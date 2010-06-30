@@ -12,7 +12,8 @@ BLENDELF_LIBS = -L/opt/local/lib ../glfw/trunk/lib/cocoa/libglfw.a -lGLEW -pthre
 	-framework OpenGL -framework OpenAL -lstdc++ -framework Cocoa \
 	../bullet-2.76.mac/src/BulletDynamics/Release/libBulletDynamics.a \
 	../bullet-2.76.mac/src/LinearMath/Release/libLinearMath.a \
-	../bullet-2.76.mac/src/BulletCollision/Release/libBulletCollision.a
+	../bullet-2.76.mac/src/BulletCollision/Release/libBulletCollision.a \
+	-lassimp
 
 all:
 	python genwraps.py
