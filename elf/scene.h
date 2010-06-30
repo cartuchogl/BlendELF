@@ -305,6 +305,8 @@ elf_scene* elf_create_scene_from_file(const char *file_path)
 	elf_scene *scene;
 	char *type;
 
+	if(!strlen(file_path)) return NULL;
+
 	type = strrchr(file_path, '.');
 
 	if(!strcmp(type, ".pak"))
