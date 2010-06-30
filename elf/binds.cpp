@@ -3038,6 +3038,24 @@ ELF_API void ELF_APIENTRY elfAddForceToActor(elf_handle actor, float x, float y,
 	}
 	elf_add_force_to_actor((elf_actor*)actor.get(), x, y, z);
 }
+ELF_API void ELF_APIENTRY elfAddForceToActorLocal(elf_handle actor, float x, float y, float z)
+{
+	if(!actor.get() || !elf_is_actor(actor.get()))
+	{
+		elf_script *script = elf_get_current_script();
+		if(script)
+		{
+			int line = elf_get_current_script_line();
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddForceToActorLocal() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "AddForceToActorLocal() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_add_force_to_actor_local((elf_actor*)actor.get(), x, y, z);
+}
 ELF_API void ELF_APIENTRY elfAddTorqueToActor(elf_handle actor, float x, float y, float z)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
@@ -3073,6 +3091,24 @@ ELF_API void ELF_APIENTRY elfSetActorLinearVelocity(elf_handle actor, float x, f
 		return;
 	}
 	elf_set_actor_linear_velocity((elf_actor*)actor.get(), x, y, z);
+}
+ELF_API void ELF_APIENTRY elfSetActorLinearVelocityLocal(elf_handle actor, float x, float y, float z)
+{
+	if(!actor.get() || !elf_is_actor(actor.get()))
+	{
+		elf_script *script = elf_get_current_script();
+		if(script)
+		{
+			int line = elf_get_current_script_line();
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorLinearVelocityLocal() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetActorLinearVelocityLocal() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_actor_linear_velocity_local((elf_actor*)actor.get(), x, y, z);
 }
 ELF_API void ELF_APIENTRY elfSetActorAngularVelocity(elf_handle actor, float x, float y, float z)
 {

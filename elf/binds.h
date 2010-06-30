@@ -550,8 +550,10 @@ ELF_API void ELF_APIENTRY elfSetActorAnisotropicFriction(elf_handle actor, float
 ELF_API void ELF_APIENTRY elfSetActorLinearFactor(elf_handle actor, float x, float y, float z);
 ELF_API void ELF_APIENTRY elfSetActorAngularFactor(elf_handle actor, float x, float y, float z);
 ELF_API void ELF_APIENTRY elfAddForceToActor(elf_handle actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfAddForceToActorLocal(elf_handle actor, float x, float y, float z);
 ELF_API void ELF_APIENTRY elfAddTorqueToActor(elf_handle actor, float x, float y, float z);
 ELF_API void ELF_APIENTRY elfSetActorLinearVelocity(elf_handle actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetActorLinearVelocityLocal(elf_handle actor, float x, float y, float z);
 ELF_API void ELF_APIENTRY elfSetActorAngularVelocity(elf_handle actor, float x, float y, float z);
 ELF_API elf_vec3f ELF_APIENTRY elfGetActorBoundingLengths(elf_handle actor);
 ELF_API elf_vec3f ELF_APIENTRY elfGetActorBoundingOffset(elf_handle actor);

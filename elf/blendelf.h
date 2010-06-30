@@ -894,8 +894,10 @@ void elf_set_actor_linear_factor(elf_actor *actor, float x, float y, float z);
 void elf_set_actor_angular_factor(elf_actor *actor, float x, float y, float z);
 
 void elf_add_force_to_actor(elf_actor *actor, float x, float y, float z);
+void elf_add_force_to_actor_local(elf_actor *actor, float x, float y, float z);
 void elf_add_torque_to_actor(elf_actor *actor, float x, float y, float z);
 void elf_set_actor_linear_velocity(elf_actor *actor, float x, float y, float z);
+void elf_set_actor_linear_velocity_local(elf_actor *actor, float x, float y, float z);
 void elf_set_actor_angular_velocity(elf_actor *actor, float x, float y, float z);
 
 elf_vec3f elf_get_actor_bounding_lengths(elf_actor *actor);

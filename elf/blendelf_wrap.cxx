@@ -8388,6 +8388,40 @@ fail:
 }
 
 
+static int _wrap_elfAddForceToActorLocal(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  float arg2 ;
+  float arg3 ;
+  float arg4 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("AddForceToActorLocal",4,4)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("AddForceToActorLocal",1,"handle");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("AddForceToActorLocal",2,"float");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("AddForceToActorLocal",3,"float");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("AddForceToActorLocal",4,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("AddForceToActorLocal",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  arg3 = (float)lua_tonumber(L, 3);
+  arg4 = (float)lua_tonumber(L, 4);
+  elfAddForceToActorLocal(arg1,arg2,arg3,arg4);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfAddTorqueToActor(lua_State* L) {
   int SWIG_arg = 0;
   elf_handle arg1 ;
@@ -8445,6 +8479,40 @@ static int _wrap_elfSetActorLinearVelocity(lua_State* L) {
   arg3 = (float)lua_tonumber(L, 3);
   arg4 = (float)lua_tonumber(L, 4);
   elfSetActorLinearVelocity(arg1,arg2,arg3,arg4);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfSetActorLinearVelocityLocal(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  float arg2 ;
+  float arg3 ;
+  float arg4 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("SetActorLinearVelocityLocal",4,4)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetActorLinearVelocityLocal",1,"handle");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("SetActorLinearVelocityLocal",2,"float");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("SetActorLinearVelocityLocal",3,"float");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("SetActorLinearVelocityLocal",4,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetActorLinearVelocityLocal",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  arg3 = (float)lua_tonumber(L, 3);
+  arg4 = (float)lua_tonumber(L, 4);
+  elfSetActorLinearVelocityLocal(arg1,arg2,arg3,arg4);
   
   return SWIG_arg;
   
@@ -20021,8 +20089,10 @@ static const struct luaL_reg swig_commands[] = {
     { "SetActorLinearFactor", _wrap_elfSetActorLinearFactor},
     { "SetActorAngularFactor", _wrap_elfSetActorAngularFactor},
     { "AddForceToActor", _wrap_elfAddForceToActor},
+    { "AddForceToActorLocal", _wrap_elfAddForceToActorLocal},
     { "AddTorqueToActor", _wrap_elfAddTorqueToActor},
     { "SetActorLinearVelocity", _wrap_elfSetActorLinearVelocity},
+    { "SetActorLinearVelocityLocal", _wrap_elfSetActorLinearVelocityLocal},
     { "SetActorAngularVelocity", _wrap_elfSetActorAngularVelocity},
     { "GetActorBoundingLengths", _wrap_elfGetActorBoundingLengths},
     { "GetActorBoundingOffset", _wrap_elfGetActorBoundingOffset},

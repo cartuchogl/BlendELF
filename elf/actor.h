@@ -576,6 +576,23 @@ void elf_add_force_to_actor(elf_actor *actor, float x, float y, float z)
 	if(actor->object) elf_add_force_to_physics_object(actor->object, x, y, z);
 }
 
+void elf_add_force_to_actor_local(elf_actor *actor, float x, float y, float z)
+{
+	elf_vec3f vec;
+	elf_vec3f result;
+	elf_vec4f orient;
+
+	if(actor->object)
+	{
+		vec.x = x;
+		vec.y = y;
+		vec.z = z;
+		elf_get_actor_orientation_(actor, &orient.x);
+		gfx_mul_qua_vec(&orient.x, &vec.x, &result.x);
+		elf_add_force_to_physics_object(actor->object, result.x, result.y, result.z);
+	}
+}
+
 void elf_add_torque_to_actor(elf_actor *actor, float x, float y, float z)
 {
 	if(actor->object) elf_add_torque_to_physics_object(actor->object, x, y, z);
@@ -584,6 +601,23 @@ void elf_add_torque_to_actor(elf_actor *actor, float x, float y, float z)
 void elf_set_actor_linear_velocity(elf_actor *actor, float x, float y, float z)
 {
 	if(actor->object) elf_set_physics_object_linear_velocity(actor->object, x, y, z);
+}
+
+void elf_set_actor_linear_velocity_local(elf_actor *actor, float x, float y, float z)
+{
+	elf_vec3f vec;
+	elf_vec3f result;
+	elf_vec4f orient;
+
+	if(actor->object)
+	{
+		vec.x = x;
+		vec.y = y;
+		vec.z = z;
+		elf_get_actor_orientation_(actor, &orient.x);
+		gfx_mul_qua_vec(&orient.x, &vec.x, &result.x);
+		elf_set_physics_object_linear_velocity(actor->object, result.x, result.y, result.z);
+	}
 }
 
 void elf_set_actor_angular_velocity(elf_actor *actor, float x, float y, float z)
