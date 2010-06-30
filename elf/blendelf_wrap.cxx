@@ -7793,6 +7793,138 @@ fail:
 }
 
 
+static int _wrap_elfSetActorPositionRelativeTo(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle arg2 ;
+  float arg3 ;
+  float arg4 ;
+  float arg5 ;
+  elf_handle *argp1 ;
+  elf_handle *argp2 ;
+  
+  SWIG_check_num_args("SetActorPositionRelativeTo",5,5)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetActorPositionRelativeTo",1,"handle");
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg("SetActorPositionRelativeTo",2,"handle");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("SetActorPositionRelativeTo",3,"float");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("SetActorPositionRelativeTo",4,"float");
+  if(!lua_isnumber(L,5)) SWIG_fail_arg("SetActorPositionRelativeTo",5,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetActorPositionRelativeTo",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetActorPositionRelativeTo",2,SWIGTYPE_p_elf_handle);
+  }
+  arg2 = *argp2;
+  
+  arg3 = (float)lua_tonumber(L, 3);
+  arg4 = (float)lua_tonumber(L, 4);
+  arg5 = (float)lua_tonumber(L, 5);
+  elfSetActorPositionRelativeTo(arg1,arg2,arg3,arg4,arg5);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfSetActorRotationRelativeTo(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle arg2 ;
+  float arg3 ;
+  float arg4 ;
+  float arg5 ;
+  elf_handle *argp1 ;
+  elf_handle *argp2 ;
+  
+  SWIG_check_num_args("SetActorRotationRelativeTo",5,5)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetActorRotationRelativeTo",1,"handle");
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg("SetActorRotationRelativeTo",2,"handle");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("SetActorRotationRelativeTo",3,"float");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("SetActorRotationRelativeTo",4,"float");
+  if(!lua_isnumber(L,5)) SWIG_fail_arg("SetActorRotationRelativeTo",5,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetActorRotationRelativeTo",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetActorRotationRelativeTo",2,SWIGTYPE_p_elf_handle);
+  }
+  arg2 = *argp2;
+  
+  arg3 = (float)lua_tonumber(L, 3);
+  arg4 = (float)lua_tonumber(L, 4);
+  arg5 = (float)lua_tonumber(L, 5);
+  elfSetActorRotationRelativeTo(arg1,arg2,arg3,arg4,arg5);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfSetActorOrientationRelativeTo(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle arg2 ;
+  float arg3 ;
+  float arg4 ;
+  float arg5 ;
+  float arg6 ;
+  elf_handle *argp1 ;
+  elf_handle *argp2 ;
+  
+  SWIG_check_num_args("SetActorOrientationRelativeTo",6,6)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetActorOrientationRelativeTo",1,"handle");
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg("SetActorOrientationRelativeTo",2,"handle");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("SetActorOrientationRelativeTo",3,"float");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("SetActorOrientationRelativeTo",4,"float");
+  if(!lua_isnumber(L,5)) SWIG_fail_arg("SetActorOrientationRelativeTo",5,"float");
+  if(!lua_isnumber(L,6)) SWIG_fail_arg("SetActorOrientationRelativeTo",6,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetActorOrientationRelativeTo",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetActorOrientationRelativeTo",2,SWIGTYPE_p_elf_handle);
+  }
+  arg2 = *argp2;
+  
+  arg3 = (float)lua_tonumber(L, 3);
+  arg4 = (float)lua_tonumber(L, 4);
+  arg5 = (float)lua_tonumber(L, 5);
+  arg6 = (float)lua_tonumber(L, 6);
+  elfSetActorOrientationRelativeTo(arg1,arg2,arg3,arg4,arg5,arg6);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfGetActorPosition(lua_State* L) {
   int SWIG_arg = 0;
   elf_handle arg1 ;
@@ -19871,6 +20003,9 @@ static const struct luaL_reg swig_commands[] = {
     { "RotateActorLocal", _wrap_elfRotateActorLocal},
     { "MoveActor", _wrap_elfMoveActor},
     { "MoveActorLocal", _wrap_elfMoveActorLocal},
+    { "SetActorPositionRelativeTo", _wrap_elfSetActorPositionRelativeTo},
+    { "SetActorRotationRelativeTo", _wrap_elfSetActorRotationRelativeTo},
+    { "SetActorOrientationRelativeTo", _wrap_elfSetActorOrientationRelativeTo},
     { "GetActorPosition", _wrap_elfGetActorPosition},
     { "GetActorRotation", _wrap_elfGetActorRotation},
     { "GetActorOrientation", _wrap_elfGetActorOrientation},

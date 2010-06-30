@@ -2663,6 +2663,102 @@ ELF_API void ELF_APIENTRY elfMoveActorLocal(elf_handle actor, float x, float y, 
 	}
 	elf_move_actor_local((elf_actor*)actor.get(), x, y, z);
 }
+ELF_API void ELF_APIENTRY elfSetActorPositionRelativeTo(elf_handle actor, elf_handle to, float x, float y, float z)
+{
+	if(!actor.get() || !elf_is_actor(actor.get()))
+	{
+		elf_script *script = elf_get_current_script();
+		if(script)
+		{
+			int line = elf_get_current_script_line();
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorPositionRelativeTo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetActorPositionRelativeTo() -> invalid handle\n");
+		}
+		return;
+	}
+	if(!to.get() || !elf_is_actor(to.get()))
+	{
+		elf_script *script = elf_get_current_script();
+		if(script)
+		{
+			int line = elf_get_current_script_line();
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorPositionRelativeTo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetActorPositionRelativeTo() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_actor_position_relative_to((elf_actor*)actor.get(), (elf_actor*)to.get(), x, y, z);
+}
+ELF_API void ELF_APIENTRY elfSetActorRotationRelativeTo(elf_handle actor, elf_handle to, float x, float y, float z)
+{
+	if(!actor.get() || !elf_is_actor(actor.get()))
+	{
+		elf_script *script = elf_get_current_script();
+		if(script)
+		{
+			int line = elf_get_current_script_line();
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorRotationRelativeTo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetActorRotationRelativeTo() -> invalid handle\n");
+		}
+		return;
+	}
+	if(!to.get() || !elf_is_actor(to.get()))
+	{
+		elf_script *script = elf_get_current_script();
+		if(script)
+		{
+			int line = elf_get_current_script_line();
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorRotationRelativeTo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetActorRotationRelativeTo() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_actor_rotation_relative_to((elf_actor*)actor.get(), (elf_actor*)to.get(), x, y, z);
+}
+ELF_API void ELF_APIENTRY elfSetActorOrientationRelativeTo(elf_handle actor, elf_handle to, float x, float y, float z, float w)
+{
+	if(!actor.get() || !elf_is_actor(actor.get()))
+	{
+		elf_script *script = elf_get_current_script();
+		if(script)
+		{
+			int line = elf_get_current_script_line();
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorOrientationRelativeTo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetActorOrientationRelativeTo() -> invalid handle\n");
+		}
+		return;
+	}
+	if(!to.get() || !elf_is_actor(to.get()))
+	{
+		elf_script *script = elf_get_current_script();
+		if(script)
+		{
+			int line = elf_get_current_script_line();
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorOrientationRelativeTo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetActorOrientationRelativeTo() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_actor_orientation_relative_to((elf_actor*)actor.get(), (elf_actor*)to.get(), x, y, z, w);
+}
 ELF_API elf_vec3f ELF_APIENTRY elfGetActorPosition(elf_handle actor)
 {
 	elf_vec3f _e_type;

@@ -309,6 +309,56 @@ void elf_move_actor_local(elf_actor *actor, float x, float y, float z)
 	if(actor->type == ELF_LIGHT) elf_move_actor_local((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
 }
 
+void elf_set_actor_position_relative_to(elf_actor *actor, elf_actor *to, float x, float y, float z)
+{
+	elf_vec3f vec;
+	elf_vec3f result;
+	elf_vec4f orient;
+
+	vec.x = x;
+	vec.y = y;
+	vec.z = z;
+
+	elf_get_actor_orientation_(actor, &orient.x);
+
+	gfx_mul_qua_vec(&orient.x, &vec.x, &result.x);
+
+	elf_set_actor_position(actor, result.x, result.y, result.z);
+}
+
+void elf_set_actor_rotation_relative_to(elf_actor *actor, elf_actor *to, float x, float y, float z)
+{
+	elf_vec4f lorient;
+	elf_vec4f orient;
+	elf_vec4f result;
+
+	gfx_set_qua_rotation(x, y, z, &lorient.x);
+
+	elf_get_actor_orientation_(actor, &orient.x);
+
+	gfx_mul_qua_qua(&lorient.x, &orient.x, &result.x);
+
+	elf_set_actor_orientation(actor, result.x, result.y, result.z, result.w);
+}
+
+void elf_set_actor_orientation_relative_to(elf_actor *actor, elf_actor *to, float x, float y, float z, float w)
+{
+	elf_vec4f lorient;
+	elf_vec4f orient;
+	elf_vec4f result;
+
+	lorient.x = x;
+	lorient.y = y;
+	lorient.z = z;
+	lorient.w = w;
+
+	elf_get_actor_orientation_(actor, &orient.x);
+
+	gfx_mul_qua_qua(&lorient.x, &orient.x, &result.x);
+
+	elf_set_actor_orientation(actor, result.x, result.y, result.z, result.w);
+}
+
 elf_vec3f elf_get_actor_position(elf_actor *actor)
 {
 	elf_vec3f pos;
