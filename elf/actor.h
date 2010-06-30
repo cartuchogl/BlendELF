@@ -473,12 +473,57 @@ void elf_set_actor_physics(elf_actor *actor, int shape, float mass)
 			actor->object = elf_create_physics_object_mesh(entity->model->tri_mesh, mass);
 			break;
 		}
-		case ELF_CAPSULE:
+		case ELF_CAPSULE_X:
+		{
+			if(actor->pbb_lengths.z > actor->pbb_lengths.y) radius = actor->pbb_lengths.z/2.0;
+			else radius = actor->pbb_lengths.y/2.0;
+
+			actor->object = elf_create_physics_object_capsule(ELF_CAPSULE_X, actor->pbb_lengths.x, radius, mass,
+				actor->pbb_offset.x, actor->pbb_offset.y, actor->pbb_offset.z);
+			break;
+		}
+		case ELF_CAPSULE_Y:
+		{
+			if(actor->pbb_lengths.z > actor->pbb_lengths.x) radius = actor->pbb_lengths.z/2.0;
+			else radius = actor->pbb_lengths.x/2.0;
+
+			actor->object = elf_create_physics_object_capsule(ELF_CAPSULE_Y, actor->pbb_lengths.y, radius, mass,
+				actor->pbb_offset.x, actor->pbb_offset.y, actor->pbb_offset.z);
+			break;
+		}
+		case ELF_CAPSULE_Z:
 		{
 			if(actor->pbb_lengths.x > actor->pbb_lengths.y) radius = actor->pbb_lengths.x/2.0;
 			else radius = actor->pbb_lengths.y/2.0;
 
-			actor->object = elf_create_physics_object_capsule(actor->pbb_lengths.z, radius, mass,
+			actor->object = elf_create_physics_object_capsule(ELF_CAPSULE_Z, actor->pbb_lengths.z, radius, mass,
+				actor->pbb_offset.x, actor->pbb_offset.y, actor->pbb_offset.z);
+			break;
+		}
+		case ELF_CONE_X:
+		{
+			if(actor->pbb_lengths.z > actor->pbb_lengths.y) radius = actor->pbb_lengths.z/2.0;
+			else radius = actor->pbb_lengths.y/2.0;
+
+			actor->object = elf_create_physics_object_cone(ELF_CONE_X, actor->pbb_lengths.x, radius, mass,
+				actor->pbb_offset.x, actor->pbb_offset.y, actor->pbb_offset.z);
+			break;
+		}
+		case ELF_CONE_Y:
+		{
+			if(actor->pbb_lengths.z > actor->pbb_lengths.x) radius = actor->pbb_lengths.z/2.0;
+			else radius = actor->pbb_lengths.x/2.0;
+
+			actor->object = elf_create_physics_object_cone(ELF_CONE_Y, actor->pbb_lengths.y, radius, mass,
+				actor->pbb_offset.x, actor->pbb_offset.y, actor->pbb_offset.z);
+			break;
+		}
+		case ELF_CONE_Z:
+		{
+			if(actor->pbb_lengths.x > actor->pbb_lengths.y) radius = actor->pbb_lengths.x/2.0;
+			else radius = actor->pbb_lengths.y/2.0;
+
+			actor->object = elf_create_physics_object_cone(ELF_CONE_Z, actor->pbb_lengths.z, radius, mass,
 				actor->pbb_offset.x, actor->pbb_offset.y, actor->pbb_offset.z);
 			break;
 		}

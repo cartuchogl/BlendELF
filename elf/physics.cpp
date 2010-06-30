@@ -699,13 +699,16 @@ elf_physics_object* elf_create_physics_object_box(float hx, float hy, float hz, 
 	return object;
 }
 
-elf_physics_object* elf_create_physics_object_capsule(float length, float radius, float mass, float ox, float oy, float oz)
+elf_physics_object* elf_create_physics_object_capsule(unsigned char type, float length, float radius, float mass, float ox, float oy, float oz)
 {
 	elf_physics_object *object;
 
 	object = elf_create_physics_object();
 
-	object->shape = new btCapsuleShape(radius, length);
+	if(type == ELF_CAPSULE_X) object->shape = new btCapsuleShapeX(radius, length);
+	else if(type == ELF_CAPSULE_Y) object->shape = new btCapsuleShape(radius, length);
+	else if(type == ELF_CAPSULE_Z) object->shape = new btCapsuleShapeZ(radius, length);
+
 	if(!elf_about_zero(ox) || !elf_about_zero(oy) || !elf_about_zero(oz))
 	{
 		btTransform localTrans;
@@ -715,7 +718,47 @@ elf_physics_object* elf_create_physics_object_capsule(float length, float radius
 		object->cshape->addChildShape(localTrans, object->shape);
 	}
 
-	object->shape_type = ELF_CAPSULE;
+	object->shape_type = type;
+
+	object->mass = mass;
+
+	btScalar bodyMass(mass);
+	btVector3 localInertia(0.0, 0.0, 0.0);
+
+	if(!elf_about_zero(mass)) object->shape->calculateLocalInertia(mass, localInertia);
+
+	btTransform startTransform;
+	startTransform.setOrigin(btVector3(0.0, 0.0, 0.0));
+	startTransform.setRotation(btQuaternion(0.0, 0.0, 0.0, 1.0));
+
+	object->motionState = new btDefaultMotionState(startTransform);
+	object->body = new btRigidBody(bodyMass, object->motionState, object->cshape ? object->cshape : object->shape, localInertia);
+
+	object->body->setUserPointer(object);
+
+	return object;
+}
+
+elf_physics_object* elf_create_physics_object_cone(unsigned char type, float length, float radius, float mass, float ox, float oy, float oz)
+{
+	elf_physics_object *object;
+
+	object = elf_create_physics_object();
+
+	if(type == ELF_CONE_X) object->shape = new btConeShapeX(radius, length);
+	else if(type == ELF_CONE_Y) object->shape = new btConeShape(radius, length);
+	else if(type == ELF_CONE_Z) object->shape = new btConeShapeZ(radius, length);
+
+	if(!elf_about_zero(ox) || !elf_about_zero(oy) || !elf_about_zero(oz))
+	{
+		btTransform localTrans;
+		localTrans.setOrigin(btVector3(ox, oy, oz));
+		localTrans.setRotation(btQuaternion(0.0, 0.0, 0.0, 1.0));
+		object->cshape = new btCompoundShape();
+		object->cshape->addChildShape(localTrans, object->shape);
+	}
+
+	object->shape_type = type;
 
 	object->mass = mass;
 

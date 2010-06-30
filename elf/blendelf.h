@@ -175,7 +175,12 @@ extern "C" {
 #define ELF_BOX						0x0001	// <mdoc> PHYSICS SHAPES <mdocc> The physics shapes used by elf.SetEntityPhysics
 #define ELF_SPHERE					0x0002
 #define ELF_MESH					0x0003
-#define ELF_CAPSULE					0x0004
+#define ELF_CAPSULE_X					0x0004
+#define ELF_CAPSULE_Y					0x0005
+#define ELF_CAPSULE_Z					0x0006
+#define ELF_CONE_X					0x0007
+#define ELF_CONE_Y					0x0008
+#define ELF_CONE_Z					0x0009
 
 #define ELF_HINGE					0x0001	// <mdoc> JOINT TYPES <mdocc> The joint types returned by elf.GetJointType
 #define ELF_BALL					0x0002
@@ -1573,7 +1578,8 @@ elf_physics_object* elf_create_physics_object();
 elf_physics_object* elf_create_physics_object_mesh(elf_physics_tri_mesh *tri_mesh, float mass);
 elf_physics_object* elf_create_physics_object_sphere(float radius, float mass, float ox, float oy, float oz);
 elf_physics_object* elf_create_physics_object_box(float hx, float hy, float hz, float mass, float ox, float oy, float oz);
-elf_physics_object* elf_create_physics_object_capsule(float length, float radius, float mass, float ox, float oy, float oz);
+elf_physics_object* elf_create_physics_object_capsule(unsigned char type, float length, float radius, float mass, float ox, float oy, float oz);
+elf_physics_object* elf_create_physics_object_cone(unsigned char type, float length, float radius, float mass, float ox, float oy, float oz);
 void elf_set_physics_object_world(elf_physics_object *object, elf_physics_world *world);
 void elf_destroy_physics_object(elf_physics_object *object);
 

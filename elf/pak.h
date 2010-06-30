@@ -512,7 +512,9 @@ void elf_read_actor_header(elf_actor *actor, FILE *file, elf_scene *scene)
 	fread((char*)linear_factor, sizeof(float), 3, file);
 	fread((char*)angular_factor, sizeof(float), 3, file);
 
-	if(shape == ELF_BOX || shape == ELF_SPHERE || shape == ELF_MESH || shape == ELF_CAPSULE)
+	if(shape == ELF_BOX || shape == ELF_SPHERE || shape == ELF_MESH || shape == ELF_CAPSULE_X ||
+		 shape == ELF_CAPSULE_Y || shape == ELF_CAPSULE_Z || shape == ELF_CONE_X ||
+		 shape == ELF_CONE_Y || shape == ELF_CONE_Z)
 	{
 		elf_set_actor_physics(actor, shape, mass);
 		elf_set_actor_damping(actor, lin_damp, ang_damp);
