@@ -1501,6 +1501,8 @@ void elf_draw_scene(elf_scene *scene)
 	int i, j;
 	elf_vec3f lpos;
 	elf_vec3f epos;
+	elf_vec3f eofs;
+	elf_vec4f eori;
 	elf_vec3f spos;
 	elf_vec3f dvec;
 	float dist, att;
@@ -1743,7 +1745,10 @@ void elf_draw_scene(elf_scene *scene)
 		{
 			// get the entity position for culling point light entities and testing against bounding sphere
 			epos = elf_get_actor_position((elf_actor*)ent);
-			epos = elf_add_vec3f_vec3f(epos, ent->bb_offset);
+			eori = elf_get_actor_orientation((elf_actor*)ent);
+			eofs = elf_mul_qua_vec3f(eori, ent->bb_offset);
+			epos = elf_add_vec3f_vec3f(epos, eofs);
+
 			if((eng->occlusion_culling && gfx_get_query_result(ent->query) > 0) || !eng->occlusion_culling ||
 				elf_camera_inside_sphere(scene->cur_camera, &epos.x, ent->cull_radius))
 			{

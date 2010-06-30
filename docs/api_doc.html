@@ -480,6 +480,7 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">float</span> elf.GetVec3fLength( <span class="apikeytype">elf_vec3f</span> vec )</div>
 <div class="apifunc"><span class="apikeytype">bool</span> elf.AboutZero( <span class="apikeytype">float</span> val )</div>
 <div class="apifunc"><span class="apikeytype">float</span> elf.FloatAbs( <span class="apikeytype">float</span> val )</div>
+<div class="apifunc"><span class="apikeytype">float</span> elf.FloatMin( <span class="apikeytype">float</span> a, <span class="apikeytype">float</span> b )</div>
 <div class="apifunc"><span class="apikeytype">float</span> elf.FloatMax( <span class="apikeytype">float</span> a, <span class="apikeytype">float</span> b )</div>
 <div class="apifunc"><span class="apikeytype">float</span> elf.RandomFloat(  )</div>
 <div class="apifunc"><span class="apikeytype">float</span> elf.RandomFloatRange( <span class="apikeytype">float</span> min, <span class="apikeytype">float</span> max )</div>
@@ -572,6 +573,9 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc">elf.RotateActorLocal( <span class="apiobjtype">object</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc">elf.MoveActor( <span class="apiobjtype">object</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc">elf.MoveActorLocal( <span class="apiobjtype">object</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
+<div class="apifunc">elf.SetActorPositionRelativeTo( <span class="apiobjtype">object</span> actor, <span class="apiobjtype">object</span> to, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
+<div class="apifunc">elf.SetActorRotationRelativeTo( <span class="apiobjtype">object</span> actor, <span class="apiobjtype">object</span> to, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
+<div class="apifunc">elf.SetActorOrientationRelativeTo( <span class="apiobjtype">object</span> actor, <span class="apiobjtype">object</span> to, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z, <span class="apikeytype">float</span> w )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec3f</span> elf.GetActorPosition( <span class="apiobjtype">object</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec3f</span> elf.GetActorRotation( <span class="apiobjtype">object</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec4f</span> elf.GetActorOrientation( <span class="apiobjtype">object</span> actor )</div>
@@ -587,8 +591,10 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc">elf.SetActorLinearFactor( <span class="apiobjtype">object</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc">elf.SetActorAngularFactor( <span class="apiobjtype">object</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc">elf.AddForceToActor( <span class="apiobjtype">object</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
+<div class="apifunc">elf.AddForceToActorLocal( <span class="apiobjtype">object</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc">elf.AddTorqueToActor( <span class="apiobjtype">object</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc">elf.SetActorLinearVelocity( <span class="apiobjtype">object</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
+<div class="apifunc">elf.SetActorLinearVelocityLocal( <span class="apiobjtype">object</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc">elf.SetActorAngularVelocity( <span class="apiobjtype">object</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec3f</span> elf.GetActorBoundingLengths( <span class="apiobjtype">object</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec3f</span> elf.GetActorBoundingOffset( <span class="apiobjtype">object</span> actor )</div>

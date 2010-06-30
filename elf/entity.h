@@ -132,6 +132,8 @@ void elf_eval_entity_aabb_armature_corner(elf_entity *entity, elf_vec4f *orient,
 
 void elf_calc_entity_aabb(elf_entity *entity)
 {
+	elf_vec3f tmp_vec;
+
 	elf_vec3f position;
 	elf_vec4f orient;
 	elf_vec3f corner;
@@ -203,13 +205,15 @@ void elf_calc_entity_aabb(elf_entity *entity)
 	entity->cull_aabb_max.x += position.x;
 	entity->cull_aabb_max.y += position.y;
 	entity->cull_aabb_max.z += position.z;
+
+	tmp_vec.x = entity->bb_max.x-entity->bb_min.x;
+	tmp_vec.y = entity->bb_max.y-entity->bb_min.y;
+	tmp_vec.z = entity->bb_max.z-entity->bb_min.z;
+	entity->cull_radius = gfx_vec_length(&tmp_vec.x)/2;
 }
 
 void elf_calc_entity_bounding_volumes(elf_entity *entity, unsigned char new_model)
 {
-	float max_scale;
-	elf_vec3f tmp_vec;
-
 	if(!entity->model)
 	{
 		entity->bb_min.x = entity->bb_min.y = entity->bb_min.z = -0.2;
@@ -262,16 +266,6 @@ void elf_calc_entity_bounding_volumes(elf_entity *entity, unsigned char new_mode
 	}
 
 	elf_calc_entity_aabb(entity);
-
-	tmp_vec.x = entity->cull_aabb_max.x-entity->cull_aabb_min.x;
-	tmp_vec.y = entity->cull_aabb_max.y-entity->cull_aabb_min.y;
-	tmp_vec.z = entity->cull_aabb_max.z-entity->cull_aabb_min.z;
-	entity->cull_radius = gfx_vec_length(&tmp_vec.x)/2;
-
-	max_scale = entity->scale.x;
-	if(entity->scale.y > max_scale) max_scale = entity->scale.y;
-	if(entity->scale.z > max_scale) max_scale = entity->scale.z;
-	entity->cull_radius *= max_scale;
 }
 
 void elf_set_entity_scale(elf_entity *entity, float x, float y, float z)
@@ -580,25 +574,13 @@ void elf_draw_entity_without_materials(elf_entity *entity, gfx_shader_params *sh
 
 void elf_draw_entity_bounding_box(elf_entity *entity, gfx_shader_params *shader_params)
 {
-	elf_vec3f bb_min;
-	elf_vec3f bb_max;
-
 	if(!entity->model || !entity->visible || !entity->model->vertex_array) return;
 
 	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(entity->transform),
 		shader_params->camera_matrix, shader_params->modelview_matrix);
 
-	bb_min = entity->cull_aabb_min;
-	bb_max = entity->cull_aabb_max;
-	bb_min.x -= entity->position.x;
-	bb_min.y -= entity->position.y;
-	bb_min.z -= entity->position.z;
-	bb_max.x -= entity->position.x;
-	bb_max.y -= entity->position.y;
-	bb_max.z -= entity->position.z;
-
 	gfx_set_shader_params(shader_params);
-	gfx_draw_bounding_box(&bb_min.x, &bb_max.x);
+	gfx_draw_bounding_box(&entity->model->bb_min.x, &entity->model->bb_max.x);
 }
 
 void elf_draw_entity_debug(elf_entity *entity, gfx_shader_params *shader_params)
