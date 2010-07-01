@@ -81,23 +81,32 @@ void elf_deinit_scripting()
 	scr = NULL;
 }
 
-int elf_get_current_script_line()
-{
-	lua_Debug ar;
-
-	if(!scr) return 0;
-
-	lua_getstack(scr->L, 0 + 1, &ar);
-	lua_getinfo(scr->L, "l", &ar);
-	//luaL_where(scr->L, 0);
-
-	return ar.currentline;
-}
-
 elf_script* elf_get_current_script()
 {
 	if(!scr) return NULL;
 	return (elf_script*)elf_rbegin_list(scr->cur_scripts);
+}
+
+void elf_set_script_error(int err, const char *msg)
+{
+	lua_Debug ar;
+	elf_script *script;
+
+	if(!scr) return;
+
+	lua_getstack(scr->L, 0 + 1, &ar);
+	lua_getinfo(scr->L, "Sl", &ar);
+	//luaL_where(scr->L, 0);
+
+	script = elf_get_current_script();
+	if(ar.source[0] == '@')
+	{
+		elf_set_error_no_save(err, "[%s]:%d: %s\n", ar.short_src, ar.currentline, msg);
+	}
+	else
+	{
+		elf_set_error_no_save(err, "[%s \"%s\"]:%d: %s\n", script->file_path, script->name, ar.currentline, msg);
+	}
 }
 
 unsigned char elf_run_string(const char *str)

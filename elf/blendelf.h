@@ -1477,8 +1477,8 @@ unsigned char elf_init_scripting();
 void elf_update_scripting();
 void elf_deinit_scripting();
 
-int elf_get_current_script_line();
 elf_script* elf_get_current_script();
+void elf_set_script_error(int err, const char *msg);
 // !!>
 
 unsigned char elf_run_string(const char *str);

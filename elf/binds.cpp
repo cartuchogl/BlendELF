@@ -73,11 +73,9 @@ ELF_API int ELF_APIENTRY elfGetObjectType(elf_handle obj)
 {
 	if(!obj.get())
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetObjectType() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetObjectType() -> invalid handle");
 		}
 		else
 		{
@@ -91,11 +89,9 @@ ELF_API int ELF_APIENTRY elfGetObjectRefCount(elf_handle obj)
 {
 	if(!obj.get())
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetObjectRefCount() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetObjectRefCount() -> invalid handle");
 		}
 		else
 		{
@@ -117,11 +113,9 @@ ELF_API bool ELF_APIENTRY elfIsActor(elf_handle obj)
 {
 	if(!obj.get())
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: IsActor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "IsActor() -> invalid handle");
 		}
 		else
 		{
@@ -135,11 +129,9 @@ ELF_API bool ELF_APIENTRY elfIsGuiObject(elf_handle obj)
 {
 	if(!obj.get())
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: IsGuiObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "IsGuiObject() -> invalid handle");
 		}
 		else
 		{
@@ -159,11 +151,9 @@ ELF_API int ELF_APIENTRY elfGetListLength(elf_handle list)
 {
 	if(!list.get() || elf_get_object_type(list.get()) != ELF_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetListLength() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetListLength() -> invalid handle");
 		}
 		else
 		{
@@ -177,11 +167,9 @@ ELF_API void ELF_APIENTRY elfInsertToList(elf_handle list, int idx, elf_handle o
 {
 	if(!list.get() || elf_get_object_type(list.get()) != ELF_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: InsertToList() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "InsertToList() -> invalid handle");
 		}
 		else
 		{
@@ -191,11 +179,9 @@ ELF_API void ELF_APIENTRY elfInsertToList(elf_handle list, int idx, elf_handle o
 	}
 	if(!obj.get())
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: InsertToList() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "InsertToList() -> invalid handle");
 		}
 		else
 		{
@@ -209,11 +195,9 @@ ELF_API void ELF_APIENTRY elfAppendToList(elf_handle list, elf_handle obj)
 {
 	if(!list.get() || elf_get_object_type(list.get()) != ELF_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AppendToList() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AppendToList() -> invalid handle");
 		}
 		else
 		{
@@ -223,11 +207,9 @@ ELF_API void ELF_APIENTRY elfAppendToList(elf_handle list, elf_handle obj)
 	}
 	if(!obj.get())
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AppendToList() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AppendToList() -> invalid handle");
 		}
 		else
 		{
@@ -241,11 +223,9 @@ ELF_API bool ELF_APIENTRY elfRemoveFromList(elf_handle list, elf_handle obj)
 {
 	if(!list.get() || elf_get_object_type(list.get()) != ELF_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveFromList() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveFromList() -> invalid handle");
 		}
 		else
 		{
@@ -255,11 +235,9 @@ ELF_API bool ELF_APIENTRY elfRemoveFromList(elf_handle list, elf_handle obj)
 	}
 	if(!obj.get())
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveFromList() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveFromList() -> invalid handle");
 		}
 		else
 		{
@@ -274,11 +252,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetItemFromList(elf_handle list, int idx)
 	elf_handle handle;
 	if(!list.get() || elf_get_object_type(list.get()) != ELF_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetItemFromList() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetItemFromList() -> invalid handle");
 		}
 		else
 		{
@@ -294,11 +270,9 @@ ELF_API elf_handle ELF_APIENTRY elfBeginList(elf_handle list)
 	elf_handle handle;
 	if(!list.get() || elf_get_object_type(list.get()) != ELF_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: BeginList() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "BeginList() -> invalid handle");
 		}
 		else
 		{
@@ -314,11 +288,9 @@ ELF_API elf_handle ELF_APIENTRY elfNextInList(elf_handle list)
 	elf_handle handle;
 	if(!list.get() || elf_get_object_type(list.get()) != ELF_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: NextInList() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "NextInList() -> invalid handle");
 		}
 		else
 		{
@@ -334,11 +306,9 @@ ELF_API elf_handle ELF_APIENTRY elfRbeginList(elf_handle list)
 	elf_handle handle;
 	if(!list.get() || elf_get_object_type(list.get()) != ELF_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RbeginList() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RbeginList() -> invalid handle");
 		}
 		else
 		{
@@ -354,11 +324,9 @@ ELF_API elf_handle ELF_APIENTRY elfRnextInList(elf_handle list)
 	elf_handle handle;
 	if(!list.get() || elf_get_object_type(list.get()) != ELF_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RnextInList() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RnextInList() -> invalid handle");
 		}
 		else
 		{
@@ -373,11 +341,9 @@ ELF_API void ELF_APIENTRY elfSeekList(elf_handle list, elf_handle ptr)
 {
 	if(!list.get() || elf_get_object_type(list.get()) != ELF_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SeekList() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SeekList() -> invalid handle");
 		}
 		else
 		{
@@ -387,11 +353,9 @@ ELF_API void ELF_APIENTRY elfSeekList(elf_handle list, elf_handle ptr)
 	}
 	if(!ptr.get())
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SeekList() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SeekList() -> invalid handle");
 		}
 		else
 		{
@@ -405,11 +369,9 @@ ELF_API void ELF_APIENTRY elfRseekList(elf_handle list, elf_handle ptr)
 {
 	if(!list.get() || elf_get_object_type(list.get()) != ELF_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RseekList() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RseekList() -> invalid handle");
 		}
 		else
 		{
@@ -419,11 +381,9 @@ ELF_API void ELF_APIENTRY elfRseekList(elf_handle list, elf_handle ptr)
 	}
 	if(!ptr.get())
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RseekList() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RseekList() -> invalid handle");
 		}
 		else
 		{
@@ -443,11 +403,9 @@ ELF_API int ELF_APIENTRY elfGetConfigWindowWidth(elf_handle config)
 {
 	if(!config.get() || elf_get_object_type(config.get()) != ELF_CONFIG)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetConfigWindowWidth() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetConfigWindowWidth() -> invalid handle");
 		}
 		else
 		{
@@ -461,11 +419,9 @@ ELF_API int ELF_APIENTRY elfGetConfigWindowHeight(elf_handle config)
 {
 	if(!config.get() || elf_get_object_type(config.get()) != ELF_CONFIG)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetConfigWindowHeight() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetConfigWindowHeight() -> invalid handle");
 		}
 		else
 		{
@@ -479,11 +435,9 @@ ELF_API bool ELF_APIENTRY elfGetConfigFullscreen(elf_handle config)
 {
 	if(!config.get() || elf_get_object_type(config.get()) != ELF_CONFIG)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetConfigFullscreen() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetConfigFullscreen() -> invalid handle");
 		}
 		else
 		{
@@ -497,11 +451,9 @@ ELF_API float ELF_APIENTRY elfGetConfigTextureAnisotropy(elf_handle config)
 {
 	if(!config.get() || elf_get_object_type(config.get()) != ELF_CONFIG)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetConfigTextureAnisotropy() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetConfigTextureAnisotropy() -> invalid handle");
 		}
 		else
 		{
@@ -515,11 +467,9 @@ ELF_API int ELF_APIENTRY elfGetConfigShadowMapSize(elf_handle config)
 {
 	if(!config.get() || elf_get_object_type(config.get()) != ELF_CONFIG)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetConfigShadowMapSize() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetConfigShadowMapSize() -> invalid handle");
 		}
 		else
 		{
@@ -533,11 +483,9 @@ ELF_API const char* ELF_APIENTRY elfGetConfigStart(elf_handle config)
 {
 	if(!config.get() || elf_get_object_type(config.get()) != ELF_CONFIG)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetConfigStart() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetConfigStart() -> invalid handle");
 		}
 		else
 		{
@@ -551,11 +499,9 @@ ELF_API const char* ELF_APIENTRY elfGetConfigLog(elf_handle config)
 {
 	if(!config.get() || elf_get_object_type(config.get()) != ELF_CONFIG)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetConfigLog() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetConfigLog() -> invalid handle");
 		}
 		else
 		{
@@ -739,11 +685,9 @@ ELF_API void ELF_APIENTRY elfSetScene(elf_handle scene)
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetScene() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetScene() -> invalid handle");
 		}
 		else
 		{
@@ -763,11 +707,9 @@ ELF_API void ELF_APIENTRY elfSetGui(elf_handle gui)
 {
 	if(!gui.get() || elf_get_object_type(gui.get()) != ELF_GUI)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetGui() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetGui() -> invalid handle");
 		}
 		else
 		{
@@ -939,11 +881,9 @@ ELF_API const char* ELF_APIENTRY elfGetDirectoryPath(elf_handle directory)
 {
 	if(!directory.get() || elf_get_object_type(directory.get()) != ELF_DIRECTORY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetDirectoryPath() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetDirectoryPath() -> invalid handle");
 		}
 		else
 		{
@@ -957,11 +897,9 @@ ELF_API int ELF_APIENTRY elfGetDirectoryItemCount(elf_handle directory)
 {
 	if(!directory.get() || elf_get_object_type(directory.get()) != ELF_DIRECTORY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetDirectoryItemCount() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetDirectoryItemCount() -> invalid handle");
 		}
 		else
 		{
@@ -976,11 +914,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetDirectoryItem(elf_handle directory, int id
 	elf_handle handle;
 	if(!directory.get() || elf_get_object_type(directory.get()) != ELF_DIRECTORY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetDirectoryItem() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetDirectoryItem() -> invalid handle");
 		}
 		else
 		{
@@ -995,11 +931,9 @@ ELF_API const char* ELF_APIENTRY elfGetDirectoryItemName(elf_handle dir_item)
 {
 	if(!dir_item.get() || elf_get_object_type(dir_item.get()) != ELF_DIRECTORY_ITEM)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetDirectoryItemName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetDirectoryItemName() -> invalid handle");
 		}
 		else
 		{
@@ -1013,11 +947,9 @@ ELF_API int ELF_APIENTRY elfGetDirectoryItemType(elf_handle dir_item)
 {
 	if(!dir_item.get() || elf_get_object_type(dir_item.get()) != ELF_DIRECTORY_ITEM)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetDirectoryItemType() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetDirectoryItemType() -> invalid handle");
 		}
 		else
 		{
@@ -1137,11 +1069,9 @@ ELF_API void ELF_APIENTRY elfUpdateFramePlayer(elf_handle player)
 {
 	if(!player.get() || elf_get_object_type(player.get()) != ELF_FRAME_PLAYER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: UpdateFramePlayer() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "UpdateFramePlayer() -> invalid handle");
 		}
 		else
 		{
@@ -1155,11 +1085,9 @@ ELF_API void ELF_APIENTRY elfSetFramePlayerFrame(elf_handle player, float frame)
 {
 	if(!player.get() || elf_get_object_type(player.get()) != ELF_FRAME_PLAYER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetFramePlayerFrame() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetFramePlayerFrame() -> invalid handle");
 		}
 		else
 		{
@@ -1173,11 +1101,9 @@ ELF_API void ELF_APIENTRY elfPlayFramePlayer(elf_handle player, float start, flo
 {
 	if(!player.get() || elf_get_object_type(player.get()) != ELF_FRAME_PLAYER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: PlayFramePlayer() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "PlayFramePlayer() -> invalid handle");
 		}
 		else
 		{
@@ -1191,11 +1117,9 @@ ELF_API void ELF_APIENTRY elfLoopFramePlayer(elf_handle player, float start, flo
 {
 	if(!player.get() || elf_get_object_type(player.get()) != ELF_FRAME_PLAYER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: LoopFramePlayer() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "LoopFramePlayer() -> invalid handle");
 		}
 		else
 		{
@@ -1209,11 +1133,9 @@ ELF_API void ELF_APIENTRY elfStopFramePlayer(elf_handle player)
 {
 	if(!player.get() || elf_get_object_type(player.get()) != ELF_FRAME_PLAYER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: StopFramePlayer() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "StopFramePlayer() -> invalid handle");
 		}
 		else
 		{
@@ -1227,11 +1149,9 @@ ELF_API void ELF_APIENTRY elfPauseFramePlayer(elf_handle player)
 {
 	if(!player.get() || elf_get_object_type(player.get()) != ELF_FRAME_PLAYER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: PauseFramePlayer() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "PauseFramePlayer() -> invalid handle");
 		}
 		else
 		{
@@ -1245,11 +1165,9 @@ ELF_API void ELF_APIENTRY elfResumeFramePlayer(elf_handle player)
 {
 	if(!player.get() || elf_get_object_type(player.get()) != ELF_FRAME_PLAYER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: ResumeFramePlayer() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "ResumeFramePlayer() -> invalid handle");
 		}
 		else
 		{
@@ -1263,11 +1181,9 @@ ELF_API float ELF_APIENTRY elfGetFramePlayerStart(elf_handle player)
 {
 	if(!player.get() || elf_get_object_type(player.get()) != ELF_FRAME_PLAYER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetFramePlayerStart() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetFramePlayerStart() -> invalid handle");
 		}
 		else
 		{
@@ -1281,11 +1197,9 @@ ELF_API float ELF_APIENTRY elfGetFramePlayerEnd(elf_handle player)
 {
 	if(!player.get() || elf_get_object_type(player.get()) != ELF_FRAME_PLAYER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetFramePlayerEnd() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetFramePlayerEnd() -> invalid handle");
 		}
 		else
 		{
@@ -1299,11 +1213,9 @@ ELF_API float ELF_APIENTRY elfGetFramePlayerSpeed(elf_handle player)
 {
 	if(!player.get() || elf_get_object_type(player.get()) != ELF_FRAME_PLAYER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetFramePlayerSpeed() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetFramePlayerSpeed() -> invalid handle");
 		}
 		else
 		{
@@ -1317,11 +1229,9 @@ ELF_API float ELF_APIENTRY elfGetFramePlayerFrame(elf_handle player)
 {
 	if(!player.get() || elf_get_object_type(player.get()) != ELF_FRAME_PLAYER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetFramePlayerFrame() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetFramePlayerFrame() -> invalid handle");
 		}
 		else
 		{
@@ -1335,11 +1245,9 @@ ELF_API bool ELF_APIENTRY elfIsFramePlayerPlaying(elf_handle player)
 {
 	if(!player.get() || elf_get_object_type(player.get()) != ELF_FRAME_PLAYER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: IsFramePlayerPlaying() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "IsFramePlayerPlaying() -> invalid handle");
 		}
 		else
 		{
@@ -1353,11 +1261,9 @@ ELF_API bool ELF_APIENTRY elfIsFramePlayerPaused(elf_handle player)
 {
 	if(!player.get() || elf_get_object_type(player.get()) != ELF_FRAME_PLAYER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: IsFramePlayerPaused() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "IsFramePlayerPaused() -> invalid handle");
 		}
 		else
 		{
@@ -1377,11 +1283,9 @@ ELF_API void ELF_APIENTRY elfStartTimer(elf_handle timer)
 {
 	if(!timer.get() || elf_get_object_type(timer.get()) != ELF_TIMER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: StartTimer() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "StartTimer() -> invalid handle");
 		}
 		else
 		{
@@ -1395,11 +1299,9 @@ ELF_API double ELF_APIENTRY elfGetElapsedTime(elf_handle timer)
 {
 	if(!timer.get() || elf_get_object_type(timer.get()) != ELF_TIMER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetElapsedTime() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetElapsedTime() -> invalid handle");
 		}
 		else
 		{
@@ -1419,11 +1321,9 @@ ELF_API const char* ELF_APIENTRY elfGetTextureName(elf_handle texture)
 {
 	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextureName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextureName() -> invalid handle");
 		}
 		else
 		{
@@ -1437,11 +1337,9 @@ ELF_API const char* ELF_APIENTRY elfGetTextureFilePath(elf_handle texture)
 {
 	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextureFilePath() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextureFilePath() -> invalid handle");
 		}
 		else
 		{
@@ -1455,11 +1353,9 @@ ELF_API int ELF_APIENTRY elfGetTextureWidth(elf_handle texture)
 {
 	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextureWidth() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextureWidth() -> invalid handle");
 		}
 		else
 		{
@@ -1473,11 +1369,9 @@ ELF_API int ELF_APIENTRY elfGetTextureHeight(elf_handle texture)
 {
 	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextureHeight() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextureHeight() -> invalid handle");
 		}
 		else
 		{
@@ -1491,11 +1385,9 @@ ELF_API int ELF_APIENTRY elfGetTextureFormat(elf_handle texture)
 {
 	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextureFormat() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextureFormat() -> invalid handle");
 		}
 		else
 		{
@@ -1509,11 +1401,9 @@ ELF_API int ELF_APIENTRY elfGetTextureDataFormat(elf_handle texture)
 {
 	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextureDataFormat() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextureDataFormat() -> invalid handle");
 		}
 		else
 		{
@@ -1533,11 +1423,9 @@ ELF_API void ELF_APIENTRY elfSetMaterialDiffuseColor(elf_handle material, float 
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetMaterialDiffuseColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialDiffuseColor() -> invalid handle");
 		}
 		else
 		{
@@ -1551,11 +1439,9 @@ ELF_API void ELF_APIENTRY elfSetMaterialSpecularColor(elf_handle material, float
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetMaterialSpecularColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialSpecularColor() -> invalid handle");
 		}
 		else
 		{
@@ -1569,11 +1455,9 @@ ELF_API void ELF_APIENTRY elfSetMaterialAmbientColor(elf_handle material, float 
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetMaterialAmbientColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialAmbientColor() -> invalid handle");
 		}
 		else
 		{
@@ -1587,11 +1471,9 @@ ELF_API void ELF_APIENTRY elfSetMaterialSpecularPower(elf_handle material, float
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetMaterialSpecularPower() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialSpecularPower() -> invalid handle");
 		}
 		else
 		{
@@ -1605,11 +1487,9 @@ ELF_API void ELF_APIENTRY elfSetMaterialLighting(elf_handle material, bool light
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetMaterialLighting() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialLighting() -> invalid handle");
 		}
 		else
 		{
@@ -1623,11 +1503,9 @@ ELF_API const char* ELF_APIENTRY elfGetMaterialName(elf_handle material)
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetMaterialName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMaterialName() -> invalid handle");
 		}
 		else
 		{
@@ -1641,11 +1519,9 @@ ELF_API const char* ELF_APIENTRY elfGetMaterialFilePath(elf_handle material)
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetMaterialFilePath() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMaterialFilePath() -> invalid handle");
 		}
 		else
 		{
@@ -1661,11 +1537,9 @@ ELF_API elf_color ELF_APIENTRY elfGetMaterialDiffuseColor(elf_handle material)
 	memset(&_e_type, 0x0, sizeof(elf_color));
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetMaterialDiffuseColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMaterialDiffuseColor() -> invalid handle");
 		}
 		else
 		{
@@ -1682,11 +1556,9 @@ ELF_API elf_color ELF_APIENTRY elfGetMaterialSpecularColor(elf_handle material)
 	memset(&_e_type, 0x0, sizeof(elf_color));
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetMaterialSpecularColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMaterialSpecularColor() -> invalid handle");
 		}
 		else
 		{
@@ -1703,11 +1575,9 @@ ELF_API elf_color ELF_APIENTRY elfGetMaterialAmbientColor(elf_handle material)
 	memset(&_e_type, 0x0, sizeof(elf_color));
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetMaterialAmbientColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMaterialAmbientColor() -> invalid handle");
 		}
 		else
 		{
@@ -1722,11 +1592,9 @@ ELF_API float ELF_APIENTRY elfGetMaterialSpecularPower(elf_handle material)
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetMaterialSpecularPower() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMaterialSpecularPower() -> invalid handle");
 		}
 		else
 		{
@@ -1740,11 +1608,9 @@ ELF_API bool ELF_APIENTRY elfGetMaterialLighting(elf_handle material)
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetMaterialLighting() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMaterialLighting() -> invalid handle");
 		}
 		else
 		{
@@ -1758,11 +1624,9 @@ ELF_API void ELF_APIENTRY elfSetMaterialDiffuseMap(elf_handle material, elf_hand
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetMaterialDiffuseMap() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialDiffuseMap() -> invalid handle");
 		}
 		else
 		{
@@ -1772,11 +1636,9 @@ ELF_API void ELF_APIENTRY elfSetMaterialDiffuseMap(elf_handle material, elf_hand
 	}
 	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetMaterialDiffuseMap() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialDiffuseMap() -> invalid handle");
 		}
 		else
 		{
@@ -1790,11 +1652,9 @@ ELF_API void ELF_APIENTRY elfSetMaterialNormalMap(elf_handle material, elf_handl
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetMaterialNormalMap() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialNormalMap() -> invalid handle");
 		}
 		else
 		{
@@ -1804,11 +1664,9 @@ ELF_API void ELF_APIENTRY elfSetMaterialNormalMap(elf_handle material, elf_handl
 	}
 	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetMaterialNormalMap() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialNormalMap() -> invalid handle");
 		}
 		else
 		{
@@ -1822,11 +1680,9 @@ ELF_API void ELF_APIENTRY elfSetMaterialHeightMap(elf_handle material, elf_handl
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetMaterialHeightMap() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialHeightMap() -> invalid handle");
 		}
 		else
 		{
@@ -1836,11 +1692,9 @@ ELF_API void ELF_APIENTRY elfSetMaterialHeightMap(elf_handle material, elf_handl
 	}
 	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetMaterialHeightMap() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialHeightMap() -> invalid handle");
 		}
 		else
 		{
@@ -1854,11 +1708,9 @@ ELF_API void ELF_APIENTRY elfSetMaterialSpecularMap(elf_handle material, elf_han
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetMaterialSpecularMap() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialSpecularMap() -> invalid handle");
 		}
 		else
 		{
@@ -1868,11 +1720,9 @@ ELF_API void ELF_APIENTRY elfSetMaterialSpecularMap(elf_handle material, elf_han
 	}
 	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetMaterialSpecularMap() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialSpecularMap() -> invalid handle");
 		}
 		else
 		{
@@ -1886,11 +1736,9 @@ ELF_API void ELF_APIENTRY elfSetMaterialLightMap(elf_handle material, elf_handle
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetMaterialLightMap() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialLightMap() -> invalid handle");
 		}
 		else
 		{
@@ -1900,11 +1748,9 @@ ELF_API void ELF_APIENTRY elfSetMaterialLightMap(elf_handle material, elf_handle
 	}
 	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetMaterialLightMap() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialLightMap() -> invalid handle");
 		}
 		else
 		{
@@ -1919,11 +1765,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetMaterialDiffuseMap(elf_handle material)
 	elf_handle handle;
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetMaterialDiffuseMap() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMaterialDiffuseMap() -> invalid handle");
 		}
 		else
 		{
@@ -1939,11 +1783,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetMaterialNormalMap(elf_handle material)
 	elf_handle handle;
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetMaterialNormalMap() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMaterialNormalMap() -> invalid handle");
 		}
 		else
 		{
@@ -1959,11 +1801,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetMaterialHeightMap(elf_handle material)
 	elf_handle handle;
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetMaterialHeightMap() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMaterialHeightMap() -> invalid handle");
 		}
 		else
 		{
@@ -1979,11 +1819,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetMaterialSpecularMap(elf_handle material)
 	elf_handle handle;
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetMaterialSpecularMap() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMaterialSpecularMap() -> invalid handle");
 		}
 		else
 		{
@@ -1999,11 +1837,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetMaterialLightMap(elf_handle material)
 	elf_handle handle;
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetMaterialLightMap() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMaterialLightMap() -> invalid handle");
 		}
 		else
 		{
@@ -2018,11 +1854,9 @@ ELF_API void ELF_APIENTRY elfSetMaterialParallaxScale(elf_handle material, float
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetMaterialParallaxScale() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialParallaxScale() -> invalid handle");
 		}
 		else
 		{
@@ -2036,11 +1870,9 @@ ELF_API void ELF_APIENTRY elfSetMaterialAlphaTest(elf_handle material, bool alph
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetMaterialAlphaTest() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialAlphaTest() -> invalid handle");
 		}
 		else
 		{
@@ -2054,11 +1886,9 @@ ELF_API void ELF_APIENTRY elfSetMaterialAlphaThreshold(elf_handle material, floa
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetMaterialAlphaThreshold() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialAlphaThreshold() -> invalid handle");
 		}
 		else
 		{
@@ -2072,11 +1902,9 @@ ELF_API float ELF_APIENTRY elfGetMaterialParallaxScale(elf_handle material)
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetMaterialParallaxScale() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMaterialParallaxScale() -> invalid handle");
 		}
 		else
 		{
@@ -2090,11 +1918,9 @@ ELF_API bool ELF_APIENTRY elfGetMaterialAlphaTest(elf_handle material)
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetMaterialAlphaTest() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMaterialAlphaTest() -> invalid handle");
 		}
 		else
 		{
@@ -2108,11 +1934,9 @@ ELF_API float ELF_APIENTRY elfGetMaterialAlphaThreshold(elf_handle material)
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetMaterialAlphaThreshold() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMaterialAlphaThreshold() -> invalid handle");
 		}
 		else
 		{
@@ -2126,11 +1950,9 @@ ELF_API void ELF_APIENTRY elfAddPointToBezierCurve(elf_handle curve, elf_handle 
 {
 	if(!curve.get() || elf_get_object_type(curve.get()) != ELF_BEZIER_CURVE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddPointToBezierCurve() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddPointToBezierCurve() -> invalid handle");
 		}
 		else
 		{
@@ -2140,11 +1962,9 @@ ELF_API void ELF_APIENTRY elfAddPointToBezierCurve(elf_handle curve, elf_handle 
 	}
 	if(!point.get() || elf_get_object_type(point.get()) != ELF_BEZIER_POINT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddPointToBezierCurve() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddPointToBezierCurve() -> invalid handle");
 		}
 		else
 		{
@@ -2158,11 +1978,9 @@ ELF_API bool ELF_APIENTRY elfAddCurveToIpo(elf_handle ipo, elf_handle curve)
 {
 	if(!ipo.get() || elf_get_object_type(ipo.get()) != ELF_IPO)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddCurveToIpo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddCurveToIpo() -> invalid handle");
 		}
 		else
 		{
@@ -2172,11 +1990,9 @@ ELF_API bool ELF_APIENTRY elfAddCurveToIpo(elf_handle ipo, elf_handle curve)
 	}
 	if(!curve.get() || elf_get_object_type(curve.get()) != ELF_BEZIER_CURVE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddCurveToIpo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddCurveToIpo() -> invalid handle");
 		}
 		else
 		{
@@ -2192,11 +2008,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetIpoLoc(elf_handle ipo, float x)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!ipo.get() || elf_get_object_type(ipo.get()) != ELF_IPO)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetIpoLoc() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetIpoLoc() -> invalid handle");
 		}
 		else
 		{
@@ -2213,11 +2027,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetIpoRot(elf_handle ipo, float x)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!ipo.get() || elf_get_object_type(ipo.get()) != ELF_IPO)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetIpoRot() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetIpoRot() -> invalid handle");
 		}
 		else
 		{
@@ -2234,11 +2046,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetIpoScale(elf_handle ipo, float x)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!ipo.get() || elf_get_object_type(ipo.get()) != ELF_IPO)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetIpoScale() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetIpoScale() -> invalid handle");
 		}
 		else
 		{
@@ -2255,11 +2065,9 @@ ELF_API elf_vec4f ELF_APIENTRY elfGetIpoQua(elf_handle ipo, float x)
 	memset(&_e_type, 0x0, sizeof(elf_vec4f));
 	if(!ipo.get() || elf_get_object_type(ipo.get()) != ELF_IPO)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetIpoQua() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetIpoQua() -> invalid handle");
 		}
 		else
 		{
@@ -2280,11 +2088,9 @@ ELF_API int ELF_APIENTRY elfGetPropertyType(elf_handle property)
 {
 	if(!property.get() || elf_get_object_type(property.get()) != ELF_PROPERTY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetPropertyType() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetPropertyType() -> invalid handle");
 		}
 		else
 		{
@@ -2298,11 +2104,9 @@ ELF_API int ELF_APIENTRY elfGetPropertyInt(elf_handle property)
 {
 	if(!property.get() || elf_get_object_type(property.get()) != ELF_PROPERTY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetPropertyInt() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetPropertyInt() -> invalid handle");
 		}
 		else
 		{
@@ -2316,11 +2120,9 @@ ELF_API float ELF_APIENTRY elfGetPropertyFloat(elf_handle property)
 {
 	if(!property.get() || elf_get_object_type(property.get()) != ELF_PROPERTY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetPropertyFloat() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetPropertyFloat() -> invalid handle");
 		}
 		else
 		{
@@ -2334,11 +2136,9 @@ ELF_API const char* ELF_APIENTRY elfGetPropertyString(elf_handle property)
 {
 	if(!property.get() || elf_get_object_type(property.get()) != ELF_PROPERTY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetPropertyString() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetPropertyString() -> invalid handle");
 		}
 		else
 		{
@@ -2352,11 +2152,9 @@ ELF_API bool ELF_APIENTRY elfGetPropertyBool(elf_handle property)
 {
 	if(!property.get() || elf_get_object_type(property.get()) != ELF_PROPERTY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetPropertyBool() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetPropertyBool() -> invalid handle");
 		}
 		else
 		{
@@ -2370,11 +2168,9 @@ ELF_API void ELF_APIENTRY elfSetPropertyInt(elf_handle property, int ival)
 {
 	if(!property.get() || elf_get_object_type(property.get()) != ELF_PROPERTY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetPropertyInt() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetPropertyInt() -> invalid handle");
 		}
 		else
 		{
@@ -2388,11 +2184,9 @@ ELF_API void ELF_APIENTRY elfSetPropertyFloat(elf_handle property, float fval)
 {
 	if(!property.get() || elf_get_object_type(property.get()) != ELF_PROPERTY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetPropertyFloat() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetPropertyFloat() -> invalid handle");
 		}
 		else
 		{
@@ -2406,11 +2200,9 @@ ELF_API void ELF_APIENTRY elfSetPropertyString(elf_handle property, const char* 
 {
 	if(!property.get() || elf_get_object_type(property.get()) != ELF_PROPERTY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetPropertyString() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetPropertyString() -> invalid handle");
 		}
 		else
 		{
@@ -2424,11 +2216,9 @@ ELF_API void ELF_APIENTRY elfSetPropertyBool(elf_handle property, bool bval)
 {
 	if(!property.get() || elf_get_object_type(property.get()) != ELF_PROPERTY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetPropertyBool() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetPropertyBool() -> invalid handle");
 		}
 		else
 		{
@@ -2442,11 +2232,9 @@ ELF_API const char* ELF_APIENTRY elfGetActorName(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorName() -> invalid handle");
 		}
 		else
 		{
@@ -2460,11 +2248,9 @@ ELF_API const char* ELF_APIENTRY elfGetActorFilePath(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorFilePath() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorFilePath() -> invalid handle");
 		}
 		else
 		{
@@ -2479,11 +2265,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetActorScript(elf_handle actor)
 	elf_handle handle;
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorScript() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorScript() -> invalid handle");
 		}
 		else
 		{
@@ -2498,11 +2282,9 @@ ELF_API void ELF_APIENTRY elfSetActorName(elf_handle actor, const char* name)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorName() -> invalid handle");
 		}
 		else
 		{
@@ -2516,11 +2298,9 @@ ELF_API void ELF_APIENTRY elfSetActorScript(elf_handle actor, elf_handle script)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorScript() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorScript() -> invalid handle");
 		}
 		else
 		{
@@ -2530,11 +2310,9 @@ ELF_API void ELF_APIENTRY elfSetActorScript(elf_handle actor, elf_handle script)
 	}
 	if(!script.get() || elf_get_object_type(script.get()) != ELF_SCRIPT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorScript() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorScript() -> invalid handle");
 		}
 		else
 		{
@@ -2548,11 +2326,9 @@ ELF_API void ELF_APIENTRY elfSetActorPosition(elf_handle actor, float x, float y
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorPosition() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorPosition() -> invalid handle");
 		}
 		else
 		{
@@ -2566,11 +2342,9 @@ ELF_API void ELF_APIENTRY elfSetActorRotation(elf_handle actor, float x, float y
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorRotation() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorRotation() -> invalid handle");
 		}
 		else
 		{
@@ -2584,11 +2358,9 @@ ELF_API void ELF_APIENTRY elfSetActorOrientation(elf_handle actor, float x, floa
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorOrientation() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorOrientation() -> invalid handle");
 		}
 		else
 		{
@@ -2602,11 +2374,9 @@ ELF_API void ELF_APIENTRY elfRotateActor(elf_handle actor, float x, float y, flo
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RotateActor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RotateActor() -> invalid handle");
 		}
 		else
 		{
@@ -2620,11 +2390,9 @@ ELF_API void ELF_APIENTRY elfRotateActorLocal(elf_handle actor, float x, float y
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RotateActorLocal() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RotateActorLocal() -> invalid handle");
 		}
 		else
 		{
@@ -2638,11 +2406,9 @@ ELF_API void ELF_APIENTRY elfMoveActor(elf_handle actor, float x, float y, float
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: MoveActor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "MoveActor() -> invalid handle");
 		}
 		else
 		{
@@ -2656,11 +2422,9 @@ ELF_API void ELF_APIENTRY elfMoveActorLocal(elf_handle actor, float x, float y, 
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: MoveActorLocal() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "MoveActorLocal() -> invalid handle");
 		}
 		else
 		{
@@ -2674,11 +2438,9 @@ ELF_API void ELF_APIENTRY elfSetActorPositionRelativeTo(elf_handle actor, elf_ha
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorPositionRelativeTo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorPositionRelativeTo() -> invalid handle");
 		}
 		else
 		{
@@ -2688,11 +2450,9 @@ ELF_API void ELF_APIENTRY elfSetActorPositionRelativeTo(elf_handle actor, elf_ha
 	}
 	if(!to.get() || !elf_is_actor(to.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorPositionRelativeTo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorPositionRelativeTo() -> invalid handle");
 		}
 		else
 		{
@@ -2706,11 +2466,9 @@ ELF_API void ELF_APIENTRY elfSetActorRotationRelativeTo(elf_handle actor, elf_ha
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorRotationRelativeTo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorRotationRelativeTo() -> invalid handle");
 		}
 		else
 		{
@@ -2720,11 +2478,9 @@ ELF_API void ELF_APIENTRY elfSetActorRotationRelativeTo(elf_handle actor, elf_ha
 	}
 	if(!to.get() || !elf_is_actor(to.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorRotationRelativeTo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorRotationRelativeTo() -> invalid handle");
 		}
 		else
 		{
@@ -2738,11 +2494,9 @@ ELF_API void ELF_APIENTRY elfSetActorOrientationRelativeTo(elf_handle actor, elf
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorOrientationRelativeTo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorOrientationRelativeTo() -> invalid handle");
 		}
 		else
 		{
@@ -2752,11 +2506,9 @@ ELF_API void ELF_APIENTRY elfSetActorOrientationRelativeTo(elf_handle actor, elf
 	}
 	if(!to.get() || !elf_is_actor(to.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorOrientationRelativeTo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorOrientationRelativeTo() -> invalid handle");
 		}
 		else
 		{
@@ -2772,11 +2524,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetActorPosition(elf_handle actor)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorPosition() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorPosition() -> invalid handle");
 		}
 		else
 		{
@@ -2793,11 +2543,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetActorRotation(elf_handle actor)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorRotation() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorRotation() -> invalid handle");
 		}
 		else
 		{
@@ -2814,11 +2562,9 @@ ELF_API elf_vec4f ELF_APIENTRY elfGetActorOrientation(elf_handle actor)
 	memset(&_e_type, 0x0, sizeof(elf_vec4f));
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorOrientation() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorOrientation() -> invalid handle");
 		}
 		else
 		{
@@ -2833,11 +2579,9 @@ ELF_API void ELF_APIENTRY elfSetActorBoundingLengths(elf_handle actor, float x, 
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorBoundingLengths() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorBoundingLengths() -> invalid handle");
 		}
 		else
 		{
@@ -2851,11 +2595,9 @@ ELF_API void ELF_APIENTRY elfSetActorBoundingOffset(elf_handle actor, float x, f
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorBoundingOffset() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorBoundingOffset() -> invalid handle");
 		}
 		else
 		{
@@ -2869,11 +2611,9 @@ ELF_API void ELF_APIENTRY elfSetActorPhysics(elf_handle actor, int shape, float 
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorPhysics() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorPhysics() -> invalid handle");
 		}
 		else
 		{
@@ -2887,11 +2627,9 @@ ELF_API bool ELF_APIENTRY elfIsActorPhysics(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: IsActorPhysics() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "IsActorPhysics() -> invalid handle");
 		}
 		else
 		{
@@ -2905,11 +2643,9 @@ ELF_API void ELF_APIENTRY elfDisableActorPhysics(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: DisableActorPhysics() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "DisableActorPhysics() -> invalid handle");
 		}
 		else
 		{
@@ -2923,11 +2659,9 @@ ELF_API void ELF_APIENTRY elfSetActorDamping(elf_handle actor, float lin_damp, f
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorDamping() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorDamping() -> invalid handle");
 		}
 		else
 		{
@@ -2941,11 +2675,9 @@ ELF_API void ELF_APIENTRY elfSetActorSleepThresholds(elf_handle actor, float lin
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorSleepThresholds() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorSleepThresholds() -> invalid handle");
 		}
 		else
 		{
@@ -2959,11 +2691,9 @@ ELF_API void ELF_APIENTRY elfSetActorRestitution(elf_handle actor, float restitu
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorRestitution() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorRestitution() -> invalid handle");
 		}
 		else
 		{
@@ -2977,11 +2707,9 @@ ELF_API void ELF_APIENTRY elfSetActorAnisotropicFriction(elf_handle actor, float
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorAnisotropicFriction() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorAnisotropicFriction() -> invalid handle");
 		}
 		else
 		{
@@ -2995,11 +2723,9 @@ ELF_API void ELF_APIENTRY elfSetActorLinearFactor(elf_handle actor, float x, flo
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorLinearFactor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorLinearFactor() -> invalid handle");
 		}
 		else
 		{
@@ -3013,11 +2739,9 @@ ELF_API void ELF_APIENTRY elfSetActorAngularFactor(elf_handle actor, float x, fl
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorAngularFactor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorAngularFactor() -> invalid handle");
 		}
 		else
 		{
@@ -3031,11 +2755,9 @@ ELF_API void ELF_APIENTRY elfAddForceToActor(elf_handle actor, float x, float y,
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddForceToActor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddForceToActor() -> invalid handle");
 		}
 		else
 		{
@@ -3049,11 +2771,9 @@ ELF_API void ELF_APIENTRY elfAddForceToActorLocal(elf_handle actor, float x, flo
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddForceToActorLocal() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddForceToActorLocal() -> invalid handle");
 		}
 		else
 		{
@@ -3067,11 +2787,9 @@ ELF_API void ELF_APIENTRY elfAddTorqueToActor(elf_handle actor, float x, float y
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddTorqueToActor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddTorqueToActor() -> invalid handle");
 		}
 		else
 		{
@@ -3085,11 +2803,9 @@ ELF_API void ELF_APIENTRY elfSetActorLinearVelocity(elf_handle actor, float x, f
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorLinearVelocity() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorLinearVelocity() -> invalid handle");
 		}
 		else
 		{
@@ -3103,11 +2819,9 @@ ELF_API void ELF_APIENTRY elfSetActorLinearVelocityLocal(elf_handle actor, float
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorLinearVelocityLocal() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorLinearVelocityLocal() -> invalid handle");
 		}
 		else
 		{
@@ -3121,11 +2835,9 @@ ELF_API void ELF_APIENTRY elfSetActorAngularVelocity(elf_handle actor, float x, 
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorAngularVelocity() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorAngularVelocity() -> invalid handle");
 		}
 		else
 		{
@@ -3141,11 +2853,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetActorBoundingLengths(elf_handle actor)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorBoundingLengths() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorBoundingLengths() -> invalid handle");
 		}
 		else
 		{
@@ -3162,11 +2872,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetActorBoundingOffset(elf_handle actor)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorBoundingOffset() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorBoundingOffset() -> invalid handle");
 		}
 		else
 		{
@@ -3181,11 +2889,9 @@ ELF_API int ELF_APIENTRY elfGetActorShape(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorShape() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorShape() -> invalid handle");
 		}
 		else
 		{
@@ -3199,11 +2905,9 @@ ELF_API float ELF_APIENTRY elfGetActorMass(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorMass() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorMass() -> invalid handle");
 		}
 		else
 		{
@@ -3217,11 +2921,9 @@ ELF_API float ELF_APIENTRY elfGetActorLinearDamping(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorLinearDamping() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorLinearDamping() -> invalid handle");
 		}
 		else
 		{
@@ -3235,11 +2937,9 @@ ELF_API float ELF_APIENTRY elfGetActorAngularDamping(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorAngularDamping() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorAngularDamping() -> invalid handle");
 		}
 		else
 		{
@@ -3253,11 +2953,9 @@ ELF_API float ELF_APIENTRY elfGetActorLinearSleepThreshold(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorLinearSleepThreshold() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorLinearSleepThreshold() -> invalid handle");
 		}
 		else
 		{
@@ -3271,11 +2969,9 @@ ELF_API float ELF_APIENTRY elfGetActorAngularSleepThreshold(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorAngularSleepThreshold() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorAngularSleepThreshold() -> invalid handle");
 		}
 		else
 		{
@@ -3289,11 +2985,9 @@ ELF_API float ELF_APIENTRY elfGetActorRestitution(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorRestitution() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorRestitution() -> invalid handle");
 		}
 		else
 		{
@@ -3309,11 +3003,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetActorAnisotropicFriction(elf_handle actor)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorAnisotropicFriction() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorAnisotropicFriction() -> invalid handle");
 		}
 		else
 		{
@@ -3330,11 +3022,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetActorLinearFactor(elf_handle actor)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorLinearFactor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorLinearFactor() -> invalid handle");
 		}
 		else
 		{
@@ -3351,11 +3041,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetActorAngularFactor(elf_handle actor)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorAngularFactor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorAngularFactor() -> invalid handle");
 		}
 		else
 		{
@@ -3372,11 +3060,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetActorLinearVelocity(elf_handle actor)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorLinearVelocity() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorLinearVelocity() -> invalid handle");
 		}
 		else
 		{
@@ -3393,11 +3079,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetActorAngularVelocity(elf_handle actor)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorAngularVelocity() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorAngularVelocity() -> invalid handle");
 		}
 		else
 		{
@@ -3413,11 +3097,9 @@ ELF_API elf_handle ELF_APIENTRY elfAddHingeJointToActor(elf_handle actor, elf_ha
 	elf_handle handle;
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddHingeJointToActor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddHingeJointToActor() -> invalid handle");
 		}
 		else
 		{
@@ -3427,11 +3109,9 @@ ELF_API elf_handle ELF_APIENTRY elfAddHingeJointToActor(elf_handle actor, elf_ha
 	}
 	if(!actor2.get() || !elf_is_actor(actor2.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddHingeJointToActor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddHingeJointToActor() -> invalid handle");
 		}
 		else
 		{
@@ -3447,11 +3127,9 @@ ELF_API elf_handle ELF_APIENTRY elfAddBallJointToActor(elf_handle actor, elf_han
 	elf_handle handle;
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddBallJointToActor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddBallJointToActor() -> invalid handle");
 		}
 		else
 		{
@@ -3461,11 +3139,9 @@ ELF_API elf_handle ELF_APIENTRY elfAddBallJointToActor(elf_handle actor, elf_han
 	}
 	if(!actor2.get() || !elf_is_actor(actor2.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddBallJointToActor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddBallJointToActor() -> invalid handle");
 		}
 		else
 		{
@@ -3481,11 +3157,9 @@ ELF_API elf_handle ELF_APIENTRY elfAddConeTwistJointToActor(elf_handle actor, el
 	elf_handle handle;
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddConeTwistJointToActor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddConeTwistJointToActor() -> invalid handle");
 		}
 		else
 		{
@@ -3495,11 +3169,9 @@ ELF_API elf_handle ELF_APIENTRY elfAddConeTwistJointToActor(elf_handle actor, el
 	}
 	if(!actor2.get() || !elf_is_actor(actor2.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddConeTwistJointToActor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddConeTwistJointToActor() -> invalid handle");
 		}
 		else
 		{
@@ -3515,11 +3187,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetActorJointByName(elf_handle actor, const c
 	elf_handle handle;
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorJointByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorJointByName() -> invalid handle");
 		}
 		else
 		{
@@ -3535,11 +3205,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetActorJointByIndex(elf_handle actor, int id
 	elf_handle handle;
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorJointByIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorJointByIndex() -> invalid handle");
 		}
 		else
 		{
@@ -3554,11 +3222,9 @@ ELF_API bool ELF_APIENTRY elfRemoveActorJointByName(elf_handle actor, const char
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveActorJointByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveActorJointByName() -> invalid handle");
 		}
 		else
 		{
@@ -3572,11 +3238,9 @@ ELF_API bool ELF_APIENTRY elfRemoveActorJointByIndex(elf_handle actor, int idx)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveActorJointByIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveActorJointByIndex() -> invalid handle");
 		}
 		else
 		{
@@ -3590,11 +3254,9 @@ ELF_API bool ELF_APIENTRY elfRemoveActorJointByObject(elf_handle actor, elf_hand
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveActorJointByObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveActorJointByObject() -> invalid handle");
 		}
 		else
 		{
@@ -3604,11 +3266,9 @@ ELF_API bool ELF_APIENTRY elfRemoveActorJointByObject(elf_handle actor, elf_hand
 	}
 	if(!joint.get() || elf_get_object_type(joint.get()) != ELF_JOINT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveActorJointByObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveActorJointByObject() -> invalid handle");
 		}
 		else
 		{
@@ -3622,11 +3282,9 @@ ELF_API void ELF_APIENTRY elfSetActorIpoFrame(elf_handle actor, float frame)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorIpoFrame() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorIpoFrame() -> invalid handle");
 		}
 		else
 		{
@@ -3640,11 +3298,9 @@ ELF_API void ELF_APIENTRY elfPlayActorIpo(elf_handle actor, float start, float e
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: PlayActorIpo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "PlayActorIpo() -> invalid handle");
 		}
 		else
 		{
@@ -3658,11 +3314,9 @@ ELF_API void ELF_APIENTRY elfLoopActorIpo(elf_handle actor, float start, float e
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: LoopActorIpo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "LoopActorIpo() -> invalid handle");
 		}
 		else
 		{
@@ -3676,11 +3330,9 @@ ELF_API void ELF_APIENTRY elfStopActorIpo(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: StopActorIpo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "StopActorIpo() -> invalid handle");
 		}
 		else
 		{
@@ -3694,11 +3346,9 @@ ELF_API void ELF_APIENTRY elfPauseActorIpo(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: PauseActorIpo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "PauseActorIpo() -> invalid handle");
 		}
 		else
 		{
@@ -3712,11 +3362,9 @@ ELF_API void ELF_APIENTRY elfResumeActorIpo(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: ResumeActorIpo() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "ResumeActorIpo() -> invalid handle");
 		}
 		else
 		{
@@ -3730,11 +3378,9 @@ ELF_API float ELF_APIENTRY elfGetActorIpoStart(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorIpoStart() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorIpoStart() -> invalid handle");
 		}
 		else
 		{
@@ -3748,11 +3394,9 @@ ELF_API float ELF_APIENTRY elfGetActorIpoEnd(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorIpoEnd() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorIpoEnd() -> invalid handle");
 		}
 		else
 		{
@@ -3766,11 +3410,9 @@ ELF_API float ELF_APIENTRY elfGetActorIpoSpeed(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorIpoSpeed() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorIpoSpeed() -> invalid handle");
 		}
 		else
 		{
@@ -3784,11 +3426,9 @@ ELF_API float ELF_APIENTRY elfGetActorIpoFrame(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorIpoFrame() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorIpoFrame() -> invalid handle");
 		}
 		else
 		{
@@ -3802,11 +3442,9 @@ ELF_API bool ELF_APIENTRY elfIsActorIpoPlaying(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: IsActorIpoPlaying() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "IsActorIpoPlaying() -> invalid handle");
 		}
 		else
 		{
@@ -3820,11 +3458,9 @@ ELF_API bool ELF_APIENTRY elfIsActorIpoPaused(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: IsActorIpoPaused() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "IsActorIpoPaused() -> invalid handle");
 		}
 		else
 		{
@@ -3838,11 +3474,9 @@ ELF_API int ELF_APIENTRY elfGetActorCollisionCount(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorCollisionCount() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorCollisionCount() -> invalid handle");
 		}
 		else
 		{
@@ -3857,11 +3491,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetActorCollision(elf_handle actor, int idx)
 	elf_handle handle;
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorCollision() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorCollision() -> invalid handle");
 		}
 		else
 		{
@@ -3876,11 +3508,9 @@ ELF_API int ELF_APIENTRY elfGetActorPropertyCount(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorPropertyCount() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorPropertyCount() -> invalid handle");
 		}
 		else
 		{
@@ -3894,11 +3524,9 @@ ELF_API void ELF_APIENTRY elfAddPropertyToActor(elf_handle actor, elf_handle pro
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddPropertyToActor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddPropertyToActor() -> invalid handle");
 		}
 		else
 		{
@@ -3908,11 +3536,9 @@ ELF_API void ELF_APIENTRY elfAddPropertyToActor(elf_handle actor, elf_handle pro
 	}
 	if(!property.get() || elf_get_object_type(property.get()) != ELF_PROPERTY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddPropertyToActor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddPropertyToActor() -> invalid handle");
 		}
 		else
 		{
@@ -3927,11 +3553,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetActorPropertyByName(elf_handle actor, cons
 	elf_handle handle;
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorPropertyByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorPropertyByName() -> invalid handle");
 		}
 		else
 		{
@@ -3947,11 +3571,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetActorPropertyByIndex(elf_handle actor, int
 	elf_handle handle;
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorPropertyByIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorPropertyByIndex() -> invalid handle");
 		}
 		else
 		{
@@ -3966,11 +3588,9 @@ ELF_API bool ELF_APIENTRY elfRemoveActorPropertyByName(elf_handle actor, const c
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveActorPropertyByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveActorPropertyByName() -> invalid handle");
 		}
 		else
 		{
@@ -3984,11 +3604,9 @@ ELF_API bool ELF_APIENTRY elfRemoveActorPropertyByIndex(elf_handle actor, int id
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveActorPropertyByIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveActorPropertyByIndex() -> invalid handle");
 		}
 		else
 		{
@@ -4002,11 +3620,9 @@ ELF_API bool ELF_APIENTRY elfRemoveActorPropertyByObject(elf_handle actor, elf_h
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveActorPropertyByObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveActorPropertyByObject() -> invalid handle");
 		}
 		else
 		{
@@ -4016,11 +3632,9 @@ ELF_API bool ELF_APIENTRY elfRemoveActorPropertyByObject(elf_handle actor, elf_h
 	}
 	if(!property.get() || elf_get_object_type(property.get()) != ELF_PROPERTY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveActorPropertyByObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveActorPropertyByObject() -> invalid handle");
 		}
 		else
 		{
@@ -4034,11 +3648,9 @@ ELF_API void ELF_APIENTRY elfRemoveActorProperties(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveActorProperties() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveActorProperties() -> invalid handle");
 		}
 		else
 		{
@@ -4052,11 +3664,9 @@ ELF_API void ELF_APIENTRY elfSetActorSelected(elf_handle actor, bool selected)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetActorSelected() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorSelected() -> invalid handle");
 		}
 		else
 		{
@@ -4070,11 +3680,9 @@ ELF_API bool ELF_APIENTRY elfGetActorSelected(elf_handle actor)
 {
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorSelected() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorSelected() -> invalid handle");
 		}
 		else
 		{
@@ -4094,11 +3702,9 @@ ELF_API void ELF_APIENTRY elfSetCameraViewport(elf_handle camera, int x, int y, 
 {
 	if(!camera.get() || elf_get_object_type(camera.get()) != ELF_CAMERA)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetCameraViewport() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetCameraViewport() -> invalid handle");
 		}
 		else
 		{
@@ -4112,11 +3718,9 @@ ELF_API void ELF_APIENTRY elfSetCameraPerspective(elf_handle camera, float fov, 
 {
 	if(!camera.get() || elf_get_object_type(camera.get()) != ELF_CAMERA)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetCameraPerspective() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetCameraPerspective() -> invalid handle");
 		}
 		else
 		{
@@ -4130,11 +3734,9 @@ ELF_API void ELF_APIENTRY elfSetCameraOrthographic(elf_handle camera, int x, int
 {
 	if(!camera.get() || elf_get_object_type(camera.get()) != ELF_CAMERA)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetCameraOrthographic() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetCameraOrthographic() -> invalid handle");
 		}
 		else
 		{
@@ -4150,11 +3752,9 @@ ELF_API elf_vec2i ELF_APIENTRY elfGetCameraViewportSize(elf_handle camera)
 	memset(&_e_type, 0x0, sizeof(elf_vec2i));
 	if(!camera.get() || elf_get_object_type(camera.get()) != ELF_CAMERA)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetCameraViewportSize() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetCameraViewportSize() -> invalid handle");
 		}
 		else
 		{
@@ -4171,11 +3771,9 @@ ELF_API elf_vec2i ELF_APIENTRY elfGetCameraViewportOffset(elf_handle camera)
 	memset(&_e_type, 0x0, sizeof(elf_vec2i));
 	if(!camera.get() || elf_get_object_type(camera.get()) != ELF_CAMERA)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetCameraViewportOffset() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetCameraViewportOffset() -> invalid handle");
 		}
 		else
 		{
@@ -4190,11 +3788,9 @@ ELF_API float ELF_APIENTRY elfGetCameraFov(elf_handle camera)
 {
 	if(!camera.get() || elf_get_object_type(camera.get()) != ELF_CAMERA)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetCameraFov() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetCameraFov() -> invalid handle");
 		}
 		else
 		{
@@ -4208,11 +3804,9 @@ ELF_API float ELF_APIENTRY elfGetCameraAspect(elf_handle camera)
 {
 	if(!camera.get() || elf_get_object_type(camera.get()) != ELF_CAMERA)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetCameraAspect() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetCameraAspect() -> invalid handle");
 		}
 		else
 		{
@@ -4228,11 +3822,9 @@ ELF_API elf_vec2f ELF_APIENTRY elfGetCameraClip(elf_handle camera)
 	memset(&_e_type, 0x0, sizeof(elf_vec2f));
 	if(!camera.get() || elf_get_object_type(camera.get()) != ELF_CAMERA)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetCameraClip() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetCameraClip() -> invalid handle");
 		}
 		else
 		{
@@ -4249,11 +3841,9 @@ ELF_API elf_vec2f ELF_APIENTRY elfGetCameraFarPlaneSize(elf_handle camera)
 	memset(&_e_type, 0x0, sizeof(elf_vec2f));
 	if(!camera.get() || elf_get_object_type(camera.get()) != ELF_CAMERA)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetCameraFarPlaneSize() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetCameraFarPlaneSize() -> invalid handle");
 		}
 		else
 		{
@@ -4270,11 +3860,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfUnProjectCameraPoint(elf_handle camera, float 
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!camera.get() || elf_get_object_type(camera.get()) != ELF_CAMERA)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: UnProjectCameraPoint() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "UnProjectCameraPoint() -> invalid handle");
 		}
 		else
 		{
@@ -4289,11 +3877,9 @@ ELF_API const char* ELF_APIENTRY elfGetModelName(elf_handle model)
 {
 	if(!model.get() || elf_get_object_type(model.get()) != ELF_MODEL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetModelName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetModelName() -> invalid handle");
 		}
 		else
 		{
@@ -4307,11 +3893,9 @@ ELF_API const char* ELF_APIENTRY elfGetModelFilePath(elf_handle model)
 {
 	if(!model.get() || elf_get_object_type(model.get()) != ELF_MODEL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetModelFilePath() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetModelFilePath() -> invalid handle");
 		}
 		else
 		{
@@ -4325,11 +3909,9 @@ ELF_API int ELF_APIENTRY elfGetModelVerticeCount(elf_handle model)
 {
 	if(!model.get() || elf_get_object_type(model.get()) != ELF_MODEL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetModelVerticeCount() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetModelVerticeCount() -> invalid handle");
 		}
 		else
 		{
@@ -4343,11 +3925,9 @@ ELF_API int ELF_APIENTRY elfGetModelIndiceCount(elf_handle model)
 {
 	if(!model.get() || elf_get_object_type(model.get()) != ELF_MODEL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetModelIndiceCount() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetModelIndiceCount() -> invalid handle");
 		}
 		else
 		{
@@ -4363,11 +3943,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetModelBoundingBoxMin(elf_handle model)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!model.get() || elf_get_object_type(model.get()) != ELF_MODEL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetModelBoundingBoxMin() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetModelBoundingBoxMin() -> invalid handle");
 		}
 		else
 		{
@@ -4384,11 +3962,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetModelBoundingBoxMax(elf_handle model)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!model.get() || elf_get_object_type(model.get()) != ELF_MODEL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetModelBoundingBoxMax() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetModelBoundingBoxMax() -> invalid handle");
 		}
 		else
 		{
@@ -4409,11 +3985,9 @@ ELF_API void ELF_APIENTRY elfSetEntityScale(elf_handle entity, float x, float y,
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetEntityScale() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetEntityScale() -> invalid handle");
 		}
 		else
 		{
@@ -4429,11 +4003,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetEntityScale(elf_handle entity)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetEntityScale() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetEntityScale() -> invalid handle");
 		}
 		else
 		{
@@ -4448,11 +4020,9 @@ ELF_API void ELF_APIENTRY elfSetEntityModel(elf_handle entity, elf_handle model)
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetEntityModel() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetEntityModel() -> invalid handle");
 		}
 		else
 		{
@@ -4462,11 +4032,9 @@ ELF_API void ELF_APIENTRY elfSetEntityModel(elf_handle entity, elf_handle model)
 	}
 	if(!model.get() || elf_get_object_type(model.get()) != ELF_MODEL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetEntityModel() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetEntityModel() -> invalid handle");
 		}
 		else
 		{
@@ -4481,11 +4049,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetEntityModel(elf_handle entity)
 	elf_handle handle;
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetEntityModel() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetEntityModel() -> invalid handle");
 		}
 		else
 		{
@@ -4500,11 +4066,9 @@ ELF_API int ELF_APIENTRY elfGetEntityMaterialCount(elf_handle entity)
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetEntityMaterialCount() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetEntityMaterialCount() -> invalid handle");
 		}
 		else
 		{
@@ -4518,11 +4082,9 @@ ELF_API void ELF_APIENTRY elfAddEntityMaterial(elf_handle entity, elf_handle mat
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddEntityMaterial() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddEntityMaterial() -> invalid handle");
 		}
 		else
 		{
@@ -4532,11 +4094,9 @@ ELF_API void ELF_APIENTRY elfAddEntityMaterial(elf_handle entity, elf_handle mat
 	}
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddEntityMaterial() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddEntityMaterial() -> invalid handle");
 		}
 		else
 		{
@@ -4550,11 +4110,9 @@ ELF_API void ELF_APIENTRY elfSetEntityMaterial(elf_handle entity, int idx, elf_h
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetEntityMaterial() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetEntityMaterial() -> invalid handle");
 		}
 		else
 		{
@@ -4564,11 +4122,9 @@ ELF_API void ELF_APIENTRY elfSetEntityMaterial(elf_handle entity, int idx, elf_h
 	}
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetEntityMaterial() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetEntityMaterial() -> invalid handle");
 		}
 		else
 		{
@@ -4583,11 +4139,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetEntityMaterial(elf_handle entity, int idx)
 	elf_handle handle;
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetEntityMaterial() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetEntityMaterial() -> invalid handle");
 		}
 		else
 		{
@@ -4602,11 +4156,9 @@ ELF_API void ELF_APIENTRY elfSetEntityVisible(elf_handle entity, bool visible)
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetEntityVisible() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetEntityVisible() -> invalid handle");
 		}
 		else
 		{
@@ -4620,11 +4172,9 @@ ELF_API bool ELF_APIENTRY elfGetEntityVisible(elf_handle entity)
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetEntityVisible() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetEntityVisible() -> invalid handle");
 		}
 		else
 		{
@@ -4638,11 +4188,9 @@ ELF_API void ELF_APIENTRY elfSetEntityPhysics(elf_handle entity, int type, float
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetEntityPhysics() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetEntityPhysics() -> invalid handle");
 		}
 		else
 		{
@@ -4656,11 +4204,9 @@ ELF_API void ELF_APIENTRY elfDisableEntityPhysics(elf_handle entity)
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: DisableEntityPhysics() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "DisableEntityPhysics() -> invalid handle");
 		}
 		else
 		{
@@ -4674,11 +4220,9 @@ ELF_API void ELF_APIENTRY elfSetEntityArmature(elf_handle entity, elf_handle arm
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetEntityArmature() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetEntityArmature() -> invalid handle");
 		}
 		else
 		{
@@ -4688,11 +4232,9 @@ ELF_API void ELF_APIENTRY elfSetEntityArmature(elf_handle entity, elf_handle arm
 	}
 	if(!armature.get() || elf_get_object_type(armature.get()) != ELF_ARMATURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetEntityArmature() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetEntityArmature() -> invalid handle");
 		}
 		else
 		{
@@ -4706,11 +4248,9 @@ ELF_API void ELF_APIENTRY elfSetEntityArmatureFrame(elf_handle entity, float fra
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetEntityArmatureFrame() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetEntityArmatureFrame() -> invalid handle");
 		}
 		else
 		{
@@ -4724,11 +4264,9 @@ ELF_API void ELF_APIENTRY elfPlayEntityArmature(elf_handle entity, float start, 
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: PlayEntityArmature() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "PlayEntityArmature() -> invalid handle");
 		}
 		else
 		{
@@ -4742,11 +4280,9 @@ ELF_API void ELF_APIENTRY elfLoopEntityArmature(elf_handle entity, float start, 
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: LoopEntityArmature() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "LoopEntityArmature() -> invalid handle");
 		}
 		else
 		{
@@ -4760,11 +4296,9 @@ ELF_API void ELF_APIENTRY elfStopEntityArmature(elf_handle entity)
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: StopEntityArmature() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "StopEntityArmature() -> invalid handle");
 		}
 		else
 		{
@@ -4778,11 +4312,9 @@ ELF_API void ELF_APIENTRY elfPauseEntityArmature(elf_handle entity)
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: PauseEntityArmature() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "PauseEntityArmature() -> invalid handle");
 		}
 		else
 		{
@@ -4796,11 +4328,9 @@ ELF_API void ELF_APIENTRY elfResumeEntityArmature(elf_handle entity)
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: ResumeEntityArmature() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "ResumeEntityArmature() -> invalid handle");
 		}
 		else
 		{
@@ -4814,11 +4344,9 @@ ELF_API float ELF_APIENTRY elfGetEntityArmatureStart(elf_handle entity)
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetEntityArmatureStart() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetEntityArmatureStart() -> invalid handle");
 		}
 		else
 		{
@@ -4832,11 +4360,9 @@ ELF_API float ELF_APIENTRY elfGetEntityArmatureEnd(elf_handle entity)
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetEntityArmatureEnd() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetEntityArmatureEnd() -> invalid handle");
 		}
 		else
 		{
@@ -4850,11 +4376,9 @@ ELF_API float ELF_APIENTRY elfGetEntityArmatureSpeed(elf_handle entity)
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetEntityArmatureSpeed() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetEntityArmatureSpeed() -> invalid handle");
 		}
 		else
 		{
@@ -4868,11 +4392,9 @@ ELF_API float ELF_APIENTRY elfGetEntityArmatureFrame(elf_handle entity)
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetEntityArmatureFrame() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetEntityArmatureFrame() -> invalid handle");
 		}
 		else
 		{
@@ -4886,11 +4408,9 @@ ELF_API bool ELF_APIENTRY elfIsEntityArmaturePlaying(elf_handle entity)
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: IsEntityArmaturePlaying() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "IsEntityArmaturePlaying() -> invalid handle");
 		}
 		else
 		{
@@ -4904,11 +4424,9 @@ ELF_API bool ELF_APIENTRY elfIsEntityArmaturePaused(elf_handle entity)
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: IsEntityArmaturePaused() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "IsEntityArmaturePaused() -> invalid handle");
 		}
 		else
 		{
@@ -4923,11 +4441,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetEntityArmature(elf_handle entity)
 	elf_handle handle;
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetEntityArmature() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetEntityArmature() -> invalid handle");
 		}
 		else
 		{
@@ -4942,11 +4458,9 @@ ELF_API bool ELF_APIENTRY elfGetEntityChanged(elf_handle entity)
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetEntityChanged() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetEntityChanged() -> invalid handle");
 		}
 		else
 		{
@@ -4966,11 +4480,9 @@ ELF_API int ELF_APIENTRY elfGetLightType(elf_handle light)
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetLightType() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetLightType() -> invalid handle");
 		}
 		else
 		{
@@ -4986,11 +4498,9 @@ ELF_API elf_color ELF_APIENTRY elfGetLightColor(elf_handle light)
 	memset(&_e_type, 0x0, sizeof(elf_color));
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetLightColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetLightColor() -> invalid handle");
 		}
 		else
 		{
@@ -5005,11 +4515,9 @@ ELF_API float ELF_APIENTRY elfGetLightDistance(elf_handle light)
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetLightDistance() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetLightDistance() -> invalid handle");
 		}
 		else
 		{
@@ -5023,11 +4531,9 @@ ELF_API float ELF_APIENTRY elfGetLightFadeSpeed(elf_handle light)
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetLightFadeSpeed() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetLightFadeSpeed() -> invalid handle");
 		}
 		else
 		{
@@ -5041,11 +4547,9 @@ ELF_API bool ELF_APIENTRY elfGetLightShadowCaster(elf_handle light)
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetLightShadowCaster() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetLightShadowCaster() -> invalid handle");
 		}
 		else
 		{
@@ -5059,11 +4563,9 @@ ELF_API bool ELF_APIENTRY elfGetLightVisible(elf_handle light)
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetLightVisible() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetLightVisible() -> invalid handle");
 		}
 		else
 		{
@@ -5079,11 +4581,9 @@ ELF_API elf_vec2f ELF_APIENTRY elfGetLightCone(elf_handle light)
 	memset(&_e_type, 0x0, sizeof(elf_vec2f));
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetLightCone() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetLightCone() -> invalid handle");
 		}
 		else
 		{
@@ -5098,11 +4598,9 @@ ELF_API bool ELF_APIENTRY elfIsLightShaft(elf_handle light)
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: IsLightShaft() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "IsLightShaft() -> invalid handle");
 		}
 		else
 		{
@@ -5116,11 +4614,9 @@ ELF_API float ELF_APIENTRY elfGetLightShaftSize(elf_handle light)
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetLightShaftSize() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetLightShaftSize() -> invalid handle");
 		}
 		else
 		{
@@ -5134,11 +4630,9 @@ ELF_API float ELF_APIENTRY elfGetLightShaftIntensity(elf_handle light)
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetLightShaftIntensity() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetLightShaftIntensity() -> invalid handle");
 		}
 		else
 		{
@@ -5152,11 +4646,9 @@ ELF_API float ELF_APIENTRY elfGetLightShaftFadeOff(elf_handle light)
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetLightShaftFadeOff() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetLightShaftFadeOff() -> invalid handle");
 		}
 		else
 		{
@@ -5170,11 +4662,9 @@ ELF_API void ELF_APIENTRY elfSetLightType(elf_handle light, int type)
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetLightType() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetLightType() -> invalid handle");
 		}
 		else
 		{
@@ -5188,11 +4678,9 @@ ELF_API void ELF_APIENTRY elfSetLightColor(elf_handle light, float r, float g, f
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetLightColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetLightColor() -> invalid handle");
 		}
 		else
 		{
@@ -5206,11 +4694,9 @@ ELF_API void ELF_APIENTRY elfSetLightDistance(elf_handle light, float distance)
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetLightDistance() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetLightDistance() -> invalid handle");
 		}
 		else
 		{
@@ -5224,11 +4710,9 @@ ELF_API void ELF_APIENTRY elfSetLightFadeSpeed(elf_handle light, float fade_spee
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetLightFadeSpeed() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetLightFadeSpeed() -> invalid handle");
 		}
 		else
 		{
@@ -5242,11 +4726,9 @@ ELF_API void ELF_APIENTRY elfSetLightShadowCaster(elf_handle light, bool shadow_
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetLightShadowCaster() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetLightShadowCaster() -> invalid handle");
 		}
 		else
 		{
@@ -5260,11 +4742,9 @@ ELF_API void ELF_APIENTRY elfSetLightVisible(elf_handle light, bool visible)
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetLightVisible() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetLightVisible() -> invalid handle");
 		}
 		else
 		{
@@ -5278,11 +4758,9 @@ ELF_API void ELF_APIENTRY elfSetLightCone(elf_handle light, float inner_cone, fl
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetLightCone() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetLightCone() -> invalid handle");
 		}
 		else
 		{
@@ -5296,11 +4774,9 @@ ELF_API void ELF_APIENTRY elfSetLightShaft(elf_handle light, float size, float i
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetLightShaft() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetLightShaft() -> invalid handle");
 		}
 		else
 		{
@@ -5314,11 +4790,9 @@ ELF_API void ELF_APIENTRY elfDisableLightShaft(elf_handle light)
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: DisableLightShaft() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "DisableLightShaft() -> invalid handle");
 		}
 		else
 		{
@@ -5333,11 +4807,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetBoneArmature(elf_handle bone)
 	elf_handle handle;
 	if(!bone.get() || elf_get_object_type(bone.get()) != ELF_BONE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetBoneArmature() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetBoneArmature() -> invalid handle");
 		}
 		else
 		{
@@ -5353,11 +4825,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetBoneParent(elf_handle bone)
 	elf_handle handle;
 	if(!bone.get() || elf_get_object_type(bone.get()) != ELF_BONE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetBoneParent() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetBoneParent() -> invalid handle");
 		}
 		else
 		{
@@ -5373,11 +4843,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetBoneChildByName(elf_handle bone, const cha
 	elf_handle handle;
 	if(!bone.get() || elf_get_object_type(bone.get()) != ELF_BONE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetBoneChildByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetBoneChildByName() -> invalid handle");
 		}
 		else
 		{
@@ -5393,11 +4861,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetBoneChildById(elf_handle bone, int id)
 	elf_handle handle;
 	if(!bone.get() || elf_get_object_type(bone.get()) != ELF_BONE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetBoneChildById() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetBoneChildById() -> invalid handle");
 		}
 		else
 		{
@@ -5413,11 +4879,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetBoneChildByIndex(elf_handle bone, int idx)
 	elf_handle handle;
 	if(!bone.get() || elf_get_object_type(bone.get()) != ELF_BONE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetBoneChildByIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetBoneChildByIndex() -> invalid handle");
 		}
 		else
 		{
@@ -5434,11 +4898,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetBonePosition(elf_handle bone)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!bone.get() || elf_get_object_type(bone.get()) != ELF_BONE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetBonePosition() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetBonePosition() -> invalid handle");
 		}
 		else
 		{
@@ -5455,11 +4917,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetBoneRotation(elf_handle bone)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!bone.get() || elf_get_object_type(bone.get()) != ELF_BONE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetBoneRotation() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetBoneRotation() -> invalid handle");
 		}
 		else
 		{
@@ -5476,11 +4936,9 @@ ELF_API elf_vec4f ELF_APIENTRY elfGetBoneOrientation(elf_handle bone)
 	memset(&_e_type, 0x0, sizeof(elf_vec4f));
 	if(!bone.get() || elf_get_object_type(bone.get()) != ELF_BONE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetBoneOrientation() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetBoneOrientation() -> invalid handle");
 		}
 		else
 		{
@@ -5502,11 +4960,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetBoneFromArmatureByName(const char* name, e
 	elf_handle handle;
 	if(!armature.get() || elf_get_object_type(armature.get()) != ELF_ARMATURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetBoneFromArmatureByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetBoneFromArmatureByName() -> invalid handle");
 		}
 		else
 		{
@@ -5522,11 +4978,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetBoneFromArmatureById(int id, elf_handle ar
 	elf_handle handle;
 	if(!armature.get() || elf_get_object_type(armature.get()) != ELF_ARMATURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetBoneFromArmatureById() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetBoneFromArmatureById() -> invalid handle");
 		}
 		else
 		{
@@ -5547,11 +5001,9 @@ ELF_API const char* ELF_APIENTRY elfGetParticlesName(elf_handle particles)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesName() -> invalid handle");
 		}
 		else
 		{
@@ -5565,11 +5017,9 @@ ELF_API const char* ELF_APIENTRY elfGetParticlesFilePath(elf_handle particles)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesFilePath() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesFilePath() -> invalid handle");
 		}
 		else
 		{
@@ -5583,11 +5033,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesMaxCount(elf_handle particles, int max_
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesMaxCount() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesMaxCount() -> invalid handle");
 		}
 		else
 		{
@@ -5601,11 +5049,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesDrawMode(elf_handle particles, int mode
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesDrawMode() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesDrawMode() -> invalid handle");
 		}
 		else
 		{
@@ -5619,11 +5065,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesTexture(elf_handle particles, elf_handl
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesTexture() -> invalid handle");
 		}
 		else
 		{
@@ -5633,11 +5077,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesTexture(elf_handle particles, elf_handl
 	}
 	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesTexture() -> invalid handle");
 		}
 		else
 		{
@@ -5651,11 +5093,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesModel(elf_handle particles, elf_handle 
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesModel() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesModel() -> invalid handle");
 		}
 		else
 		{
@@ -5665,11 +5105,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesModel(elf_handle particles, elf_handle 
 	}
 	if(!model.get() || elf_get_object_type(model.get()) != ELF_MODEL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesModel() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesModel() -> invalid handle");
 		}
 		else
 		{
@@ -5683,11 +5121,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesEntity(elf_handle particles, elf_handle
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesEntity() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesEntity() -> invalid handle");
 		}
 		else
 		{
@@ -5697,11 +5133,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesEntity(elf_handle particles, elf_handle
 	}
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesEntity() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesEntity() -> invalid handle");
 		}
 		else
 		{
@@ -5715,11 +5149,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesGravity(elf_handle particles, float x, 
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesGravity() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesGravity() -> invalid handle");
 		}
 		else
 		{
@@ -5733,11 +5165,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesSpawnDelay(elf_handle particles, float 
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesSpawnDelay() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesSpawnDelay() -> invalid handle");
 		}
 		else
 		{
@@ -5751,11 +5181,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesSpawn(elf_handle particles, bool spawn)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesSpawn() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesSpawn() -> invalid handle");
 		}
 		else
 		{
@@ -5769,11 +5197,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesSize(elf_handle particles, float min, f
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesSize() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesSize() -> invalid handle");
 		}
 		else
 		{
@@ -5787,11 +5213,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesSizeGrowth(elf_handle particles, float 
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesSizeGrowth() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesSizeGrowth() -> invalid handle");
 		}
 		else
 		{
@@ -5805,11 +5229,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesRotation(elf_handle particles, float mi
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesRotation() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesRotation() -> invalid handle");
 		}
 		else
 		{
@@ -5823,11 +5245,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesRotationGrowth(elf_handle particles, fl
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesRotationGrowth() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesRotationGrowth() -> invalid handle");
 		}
 		else
 		{
@@ -5841,11 +5261,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesLifeSpan(elf_handle particles, float mi
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesLifeSpan() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesLifeSpan() -> invalid handle");
 		}
 		else
 		{
@@ -5859,11 +5277,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesFadeSpeed(elf_handle particles, float m
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesFadeSpeed() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesFadeSpeed() -> invalid handle");
 		}
 		else
 		{
@@ -5877,11 +5293,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesPositionMin(elf_handle particles, float
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesPositionMin() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesPositionMin() -> invalid handle");
 		}
 		else
 		{
@@ -5895,11 +5309,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesPositionMax(elf_handle particles, float
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesPositionMax() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesPositionMax() -> invalid handle");
 		}
 		else
 		{
@@ -5913,11 +5325,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesVelocityMin(elf_handle particles, float
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesVelocityMin() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesVelocityMin() -> invalid handle");
 		}
 		else
 		{
@@ -5931,11 +5341,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesVelocityMax(elf_handle particles, float
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesVelocityMax() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesVelocityMax() -> invalid handle");
 		}
 		else
 		{
@@ -5949,11 +5357,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesColorMin(elf_handle particles, float r,
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesColorMin() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesColorMin() -> invalid handle");
 		}
 		else
 		{
@@ -5967,11 +5373,9 @@ ELF_API void ELF_APIENTRY elfSetParticlesColorMax(elf_handle particles, float r,
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetParticlesColorMax() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetParticlesColorMax() -> invalid handle");
 		}
 		else
 		{
@@ -5985,11 +5389,9 @@ ELF_API int ELF_APIENTRY elfGetParticlesMaxCount(elf_handle particles)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesMaxCount() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesMaxCount() -> invalid handle");
 		}
 		else
 		{
@@ -6003,11 +5405,9 @@ ELF_API int ELF_APIENTRY elfGetParticlesCount(elf_handle particles)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesCount() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesCount() -> invalid handle");
 		}
 		else
 		{
@@ -6021,11 +5421,9 @@ ELF_API int ELF_APIENTRY elfGetParticlesDrawMode(elf_handle particles)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesDrawMode() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesDrawMode() -> invalid handle");
 		}
 		else
 		{
@@ -6040,11 +5438,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetParticlesTexture(elf_handle particles)
 	elf_handle handle;
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesTexture() -> invalid handle");
 		}
 		else
 		{
@@ -6060,11 +5456,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetParticlesModel(elf_handle particles)
 	elf_handle handle;
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesModel() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesModel() -> invalid handle");
 		}
 		else
 		{
@@ -6080,11 +5474,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetParticlesEntity(elf_handle particles)
 	elf_handle handle;
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesEntity() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesEntity() -> invalid handle");
 		}
 		else
 		{
@@ -6101,11 +5493,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetParticlesGravity(elf_handle particles)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesGravity() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesGravity() -> invalid handle");
 		}
 		else
 		{
@@ -6120,11 +5510,9 @@ ELF_API float ELF_APIENTRY elfGetParticlesSpawnDelay(elf_handle particles)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesSpawnDelay() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesSpawnDelay() -> invalid handle");
 		}
 		else
 		{
@@ -6138,11 +5526,9 @@ ELF_API bool ELF_APIENTRY elfGetParticlesSpawn(elf_handle particles)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesSpawn() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesSpawn() -> invalid handle");
 		}
 		else
 		{
@@ -6156,11 +5542,9 @@ ELF_API float ELF_APIENTRY elfGetParticlesSizeMin(elf_handle particles)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesSizeMin() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesSizeMin() -> invalid handle");
 		}
 		else
 		{
@@ -6174,11 +5558,9 @@ ELF_API float ELF_APIENTRY elfGetParticlesSizeMax(elf_handle particles)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesSizeMax() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesSizeMax() -> invalid handle");
 		}
 		else
 		{
@@ -6192,11 +5574,9 @@ ELF_API float ELF_APIENTRY elfGetParticlesSizeGrowthMin(elf_handle particles)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesSizeGrowthMin() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesSizeGrowthMin() -> invalid handle");
 		}
 		else
 		{
@@ -6210,11 +5590,9 @@ ELF_API float ELF_APIENTRY elfGetParticlesSizeGrowthMax(elf_handle particles)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesSizeGrowthMax() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesSizeGrowthMax() -> invalid handle");
 		}
 		else
 		{
@@ -6228,11 +5606,9 @@ ELF_API float ELF_APIENTRY elfGetParticlesRotationMin(elf_handle particles)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesRotationMin() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesRotationMin() -> invalid handle");
 		}
 		else
 		{
@@ -6246,11 +5622,9 @@ ELF_API float ELF_APIENTRY elfGetParticlesRotationMax(elf_handle particles)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesRotationMax() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesRotationMax() -> invalid handle");
 		}
 		else
 		{
@@ -6264,11 +5638,9 @@ ELF_API float ELF_APIENTRY elfGetParticlesRotationGrowthMin(elf_handle particles
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesRotationGrowthMin() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesRotationGrowthMin() -> invalid handle");
 		}
 		else
 		{
@@ -6282,11 +5654,9 @@ ELF_API float ELF_APIENTRY elfGetParticlesRotationGrowthMax(elf_handle particles
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesRotationGrowthMax() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesRotationGrowthMax() -> invalid handle");
 		}
 		else
 		{
@@ -6300,11 +5670,9 @@ ELF_API float ELF_APIENTRY elfGetParticlesLifeSpanMin(elf_handle particles)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesLifeSpanMin() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesLifeSpanMin() -> invalid handle");
 		}
 		else
 		{
@@ -6318,11 +5686,9 @@ ELF_API float ELF_APIENTRY elfGetParticlesLifeSpanMax(elf_handle particles)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesLifeSpanMax() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesLifeSpanMax() -> invalid handle");
 		}
 		else
 		{
@@ -6336,11 +5702,9 @@ ELF_API float ELF_APIENTRY elfGetParticlesFadeSpeedMin(elf_handle particles)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesFadeSpeedMin() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesFadeSpeedMin() -> invalid handle");
 		}
 		else
 		{
@@ -6354,11 +5718,9 @@ ELF_API float ELF_APIENTRY elfGetParticlesFadeSpeedMax(elf_handle particles)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesFadeSpeedMax() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesFadeSpeedMax() -> invalid handle");
 		}
 		else
 		{
@@ -6374,11 +5736,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetParticlesPositionMin(elf_handle particles)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesPositionMin() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesPositionMin() -> invalid handle");
 		}
 		else
 		{
@@ -6395,11 +5755,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetParticlesPositionMax(elf_handle particles)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesPositionMax() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesPositionMax() -> invalid handle");
 		}
 		else
 		{
@@ -6416,11 +5774,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetParticlesVelocityMin(elf_handle particles)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesVelocityMin() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesVelocityMin() -> invalid handle");
 		}
 		else
 		{
@@ -6437,11 +5793,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetParticlesVelocityMax(elf_handle particles)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesVelocityMax() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesVelocityMax() -> invalid handle");
 		}
 		else
 		{
@@ -6458,11 +5812,9 @@ ELF_API elf_color ELF_APIENTRY elfGetParticlesColorMin(elf_handle particles)
 	memset(&_e_type, 0x0, sizeof(elf_color));
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesColorMin() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesColorMin() -> invalid handle");
 		}
 		else
 		{
@@ -6479,11 +5831,9 @@ ELF_API elf_color ELF_APIENTRY elfGetParticlesColorMax(elf_handle particles)
 	memset(&_e_type, 0x0, sizeof(elf_color));
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesColorMax() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesColorMax() -> invalid handle");
 		}
 		else
 		{
@@ -6504,11 +5854,9 @@ ELF_API void ELF_APIENTRY elfSetSpriteMaterial(elf_handle sprite, elf_handle mat
 {
 	if(!sprite.get() || elf_get_object_type(sprite.get()) != ELF_SPRITE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetSpriteMaterial() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetSpriteMaterial() -> invalid handle");
 		}
 		else
 		{
@@ -6518,11 +5866,9 @@ ELF_API void ELF_APIENTRY elfSetSpriteMaterial(elf_handle sprite, elf_handle mat
 	}
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetSpriteMaterial() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetSpriteMaterial() -> invalid handle");
 		}
 		else
 		{
@@ -6536,11 +5882,9 @@ ELF_API void ELF_APIENTRY elfSetSpriteScale(elf_handle sprite, float x, float y)
 {
 	if(!sprite.get() || elf_get_object_type(sprite.get()) != ELF_SPRITE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetSpriteScale() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetSpriteScale() -> invalid handle");
 		}
 		else
 		{
@@ -6554,11 +5898,9 @@ ELF_API void ELF_APIENTRY elfSetSpriteFaceCamera(elf_handle sprite, bool face_ca
 {
 	if(!sprite.get() || elf_get_object_type(sprite.get()) != ELF_SPRITE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetSpriteFaceCamera() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetSpriteFaceCamera() -> invalid handle");
 		}
 		else
 		{
@@ -6573,11 +5915,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetSpriteMaterial(elf_handle sprite)
 	elf_handle handle;
 	if(!sprite.get() || elf_get_object_type(sprite.get()) != ELF_SPRITE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSpriteMaterial() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSpriteMaterial() -> invalid handle");
 		}
 		else
 		{
@@ -6594,11 +5934,9 @@ ELF_API elf_vec2f ELF_APIENTRY elfGetSpriteScale(elf_handle sprite)
 	memset(&_e_type, 0x0, sizeof(elf_vec2f));
 	if(!sprite.get() || elf_get_object_type(sprite.get()) != ELF_SPRITE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSpriteScale() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSpriteScale() -> invalid handle");
 		}
 		else
 		{
@@ -6613,11 +5951,9 @@ ELF_API bool ELF_APIENTRY elfGetSpriteFaceCamera(elf_handle sprite)
 {
 	if(!sprite.get() || elf_get_object_type(sprite.get()) != ELF_SPRITE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSpriteFaceCamera() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSpriteFaceCamera() -> invalid handle");
 		}
 		else
 		{
@@ -6643,11 +5979,9 @@ ELF_API bool ELF_APIENTRY elfSaveScene(elf_handle scene, const char* file_path)
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SaveScene() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SaveScene() -> invalid handle");
 		}
 		else
 		{
@@ -6661,11 +5995,9 @@ ELF_API void ELF_APIENTRY elfSetSceneAmbientColor(elf_handle scene, float r, flo
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetSceneAmbientColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetSceneAmbientColor() -> invalid handle");
 		}
 		else
 		{
@@ -6681,11 +6013,9 @@ ELF_API elf_color ELF_APIENTRY elfGetSceneAmbientColor(elf_handle scene)
 	memset(&_e_type, 0x0, sizeof(elf_color));
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSceneAmbientColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSceneAmbientColor() -> invalid handle");
 		}
 		else
 		{
@@ -6700,11 +6030,9 @@ ELF_API void ELF_APIENTRY elfSetSceneGravity(elf_handle scene, float x, float y,
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetSceneGravity() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetSceneGravity() -> invalid handle");
 		}
 		else
 		{
@@ -6720,11 +6048,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetSceneGravity(elf_handle scene)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSceneGravity() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSceneGravity() -> invalid handle");
 		}
 		else
 		{
@@ -6739,11 +6065,9 @@ ELF_API void ELF_APIENTRY elfSetScenePhysics(elf_handle scene, bool physics)
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetScenePhysics() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetScenePhysics() -> invalid handle");
 		}
 		else
 		{
@@ -6757,11 +6081,9 @@ ELF_API bool ELF_APIENTRY elfGetScenePhysics(elf_handle scene)
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetScenePhysics() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetScenePhysics() -> invalid handle");
 		}
 		else
 		{
@@ -6775,11 +6097,9 @@ ELF_API void ELF_APIENTRY elfSetSceneRunScripts(elf_handle scene, bool run_scrip
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetSceneRunScripts() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetSceneRunScripts() -> invalid handle");
 		}
 		else
 		{
@@ -6793,11 +6113,9 @@ ELF_API bool ELF_APIENTRY elfGetSceneRunScripts(elf_handle scene, bool run_scrip
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSceneRunScripts() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSceneRunScripts() -> invalid handle");
 		}
 		else
 		{
@@ -6811,11 +6129,9 @@ ELF_API const char* ELF_APIENTRY elfGetSceneName(elf_handle scene)
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSceneName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSceneName() -> invalid handle");
 		}
 		else
 		{
@@ -6829,11 +6145,9 @@ ELF_API const char* ELF_APIENTRY elfGetSceneFilePath(elf_handle scene)
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSceneFilePath() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSceneFilePath() -> invalid handle");
 		}
 		else
 		{
@@ -6847,11 +6161,9 @@ ELF_API int ELF_APIENTRY elfGetSceneCameraCount(elf_handle scene)
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSceneCameraCount() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSceneCameraCount() -> invalid handle");
 		}
 		else
 		{
@@ -6865,11 +6177,9 @@ ELF_API int ELF_APIENTRY elfGetSceneEntityCount(elf_handle scene)
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSceneEntityCount() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSceneEntityCount() -> invalid handle");
 		}
 		else
 		{
@@ -6883,11 +6193,9 @@ ELF_API int ELF_APIENTRY elfGetSceneLightCount(elf_handle scene)
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSceneLightCount() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSceneLightCount() -> invalid handle");
 		}
 		else
 		{
@@ -6901,11 +6209,9 @@ ELF_API int ELF_APIENTRY elfGetSceneArmatureCount(elf_handle scene)
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSceneArmatureCount() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSceneArmatureCount() -> invalid handle");
 		}
 		else
 		{
@@ -6919,11 +6225,9 @@ ELF_API int ELF_APIENTRY elfGetSceneParticlesCount(elf_handle scene)
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSceneParticlesCount() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSceneParticlesCount() -> invalid handle");
 		}
 		else
 		{
@@ -6937,11 +6241,9 @@ ELF_API int ELF_APIENTRY elfGetSceneSpriteCount(elf_handle scene)
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSceneSpriteCount() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSceneSpriteCount() -> invalid handle");
 		}
 		else
 		{
@@ -6955,11 +6257,9 @@ ELF_API void ELF_APIENTRY elfAddCameraToScene(elf_handle scene, elf_handle camer
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddCameraToScene() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddCameraToScene() -> invalid handle");
 		}
 		else
 		{
@@ -6969,11 +6269,9 @@ ELF_API void ELF_APIENTRY elfAddCameraToScene(elf_handle scene, elf_handle camer
 	}
 	if(!camera.get() || elf_get_object_type(camera.get()) != ELF_CAMERA)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddCameraToScene() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddCameraToScene() -> invalid handle");
 		}
 		else
 		{
@@ -6987,11 +6285,9 @@ ELF_API void ELF_APIENTRY elfAddEntityToScene(elf_handle scene, elf_handle entit
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddEntityToScene() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddEntityToScene() -> invalid handle");
 		}
 		else
 		{
@@ -7001,11 +6297,9 @@ ELF_API void ELF_APIENTRY elfAddEntityToScene(elf_handle scene, elf_handle entit
 	}
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddEntityToScene() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddEntityToScene() -> invalid handle");
 		}
 		else
 		{
@@ -7019,11 +6313,9 @@ ELF_API void ELF_APIENTRY elfAddLightToScene(elf_handle scene, elf_handle light)
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddLightToScene() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddLightToScene() -> invalid handle");
 		}
 		else
 		{
@@ -7033,11 +6325,9 @@ ELF_API void ELF_APIENTRY elfAddLightToScene(elf_handle scene, elf_handle light)
 	}
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddLightToScene() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddLightToScene() -> invalid handle");
 		}
 		else
 		{
@@ -7051,11 +6341,9 @@ ELF_API void ELF_APIENTRY elfAddParticlesToScene(elf_handle scene, elf_handle pa
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddParticlesToScene() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddParticlesToScene() -> invalid handle");
 		}
 		else
 		{
@@ -7065,11 +6353,9 @@ ELF_API void ELF_APIENTRY elfAddParticlesToScene(elf_handle scene, elf_handle pa
 	}
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddParticlesToScene() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddParticlesToScene() -> invalid handle");
 		}
 		else
 		{
@@ -7083,11 +6369,9 @@ ELF_API void ELF_APIENTRY elfAddSpriteToScene(elf_handle scene, elf_handle sprit
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddSpriteToScene() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddSpriteToScene() -> invalid handle");
 		}
 		else
 		{
@@ -7097,11 +6381,9 @@ ELF_API void ELF_APIENTRY elfAddSpriteToScene(elf_handle scene, elf_handle sprit
 	}
 	if(!sprite.get() || elf_get_object_type(sprite.get()) != ELF_SPRITE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddSpriteToScene() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddSpriteToScene() -> invalid handle");
 		}
 		else
 		{
@@ -7115,11 +6397,9 @@ ELF_API void ELF_APIENTRY elfSetSceneActiveCamera(elf_handle scene, elf_handle c
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetSceneActiveCamera() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetSceneActiveCamera() -> invalid handle");
 		}
 		else
 		{
@@ -7129,11 +6409,9 @@ ELF_API void ELF_APIENTRY elfSetSceneActiveCamera(elf_handle scene, elf_handle c
 	}
 	if(!camera.get() || elf_get_object_type(camera.get()) != ELF_CAMERA)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetSceneActiveCamera() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetSceneActiveCamera() -> invalid handle");
 		}
 		else
 		{
@@ -7148,11 +6426,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetSceneActiveCamera(elf_handle scene)
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSceneActiveCamera() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSceneActiveCamera() -> invalid handle");
 		}
 		else
 		{
@@ -7168,11 +6444,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetSceneRayCastResult(elf_handle scene, float
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSceneRayCastResult() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSceneRayCastResult() -> invalid handle");
 		}
 		else
 		{
@@ -7188,11 +6462,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetSceneRayCastResults(elf_handle scene, floa
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSceneRayCastResults() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSceneRayCastResults() -> invalid handle");
 		}
 		else
 		{
@@ -7208,11 +6480,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetDebugSceneRayCastResult(elf_handle scene, 
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetDebugSceneRayCastResult() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetDebugSceneRayCastResult() -> invalid handle");
 		}
 		else
 		{
@@ -7228,11 +6498,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetDebugSceneRayCastResults(elf_handle scene,
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetDebugSceneRayCastResults() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetDebugSceneRayCastResults() -> invalid handle");
 		}
 		else
 		{
@@ -7248,11 +6516,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetCameraByIndex(elf_handle scene, int idx)
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetCameraByIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetCameraByIndex() -> invalid handle");
 		}
 		else
 		{
@@ -7268,11 +6534,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetEntityByIndex(elf_handle scene, int idx)
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetEntityByIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetEntityByIndex() -> invalid handle");
 		}
 		else
 		{
@@ -7288,11 +6552,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetLightByIndex(elf_handle scene, int idx)
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetLightByIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetLightByIndex() -> invalid handle");
 		}
 		else
 		{
@@ -7308,11 +6570,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetArmatureByIndex(elf_handle scene, int idx)
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetArmatureByIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetArmatureByIndex() -> invalid handle");
 		}
 		else
 		{
@@ -7328,11 +6588,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetParticlesByIndex(elf_handle scene, int idx
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesByIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesByIndex() -> invalid handle");
 		}
 		else
 		{
@@ -7348,11 +6606,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetSpriteByIndex(elf_handle scene, int idx)
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSpriteByIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSpriteByIndex() -> invalid handle");
 		}
 		else
 		{
@@ -7368,11 +6624,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetTextureByName(elf_handle scene, const char
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextureByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextureByName() -> invalid handle");
 		}
 		else
 		{
@@ -7388,11 +6642,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetMaterialByName(elf_handle scene, const cha
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetMaterialByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMaterialByName() -> invalid handle");
 		}
 		else
 		{
@@ -7408,11 +6660,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetModelByName(elf_handle scene, const char* 
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetModelByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetModelByName() -> invalid handle");
 		}
 		else
 		{
@@ -7428,11 +6678,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetScriptByName(elf_handle scene, const char*
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetScriptByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetScriptByName() -> invalid handle");
 		}
 		else
 		{
@@ -7448,11 +6696,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetCameraByName(elf_handle scene, const char*
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetCameraByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetCameraByName() -> invalid handle");
 		}
 		else
 		{
@@ -7468,11 +6714,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetEntityByName(elf_handle scene, const char*
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetEntityByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetEntityByName() -> invalid handle");
 		}
 		else
 		{
@@ -7488,11 +6732,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetLightByName(elf_handle scene, const char* 
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetLightByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetLightByName() -> invalid handle");
 		}
 		else
 		{
@@ -7508,11 +6750,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetArmatureByName(elf_handle scene, const cha
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetArmatureByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetArmatureByName() -> invalid handle");
 		}
 		else
 		{
@@ -7528,11 +6768,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetParticlesByName(elf_handle scene, const ch
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetParticlesByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetParticlesByName() -> invalid handle");
 		}
 		else
 		{
@@ -7548,11 +6786,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetSpriteByName(elf_handle scene, const char*
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSpriteByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSpriteByName() -> invalid handle");
 		}
 		else
 		{
@@ -7568,11 +6804,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetActorByName(elf_handle scene, const char* 
 	elf_handle handle;
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetActorByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorByName() -> invalid handle");
 		}
 		else
 		{
@@ -7587,11 +6821,9 @@ ELF_API bool ELF_APIENTRY elfRemoveCameraByName(elf_handle scene, const char* na
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveCameraByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveCameraByName() -> invalid handle");
 		}
 		else
 		{
@@ -7605,11 +6837,9 @@ ELF_API bool ELF_APIENTRY elfRemoveEntityByName(elf_handle scene, const char* na
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveEntityByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveEntityByName() -> invalid handle");
 		}
 		else
 		{
@@ -7623,11 +6853,9 @@ ELF_API bool ELF_APIENTRY elfRemoveLightByName(elf_handle scene, const char* nam
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveLightByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveLightByName() -> invalid handle");
 		}
 		else
 		{
@@ -7641,11 +6869,9 @@ ELF_API bool ELF_APIENTRY elfRemoveParticlesByName(elf_handle scene, const char*
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveParticlesByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveParticlesByName() -> invalid handle");
 		}
 		else
 		{
@@ -7659,11 +6885,9 @@ ELF_API bool ELF_APIENTRY elfRemoveSpriteByName(elf_handle scene, const char* na
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveSpriteByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveSpriteByName() -> invalid handle");
 		}
 		else
 		{
@@ -7677,11 +6901,9 @@ ELF_API bool ELF_APIENTRY elfRemoveCameraByIndex(elf_handle scene, int idx)
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveCameraByIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveCameraByIndex() -> invalid handle");
 		}
 		else
 		{
@@ -7695,11 +6917,9 @@ ELF_API bool ELF_APIENTRY elfRemoveEntityByIndex(elf_handle scene, int idx)
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveEntityByIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveEntityByIndex() -> invalid handle");
 		}
 		else
 		{
@@ -7713,11 +6933,9 @@ ELF_API bool ELF_APIENTRY elfRemoveLightByIndex(elf_handle scene, int idx)
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveLightByIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveLightByIndex() -> invalid handle");
 		}
 		else
 		{
@@ -7731,11 +6949,9 @@ ELF_API bool ELF_APIENTRY elfRemoveParticlesByIndex(elf_handle scene, int idx)
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveParticlesByIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveParticlesByIndex() -> invalid handle");
 		}
 		else
 		{
@@ -7749,11 +6965,9 @@ ELF_API bool ELF_APIENTRY elfRemoveSpriteByIndex(elf_handle scene, int idx)
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveSpriteByIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveSpriteByIndex() -> invalid handle");
 		}
 		else
 		{
@@ -7767,11 +6981,9 @@ ELF_API bool ELF_APIENTRY elfRemoveCameraByObject(elf_handle scene, elf_handle c
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveCameraByObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveCameraByObject() -> invalid handle");
 		}
 		else
 		{
@@ -7781,11 +6993,9 @@ ELF_API bool ELF_APIENTRY elfRemoveCameraByObject(elf_handle scene, elf_handle c
 	}
 	if(!camera.get() || elf_get_object_type(camera.get()) != ELF_CAMERA)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveCameraByObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveCameraByObject() -> invalid handle");
 		}
 		else
 		{
@@ -7799,11 +7009,9 @@ ELF_API bool ELF_APIENTRY elfRemoveEntityByObject(elf_handle scene, elf_handle e
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveEntityByObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveEntityByObject() -> invalid handle");
 		}
 		else
 		{
@@ -7813,11 +7021,9 @@ ELF_API bool ELF_APIENTRY elfRemoveEntityByObject(elf_handle scene, elf_handle e
 	}
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveEntityByObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveEntityByObject() -> invalid handle");
 		}
 		else
 		{
@@ -7831,11 +7037,9 @@ ELF_API bool ELF_APIENTRY elfRemoveLightByObject(elf_handle scene, elf_handle li
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveLightByObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveLightByObject() -> invalid handle");
 		}
 		else
 		{
@@ -7845,11 +7049,9 @@ ELF_API bool ELF_APIENTRY elfRemoveLightByObject(elf_handle scene, elf_handle li
 	}
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveLightByObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveLightByObject() -> invalid handle");
 		}
 		else
 		{
@@ -7863,11 +7065,9 @@ ELF_API bool ELF_APIENTRY elfRemoveParticlesByObject(elf_handle scene, elf_handl
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveParticlesByObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveParticlesByObject() -> invalid handle");
 		}
 		else
 		{
@@ -7877,11 +7077,9 @@ ELF_API bool ELF_APIENTRY elfRemoveParticlesByObject(elf_handle scene, elf_handl
 	}
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveParticlesByObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveParticlesByObject() -> invalid handle");
 		}
 		else
 		{
@@ -7895,11 +7093,9 @@ ELF_API bool ELF_APIENTRY elfRemoveSpriteByObject(elf_handle scene, elf_handle s
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveSpriteByObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveSpriteByObject() -> invalid handle");
 		}
 		else
 		{
@@ -7909,11 +7105,9 @@ ELF_API bool ELF_APIENTRY elfRemoveSpriteByObject(elf_handle scene, elf_handle s
 	}
 	if(!sprite.get() || elf_get_object_type(sprite.get()) != ELF_SPRITE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveSpriteByObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveSpriteByObject() -> invalid handle");
 		}
 		else
 		{
@@ -7927,11 +7121,9 @@ ELF_API bool ELF_APIENTRY elfRemoveActorByObject(elf_handle scene, elf_handle ac
 {
 	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveActorByObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveActorByObject() -> invalid handle");
 		}
 		else
 		{
@@ -7941,11 +7133,9 @@ ELF_API bool ELF_APIENTRY elfRemoveActorByObject(elf_handle scene, elf_handle ac
 	}
 	if(!actor.get() || !elf_is_actor(actor.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveActorByObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveActorByObject() -> invalid handle");
 		}
 		else
 		{
@@ -7971,11 +7161,9 @@ ELF_API const char* ELF_APIENTRY elfGetScriptName(elf_handle script)
 {
 	if(!script.get() || elf_get_object_type(script.get()) != ELF_SCRIPT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetScriptName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetScriptName() -> invalid handle");
 		}
 		else
 		{
@@ -7989,11 +7177,9 @@ ELF_API const char* ELF_APIENTRY elfGetScriptFilePath(elf_handle script)
 {
 	if(!script.get() || elf_get_object_type(script.get()) != ELF_SCRIPT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetScriptFilePath() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetScriptFilePath() -> invalid handle");
 		}
 		else
 		{
@@ -8007,11 +7193,9 @@ ELF_API void ELF_APIENTRY elfSetScriptText(elf_handle script, const char* text)
 {
 	if(!script.get() || elf_get_object_type(script.get()) != ELF_SCRIPT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetScriptText() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetScriptText() -> invalid handle");
 		}
 		else
 		{
@@ -8025,11 +7209,9 @@ ELF_API bool ELF_APIENTRY elfIsScriptError(elf_handle script)
 {
 	if(!script.get() || elf_get_object_type(script.get()) != ELF_SCRIPT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: IsScriptError() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "IsScriptError() -> invalid handle");
 		}
 		else
 		{
@@ -8047,11 +7229,9 @@ ELF_API bool ELF_APIENTRY elfRunScript(elf_handle script)
 {
 	if(!script.get() || elf_get_object_type(script.get()) != ELF_SCRIPT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RunScript() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RunScript() -> invalid handle");
 		}
 		else
 		{
@@ -8093,11 +7273,9 @@ ELF_API int ELF_APIENTRY elfGetSoundFileType(elf_handle sound)
 {
 	if(!sound.get() || elf_get_object_type(sound.get()) != ELF_SOUND)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSoundFileType() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSoundFileType() -> invalid handle");
 		}
 		else
 		{
@@ -8112,11 +7290,9 @@ ELF_API elf_handle ELF_APIENTRY elfPlaySound(elf_handle sound, float volume)
 	elf_handle handle;
 	if(!sound.get() || elf_get_object_type(sound.get()) != ELF_SOUND)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: PlaySound() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "PlaySound() -> invalid handle");
 		}
 		else
 		{
@@ -8132,11 +7308,9 @@ ELF_API elf_handle ELF_APIENTRY elfPlayEntitySound(elf_handle entity, elf_handle
 	elf_handle handle;
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: PlayEntitySound() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "PlayEntitySound() -> invalid handle");
 		}
 		else
 		{
@@ -8146,11 +7320,9 @@ ELF_API elf_handle ELF_APIENTRY elfPlayEntitySound(elf_handle entity, elf_handle
 	}
 	if(!sound.get() || elf_get_object_type(sound.get()) != ELF_SOUND)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: PlayEntitySound() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "PlayEntitySound() -> invalid handle");
 		}
 		else
 		{
@@ -8166,11 +7338,9 @@ ELF_API elf_handle ELF_APIENTRY elfLoopSound(elf_handle sound, float volume)
 	elf_handle handle;
 	if(!sound.get() || elf_get_object_type(sound.get()) != ELF_SOUND)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: LoopSound() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "LoopSound() -> invalid handle");
 		}
 		else
 		{
@@ -8186,11 +7356,9 @@ ELF_API elf_handle ELF_APIENTRY elfLoopEntitySound(elf_handle entity, elf_handle
 	elf_handle handle;
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: LoopEntitySound() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "LoopEntitySound() -> invalid handle");
 		}
 		else
 		{
@@ -8200,11 +7368,9 @@ ELF_API elf_handle ELF_APIENTRY elfLoopEntitySound(elf_handle entity, elf_handle
 	}
 	if(!sound.get() || elf_get_object_type(sound.get()) != ELF_SOUND)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: LoopEntitySound() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "LoopEntitySound() -> invalid handle");
 		}
 		else
 		{
@@ -8219,11 +7385,9 @@ ELF_API void ELF_APIENTRY elfSetSoundVolume(elf_handle source, float volume)
 {
 	if(!source.get() || elf_get_object_type(source.get()) != ELF_AUDIO_SOURCE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetSoundVolume() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetSoundVolume() -> invalid handle");
 		}
 		else
 		{
@@ -8237,11 +7401,9 @@ ELF_API float ELF_APIENTRY elfGetSoundVolume(elf_handle source)
 {
 	if(!source.get() || elf_get_object_type(source.get()) != ELF_AUDIO_SOURCE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSoundVolume() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSoundVolume() -> invalid handle");
 		}
 		else
 		{
@@ -8255,11 +7417,9 @@ ELF_API void ELF_APIENTRY elfPauseSound(elf_handle source)
 {
 	if(!source.get() || elf_get_object_type(source.get()) != ELF_AUDIO_SOURCE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: PauseSound() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "PauseSound() -> invalid handle");
 		}
 		else
 		{
@@ -8273,11 +7433,9 @@ ELF_API void ELF_APIENTRY elfResumeSound(elf_handle source)
 {
 	if(!source.get() || elf_get_object_type(source.get()) != ELF_AUDIO_SOURCE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: ResumeSound() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "ResumeSound() -> invalid handle");
 		}
 		else
 		{
@@ -8291,11 +7449,9 @@ ELF_API void ELF_APIENTRY elfStopSound(elf_handle source)
 {
 	if(!source.get() || elf_get_object_type(source.get()) != ELF_AUDIO_SOURCE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: StopSound() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "StopSound() -> invalid handle");
 		}
 		else
 		{
@@ -8309,11 +7465,9 @@ ELF_API bool ELF_APIENTRY elfIsSoundPlaying(elf_handle source)
 {
 	if(!source.get() || elf_get_object_type(source.get()) != ELF_AUDIO_SOURCE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: IsSoundPlaying() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "IsSoundPlaying() -> invalid handle");
 		}
 		else
 		{
@@ -8327,11 +7481,9 @@ ELF_API bool ELF_APIENTRY elfIsSoundPaused(elf_handle source)
 {
 	if(!source.get() || elf_get_object_type(source.get()) != ELF_AUDIO_SOURCE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: IsSoundPaused() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "IsSoundPaused() -> invalid handle");
 		}
 		else
 		{
@@ -8346,11 +7498,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetCollisionActor(elf_handle collision)
 	elf_handle handle;
 	if(!collision.get() || elf_get_object_type(collision.get()) != ELF_COLLISION)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetCollisionActor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetCollisionActor() -> invalid handle");
 		}
 		else
 		{
@@ -8367,11 +7517,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetCollisionPosition(elf_handle collision)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!collision.get() || elf_get_object_type(collision.get()) != ELF_COLLISION)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetCollisionPosition() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetCollisionPosition() -> invalid handle");
 		}
 		else
 		{
@@ -8388,11 +7536,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetCollisionNormal(elf_handle collision)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!collision.get() || elf_get_object_type(collision.get()) != ELF_COLLISION)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetCollisionNormal() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetCollisionNormal() -> invalid handle");
 		}
 		else
 		{
@@ -8407,11 +7553,9 @@ ELF_API float ELF_APIENTRY elfGetCollisionDepth(elf_handle collision)
 {
 	if(!collision.get() || elf_get_object_type(collision.get()) != ELF_COLLISION)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetCollisionDepth() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetCollisionDepth() -> invalid handle");
 		}
 		else
 		{
@@ -8425,11 +7569,9 @@ ELF_API const char* ELF_APIENTRY elfGetJointName(elf_handle joint)
 {
 	if(!joint.get() || elf_get_object_type(joint.get()) != ELF_JOINT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetJointName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetJointName() -> invalid handle");
 		}
 		else
 		{
@@ -8443,11 +7585,9 @@ ELF_API int ELF_APIENTRY elfGetJointType(elf_handle joint)
 {
 	if(!joint.get() || elf_get_object_type(joint.get()) != ELF_JOINT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetJointType() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetJointType() -> invalid handle");
 		}
 		else
 		{
@@ -8462,11 +7602,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetJointActorA(elf_handle joint)
 	elf_handle handle;
 	if(!joint.get() || elf_get_object_type(joint.get()) != ELF_JOINT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetJointActorA() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetJointActorA() -> invalid handle");
 		}
 		else
 		{
@@ -8482,11 +7620,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetJointActorB(elf_handle joint)
 	elf_handle handle;
 	if(!joint.get() || elf_get_object_type(joint.get()) != ELF_JOINT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetJointActorB() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetJointActorB() -> invalid handle");
 		}
 		else
 		{
@@ -8503,11 +7639,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetJointPivot(elf_handle joint)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!joint.get() || elf_get_object_type(joint.get()) != ELF_JOINT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetJointPivot() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetJointPivot() -> invalid handle");
 		}
 		else
 		{
@@ -8524,11 +7658,9 @@ ELF_API elf_vec3f ELF_APIENTRY elfGetJointAxis(elf_handle joint)
 	memset(&_e_type, 0x0, sizeof(elf_vec3f));
 	if(!joint.get() || elf_get_object_type(joint.get()) != ELF_JOINT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetJointAxis() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetJointAxis() -> invalid handle");
 		}
 		else
 		{
@@ -8549,11 +7681,9 @@ ELF_API const char* ELF_APIENTRY elfGetFontName(elf_handle font)
 {
 	if(!font.get() || elf_get_object_type(font.get()) != ELF_FONT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetFontName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetFontName() -> invalid handle");
 		}
 		else
 		{
@@ -8567,11 +7697,9 @@ ELF_API const char* ELF_APIENTRY elfGetFontFilePath(elf_handle font)
 {
 	if(!font.get() || elf_get_object_type(font.get()) != ELF_FONT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetFontFilePath() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetFontFilePath() -> invalid handle");
 		}
 		else
 		{
@@ -8585,11 +7713,9 @@ ELF_API int ELF_APIENTRY elfGetFontSize(elf_handle font)
 {
 	if(!font.get() || elf_get_object_type(font.get()) != ELF_FONT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetFontSize() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetFontSize() -> invalid handle");
 		}
 		else
 		{
@@ -8603,11 +7729,9 @@ ELF_API int ELF_APIENTRY elfGetStringWidth(elf_handle font, const char* str)
 {
 	if(!font.get() || elf_get_object_type(font.get()) != ELF_FONT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetStringWidth() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetStringWidth() -> invalid handle");
 		}
 		else
 		{
@@ -8621,11 +7745,9 @@ ELF_API int ELF_APIENTRY elfGetStringHeight(elf_handle font, const char* str)
 {
 	if(!font.get() || elf_get_object_type(font.get()) != ELF_FONT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetStringHeight() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetStringHeight() -> invalid handle");
 		}
 		else
 		{
@@ -8639,11 +7761,9 @@ ELF_API const char* ELF_APIENTRY elfGetGuiObjectName(elf_handle object)
 {
 	if(!object.get() || !elf_is_gui_object(object.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetGuiObjectName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetGuiObjectName() -> invalid handle");
 		}
 		else
 		{
@@ -8659,11 +7779,9 @@ ELF_API elf_vec2i ELF_APIENTRY elfGetGuiObjectPosition(elf_handle object)
 	memset(&_e_type, 0x0, sizeof(elf_vec2i));
 	if(!object.get() || !elf_is_gui_object(object.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetGuiObjectPosition() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetGuiObjectPosition() -> invalid handle");
 		}
 		else
 		{
@@ -8680,11 +7798,9 @@ ELF_API elf_vec2i ELF_APIENTRY elfGetGuiObjectSize(elf_handle object)
 	memset(&_e_type, 0x0, sizeof(elf_vec2i));
 	if(!object.get() || !elf_is_gui_object(object.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetGuiObjectSize() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetGuiObjectSize() -> invalid handle");
 		}
 		else
 		{
@@ -8701,11 +7817,9 @@ ELF_API elf_color ELF_APIENTRY elfGetGuiObjectColor(elf_handle object)
 	memset(&_e_type, 0x0, sizeof(elf_color));
 	if(!object.get() || !elf_is_gui_object(object.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetGuiObjectColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetGuiObjectColor() -> invalid handle");
 		}
 		else
 		{
@@ -8720,11 +7834,9 @@ ELF_API bool ELF_APIENTRY elfGetGuiObjectVisible(elf_handle object)
 {
 	if(!object.get() || !elf_is_gui_object(object.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetGuiObjectVisible() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetGuiObjectVisible() -> invalid handle");
 		}
 		else
 		{
@@ -8739,11 +7851,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetGuiObjectScript(elf_handle object)
 	elf_handle handle;
 	if(!object.get() || !elf_is_gui_object(object.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetGuiObjectScript() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetGuiObjectScript() -> invalid handle");
 		}
 		else
 		{
@@ -8758,11 +7868,9 @@ ELF_API int ELF_APIENTRY elfGetGuiObjectEvent(elf_handle object)
 {
 	if(!object.get() || !elf_is_gui_object(object.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetGuiObjectEvent() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetGuiObjectEvent() -> invalid handle");
 		}
 		else
 		{
@@ -8776,11 +7884,9 @@ ELF_API void ELF_APIENTRY elfSetGuiObjectPosition(elf_handle object, float x, fl
 {
 	if(!object.get() || !elf_is_gui_object(object.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetGuiObjectPosition() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetGuiObjectPosition() -> invalid handle");
 		}
 		else
 		{
@@ -8794,11 +7900,9 @@ ELF_API void ELF_APIENTRY elfSetGuiObjectColor(elf_handle object, float r, float
 {
 	if(!object.get() || !elf_is_gui_object(object.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetGuiObjectColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetGuiObjectColor() -> invalid handle");
 		}
 		else
 		{
@@ -8812,11 +7916,9 @@ ELF_API void ELF_APIENTRY elfSetGuiObjectVisible(elf_handle object, bool visible
 {
 	if(!object.get() || !elf_is_gui_object(object.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetGuiObjectVisible() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetGuiObjectVisible() -> invalid handle");
 		}
 		else
 		{
@@ -8830,11 +7932,9 @@ ELF_API void ELF_APIENTRY elfSetGuiObjectScript(elf_handle object, elf_handle sc
 {
 	if(!object.get() || !elf_is_gui_object(object.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetGuiObjectScript() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetGuiObjectScript() -> invalid handle");
 		}
 		else
 		{
@@ -8844,11 +7944,9 @@ ELF_API void ELF_APIENTRY elfSetGuiObjectScript(elf_handle object, elf_handle sc
 	}
 	if(!script.get() || elf_get_object_type(script.get()) != ELF_SCRIPT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetGuiObjectScript() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetGuiObjectScript() -> invalid handle");
 		}
 		else
 		{
@@ -8869,11 +7967,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetLabelFont(elf_handle label)
 	elf_handle handle;
 	if(!label.get() || elf_get_object_type(label.get()) != ELF_LABEL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetLabelFont() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetLabelFont() -> invalid handle");
 		}
 		else
 		{
@@ -8888,11 +7984,9 @@ ELF_API const char* ELF_APIENTRY elfGetLabelText(elf_handle label)
 {
 	if(!label.get() || elf_get_object_type(label.get()) != ELF_LABEL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetLabelText() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetLabelText() -> invalid handle");
 		}
 		else
 		{
@@ -8906,11 +8000,9 @@ ELF_API void ELF_APIENTRY elfSetLabelFont(elf_handle label, elf_handle font)
 {
 	if(!label.get() || elf_get_object_type(label.get()) != ELF_LABEL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetLabelFont() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetLabelFont() -> invalid handle");
 		}
 		else
 		{
@@ -8920,11 +8012,9 @@ ELF_API void ELF_APIENTRY elfSetLabelFont(elf_handle label, elf_handle font)
 	}
 	if(!font.get() || elf_get_object_type(font.get()) != ELF_FONT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetLabelFont() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetLabelFont() -> invalid handle");
 		}
 		else
 		{
@@ -8938,11 +8028,9 @@ ELF_API void ELF_APIENTRY elfSetLabelText(elf_handle label, const char* text)
 {
 	if(!label.get() || elf_get_object_type(label.get()) != ELF_LABEL)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetLabelText() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetLabelText() -> invalid handle");
 		}
 		else
 		{
@@ -8962,11 +8050,9 @@ ELF_API bool ELF_APIENTRY elfGetButtonState(elf_handle button)
 {
 	if(!button.get() || elf_get_object_type(button.get()) != ELF_BUTTON)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetButtonState() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetButtonState() -> invalid handle");
 		}
 		else
 		{
@@ -8981,11 +8067,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetButtonOffTexture(elf_handle button)
 	elf_handle handle;
 	if(!button.get() || elf_get_object_type(button.get()) != ELF_BUTTON)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetButtonOffTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetButtonOffTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9001,11 +8085,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetButtonOverTexture(elf_handle button)
 	elf_handle handle;
 	if(!button.get() || elf_get_object_type(button.get()) != ELF_BUTTON)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetButtonOverTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetButtonOverTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9021,11 +8103,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetButtonOnTexture(elf_handle button)
 	elf_handle handle;
 	if(!button.get() || elf_get_object_type(button.get()) != ELF_BUTTON)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetButtonOnTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetButtonOnTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9040,11 +8120,9 @@ ELF_API void ELF_APIENTRY elfSetButtonOffTexture(elf_handle button, elf_handle o
 {
 	if(!button.get() || elf_get_object_type(button.get()) != ELF_BUTTON)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetButtonOffTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetButtonOffTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9054,11 +8132,9 @@ ELF_API void ELF_APIENTRY elfSetButtonOffTexture(elf_handle button, elf_handle o
 	}
 	if(!off.get() || elf_get_object_type(off.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetButtonOffTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetButtonOffTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9072,11 +8148,9 @@ ELF_API void ELF_APIENTRY elfSetButtonOverTexture(elf_handle button, elf_handle 
 {
 	if(!button.get() || elf_get_object_type(button.get()) != ELF_BUTTON)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetButtonOverTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetButtonOverTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9086,11 +8160,9 @@ ELF_API void ELF_APIENTRY elfSetButtonOverTexture(elf_handle button, elf_handle 
 	}
 	if(!over.get() || elf_get_object_type(over.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetButtonOverTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetButtonOverTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9104,11 +8176,9 @@ ELF_API void ELF_APIENTRY elfSetButtonOnTexture(elf_handle button, elf_handle on
 {
 	if(!button.get() || elf_get_object_type(button.get()) != ELF_BUTTON)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetButtonOnTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetButtonOnTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9118,11 +8188,9 @@ ELF_API void ELF_APIENTRY elfSetButtonOnTexture(elf_handle button, elf_handle on
 	}
 	if(!on.get() || elf_get_object_type(on.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetButtonOnTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetButtonOnTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9143,11 +8211,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetPictureTexture(elf_handle picture)
 	elf_handle handle;
 	if(!picture.get() || elf_get_object_type(picture.get()) != ELF_PICTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetPictureTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetPictureTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9164,11 +8230,9 @@ ELF_API elf_vec2f ELF_APIENTRY elfGetPictureScale(elf_handle picture)
 	memset(&_e_type, 0x0, sizeof(elf_vec2f));
 	if(!picture.get() || elf_get_object_type(picture.get()) != ELF_PICTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetPictureScale() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetPictureScale() -> invalid handle");
 		}
 		else
 		{
@@ -9183,11 +8247,9 @@ ELF_API void ELF_APIENTRY elfSetPictureTexture(elf_handle picture, elf_handle te
 {
 	if(!picture.get() || elf_get_object_type(picture.get()) != ELF_PICTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetPictureTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetPictureTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9197,11 +8259,9 @@ ELF_API void ELF_APIENTRY elfSetPictureTexture(elf_handle picture, elf_handle te
 	}
 	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetPictureTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetPictureTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9215,11 +8275,9 @@ ELF_API void ELF_APIENTRY elfSetPictureScale(elf_handle picture, float x, float 
 {
 	if(!picture.get() || elf_get_object_type(picture.get()) != ELF_PICTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetPictureScale() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetPictureScale() -> invalid handle");
 		}
 		else
 		{
@@ -9240,11 +8298,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetTextFieldTexture(elf_handle text_field)
 	elf_handle handle;
 	if(!text_field.get() || elf_get_object_type(text_field.get()) != ELF_TEXT_FIELD)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextFieldTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextFieldTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9260,11 +8316,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetTextFieldFont(elf_handle text_field)
 	elf_handle handle;
 	if(!text_field.get() || elf_get_object_type(text_field.get()) != ELF_TEXT_FIELD)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextFieldFont() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextFieldFont() -> invalid handle");
 		}
 		else
 		{
@@ -9281,11 +8335,9 @@ ELF_API elf_color ELF_APIENTRY elfGetTextFieldTextColor(elf_handle text_field)
 	memset(&_e_type, 0x0, sizeof(elf_color));
 	if(!text_field.get() || elf_get_object_type(text_field.get()) != ELF_TEXT_FIELD)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextFieldTextColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextFieldTextColor() -> invalid handle");
 		}
 		else
 		{
@@ -9302,11 +8354,9 @@ ELF_API elf_vec2i ELF_APIENTRY elfGetTextFieldOffset(elf_handle text_field)
 	memset(&_e_type, 0x0, sizeof(elf_vec2i));
 	if(!text_field.get() || elf_get_object_type(text_field.get()) != ELF_TEXT_FIELD)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextFieldOffset() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextFieldOffset() -> invalid handle");
 		}
 		else
 		{
@@ -9321,11 +8371,9 @@ ELF_API const char* ELF_APIENTRY elfGetTextFieldText(elf_handle text_field)
 {
 	if(!text_field.get() || elf_get_object_type(text_field.get()) != ELF_TEXT_FIELD)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextFieldText() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextFieldText() -> invalid handle");
 		}
 		else
 		{
@@ -9339,11 +8387,9 @@ ELF_API void ELF_APIENTRY elfSetTextFieldTexture(elf_handle text_field, elf_hand
 {
 	if(!text_field.get() || elf_get_object_type(text_field.get()) != ELF_TEXT_FIELD)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetTextFieldTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetTextFieldTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9353,11 +8399,9 @@ ELF_API void ELF_APIENTRY elfSetTextFieldTexture(elf_handle text_field, elf_hand
 	}
 	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetTextFieldTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetTextFieldTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9371,11 +8415,9 @@ ELF_API void ELF_APIENTRY elfSetTextFieldFont(elf_handle text_field, elf_handle 
 {
 	if(!text_field.get() || elf_get_object_type(text_field.get()) != ELF_TEXT_FIELD)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetTextFieldFont() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetTextFieldFont() -> invalid handle");
 		}
 		else
 		{
@@ -9385,11 +8427,9 @@ ELF_API void ELF_APIENTRY elfSetTextFieldFont(elf_handle text_field, elf_handle 
 	}
 	if(!font.get() || elf_get_object_type(font.get()) != ELF_FONT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetTextFieldFont() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetTextFieldFont() -> invalid handle");
 		}
 		else
 		{
@@ -9403,11 +8443,9 @@ ELF_API void ELF_APIENTRY elfSetTextFieldTextColor(elf_handle text_field, float 
 {
 	if(!text_field.get() || elf_get_object_type(text_field.get()) != ELF_TEXT_FIELD)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetTextFieldTextColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetTextFieldTextColor() -> invalid handle");
 		}
 		else
 		{
@@ -9421,11 +8459,9 @@ ELF_API void ELF_APIENTRY elfSetTextFieldOffset(elf_handle text_field, int offse
 {
 	if(!text_field.get() || elf_get_object_type(text_field.get()) != ELF_TEXT_FIELD)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetTextFieldOffset() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetTextFieldOffset() -> invalid handle");
 		}
 		else
 		{
@@ -9439,11 +8475,9 @@ ELF_API void ELF_APIENTRY elfSetTextFieldCursorPosition(elf_handle text_field, i
 {
 	if(!text_field.get() || elf_get_object_type(text_field.get()) != ELF_TEXT_FIELD)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetTextFieldCursorPosition() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetTextFieldCursorPosition() -> invalid handle");
 		}
 		else
 		{
@@ -9457,11 +8491,9 @@ ELF_API void ELF_APIENTRY elfSetTextFieldText(elf_handle text_field, const char*
 {
 	if(!text_field.get() || elf_get_object_type(text_field.get()) != ELF_TEXT_FIELD)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetTextFieldText() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetTextFieldText() -> invalid handle");
 		}
 		else
 		{
@@ -9482,11 +8514,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetSliderBackgroundTexture(elf_handle slider)
 	elf_handle handle;
 	if(!slider.get() || elf_get_object_type(slider.get()) != ELF_SLIDER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSliderBackgroundTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSliderBackgroundTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9502,11 +8532,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetSliderSliderTexture(elf_handle slider)
 	elf_handle handle;
 	if(!slider.get() || elf_get_object_type(slider.get()) != ELF_SLIDER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSliderSliderTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSliderSliderTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9521,11 +8549,9 @@ ELF_API float ELF_APIENTRY elfGetSliderValue(elf_handle slider)
 {
 	if(!slider.get() || elf_get_object_type(slider.get()) != ELF_SLIDER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetSliderValue() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSliderValue() -> invalid handle");
 		}
 		else
 		{
@@ -9539,11 +8565,9 @@ ELF_API void ELF_APIENTRY elfSetSliderBackgroundTexture(elf_handle slider, elf_h
 {
 	if(!slider.get() || elf_get_object_type(slider.get()) != ELF_SLIDER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetSliderBackgroundTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetSliderBackgroundTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9553,11 +8577,9 @@ ELF_API void ELF_APIENTRY elfSetSliderBackgroundTexture(elf_handle slider, elf_h
 	}
 	if(!background.get() || elf_get_object_type(background.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetSliderBackgroundTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetSliderBackgroundTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9571,11 +8593,9 @@ ELF_API void ELF_APIENTRY elfSetSliderSliderTexture(elf_handle slider, elf_handl
 {
 	if(!slider.get() || elf_get_object_type(slider.get()) != ELF_SLIDER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetSliderSliderTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetSliderSliderTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9585,11 +8605,9 @@ ELF_API void ELF_APIENTRY elfSetSliderSliderTexture(elf_handle slider, elf_handl
 	}
 	if(!slider_texture.get() || elf_get_object_type(slider_texture.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetSliderSliderTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetSliderSliderTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9603,11 +8621,9 @@ ELF_API void ELF_APIENTRY elfSetSliderValue(elf_handle slider, float value)
 {
 	if(!slider.get() || elf_get_object_type(slider.get()) != ELF_SLIDER)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetSliderValue() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetSliderValue() -> invalid handle");
 		}
 		else
 		{
@@ -9628,11 +8644,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetScreenTexture(elf_handle screen)
 	elf_handle handle;
 	if(!screen.get() || elf_get_object_type(screen.get()) != ELF_SCREEN)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetScreenTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetScreenTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9647,11 +8661,9 @@ ELF_API void ELF_APIENTRY elfSetScreenTexture(elf_handle screen, elf_handle text
 {
 	if(!screen.get() || elf_get_object_type(screen.get()) != ELF_SCREEN)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetScreenTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetScreenTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9661,11 +8673,9 @@ ELF_API void ELF_APIENTRY elfSetScreenTexture(elf_handle screen, elf_handle text
 	}
 	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetScreenTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetScreenTexture() -> invalid handle");
 		}
 		else
 		{
@@ -9679,11 +8689,9 @@ ELF_API void ELF_APIENTRY elfSetScreenToTop(elf_handle screen)
 {
 	if(!screen.get() || elf_get_object_type(screen.get()) != ELF_SCREEN)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetScreenToTop() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetScreenToTop() -> invalid handle");
 		}
 		else
 		{
@@ -9697,11 +8705,9 @@ ELF_API void ELF_APIENTRY elfForceFocusToScreen(elf_handle screen)
 {
 	if(!screen.get() || elf_get_object_type(screen.get()) != ELF_SCREEN)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: ForceFocusToScreen() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "ForceFocusToScreen() -> invalid handle");
 		}
 		else
 		{
@@ -9715,11 +8721,9 @@ ELF_API void ELF_APIENTRY elfReleaseFocusFromScreen(elf_handle screen)
 {
 	if(!screen.get() || elf_get_object_type(screen.get()) != ELF_SCREEN)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: ReleaseFocusFromScreen() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "ReleaseFocusFromScreen() -> invalid handle");
 		}
 		else
 		{
@@ -9740,11 +8744,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetTextListFont(elf_handle text_list)
 	elf_handle handle;
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextListFont() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextListFont() -> invalid handle");
 		}
 		else
 		{
@@ -9761,11 +8763,9 @@ ELF_API elf_color ELF_APIENTRY elfGetTextListSelectionColor(elf_handle text_list
 	memset(&_e_type, 0x0, sizeof(elf_color));
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextListSelectionColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextListSelectionColor() -> invalid handle");
 		}
 		else
 		{
@@ -9782,11 +8782,9 @@ ELF_API elf_color ELF_APIENTRY elfGetTextListLightColor(elf_handle text_list)
 	memset(&_e_type, 0x0, sizeof(elf_color));
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextListLightColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextListLightColor() -> invalid handle");
 		}
 		else
 		{
@@ -9803,11 +8801,9 @@ ELF_API elf_color ELF_APIENTRY elfGetTextListDarkColor(elf_handle text_list)
 	memset(&_e_type, 0x0, sizeof(elf_color));
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextListDarkColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextListDarkColor() -> invalid handle");
 		}
 		else
 		{
@@ -9822,11 +8818,9 @@ ELF_API int ELF_APIENTRY elfGetTextListRowCount(elf_handle text_list)
 {
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextListRowCount() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextListRowCount() -> invalid handle");
 		}
 		else
 		{
@@ -9840,11 +8834,9 @@ ELF_API int ELF_APIENTRY elfGetTextListItemCount(elf_handle text_list)
 {
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextListItemCount() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextListItemCount() -> invalid handle");
 		}
 		else
 		{
@@ -9858,11 +8850,9 @@ ELF_API int ELF_APIENTRY elfGetTextListSelectionIndex(elf_handle text_list)
 {
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextListSelectionIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextListSelectionIndex() -> invalid handle");
 		}
 		else
 		{
@@ -9876,11 +8866,9 @@ ELF_API int ELF_APIENTRY elfGetTextListOffset(elf_handle text_list)
 {
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextListOffset() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextListOffset() -> invalid handle");
 		}
 		else
 		{
@@ -9894,11 +8882,9 @@ ELF_API const char* ELF_APIENTRY elfGetTextListItem(elf_handle text_list, int id
 {
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextListItem() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextListItem() -> invalid handle");
 		}
 		else
 		{
@@ -9912,11 +8898,9 @@ ELF_API const char* ELF_APIENTRY elfGetTextListSelectedItem(elf_handle text_list
 {
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetTextListSelectedItem() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetTextListSelectedItem() -> invalid handle");
 		}
 		else
 		{
@@ -9930,11 +8914,9 @@ ELF_API void ELF_APIENTRY elfSetTextListFont(elf_handle text_list, elf_handle fo
 {
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetTextListFont() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetTextListFont() -> invalid handle");
 		}
 		else
 		{
@@ -9944,11 +8926,9 @@ ELF_API void ELF_APIENTRY elfSetTextListFont(elf_handle text_list, elf_handle fo
 	}
 	if(!font.get() || elf_get_object_type(font.get()) != ELF_FONT)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetTextListFont() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetTextListFont() -> invalid handle");
 		}
 		else
 		{
@@ -9962,11 +8942,9 @@ ELF_API void ELF_APIENTRY elfSetTextListSelectionColor(elf_handle text_list, flo
 {
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetTextListSelectionColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetTextListSelectionColor() -> invalid handle");
 		}
 		else
 		{
@@ -9980,11 +8958,9 @@ ELF_API void ELF_APIENTRY elfSetTextListLightColor(elf_handle text_list, float r
 {
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetTextListLightColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetTextListLightColor() -> invalid handle");
 		}
 		else
 		{
@@ -9998,11 +8974,9 @@ ELF_API void ELF_APIENTRY elfSetTextListDarkColor(elf_handle text_list, float r,
 {
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetTextListDarkColor() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetTextListDarkColor() -> invalid handle");
 		}
 		else
 		{
@@ -10016,11 +8990,9 @@ ELF_API void ELF_APIENTRY elfSetTextListSize(elf_handle text_list, int rows, int
 {
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetTextListSize() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetTextListSize() -> invalid handle");
 		}
 		else
 		{
@@ -10034,11 +9006,9 @@ ELF_API void ELF_APIENTRY elfAddTextListItem(elf_handle text_list, const char* t
 {
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddTextListItem() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddTextListItem() -> invalid handle");
 		}
 		else
 		{
@@ -10052,11 +9022,9 @@ ELF_API void ELF_APIENTRY elfSetTextListItem(elf_handle text_list, int idx, cons
 {
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetTextListItem() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetTextListItem() -> invalid handle");
 		}
 		else
 		{
@@ -10070,11 +9038,9 @@ ELF_API bool ELF_APIENTRY elfRemoveTextListItem(elf_handle text_list, int idx)
 {
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveTextListItem() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveTextListItem() -> invalid handle");
 		}
 		else
 		{
@@ -10088,11 +9054,9 @@ ELF_API void ELF_APIENTRY elfRemoveTextListItems(elf_handle text_list)
 {
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveTextListItems() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveTextListItems() -> invalid handle");
 		}
 		else
 		{
@@ -10106,11 +9070,9 @@ ELF_API void ELF_APIENTRY elfSetTextListOffset(elf_handle text_list, int offset)
 {
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetTextListOffset() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetTextListOffset() -> invalid handle");
 		}
 		else
 		{
@@ -10124,11 +9086,9 @@ ELF_API void ELF_APIENTRY elfSetTextListSelection(elf_handle text_list, int sele
 {
 	if(!text_list.get() || elf_get_object_type(text_list.get()) != ELF_TEXT_LIST)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetTextListSelection() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetTextListSelection() -> invalid handle");
 		}
 		else
 		{
@@ -10148,11 +9108,9 @@ ELF_API bool ELF_APIENTRY elfGetCheckBoxState(elf_handle check_box)
 {
 	if(!check_box.get() || elf_get_object_type(check_box.get()) != ELF_CHECK_BOX)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetCheckBoxState() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetCheckBoxState() -> invalid handle");
 		}
 		else
 		{
@@ -10167,11 +9125,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetCheckBoxOffTexture(elf_handle check_box)
 	elf_handle handle;
 	if(!check_box.get() || elf_get_object_type(check_box.get()) != ELF_CHECK_BOX)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetCheckBoxOffTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetCheckBoxOffTexture() -> invalid handle");
 		}
 		else
 		{
@@ -10187,11 +9143,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetCheckBoxOnTexture(elf_handle check_box)
 	elf_handle handle;
 	if(!check_box.get() || elf_get_object_type(check_box.get()) != ELF_CHECK_BOX)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetCheckBoxOnTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetCheckBoxOnTexture() -> invalid handle");
 		}
 		else
 		{
@@ -10206,11 +9160,9 @@ ELF_API void ELF_APIENTRY elfSetCheckBoxOffTexture(elf_handle check_box, elf_han
 {
 	if(!check_box.get() || elf_get_object_type(check_box.get()) != ELF_CHECK_BOX)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetCheckBoxOffTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetCheckBoxOffTexture() -> invalid handle");
 		}
 		else
 		{
@@ -10220,11 +9172,9 @@ ELF_API void ELF_APIENTRY elfSetCheckBoxOffTexture(elf_handle check_box, elf_han
 	}
 	if(!off.get() || elf_get_object_type(off.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetCheckBoxOffTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetCheckBoxOffTexture() -> invalid handle");
 		}
 		else
 		{
@@ -10238,11 +9188,9 @@ ELF_API void ELF_APIENTRY elfSetCheckBoxOnTexture(elf_handle check_box, elf_hand
 {
 	if(!check_box.get() || elf_get_object_type(check_box.get()) != ELF_CHECK_BOX)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetCheckBoxOnTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetCheckBoxOnTexture() -> invalid handle");
 		}
 		else
 		{
@@ -10252,11 +9200,9 @@ ELF_API void ELF_APIENTRY elfSetCheckBoxOnTexture(elf_handle check_box, elf_hand
 	}
 	if(!on.get() || elf_get_object_type(on.get()) != ELF_TEXTURE)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetCheckBoxOnTexture() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetCheckBoxOnTexture() -> invalid handle");
 		}
 		else
 		{
@@ -10270,11 +9216,9 @@ ELF_API void ELF_APIENTRY elfSetCheckBoxState(elf_handle check_box, bool state)
 {
 	if(!check_box.get() || elf_get_object_type(check_box.get()) != ELF_CHECK_BOX)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: SetCheckBoxState() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetCheckBoxState() -> invalid handle");
 		}
 		else
 		{
@@ -10294,11 +9238,9 @@ ELF_API bool ELF_APIENTRY elfAddGuiObject(elf_handle parent, elf_handle object)
 {
 	if(!parent.get() || !elf_is_gui_object(parent.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddGuiObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddGuiObject() -> invalid handle");
 		}
 		else
 		{
@@ -10308,11 +9250,9 @@ ELF_API bool ELF_APIENTRY elfAddGuiObject(elf_handle parent, elf_handle object)
 	}
 	if(!object.get() || !elf_is_gui_object(object.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: AddGuiObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddGuiObject() -> invalid handle");
 		}
 		else
 		{
@@ -10327,11 +9267,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetGuiObjectByName(elf_handle parent, const c
 	elf_handle handle;
 	if(!parent.get() || !elf_is_gui_object(parent.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetGuiObjectByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetGuiObjectByName() -> invalid handle");
 		}
 		else
 		{
@@ -10347,11 +9285,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetGuiObjectByIndex(elf_handle parent, int id
 	elf_handle handle;
 	if(!parent.get() || !elf_is_gui_object(parent.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetGuiObjectByIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetGuiObjectByIndex() -> invalid handle");
 		}
 		else
 		{
@@ -10366,11 +9302,9 @@ ELF_API bool ELF_APIENTRY elfRemoveGuiObjectByName(elf_handle parent, const char
 {
 	if(!parent.get() || !elf_is_gui_object(parent.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveGuiObjectByName() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveGuiObjectByName() -> invalid handle");
 		}
 		else
 		{
@@ -10384,11 +9318,9 @@ ELF_API bool ELF_APIENTRY elfRemoveGuiObjectByIndex(elf_handle parent, int idx)
 {
 	if(!parent.get() || !elf_is_gui_object(parent.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveGuiObjectByIndex() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveGuiObjectByIndex() -> invalid handle");
 		}
 		else
 		{
@@ -10402,11 +9334,9 @@ ELF_API bool ELF_APIENTRY elfRemoveGuiObjectByObject(elf_handle parent, elf_hand
 {
 	if(!parent.get() || !elf_is_gui_object(parent.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveGuiObjectByObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveGuiObjectByObject() -> invalid handle");
 		}
 		else
 		{
@@ -10416,11 +9346,9 @@ ELF_API bool ELF_APIENTRY elfRemoveGuiObjectByObject(elf_handle parent, elf_hand
 	}
 	if(!object.get() || !elf_is_gui_object(object.get()))
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: RemoveGuiObjectByObject() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveGuiObjectByObject() -> invalid handle");
 		}
 		else
 		{
@@ -10435,11 +9363,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetGuiTrace(elf_handle gui)
 	elf_handle handle;
 	if(!gui.get() || elf_get_object_type(gui.get()) != ELF_GUI)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetGuiTrace() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetGuiTrace() -> invalid handle");
 		}
 		else
 		{
@@ -10455,11 +9381,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetGuiFocus(elf_handle gui)
 	elf_handle handle;
 	if(!gui.get() || elf_get_object_type(gui.get()) != ELF_GUI)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: GetGuiFocus() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetGuiFocus() -> invalid handle");
 		}
 		else
 		{
@@ -10474,11 +9398,9 @@ ELF_API void ELF_APIENTRY elfEmptyGui(elf_handle gui)
 {
 	if(!gui.get() || elf_get_object_type(gui.get()) != ELF_GUI)
 	{
-		elf_script *script = elf_get_current_script();
-		if(script)
+		if(elf_get_current_script())
 		{
-			int line = elf_get_current_script_line();
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "[script \"%s\" %s]:%d: EmptyGui() -> invalid handle\n", elf_get_script_name(script), elf_get_script_file_path(script), line);
+			elf_set_script_error(ELF_INVALID_HANDLE, "EmptyGui() -> invalid handle");
 		}
 		else
 		{
