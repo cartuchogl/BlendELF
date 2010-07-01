@@ -456,7 +456,12 @@ def get_actor_header_from_object(obj, eobj):
 	try:
 		prop = obj.getProperty('shape')
 		if prop.getType() == 'STRING':
-			if prop.getData() == 'CAPSULE': eobj.shape = 4
+			if prop.getData() == 'CONE_Z': eobj.shape = 9
+			if prop.getData() == 'CONE_Y': eobj.shape = 8
+			if prop.getData() == 'CONE_X': eobj.shape = 7
+			if prop.getData() == 'CAPSULE_Z': eobj.shape = 6
+			if prop.getData() == 'CAPSULE_Y': eobj.shape = 5
+			if prop.getData() == 'CAPSULE_X': eobj.shape = 4
 			if prop.getData() == 'MESH': eobj.shape = 3
 			if prop.getData() == 'SPHERE': eobj.shape = 2
 			if prop.getData() == 'BOX': eobj.shape = 1

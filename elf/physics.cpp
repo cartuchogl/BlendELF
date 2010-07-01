@@ -787,7 +787,11 @@ void elf_set_physics_object_world(elf_physics_object *object, elf_physics_world 
 		object->world = NULL;
 	}
 	object->world = world;
-	if(object->world) object->world->world->addRigidBody(object->body);
+	if(object->world)
+	{
+		object->world->world->addRigidBody(object->body);
+		object->body->activate(true);
+	}
 }
 
 void elf_destroy_physics_object(elf_physics_object *object)
