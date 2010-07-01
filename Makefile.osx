@@ -1,19 +1,21 @@
 # Makefile for osx
 
+BULLET_PATH=../bullet-2.76.mac/src
+GLFW_PATH=../glfw/trunk
+
 DEV_CFLAGS = -g -Wall -DELF_PLAYER -DELF_MACOSX
 REL_CFLAGS = -Wall -O2 -DELF_PLAYER -DELF_MACOSX
 
-INCS = -Iphy -Igfx -Ielf -I/usr/include/lua5.1 -I/usr/include/freetype2 -I../bullet-2.76.mac/src \
-	-I../glfw/trunk/include -I/opt/local/include/ -I/opt/local/include/freetype2 -framework OpenAL \
+INCS = -Iphy -Igfx -Ielf -I/usr/include/lua5.1 -I/usr/include/freetype2 -I$(BULLET_PATH) \
+	-I$(GLFW_PATH)/include -I/opt/local/include/ -I/opt/local/include/freetype2 -framework OpenAL \
 	-I/usr/include/malloc
 
-BLENDELF_LIBS = -L/opt/local/lib ../glfw/trunk/lib/cocoa/libglfw.a -lGLEW -pthread \
-	-lfreeimage -lvorbisfile -lvorbis -logg -llua -lfreetype -lenet -lz \
+BLENDELF_LIBS = -L/opt/local/lib $(GLFW_PATH)/lib/cocoa/libglfw.a -lGLEW -pthread \
+	-lfreeimage -lvorbisfile -lvorbis -logg -llua -lfreetype -lenet -lz -lassimp \
 	-framework OpenGL -framework OpenAL -lstdc++ -framework Cocoa \
-	../bullet-2.76.mac/src/BulletDynamics/Release/libBulletDynamics.a \
-	../bullet-2.76.mac/src/LinearMath/Release/libLinearMath.a \
-	../bullet-2.76.mac/src/BulletCollision/Release/libBulletCollision.a \
-	-lassimp
+	$(BULLET_PATH)/BulletDynamics/Release/libBulletDynamics.a \
+	$(BULLET_PATH)/LinearMath/Release/libLinearMath.a \
+	$(BULLET_PATH)/BulletCollision/Release/libBulletCollision.a
 
 all:
 	python genwraps.py

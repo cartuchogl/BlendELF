@@ -50,7 +50,7 @@ type the following command and blendelf should compile:
 make
 
 If you want to make a release build of blendelf, or a
-shared library release build of blender, use the following
+shared library release build of blendelf, use the following
 commands:
 
 (for static release): make static
@@ -70,7 +70,7 @@ Extract and generate XCode project with:
 
 cmake . -G Xcode
 
-Then build it using XCode.
+Then build it using XCode a release version.
 
 For GLFW, check out the glfw svn:
 
@@ -84,15 +84,31 @@ Install the other dependencies with macports or following
 the install instructions of the individual libraries.
 
 sudo port install lua
-sudo port install vorbis
+sudo port install libvorbis
 sudo port install glew
 sudo port install freeimage
-...
+sudo port install freetype
+sudo port install libenet
 
+Now compile assimp, but first install boost
+
+sudo port install boost
+
+Get source from http://assimp.sourceforge.net/main_downloads.html
+
+Extract an generate makefiles with:
+
+cmake .
+
+run make and if it fails then edit tools/assimp_cmd/CMakeFiles/assimp_cmd.dir/flags.make
+and add -I/opt/local/include at C_FLAGS and CXX_FLAGS vars, then re-run make
+
+Install it with sudo make install and only rest blendelf ...
+
+Review Makefile.osx for path of bullet and glfw
 Compile the BlendELF code with:
 
 make -f Makefile.osx
 
-TODO:
-	Only tested on Snow Leopard 64bits with a 9400M
+Tested on Snow Leopard (10.6 x64) with a 9400M and Leopard (10.5 x32) with 8800GS
 
