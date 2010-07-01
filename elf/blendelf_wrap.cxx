@@ -5199,6 +5199,44 @@ fail:
 }
 
 
+static int _wrap_elfRotateVec3f(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_vec3f arg1 ;
+  float arg2 ;
+  float arg3 ;
+  float arg4 ;
+  elf_vec3f *argp1 ;
+  elf_vec3f result;
+  
+  SWIG_check_num_args("RotateVec3f",4,4)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("RotateVec3f",1,"vec3f");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("RotateVec3f",2,"float");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("RotateVec3f",3,"float");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("RotateVec3f",4,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_vec3f,0))){
+    SWIG_fail_ptr("RotateVec3f",1,SWIGTYPE_p_elf_vec3f);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  arg3 = (float)lua_tonumber(L, 3);
+  arg4 = (float)lua_tonumber(L, 4);
+  result = elfRotateVec3f(arg1,arg2,arg3,arg4);
+  {
+    elf_vec3f * resultptr = new elf_vec3f((const elf_vec3f &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_vec3f,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfSubVec3fVec3f(lua_State* L) {
   int SWIG_arg = 0;
   elf_vec3f arg1 ;
@@ -19979,6 +20017,7 @@ static const struct luaL_reg swig_commands[] = {
     { "MulQuaVec3f", _wrap_elfMulQuaVec3f},
     { "MulQuaQua", _wrap_elfMulQuaQua},
     { "GetQuaInverted", _wrap_elfGetQuaInverted},
+    { "RotateVec3f", _wrap_elfRotateVec3f},
     { "SubVec3fVec3f", _wrap_elfSubVec3fVec3f},
     { "AddVec3fVec3f", _wrap_elfAddVec3fVec3f},
     { "GetVec3fLength", _wrap_elfGetVec3fLength},

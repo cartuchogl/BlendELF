@@ -445,6 +445,7 @@ ELF_API elf_vec4f ELF_APIENTRY elfCreateQuaFromEuler(float x, float y, float z);
 ELF_API elf_vec3f ELF_APIENTRY elfMulQuaVec3f(elf_vec4f qua, elf_vec3f vec);
 ELF_API elf_vec4f ELF_APIENTRY elfMulQuaQua(elf_vec4f qua1, elf_vec4f qua2);
 ELF_API elf_vec4f ELF_APIENTRY elfGetQuaInverted(elf_vec4f qua);
+ELF_API elf_vec3f ELF_APIENTRY elfRotateVec3f(elf_vec3f vec, float x, float y, float z);
 ELF_API elf_vec3f ELF_APIENTRY elfSubVec3fVec3f(elf_vec3f vec1, elf_vec3f vec2);
 ELF_API elf_vec3f ELF_APIENTRY elfAddVec3fVec3f(elf_vec3f vec1, elf_vec3f vec2);
 ELF_API float ELF_APIENTRY elfGetVec3fLength(elf_vec3f vec);

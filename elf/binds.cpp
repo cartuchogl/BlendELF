@@ -1070,6 +1070,13 @@ ELF_API elf_vec4f ELF_APIENTRY elfGetQuaInverted(elf_vec4f qua)
 	_e_type = elf_get_qua_inverted(qua);
 	return _e_type;
 }
+ELF_API elf_vec3f ELF_APIENTRY elfRotateVec3f(elf_vec3f vec, float x, float y, float z)
+{
+	elf_vec3f _e_type;
+	memset(&_e_type, 0x0, sizeof(elf_vec3f));
+	_e_type = elf_rotate_vec3f(vec, x, y, z);
+	return _e_type;
+}
 ELF_API elf_vec3f ELF_APIENTRY elfSubVec3fVec3f(elf_vec3f vec1, elf_vec3f vec2)
 {
 	elf_vec3f _e_type;

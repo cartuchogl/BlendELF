@@ -686,6 +686,7 @@ elf_vec4f elf_create_qua_from_euler(float x, float y, float z);
 elf_vec3f elf_mul_qua_vec3f(elf_vec4f qua, elf_vec3f vec);
 elf_vec4f elf_mul_qua_qua(elf_vec4f qua1, elf_vec4f qua2);
 elf_vec4f elf_get_qua_inverted(elf_vec4f qua);
+elf_vec3f elf_rotate_vec3f(elf_vec3f vec, float x, float y, float z);
 elf_vec3f elf_sub_vec3f_vec3f(elf_vec3f vec1, elf_vec3f vec2);
 elf_vec3f elf_add_vec3f_vec3f(elf_vec3f vec1, elf_vec3f vec2);
 float elf_get_vec3f_length(elf_vec3f vec);

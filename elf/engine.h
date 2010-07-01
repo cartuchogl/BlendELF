@@ -1008,6 +1008,18 @@ elf_vec4f elf_get_qua_inverted(elf_vec4f qua)
 	return result;
 }
 
+elf_vec3f elf_rotate_vec3f(elf_vec3f vec, float x, float y, float z)
+{
+	elf_vec4f qua;
+	elf_vec3f result;
+
+	gfx_set_qua_rotation(x, y, z, &qua.x);
+
+	gfx_mul_qua_vec(&qua.x, &vec.x, &result.x);
+
+	return result;
+}
+
 elf_vec3f elf_sub_vec3f_vec3f(elf_vec3f vec1, elf_vec3f vec2)
 {
 	elf_vec3f result;
