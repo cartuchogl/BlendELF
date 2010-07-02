@@ -153,7 +153,10 @@
 #define ELF_SPRITE 0x0043
 #define ELF_VIDEO_MODE 0x0044
 #define ELF_GENERAL 0x0045
-#define ELF_OBJECT_TYPE_COUNT 0x0046
+#define ELF_VERTICE 0x0046
+#define ELF_FACE 0x0047
+#define ELF_MESH_DATA 0x0048
+#define ELF_OBJECT_TYPE_COUNT 0x0049
 #define ELF_PERSPECTIVE 0x0000
 #define ELF_ORTHOGRAPHIC 0x0001
 #define ELF_BOX 0x0001
@@ -445,6 +448,7 @@ ELF_API elf_vec4f ELF_APIENTRY elfCreateQuaFromEuler(float x, float y, float z);
 ELF_API elf_vec3f ELF_APIENTRY elfMulQuaVec3f(elf_vec4f qua, elf_vec3f vec);
 ELF_API elf_vec4f ELF_APIENTRY elfMulQuaQua(elf_vec4f qua1, elf_vec4f qua2);
 ELF_API elf_vec4f ELF_APIENTRY elfGetQuaInverted(elf_vec4f qua);
+ELF_API elf_vec3f ELF_APIENTRY elfRotateVec3f(elf_vec3f vec, float x, float y, float z);
 ELF_API elf_vec3f ELF_APIENTRY elfSubVec3fVec3f(elf_vec3f vec1, elf_vec3f vec2);
 ELF_API elf_vec3f ELF_APIENTRY elfAddVec3fVec3f(elf_vec3f vec1, elf_vec3f vec2);
 ELF_API float ELF_APIENTRY elfGetVec3fLength(elf_vec3f vec);
@@ -617,6 +621,24 @@ ELF_API float ELF_APIENTRY elfGetCameraAspect(elf_handle camera);
 ELF_API elf_vec2f ELF_APIENTRY elfGetCameraClip(elf_handle camera);
 ELF_API elf_vec2f ELF_APIENTRY elfGetCameraFarPlaneSize(elf_handle camera);
 ELF_API elf_vec3f ELF_APIENTRY elfUnProjectCameraPoint(elf_handle camera, float x, float y, float z);
+ELF_API elf_handle ELF_APIENTRY elfCreateVertice();
+ELF_API void ELF_APIENTRY elfSetVerticePosition(elf_handle vertice, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetVerticeNormal(elf_handle vertice, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetVerticeTexCoord(elf_handle vertice, float u, float v);
+ELF_API elf_vec3f ELF_APIENTRY elfGetVerticePosition(elf_handle vertice);
+ELF_API elf_vec3f ELF_APIENTRY elfGetVerticeNormal(elf_handle vertice);
+ELF_API elf_vec2f ELF_APIENTRY elfGetVerticeTexCoord(elf_handle vertice);
+ELF_API int ELF_APIENTRY elfGetFaceV1(elf_handle face);
+ELF_API int ELF_APIENTRY elfGetFaceV2(elf_handle face);
+ELF_API int ELF_APIENTRY elfGetFaceV3(elf_handle face);
+ELF_API elf_handle ELF_APIENTRY elfCreateMeshData();
+ELF_API int ELF_APIENTRY elfGetMeshDataVerticeCount(elf_handle mesh_data);
+ELF_API int ELF_APIENTRY elfGetMeshDataFaceCount(elf_handle mesh_data);
+ELF_API void ELF_APIENTRY elfAddVerticeToMeshData(elf_handle mesh_data, elf_handle vertice);
+ELF_API void ELF_APIENTRY elfAddFaceToMeshData(elf_handle mesh_data, int v1, int v2, int v3);
+ELF_API elf_handle ELF_APIENTRY elfGetVerticeFromMeshData(elf_handle mesh_data, int idx);
+ELF_API elf_handle ELF_APIENTRY elfGetFaceFromMeshData(elf_handle mesh_data, int idx);
+ELF_API elf_handle ELF_APIENTRY elfCreateModelFromMeshData(elf_handle data);
 ELF_API const char* ELF_APIENTRY elfGetModelName(elf_handle model);
 ELF_API const char* ELF_APIENTRY elfGetModelFilePath(elf_handle model);
 ELF_API int ELF_APIENTRY elfGetModelVerticeCount(elf_handle model);

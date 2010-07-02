@@ -212,6 +212,9 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apidefine">elf.SPRITE</div>
 <div class="apidefine">elf.VIDEO_MODE</div>
 <div class="apidefine">elf.GENERAL</div>
+<div class="apidefine">elf.VERTICE</div>
+<div class="apidefine">elf.FACE</div>
+<div class="apidefine">elf.MESH_DATA</div>
 <div class="apitopic">NUMBER OF OBJECT TYPES</div>
 <div class="apidefine">elf.OBJECT_TYPE_COUNT</div>
 <div class="apitopic">CAMERA MODE</div>
@@ -480,6 +483,7 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">elf_vec3f</span> elf.MulQuaVec3f( <span class="apikeytype">elf_vec4f</span> qua, <span class="apikeytype">elf_vec3f</span> vec )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec4f</span> elf.MulQuaQua( <span class="apikeytype">elf_vec4f</span> qua1, <span class="apikeytype">elf_vec4f</span> qua2 )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec4f</span> elf.GetQuaInverted( <span class="apikeytype">elf_vec4f</span> qua )</div>
+<div class="apifunc"><span class="apikeytype">elf_vec3f</span> elf.RotateVec3f( <span class="apikeytype">elf_vec3f</span> vec, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec3f</span> elf.SubVec3fVec3f( <span class="apikeytype">elf_vec3f</span> vec1, <span class="apikeytype">elf_vec3f</span> vec2 )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec3f</span> elf.AddVec3fVec3f( <span class="apikeytype">elf_vec3f</span> vec1, <span class="apikeytype">elf_vec3f</span> vec2 )</div>
 <div class="apifunc"><span class="apikeytype">float</span> elf.GetVec3fLength( <span class="apikeytype">elf_vec3f</span> vec )</div>
@@ -659,7 +663,26 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">elf_vec2f</span> elf.GetCameraClip( <span class="apiobjtype">object</span> camera )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec2f</span> elf.GetCameraFarPlaneSize( <span class="apiobjtype">object</span> camera )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec3f</span> elf.UnProjectCameraPoint( <span class="apiobjtype">object</span> camera, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
+<div class="apitopic">MESH DATA FUNCTIONS</div>
+<div class="apifunc"><span class="apiobjtype">object</span> elf.CreateVertice(  )</div>
+<div class="apifunc">elf.SetVerticePosition( <span class="apiobjtype">object</span> vertice, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
+<div class="apifunc">elf.SetVerticeNormal( <span class="apiobjtype">object</span> vertice, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
+<div class="apifunc">elf.SetVerticeTexCoord( <span class="apiobjtype">object</span> vertice, <span class="apikeytype">float</span> u, <span class="apikeytype">float</span> v )</div>
+<div class="apifunc"><span class="apikeytype">elf_vec3f</span> elf.GetVerticePosition( <span class="apiobjtype">object</span> vertice )</div>
+<div class="apifunc"><span class="apikeytype">elf_vec3f</span> elf.GetVerticeNormal( <span class="apiobjtype">object</span> vertice )</div>
+<div class="apifunc"><span class="apikeytype">elf_vec2f</span> elf.GetVerticeTexCoord( <span class="apiobjtype">object</span> vertice )</div>
+<div class="apifunc"><span class="apikeytype">int</span> elf.GetFaceV1( <span class="apiobjtype">object</span> face )</div>
+<div class="apifunc"><span class="apikeytype">int</span> elf.GetFaceV2( <span class="apiobjtype">object</span> face )</div>
+<div class="apifunc"><span class="apikeytype">int</span> elf.GetFaceV3( <span class="apiobjtype">object</span> face )</div>
+<div class="apifunc"><span class="apiobjtype">object</span> elf.CreateMeshData(  )</div>
+<div class="apifunc"><span class="apikeytype">int</span> elf.GetMeshDataVerticeCount( <span class="apiobjtype">object</span> mesh_data )</div>
+<div class="apifunc"><span class="apikeytype">int</span> elf.GetMeshDataFaceCount( <span class="apiobjtype">object</span> mesh_data )</div>
+<div class="apifunc">elf.AddVerticeToMeshData( <span class="apiobjtype">object</span> mesh_data, <span class="apiobjtype">object</span> vertice )</div>
+<div class="apifunc">elf.AddFaceToMeshData( <span class="apiobjtype">object</span> mesh_data, <span class="apikeytype">int</span> v1, <span class="apikeytype">int</span> v2, <span class="apikeytype">int</span> v3 )</div>
+<div class="apifunc"><span class="apiobjtype">object</span> elf.GetVerticeFromMeshData( <span class="apiobjtype">object</span> mesh_data, <span class="apikeytype">int</span> idx )</div>
+<div class="apifunc"><span class="apiobjtype">object</span> elf.GetFaceFromMeshData( <span class="apiobjtype">object</span> mesh_data, <span class="apikeytype">int</span> idx )</div>
 <div class="apitopic">MODEL FUNCTIONS</div>
+<div class="apifunc"><span class="apiobjtype">object</span> elf.CreateModelFromMeshData( <span class="apiobjtype">object</span> data )</div>
 <div class="apifunc"><span class="apikeytype">string</span> elf.GetModelName( <span class="apiobjtype">object</span> model )</div>
 <div class="apifunc"><span class="apikeytype">string</span> elf.GetModelFilePath( <span class="apiobjtype">object</span> model )</div>
 <div class="apifunc"><span class="apikeytype">int</span> elf.GetModelVerticeCount( <span class="apiobjtype">object</span> model )</div>
