@@ -158,6 +158,7 @@ int elf_get_pak_index_offset(elf_pak_index *index)
 int elf_get_actor_header_size_bytes(elf_actor *actor)
 {
 	int size_bytes;
+	elf_property *property;
 	elf_bezier_curve *curve;
 
 	size_bytes = 0;
@@ -167,8 +168,8 @@ int elf_get_actor_header_size_bytes(elf_actor *actor)
 	size_bytes += sizeof(char)*64;	// script
 	size_bytes += sizeof(float)*3;	// position
 	size_bytes += sizeof(float)*3;	// rotation
-	size_bytes += sizeof(unsigned char);	// curve count
 
+	size_bytes += sizeof(unsigned char);	// curve count
 	for(curve = (elf_bezier_curve*)elf_begin_list(actor->ipo->curves); curve;
 		curve = (elf_bezier_curve*)elf_next_in_list(actor->ipo->curves))
 	{
@@ -190,6 +191,22 @@ int elf_get_actor_header_size_bytes(elf_actor *actor)
 	size_bytes += sizeof(float)*3;	// anisotropic friction
 	size_bytes += sizeof(float)*3;	// linear factor
 	size_bytes += sizeof(float)*3;	// angular factor
+
+	size_bytes += sizeof(int);	// property count
+	for(property = (elf_property*)elf_begin_list(actor->properties); property;
+		property = (elf_property*)elf_next_in_list(actor->properties))
+	{
+		size_bytes += sizeof(unsigned char);	// prop type
+		size_bytes += sizeof(char)*64;	// prop name
+		if(property->property_type == ELF_PROPERTY_STRING)
+		{
+			size_bytes += sizeof(int);	// string data length
+			size_bytes += sizeof(char)*strlen(property->sval);
+		}
+		else if(property->property_type == ELF_PROPERTY_FLOAT) size_bytes += sizeof(float);
+		else if(property->property_type == ELF_PROPERTY_INT) size_bytes += sizeof(int);
+		else if(property->property_type == ELF_PROPERTY_BOOL) size_bytes += sizeof(unsigned char);
+	}
 
 	return size_bytes;
 }
@@ -450,6 +467,10 @@ void elf_read_actor_header(elf_actor *actor, FILE *file, elf_scene *scene)
 	float anis_fric[3];
 	float linear_factor[3];
 	float angular_factor[3];
+	int property_count;
+	char prop_name[64];
+	elf_property *property;
+	int length;
 
 	fread(name, sizeof(char), 64, file);
 	fread(parent_name, sizeof(char), 64, file);
@@ -523,6 +544,33 @@ void elf_read_actor_header(elf_actor *actor, FILE *file, elf_scene *scene)
 		elf_set_actor_anisotropic_friction(actor, anis_fric[0], anis_fric[1], anis_fric[2]);
 		elf_set_actor_linear_factor(actor, linear_factor[0], linear_factor[1], linear_factor[2]);
 		elf_set_actor_angular_factor(actor, angular_factor[0], angular_factor[1], angular_factor[2]);
+	}
+
+	fread((char*)&property_count, sizeof(int), 1, file);
+	for(i = 0; i < property_count; i++)
+	{
+		property = elf_create_property(NULL);
+
+		fread((char*)&property->property_type, sizeof(unsigned char), 1, file);
+		fread(prop_name, sizeof(char), 64, file);
+
+		property->name = elf_create_string(prop_name);
+
+		if(property->property_type == ELF_PROPERTY_STRING)
+		{
+			fread((char*)&length, sizeof(int), 1, file);
+
+			property->sval = malloc(sizeof(char)*(length+1));
+			elf_inc_obj_count();
+
+			fread(property->sval, sizeof(char), length, file);
+			property->sval[length] = '\0';
+		}
+		else if(property->property_type == ELF_PROPERTY_FLOAT) fread((char*)&property->fval, sizeof(float), 1, file);
+		else if(property->property_type == ELF_PROPERTY_INT) fread((char*)&property->fval, sizeof(int), 1, file);
+		else if(property->property_type == ELF_PROPERTY_BOOL) fread((char*)&property->fval, sizeof(unsigned char), 1, file);
+
+		elf_append_to_list(actor->properties, (elf_object*)property);
 	}
 }
 
@@ -1389,6 +1437,9 @@ void elf_write_actor_header(elf_actor *actor, FILE *file)
 	elf_vec3f anis_fric;
 	elf_vec3f linear_factor;
 	elf_vec3f angular_factor;
+	int property_count;
+	elf_property *property;
+	int length;
 
 	elf_write_name_to_file(actor->name, file);
 	elf_write_name_to_file("", file);
@@ -1448,6 +1499,26 @@ void elf_write_actor_header(elf_actor *actor, FILE *file)
 	fwrite((char*)&anis_fric.x, sizeof(float), 3, file);
 	fwrite((char*)&linear_factor.x, sizeof(float), 3, file);
 	fwrite((char*)&angular_factor.x, sizeof(float), 3, file);
+
+	property_count = elf_get_list_length(actor->properties);
+	fwrite((char*)&property_count, sizeof(int), 1, file);
+	for(property = (elf_property*)elf_begin_list(actor->properties); property;
+		property = (elf_property*)elf_next_in_list(actor->properties))
+	{
+		fwrite((char*)&property->property_type, sizeof(unsigned char), 1, file);
+		elf_write_name_to_file(property->name, file);
+
+		if(property->property_type == ELF_PROPERTY_STRING)
+		{
+			length = strlen(property->sval);
+			fwrite((char*)&length, sizeof(int), 1, file);
+
+			if(property->sval) fwrite(property->sval, sizeof(char), length, file);
+		}
+		else if(property->property_type == ELF_PROPERTY_FLOAT) fwrite((char*)&property->fval, sizeof(float), 1, file);
+		else if(property->property_type == ELF_PROPERTY_INT) fwrite((char*)&property->fval, sizeof(int), 1, file);
+		else if(property->property_type == ELF_PROPERTY_BOOL) fwrite((char*)&property->fval, sizeof(unsigned char), 1, file);
+	}
 }
 
 void elf_write_armature_to_file(elf_armature *armature, FILE *file)

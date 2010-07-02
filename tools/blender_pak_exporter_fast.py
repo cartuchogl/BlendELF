@@ -514,6 +514,7 @@ def write_actor_header(eobj, f):
 	f.write(struct.pack('<fff', eobj.anis_fric[0], eobj.anis_fric[1], eobj.anis_fric[2]))
 	f.write(struct.pack('<fff', eobj.lin_factor[0], eobj.lin_factor[1], eobj.lin_factor[2]))
 	f.write(struct.pack('<fff', eobj.ang_factor[0], eobj.ang_factor[1], eobj.ang_factor[2]))
+	f.write(struct.pack('<i', 0))
 
 def get_actor_header_size(eobj):
 	size_bytes = 0
@@ -540,6 +541,7 @@ def get_actor_header_size(eobj):
 	size_bytes += struct.calcsize('<fff')	# anisotropic friction
 	size_bytes += struct.calcsize('<fff')	# linear factor
 	size_bytes += struct.calcsize('<fff')	# angular factor
+	size_bytes += struct.calcsize('<i')	# property count
 
 	return size_bytes
 
