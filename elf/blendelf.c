@@ -24,6 +24,7 @@ elf_engine *eng = NULL;
 #include "material.h"
 #include "ipo.h"
 #include "camera.h"
+#include "meshdata.h"
 #include "model.h"
 #include "entity.h"
 #include "light.h"

@@ -3873,6 +3873,301 @@ ELF_API elf_vec3f ELF_APIENTRY elfUnProjectCameraPoint(elf_handle camera, float 
 	_e_type = elf_un_project_camera_point((elf_camera*)camera.get(), x, y, z);
 	return _e_type;
 }
+ELF_API elf_handle ELF_APIENTRY elfCreateVertice()
+{
+	elf_handle handle;
+	handle = (elf_object*)elf_create_vertice();
+	return handle;
+}
+ELF_API void ELF_APIENTRY elfSetVerticePosition(elf_handle vertice, float x, float y, float z)
+{
+	if(!vertice.get() || elf_get_object_type(vertice.get()) != ELF_VERTICE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetVerticePosition() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetVerticePosition() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_vertice_position((elf_vertice*)vertice.get(), x, y, z);
+}
+ELF_API void ELF_APIENTRY elfSetVerticeNormal(elf_handle vertice, float x, float y, float z)
+{
+	if(!vertice.get() || elf_get_object_type(vertice.get()) != ELF_VERTICE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetVerticeNormal() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetVerticeNormal() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_vertice_normal((elf_vertice*)vertice.get(), x, y, z);
+}
+ELF_API void ELF_APIENTRY elfSetVerticeTexCoord(elf_handle vertice, float u, float v)
+{
+	if(!vertice.get() || elf_get_object_type(vertice.get()) != ELF_VERTICE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetVerticeTexCoord() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetVerticeTexCoord() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_vertice_tex_coord((elf_vertice*)vertice.get(), u, v);
+}
+ELF_API elf_vec3f ELF_APIENTRY elfGetVerticePosition(elf_handle vertice)
+{
+	elf_vec3f _e_type;
+	memset(&_e_type, 0x0, sizeof(elf_vec3f));
+	if(!vertice.get() || elf_get_object_type(vertice.get()) != ELF_VERTICE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetVerticePosition() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetVerticePosition() -> invalid handle\n");
+		}
+		return _e_type;
+	}
+	_e_type = elf_get_vertice_position((elf_vertice*)vertice.get());
+	return _e_type;
+}
+ELF_API elf_vec3f ELF_APIENTRY elfGetVerticeNormal(elf_handle vertice)
+{
+	elf_vec3f _e_type;
+	memset(&_e_type, 0x0, sizeof(elf_vec3f));
+	if(!vertice.get() || elf_get_object_type(vertice.get()) != ELF_VERTICE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetVerticeNormal() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetVerticeNormal() -> invalid handle\n");
+		}
+		return _e_type;
+	}
+	_e_type = elf_get_vertice_normal((elf_vertice*)vertice.get());
+	return _e_type;
+}
+ELF_API elf_vec2f ELF_APIENTRY elfGetVerticeTexCoord(elf_handle vertice)
+{
+	elf_vec2f _e_type;
+	memset(&_e_type, 0x0, sizeof(elf_vec2f));
+	if(!vertice.get() || elf_get_object_type(vertice.get()) != ELF_VERTICE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetVerticeTexCoord() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetVerticeTexCoord() -> invalid handle\n");
+		}
+		return _e_type;
+	}
+	_e_type = elf_get_vertice_tex_coord((elf_vertice*)vertice.get());
+	return _e_type;
+}
+ELF_API int ELF_APIENTRY elfGetFaceV1(elf_handle face)
+{
+	if(!face.get() || elf_get_object_type(face.get()) != ELF_FACE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetFaceV1() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetFaceV1() -> invalid handle\n");
+		}
+		return 0;
+	}
+	return elf_get_face_v1((elf_face*)face.get());
+}
+ELF_API int ELF_APIENTRY elfGetFaceV2(elf_handle face)
+{
+	if(!face.get() || elf_get_object_type(face.get()) != ELF_FACE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetFaceV2() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetFaceV2() -> invalid handle\n");
+		}
+		return 0;
+	}
+	return elf_get_face_v2((elf_face*)face.get());
+}
+ELF_API int ELF_APIENTRY elfGetFaceV3(elf_handle face)
+{
+	if(!face.get() || elf_get_object_type(face.get()) != ELF_FACE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetFaceV3() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetFaceV3() -> invalid handle\n");
+		}
+		return 0;
+	}
+	return elf_get_face_v3((elf_face*)face.get());
+}
+ELF_API elf_handle ELF_APIENTRY elfCreateMeshData()
+{
+	elf_handle handle;
+	handle = (elf_object*)elf_create_mesh_data();
+	return handle;
+}
+ELF_API int ELF_APIENTRY elfGetMeshDataVerticeCount(elf_handle mesh_data)
+{
+	if(!mesh_data.get() || elf_get_object_type(mesh_data.get()) != ELF_MESH_DATA)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMeshDataVerticeCount() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetMeshDataVerticeCount() -> invalid handle\n");
+		}
+		return 0;
+	}
+	return elf_get_mesh_data_vertice_count((elf_mesh_data*)mesh_data.get());
+}
+ELF_API int ELF_APIENTRY elfGetMeshDataFaceCount(elf_handle mesh_data)
+{
+	if(!mesh_data.get() || elf_get_object_type(mesh_data.get()) != ELF_MESH_DATA)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMeshDataFaceCount() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetMeshDataFaceCount() -> invalid handle\n");
+		}
+		return 0;
+	}
+	return elf_get_mesh_data_face_count((elf_mesh_data*)mesh_data.get());
+}
+ELF_API void ELF_APIENTRY elfAddVerticeToMeshData(elf_handle mesh_data, elf_handle vertice)
+{
+	if(!mesh_data.get() || elf_get_object_type(mesh_data.get()) != ELF_MESH_DATA)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddVerticeToMeshData() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "AddVerticeToMeshData() -> invalid handle\n");
+		}
+		return;
+	}
+	if(!vertice.get() || elf_get_object_type(vertice.get()) != ELF_VERTICE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddVerticeToMeshData() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "AddVerticeToMeshData() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_add_vertice_to_mesh_data((elf_mesh_data*)mesh_data.get(), (elf_vertice*)vertice.get());
+}
+ELF_API void ELF_APIENTRY elfAddFaceToMeshData(elf_handle mesh_data, int v1, int v2, int v3)
+{
+	if(!mesh_data.get() || elf_get_object_type(mesh_data.get()) != ELF_MESH_DATA)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "AddFaceToMeshData() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "AddFaceToMeshData() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_add_face_to_mesh_data((elf_mesh_data*)mesh_data.get(), v1, v2, v3);
+}
+ELF_API elf_handle ELF_APIENTRY elfGetVerticeFromMeshData(elf_handle mesh_data, int idx)
+{
+	elf_handle handle;
+	if(!mesh_data.get() || elf_get_object_type(mesh_data.get()) != ELF_MESH_DATA)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetVerticeFromMeshData() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetVerticeFromMeshData() -> invalid handle\n");
+		}
+		return handle;
+	}
+	handle = (elf_object*)elf_get_vertice_from_mesh_data((elf_mesh_data*)mesh_data.get(), idx);
+	return handle;
+}
+ELF_API elf_handle ELF_APIENTRY elfGetFaceFromMeshData(elf_handle mesh_data, int idx)
+{
+	elf_handle handle;
+	if(!mesh_data.get() || elf_get_object_type(mesh_data.get()) != ELF_MESH_DATA)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetFaceFromMeshData() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetFaceFromMeshData() -> invalid handle\n");
+		}
+		return handle;
+	}
+	handle = (elf_object*)elf_get_face_from_mesh_data((elf_mesh_data*)mesh_data.get(), idx);
+	return handle;
+}
+ELF_API elf_handle ELF_APIENTRY elfCreateModelFromMeshData(elf_handle data)
+{
+	elf_handle handle;
+	if(!data.get() || elf_get_object_type(data.get()) != ELF_MESH_DATA)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "CreateModelFromMeshData() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "CreateModelFromMeshData() -> invalid handle\n");
+		}
+		return handle;
+	}
+	handle = (elf_object*)elf_create_model_from_mesh_data((elf_mesh_data*)data.get());
+	return handle;
+}
 ELF_API const char* ELF_APIENTRY elfGetModelName(elf_handle model)
 {
 	if(!model.get() || elf_get_object_type(model.get()) != ELF_MODEL)

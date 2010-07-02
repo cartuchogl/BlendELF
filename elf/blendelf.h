@@ -167,7 +167,10 @@ extern "C" {
 #define ELF_SPRITE					0x0043
 #define ELF_VIDEO_MODE					0x0044
 #define ELF_GENERAL					0x0045
-#define ELF_OBJECT_TYPE_COUNT				0x0046	// <mdoc> NUMBER OF OBJECT TYPES
+#define ELF_VERTICE					0x0046
+#define ELF_FACE					0x0047
+#define ELF_MESH_DATA					0x0048
+#define ELF_OBJECT_TYPE_COUNT				0x0049	// <mdoc> NUMBER OF OBJECT TYPES
 
 #define ELF_PERSPECTIVE					0x0000	// <mdoc> CAMERA MODE <mdocc> The camera modes used by camera internal functions
 #define ELF_ORTHOGRAPHIC				0x0001
@@ -387,6 +390,9 @@ typedef struct elf_client				elf_client;
 typedef struct elf_scripting				elf_scripting;
 typedef struct elf_sprite				elf_sprite;
 typedef struct elf_video_mode				elf_video_mode;
+typedef struct elf_vertice				elf_vertice;
+typedef struct elf_face					elf_face;
+typedef struct elf_mesh_data				elf_mesh_data;
 
 // <!!
 struct elf_vec2i {
@@ -996,14 +1002,51 @@ void elf_draw_camera_debug(elf_camera *camera, gfx_shader_params *shader_params)
 
 elf_vec3f elf_un_project_camera_point(elf_camera *camera, float x, float y, float z);
 
+//////////////////////////////// MESH ////////////////////////////////
+
+elf_vertice* elf_create_vertice();	// <mdoc> MESH DATA FUNCTIONS
+/* <!> */ void elf_destroy_vertice(elf_vertice *vertice);
+
+void elf_set_vertice_position(elf_vertice *vertice, float x, float y, float z);
+void elf_set_vertice_normal(elf_vertice *vertice, float x, float y, float z);
+void elf_set_vertice_tex_coord(elf_vertice *vertice, float u, float v);
+
+elf_vec3f elf_get_vertice_position(elf_vertice *vertice);
+elf_vec3f elf_get_vertice_normal(elf_vertice *vertice);
+elf_vec2f elf_get_vertice_tex_coord(elf_vertice *vertice);
+
+// <!!
+elf_face* elf_create_face();
+void elf_destroy_face(elf_face *face);
+// !!>
+
+int elf_get_face_v1(elf_face *face);
+int elf_get_face_v2(elf_face *face);
+int elf_get_face_v3(elf_face *face);
+
+elf_mesh_data* elf_create_mesh_data();
+/* <!> */ void elf_destroy_mesh_data(elf_mesh_data *mesh_data);
+
+int elf_get_mesh_data_vertice_count(elf_mesh_data *mesh_data);
+int elf_get_mesh_data_face_count(elf_mesh_data *mesh_data);
+
+void elf_add_vertice_to_mesh_data(elf_mesh_data *mesh_data, elf_vertice *vertice);
+void elf_add_face_to_mesh_data(elf_mesh_data *mesh_data, int v1, int v2, int v3);
+
+elf_vertice* elf_get_vertice_from_mesh_data(elf_mesh_data *mesh_data, int idx);
+elf_face* elf_get_face_from_mesh_data(elf_mesh_data *mesh_data, int idx);
+
 //////////////////////////////// MODEL ////////////////////////////////
 
 // <!!
+elf_model* elf_create_model(const char *name);
 void elf_destroy_model(elf_model *model);
 void elf_generate_model_tangents(elf_model *model);
 // !!>
 
-const char* elf_get_model_name(elf_model *model);	// <mdoc> MODEL FUNCTIONS
+elf_model* elf_create_model_from_mesh_data(elf_mesh_data *data);	// <mdoc> MODEL FUNCTIONS
+
+const char* elf_get_model_name(elf_model *model);
 const char* elf_get_model_file_path(elf_model *model);
 int elf_get_model_vertice_count(elf_model *model);
 int elf_get_model_indice_count(elf_model *model);

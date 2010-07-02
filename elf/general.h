@@ -111,6 +111,9 @@ void elf_dec_ref(elf_object *obj)
 			case ELF_PHYSICS_TRI_MESH: elf_destroy_physics_tri_mesh((elf_physics_tri_mesh*)obj); break;
 			case ELF_SPRITE: elf_destroy_sprite((elf_sprite*)obj); break;
 			case ELF_VIDEO_MODE: elf_destroy_video_mode((elf_video_mode*)obj); break;
+			case ELF_VERTICE: elf_destroy_vertice((elf_vertice*)obj); break;
+			case ELF_FACE: elf_destroy_face((elf_face*)obj); break;
+			case ELF_MESH_DATA: elf_destroy_mesh_data((elf_mesh_data*)obj); break;
 			case ELF_LIST: elf_destroy_list((elf_list*)obj); break;
 			default: elf_set_error(ELF_UNKNOWN_TYPE, "error: can not destroy unknown type\n"); break;
 		}

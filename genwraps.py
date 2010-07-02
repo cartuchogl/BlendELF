@@ -265,7 +265,10 @@ elfobjs = ['elf_config',
 	'elf_client',
 	'elf_sprite',
 	'elf_directory',
-	'elf_directory_item']
+	'elf_directory_item',
+	'elf_vertice',
+	'elf_face',
+	'elf_mesh_data']
 
 defines = []
 functions = []

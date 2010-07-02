@@ -10333,6 +10333,523 @@ fail:
 }
 
 
+static int _wrap_elfCreateVertice(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle result;
+  
+  SWIG_check_num_args("CreateVertice",0,0)
+  result = elfCreateVertice();
+  {
+    elf_handle * resultptr = new elf_handle((const elf_handle &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_handle,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfSetVerticePosition(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  float arg2 ;
+  float arg3 ;
+  float arg4 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("SetVerticePosition",4,4)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetVerticePosition",1,"handle");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("SetVerticePosition",2,"float");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("SetVerticePosition",3,"float");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("SetVerticePosition",4,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetVerticePosition",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  arg3 = (float)lua_tonumber(L, 3);
+  arg4 = (float)lua_tonumber(L, 4);
+  elfSetVerticePosition(arg1,arg2,arg3,arg4);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfSetVerticeNormal(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  float arg2 ;
+  float arg3 ;
+  float arg4 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("SetVerticeNormal",4,4)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetVerticeNormal",1,"handle");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("SetVerticeNormal",2,"float");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("SetVerticeNormal",3,"float");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("SetVerticeNormal",4,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetVerticeNormal",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  arg3 = (float)lua_tonumber(L, 3);
+  arg4 = (float)lua_tonumber(L, 4);
+  elfSetVerticeNormal(arg1,arg2,arg3,arg4);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfSetVerticeTexCoord(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  float arg2 ;
+  float arg3 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("SetVerticeTexCoord",3,3)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetVerticeTexCoord",1,"handle");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("SetVerticeTexCoord",2,"float");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("SetVerticeTexCoord",3,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetVerticeTexCoord",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  arg3 = (float)lua_tonumber(L, 3);
+  elfSetVerticeTexCoord(arg1,arg2,arg3);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetVerticePosition(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  elf_vec3f result;
+  
+  SWIG_check_num_args("GetVerticePosition",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetVerticePosition",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetVerticePosition",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = elfGetVerticePosition(arg1);
+  {
+    elf_vec3f * resultptr = new elf_vec3f((const elf_vec3f &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_vec3f,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetVerticeNormal(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  elf_vec3f result;
+  
+  SWIG_check_num_args("GetVerticeNormal",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetVerticeNormal",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetVerticeNormal",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = elfGetVerticeNormal(arg1);
+  {
+    elf_vec3f * resultptr = new elf_vec3f((const elf_vec3f &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_vec3f,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetVerticeTexCoord(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  elf_vec2f result;
+  
+  SWIG_check_num_args("GetVerticeTexCoord",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetVerticeTexCoord",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetVerticeTexCoord",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = elfGetVerticeTexCoord(arg1);
+  {
+    elf_vec2f * resultptr = new elf_vec2f((const elf_vec2f &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_vec2f,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetFaceV1(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  int result;
+  
+  SWIG_check_num_args("GetFaceV1",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetFaceV1",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetFaceV1",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = (int)elfGetFaceV1(arg1);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetFaceV2(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  int result;
+  
+  SWIG_check_num_args("GetFaceV2",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetFaceV2",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetFaceV2",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = (int)elfGetFaceV2(arg1);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetFaceV3(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  int result;
+  
+  SWIG_check_num_args("GetFaceV3",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetFaceV3",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetFaceV3",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = (int)elfGetFaceV3(arg1);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfCreateMeshData(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle result;
+  
+  SWIG_check_num_args("CreateMeshData",0,0)
+  result = elfCreateMeshData();
+  {
+    elf_handle * resultptr = new elf_handle((const elf_handle &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_handle,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetMeshDataVerticeCount(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  int result;
+  
+  SWIG_check_num_args("GetMeshDataVerticeCount",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetMeshDataVerticeCount",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetMeshDataVerticeCount",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = (int)elfGetMeshDataVerticeCount(arg1);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetMeshDataFaceCount(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  int result;
+  
+  SWIG_check_num_args("GetMeshDataFaceCount",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetMeshDataFaceCount",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetMeshDataFaceCount",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = (int)elfGetMeshDataFaceCount(arg1);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfAddVerticeToMeshData(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle arg2 ;
+  elf_handle *argp1 ;
+  elf_handle *argp2 ;
+  
+  SWIG_check_num_args("AddVerticeToMeshData",2,2)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("AddVerticeToMeshData",1,"handle");
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg("AddVerticeToMeshData",2,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("AddVerticeToMeshData",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("AddVerticeToMeshData",2,SWIGTYPE_p_elf_handle);
+  }
+  arg2 = *argp2;
+  
+  elfAddVerticeToMeshData(arg1,arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfAddFaceToMeshData(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  int arg2 ;
+  int arg3 ;
+  int arg4 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("AddFaceToMeshData",4,4)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("AddFaceToMeshData",1,"handle");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("AddFaceToMeshData",2,"int");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("AddFaceToMeshData",3,"int");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("AddFaceToMeshData",4,"int");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("AddFaceToMeshData",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  arg3 = (int)lua_tonumber(L, 3);
+  arg4 = (int)lua_tonumber(L, 4);
+  elfAddFaceToMeshData(arg1,arg2,arg3,arg4);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetVerticeFromMeshData(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  int arg2 ;
+  elf_handle *argp1 ;
+  elf_handle result;
+  
+  SWIG_check_num_args("GetVerticeFromMeshData",2,2)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetVerticeFromMeshData",1,"handle");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("GetVerticeFromMeshData",2,"int");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetVerticeFromMeshData",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  result = elfGetVerticeFromMeshData(arg1,arg2);
+  {
+    elf_handle * resultptr = new elf_handle((const elf_handle &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_handle,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetFaceFromMeshData(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  int arg2 ;
+  elf_handle *argp1 ;
+  elf_handle result;
+  
+  SWIG_check_num_args("GetFaceFromMeshData",2,2)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetFaceFromMeshData",1,"handle");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("GetFaceFromMeshData",2,"int");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetFaceFromMeshData",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  result = elfGetFaceFromMeshData(arg1,arg2);
+  {
+    elf_handle * resultptr = new elf_handle((const elf_handle &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_handle,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfCreateModelFromMeshData(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  elf_handle result;
+  
+  SWIG_check_num_args("CreateModelFromMeshData",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("CreateModelFromMeshData",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("CreateModelFromMeshData",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = elfCreateModelFromMeshData(arg1);
+  {
+    elf_handle * resultptr = new elf_handle((const elf_handle &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_handle,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfGetModelName(lua_State* L) {
   int SWIG_arg = 0;
   elf_handle arg1 ;
@@ -20190,6 +20707,24 @@ static const struct luaL_reg swig_commands[] = {
     { "GetCameraClip", _wrap_elfGetCameraClip},
     { "GetCameraFarPlaneSize", _wrap_elfGetCameraFarPlaneSize},
     { "UnProjectCameraPoint", _wrap_elfUnProjectCameraPoint},
+    { "CreateVertice", _wrap_elfCreateVertice},
+    { "SetVerticePosition", _wrap_elfSetVerticePosition},
+    { "SetVerticeNormal", _wrap_elfSetVerticeNormal},
+    { "SetVerticeTexCoord", _wrap_elfSetVerticeTexCoord},
+    { "GetVerticePosition", _wrap_elfGetVerticePosition},
+    { "GetVerticeNormal", _wrap_elfGetVerticeNormal},
+    { "GetVerticeTexCoord", _wrap_elfGetVerticeTexCoord},
+    { "GetFaceV1", _wrap_elfGetFaceV1},
+    { "GetFaceV2", _wrap_elfGetFaceV2},
+    { "GetFaceV3", _wrap_elfGetFaceV3},
+    { "CreateMeshData", _wrap_elfCreateMeshData},
+    { "GetMeshDataVerticeCount", _wrap_elfGetMeshDataVerticeCount},
+    { "GetMeshDataFaceCount", _wrap_elfGetMeshDataFaceCount},
+    { "AddVerticeToMeshData", _wrap_elfAddVerticeToMeshData},
+    { "AddFaceToMeshData", _wrap_elfAddFaceToMeshData},
+    { "GetVerticeFromMeshData", _wrap_elfGetVerticeFromMeshData},
+    { "GetFaceFromMeshData", _wrap_elfGetFaceFromMeshData},
+    { "CreateModelFromMeshData", _wrap_elfCreateModelFromMeshData},
     { "GetModelName", _wrap_elfGetModelName},
     { "GetModelFilePath", _wrap_elfGetModelFilePath},
     { "GetModelVerticeCount", _wrap_elfGetModelVerticeCount},
@@ -20684,7 +21219,10 @@ static swig_lua_const_info swig_constants[] = {
 { SWIG_LUA_INT,     (char *)"SPRITE", (long) 0x0043, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"VIDEO_MODE", (long) 0x0044, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"GENERAL", (long) 0x0045, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"OBJECT_TYPE_COUNT", (long) 0x0046, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"VERTICE", (long) 0x0046, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"FACE", (long) 0x0047, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"MESH_DATA", (long) 0x0048, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"OBJECT_TYPE_COUNT", (long) 0x0049, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"PERSPECTIVE", (long) 0x0000, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ORTHOGRAPHIC", (long) 0x0001, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"BOX", (long) 0x0001, 0, 0, 0},

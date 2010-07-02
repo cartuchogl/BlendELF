@@ -16,6 +16,105 @@ elf_model* elf_create_model(const char *name)
 	return model;
 }
 
+elf_model* elf_create_model_from_mesh_data(elf_mesh_data *mesh_data)
+{
+	elf_model *model;
+	float *vertex_buffer;
+	float *normal_buffer;
+	float *texcoord_buffer;
+	unsigned int *index_buffer;
+	int i, j;
+	elf_face *face;
+	elf_vertice *vertice;
+
+	if(elf_get_mesh_data_vertice_count(mesh_data) < 3) return NULL;
+	if(elf_get_mesh_data_face_count(mesh_data) < 1) return NULL;
+
+	model = elf_create_model(NULL);
+
+	model->vertice_count = elf_get_list_length(mesh_data->vertices);
+	model->frame_count = 1;
+	model->area_count = 1;
+	model->indice_count = elf_get_list_length(mesh_data->faces)*3;
+
+	model->vertices = gfx_create_vertex_data(3*model->vertice_count, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
+	model->normals = gfx_create_vertex_data(3*model->vertice_count, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
+	model->tex_coords = gfx_create_vertex_data(2*model->vertice_count, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
+
+	gfx_inc_ref((gfx_object*)model->vertices);
+	gfx_inc_ref((gfx_object*)model->normals);
+	gfx_inc_ref((gfx_object*)model->tex_coords);
+
+	vertex_buffer = (float*)gfx_get_vertex_data_buffer(model->vertices);
+	normal_buffer = (float*)gfx_get_vertex_data_buffer(model->normals);
+	texcoord_buffer = (float*)gfx_get_vertex_data_buffer(model->tex_coords);
+
+	model->areas = (elf_model_area*)malloc(sizeof(elf_model_area)*model->area_count);
+	memset(model->areas, 0x0, sizeof(elf_model_area)*model->area_count);
+
+	model->areas[0].indice_count = model->indice_count;
+	model->areas[0].index = gfx_create_vertex_data(model->areas[0].indice_count, GFX_UINT, GFX_VERTEX_DATA_STATIC);
+	gfx_inc_ref((gfx_object*)model->areas[0].index);
+
+	// model->index should contain ALL of the indexes of the model regardless of the material
+	// its used for generating the physics triangle mesh of the model
+	model->index = (unsigned int*)malloc(sizeof(unsigned int)*model->areas[0].indice_count);
+
+	index_buffer = (unsigned int*)gfx_get_vertex_data_buffer(model->areas[0].index);
+
+	for(i = 0, face = (elf_face*)elf_begin_list(mesh_data->faces); face;
+		face = (elf_face*)elf_next_in_list(mesh_data->faces), i+=3)
+	{
+		index_buffer[i] = face->v1;
+		index_buffer[i+1] = face->v2;
+		index_buffer[i+2] = face->v3;
+	}
+
+	for(i = 0, j = 0, vertice = (elf_vertice*)elf_begin_list(mesh_data->vertices); vertice;
+		vertice = (elf_vertice*)elf_next_in_list(mesh_data->vertices), i += 3, j += 2)
+	{
+		vertex_buffer[i] = vertice->position.x;
+		vertex_buffer[i+1] = vertice->position.y;
+		vertex_buffer[i+2] = vertice->position.z;
+
+		normal_buffer[i] = vertice->normal.x;
+		normal_buffer[i+1] = vertice->normal.y;
+		normal_buffer[i+2] = vertice->normal.z;
+
+		texcoord_buffer[j] = vertice->tex_coord.x;
+		texcoord_buffer[j+1] = vertice->tex_coord.y;
+	}
+
+	// get bounding box values
+	memcpy(&model->bb_min.x, vertex_buffer, sizeof(float)*3);
+	memcpy(&model->bb_max.x, vertex_buffer, sizeof(float)*3);
+
+	for(j = 3; j < model->vertice_count*3; j+=3)
+	{
+		if(vertex_buffer[j] < model->bb_min.x) model->bb_min.x = vertex_buffer[j];
+		if(vertex_buffer[j+1] < model->bb_min.y) model->bb_min.y = vertex_buffer[j+1];
+		if(vertex_buffer[j+2] < model->bb_min.z) model->bb_min.z = vertex_buffer[j+2];
+
+		if(vertex_buffer[j] > model->bb_max.x) model->bb_max.x = vertex_buffer[j];
+		if(vertex_buffer[j+1] > model->bb_max.y) model->bb_max.y = vertex_buffer[j+1];
+		if(vertex_buffer[j+2] > model->bb_max.z) model->bb_max.z = vertex_buffer[j+2];
+	}
+
+	model->vertex_array = gfx_create_vertex_array(GFX_TRUE);
+	gfx_inc_ref((gfx_object*)model->vertex_array);
+
+	gfx_set_vertex_array_data(model->vertex_array, GFX_VERTEX, model->vertices);
+	gfx_set_vertex_array_data(model->vertex_array, GFX_NORMAL, model->normals);
+	gfx_set_vertex_array_data(model->vertex_array, GFX_TEX_COORD, model->tex_coords);
+
+	model->areas[0].vertex_index = gfx_create_vertex_index(GFX_TRUE, model->areas[0].index);
+	gfx_inc_ref((gfx_object*)model->areas[0].vertex_index);
+
+	memcpy(model->index, index_buffer, sizeof(unsigned int)*model->areas[0].indice_count);
+
+	return model;
+}
+
 void elf_generate_model_tangents(elf_model *model)
 {
 	float *vertex_buffer;

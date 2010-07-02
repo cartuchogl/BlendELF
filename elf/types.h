@@ -320,6 +320,24 @@ struct elf_camera {
 	float modelview_matrix[16];
 };
 
+struct elf_vertice {
+	ELF_OBJECT_HEADER;
+	elf_vec3f position;
+	elf_vec3f normal;
+	elf_vec2f tex_coord;
+};
+
+struct elf_face {
+	ELF_OBJECT_HEADER;
+	int v1, v2, v3;
+};
+
+struct elf_mesh_data {
+	ELF_OBJECT_HEADER;
+	elf_list *vertices;
+	elf_list *faces;
+};
+
 typedef struct elf_model_area {
 	int indice_count;
 	gfx_vertex_data *index;
