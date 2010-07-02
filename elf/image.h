@@ -7,6 +7,11 @@ elf_image* elf_create_image_from_file(const char *file_path)
 	const char *type;
 
 	type = strrchr(file_path, '.');
+	if(!type)
+	{
+		elf_set_error(ELF_CANT_OPEN_FILE, "error: can't open file \"%s\"\n", file_path);
+		return NULL;
+	}
 
 	if(strcmp(type, ".jpg") == 0)
 		in = FreeImage_Load(FIF_JPEG, file_path, JPEG_ACCURATE);

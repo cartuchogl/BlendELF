@@ -305,9 +305,12 @@ elf_scene* elf_create_scene_from_file(const char *file_path)
 	elf_scene *scene;
 	char *type;
 
-	if(!strlen(file_path)) return NULL;
-
 	type = strrchr(file_path, '.');
+	if(!type)
+	{
+		elf_set_error(ELF_CANT_OPEN_FILE, "error: can't open file \"%s\"\n", file_path);
+		return NULL;
+	}
 
 	if(!strcmp(type, ".pak"))
 	{
@@ -345,7 +348,7 @@ elf_scene* elf_create_scene_from_file(const char *file_path)
 	}
 	else
 	{
-		elf_set_error(ELF_INVALID_FILE, "error: can't open \"%s\", unsupported format\n");
+		elf_set_error(ELF_INVALID_FILE, "error: can't open \"%s\", unsupported format\n", file_path);
 		return NULL;
 	}
 }
