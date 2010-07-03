@@ -1187,7 +1187,7 @@ void elf_set_text_list_offset(elf_text_list *text_list, int offset)
 void elf_set_text_list_selection(elf_text_list *text_list, int selection)
 {
 	text_list->selection = selection;
-	if(text_list->selection < 0) text_list->selection = 0;
+	if(text_list->selection < 0) text_list->selection = -1;
 	if(text_list->selection > elf_get_list_length(text_list->items)-1)
 		text_list->selection = elf_get_list_length(text_list->items)-1;
 	if(elf_get_list_length(text_list->items) == 0) text_list->selection = -1;
