@@ -23,7 +23,7 @@ elf_scripting* elf_create_scripting()
 {
 	elf_scripting *scripting;
 
-	scripting = malloc(sizeof(elf_scripting));
+	scripting = (elf_scripting*)malloc(sizeof(elf_scripting));
 	memset(scripting, 0x0, sizeof(elf_scripting));
 	scripting->type = ELF_SCRIPTING;
 

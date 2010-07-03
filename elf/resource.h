@@ -41,7 +41,7 @@ void elf_set_unique_name_for_resource(elf_list *named_objects, elf_resource *obj
 
 		dot_pos = elf_rfind_char_from_string(object->name, '.');
 
-		if(dot_pos == strlen(object->name)-1)
+		if(dot_pos == (int)strlen(object->name)-1)
 		{
 			tname = (char*)malloc(sizeof(char)*(strlen(object->name)+1));
 			memcpy(tname, object->name, sizeof(char)*strlen(object->name));
@@ -62,7 +62,7 @@ void elf_set_unique_name_for_resource(elf_list *named_objects, elf_resource *obj
 	}
 	else
 	{
-		tname = malloc(sizeof(char)*8);
+		tname = (char*)malloc(sizeof(char)*8);
 		memcpy(tname, "Object.", sizeof(char)*7);
 		tname[7] = '\0';
 	}

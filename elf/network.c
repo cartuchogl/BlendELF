@@ -133,7 +133,7 @@ unsigned char elf_create_session(const char* address, unsigned short port)
 	}
 
 	// initialise the server handle
-	server = malloc(sizeof(elf_server));
+	server = (elf_server*)malloc(sizeof(elf_server));
 
 	enet_address_set_host(&server->address, address);
 	server->address.port = port;

@@ -228,12 +228,12 @@ int elf_rfind_char_from_string(const char *str, char chr)
 	return result;
 }
 
-int elf_rfind_chars_from_string(const char *str, char *chrs)
+int elf_rfind_chars_from_string(const char *str, const char *chrs)
 {
 	int i;
 	int result = -1;
 
-	for(i = 0; i < strlen(chrs); i++)
+	for(i = 0; i < (int)strlen(chrs); i++)
 	{
 		for(result = strlen(str)-1; result > -1; result--)
 		{

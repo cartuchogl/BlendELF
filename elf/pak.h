@@ -560,7 +560,7 @@ void elf_read_actor_header(elf_actor *actor, FILE *file, elf_scene *scene)
 		{
 			fread((char*)&length, sizeof(int), 1, file);
 
-			property->sval = malloc(sizeof(char)*(length+1));
+			property->sval = (char*)malloc(sizeof(char)*(length+1));
 			elf_inc_obj_count();
 
 			fread(property->sval, sizeof(char), length, file);
@@ -905,7 +905,7 @@ elf_model* elf_create_model_from_pak(FILE *file, const char *name, elf_scene *sc
 {
 	elf_model *model = NULL;
 	int magic = 0;
-	unsigned int i = 0;
+	int i = 0;
 	char rname[64];
 	unsigned int indices_read = 0;
 	unsigned char is_normals;
@@ -1045,7 +1045,7 @@ elf_model* elf_create_model_from_pak(FILE *file, const char *name, elf_scene *sc
 		}
 	}
 
-	vertex_buffer = gfx_get_vertex_data_buffer(model->vertices);
+	vertex_buffer = (float*)gfx_get_vertex_data_buffer(model->vertices);
 
 	// get bounding box values
 	memcpy(&model->bb_min.x, vertex_buffer, sizeof(float)*3);

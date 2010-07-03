@@ -103,7 +103,7 @@ void elf_destroy_image(elf_image *image)
 	elf_dec_obj_count();
 }
 
-void elf_set_image_pixel(elf_image *image, int x, int y, int r, int g, int b, int a)
+void elf_set_image_pixel(elf_image *image, int x, int y, float r, float g, float b, float a)
 {
 	int offset;
 
@@ -111,10 +111,10 @@ void elf_set_image_pixel(elf_image *image, int x, int y, int r, int g, int b, in
 
 	offset = image->width*y+x;
 
-	image->data[offset] = (unsigned char)r;
-	if(image->bpp == 16) image->data[offset+1] = (unsigned char)g;
-	if(image->bpp == 24) image->data[offset+2] = (unsigned char)b;
-	if(image->bpp == 32) image->data[offset+3] = (unsigned char)a;
+	image->data[offset] = (unsigned char)(r*255);
+	if(image->bpp == 16) image->data[offset+1] = (unsigned char)(g*255);
+	if(image->bpp == 24) image->data[offset+2] = (unsigned char)(b*255);
+	if(image->bpp == 32) image->data[offset+3] = (unsigned char)(a*255);
 }
 
 int elf_get_image_width(elf_image *image)
@@ -131,6 +131,26 @@ int elf_get_image_bits_per_pixel(elf_image *image)
 {
 	return image->bpp;
 }
+
+elf_color elf_get_image_pixel(elf_image *image, int x, int y)
+{
+	int offset;
+	elf_color color;
+
+	memset(&color, 0x0, sizeof(elf_color));
+
+	if(x < 0 || x >= image->width || y < 0 || y >= image->height) return color;
+
+	offset = image->width*y+x;
+
+	color.r = (float)image->data[offset]/(float)255;
+	if(image->bpp == 16) color.g = (float)image->data[offset+1]/(float)255;
+	if(image->bpp == 24) color.b = (float)image->data[offset+2]/(float)255;
+	if(image->bpp == 32) color.a = (float)image->data[offset+3]/(float)255;
+
+	return color;
+}
+
 
 void* elf_get_image_data(elf_image *image)
 {

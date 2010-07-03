@@ -156,7 +156,7 @@ void elf_init_new_particle(elf_particles *particles, elf_particle *particle)
 	{
 		elf_get_actor_position_((elf_actor*)particles->entity, &particle->position.x);
 		num = elf_random_int_range(0, elf_get_model_vertice_count(particles->entity->model));
-		vertices = gfx_get_vertex_data_buffer(particles->entity->vertices);
+		vertices = (float*)gfx_get_vertex_data_buffer(particles->entity->vertices);
 		local_pos.x = vertices[3*num];
 		local_pos.y = vertices[3*num+1];
 		local_pos.z = vertices[3*num+2];
@@ -298,8 +298,8 @@ void elf_draw_particles(elf_particles *particles, elf_camera *camera, gfx_shader
 	float *vertex_buffer;
 	float *color_buffer;
 
-	vertex_buffer = gfx_get_vertex_data_buffer(particles->vertices);
-	color_buffer = gfx_get_vertex_data_buffer(particles->colors);
+	vertex_buffer = (float*)gfx_get_vertex_data_buffer(particles->vertices);
+	color_buffer = (float*)gfx_get_vertex_data_buffer(particles->colors);
 
 	elf_get_actor_position_((elf_actor*)camera, camera_pos);
 	elf_get_actor_orientation_((elf_actor*)camera, camera_orient);

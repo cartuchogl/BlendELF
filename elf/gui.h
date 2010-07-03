@@ -569,7 +569,7 @@ void elf_move_text_field_cursor_right(elf_text_field *text_field)
 void elf_set_text_field_cursor_position(elf_text_field *text_field, int idx)
 {
 	if(idx < 0) return;
-	if(idx > strlen(text_field->text)) idx = strlen(text_field->text);
+	if(idx > (int)strlen(text_field->text)) idx = strlen(text_field->text);
 
 	text_field->cursor_pos = 0;
 	text_field->draw_pos = 0;
@@ -585,7 +585,7 @@ void elf_set_text_field_text(elf_text_field *text_field, const char *text)
 	text_field->cursor_pos = 0;
 	text_field->draw_pos = 0;
 
-	while(text_field->cursor_pos < strlen(text_field->text))
+	while(text_field->cursor_pos < (int)strlen(text_field->text))
 		elf_move_text_field_cursor_right(text_field);
 }
 

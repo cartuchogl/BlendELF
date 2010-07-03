@@ -477,7 +477,7 @@ unsigned char elf_is_char_number(char c);
 unsigned char elf_is_string_number(const char *str);
 unsigned char elf_is_string_positive_int(const char *str);
 int elf_rfind_char_from_string(const char *str, char chr);
-int elf_rfind_chars_from_string(const char *str, char *chrs);
+int elf_rfind_chars_from_string(const char *str, const char *chrs);
 // !!>
 
 //////////////////////////////// LIST ////////////////////////////////
@@ -742,11 +742,12 @@ elf_image* elf_create_empty_image(int width, int height, int bpp);	// <mdoc> IMA
 elf_image* elf_create_image_from_file(const char *file_path);
 /* <!> */ void elf_destroy_image(elf_image *image);
 
-void elf_set_image_pixel(elf_image *image, int x, int y, int r, int g, int b, int a);
+void elf_set_image_pixel(elf_image *image, int x, int y, float r, float g, float b, float a);
 
 int elf_get_image_width(elf_image *image);
 int elf_get_image_height(elf_image *image);
 int elf_get_image_bits_per_pixel(elf_image *image);
+elf_color elf_get_image_pixel(elf_image *image, int x, int y);
 
 // <!!
 void* elf_get_image_data(elf_image *image);

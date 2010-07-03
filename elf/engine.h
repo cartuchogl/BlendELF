@@ -37,7 +37,7 @@ elf_engine* elf_create_engine()
 
 	vertex_data = gfx_create_vertex_data(36, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
 
-	vertex_buffer = gfx_get_vertex_data_buffer(vertex_data);
+	vertex_buffer = (float*)gfx_get_vertex_data_buffer(vertex_data);
 
 	vertex_buffer[0] = -0.5;
 	vertex_buffer[1] = 0.5;
@@ -83,7 +83,7 @@ elf_engine* elf_create_engine()
 
 	vertex_data = gfx_create_vertex_data(24, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
 
-	vertex_buffer = gfx_get_vertex_data_buffer(vertex_data);
+	vertex_buffer = (float*)gfx_get_vertex_data_buffer(vertex_data);
 
 	vertex_buffer[0] = 0.0;
 	vertex_buffer[1] = 1.0;
@@ -117,7 +117,7 @@ elf_engine* elf_create_engine()
 
 	vertex_data = gfx_create_vertex_data(36, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
 
-	vertex_buffer = gfx_get_vertex_data_buffer(vertex_data);
+	vertex_buffer = (float*)gfx_get_vertex_data_buffer(vertex_data);
 
 	vertex_buffer[0] = 0.0;
 	vertex_buffer[1] = 0.0;
@@ -872,13 +872,13 @@ elf_directory* elf_read_directory(const char *path)
 
 		item_count = elf_get_list_length(directory->items);
 
-		names = malloc(sizeof(elf_dir_item_emul)*item_count);
+		names = (elf_dir_item_emul*)malloc(sizeof(elf_dir_item_emul)*item_count);
 		memset(names, 0x0, sizeof(elf_dir_item_emul)*item_count);
 
 		for(i = 0, dir_item = (elf_directory_item*)elf_begin_list(directory->items); dir_item;
 			dir_item = (elf_directory_item*)elf_next_in_list(directory->items), i++)
 		{
-			names[i].str = malloc(sizeof(char)*(strlen(dir_item->name)+1));
+			names[i].str = (char*)malloc(sizeof(char)*(strlen(dir_item->name)+1));
 			memcpy(names[i].str, dir_item->name, sizeof(char)*(strlen(dir_item->name)+1));
 			names[i].type = dir_item->item_type;
 		}

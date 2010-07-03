@@ -201,7 +201,7 @@ void elf_generate_model_tangents(elf_model *model)
 	model->tangents = gfx_create_vertex_data(3*model->vertice_count, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
 	gfx_inc_ref((gfx_object*)model->tangents);
 
-	tangent_buffer = gfx_get_vertex_data_buffer(model->tangents);
+	tangent_buffer = (float*)gfx_get_vertex_data_buffer(model->tangents);
 
 	// smooth tangents
 	for(i = 0; i < (int)model->indice_count/3; i++)
@@ -222,7 +222,7 @@ void elf_generate_model_tangents(elf_model *model)
 		gfx_vec_normalize(&tangent_buffer[i]);
 	}
 
-	normal_buffer = gfx_get_vertex_data_buffer(model->normals);
+	normal_buffer = (float*)gfx_get_vertex_data_buffer(model->normals);
 
 	// orthogonize tangents
 	for(i = 0; i < (int)model->vertice_count*3; i+=3)
@@ -243,7 +243,7 @@ void elf_generate_model_tangents(elf_model *model)
 
 void elf_destroy_model(elf_model *model)
 {
-	unsigned int i;
+	int i;
 
 	if(model->name) elf_destroy_string(model->name);
 	if(model->file_path) elf_destroy_string(model->file_path);

@@ -1323,7 +1323,7 @@ ELF_API elf_handle ELF_APIENTRY elfCreateImageFromFile(const char* file_path)
 	handle = (elf_object*)elf_create_image_from_file(file_path);
 	return handle;
 }
-ELF_API void ELF_APIENTRY elfSetImagePixel(elf_handle image, int x, int y, int r, int g, int b, int a)
+ELF_API void ELF_APIENTRY elfSetImagePixel(elf_handle image, int x, int y, float r, float g, float b, float a)
 {
 	if(!image.get() || elf_get_object_type(image.get()) != ELF_IMAGE)
 	{
@@ -1386,6 +1386,25 @@ ELF_API int ELF_APIENTRY elfGetImageBitsPerPixel(elf_handle image)
 		return 0;
 	}
 	return elf_get_image_bits_per_pixel((elf_image*)image.get());
+}
+ELF_API elf_color ELF_APIENTRY elfGetImagePixel(elf_handle image, int x, int y)
+{
+	elf_color _e_type;
+	memset(&_e_type, 0x0, sizeof(elf_color));
+	if(!image.get() || elf_get_object_type(image.get()) != ELF_IMAGE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetImagePixel() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetImagePixel() -> invalid handle\n");
+		}
+		return _e_type;
+	}
+	_e_type = elf_get_image_pixel((elf_image*)image.get(), x, y);
+	return _e_type;
 }
 ELF_API elf_handle ELF_APIENTRY elfCreateTextureFromFile(const char* file_path)
 {

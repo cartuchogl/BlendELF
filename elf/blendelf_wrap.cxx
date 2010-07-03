@@ -6005,20 +6005,20 @@ static int _wrap_elfSetImagePixel(lua_State* L) {
   elf_handle arg1 ;
   int arg2 ;
   int arg3 ;
-  int arg4 ;
-  int arg5 ;
-  int arg6 ;
-  int arg7 ;
+  float arg4 ;
+  float arg5 ;
+  float arg6 ;
+  float arg7 ;
   elf_handle *argp1 ;
   
   SWIG_check_num_args("SetImagePixel",7,7)
   if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetImagePixel",1,"handle");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("SetImagePixel",2,"int");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("SetImagePixel",3,"int");
-  if(!lua_isnumber(L,4)) SWIG_fail_arg("SetImagePixel",4,"int");
-  if(!lua_isnumber(L,5)) SWIG_fail_arg("SetImagePixel",5,"int");
-  if(!lua_isnumber(L,6)) SWIG_fail_arg("SetImagePixel",6,"int");
-  if(!lua_isnumber(L,7)) SWIG_fail_arg("SetImagePixel",7,"int");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("SetImagePixel",4,"float");
+  if(!lua_isnumber(L,5)) SWIG_fail_arg("SetImagePixel",5,"float");
+  if(!lua_isnumber(L,6)) SWIG_fail_arg("SetImagePixel",6,"float");
+  if(!lua_isnumber(L,7)) SWIG_fail_arg("SetImagePixel",7,"float");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
     SWIG_fail_ptr("SetImagePixel",1,SWIGTYPE_p_elf_handle);
@@ -6027,10 +6027,10 @@ static int _wrap_elfSetImagePixel(lua_State* L) {
   
   arg2 = (int)lua_tonumber(L, 2);
   arg3 = (int)lua_tonumber(L, 3);
-  arg4 = (int)lua_tonumber(L, 4);
-  arg5 = (int)lua_tonumber(L, 5);
-  arg6 = (int)lua_tonumber(L, 6);
-  arg7 = (int)lua_tonumber(L, 7);
+  arg4 = (float)lua_tonumber(L, 4);
+  arg5 = (float)lua_tonumber(L, 5);
+  arg6 = (float)lua_tonumber(L, 6);
+  arg7 = (float)lua_tonumber(L, 7);
   elfSetImagePixel(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
   
   return SWIG_arg;
@@ -6111,6 +6111,41 @@ static int _wrap_elfGetImageBitsPerPixel(lua_State* L) {
   
   result = (int)elfGetImageBitsPerPixel(arg1);
   lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetImagePixel(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  int arg2 ;
+  int arg3 ;
+  elf_handle *argp1 ;
+  elf_color result;
+  
+  SWIG_check_num_args("GetImagePixel",3,3)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetImagePixel",1,"handle");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("GetImagePixel",2,"int");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("GetImagePixel",3,"int");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetImagePixel",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  arg3 = (int)lua_tonumber(L, 3);
+  result = elfGetImagePixel(arg1,arg2,arg3);
+  {
+    elf_color * resultptr = new elf_color((const elf_color &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_color,1); SWIG_arg++;
+  }
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -20771,6 +20806,7 @@ static const struct luaL_reg swig_commands[] = {
     { "GetImageWidth", _wrap_elfGetImageWidth},
     { "GetImageHeight", _wrap_elfGetImageHeight},
     { "GetImageBitsPerPixel", _wrap_elfGetImageBitsPerPixel},
+    { "GetImagePixel", _wrap_elfGetImagePixel},
     { "CreateTextureFromFile", _wrap_elfCreateTextureFromFile},
     { "CreateTextureFromImage", _wrap_elfCreateTextureFromImage},
     { "GetTextureName", _wrap_elfGetTextureName},

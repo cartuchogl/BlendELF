@@ -127,7 +127,7 @@ void elf_recursively_import_assets(elf_scene *scene, const struct aiScene *aiscn
 	char *parent_folder;
 	char *real_path;
 
-	for(i = 0; i < aind->mNumMeshes; i++)
+	for(i = 0; i < (int)aind->mNumMeshes; i++)
 	{
 		const struct aiMesh *mesh = aiscn->mMeshes[aind->mMeshes[i]];
 
@@ -163,7 +163,7 @@ void elf_recursively_import_assets(elf_scene *scene, const struct aiScene *aiscn
 		model->index = (unsigned int*)malloc(sizeof(unsigned int)*model->areas[0].indice_count);
 		index_buffer = (unsigned int*)gfx_get_vertex_data_buffer(model->areas[0].index);
 
-		for(j = 0; j < mesh->mNumFaces; j++)
+		for(j = 0; j < (int)mesh->mNumFaces; j++)
 		{
 			const struct aiFace *face = &mesh->mFaces[j];
 
@@ -173,7 +173,7 @@ void elf_recursively_import_assets(elf_scene *scene, const struct aiScene *aiscn
 				break;
 			}
 
-			for(k = 0; k < face->mNumIndices; k++)
+			for(k = 0; k < (int)face->mNumIndices; k++)
 			{
 				index = face->mIndices[k];
 
@@ -293,7 +293,7 @@ void elf_recursively_import_assets(elf_scene *scene, const struct aiScene *aiscn
 		elf_add_entity_to_scene(scene, entity);
 	}
 
-	for (i = 0; i < aind->mNumChildren; i++)
+	for (i = 0; i < (int)aind->mNumChildren; i++)
 	{
 		elf_recursively_import_assets(scene, aiscn, aind->mChildren[i]);
 	}
@@ -303,7 +303,7 @@ elf_scene* elf_create_scene_from_file(const char *file_path)
 {
 	elf_pak *pak;
 	elf_scene *scene;
-	char *type;
+	const char *type;
 
 	type = strrchr(file_path, '.');
 	if(!type)
