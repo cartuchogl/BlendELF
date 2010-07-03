@@ -1311,10 +1311,104 @@ ELF_API double ELF_APIENTRY elfGetElapsedTime(elf_handle timer)
 	}
 	return elf_get_elapsed_time((elf_timer*)timer.get());
 }
+ELF_API elf_handle ELF_APIENTRY elfCreateEmptyImage(int width, int height, int bpp)
+{
+	elf_handle handle;
+	handle = (elf_object*)elf_create_empty_image(width, height, bpp);
+	return handle;
+}
+ELF_API elf_handle ELF_APIENTRY elfCreateImageFromFile(const char* file_path)
+{
+	elf_handle handle;
+	handle = (elf_object*)elf_create_image_from_file(file_path);
+	return handle;
+}
+ELF_API void ELF_APIENTRY elfSetImagePixel(elf_handle image, int x, int y, int r, int g, int b, int a)
+{
+	if(!image.get() || elf_get_object_type(image.get()) != ELF_IMAGE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetImagePixel() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetImagePixel() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_image_pixel((elf_image*)image.get(), x, y, r, g, b, a);
+}
+ELF_API int ELF_APIENTRY elfGetImageWidth(elf_handle image)
+{
+	if(!image.get() || elf_get_object_type(image.get()) != ELF_IMAGE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetImageWidth() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetImageWidth() -> invalid handle\n");
+		}
+		return 0;
+	}
+	return elf_get_image_width((elf_image*)image.get());
+}
+ELF_API int ELF_APIENTRY elfGetImageHeight(elf_handle image)
+{
+	if(!image.get() || elf_get_object_type(image.get()) != ELF_IMAGE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetImageHeight() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetImageHeight() -> invalid handle\n");
+		}
+		return 0;
+	}
+	return elf_get_image_height((elf_image*)image.get());
+}
+ELF_API int ELF_APIENTRY elfGetImageBitsPerPixel(elf_handle image)
+{
+	if(!image.get() || elf_get_object_type(image.get()) != ELF_IMAGE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetImageBitsPerPixel() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetImageBitsPerPixel() -> invalid handle\n");
+		}
+		return 0;
+	}
+	return elf_get_image_bits_per_pixel((elf_image*)image.get());
+}
 ELF_API elf_handle ELF_APIENTRY elfCreateTextureFromFile(const char* file_path)
 {
 	elf_handle handle;
 	handle = (elf_object*)elf_create_texture_from_file(file_path);
+	return handle;
+}
+ELF_API elf_handle ELF_APIENTRY elfCreateTextureFromImage(elf_handle image)
+{
+	elf_handle handle;
+	if(!image.get() || elf_get_object_type(image.get()) != ELF_IMAGE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "CreateTextureFromImage() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "CreateTextureFromImage() -> invalid handle\n");
+		}
+		return handle;
+	}
+	handle = (elf_object*)elf_create_texture_from_image((elf_image*)image.get());
 	return handle;
 }
 ELF_API const char* ELF_APIENTRY elfGetTextureName(elf_handle texture)

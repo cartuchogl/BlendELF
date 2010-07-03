@@ -268,7 +268,8 @@ elfobjs = ['elf_config',
 	'elf_directory_item',
 	'elf_vertice',
 	'elf_face',
-	'elf_mesh_data']
+	'elf_mesh_data',
+	'elf_image']
 
 defines = []
 functions = []

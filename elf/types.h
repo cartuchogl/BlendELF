@@ -232,7 +232,7 @@ struct elf_image {
 	int width;
 	int height;
 	unsigned char bpp;
-	void *data;
+	unsigned char *data;
 };
 
 struct elf_texture {

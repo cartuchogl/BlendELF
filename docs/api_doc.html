@@ -514,8 +514,16 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apiobjtype">object</span> elf.CreateTimer(  )</div>
 <div class="apifunc">elf.StartTimer( <span class="apiobjtype">object</span> timer )</div>
 <div class="apifunc"><span class="apikeytype">double</span> elf.GetElapsedTime( <span class="apiobjtype">object</span> timer )</div>
+<div class="apitopic">IMAGE FUNCTIONS</div>
+<div class="apifunc"><span class="apiobjtype">object</span> elf.CreateEmptyImage( <span class="apikeytype">int</span> width, <span class="apikeytype">int</span> height, <span class="apikeytype">int</span> bpp )</div>
+<div class="apifunc"><span class="apiobjtype">object</span> elf.CreateImageFromFile( <span class="apikeytype">string</span> file_path )</div>
+<div class="apifunc">elf.SetImagePixel( <span class="apiobjtype">object</span> image, <span class="apikeytype">int</span> x, <span class="apikeytype">int</span> y, <span class="apikeytype">int</span> r, <span class="apikeytype">int</span> g, <span class="apikeytype">int</span> b, <span class="apikeytype">int</span> a )</div>
+<div class="apifunc"><span class="apikeytype">int</span> elf.GetImageWidth( <span class="apiobjtype">object</span> image )</div>
+<div class="apifunc"><span class="apikeytype">int</span> elf.GetImageHeight( <span class="apiobjtype">object</span> image )</div>
+<div class="apifunc"><span class="apikeytype">int</span> elf.GetImageBitsPerPixel( <span class="apiobjtype">object</span> image )</div>
 <div class="apitopic">TEXTURE FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">object</span> elf.CreateTextureFromFile( <span class="apikeytype">string</span> file_path )</div>
+<div class="apifunc"><span class="apiobjtype">object</span> elf.CreateTextureFromImage( <span class="apiobjtype">object</span> image )</div>
 <div class="apifunc"><span class="apikeytype">string</span> elf.GetTextureName( <span class="apiobjtype">object</span> texture )</div>
 <div class="apifunc"><span class="apikeytype">string</span> elf.GetTextureFilePath( <span class="apiobjtype">object</span> texture )</div>
 <div class="apifunc"><span class="apikeytype">int</span> elf.GetTextureWidth( <span class="apiobjtype">object</span> texture )</div>

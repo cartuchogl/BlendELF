@@ -737,12 +737,17 @@ double elf_get_elapsed_time(elf_timer *timer);
 
 //////////////////////////////// IMAGE ////////////////////////////////
 
-elf_image* elf_create_image_from_file(const char *file_path);	// <mdoc> IMAGE FUNCTIONS
+/* <!> */ elf_image* elf_create_image();
+elf_image* elf_create_empty_image(int width, int height, int bpp);	// <mdoc> IMAGE FUNCTIONS
+elf_image* elf_create_image_from_file(const char *file_path);
 /* <!> */ void elf_destroy_image(elf_image *image);
+
+void elf_set_image_pixel(elf_image *image, int x, int y, int r, int g, int b, int a);
 
 int elf_get_image_width(elf_image *image);
 int elf_get_image_height(elf_image *image);
 int elf_get_image_bits_per_pixel(elf_image *image);
+
 // <!!
 void* elf_get_image_data(elf_image *image);
 unsigned char elf_save_image_data(const char *file_path, int width, int height, unsigned char bpp, void *data);
@@ -756,6 +761,7 @@ void elf_destroy_texture(elf_texture *texture);
 // !!>
 
 elf_texture* elf_create_texture_from_file(const char *file_path);	// <mdoc> TEXTURE FUNCTIONS
+elf_texture *elf_create_texture_from_image(elf_image *image);
 
 const char* elf_get_texture_name(elf_texture *texture);
 const char* elf_get_texture_file_path(elf_texture *texture);

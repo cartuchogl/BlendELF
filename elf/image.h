@@ -1,4 +1,35 @@
 
+elf_image* elf_create_image()
+{
+	elf_image *image;
+
+	image = (elf_image*)malloc(sizeof(elf_image));
+	memset(image, 0x0, sizeof(elf_image));
+	image->type = ELF_IMAGE;
+
+	elf_inc_obj_count();
+
+	return image;
+}
+
+elf_image* elf_create_empty_image(int width, int height, int bpp)
+{
+	elf_image *image;
+
+	if(width < 0 || height < 0 || (bpp != 8 && bpp != 16 && bpp != 24 && bpp != 32)) return NULL;
+
+	image = elf_create_image();
+
+	image->width = width;
+	image->height = height;
+	image->bpp = bpp;
+
+	image->data = (unsigned char*)malloc(sizeof(unsigned char)*width*height*(bpp/8));
+	memset(image->data, 0x0, sizeof(unsigned char)*width*height*(bpp/8));
+
+	return 0;
+}
+
 elf_image* elf_create_image_from_file(const char *file_path)
 {
 	elf_image *image;
@@ -37,9 +68,7 @@ elf_image* elf_create_image_from_file(const char *file_path)
 		return NULL;
 	}
 
-	image = (elf_image*)malloc(sizeof(elf_image));
-	memset(image, 0x0, sizeof(elf_image));
-	image->type = ELF_IMAGE;
+	image = elf_create_image();
 
 	image->width = FreeImage_GetWidth(in);
 	image->height = FreeImage_GetHeight(in);
@@ -62,8 +91,6 @@ elf_image* elf_create_image_from_file(const char *file_path)
 
 	FreeImage_Unload(in);
 
-	elf_inc_obj_count();
-
 	return image;
 }
 
@@ -74,6 +101,20 @@ void elf_destroy_image(elf_image *image)
 	free(image);
 
 	elf_dec_obj_count();
+}
+
+void elf_set_image_pixel(elf_image *image, int x, int y, int r, int g, int b, int a)
+{
+	int offset;
+
+	if(x < 0 || x >= image->width || y < 0 || y >= image->height) return;
+
+	offset = image->width*y+x;
+
+	image->data[offset] = (unsigned char)r;
+	if(image->bpp == 16) image->data[offset+1] = (unsigned char)g;
+	if(image->bpp == 24) image->data[offset+2] = (unsigned char)b;
+	if(image->bpp == 32) image->data[offset+3] = (unsigned char)a;
 }
 
 int elf_get_image_width(elf_image *image)

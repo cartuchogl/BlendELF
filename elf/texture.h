@@ -20,8 +20,6 @@ elf_texture* elf_create_texture_from_file(const char *file_path)
 	elf_texture *texture;
 	int format;
 	int internal_format;
-	int width, height;
-	unsigned char *data;
 
 	image = elf_create_image_from_file(file_path);
 	if(!image) return NULL;
@@ -30,17 +28,8 @@ elf_texture* elf_create_texture_from_file(const char *file_path)
 	{
 		case 8: format = GFX_LUMINANCE; internal_format = GFX_LUMINANCE; break;
 		case 16: format = GFX_LUMINANCE_ALPHA; internal_format = GFX_LUMINANCE_ALPHA; break;
-		case 24:
-			format = GFX_BGR;
-			internal_format = GFX_COMPRESSED_RGB;
-			width = elf_get_image_width(image);
-			height = elf_get_image_height(image);
-			data = (unsigned char*)elf_get_image_data(image);
-			break;
-		case 32:
-			format = GFX_BGRA;
-			internal_format = GFX_COMPRESSED_RGBA;
-			break;
+		case 24: format = GFX_BGR; internal_format = GFX_COMPRESSED_RGB; break;
+		case 32: format = GFX_BGRA; internal_format = GFX_COMPRESSED_RGBA; break;
 		default:
 			elf_set_error(ELF_INVALID_FILE, "error: unsupported bits per pixel value [%d] in image \"%s\"\n", elf_get_image_bits_per_pixel(image), file_path);
 			elf_destroy_image(image);
@@ -63,6 +52,38 @@ elf_texture* elf_create_texture_from_file(const char *file_path)
 	}
 
 	elf_destroy_image(image);
+
+	return texture;
+}
+
+elf_texture* elf_create_texture_from_image(elf_image *image)
+{
+	elf_texture *texture;
+	int format;
+	int internal_format;
+
+	switch(elf_get_image_bits_per_pixel(image))
+	{
+		case 8: format = GFX_LUMINANCE; internal_format = GFX_LUMINANCE; break;
+		case 16: format = GFX_LUMINANCE_ALPHA; internal_format = GFX_LUMINANCE_ALPHA; break;
+		case 24: format = GFX_BGR; internal_format = GFX_COMPRESSED_RGB; break;
+		case 32: format = GFX_BGRA; internal_format = GFX_COMPRESSED_RGBA; break;
+		default:
+			elf_set_error(ELF_INVALID_FILE, "error: unsupported bits per pixel value [%d] for image\n", elf_get_image_bits_per_pixel(image));
+			return NULL;
+	}
+
+	texture = elf_create_texture();
+
+	texture->texture = gfx_create_2d_texture(elf_get_image_width(image), elf_get_image_height(image),
+		eng->texture_anisotropy, GFX_REPEAT, GFX_LINEAR, format, internal_format, GFX_UBYTE, elf_get_image_data(image));
+
+	if(!texture->texture)
+	{
+		elf_set_error(ELF_CANT_CREATE, "error: failed to create texture\n");
+		elf_destroy_texture(texture);
+		return NULL;
+	}
 
 	return texture;
 }
