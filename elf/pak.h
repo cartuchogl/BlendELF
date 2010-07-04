@@ -2090,7 +2090,7 @@ unsigned char elf_save_scene_to_pak(elf_scene *scene, const char *file_path)
 	file = fopen(file_path, "wb");
 	if(!file)
 	{
-		elf_set_error(ELF_CANT_OPEN_FILE, "error: can't open file \"%s\" for writing", file_path);
+		elf_set_error(ELF_CANT_OPEN_FILE, "error: can't open file \"%s\" for writing\n", file_path);
 
 		elf_dec_ref((elf_object*)scenes);
 		elf_dec_ref((elf_object*)scripts);
