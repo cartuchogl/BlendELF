@@ -3,7 +3,7 @@ LICENSE
 This file contains the licenses for BlendELF binary, BlendELF code and the
 libraries BlendELF uses. If you desire a different license for either the
 code or the binary, or if you find something incorrect in this file please
-contact the author of BlendELF, Samuel Anjam at contact@blendelf.com.
+contact the author of BlendELF, Samuel Anjam at support@blendelf.com.
 
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------
