@@ -981,6 +981,17 @@ elf_vec4f elf_create_qua_from_euler(float x, float y, float z)
 	return result;
 }
 
+elf_vec4f elf_create_qua_from_angle_axis(float angle, float x, float y, float z)
+{
+	elf_vec4f qua;
+	float axis[3];
+
+	axis[0] = x; axis[1] = y; axis[2] = z;
+	gfx_qua_from_angle_axis(angle, axis, &qua.x);
+
+	return qua;
+}
+
 elf_vec3f elf_mul_qua_vec3f(elf_vec4f qua, elf_vec3f vec)
 {
 	elf_vec3f result;

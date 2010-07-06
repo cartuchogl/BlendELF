@@ -981,6 +981,13 @@ ELF_API elf_vec4f ELF_APIENTRY elfCreateQuaFromEuler(float x, float y, float z)
 	_e_type = elf_create_qua_from_euler(x, y, z);
 	return _e_type;
 }
+ELF_API elf_vec4f ELF_APIENTRY elfCreateQuaFromAngleAxis(float angle, float x, float y, float z)
+{
+	elf_vec4f _e_type;
+	memset(&_e_type, 0x0, sizeof(elf_vec4f));
+	_e_type = elf_create_qua_from_angle_axis(angle, x, y, z);
+	return _e_type;
+}
 ELF_API elf_vec3f ELF_APIENTRY elfMulQuaVec3f(elf_vec4f qua, elf_vec3f vec)
 {
 	elf_vec3f _e_type;

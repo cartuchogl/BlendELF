@@ -5094,6 +5094,38 @@ fail:
 }
 
 
+static int _wrap_elfCreateQuaFromAngleAxis(lua_State* L) {
+  int SWIG_arg = 0;
+  float arg1 ;
+  float arg2 ;
+  float arg3 ;
+  float arg4 ;
+  elf_vec4f result;
+  
+  SWIG_check_num_args("CreateQuaFromAngleAxis",4,4)
+  if(!lua_isnumber(L,1)) SWIG_fail_arg("CreateQuaFromAngleAxis",1,"float");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("CreateQuaFromAngleAxis",2,"float");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("CreateQuaFromAngleAxis",3,"float");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("CreateQuaFromAngleAxis",4,"float");
+  arg1 = (float)lua_tonumber(L, 1);
+  arg2 = (float)lua_tonumber(L, 2);
+  arg3 = (float)lua_tonumber(L, 3);
+  arg4 = (float)lua_tonumber(L, 4);
+  result = elfCreateQuaFromAngleAxis(arg1,arg2,arg3,arg4);
+  {
+    elf_vec4f * resultptr = new elf_vec4f((const elf_vec4f &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_vec4f,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfMulQuaVec3f(lua_State* L) {
   int SWIG_arg = 0;
   elf_vec4f arg1 ;
@@ -20768,6 +20800,7 @@ static const struct luaL_reg swig_commands[] = {
     { "CreateVec3fFromValues", _wrap_elfCreateVec3fFromValues},
     { "CreateQua", _wrap_elfCreateQua},
     { "CreateQuaFromEuler", _wrap_elfCreateQuaFromEuler},
+    { "CreateQuaFromAngleAxis", _wrap_elfCreateQuaFromAngleAxis},
     { "MulQuaVec3f", _wrap_elfMulQuaVec3f},
     { "MulQuaQua", _wrap_elfMulQuaQua},
     { "GetQuaInverted", _wrap_elfGetQuaInverted},
