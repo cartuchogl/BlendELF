@@ -192,7 +192,7 @@ unsigned char elf_remove_from_list(elf_list *list, elf_object *obj)
 		ptr = ptr->next;
 	}
 
-	return ELF_TRUE;
+	return ELF_FALSE;
 }
 
 elf_object* elf_begin_list(elf_list *list)

@@ -1031,7 +1031,6 @@ elf_camera *elf_get_or_load_camera_by_name(elf_scene *scene, const char *name)
 			file = fopen(scene->pak->file_path, "rb");
 			fseek(file, elf_get_pak_index_offset(index), SEEK_SET);
 			if(feof(file)) return NULL;
-
 			camera = elf_create_camera_from_pak(file, name, scene);
 			if(camera) elf_add_camera_to_scene(scene, camera);
 			fclose(file);
