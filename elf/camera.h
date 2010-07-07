@@ -90,15 +90,15 @@ void elf_set_camera_perspective(elf_camera *camera, float fov, float aspect, flo
 	camera->clip_near = clip_near;
 	camera->clip_far = clip_far;
 
-	camera->far_plane_height = 2 * (float)tan(camera->fov * GFX_PI_DIV_180 / 2) * camera->clip_far;
-	camera->far_plane_width = camera->far_plane_height * camera->aspect;
-
 	if(aspect <= 0.0)
 	{
 		if((float)elf_get_window_width()/(float)elf_get_window_height() >= 1.0)
 			aspect = (float)elf_get_window_width()/(float)elf_get_window_height();
 		else aspect = (float)elf_get_window_height()/(float)elf_get_window_width();
 	}
+
+	camera->far_plane_height = 2 * (float)tan(camera->fov * GFX_PI_DIV_180 / 2) * camera->clip_far;
+	camera->far_plane_width = camera->far_plane_height * aspect;
 
 	gfx_get_perspective_projection_matrix(camera->fov, aspect,
 		camera->clip_near, camera->clip_far, camera->projection_matrix);
