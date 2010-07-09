@@ -765,6 +765,8 @@ void elf_destroy_texture(elf_texture *texture);
 elf_texture* elf_create_texture_from_file(const char *file_path);	// <mdoc> TEXTURE FUNCTIONS
 elf_texture *elf_create_texture_from_image(elf_image *image);
 
+void elf_set_texture_name(elf_texture *texture, const char *name);
+
 const char* elf_get_texture_name(elf_texture *texture);
 const char* elf_get_texture_file_path(elf_texture *texture);
 int elf_get_texture_width(elf_texture *texture);
@@ -879,6 +881,7 @@ elf_script* elf_get_actor_script(elf_actor *actor);
 
 void elf_set_actor_name(elf_actor *actor, const char *name);
 void elf_set_actor_script(elf_actor *actor, elf_script *script);
+void elf_clear_actor_script(elf_actor *actor);
 
 void elf_set_actor_position(elf_actor *actor, float x, float y, float z);
 void elf_set_actor_rotation(elf_actor *actor, float x, float y, float z);
@@ -1509,8 +1512,10 @@ unsigned char elf_is_post_process_light_shafts(elf_post_process *post_process);
 void elf_destroy_script(elf_script *script);
 // !!>
 
-elf_script* elf_create_script();	// <mdoc> SCRIPT FUNCTIONS
+elf_script* elf_create_script(const char *name);	// <mdoc> SCRIPT FUNCTIONS
 elf_script* elf_create_script_from_file(const char *file_path);
+
+void elf_set_script_name(elf_script *script, const char *name);
 
 const char* elf_get_script_name(elf_script *script);
 const char* elf_get_script_file_path(elf_script *script);

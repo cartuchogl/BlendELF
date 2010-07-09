@@ -210,6 +210,12 @@ void elf_set_actor_script(elf_actor *actor, elf_script *script)
 	if(actor->script) elf_inc_ref((elf_object*)actor->script);
 }
 
+void elf_clear_actor_script(elf_actor *actor)
+{
+	if(actor->script) elf_dec_ref((elf_object*)actor->script);
+	actor->script = NULL;
+}
+
 void elf_set_actor_position(elf_actor *actor, float x, float y, float z)
 {
 	actor->moved = ELF_TRUE;

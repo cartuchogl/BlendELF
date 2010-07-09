@@ -1,5 +1,5 @@
 
-elf_script* elf_create_script()
+elf_script* elf_create_script(const char *name)
 {
 	elf_script *script;
 
@@ -8,6 +8,8 @@ elf_script* elf_create_script()
 	script->type = ELF_SCRIPT;
 
 	script->id = ++gen->script_id_counter;
+
+	if(name) script->name = elf_create_string(name);
 
 	elf_inc_obj_count();
 
@@ -37,9 +39,11 @@ elf_script* elf_create_script_from_file(const char *file_path)
 		memset(text, 0x0, sizeof(char)*length+1);
 		fread(text, sizeof(char), length, file);
 
-		script = elf_create_script();
+		script = elf_create_script(NULL);
+
 		script->name = elf_create_string(file_path);
 		script->file_path = elf_create_string(file_path);
+
 		elf_set_script_text(script, text);
 
 		free(text);
@@ -59,6 +63,12 @@ void elf_destroy_script(elf_script *script)
 	elf_dec_obj_count();
 
 	free(script);
+}
+
+void elf_set_script_name(elf_script *script, const char *name)
+{
+	if(script->name) elf_destroy_string(script->name);
+	script->name = elf_create_string(name);
 }
 
 const char* elf_get_script_name(elf_script *script)

@@ -1190,7 +1190,7 @@ elf_script* elf_create_script_from_pak(FILE *file, const char *name, elf_scene *
 	memset(rname, 0x0, sizeof(char)*64);
 	fread(rname, sizeof(char), 64, file);
 
-	script = elf_create_script();
+	script = elf_create_script(NULL);
 
 	script->name = elf_create_string(name);
 	script->file_path = elf_create_string(elf_get_scene_file_path(scene));

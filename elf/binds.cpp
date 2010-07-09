@@ -1437,6 +1437,22 @@ ELF_API elf_handle ELF_APIENTRY elfCreateTextureFromImage(elf_handle image)
 	handle = (elf_object*)elf_create_texture_from_image((elf_image*)image.get());
 	return handle;
 }
+ELF_API void ELF_APIENTRY elfSetTextureName(elf_handle texture, const char* name)
+{
+	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetTextureName() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetTextureName() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_texture_name((elf_texture*)texture.get(), name);
+}
 ELF_API const char* ELF_APIENTRY elfGetTextureName(elf_handle texture)
 {
 	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
@@ -2441,6 +2457,22 @@ ELF_API void ELF_APIENTRY elfSetActorScript(elf_handle actor, elf_handle script)
 		return;
 	}
 	elf_set_actor_script((elf_actor*)actor.get(), (elf_script*)script.get());
+}
+ELF_API void ELF_APIENTRY elfClearActorScript(elf_handle actor)
+{
+	if(!actor.get() || !elf_is_actor(actor.get()))
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "ClearActorScript() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "ClearActorScript() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_clear_actor_script((elf_actor*)actor.get());
 }
 ELF_API void ELF_APIENTRY elfSetActorPosition(elf_handle actor, float x, float y, float z)
 {
@@ -7560,10 +7592,10 @@ ELF_API bool ELF_APIENTRY elfRemoveActorByObject(elf_handle scene, elf_handle ac
 	}
 	return (bool)elf_remove_actor_by_object((elf_scene*)scene.get(), (elf_actor*)actor.get());
 }
-ELF_API elf_handle ELF_APIENTRY elfCreateScript()
+ELF_API elf_handle ELF_APIENTRY elfCreateScript(const char* name)
 {
 	elf_handle handle;
-	handle = (elf_object*)elf_create_script();
+	handle = (elf_object*)elf_create_script(name);
 	return handle;
 }
 ELF_API elf_handle ELF_APIENTRY elfCreateScriptFromFile(const char* file_path)
@@ -7571,6 +7603,22 @@ ELF_API elf_handle ELF_APIENTRY elfCreateScriptFromFile(const char* file_path)
 	elf_handle handle;
 	handle = (elf_object*)elf_create_script_from_file(file_path);
 	return handle;
+}
+ELF_API void ELF_APIENTRY elfSetScriptName(elf_handle script, const char* name)
+{
+	if(!script.get() || elf_get_object_type(script.get()) != ELF_SCRIPT)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetScriptName() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetScriptName() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_script_name((elf_script*)script.get(), name);
 }
 ELF_API const char* ELF_APIENTRY elfGetScriptName(elf_handle script)
 {

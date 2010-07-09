@@ -101,6 +101,12 @@ void elf_destroy_texture(elf_texture *texture)
 	free(texture);
 }
 
+void elf_set_texture_name(elf_texture *texture, const char *name)
+{
+	if(texture->name) elf_destroy_string(texture->name);
+	texture->name = elf_create_string(name);
+}
+
 const char* elf_get_texture_name(elf_texture *texture)
 {
 	return texture->name;
