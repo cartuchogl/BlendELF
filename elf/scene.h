@@ -93,6 +93,7 @@ elf_scene* elf_create_scene(const char *name)
 	scene->dworld = elf_create_physics_world();
 
 	scene->physics = ELF_TRUE;
+	scene->run_scripts = ELF_TRUE;
 
 	scene->dof_depth_write = gfx_create_shader_program(dof_depth_write_vert, dof_depth_write_frag);
 	scene->dof_depth_write_alpha = gfx_create_shader_program(dof_depth_write_alpha_vert, dof_depth_write_alpha_frag);
