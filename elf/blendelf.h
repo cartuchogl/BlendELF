@@ -1870,6 +1870,7 @@ unsigned char elf_remove_gui_object_by_object(elf_gui_object *parent, elf_gui_ob
 
 elf_gui_object* elf_get_gui_trace(elf_gui *gui);
 elf_gui_object* elf_get_gui_focus(elf_gui *gui);
+elf_gui_object* elf_get_gui_active_text_field(elf_gui *gui);
 
 void elf_empty_gui(elf_gui *gui);
 

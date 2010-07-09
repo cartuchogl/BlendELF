@@ -9809,6 +9809,24 @@ ELF_API elf_handle ELF_APIENTRY elfGetGuiFocus(elf_handle gui)
 	handle = (elf_object*)elf_get_gui_focus((elf_gui*)gui.get());
 	return handle;
 }
+ELF_API elf_handle ELF_APIENTRY elfGetGuiActiveTextField(elf_handle gui)
+{
+	elf_handle handle;
+	if(!gui.get() || elf_get_object_type(gui.get()) != ELF_GUI)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetGuiActiveTextField() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetGuiActiveTextField() -> invalid handle\n");
+		}
+		return handle;
+	}
+	handle = (elf_object*)elf_get_gui_active_text_field((elf_gui*)gui.get());
+	return handle;
+}
 ELF_API void ELF_APIENTRY elfEmptyGui(elf_handle gui)
 {
 	if(!gui.get() || elf_get_object_type(gui.get()) != ELF_GUI)

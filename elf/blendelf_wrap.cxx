@@ -20431,6 +20431,35 @@ fail:
 }
 
 
+static int _wrap_elfGetGuiActiveTextField(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  elf_handle result;
+  
+  SWIG_check_num_args("GetGuiActiveTextField",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetGuiActiveTextField",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetGuiActiveTextField",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = elfGetGuiActiveTextField(arg1);
+  {
+    elf_handle * resultptr = new elf_handle((const elf_handle &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_handle,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfEmptyGui(lua_State* L) {
   int SWIG_arg = 0;
   elf_handle arg1 ;
@@ -21323,6 +21352,7 @@ static const struct luaL_reg swig_commands[] = {
     { "RemoveGuiObjectByObject", _wrap_elfRemoveGuiObjectByObject},
     { "GetGuiTrace", _wrap_elfGetGuiTrace},
     { "GetGuiFocus", _wrap_elfGetGuiFocus},
+    { "GetGuiActiveTextField", _wrap_elfGetGuiActiveTextField},
     { "EmptyGui", _wrap_elfEmptyGui},
     { "CreateSession", _wrap_elfCreateSession},
     { "ConnectSession", _wrap_elfConnectSession},

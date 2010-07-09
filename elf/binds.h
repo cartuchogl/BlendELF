@@ -968,6 +968,7 @@ ELF_API bool ELF_APIENTRY elfRemoveGuiObjectByIndex(elf_handle parent, int idx);
 ELF_API bool ELF_APIENTRY elfRemoveGuiObjectByObject(elf_handle parent, elf_handle object);
 ELF_API elf_handle ELF_APIENTRY elfGetGuiTrace(elf_handle gui);
 ELF_API elf_handle ELF_APIENTRY elfGetGuiFocus(elf_handle gui);
+ELF_API elf_handle ELF_APIENTRY elfGetGuiActiveTextField(elf_handle gui);
 ELF_API void ELF_APIENTRY elfEmptyGui(elf_handle gui);
 ELF_API bool ELF_APIENTRY elfCreateSession(const char* address, unsigned short port);
 ELF_API bool ELF_APIENTRY elfConnectSession(const char* address, unsigned short port);

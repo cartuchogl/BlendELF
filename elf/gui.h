@@ -2187,6 +2187,11 @@ elf_gui_object* elf_get_gui_focus(elf_gui *gui)
 	return (elf_gui_object*)gui->focus_screen;
 }
 
+elf_gui_object* elf_get_gui_active_text_field(elf_gui *gui)
+{
+	return (elf_gui_object*)gui->active_text_field;
+}
+
 void elf_empty_gui(elf_gui *gui)
 {
 	elf_dec_ref((elf_object*)gui->children);
