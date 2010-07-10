@@ -7592,6 +7592,78 @@ ELF_API bool ELF_APIENTRY elfRemoveActorByObject(elf_handle scene, elf_handle ac
 	}
 	return (bool)elf_remove_actor_by_object((elf_scene*)scene.get(), (elf_actor*)actor.get());
 }
+ELF_API elf_handle ELF_APIENTRY elfGetSceneScripts(elf_handle scene)
+{
+	elf_handle handle;
+	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSceneScripts() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetSceneScripts() -> invalid handle\n");
+		}
+		return handle;
+	}
+	handle = (elf_object*)elf_get_scene_scripts((elf_scene*)scene.get());
+	return handle;
+}
+ELF_API elf_handle ELF_APIENTRY elfGetSceneTextures(elf_handle scene)
+{
+	elf_handle handle;
+	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSceneTextures() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetSceneTextures() -> invalid handle\n");
+		}
+		return handle;
+	}
+	handle = (elf_object*)elf_get_scene_textures((elf_scene*)scene.get());
+	return handle;
+}
+ELF_API elf_handle ELF_APIENTRY elfGetSceneMaterials(elf_handle scene)
+{
+	elf_handle handle;
+	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSceneMaterials() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetSceneMaterials() -> invalid handle\n");
+		}
+		return handle;
+	}
+	handle = (elf_object*)elf_get_scene_materials((elf_scene*)scene.get());
+	return handle;
+}
+ELF_API elf_handle ELF_APIENTRY elfGetSceneModels(elf_handle scene)
+{
+	elf_handle handle;
+	if(!scene.get() || elf_get_object_type(scene.get()) != ELF_SCENE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSceneModels() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetSceneModels() -> invalid handle\n");
+		}
+		return handle;
+	}
+	handle = (elf_object*)elf_get_scene_models((elf_scene*)scene.get());
+	return handle;
+}
 ELF_API elf_handle ELF_APIENTRY elfCreateScript(const char* name)
 {
 	elf_handle handle;

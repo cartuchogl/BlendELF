@@ -1413,6 +1413,11 @@ void elf_draw_scene(elf_scene *scene);
 void elf_draw_scene_debug(elf_scene *scene);
 // !!>
 
+elf_list* elf_get_scene_scripts(elf_scene *scene);
+elf_list* elf_get_scene_textures(elf_scene *scene);
+elf_list* elf_get_scene_materials(elf_scene *scene);
+elf_list* elf_get_scene_models(elf_scene *scene);
+
 //////////////////////////////// PAK ////////////////////////////////
 
 // <!!

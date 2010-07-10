@@ -1968,3 +1968,192 @@ void elf_draw_scene_debug(elf_scene *scene)
 	gfx_set_shader_params(&scene->shader_params);
 }
 
+
+
+elf_list* elf_get_scene_scripts(elf_scene *scene)
+{
+	elf_list *scripts;
+
+	elf_camera *cam;
+	elf_entity *ent;
+	elf_light *lig;
+	elf_particles *par;
+	elf_sprite *spr;
+
+	scripts = elf_create_list();
+
+	elf_inc_ref((elf_object*)scripts);
+
+	for(cam = (elf_camera*)elf_begin_list(scene->cameras); cam;
+		cam = (elf_camera*)elf_next_in_list(scene->cameras))
+	{
+		if(cam->script && !elf_get_resource_by_id(scripts, cam->script->id))
+		{
+			elf_append_to_list(scripts, (elf_object*)cam->script);
+		}
+	}
+
+	for(ent = (elf_entity*)elf_begin_list(scene->entities); ent;
+		ent = (elf_entity*)elf_next_in_list(scene->entities))
+	{
+		if(ent->script && !elf_get_resource_by_id(scripts, ent->script->id))
+		{
+			elf_append_to_list(scripts, (elf_object*)ent->script);
+		}
+	}
+
+	for(lig = (elf_light*)elf_begin_list(scene->lights); lig;
+		lig = (elf_light*)elf_next_in_list(scene->lights))
+	{
+		if(lig->script && !elf_get_resource_by_id(scripts, lig->script->id))
+		{
+			elf_append_to_list(scripts, (elf_object*)lig->script);
+		}
+	}
+
+	for(par = (elf_particles*)elf_begin_list(scene->particles); par;
+		par = (elf_particles*)elf_next_in_list(scene->particles))
+	{
+		if(par->script && !elf_get_resource_by_id(scripts, par->script->id))
+		{
+			elf_append_to_list(scripts, (elf_object*)par->script);
+		}
+	}
+
+	for(spr = (elf_sprite*)elf_begin_list(scene->sprites); spr;
+		spr = (elf_sprite*)elf_next_in_list(scene->sprites))
+	{
+		if(spr->script && !elf_get_resource_by_id(scripts, spr->script->id))
+		{
+			elf_append_to_list(scripts, (elf_object*)spr->script);
+		}
+	}
+
+	return scripts;
+}
+
+elf_list* elf_get_scene_textures(elf_scene *scene)
+{
+	elf_list *textures;
+
+	elf_material *mat;
+	elf_entity *ent;
+	elf_particles *par;
+	elf_sprite *spr;
+
+	textures = elf_create_list();
+
+	for(ent = (elf_entity*)elf_begin_list(scene->entities); ent;
+		ent = (elf_entity*)elf_next_in_list(scene->entities))
+	{
+		for(mat = (elf_material*)elf_begin_list(ent->materials); mat;
+			mat = (elf_material*)elf_next_in_list(ent->materials))
+		{
+			if(mat->diffuse_map && !elf_get_resource_by_id(textures, mat->diffuse_map->id))
+				elf_append_to_list(textures, (elf_object*)mat->diffuse_map);
+			if(mat->normal_map && !elf_get_resource_by_id(textures, mat->normal_map->id))
+				elf_append_to_list(textures, (elf_object*)mat->normal_map);
+			if(mat->height_map && !elf_get_resource_by_id(textures, mat->height_map->id))
+				elf_append_to_list(textures, (elf_object*)mat->height_map);
+			if(mat->specular_map && !elf_get_resource_by_id(textures, mat->specular_map->id))
+				elf_append_to_list(textures, (elf_object*)mat->specular_map);
+			if(mat->light_map && !elf_get_resource_by_id(textures, mat->light_map->id))
+				elf_append_to_list(textures, (elf_object*)mat->light_map);
+		}
+	}
+
+	for(par = (elf_particles*)elf_begin_list(scene->particles); par;
+		par = (elf_particles*)elf_next_in_list(scene->particles))
+	{
+		if(par->texture && !elf_get_resource_by_id(textures, par->texture->id))
+			elf_append_to_list(textures, (elf_object*)par->texture);
+	}
+
+	for(spr = (elf_sprite*)elf_begin_list(scene->sprites); spr;
+		spr = (elf_sprite*)elf_next_in_list(scene->sprites))
+	{
+		mat = spr->material;
+		if(!mat) continue;
+
+		if(mat->diffuse_map && !elf_get_resource_by_id(textures, mat->diffuse_map->id))
+			elf_append_to_list(textures, (elf_object*)mat->diffuse_map);
+		if(mat->normal_map && !elf_get_resource_by_id(textures, mat->normal_map->id))
+			elf_append_to_list(textures, (elf_object*)mat->normal_map);
+		if(mat->height_map && !elf_get_resource_by_id(textures, mat->height_map->id))
+			elf_append_to_list(textures, (elf_object*)mat->height_map);
+		if(mat->specular_map && !elf_get_resource_by_id(textures, mat->specular_map->id))
+			elf_append_to_list(textures, (elf_object*)mat->specular_map);
+		if(mat->light_map && !elf_get_resource_by_id(textures, mat->light_map->id))
+			elf_append_to_list(textures, (elf_object*)mat->light_map);
+	}
+
+	return textures;
+}
+
+elf_list* elf_get_scene_materials(elf_scene *scene)
+{
+	elf_list *materials;
+
+	elf_material *mat;
+	elf_entity *ent;
+	elf_sprite *spr;
+
+	materials = elf_create_list();
+
+	for(ent = (elf_entity*)elf_begin_list(scene->entities); ent;
+		ent = (elf_entity*)elf_next_in_list(scene->entities))
+	{
+		for(mat = (elf_material*)elf_begin_list(ent->materials); mat;
+			mat = (elf_material*)elf_next_in_list(ent->materials))
+		{
+			if(!elf_get_resource_by_id(materials, mat->id))
+			{
+				elf_append_to_list(materials, (elf_object*)mat);
+			}
+		}
+	}
+
+	for(spr = (elf_sprite*)elf_begin_list(scene->sprites); spr;
+		spr = (elf_sprite*)elf_next_in_list(scene->sprites))
+	{
+		if(spr->material && !elf_get_resource_by_id(materials, spr->material->id))
+		{
+			elf_append_to_list(materials, (elf_object*)spr->material);
+		}
+	}
+
+	return materials;
+}
+
+
+
+elf_list* elf_get_scene_models(elf_scene *scene)
+{
+	elf_list *models;
+
+	elf_entity *ent;
+	elf_particles *par;
+
+	models = elf_create_list();
+
+	for(ent = (elf_entity*)elf_begin_list(scene->entities); ent;
+		ent = (elf_entity*)elf_next_in_list(scene->entities))
+	{
+		if(ent->model && !elf_get_resource_by_id(models, ent->model->id))
+		{
+			elf_append_to_list(models, (elf_object*)ent->model);
+		}
+	}
+
+	for(par = (elf_particles*)elf_begin_list(scene->particles); par;
+		par = (elf_particles*)elf_next_in_list(scene->particles))
+	{
+		if(par->model && !elf_get_resource_by_id(models, par->model->id))
+		{
+			elf_append_to_list(models, (elf_object*)par->model);
+		}
+	}
+
+	return models;
+}
+

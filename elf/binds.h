@@ -836,6 +836,10 @@ ELF_API bool ELF_APIENTRY elfRemoveLightByObject(elf_handle scene, elf_handle li
 ELF_API bool ELF_APIENTRY elfRemoveParticlesByObject(elf_handle scene, elf_handle particles);
 ELF_API bool ELF_APIENTRY elfRemoveSpriteByObject(elf_handle scene, elf_handle sprite);
 ELF_API bool ELF_APIENTRY elfRemoveActorByObject(elf_handle scene, elf_handle actor);
+ELF_API elf_handle ELF_APIENTRY elfGetSceneScripts(elf_handle scene);
+ELF_API elf_handle ELF_APIENTRY elfGetSceneTextures(elf_handle scene);
+ELF_API elf_handle ELF_APIENTRY elfGetSceneMaterials(elf_handle scene);
+ELF_API elf_handle ELF_APIENTRY elfGetSceneModels(elf_handle scene);
 ELF_API elf_handle ELF_APIENTRY elfCreateScript(const char* name);
 ELF_API elf_handle ELF_APIENTRY elfCreateScriptFromFile(const char* file_path);
 ELF_API void ELF_APIENTRY elfSetScriptName(elf_handle script, const char* name);
