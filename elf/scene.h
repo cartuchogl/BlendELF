@@ -1910,6 +1910,7 @@ void elf_draw_scene_debug(elf_scene *scene)
 	elf_entity *ent;
 	elf_light *lig;
 	elf_camera *cam;
+	elf_particles *par;
 	elf_sprite *spr;
 
 	if(!scene->cur_camera) return;
@@ -1924,6 +1925,18 @@ void elf_draw_scene_debug(elf_scene *scene)
 		ent = (elf_entity*)elf_next_in_list(scene->entities))
 	{
 		elf_draw_entity_debug(ent, &scene->shader_params);
+	}
+
+	gfx_set_shader_params_default(&scene->shader_params);
+	scene->shader_params.render_params.depth_write = GFX_FALSE;
+	scene->shader_params.render_params.depth_test = GFX_FALSE;
+	scene->shader_params.render_params.blend_mode = GFX_ADD;
+	elf_set_camera(scene->cur_camera, &scene->shader_params);
+
+	for(par = (elf_particles*)elf_begin_list(scene->particles); par != NULL;
+		par = (elf_particles*)elf_next_in_list(scene->particles))
+	{
+		elf_draw_particles_debug(par, &scene->shader_params);
 	}
 
 	gfx_set_shader_params_default(&scene->shader_params);

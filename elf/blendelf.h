@@ -1275,6 +1275,7 @@ elf_color elf_get_particles_color_min(elf_particles *particles);
 elf_color elf_get_particles_color_max(elf_particles *particles);
 
 // <!!
+void elf_draw_particles_debug(elf_particles *particles, gfx_shader_params *shader_params);
 void elf_draw_particles(elf_particles *particles, elf_camera *camera, gfx_shader_params *shader_params);
 unsigned char elf_cull_particles(elf_particles *particles, elf_camera *camera);
 // !!>
