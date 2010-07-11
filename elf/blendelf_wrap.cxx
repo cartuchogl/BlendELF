@@ -13216,6 +13216,31 @@ fail:
 }
 
 
+static int _wrap_elfClearParticlesTexture(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("ClearParticlesTexture",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("ClearParticlesTexture",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("ClearParticlesTexture",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  elfClearParticlesTexture(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfSetParticlesModel(lua_State* L) {
   int SWIG_arg = 0;
   elf_handle arg1 ;
@@ -13250,6 +13275,31 @@ fail:
 }
 
 
+static int _wrap_elfClearParticlesModel(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("ClearParticlesModel",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("ClearParticlesModel",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("ClearParticlesModel",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  elfClearParticlesModel(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfSetParticlesEntity(lua_State* L) {
   int SWIG_arg = 0;
   elf_handle arg1 ;
@@ -13273,6 +13323,31 @@ static int _wrap_elfSetParticlesEntity(lua_State* L) {
   arg2 = *argp2;
   
   elfSetParticlesEntity(arg1,arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfClearParticlesEntity(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("ClearParticlesEntity",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("ClearParticlesEntity",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("ClearParticlesEntity",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  elfClearParticlesEntity(arg1);
   
   return SWIG_arg;
   
@@ -21306,8 +21381,11 @@ static const struct luaL_reg swig_commands[] = {
     { "SetParticlesMaxCount", _wrap_elfSetParticlesMaxCount},
     { "SetParticlesDrawMode", _wrap_elfSetParticlesDrawMode},
     { "SetParticlesTexture", _wrap_elfSetParticlesTexture},
+    { "ClearParticlesTexture", _wrap_elfClearParticlesTexture},
     { "SetParticlesModel", _wrap_elfSetParticlesModel},
+    { "ClearParticlesModel", _wrap_elfClearParticlesModel},
     { "SetParticlesEntity", _wrap_elfSetParticlesEntity},
+    { "ClearParticlesEntity", _wrap_elfClearParticlesEntity},
     { "SetParticlesGravity", _wrap_elfSetParticlesGravity},
     { "SetParticlesSpawnDelay", _wrap_elfSetParticlesSpawnDelay},
     { "SetParticlesSpawn", _wrap_elfSetParticlesSpawn},

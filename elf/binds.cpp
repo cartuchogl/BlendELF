@@ -5536,6 +5536,22 @@ ELF_API void ELF_APIENTRY elfSetParticlesTexture(elf_handle particles, elf_handl
 	}
 	elf_set_particles_texture((elf_particles*)particles.get(), (elf_texture*)texture.get());
 }
+ELF_API void ELF_APIENTRY elfClearParticlesTexture(elf_handle particles)
+{
+	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "ClearParticlesTexture() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "ClearParticlesTexture() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_clear_particles_texture((elf_particles*)particles.get());
+}
 ELF_API void ELF_APIENTRY elfSetParticlesModel(elf_handle particles, elf_handle model)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
@@ -5564,6 +5580,22 @@ ELF_API void ELF_APIENTRY elfSetParticlesModel(elf_handle particles, elf_handle 
 	}
 	elf_set_particles_model((elf_particles*)particles.get(), (elf_model*)model.get());
 }
+ELF_API void ELF_APIENTRY elfClearParticlesModel(elf_handle particles)
+{
+	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "ClearParticlesModel() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "ClearParticlesModel() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_clear_particles_model((elf_particles*)particles.get());
+}
 ELF_API void ELF_APIENTRY elfSetParticlesEntity(elf_handle particles, elf_handle entity)
 {
 	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
@@ -5591,6 +5623,22 @@ ELF_API void ELF_APIENTRY elfSetParticlesEntity(elf_handle particles, elf_handle
 		return;
 	}
 	elf_set_particles_entity((elf_particles*)particles.get(), (elf_entity*)entity.get());
+}
+ELF_API void ELF_APIENTRY elfClearParticlesEntity(elf_handle particles)
+{
+	if(!particles.get() || elf_get_object_type(particles.get()) != ELF_PARTICLES)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "ClearParticlesEntity() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "ClearParticlesEntity() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_clear_particles_entity((elf_particles*)particles.get());
 }
 ELF_API void ELF_APIENTRY elfSetParticlesGravity(elf_handle particles, float x, float y, float z)
 {

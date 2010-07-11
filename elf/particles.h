@@ -708,6 +708,12 @@ void elf_set_particles_texture(elf_particles *particles, elf_texture *texture)
 	if(particles->texture) elf_inc_ref((elf_object*)particles->texture);
 }
 
+void elf_clear_particles_texture(elf_particles *particles)
+{
+	if(particles->texture) elf_dec_ref((elf_object*)particles->texture);
+	particles->texture = NULL;
+}
+
 void elf_set_particles_model(elf_particles *particles, elf_model *model)
 {
 	if(particles->entity) elf_dec_ref((elf_object*)particles->entity);
@@ -718,6 +724,12 @@ void elf_set_particles_model(elf_particles *particles, elf_model *model)
 	if(particles->model) elf_inc_ref((elf_object*)particles->model);
 }
 
+void elf_clear_particles_model(elf_particles *particles)
+{
+	if(particles->model) elf_dec_ref((elf_object*)particles->model);
+	particles->model = NULL;
+}
+
 void elf_set_particles_entity(elf_particles *particles, elf_entity *entity)
 {
 	if(particles->model) elf_dec_ref((elf_object*)particles->model);
@@ -726,6 +738,12 @@ void elf_set_particles_entity(elf_particles *particles, elf_entity *entity)
 	if(particles->entity) elf_dec_ref((elf_object*)particles->entity);
 	particles->entity = entity;
 	if(particles->entity) elf_inc_ref((elf_object*)particles->entity);
+}
+
+void elf_clear_particles_entity(elf_particles *particles)
+{
+	if(particles->entity) elf_dec_ref((elf_object*)particles->entity);
+	particles->entity = NULL;
 }
 
 void elf_set_particles_gravity(elf_particles *particles, float x, float y, float z)
