@@ -1057,6 +1057,7 @@ void elf_generate_model_tangents(elf_model *model);
 
 elf_model* elf_create_model_from_mesh_data(elf_mesh_data *data);	// <mdoc> MODEL FUNCTIONS
 
+void elf_set_model_name(elf_model *model, const char *name);
 const char* elf_get_model_name(elf_model *model);
 const char* elf_get_model_file_path(elf_model *model);
 int elf_get_model_vertice_count(elf_model *model);

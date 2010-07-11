@@ -650,6 +650,7 @@ ELF_API void ELF_APIENTRY elfAddFaceToMeshData(elf_handle mesh_data, int v1, int
 ELF_API elf_handle ELF_APIENTRY elfGetVerticeFromMeshData(elf_handle mesh_data, int idx);
 ELF_API elf_handle ELF_APIENTRY elfGetFaceFromMeshData(elf_handle mesh_data, int idx);
 ELF_API elf_handle ELF_APIENTRY elfCreateModelFromMeshData(elf_handle data);
+ELF_API void ELF_APIENTRY elfSetModelName(elf_handle model, const char* name);
 ELF_API const char* ELF_APIENTRY elfGetModelName(elf_handle model);
 ELF_API const char* ELF_APIENTRY elfGetModelFilePath(elf_handle model);
 ELF_API int ELF_APIENTRY elfGetModelVerticeCount(elf_handle model);

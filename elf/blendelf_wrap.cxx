@@ -11172,6 +11172,34 @@ fail:
 }
 
 
+static int _wrap_elfSetModelName(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  char *arg2 = (char *) 0 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("SetModelName",2,2)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetModelName",1,"handle");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("SetModelName",2,"char const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetModelName",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  elfSetModelName(arg1,(char const *)arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfGetModelName(lua_State* L) {
   int SWIG_arg = 0;
   elf_handle arg1 ;
@@ -21309,6 +21337,7 @@ static const struct luaL_reg swig_commands[] = {
     { "GetVerticeFromMeshData", _wrap_elfGetVerticeFromMeshData},
     { "GetFaceFromMeshData", _wrap_elfGetFaceFromMeshData},
     { "CreateModelFromMeshData", _wrap_elfCreateModelFromMeshData},
+    { "SetModelName", _wrap_elfSetModelName},
     { "GetModelName", _wrap_elfGetModelName},
     { "GetModelFilePath", _wrap_elfGetModelFilePath},
     { "GetModelVerticeCount", _wrap_elfGetModelVerticeCount},

@@ -277,6 +277,12 @@ void elf_destroy_model(elf_model *model)
 	elf_dec_obj_count();
 }
 
+void elf_set_model_name(elf_model *model, const char *name)
+{
+	if(model->name) elf_destroy_string(model->name);
+	model->name = elf_create_string(name);
+}
+
 const char* elf_get_model_name(elf_model *model)
 {
 	return model->name;

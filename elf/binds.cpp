@@ -4320,6 +4320,22 @@ ELF_API elf_handle ELF_APIENTRY elfCreateModelFromMeshData(elf_handle data)
 	handle = (elf_object*)elf_create_model_from_mesh_data((elf_mesh_data*)data.get());
 	return handle;
 }
+ELF_API void ELF_APIENTRY elfSetModelName(elf_handle model, const char* name)
+{
+	if(!model.get() || elf_get_object_type(model.get()) != ELF_MODEL)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetModelName() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetModelName() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_model_name((elf_model*)model.get(), name);
+}
 ELF_API const char* ELF_APIENTRY elfGetModelName(elf_handle model)
 {
 	if(!model.get() || elf_get_object_type(model.get()) != ELF_MODEL)
