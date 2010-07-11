@@ -157,12 +157,13 @@ void elf_init_new_particle(elf_particles *particles, elf_particle *particle)
 		particle->position.y += vertices[3*num+1];
 		particle->position.z += vertices[3*num+2];
 	}
-	else if(particles->entity && particles->entity->model && particles->entity->vertices &&
+	else if(particles->entity && particles->entity->model &&
 		elf_get_model_vertice_count(particles->entity->model) > 0)
 	{
 		elf_get_actor_position_((elf_actor*)particles->entity, &particle->position.x);
 		num = elf_random_int_range(0, elf_get_model_vertice_count(particles->entity->model));
-		vertices = (float*)gfx_get_vertex_data_buffer(particles->entity->vertices);
+		if(!particles->entity->vertices)  vertices = (float*)gfx_get_vertex_data_buffer(particles->entity->model->vertices);
+		else vertices = (float*)gfx_get_vertex_data_buffer(particles->entity->vertices);
 		local_pos.x = vertices[3*num];
 		local_pos.y = vertices[3*num+1];
 		local_pos.z = vertices[3*num+2];
