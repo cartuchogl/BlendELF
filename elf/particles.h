@@ -759,6 +759,7 @@ void elf_set_particles_gravity(elf_particles *particles, float x, float y, float
 void elf_set_particles_spawn_delay(elf_particles *particles, float delay)
 {
 	particles->spawn_delay = delay;
+	if(particles->spawn_delay < 0.00001) particles->spawn_delay = 0.00001;
 }
 
 void elf_set_particles_spawn(elf_particles *particles, unsigned char spawn)
