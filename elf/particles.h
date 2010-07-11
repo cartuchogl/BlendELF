@@ -752,6 +752,8 @@ void elf_set_particles_gravity(elf_particles *particles, float x, float y, float
 	particles->gravity.x = x;
 	particles->gravity.y = y;
 	particles->gravity.z = z;
+
+	elf_calc_particles_aabb(particles);
 }
 
 void elf_set_particles_spawn_delay(elf_particles *particles, float delay)
@@ -805,6 +807,8 @@ void elf_set_particles_velocity_min(elf_particles *particles, float x, float y, 
 	particles->velocity_min.x = x;
 	particles->velocity_min.y = y;
 	particles->velocity_min.z = z;
+
+	elf_calc_particles_aabb(particles);
 }
 
 void elf_set_particles_position_min(elf_particles *particles, float x, float y, float z)
@@ -812,6 +816,8 @@ void elf_set_particles_position_min(elf_particles *particles, float x, float y, 
 	particles->position_min.x = x;
 	particles->position_min.y = y;
 	particles->position_min.z = z;
+
+	elf_calc_particles_aabb(particles);
 }
 
 void elf_set_particles_position_max(elf_particles *particles, float x, float y, float z)
@@ -819,6 +825,8 @@ void elf_set_particles_position_max(elf_particles *particles, float x, float y, 
 	particles->position_max.x = x;
 	particles->position_max.y = y;
 	particles->position_max.z = z;
+
+	elf_calc_particles_aabb(particles);
 }
 
 void elf_set_particles_velocity_max(elf_particles *particles, float x, float y, float z)
@@ -826,6 +834,8 @@ void elf_set_particles_velocity_max(elf_particles *particles, float x, float y, 
 	particles->velocity_max.x = x;
 	particles->velocity_max.y = y;
 	particles->velocity_max.z = z;
+
+	elf_calc_particles_aabb(particles);
 }
 
 void elf_set_particles_color_min(elf_particles *particles, float r, float g, float b, float a)
