@@ -201,7 +201,45 @@ void elf_calc_particles_aabb(elf_particles *particles)
 	particles->cull_aabb_max.y = particles->life_span_max*(particles->velocity_max.y+elf_float_max(0.0, particles->gravity.y));
 	particles->cull_aabb_max.z = particles->life_span_max*(particles->velocity_max.z+elf_float_max(0.0, particles->gravity.z));
 
-	elf_get_actor_position_((elf_actor*)particles, &position.x);
+	if(particles->model)
+	{
+		particles->cull_aabb_min.x += particles->model->bb_min.x;
+		particles->cull_aabb_min.y += particles->model->bb_min.y;
+		particles->cull_aabb_min.z += particles->model->bb_min.z;
+
+		particles->cull_aabb_max.x += particles->model->bb_max.x;
+		particles->cull_aabb_max.y += particles->model->bb_max.y;
+		particles->cull_aabb_max.z += particles->model->bb_max.z;
+	}
+	else if(particles->entity)
+	{
+		particles->cull_aabb_min.x += particles->entity->cull_aabb_min.x;
+		particles->cull_aabb_min.y += particles->entity->cull_aabb_min.y;
+		particles->cull_aabb_min.z += particles->entity->cull_aabb_min.z;
+
+		particles->cull_aabb_max.x += particles->entity->cull_aabb_max.x;
+		particles->cull_aabb_max.y += particles->entity->cull_aabb_max.y;
+		particles->cull_aabb_max.z += particles->entity->cull_aabb_max.z;
+	}
+	else
+	{
+		particles->cull_aabb_min.x += particles->position_min.x;
+		particles->cull_aabb_min.y += particles->position_min.y;
+		particles->cull_aabb_min.z += particles->position_min.z;
+
+		particles->cull_aabb_max.x += particles->position_max.x;
+		particles->cull_aabb_max.y += particles->position_max.y;
+		particles->cull_aabb_max.z += particles->position_max.z;
+	}
+
+	if(!particles->entity)
+	{
+		elf_get_actor_position_((elf_actor*)particles, &position.x);
+	}
+	else
+	{
+		elf_get_actor_position_((elf_actor*)particles->entity, &position.x);
+	}
 
 	particles->cull_aabb_min.x += position.x;
 	particles->cull_aabb_min.y += position.y;
@@ -723,12 +761,16 @@ void elf_set_particles_model(elf_particles *particles, elf_model *model)
 	if(particles->model) elf_dec_ref((elf_object*)particles->model);
 	particles->model = model;
 	if(particles->model) elf_inc_ref((elf_object*)particles->model);
+
+	elf_calc_particles_aabb(particles);
 }
 
 void elf_clear_particles_model(elf_particles *particles)
 {
 	if(particles->model) elf_dec_ref((elf_object*)particles->model);
 	particles->model = NULL;
+
+	elf_calc_particles_aabb(particles);
 }
 
 void elf_set_particles_entity(elf_particles *particles, elf_entity *entity)
@@ -739,12 +781,16 @@ void elf_set_particles_entity(elf_particles *particles, elf_entity *entity)
 	if(particles->entity) elf_dec_ref((elf_object*)particles->entity);
 	particles->entity = entity;
 	if(particles->entity) elf_inc_ref((elf_object*)particles->entity);
+
+	elf_calc_particles_aabb(particles);
 }
 
 void elf_clear_particles_entity(elf_particles *particles)
 {
 	if(particles->entity) elf_dec_ref((elf_object*)particles->entity);
 	particles->entity = NULL;
+
+	elf_calc_particles_aabb(particles);
 }
 
 void elf_set_particles_gravity(elf_particles *particles, float x, float y, float z)
