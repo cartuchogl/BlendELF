@@ -792,6 +792,7 @@ void elf_set_material_ambient_color(elf_material *material, float r, float g, fl
 void elf_set_material_specular_power(elf_material *material, float power);
 void elf_set_material_lighting(elf_material *material, unsigned char lighting);
 
+void elf_set_material_name(elf_material *material, const char *name);
 const char* elf_get_material_name(elf_material *material);
 const char* elf_get_material_file_path(elf_material *material);
 elf_color elf_get_material_diffuse_color(elf_material *material);

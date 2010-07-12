@@ -76,6 +76,12 @@ void elf_set_material_lighting(elf_material *material, unsigned char lighting)
 	material->lighting = !lighting == ELF_FALSE;
 }
 
+void elf_set_material_name(elf_material *material, const char *name)
+{
+	if(material->name) elf_destroy_string(material->name);
+	material->name = elf_create_string(name);
+}
+
 const char* elf_get_material_name(elf_material *material)
 {
 	return material->name;

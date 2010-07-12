@@ -500,6 +500,7 @@ ELF_API void ELF_APIENTRY elfSetMaterialSpecularColor(elf_handle material, float
 ELF_API void ELF_APIENTRY elfSetMaterialAmbientColor(elf_handle material, float r, float g, float b, float a);
 ELF_API void ELF_APIENTRY elfSetMaterialSpecularPower(elf_handle material, float power);
 ELF_API void ELF_APIENTRY elfSetMaterialLighting(elf_handle material, bool lighting);
+ELF_API void ELF_APIENTRY elfSetMaterialName(elf_handle material, const char* name);
 ELF_API const char* ELF_APIENTRY elfGetMaterialName(elf_handle material);
 ELF_API const char* ELF_APIENTRY elfGetMaterialFilePath(elf_handle material);
 ELF_API elf_color ELF_APIENTRY elfGetMaterialDiffuseColor(elf_handle material);

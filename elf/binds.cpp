@@ -1635,6 +1635,22 @@ ELF_API void ELF_APIENTRY elfSetMaterialLighting(elf_handle material, bool light
 	}
 	elf_set_material_lighting((elf_material*)material.get(), lighting);
 }
+ELF_API void ELF_APIENTRY elfSetMaterialName(elf_handle material, const char* name)
+{
+	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialName() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetMaterialName() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_material_name((elf_material*)material.get(), name);
+}
 ELF_API const char* ELF_APIENTRY elfGetMaterialName(elf_handle material)
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
