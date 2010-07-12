@@ -38,6 +38,7 @@ elf_texture* elf_create_texture_from_file(const char *file_path)
 
 	texture = elf_create_texture();
 
+	texture->name = elf_create_string(file_path);
 	texture->file_path = elf_create_string(file_path);
 
 	texture->texture = gfx_create_2d_texture(elf_get_image_width(image), elf_get_image_height(image),
