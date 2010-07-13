@@ -128,7 +128,7 @@ int gfx_get_vertex_array_vertex_count(gfx_vertex_array *vertex_array)
 	return vertex_array->vertex_count;
 }
 
-void gfx_set_vertex_array_data(gfx_vertex_array *vertex_array, unsigned int target, gfx_vertex_data *data)
+void gfx_set_vertex_array_data(gfx_vertex_array *vertex_array, int target, gfx_vertex_data *data)
 {
 	gfx_varr *varr;
 	int i;
@@ -219,7 +219,7 @@ void gfx_set_vertex_array(gfx_vertex_array *vertex_array)
 	}
 }
 
-void gfx_draw_vertex_array(gfx_vertex_array *vertex_array, unsigned int count, unsigned int draw_mode)
+void gfx_draw_vertex_array(gfx_vertex_array *vertex_array, int count, int draw_mode)
 {
 	if(count > vertex_array->vertex_count) count -= count-vertex_array->vertex_count;
 

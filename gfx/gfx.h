@@ -307,10 +307,10 @@ gfx_vertex_array* gfx_create_vertex_array(unsigned char gpu_data);
 void gfx_destroy_vertex_array(gfx_vertex_array *vertex_array);
 
 int gfx_get_vertex_array_vertex_count(gfx_vertex_array *vertex_array);
-void gfx_set_vertex_array_data(gfx_vertex_array *vertex_array, unsigned int target, gfx_vertex_data *data);
+void gfx_set_vertex_array_data(gfx_vertex_array *vertex_array, int target, gfx_vertex_data *data);
 void gfx_reset_vertex_array(gfx_vertex_array *vertex_array);
 void gfx_set_vertex_array(gfx_vertex_array *vertex_array);
-void gfx_draw_vertex_array(gfx_vertex_array *vertex_array, unsigned int count, unsigned int draw_mode);
+void gfx_draw_vertex_array(gfx_vertex_array *vertex_array, int count, int draw_mode);
 
 gfx_vertex_index* gfx_create_vertex_index(unsigned char gpu_data, gfx_vertex_data *data);
 void gfx_destroy_vertex_index(gfx_vertex_index *vertex_index);

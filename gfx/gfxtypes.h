@@ -78,7 +78,7 @@ typedef struct gfx_varr {
 
 struct gfx_vertex_array {
 	GFX_OBJECT_HEADER;
-	unsigned int vertex_count;
+	int vertex_count;
 	gfx_varr varrs[GFX_MAX_VERTEX_ARRAYS];
 	unsigned char gpu_data;
 };

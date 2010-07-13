@@ -160,7 +160,7 @@ void gfx_draw_circle(int vertices, float size)
 	{
 		step = (360.0/((float)vertices))*GFX_PI_DIV_180;
 
-		vertex_buffer = gfx_get_vertex_data_buffer(driver->circle_vertex_data);
+		vertex_buffer = (float*)gfx_get_vertex_data_buffer(driver->circle_vertex_data);
 
 		vertex_buffer[0] = 0.0;
 		vertex_buffer[1] = 0.0;

@@ -21,7 +21,7 @@ int gfx_global_obj_count = 0;
 int gfx_global_ref_count_table[GFX_OBJECT_TYPE_COUNT];
 int gfx_global_ref_count = 0;
 
-void elf_write_to_log(const char *fmt, ...);
+extern void elf_write_to_log(const char *fmt, ...);
 
 #include "gfxtypes.h"
 #include "gfxobject.h"

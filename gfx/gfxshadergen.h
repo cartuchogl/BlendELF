@@ -381,13 +381,13 @@ void gfx_add_fragment_texture_calcs(gfx_document *document, gfx_shader_config *c
 	{
 		if(config->textures & GFX_COLOR_MAP && !config->alpha_test_in_shader) gfx_add_line_to_document(document, "\tfinal_color *= texture2D(elf_ColorMap, elf_HeightTexCoord);");
 		if(config->light && config->textures & GFX_COLOR_RAMP_MAP) gfx_add_line_to_document(document, "\tfinal_color.rgb *= texture2D(elf_ColorRampMap, vec2(clamp(lambertTerm, 0.0, 1.0))).rgb*elf_Color*elf_LightColor;");
-		if(config->textures & GFX_LIGHT_MAP) gfx_add_line_to_document(document, "\tfinal_color.rgb *= vec4(texture2D(elf_LightMap, elf_HeightTexCoord).rgb;");
+		if(config->textures & GFX_LIGHT_MAP) gfx_add_line_to_document(document, "\tfinal_color.rgb *= texture2D(elf_LightMap, elf_HeightTexCoord).rgb;");
 	}
 	else
 	{
 		if(config->textures & GFX_COLOR_MAP && !config->alpha_test_in_shader) gfx_add_line_to_document(document, "\tfinal_color *= texture2D(elf_ColorMap, elf_TexCoord);");
 		if(config->light && config->textures & GFX_COLOR_RAMP_MAP) gfx_add_line_to_document(document, "\tfinal_color.rgb *= texture2D(elf_ColorRampMap, vec2(clamp(lambertTerm, 0.0, 1.0))).rgb*elf_Color*elf_LightColor;");
-		if(config->textures & GFX_LIGHT_MAP) gfx_add_line_to_document(document, "\tfinal_color.rgb *= vec4(texture2D(elf_LightMap, elf_TexCoord).rgb;");
+		if(config->textures & GFX_LIGHT_MAP) gfx_add_line_to_document(document, "\tfinal_color.rgb *= texture2D(elf_LightMap, elf_TexCoord).rgb;");
 	}
 }
 
