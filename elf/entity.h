@@ -319,7 +319,7 @@ void elf_set_entity_model(elf_entity *entity, elf_model *model)
 
 	while((int)entity->model->area_count > elf_get_entity_material_count(entity))
 	{
-		material = elf_create_material("");
+		material = elf_create_material("Material");
 		elf_add_entity_material(entity, material);
 	}
 
