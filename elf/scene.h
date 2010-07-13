@@ -1995,8 +1995,6 @@ elf_list* elf_get_scene_scripts(elf_scene *scene)
 
 	scripts = elf_create_list();
 
-	elf_inc_ref((elf_object*)scripts);
-
 	for(cam = (elf_camera*)elf_begin_list(scene->cameras); cam;
 		cam = (elf_camera*)elf_next_in_list(scene->cameras))
 	{
