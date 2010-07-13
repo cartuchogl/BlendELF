@@ -4540,6 +4540,22 @@ ELF_API elf_handle ELF_APIENTRY elfCreateEntity(const char* name)
 	handle = (elf_object*)elf_create_entity(name);
 	return handle;
 }
+ELF_API void ELF_APIENTRY elfGenerateEntityTangents(elf_handle entity)
+{
+	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GenerateEntityTangents() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GenerateEntityTangents() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_generate_entity_tangents((elf_entity*)entity.get());
+}
 ELF_API void ELF_APIENTRY elfSetEntityScale(elf_handle entity, float x, float y, float z)
 {
 	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)

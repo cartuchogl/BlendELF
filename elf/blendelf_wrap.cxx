@@ -11538,6 +11538,31 @@ fail:
 }
 
 
+static int _wrap_elfGenerateEntityTangents(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("GenerateEntityTangents",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GenerateEntityTangents",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GenerateEntityTangents",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  elfGenerateEntityTangents(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfSetEntityScale(lua_State* L) {
   int SWIG_arg = 0;
   elf_handle arg1 ;
@@ -21557,6 +21582,7 @@ static const struct luaL_reg swig_commands[] = {
     { "GetModelBoundingBoxMin", _wrap_elfGetModelBoundingBoxMin},
     { "GetModelBoundingBoxMax", _wrap_elfGetModelBoundingBoxMax},
     { "CreateEntity", _wrap_elfCreateEntity},
+    { "GenerateEntityTangents", _wrap_elfGenerateEntityTangents},
     { "SetEntityScale", _wrap_elfSetEntityScale},
     { "GetEntityScale", _wrap_elfGetEntityScale},
     { "SetEntityModel", _wrap_elfSetEntityModel},

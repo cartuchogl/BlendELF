@@ -1097,6 +1097,7 @@ void elf_calc_entity_bounding_volumes(elf_entity *entity, unsigned char new_mode
 // !!>
 
 elf_entity* elf_create_entity(const char *name);	// <mdoc> ENTITY FUNCTIONS
+void elf_generate_entity_tangents(elf_entity *entity);
 
 void elf_set_entity_scale(elf_entity *entity, float x, float y, float z);
 elf_vec3f elf_get_entity_scale(elf_entity *entity);
