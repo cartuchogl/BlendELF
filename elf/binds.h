@@ -662,6 +662,7 @@ ELF_API elf_handle ELF_APIENTRY elfCreateEntity(const char* name);
 ELF_API void ELF_APIENTRY elfSetEntityScale(elf_handle entity, float x, float y, float z);
 ELF_API elf_vec3f ELF_APIENTRY elfGetEntityScale(elf_handle entity);
 ELF_API void ELF_APIENTRY elfSetEntityModel(elf_handle entity, elf_handle model);
+ELF_API void ELF_APIENTRY elfClearEntityModel(elf_handle entity);
 ELF_API elf_handle ELF_APIENTRY elfGetEntityModel(elf_handle entity);
 ELF_API int ELF_APIENTRY elfGetEntityMaterialCount(elf_handle entity);
 ELF_API void ELF_APIENTRY elfAddEntityMaterial(elf_handle entity, elf_handle material);

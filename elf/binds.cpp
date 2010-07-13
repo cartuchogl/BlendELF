@@ -4523,6 +4523,22 @@ ELF_API void ELF_APIENTRY elfSetEntityModel(elf_handle entity, elf_handle model)
 	}
 	elf_set_entity_model((elf_entity*)entity.get(), (elf_model*)model.get());
 }
+ELF_API void ELF_APIENTRY elfClearEntityModel(elf_handle entity)
+{
+	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "ClearEntityModel() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "ClearEntityModel() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_clear_entity_model((elf_entity*)entity.get());
+}
 ELF_API elf_handle ELF_APIENTRY elfGetEntityModel(elf_handle entity)
 {
 	elf_handle handle;

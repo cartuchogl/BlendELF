@@ -1097,6 +1097,7 @@ elf_vec3f elf_get_entity_scale(elf_entity *entity);
 /* <!> */ void elf_get_entity_scale_(elf_entity *entity, float *scale);
 
 void elf_set_entity_model(elf_entity *entity, elf_model *model);
+void elf_clear_entity_model(elf_entity *entity);
 elf_model* elf_get_entity_model(elf_entity *entity);
 int elf_get_entity_material_count(elf_entity *entity);
 void elf_add_entity_material(elf_entity *entity, elf_material *material);

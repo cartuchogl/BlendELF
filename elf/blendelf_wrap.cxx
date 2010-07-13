@@ -11510,6 +11510,31 @@ fail:
 }
 
 
+static int _wrap_elfClearEntityModel(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("ClearEntityModel",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("ClearEntityModel",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("ClearEntityModel",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  elfClearEntityModel(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfGetEntityModel(lua_State* L) {
   int SWIG_arg = 0;
   elf_handle arg1 ;
@@ -21377,6 +21402,7 @@ static const struct luaL_reg swig_commands[] = {
     { "SetEntityScale", _wrap_elfSetEntityScale},
     { "GetEntityScale", _wrap_elfGetEntityScale},
     { "SetEntityModel", _wrap_elfSetEntityModel},
+    { "ClearEntityModel", _wrap_elfClearEntityModel},
     { "GetEntityModel", _wrap_elfGetEntityModel},
     { "GetEntityMaterialCount", _wrap_elfGetEntityMaterialCount},
     { "AddEntityMaterial", _wrap_elfAddEntityMaterial},

@@ -337,6 +337,21 @@ void elf_set_entity_model(elf_entity *entity, elf_model *model)
 	entity->moved = ELF_TRUE;
 }
 
+void elf_clear_entity_model(elf_entity *entity)
+{
+	if(entity->model) elf_dec_ref((elf_object*)entity->model);
+	entity->model = NULL;
+
+	if(entity->object)
+	{
+		elf_dec_ref((elf_object*)entity->object);
+		entity->object = NULL;
+	}
+
+	elf_set_entity_scale(entity, 1.0, 1.0, 1.0);
+	elf_calc_entity_bounding_volumes(entity, ELF_FALSE);
+}
+
 elf_model* elf_get_entity_model(elf_entity *entity)
 {
 	return entity->model;
