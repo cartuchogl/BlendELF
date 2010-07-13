@@ -162,6 +162,36 @@ void elf_set_material_light_map(elf_material *material, elf_texture *texture)
 	if(material->light_map) elf_inc_ref((elf_object*)material->light_map);
 }
 
+void elf_clear_material_diffuse_map(elf_material *material)
+{
+	if(material->diffuse_map) elf_dec_ref((elf_object*)material->diffuse_map);
+	material->diffuse_map = NULL;
+}
+
+void elf_clear_material_normal_map(elf_material *material)
+{
+	if(material->normal_map) elf_dec_ref((elf_object*)material->normal_map);
+	material->normal_map = NULL;
+}
+
+void elf_clear_material_height_map(elf_material *material)
+{
+	if(material->height_map) elf_dec_ref((elf_object*)material->height_map);
+	material->height_map = NULL;
+}
+
+void elf_clear_material_specular_map(elf_material *material)
+{
+	if(material->specular_map) elf_dec_ref((elf_object*)material->specular_map);
+	material->specular_map = NULL;
+}
+
+void elf_clear_material_light_map(elf_material *material)
+{
+	if(material->light_map) elf_dec_ref((elf_object*)material->light_map);
+	material->light_map = NULL;
+}
+
 elf_texture* elf_get_material_diffuse_map(elf_material *material)
 {
 	return material->diffuse_map;

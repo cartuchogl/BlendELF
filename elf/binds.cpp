@@ -1912,6 +1912,86 @@ ELF_API void ELF_APIENTRY elfSetMaterialLightMap(elf_handle material, elf_handle
 	}
 	elf_set_material_light_map((elf_material*)material.get(), (elf_texture*)texture.get());
 }
+ELF_API void ELF_APIENTRY elfClearMaterialDiffuseMap(elf_handle material)
+{
+	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "ClearMaterialDiffuseMap() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "ClearMaterialDiffuseMap() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_clear_material_diffuse_map((elf_material*)material.get());
+}
+ELF_API void ELF_APIENTRY elfClearMaterialNormalMap(elf_handle material)
+{
+	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "ClearMaterialNormalMap() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "ClearMaterialNormalMap() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_clear_material_normal_map((elf_material*)material.get());
+}
+ELF_API void ELF_APIENTRY elfClearMaterialHeightMap(elf_handle material)
+{
+	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "ClearMaterialHeightMap() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "ClearMaterialHeightMap() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_clear_material_height_map((elf_material*)material.get());
+}
+ELF_API void ELF_APIENTRY elfClearMaterialSpecularMap(elf_handle material)
+{
+	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "ClearMaterialSpecularMap() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "ClearMaterialSpecularMap() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_clear_material_specular_map((elf_material*)material.get());
+}
+ELF_API void ELF_APIENTRY elfClearMaterialLightMap(elf_handle material)
+{
+	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "ClearMaterialLightMap() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "ClearMaterialLightMap() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_clear_material_light_map((elf_material*)material.get());
+}
 ELF_API elf_handle ELF_APIENTRY elfGetMaterialDiffuseMap(elf_handle material)
 {
 	elf_handle handle;

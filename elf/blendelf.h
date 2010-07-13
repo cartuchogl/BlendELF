@@ -807,6 +807,12 @@ void elf_set_material_height_map(elf_material *material, elf_texture *texture);
 void elf_set_material_specular_map(elf_material *material, elf_texture *texture);
 void elf_set_material_light_map(elf_material *material, elf_texture *texture);
 
+void elf_clear_material_diffuse_map(elf_material *material);
+void elf_clear_material_normal_map(elf_material *material);
+void elf_clear_material_height_map(elf_material *material);
+void elf_clear_material_specular_map(elf_material *material);
+void elf_clear_material_light_map(elf_material *material);
+
 elf_texture* elf_get_material_diffuse_map(elf_material *material);
 elf_texture* elf_get_material_normal_map(elf_material *material);
 elf_texture* elf_get_material_height_map(elf_material *material);

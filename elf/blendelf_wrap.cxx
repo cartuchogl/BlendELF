@@ -7003,6 +7003,131 @@ fail:
 }
 
 
+static int _wrap_elfClearMaterialDiffuseMap(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("ClearMaterialDiffuseMap",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("ClearMaterialDiffuseMap",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("ClearMaterialDiffuseMap",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  elfClearMaterialDiffuseMap(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfClearMaterialNormalMap(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("ClearMaterialNormalMap",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("ClearMaterialNormalMap",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("ClearMaterialNormalMap",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  elfClearMaterialNormalMap(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfClearMaterialHeightMap(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("ClearMaterialHeightMap",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("ClearMaterialHeightMap",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("ClearMaterialHeightMap",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  elfClearMaterialHeightMap(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfClearMaterialSpecularMap(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("ClearMaterialSpecularMap",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("ClearMaterialSpecularMap",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("ClearMaterialSpecularMap",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  elfClearMaterialSpecularMap(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfClearMaterialLightMap(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("ClearMaterialLightMap",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("ClearMaterialLightMap",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("ClearMaterialLightMap",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  elfClearMaterialLightMap(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfGetMaterialDiffuseMap(lua_State* L) {
   int SWIG_arg = 0;
   elf_handle arg1 ;
@@ -21281,6 +21406,11 @@ static const struct luaL_reg swig_commands[] = {
     { "SetMaterialHeightMap", _wrap_elfSetMaterialHeightMap},
     { "SetMaterialSpecularMap", _wrap_elfSetMaterialSpecularMap},
     { "SetMaterialLightMap", _wrap_elfSetMaterialLightMap},
+    { "ClearMaterialDiffuseMap", _wrap_elfClearMaterialDiffuseMap},
+    { "ClearMaterialNormalMap", _wrap_elfClearMaterialNormalMap},
+    { "ClearMaterialHeightMap", _wrap_elfClearMaterialHeightMap},
+    { "ClearMaterialSpecularMap", _wrap_elfClearMaterialSpecularMap},
+    { "ClearMaterialLightMap", _wrap_elfClearMaterialLightMap},
     { "GetMaterialDiffuseMap", _wrap_elfGetMaterialDiffuseMap},
     { "GetMaterialNormalMap", _wrap_elfGetMaterialNormalMap},
     { "GetMaterialHeightMap", _wrap_elfGetMaterialHeightMap},

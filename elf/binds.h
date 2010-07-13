@@ -513,6 +513,11 @@ ELF_API void ELF_APIENTRY elfSetMaterialNormalMap(elf_handle material, elf_handl
 ELF_API void ELF_APIENTRY elfSetMaterialHeightMap(elf_handle material, elf_handle texture);
 ELF_API void ELF_APIENTRY elfSetMaterialSpecularMap(elf_handle material, elf_handle texture);
 ELF_API void ELF_APIENTRY elfSetMaterialLightMap(elf_handle material, elf_handle texture);
+ELF_API void ELF_APIENTRY elfClearMaterialDiffuseMap(elf_handle material);
+ELF_API void ELF_APIENTRY elfClearMaterialNormalMap(elf_handle material);
+ELF_API void ELF_APIENTRY elfClearMaterialHeightMap(elf_handle material);
+ELF_API void ELF_APIENTRY elfClearMaterialSpecularMap(elf_handle material);
+ELF_API void ELF_APIENTRY elfClearMaterialLightMap(elf_handle material);
 ELF_API elf_handle ELF_APIENTRY elfGetMaterialDiffuseMap(elf_handle material);
 ELF_API elf_handle ELF_APIENTRY elfGetMaterialNormalMap(elf_handle material);
 ELF_API elf_handle ELF_APIENTRY elfGetMaterialHeightMap(elf_handle material);
