@@ -4629,6 +4629,22 @@ ELF_API void ELF_APIENTRY elfSetEntityMaterial(elf_handle entity, int idx, elf_h
 	}
 	elf_set_entity_material((elf_entity*)entity.get(), idx, (elf_material*)material.get());
 }
+ELF_API void ELF_APIENTRY elfRemoveEntityMaterial(elf_handle entity, int idx)
+{
+	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "RemoveEntityMaterial() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "RemoveEntityMaterial() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_remove_entity_material((elf_entity*)entity.get(), idx);
+}
 ELF_API elf_handle ELF_APIENTRY elfGetEntityMaterial(elf_handle entity, int idx)
 {
 	elf_handle handle;

@@ -388,6 +388,24 @@ void elf_set_entity_material(elf_entity *entity, int idx, elf_material *material
 	elf_generate_entity_tangents(entity);
 }
 
+void elf_remove_entity_material(elf_entity *entity, int idx)
+{
+	elf_object *mat;
+	int i;
+
+	if(idx < 0 || idx > elf_get_list_length(entity->materials)-1) return;
+
+	for(i = 0, mat = elf_begin_list(entity->materials); mat;
+		mat = elf_next_in_list(entity->materials), i++)
+	{
+		if(idx == i)
+		{
+			elf_remove_from_list(entity->materials, (elf_object*)mat);
+			return;
+		}
+	}
+}
+
 elf_material* elf_get_entity_material(elf_entity *entity, int idx)
 {
 	if(idx < 0 || idx > elf_get_list_length(entity->materials)-1) return NULL;

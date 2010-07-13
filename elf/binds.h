@@ -667,6 +667,7 @@ ELF_API elf_handle ELF_APIENTRY elfGetEntityModel(elf_handle entity);
 ELF_API int ELF_APIENTRY elfGetEntityMaterialCount(elf_handle entity);
 ELF_API void ELF_APIENTRY elfAddEntityMaterial(elf_handle entity, elf_handle material);
 ELF_API void ELF_APIENTRY elfSetEntityMaterial(elf_handle entity, int idx, elf_handle material);
+ELF_API void ELF_APIENTRY elfRemoveEntityMaterial(elf_handle entity, int idx);
 ELF_API elf_handle ELF_APIENTRY elfGetEntityMaterial(elf_handle entity, int idx);
 ELF_API void ELF_APIENTRY elfSetEntityVisible(elf_handle entity, bool visible);
 ELF_API bool ELF_APIENTRY elfGetEntityVisible(elf_handle entity);

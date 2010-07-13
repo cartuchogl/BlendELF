@@ -1102,6 +1102,7 @@ elf_model* elf_get_entity_model(elf_entity *entity);
 int elf_get_entity_material_count(elf_entity *entity);
 void elf_add_entity_material(elf_entity *entity, elf_material *material);
 void elf_set_entity_material(elf_entity *entity, int idx, elf_material *material);
+void elf_remove_entity_material(elf_entity *entity, int idx);
 elf_material* elf_get_entity_material(elf_entity *entity, int idx);
 
 void elf_set_entity_visible(elf_entity *entity, unsigned char visible);
