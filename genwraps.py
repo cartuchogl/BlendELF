@@ -595,9 +595,55 @@ for line in realbinds:
 	realbindslines.append(line)
 realbinds.close()
 
+skipdef = False
 realbinds = open('elf/blendelf_wrap.cxx', 'w')
+
+realbinds.write('#include \"default.h\"\n')
+realbinds.write('#include \"../gfx/gfx.h\"\n')
+realbinds.write('#include \"blendelf.h\"\n')
+realbinds.write('#include \"types.h\"\n')
+realbinds.write('#include \"binds.h\"\n')
+
 for line in realbindslines:
-	if "SWIG_name" not in line:
+	if skipdef == True:
+		if len(line.strip()) > 0 and line.strip()[-1] == '\\': continue
+		else:
+			skipdef = False
+			continue
+	if "#define SWIG_fail_arg" in line:
+		realbinds.write('#define SWIG_fail_arg(func_name,argnum,type) \\\n')
+		realbinds.write('  {lua_Debug ar; \\\n')
+		realbinds.write('  struct elf_script *script; \\\n')
+		realbinds.write('  lua_getstack(L, 0 + 1, &ar); \\\n')
+		realbinds.write('  lua_getinfo(L, \"Sl\", &ar); \\\n')
+		realbinds.write('  script = elf_get_current_script(); \\\n')
+		realbinds.write('  if(ar.source[0] == \'@\') \\\n')
+		realbinds.write('    lua_pushfstring(L,\"[%s]:%d: error in %s (arg %d), expected \'%s\' got \'%s\'\", \\\n')
+		realbinds.write('    ar.short_src,ar.currentline,func_name,argnum,type,SWIG_Lua_typename(L,argnum)); \\\n')
+		realbinds.write('  else \\\n')
+		realbinds.write('    lua_pushfstring(L,\"[%s \\\"%s\\\"]:%d: error in %s (arg %d), expected \'%s\' got \'%s\'\", \\\n')
+		realbinds.write('    script->file_path,script->name,ar.currentline,func_name,argnum,type,SWIG_Lua_typename(L,argnum)); \\\n')
+		realbinds.write('  goto fail;}\n')
+		skipdef = True
+		continue
+	elif "#define SWIG_check_num_args" in line:
+		realbinds.write('#define SWIG_check_num_args(func_name,a,b) \\\n')
+		realbinds.write('  if (lua_gettop(L)<a || lua_gettop(L)>b) \\\n')
+		realbinds.write('  {lua_Debug ar; \\\n')
+		realbinds.write('  struct elf_script *script; \\\n')
+		realbinds.write('  lua_getstack(L, 0 + 1, &ar); \\\n')
+		realbinds.write('  lua_getinfo(L, \"Sl\", &ar); \\\n')
+		realbinds.write('  script = elf_get_current_script(); \\\n')
+		realbinds.write('  if(ar.source[0] == \'@\') \\\n')
+		realbinds.write('    lua_pushfstring(L,\"[%s]:%d: error in %s expected %d..%d args, got %d\", \\\n')
+		realbinds.write('    ar.short_src,ar.currentline,func_name,a,b,lua_gettop(L)); \\\n')
+		realbinds.write('  else \\\n')
+		realbinds.write('    lua_pushfstring(L,\"[%s \\\"%s\\\"]:%d: error in %s expected %d..%d args, got %d\", \\\n')
+		realbinds.write('    script->file_path,script->name,ar.currentline,func_name,a,b,lua_gettop(L)); \\\n')
+		realbinds.write('  goto fail;}\n')
+		skipdef = True
+		continue
+	elif "SWIG_name" not in line:
 		line = line.replace('\"elf_', '\"')
 		line = line.replace('\"ELF_', '\"')
 		line = line.replace('\"elf', '\"')
