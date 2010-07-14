@@ -1840,6 +1840,7 @@ void elf_update_gui(elf_gui *gui, float step)
 		}
 	}
 
+#ifndef ELF_MACOSX
 	if(gui->cur_key)
 	{
 		gui->key_step += step;
@@ -1885,6 +1886,7 @@ void elf_update_gui(elf_gui *gui, float step)
 			}
 		}
 	}
+#endif
 
 	for(i = 0; i < elf_get_event_count(); i++)
 	{
