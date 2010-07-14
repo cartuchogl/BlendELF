@@ -40,8 +40,8 @@ struct elf_physics_object {
 	ELF_OBJECT_HEADER;
 	int shape_type;
 	float mass;
+	elf_vec3f offset;
 	btCollisionShape *shape;
-	btCompoundShape *cshape;
 	btRigidBody *body;
 	btDefaultMotionState *motionState;
 	elf_physics_tri_mesh *tri_mesh;
@@ -633,17 +633,11 @@ elf_physics_object* elf_create_physics_object_sphere(float radius, float mass, f
 	object = elf_create_physics_object();
 
 	object->shape = new btSphereShape(btScalar(radius));
-	if(!elf_about_zero(ox) || !elf_about_zero(oy) || !elf_about_zero(oz))
-	{
-		btTransform localTrans;
-		localTrans.setOrigin(btVector3(ox, oy, oz));
-		object->cshape = new btCompoundShape();
-		object->cshape->addChildShape(localTrans, object->shape);
-	}
-
 	object->shape_type = ELF_SPHERE;
-
 	object->mass = mass;
+	object->offset.x = ox;
+	object->offset.y = oy;
+	object->offset.z = oz;
 
 	btScalar bodyMass(mass);
 	btVector3 localInertia(0.0, 0.0, 0.0);
@@ -651,11 +645,11 @@ elf_physics_object* elf_create_physics_object_sphere(float radius, float mass, f
 	if(!elf_about_zero(mass)) object->shape->calculateLocalInertia(mass, localInertia);
 
 	btTransform startTransform;
-	startTransform.setOrigin(btVector3(0.0, 0.0, 0.0));
+	startTransform.setOrigin(btVector3(object->offset.x, object->offset.y, object->offset.z));
 	startTransform.setRotation(btQuaternion(0.0, 0.0, 0.0, 1.0));
 
 	object->motionState = new btDefaultMotionState(startTransform);
-	object->body = new btRigidBody(bodyMass, object->motionState, object->cshape ? object->cshape : object->shape, localInertia);
+	object->body = new btRigidBody(bodyMass, object->motionState, object->shape, localInertia);
 
 	object->body->setUserPointer(object);
 
@@ -669,18 +663,11 @@ elf_physics_object* elf_create_physics_object_box(float hx, float hy, float hz, 
 	object = elf_create_physics_object();
 
 	object->shape = new btBoxShape(btVector3(hx+0.001, hy+0.001, hz+0.001));
-	if(!elf_about_zero(ox) || !elf_about_zero(oy) || !elf_about_zero(oz))
-	{
-		btTransform localTrans;
-		localTrans.setOrigin(btVector3(ox, oy, oz));
-		localTrans.setRotation(btQuaternion(0.0, 0.0, 0.0, 1.0));
-		object->cshape = new btCompoundShape();
-		object->cshape->addChildShape(localTrans, object->shape);
-	}
-
 	object->shape_type = ELF_BOX;
-
 	object->mass = mass;
+	object->offset.x = ox;
+	object->offset.y = oy;
+	object->offset.z = oz;
 
 	btScalar bodyMass(mass);
 	btVector3 localInertia(0.0, 0.0, 0.0);
@@ -688,11 +675,11 @@ elf_physics_object* elf_create_physics_object_box(float hx, float hy, float hz, 
 	if(!elf_about_zero(mass)) object->shape->calculateLocalInertia(mass, localInertia);
 
 	btTransform startTransform;
-	startTransform.setOrigin(btVector3(0.0, 0.0, 0.0));
+	startTransform.setOrigin(btVector3(object->offset.x, object->offset.y, object->offset.z));
 	startTransform.setRotation(btQuaternion(0.0, 0.0, 0.0, 1.0));
 
 	object->motionState = new btDefaultMotionState(startTransform);
-	object->body = new btRigidBody(bodyMass, object->motionState, object->cshape ? object->cshape : object->shape, localInertia);
+	object->body = new btRigidBody(bodyMass, object->motionState, object->shape, localInertia);
 
 	object->body->setUserPointer(object);
 
@@ -709,18 +696,11 @@ elf_physics_object* elf_create_physics_object_capsule(unsigned char type, float 
 	else if(type == ELF_CAPSULE_Y) object->shape = new btCapsuleShape(radius, length);
 	else if(type == ELF_CAPSULE_Z) object->shape = new btCapsuleShapeZ(radius, length);
 
-	if(!elf_about_zero(ox) || !elf_about_zero(oy) || !elf_about_zero(oz))
-	{
-		btTransform localTrans;
-		localTrans.setOrigin(btVector3(ox, oy, oz));
-		localTrans.setRotation(btQuaternion(0.0, 0.0, 0.0, 1.0));
-		object->cshape = new btCompoundShape();
-		object->cshape->addChildShape(localTrans, object->shape);
-	}
-
 	object->shape_type = type;
-
 	object->mass = mass;
+	object->offset.x = ox;
+	object->offset.y = oy;
+	object->offset.z = oz;
 
 	btScalar bodyMass(mass);
 	btVector3 localInertia(0.0, 0.0, 0.0);
@@ -728,11 +708,11 @@ elf_physics_object* elf_create_physics_object_capsule(unsigned char type, float 
 	if(!elf_about_zero(mass)) object->shape->calculateLocalInertia(mass, localInertia);
 
 	btTransform startTransform;
-	startTransform.setOrigin(btVector3(0.0, 0.0, 0.0));
+	startTransform.setOrigin(btVector3(object->offset.x, object->offset.y, object->offset.z));
 	startTransform.setRotation(btQuaternion(0.0, 0.0, 0.0, 1.0));
 
 	object->motionState = new btDefaultMotionState(startTransform);
-	object->body = new btRigidBody(bodyMass, object->motionState, object->cshape ? object->cshape : object->shape, localInertia);
+	object->body = new btRigidBody(bodyMass, object->motionState, object->shape, localInertia);
 
 	object->body->setUserPointer(object);
 
@@ -749,18 +729,11 @@ elf_physics_object* elf_create_physics_object_cone(unsigned char type, float len
 	else if(type == ELF_CONE_Y) object->shape = new btConeShape(radius, length);
 	else if(type == ELF_CONE_Z) object->shape = new btConeShapeZ(radius, length);
 
-	if(!elf_about_zero(ox) || !elf_about_zero(oy) || !elf_about_zero(oz))
-	{
-		btTransform localTrans;
-		localTrans.setOrigin(btVector3(ox, oy, oz));
-		localTrans.setRotation(btQuaternion(0.0, 0.0, 0.0, 1.0));
-		object->cshape = new btCompoundShape();
-		object->cshape->addChildShape(localTrans, object->shape);
-	}
-
 	object->shape_type = type;
-
 	object->mass = mass;
+	object->offset.x = ox;
+	object->offset.y = oy;
+	object->offset.z = oz;
 
 	btScalar bodyMass(mass);
 	btVector3 localInertia(0.0, 0.0, 0.0);
@@ -768,11 +741,11 @@ elf_physics_object* elf_create_physics_object_cone(unsigned char type, float len
 	if(!elf_about_zero(mass)) object->shape->calculateLocalInertia(mass, localInertia);
 
 	btTransform startTransform;
-	startTransform.setOrigin(btVector3(0.0, 0.0, 0.0));
+	startTransform.setOrigin(btVector3(object->offset.x, object->offset.y, object->offset.z));
 	startTransform.setRotation(btQuaternion(0.0, 0.0, 0.0, 1.0));
 
 	object->motionState = new btDefaultMotionState(startTransform);
-	object->body = new btRigidBody(bodyMass, object->motionState, object->cshape ? object->cshape : object->shape, localInertia);
+	object->body = new btRigidBody(bodyMass, object->motionState, object->shape, localInertia);
 
 	object->body->setUserPointer(object);
 
@@ -801,7 +774,6 @@ void elf_destroy_physics_object(elf_physics_object *object)
 		if(object->world) object->world->world->removeRigidBody(object->body);
 		delete object->body;
 	}
-	if(object->cshape) delete object->cshape;
 	if(object->shape) delete object->shape;
 	if(object->motionState) delete object->motionState;
 	if(object->tri_mesh) elf_dec_ref((elf_object*)object->tri_mesh);
@@ -846,6 +818,13 @@ elf_collision* elf_get_physics_object_collision(elf_physics_object *object, int 
 
 void elf_set_physics_object_position(elf_physics_object *object, float x, float y, float z)
 {
+	float orient[4];
+	float offset[3];
+
+	elf_get_physics_object_orientation(object, orient);
+
+	gfx_mul_qua_vec(orient, &object->offset.x, offset);
+
 	object->body->activate(true);
 	if(object->body->isStaticObject())
 	{
@@ -853,13 +832,26 @@ void elf_set_physics_object_position(elf_physics_object *object, float x, float 
 			btCollisionObject::CF_KINEMATIC_OBJECT);
 	}
 	btTransform xform = object->body->getCenterOfMassTransform();
-	xform.setOrigin(btVector3(x, y, z));
+	xform.setOrigin(btVector3(x+offset[0], y+offset[1], z+offset[2]));
 	object->body->setCenterOfMassTransform(xform);
 	object->motionState->setWorldTransform(xform);
 }
 
 void elf_set_physics_object_orientation(elf_physics_object *object, float x, float y, float z, float w)
 {
+	float orient[4];
+	float offset[3];
+	btVector3 origin;
+
+	orient[0] = x;
+	orient[1] = y;
+	orient[2] = z;
+	orient[3] = w;
+
+	gfx_mul_qua_vec(orient, &object->offset.x, offset);
+
+	origin = object->motionState->m_graphicsWorldTrans.getOrigin();
+
 	object->body->activate(true);
 	if(object->body->isStaticObject())
 	{
@@ -867,6 +859,7 @@ void elf_set_physics_object_orientation(elf_physics_object *object, float x, flo
 			btCollisionObject::CF_KINEMATIC_OBJECT);
 	}
 	btTransform xform = object->body->getCenterOfMassTransform();
+	xform.setOrigin(btVector3(origin.x()+offset[0], origin.y()+offset[1], origin.z()+offset[2]));
 	xform.setRotation(btQuaternion(x, y, z, w));
 	object->body->setCenterOfMassTransform(xform);
 	object->motionState->setWorldTransform(xform);
@@ -890,10 +883,18 @@ float elf_get_physics_object_mass(elf_physics_object *object)
 
 void elf_get_physics_object_position(elf_physics_object *object, float *params)
 {
-	btVector3 origin = object->motionState->m_graphicsWorldTrans.getOrigin();
-	params[0] = origin.x();
-	params[1] = origin.y();
-	params[2] = origin.z();
+	float orient[4];
+	float offset[3];
+	btVector3 origin;
+
+	elf_get_physics_object_orientation(object, orient);
+
+	gfx_mul_qua_vec(orient, &object->offset.x, offset);
+
+	origin = object->motionState->m_graphicsWorldTrans.getOrigin();
+	params[0] = origin.x()-offset[0];
+	params[1] = origin.y()-offset[1];
+	params[2] = origin.z()-offset[2];
 }
 
 void elf_get_physics_object_orientation(elf_physics_object *object, float *params)
