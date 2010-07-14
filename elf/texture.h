@@ -157,7 +157,7 @@ unsigned char elf_load_texture_data(elf_texture *texture)
 	elf_pak *pak;
 	elf_pak_index *index;
 	int magic;
-	char name[64];
+	char name[ELF_NAME_LENGTH];
 	unsigned char type;
 
 	if(texture->data) return ELF_TRUE;
@@ -191,7 +191,7 @@ unsigned char elf_load_texture_data(elf_texture *texture)
 			return ELF_FALSE;
 		}
 
-		fread(name, sizeof(char), 64, file);
+		fread(name, sizeof(char), ELF_NAME_LENGTH, file);
 		fread((char*)&type, sizeof(unsigned char), 1, file);
 
 		if(type == 1)

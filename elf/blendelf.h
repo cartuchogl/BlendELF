@@ -320,6 +320,8 @@ extern "C" {
 #define ELF_SCRIPT_MAGIC				179532121
 #define ELF_SPRITE_MAGIC				179532140
 #define ELF_TEXTURE_MAGIC				179532108
+
+#define ELF_NAME_LENGTH 128
 // !!>
 
 typedef struct elf_vec2i				elf_vec2i;
