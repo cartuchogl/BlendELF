@@ -577,7 +577,7 @@ void elf_draw_entity(elf_entity *entity, gfx_shader_params *shader_params)
 			shader_params->camera_matrix, shader_params->modelview_matrix);
 
 	elf_pre_draw_entity(entity);
-	elf_draw_model(entity->materials, entity->model, shader_params, &entity->non_lit_flag);
+	elf_draw_model(entity->materials, entity->model, shader_params);
 	elf_post_draw_entity(entity);
 }
 
@@ -590,6 +590,18 @@ void elf_draw_entity_ambient(elf_entity *entity, gfx_shader_params *shader_param
 
 	elf_pre_draw_entity(entity);
 	elf_draw_model_ambient(entity->materials, entity->model, shader_params);
+	elf_post_draw_entity(entity);
+}
+
+void elf_draw_entity_non_lighted(elf_entity *entity, gfx_shader_params *shader_params)
+{
+	if(!entity->model || !entity->visible) return;
+
+	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(entity->transform),
+			shader_params->camera_matrix, shader_params->modelview_matrix);
+
+	elf_pre_draw_entity(entity);
+	elf_draw_model_non_lighted(entity->materials, entity->model, shader_params);
 	elf_post_draw_entity(entity);
 }
 

@@ -1632,8 +1632,27 @@ void elf_draw_scene(elf_scene *scene)
 		}
 	}
 
-	// used for detecting if some non lit geometry has been rendered already
-	eng->non_lit_flag = !eng->non_lit_flag;
+	// draw non lighted stuff
+	gfx_set_shader_params_default(&scene->shader_params);
+	elf_set_camera(scene->cur_camera, &scene->shader_params);
+
+	scene->shader_params.render_params.depth_write = GFX_FALSE;
+	scene->shader_params.render_params.depth_func = GFX_EQUAL;
+	scene->shader_params.render_params.blend_mode = GFX_ADD;
+
+	for(i = 0, ent = (elf_entity*)elf_begin_list(scene->entity_queue);
+		i < scene->entity_queue_count && ent != NULL;
+		i++, ent = (elf_entity*)elf_next_in_list(scene->entity_queue))
+	{
+		elf_draw_entity_non_lighted(ent, &scene->shader_params);
+	}
+
+	for(i = 0, spr = (elf_sprite*)elf_begin_list(scene->sprite_queue);
+		i < scene->sprite_queue_count && spr != NULL;
+		i++, spr = (elf_sprite*)elf_next_in_list(scene->sprite_queue))
+	{
+		elf_draw_sprite_non_lighted(spr, &scene->shader_params);
+	}
 
 	// render lighting
 	for(light = (elf_light*)elf_begin_list(scene->lights); light != NULL;

@@ -186,7 +186,6 @@ struct elf_engine {
 	float texture_anisotropy;
 	unsigned char occlusion_culling;
 	unsigned char debug_draw;
-	unsigned char non_lit_flag;
 	elf_color ambient_color;
 
 	gfx_vertex_data *lines;
@@ -252,7 +251,6 @@ struct elf_material {
 	elf_color specular_color;
 	float spec_power;
 	unsigned char lighting;
-	unsigned char non_lit_flag;
 
 	elf_texture *diffuse_map;
 	elf_texture *normal_map;
@@ -364,7 +362,6 @@ struct elf_model {
 	elf_model_area *areas;
 	elf_vec3f bb_min;
 	elf_vec3f bb_max;
-	unsigned char non_lit_flag;
 };
 
 struct elf_entity {
@@ -394,7 +391,6 @@ struct elf_entity {
 	gfx_query *query;
 	unsigned char visible;
 	unsigned char culled;
-	unsigned char non_lit_flag;
 };
 
 struct elf_light {
@@ -521,7 +517,6 @@ struct elf_sprite {
 	gfx_query *query;
 	unsigned char visible;
 	unsigned char culled;
-	unsigned char non_lit_flag;
 };
 
 struct elf_scene {

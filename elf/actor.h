@@ -318,6 +318,7 @@ void elf_move_actor_local(elf_actor *actor, float x, float y, float z)
 void elf_set_actor_position_relative_to(elf_actor *actor, elf_actor *to, float x, float y, float z)
 {
 	elf_vec3f vec;
+	elf_vec3f pos;
 	elf_vec3f result;
 	elf_vec4f orient;
 
@@ -325,9 +326,14 @@ void elf_set_actor_position_relative_to(elf_actor *actor, elf_actor *to, float x
 	vec.y = y;
 	vec.z = z;
 
-	elf_get_actor_orientation_(actor, &orient.x);
+	elf_get_actor_orientation_(to, &orient.x);
+	elf_get_actor_position_(to, &pos.x);
 
 	gfx_mul_qua_vec(&orient.x, &vec.x, &result.x);
+
+	result.x += pos.x;
+	result.y += pos.y;
+	result.z += pos.z;
 
 	elf_set_actor_position(actor, result.x, result.y, result.z);
 }
@@ -340,9 +346,9 @@ void elf_set_actor_rotation_relative_to(elf_actor *actor, elf_actor *to, float x
 
 	gfx_set_qua_rotation(x, y, z, &lorient.x);
 
-	elf_get_actor_orientation_(actor, &orient.x);
+	elf_get_actor_orientation_(to, &orient.x);
 
-	gfx_mul_qua_qua(&lorient.x, &orient.x, &result.x);
+	gfx_mul_qua_qua(&orient.x, &lorient.x, &result.x);
 
 	elf_set_actor_orientation(actor, result.x, result.y, result.z, result.w);
 }

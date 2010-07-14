@@ -1079,8 +1079,9 @@ float* elf_get_model_tex_coords(elf_model *model);
 float* elf_get_model_tangents(elf_model *model);
 unsigned int* elf_get_model_indices(elf_model *model);
 
-void elf_draw_model(elf_list *material, elf_model *model, gfx_shader_params *shader_params, unsigned char *non_lit_flag);
+void elf_draw_model(elf_list *material, elf_model *model, gfx_shader_params *shader_params);
 void elf_draw_model_ambient(elf_list *material, elf_model *model, gfx_shader_params *shader_params);
+void elf_draw_model_non_lighted(elf_list *material, elf_model *model, gfx_shader_params *shader_params);
 void elf_draw_model_without_materials(elf_list *materials, elf_model *model, gfx_shader_params *shader_params);
 void elf_draw_model_bouding_box(elf_model *model, gfx_shader_params *shader_params);
 // !!>
@@ -1138,6 +1139,7 @@ elf_armature* elf_get_entity_armature(elf_entity *entity);
 void elf_reset_entity_debug_physics_object(elf_entity *entity);
 void elf_draw_entity(elf_entity *entity, gfx_shader_params *shader_params);
 void elf_draw_entity_ambient(elf_entity *entity, gfx_shader_params *shader_params);
+void elf_draw_entity_non_lighted(elf_entity *entity, gfx_shader_params *shader_params);
 void elf_draw_entity_without_materials(elf_entity *entity, gfx_shader_params *shader_params);
 void elf_draw_entity_bounding_box(elf_entity *entity, gfx_shader_params *shader_params);
 void elf_draw_entity_debug(elf_entity *entity, gfx_shader_params *shader_params);
@@ -1316,8 +1318,9 @@ unsigned char elf_get_sprite_face_camera(elf_sprite *sprite);
 // <!!
 unsigned char elf_cull_sprite(elf_sprite *sprite, elf_camera *camera);
 void elf_draw_sprite(elf_sprite *sprite, gfx_shader_params *shader_params);
-void elf_draw_sprite_without_materials(elf_sprite *sprite, gfx_shader_params *shader_params);
 void elf_draw_sprite_ambient(elf_sprite *sprite, gfx_shader_params *shader_params);
+void elf_draw_sprite_non_lighted(elf_sprite *sprite, gfx_shader_params *shader_params);
+void elf_draw_sprite_without_materials(elf_sprite *sprite, gfx_shader_params *shader_params);
 void elf_draw_sprite_debug(elf_sprite *sprite, gfx_shader_params *shader_params);
 // !!>
 

@@ -193,28 +193,13 @@ unsigned char elf_cull_sprite(elf_sprite *sprite, elf_camera *camera)
 
 void elf_draw_sprite(elf_sprite *sprite, gfx_shader_params *shader_params)
 {
-	unsigned char light_type;
-
-	if(!sprite->material || !sprite->visible) return;
+	if(!sprite->material || !sprite->visible || !sprite->material->lighting) return;
 
 	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(sprite->transform),
 			shader_params->camera_matrix, shader_params->modelview_matrix);
 
 	elf_set_material(sprite->material, shader_params);
-
-	light_type = shader_params->light_params.type;
-
-	if(!sprite->material->lighting)
-	{
-		if(sprite->material->non_lit_flag == eng->non_lit_flag && sprite->non_lit_flag == eng->non_lit_flag) return;
-		sprite->material->non_lit_flag = sprite->non_lit_flag = eng->non_lit_flag;
-
-		shader_params->light_params.type = GFX_NONE;
-	}
-
 	gfx_set_shader_params(shader_params);
-
-	shader_params->light_params.type = light_type;
 
 	gfx_draw_vertex_array(eng->sprite_vertex_array, 12, GFX_TRIANGLES);
 }
@@ -230,6 +215,19 @@ void elf_draw_sprite_ambient(elf_sprite *sprite, gfx_shader_params *shader_param
 	shader_params->material_params.color.r = eng->ambient_color.r*sprite->material->ambient_color.r;
 	shader_params->material_params.color.g = eng->ambient_color.g*sprite->material->ambient_color.g;
 	shader_params->material_params.color.b = eng->ambient_color.b*sprite->material->ambient_color.b;
+	gfx_set_shader_params(shader_params);
+
+	gfx_draw_vertex_array(eng->sprite_vertex_array, 12, GFX_TRIANGLES);
+}
+
+void elf_draw_sprite_non_lighted(elf_sprite *sprite, gfx_shader_params *shader_params)
+{
+	if(!sprite->material || !sprite->visible || sprite->material->lighting) return;
+
+	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(sprite->transform),
+			shader_params->camera_matrix, shader_params->modelview_matrix);
+
+	elf_set_material(sprite->material, shader_params);
 	gfx_set_shader_params(shader_params);
 
 	gfx_draw_vertex_array(eng->sprite_vertex_array, 12, GFX_TRIANGLES);
