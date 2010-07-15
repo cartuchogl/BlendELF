@@ -40,9 +40,7 @@ void elf_generate_entity_tangents(elf_entity *entity)
 {
 	elf_material *material;
 
-	if(elf_get_model_tangents(entity->model)) return;
-
-	if(!entity->model) return;
+	if(!entity->model || elf_get_model_tangents(entity->model)) return;
 
 	for(material = (elf_material*)elf_begin_list(entity->materials); material;
 		material = (elf_material*)elf_next_in_list(entity->materials))
