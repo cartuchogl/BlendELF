@@ -66,6 +66,7 @@ int main()
 		return -1;
 	}
 
+	elf_set_texture_compress(config->texture_compress);
 	elf_set_texture_anisotropy(config->texture_anisotropy);
 	elf_set_shadow_map_size(config->shadow_map_size);
 

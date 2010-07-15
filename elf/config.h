@@ -10,6 +10,7 @@ elf_config* elf_create_config()
 	config->window_size[0] = 1024;
 	config->window_size[1] = 768;
 	config->fullscreen = ELF_FALSE;
+	config->texture_compress = ELF_FALSE;
 	config->texture_anisotropy = 1.0;
 	config->shadow_map_size = 1024;
 	config->start = elf_create_string("");
@@ -86,6 +87,10 @@ elf_config* elf_read_config(const char *file_path)
 			{
 				config->fullscreen = elf_read_sst_bool(text, &pos);
 			}
+			else if(!strcmp(str, "texture_compress"))
+			{
+				config->texture_compress = elf_read_sst_bool(text, &pos);
+			}
 			else if(!strcmp(str, "texture_anisotropy"))
 			{
 				config->texture_anisotropy = elf_read_sst_float(text, &pos);
@@ -144,6 +149,11 @@ int elf_get_config_window_height(elf_config *config)
 unsigned char elf_get_config_fullscreen(elf_config *config)
 {
 	return !config->fullscreen == ELF_FALSE;
+}
+
+unsigned char elf_get_config_texture_compress(elf_config *config)
+{
+	return config->texture_compress;
 }
 
 float elf_get_config_texture_anisotropy(elf_config *config)

@@ -1311,9 +1311,9 @@ elf_texture *elf_create_texture_from_pak(FILE *file, const char *name, elf_scene
 	{
 		case 8: format = GFX_LUMINANCE; internal_format = GFX_LUMINANCE; data_format = GFX_UBYTE; break;
 		case 16: format = GFX_LUMINANCE_ALPHA; internal_format = GFX_LUMINANCE_ALPHA; data_format = GFX_UBYTE; break;
-		case 24: format = GFX_BGR; internal_format = GFX_COMPRESSED_RGB; data_format = GFX_UBYTE; break;
-		case 32: format = GFX_BGRA; internal_format = GFX_COMPRESSED_RGBA; data_format = GFX_UBYTE; break;
-		case 48: format = GFX_BGR; internal_format = GFX_COMPRESSED_RGB; data_format = GFX_USHORT; break;
+		case 24: format = GFX_BGR; internal_format = eng->texture_compress ? GFX_COMPRESSED_RGB : GFX_RGB; data_format = GFX_UBYTE; break;
+		case 32: format = GFX_BGRA; internal_format = eng->texture_compress ? GFX_COMPRESSED_RGBA : GFX_RGBA; data_format = GFX_UBYTE; break;
+		case 48: format = GFX_BGR; internal_format = eng->texture_compress ? GFX_COMPRESSED_RGB : GFX_RGB; data_format = GFX_USHORT; break;
 		default:
 			elf_set_error(ELF_INVALID_FILE, "error: unsupported bits per pixel value [%d] in texture \"%s//%s\"\n", (int)bpp, elf_get_scene_file_path(scene), rname);
 			free(data);

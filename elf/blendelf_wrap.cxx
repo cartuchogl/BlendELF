@@ -3268,6 +3268,32 @@ fail:
 }
 
 
+static int _wrap_elfGetConfigTextureCompress(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  bool result;
+  
+  SWIG_check_num_args("GetConfigTextureCompress",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetConfigTextureCompress",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetConfigTextureCompress",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = (bool)elfGetConfigTextureCompress(arg1);
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfGetConfigTextureAnisotropy(lua_State* L) {
   int SWIG_arg = 0;
   elf_handle arg1 ;
@@ -4371,6 +4397,42 @@ static int _wrap_elfGetSpeed(lua_State* L) {
   SWIG_check_num_args("GetSpeed",0,0)
   result = (float)elfGetSpeed();
   lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfSetTextureCompress(lua_State* L) {
+  int SWIG_arg = 0;
+  bool arg1 ;
+  
+  SWIG_check_num_args("SetTextureCompress",1,1)
+  if(!lua_isboolean(L,1)) SWIG_fail_arg("SetTextureCompress",1,"bool");
+  arg1 = (lua_toboolean(L, 1)!=0);
+  elfSetTextureCompress(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetTextureCompress(lua_State* L) {
+  int SWIG_arg = 0;
+  bool result;
+  
+  SWIG_check_num_args("GetTextureCompress",0,0)
+  result = (bool)elfGetTextureCompress();
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -21290,6 +21352,7 @@ static const struct luaL_reg swig_commands[] = {
     { "GetConfigWindowWidth", _wrap_elfGetConfigWindowWidth},
     { "GetConfigWindowHeight", _wrap_elfGetConfigWindowHeight},
     { "GetConfigFullscreen", _wrap_elfGetConfigFullscreen},
+    { "GetConfigTextureCompress", _wrap_elfGetConfigTextureCompress},
     { "GetConfigTextureAnisotropy", _wrap_elfGetConfigTextureAnisotropy},
     { "GetConfigShadowMapSize", _wrap_elfGetConfigShadowMapSize},
     { "GetConfigStart", _wrap_elfGetConfigStart},
@@ -21347,6 +21410,8 @@ static const struct luaL_reg swig_commands[] = {
     { "GetTickRate", _wrap_elfGetTickRate},
     { "SetSpeed", _wrap_elfSetSpeed},
     { "GetSpeed", _wrap_elfGetSpeed},
+    { "SetTextureCompress", _wrap_elfSetTextureCompress},
+    { "GetTextureCompress", _wrap_elfGetTextureCompress},
     { "SetTextureAnisotropy", _wrap_elfSetTextureAnisotropy},
     { "GetTextureAnisotropy", _wrap_elfGetTextureAnisotropy},
     { "SetShadowMapSize", _wrap_elfSetShadowMapSize},

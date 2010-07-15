@@ -28,8 +28,8 @@ elf_texture* elf_create_texture_from_file(const char *file_path)
 	{
 		case 8: format = GFX_LUMINANCE; internal_format = GFX_LUMINANCE; break;
 		case 16: format = GFX_LUMINANCE_ALPHA; internal_format = GFX_LUMINANCE_ALPHA; break;
-		case 24: format = GFX_BGR; internal_format = GFX_COMPRESSED_RGB; break;
-		case 32: format = GFX_BGRA; internal_format = GFX_COMPRESSED_RGBA; break;
+		case 24: format = GFX_BGR; internal_format = eng->texture_compress ? GFX_COMPRESSED_RGB : GFX_RGB; break;
+		case 32: format = GFX_BGRA; internal_format = eng->texture_compress ? GFX_COMPRESSED_RGBA : GFX_RGBA; break;
 		default:
 			elf_set_error(ELF_INVALID_FILE, "error: unsupported bits per pixel value [%d] in image \"%s\"\n", elf_get_image_bits_per_pixel(image), file_path);
 			elf_destroy_image(image);
@@ -67,8 +67,8 @@ elf_texture* elf_create_texture_from_image(elf_image *image)
 	{
 		case 8: format = GFX_LUMINANCE; internal_format = GFX_LUMINANCE; break;
 		case 16: format = GFX_LUMINANCE_ALPHA; internal_format = GFX_LUMINANCE_ALPHA; break;
-		case 24: format = GFX_BGR; internal_format = GFX_COMPRESSED_RGB; break;
-		case 32: format = GFX_BGRA; internal_format = GFX_COMPRESSED_RGBA; break;
+		case 24: format = GFX_BGR; internal_format = eng->texture_compress ? GFX_COMPRESSED_RGB : GFX_RGB; break;
+		case 32: format = GFX_BGRA; internal_format = eng->texture_compress ? GFX_COMPRESSED_RGBA : GFX_RGBA; break;
 		default:
 			elf_set_error(ELF_INVALID_FILE, "error: unsupported bits per pixel value [%d] for image\n", elf_get_image_bits_per_pixel(image));
 			return NULL;

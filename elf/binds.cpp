@@ -447,6 +447,22 @@ ELF_API bool ELF_APIENTRY elfGetConfigFullscreen(elf_handle config)
 	}
 	return (bool)elf_get_config_fullscreen((elf_config*)config.get());
 }
+ELF_API bool ELF_APIENTRY elfGetConfigTextureCompress(elf_handle config)
+{
+	if(!config.get() || elf_get_object_type(config.get()) != ELF_CONFIG)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetConfigTextureCompress() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetConfigTextureCompress() -> invalid handle\n");
+		}
+		return false;
+	}
+	return (bool)elf_get_config_texture_compress((elf_config*)config.get());
+}
 ELF_API float ELF_APIENTRY elfGetConfigTextureAnisotropy(elf_handle config)
 {
 	if(!config.get() || elf_get_object_type(config.get()) != ELF_CONFIG)
@@ -760,6 +776,14 @@ ELF_API void ELF_APIENTRY elfSetSpeed(float speed)
 ELF_API float ELF_APIENTRY elfGetSpeed()
 {
 	return elf_get_speed();
+}
+ELF_API void ELF_APIENTRY elfSetTextureCompress(bool compress)
+{
+	elf_set_texture_compress(compress);
+}
+ELF_API bool ELF_APIENTRY elfGetTextureCompress()
+{
+	return (bool)elf_get_texture_compress();
 }
 ELF_API void ELF_APIENTRY elfSetTextureAnisotropy(float anisotropy)
 {

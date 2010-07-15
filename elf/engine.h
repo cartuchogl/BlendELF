@@ -197,7 +197,11 @@ unsigned char elf_init_engine()
 	if(!eng) return ELF_FALSE;
 	elf_inc_ref((elf_object*)eng);
 
-	getcwd(eng->cwd, 256);
+#ifdef ELF_WINDOWS
+	GetCurrentDirectoryA(255, eng->cwd);
+#else
+	getcwd(eng->cwd, 255);
+#endif
 
 	return ELF_TRUE;
 }
@@ -248,6 +252,7 @@ unsigned char elf_init_with_config(const char *file_path)
 		return ELF_FALSE;
 	}
 
+	elf_set_texture_compress(config->texture_compress);
 	elf_set_texture_anisotropy(config->texture_anisotropy);
 	elf_set_shadow_map_size(config->shadow_map_size);
 
@@ -562,6 +567,16 @@ unsigned char elf_save_screen_shot(const char *file_path)
 	return ELF_TRUE;
 }
 
+void elf_set_texture_compress(unsigned char compress)
+{
+	eng->texture_compress = !compress == ELF_FALSE;
+}
+
+unsigned char elf_get_texture_compress()
+{
+	return eng->texture_compress;
+}
+
 void elf_set_texture_anisotropy(float anisotropy)
 {
 	eng->texture_anisotropy = anisotropy;
@@ -864,8 +879,13 @@ elf_directory* elf_read_directory(const char *path)
 			dir_item = elf_create_directory_item();
 			dir_item->name = elf_create_string(dp->d_name);
 
+#ifdef ELF_WINDOWS
+			if(dp->data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) dir_item->item_type = ELF_DIR;
+			else dir_item->item_type = ELF_FILE;
+#else
 			if(dp->d_type == 4) dir_item->item_type = ELF_DIR;
 			else dir_item->item_type = ELF_FILE;
+#endif
 
 			elf_append_to_list(directory->items, (elf_object*)dir_item);
 		}

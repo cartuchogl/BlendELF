@@ -510,6 +510,7 @@ elf_config* elf_read_config(const char *file_path);	// <mdoc> CONFIGURATION FUNC
 int elf_get_config_window_width(elf_config *config);
 int elf_get_config_window_height(elf_config *config);
 unsigned char elf_get_config_fullscreen(elf_config *config);
+unsigned char elf_get_config_texture_compress(elf_config *config);
 float elf_get_config_texture_anisotropy(elf_config *config);
 int elf_get_config_shadow_map_size(elf_config *config);
 const char* elf_get_config_start(elf_config *config);
@@ -634,6 +635,8 @@ float elf_get_tick_rate();
 void elf_set_speed(float speed);
 float elf_get_speed();
 
+void elf_set_texture_compress(unsigned char compress);
+unsigned char elf_get_texture_compress();
 void elf_set_texture_anisotropy(float anisotropy);
 float elf_get_texture_anisotropy();
 

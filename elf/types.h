@@ -110,6 +110,7 @@ struct elf_config {
 	ELF_OBJECT_HEADER;
 	int window_size[2];
 	unsigned char fullscreen;
+	unsigned char texture_compress;
 	float texture_anisotropy;
 	int shadow_map_size;
 	char *start;
@@ -184,6 +185,7 @@ struct elf_engine {
 	gfx_texture *shadow_map;
 	gfx_render_target *shadow_target;
 	int shadow_map_size;
+	unsigned char texture_compress;
 	float texture_anisotropy;
 	unsigned char occlusion_culling;
 	unsigned char debug_draw;
