@@ -914,6 +914,7 @@ void elf_get_actor_orientation_(elf_actor *actor, float *params);
 
 void elf_set_actor_bounding_lengths(elf_actor *actor, float x, float y, float z);
 void elf_set_actor_bounding_offset(elf_actor *actor, float x, float y, float z);
+/* <!> */ void elf_reset_actor_bounding_offset_set_flag(elf_actor *actor);
 void elf_set_actor_physics(elf_actor *actor, int shape, float mass);
 unsigned char elf_is_actor_physics(elf_actor *actor);
 void elf_disable_actor_physics(elf_actor *actor);

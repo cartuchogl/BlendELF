@@ -522,6 +522,8 @@ void elf_read_actor_header(elf_actor *actor, FILE *file, elf_scene *scene)
 	elf_set_actor_bounding_lengths(actor, bounding_lengths[0], bounding_lengths[1], bounding_lengths[2]);
 	elf_set_actor_bounding_offset(actor, bounding_offset[0], bounding_offset[1], bounding_offset[2]);
 
+	elf_reset_actor_bounding_offset_set_flag(actor);
+
 	fread((char*)&shape, sizeof(unsigned char), 1, file);
 	fread((char*)&mass, sizeof(float), 1, file);
 	fread((char*)&lin_damp, sizeof(float), 1, file);

@@ -251,6 +251,8 @@ void elf_calc_entity_bounding_volumes(elf_entity *entity, unsigned char new_mode
 	entity->bb_offset.y = (entity->bb_max.y+entity->bb_min.y)/2.0;
 	entity->bb_offset.z = (entity->bb_max.z+entity->bb_min.z)/2.0;
 
+	if(!entity->pbb_offset_set) entity->pbb_offset = entity->bb_offset;
+
 	entity->bb_min.x += entity->bb_offset.x;
 	entity->bb_min.y += entity->bb_offset.y;
 	entity->bb_min.z += entity->bb_offset.z;
@@ -276,7 +278,7 @@ void elf_set_entity_scale(elf_entity *entity, float x, float y, float z)
 	elf_calc_entity_bounding_volumes(entity, ELF_FALSE);
 
 	if(entity->object) elf_set_physics_object_scale(entity->object, x, y, z);
-	if(entity->dobject) elf_set_physics_object_scale(entity->dobject, x, y, z);
+	elf_reset_entity_debug_physics_object(entity);
 }
 
 elf_vec3f elf_get_entity_scale(elf_entity *entity)

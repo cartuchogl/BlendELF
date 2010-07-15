@@ -24,6 +24,7 @@
 	unsigned char physics; \
 	elf_vec3f pbb_lengths; \
 	elf_vec3f pbb_offset; \
+	unsigned char pbb_offset_set; \
 	unsigned char shape; \
 	float mass; \
 	float lin_damp; \

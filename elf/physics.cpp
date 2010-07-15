@@ -841,7 +841,18 @@ void elf_set_physics_object_orientation(elf_physics_object *object, float x, flo
 {
 	float orient[4];
 	float offset[3];
+	float new_pos[3];
 	btVector3 origin;
+
+	elf_get_physics_object_orientation(object, orient);
+
+	gfx_mul_qua_vec(orient, &object->offset.x, offset);
+
+	origin = object->motionState->m_graphicsWorldTrans.getOrigin();
+
+	new_pos[0] = origin.x()-offset[0];
+	new_pos[1] = origin.y()-offset[1];
+	new_pos[2] = origin.z()-offset[2];
 
 	orient[0] = x;
 	orient[1] = y;
@@ -850,7 +861,9 @@ void elf_set_physics_object_orientation(elf_physics_object *object, float x, flo
 
 	gfx_mul_qua_vec(orient, &object->offset.x, offset);
 
-	origin = object->motionState->m_graphicsWorldTrans.getOrigin();
+	new_pos[0] += offset[0];
+	new_pos[1] += offset[1];
+	new_pos[2] += offset[2];
 
 	object->body->activate(true);
 	if(object->body->isStaticObject())
@@ -859,7 +872,7 @@ void elf_set_physics_object_orientation(elf_physics_object *object, float x, flo
 			btCollisionObject::CF_KINEMATIC_OBJECT);
 	}
 	btTransform xform = object->body->getCenterOfMassTransform();
-	xform.setOrigin(btVector3(origin.x()+offset[0], origin.y()+offset[1], origin.z()+offset[2]));
+	xform.setOrigin(btVector3(new_pos[0], new_pos[1], new_pos[2]));
 	xform.setRotation(btQuaternion(x, y, z, w));
 	object->body->setCenterOfMassTransform(xform);
 	object->motionState->setWorldTransform(xform);
