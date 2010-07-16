@@ -851,7 +851,7 @@ elf_ipo* elf_create_ipo();
 void elf_destroy_ipo(elf_ipo *ipo);
 // !!>
 
-void elf_add_point_to_bezier_curve(elf_bezier_curve *curve, elf_bezier_point *point);
+void elf_add_point_to_bezier_curve(elf_bezier_curve *curve, elf_bezier_point *point);	// <mdoc> IPO FUNCTIONS
 
 unsigned char elf_add_curve_to_ipo(elf_ipo *ipo, elf_bezier_curve *curve);
 elf_vec3f elf_get_ipo_loc(elf_ipo *ipo, float x);
@@ -862,7 +862,7 @@ elf_vec4f elf_get_ipo_qua(elf_ipo *ipo, float x);
 //////////////////////////////// PROPERTY ////////////////////////////////
 
 
-elf_property* elf_create_property(const char *name);
+elf_property* elf_create_property(const char *name);	// <mdoc> PROPERTY FUNCTIONS
 /* <!> */ void elf_destroy_property(elf_property *property);
 
 int elf_get_property_type(elf_property *property);
