@@ -114,7 +114,9 @@ void elf_recursively_import_assets(elf_scene *scene, const struct aiScene *aiscn
 	elf_model *model;
 	elf_material *material;
 	elf_texture *texture;
-	int index;
+	int area_index;
+	int vertex_offset;
+	int index_offset;
 	float *vertex_buffer;
 	float *normal_buffer;
 	float *texcoord_buffer;
@@ -127,6 +129,13 @@ void elf_recursively_import_assets(elf_scene *scene, const struct aiScene *aiscn
 	struct aiString path;
 	char *parent_folder;
 	char *real_path;
+	unsigned char is_tex_coords;
+
+	entity = elf_create_entity("Node");
+	model = elf_create_model("NodeMesh");
+
+	model->frame_count = 1;
+	is_tex_coords = ELF_FALSE;
 
 	for(i = 0; i < (int)aind->mNumMeshes; i++)
 	{
@@ -134,75 +143,151 @@ void elf_recursively_import_assets(elf_scene *scene, const struct aiScene *aiscn
 
 		if(mesh->mNumVertices < 3 || mesh->mNumFaces < 1) continue;
 
-		entity = elf_create_entity("Node");
-		model = elf_create_model("NodeMesh");
+		model->vertice_count += mesh->mNumVertices;
+		model->area_count += 1;
+		model->indice_count += mesh->mNumFaces*3;
 
-		model->vertice_count = mesh->mNumVertices;
-		model->frame_count = 1;
-		model->area_count = 1;
-		model->indice_count = mesh->mNumFaces*3;
+		if(mesh->mTextureCoords[0] != NULL) is_tex_coords = ELF_TRUE;
+	}
 
-		model->vertices = gfx_create_vertex_data(3*mesh->mNumVertices, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
-		model->normals = gfx_create_vertex_data(3*mesh->mNumVertices, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
-		if(mesh->mTextureCoords[0] != NULL) model->tex_coords = gfx_create_vertex_data(2*mesh->mNumVertices, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
-
+	if(model->vertice_count > 2 && model->indice_count > 2)
+	{
+		model->vertices = gfx_create_vertex_data(3*model->vertice_count, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
 		gfx_inc_ref((gfx_object*)model->vertices);
-		gfx_inc_ref((gfx_object*)model->normals);
-		if(mesh->mTextureCoords[0] != NULL) gfx_inc_ref((gfx_object*)model->tex_coords);
-
 		vertex_buffer = (float*)gfx_get_vertex_data_buffer(model->vertices);
+
+		model->normals = gfx_create_vertex_data(3*model->vertice_count, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
+		gfx_inc_ref((gfx_object*)model->normals);
 		normal_buffer = (float*)gfx_get_vertex_data_buffer(model->normals);
-		if(mesh->mTextureCoords[0] != NULL) texcoord_buffer = (float*)gfx_get_vertex_data_buffer(model->tex_coords);
+
+		if(is_tex_coords)
+		{
+			model->tex_coords = gfx_create_vertex_data(2*model->vertice_count, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
+			gfx_inc_ref((gfx_object*)model->tex_coords);
+			texcoord_buffer = (float*)gfx_get_vertex_data_buffer(model->tex_coords);
+		}
 
 		model->areas = (elf_model_area*)malloc(sizeof(elf_model_area)*model->area_count);
 		memset(model->areas, 0x0, sizeof(elf_model_area)*model->area_count);
 
-		model->areas[0].indice_count = mesh->mNumFaces*3;
-		model->areas[0].index = gfx_create_vertex_data(model->areas[0].indice_count, GFX_UINT, GFX_VERTEX_DATA_STATIC);
-		gfx_inc_ref((gfx_object*)model->areas[0].index);
+		area_index = 0;
+		vertex_offset = 0;
 
-		model->index = (unsigned int*)malloc(sizeof(unsigned int)*model->areas[0].indice_count);
-		index_buffer = (unsigned int*)gfx_get_vertex_data_buffer(model->areas[0].index);
-
-		for(j = 0; j < (int)mesh->mNumVertices; j++)
+		for(i = 0; i < (int)aind->mNumMeshes; i++)
 		{
-			memcpy(&vertex_buffer[j*3], &mesh->mVertices[j].x, sizeof(float)*3);
-			if(mesh->mNormals != NULL)
-				memcpy(&normal_buffer[j*3], &mesh->mNormals[j].x, sizeof(float)*3);
-			if(mesh->mTextureCoords[0] != NULL)
-				memcpy(&texcoord_buffer[j*2], &mesh->mTextureCoords[0][j].x, sizeof(float)*2);
-		}
+			const struct aiMesh *mesh = aiscn->mMeshes[aind->mMeshes[i]];
 
-		for(j = 0; j < (int)mesh->mNumFaces; j++)
-		{
-			const struct aiFace *face = &mesh->mFaces[j];
+			if(mesh->mNumVertices < 3 || mesh->mNumFaces < 1) continue;
 
-			if(face->mNumIndices != 3)
+			for(j = 0; j < (int)mesh->mNumVertices; j++)
 			{
-				elf_set_error(ELF_INVALID_MESH, "error: unexpected non triangular face when loading mesh\n");
-				continue;
+				memcpy(&vertex_buffer[(vertex_offset+j)*3], &mesh->mVertices[j].x, sizeof(float)*3);
+				if(mesh->mNormals != NULL)
+					memcpy(&normal_buffer[(vertex_offset+j)*3], &mesh->mNormals[j].x, sizeof(float)*3);
+				if(mesh->mTextureCoords[0] != NULL)
+					memcpy(&texcoord_buffer[(vertex_offset+j)*2], &mesh->mTextureCoords[0][j].x, sizeof(float)*2);
 			}
 
-			for(k = 0; k < (int)face->mNumIndices; k++)
+			model->areas[area_index].indice_count = mesh->mNumFaces*3;
+			model->areas[area_index].index = gfx_create_vertex_data(model->areas[area_index].indice_count, GFX_UINT, GFX_VERTEX_DATA_STATIC);
+			gfx_inc_ref((gfx_object*)model->areas[area_index].index);
+			index_buffer = (unsigned int*)gfx_get_vertex_data_buffer(model->areas[area_index].index);
+
+			for(j = 0; j < (int)mesh->mNumFaces; j++)
 			{
-				index = face->mIndices[k];
-				index_buffer[j*3+k] = index;
+				const struct aiFace *face = &mesh->mFaces[j];
+
+				if(face->mNumIndices != 3)
+				{
+					elf_set_error(ELF_INVALID_MESH, "error: unexpected non triangular face when loading mesh\n");
+					continue;
+				}
+
+				for(k = 0; k < (int)face->mNumIndices; k++)
+				{
+					index_buffer[j*3+k] = vertex_offset+face->mIndices[k];
+				}
 			}
-		}
 
-		// get bounding box values
-		memcpy(&model->bb_min.x, vertex_buffer, sizeof(float)*3);
-		memcpy(&model->bb_max.x, vertex_buffer, sizeof(float)*3);
+			vertex_offset += mesh->mNumVertices;
 
-		for(j = 3; j < model->vertice_count*3; j+=3)
-		{
-			if(vertex_buffer[j] < model->bb_min.x) model->bb_min.x = vertex_buffer[j];
-			if(vertex_buffer[j+1] < model->bb_min.y) model->bb_min.y = vertex_buffer[j+1];
-			if(vertex_buffer[j+2] < model->bb_min.z) model->bb_min.z = vertex_buffer[j+2];
+			model->areas[area_index].vertex_index = gfx_create_vertex_index(GFX_TRUE, model->areas[area_index].index);
+			gfx_inc_ref((gfx_object*)model->areas[area_index].vertex_index);
 
-			if(vertex_buffer[j] > model->bb_max.x) model->bb_max.x = vertex_buffer[j];
-			if(vertex_buffer[j+1] > model->bb_max.y) model->bb_max.y = vertex_buffer[j+1];
-			if(vertex_buffer[j+2] > model->bb_max.z) model->bb_max.z = vertex_buffer[j+2];
+			area_index += 1;
+
+			material = elf_create_material("NodeMaterial");
+
+			aimat = aiscn->mMaterials[mesh->mMaterialIndex];
+
+			if(AI_SUCCESS == aiGetMaterialColor(aimat, AI_MATKEY_COLOR_DIFFUSE, &col))
+				elf_set_material_diffuse_color(material, col.r, col.g, col.b, col.a);
+			if(AI_SUCCESS == aiGetMaterialColor(aimat, AI_MATKEY_COLOR_SPECULAR, &col))
+				elf_set_material_specular_color(material, col.r, col.g, col.b, col.a);
+			if(AI_SUCCESS == aiGetMaterialColor(aimat, AI_MATKEY_COLOR_AMBIENT, &col))
+				elf_set_material_ambient_color(material, col.r, col.g, col.b, col.a);
+
+			max = 1;
+			if(AI_SUCCESS == aiGetMaterialFloatArray(aimat, AI_MATKEY_SHININESS, &shininess, &max))
+			{
+				max = 1;
+				if(AI_SUCCESS == aiGetMaterialFloatArray(aimat, AI_MATKEY_SHININESS_STRENGTH, &strength, &max))
+				{
+					elf_set_material_specular_power(material, shininess*strength);
+				}
+				else
+				{
+					elf_set_material_specular_power(material, shininess);
+				}
+			}
+
+			parent_folder = elf_get_directory_from_path(scene->file_path);
+			real_path = NULL;
+
+			if(AI_SUCCESS == aiGetMaterialString(aimat, AI_MATKEY_TEXTURE_DIFFUSE(0), &path))
+			{
+				if(real_path) elf_destroy_string(real_path);
+				real_path = elf_merge_strings(parent_folder, path.data);
+				texture = elf_create_texture_from_file(real_path);
+				if(texture) elf_set_material_diffuse_map(material, texture);
+			}
+
+			if(AI_SUCCESS == aiGetMaterialString(aimat, AI_MATKEY_TEXTURE_SPECULAR(0), &path))
+			{
+				if(real_path) elf_destroy_string(real_path);
+				real_path = elf_merge_strings(parent_folder, path.data);
+				texture = elf_create_texture_from_file(real_path);
+				if(texture) elf_set_material_specular_map(material, texture);
+			}
+
+			if(AI_SUCCESS == aiGetMaterialString(aimat, AI_MATKEY_TEXTURE_NORMALS(0), &path))
+			{
+				if(real_path) elf_destroy_string(real_path);
+				real_path = elf_merge_strings(parent_folder, path.data);
+				texture = elf_create_texture_from_file(real_path);
+				if(texture) elf_set_material_normal_map(material, texture);
+			}
+
+			if(AI_SUCCESS == aiGetMaterialString(aimat, AI_MATKEY_TEXTURE_LIGHTMAP(0), &path))
+			{
+				if(real_path) elf_destroy_string(real_path);
+				real_path = elf_merge_strings(parent_folder, path.data);
+				texture = elf_create_texture_from_file(real_path);
+				if(texture) elf_set_material_light_map(material, texture);
+			}
+
+			if(AI_SUCCESS == aiGetMaterialString(aimat, AI_MATKEY_TEXTURE_HEIGHT(0), &path))
+			{
+				if(real_path) elf_destroy_string(real_path);
+				real_path = elf_merge_strings(parent_folder, path.data);
+				texture = elf_create_texture_from_file(real_path);
+				if(texture) elf_set_material_height_map(material, texture);
+			}
+
+			elf_destroy_string(parent_folder);
+			if(real_path) elf_destroy_string(real_path);
+
+			elf_add_entity_material(entity, material);
 		}
 
 		model->vertex_array = gfx_create_vertex_array(GFX_TRUE);
@@ -210,91 +295,44 @@ void elf_recursively_import_assets(elf_scene *scene, const struct aiScene *aiscn
 
 		gfx_set_vertex_array_data(model->vertex_array, GFX_VERTEX, model->vertices);
 		gfx_set_vertex_array_data(model->vertex_array, GFX_NORMAL, model->normals);
-		if(mesh->mTextureCoords[0] != NULL) gfx_set_vertex_array_data(model->vertex_array, GFX_TEX_COORD, model->tex_coords);
+		if(is_tex_coords) gfx_set_vertex_array_data(model->vertex_array, GFX_TEX_COORD, model->tex_coords);
 
-		model->areas[0].vertex_index = gfx_create_vertex_index(GFX_TRUE, model->areas[0].index);
-		gfx_inc_ref((gfx_object*)model->areas[0].vertex_index);
+		model->index = (unsigned int*)malloc(sizeof(unsigned int)*model->indice_count);
 
-		memcpy(model->index, index_buffer, sizeof(unsigned int)*model->areas[0].indice_count);
+		index_offset = 0;
 
+		for(i = 0; i < model->area_count; i++)
+		{
+			index_buffer = (unsigned int*)gfx_get_vertex_data_buffer(model->areas[i].index);
+			memcpy(&model->index[index_offset], index_buffer, sizeof(unsigned int)*model->areas[i].indice_count);
+			index_offset += model->areas[i].indice_count;
+		}
+
+		// get bounding box values
+		memcpy(&model->bb_min.x, vertex_buffer, sizeof(float)*3);
+		memcpy(&model->bb_max.x, vertex_buffer, sizeof(float)*3);
+
+		for(i = 3; i < model->vertice_count*3; i+=3)
+		{
+			if(vertex_buffer[i] < model->bb_min.x) model->bb_min.x = vertex_buffer[i];
+			if(vertex_buffer[i+1] < model->bb_min.y) model->bb_min.y = vertex_buffer[i+1];
+			if(vertex_buffer[i+2] < model->bb_min.z) model->bb_min.z = vertex_buffer[i+2];
+
+			if(vertex_buffer[i] > model->bb_max.x) model->bb_max.x = vertex_buffer[i];
+			if(vertex_buffer[i+1] > model->bb_max.y) model->bb_max.y = vertex_buffer[i+1];
+			if(vertex_buffer[i+2] > model->bb_max.z) model->bb_max.z = vertex_buffer[i+2];
+		}
+
+		// set entity model
 		elf_set_entity_model(entity, model);
 
-		material = elf_create_material("NodeMaterial");
-
-		aimat = aiscn->mMaterials[mesh->mMaterialIndex];
-
-		if(AI_SUCCESS == aiGetMaterialColor(aimat, AI_MATKEY_COLOR_DIFFUSE, &col))
-			elf_set_material_diffuse_color(material, col.r, col.g, col.b, col.a);
-		if(AI_SUCCESS == aiGetMaterialColor(aimat, AI_MATKEY_COLOR_SPECULAR, &col))
-			elf_set_material_specular_color(material, col.r, col.g, col.b, col.a);
-		if(AI_SUCCESS == aiGetMaterialColor(aimat, AI_MATKEY_COLOR_AMBIENT, &col))
-			elf_set_material_ambient_color(material, col.r, col.g, col.b, col.a);
-
-		max = 1;
-		if(AI_SUCCESS == aiGetMaterialFloatArray(aimat, AI_MATKEY_SHININESS, &shininess, &max))
-		{
-			max = 1;
-			if(AI_SUCCESS == aiGetMaterialFloatArray(aimat, AI_MATKEY_SHININESS_STRENGTH, &strength, &max))
-			{
-				elf_set_material_specular_power(material, shininess*strength);
-			}
-			else
-			{
-				elf_set_material_specular_power(material, shininess);
-			}
-		}
-
-		parent_folder = elf_get_directory_from_path(scene->file_path);
-		real_path = NULL;
-
-		if(AI_SUCCESS == aiGetMaterialString(aimat, AI_MATKEY_TEXTURE_DIFFUSE(0), &path))
-		{
-			if(real_path) elf_destroy_string(real_path);
-			real_path = elf_merge_strings(parent_folder, path.data);
-			texture = elf_create_texture_from_file(real_path);
-			if(texture) elf_set_material_diffuse_map(material, texture);
-		}
-
-		if(AI_SUCCESS == aiGetMaterialString(aimat, AI_MATKEY_TEXTURE_SPECULAR(0), &path))
-		{
-			if(real_path) elf_destroy_string(real_path);
-			real_path = elf_merge_strings(parent_folder, path.data);
-			texture = elf_create_texture_from_file(real_path);
-			if(texture) elf_set_material_specular_map(material, texture);
-		}
-
-		if(AI_SUCCESS == aiGetMaterialString(aimat, AI_MATKEY_TEXTURE_NORMALS(0), &path))
-		{
-			if(real_path) elf_destroy_string(real_path);
-			real_path = elf_merge_strings(parent_folder, path.data);
-			texture = elf_create_texture_from_file(real_path);
-			if(texture) elf_set_material_normal_map(material, texture);
-		}
-
-		if(AI_SUCCESS == aiGetMaterialString(aimat, AI_MATKEY_TEXTURE_LIGHTMAP(0), &path))
-		{
-			if(real_path) elf_destroy_string(real_path);
-			real_path = elf_merge_strings(parent_folder, path.data);
-			texture = elf_create_texture_from_file(real_path);
-			if(texture) elf_set_material_light_map(material, texture);
-		}
-
-		if(AI_SUCCESS == aiGetMaterialString(aimat, AI_MATKEY_TEXTURE_HEIGHT(0), &path))
-		{
-			if(real_path) elf_destroy_string(real_path);
-			real_path = elf_merge_strings(parent_folder, path.data);
-			texture = elf_create_texture_from_file(real_path);
-			if(texture) elf_set_material_height_map(material, texture);
-		}
-
-		elf_destroy_string(parent_folder);
-		if(real_path) elf_destroy_string(real_path);
-
-		elf_set_entity_material(entity, 0, material);
-
 		elf_generate_entity_tangents(entity);
-
 		elf_add_entity_to_scene(scene, entity);
+	}
+	else
+	{
+		elf_destroy_model(model);
+		elf_destroy_entity(entity);
 	}
 
 	for (i = 0; i < (int)aind->mNumChildren; i++)
