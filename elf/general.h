@@ -8,6 +8,7 @@ void elf_init_general()
 	gen->type = ELF_GENERAL;
 
 	gen->log = elf_create_string("elf.log");
+
 }
 
 void elf_deinit_general()
@@ -45,7 +46,7 @@ void elf_deinit_general()
 void elf_inc_ref(elf_object *obj)
 {
 	gen->global_ref_count++;
-	gen->global_ref_count_table[obj->type]++;
+	gen->ref_table[obj->type]++;
 
 	obj->ref_count++;
 }
@@ -53,7 +54,7 @@ void elf_inc_ref(elf_object *obj)
 void elf_dec_ref(elf_object *obj)
 {
 	gen->global_ref_count--;
-	gen->global_ref_count_table[obj->type]--;
+	gen->ref_table[obj->type]--;
 
 	obj->ref_count--;
 
@@ -138,7 +139,7 @@ void elf_log_ref_count_table()
 
 	for(i = 0; i < ELF_OBJECT_TYPE_COUNT; i++)
 	{
-		elf_write_to_log("%d : %d\n", i, gen->global_ref_count_table[i]);
+		elf_write_to_log("%d : %d\n", i, gen->ref_table[i]);
 	}
 
 	elf_write_to_log("-------------------------------------\n");

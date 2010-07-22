@@ -164,6 +164,15 @@ void elf_recursively_import_assets(elf_scene *scene, const struct aiScene *aiscn
 		model->index = (unsigned int*)malloc(sizeof(unsigned int)*model->areas[0].indice_count);
 		index_buffer = (unsigned int*)gfx_get_vertex_data_buffer(model->areas[0].index);
 
+		for(j = 0; j < (int)mesh->mNumVertices; j++)
+		{
+			memcpy(&vertex_buffer[j*3], &mesh->mVertices[j].x, sizeof(float)*3);
+			if(mesh->mNormals != NULL)
+				memcpy(&normal_buffer[j*3], &mesh->mNormals[j].x, sizeof(float)*3);
+			if(mesh->mTextureCoords[0] != NULL)
+				memcpy(&texcoord_buffer[j*2], &mesh->mTextureCoords[0][j].x, sizeof(float)*2);
+		}
+
 		for(j = 0; j < (int)mesh->mNumFaces; j++)
 		{
 			const struct aiFace *face = &mesh->mFaces[j];
@@ -171,19 +180,13 @@ void elf_recursively_import_assets(elf_scene *scene, const struct aiScene *aiscn
 			if(face->mNumIndices != 3)
 			{
 				elf_set_error(ELF_INVALID_MESH, "error: unexpected non triangular face when loading mesh\n");
-				break;
+				continue;
 			}
 
 			for(k = 0; k < (int)face->mNumIndices; k++)
 			{
 				index = face->mIndices[k];
-
 				index_buffer[j*3+k] = index;
-				memcpy(&vertex_buffer[index*3], &mesh->mVertices[index].x, sizeof(float)*3);
-				if(mesh->mNormals != NULL)
-					memcpy(&normal_buffer[index*3], &mesh->mNormals[index].x, sizeof(float)*3);
-				if(mesh->mTextureCoords[0] != NULL)
-					memcpy(&texcoord_buffer[index*2], &mesh->mTextureCoords[0][index].x, sizeof(float)*2);
 			}
 		}
 

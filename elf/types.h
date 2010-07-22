@@ -103,7 +103,7 @@ struct elf_general {
 	int global_ref_count;
 	int global_obj_count;
 
-	int global_ref_count_table[ELF_OBJECT_TYPE_COUNT];
+	int ref_table[ELF_OBJECT_TYPE_COUNT];
 };
 
 struct elf_config {
