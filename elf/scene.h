@@ -127,12 +127,13 @@ void elf_recursively_import_assets(elf_scene *scene, const struct aiScene *aiscn
 	float strength;
 	unsigned int max;
 	struct aiString path;
+	struct aiString name;
 	char *parent_folder;
 	char *real_path;
 	unsigned char is_tex_coords;
 
-	entity = elf_create_entity("Node");
-	model = elf_create_model("NodeMesh");
+	entity = elf_create_entity(aind->mName.data);
+	model = elf_create_model(aind->mName.data);
 
 	model->frame_count = 1;
 	is_tex_coords = ELF_FALSE;
@@ -216,9 +217,11 @@ void elf_recursively_import_assets(elf_scene *scene, const struct aiScene *aiscn
 
 			area_index += 1;
 
-			material = elf_create_material("NodeMaterial");
-
 			aimat = aiscn->mMaterials[mesh->mMaterialIndex];
+
+			aiGetMaterialString(aimat, AI_MATKEY_NAME, &name);
+
+			material = elf_create_material(name.data);
 
 			if(AI_SUCCESS == aiGetMaterialColor(aimat, AI_MATKEY_COLOR_DIFFUSE, &col))
 				elf_set_material_diffuse_color(material, col.r, col.g, col.b, col.a);
