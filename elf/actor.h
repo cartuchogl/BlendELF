@@ -344,13 +344,45 @@ void elf_set_actor_rotation_relative_to(elf_actor *actor, elf_actor *to, float x
 	elf_vec4f orient;
 	elf_vec4f result;
 
-	gfx_set_qua_rotation(x, y, z, &lorient.x);
+	gfx_qua_from_euler(x, y, z, &lorient.x);
 
 	elf_get_actor_orientation_(to, &orient.x);
 
 	gfx_mul_qua_qua(&orient.x, &lorient.x, &result.x);
 
 	elf_set_actor_orientation(actor, result.x, result.y, result.z, result.w);
+}
+
+void elf_direct_actor_at(elf_actor *actor, elf_actor *at)
+{
+	elf_vec3f dir;
+	elf_vec3f pos1;
+	elf_vec3f pos2;
+
+	elf_get_actor_position_(actor, &pos1.x);
+	elf_get_actor_position_(at, &pos2.x);
+
+	dir.x = pos2.x-pos1.x;
+	dir.y = pos2.y-pos1.y;
+	dir.z = pos2.z-pos1.z;
+
+	elf_set_actor_direction(actor, dir.x, dir.y, dir.z);
+}
+
+void elf_set_actor_direction(elf_actor *actor, float x, float y, float z)
+{
+	elf_vec4f orient;
+	elf_vec3f dir;
+
+	dir.x = x;
+	dir.y = y;
+	dir.z = z;
+
+	gfx_vec_normalize(&dir.x);
+
+	gfx_qua_from_direction(&dir.x, &orient.x);
+
+	elf_set_actor_orientation(actor, orient.x, orient.y, orient.z, orient.w);
 }
 
 void elf_set_actor_orientation_relative_to(elf_actor *actor, elf_actor *to, float x, float y, float z, float w)
@@ -1032,10 +1064,6 @@ void elf_remove_actor_properties(elf_actor *actor)
 	elf_dec_ref((elf_object*)actor->properties);
 	actor->properties = elf_create_list();
 	elf_inc_ref((elf_object*)actor->properties);
-}
-
-void elf_direct_actor_at(elf_actor *actor, elf_vec3f at, int axis)
-{
 }
 
 void elf_set_actor_selected(elf_actor *actor, unsigned char selected)

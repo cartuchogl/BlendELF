@@ -905,6 +905,8 @@ void elf_move_actor_local(elf_actor *actor, float x, float y, float z);
 void elf_set_actor_position_relative_to(elf_actor *actor, elf_actor *to, float x, float y, float z);
 void elf_set_actor_rotation_relative_to(elf_actor *actor, elf_actor *to, float x, float y, float z);
 void elf_set_actor_orientation_relative_to(elf_actor *actor, elf_actor *to, float x, float y, float z, float w);
+/* <!> */ void elf_direct_actor_at(elf_actor *actor, elf_actor *at);
+/* <!> */ void elf_set_actor_direction(elf_actor *actor, float x, float y, float z);
 elf_vec3f elf_get_actor_position(elf_actor *actor);
 elf_vec3f elf_get_actor_rotation(elf_actor *actor);
 elf_vec4f elf_get_actor_orientation(elf_actor *actor);
@@ -985,8 +987,6 @@ unsigned char elf_remove_actor_property_by_name(elf_actor *actor, const char *na
 unsigned char elf_remove_actor_property_by_index(elf_actor *actor, int idx);
 unsigned char elf_remove_actor_property_by_object(elf_actor *actor, elf_property *property);
 void elf_remove_actor_properties(elf_actor *actor);
-
-/* <!> */ void elf_direct_actor_at(elf_actor *actor, elf_vec3f at, int axis);
 
 void elf_set_actor_selected(elf_actor *actor, unsigned char selected);
 unsigned char elf_get_actor_selected(elf_actor *actor);

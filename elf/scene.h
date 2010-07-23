@@ -349,6 +349,9 @@ elf_scene* elf_create_scene_from_file(const char *file_path)
 	elf_pak *pak;
 	elf_scene *scene;
 	const char *type;
+	int i;
+	elf_camera *camera;
+	elf_light *light;
 
 	type = strrchr(file_path, '.');
 	if(!type)
@@ -385,6 +388,38 @@ elf_scene* elf_create_scene_from_file(const char *file_path)
 		scene->file_path = elf_create_string(file_path);
 
 		elf_recursively_import_assets(scene, aiscn, aiscn->mRootNode);
+
+		for(i = 0; i < aiscn->mNumCameras; i++)
+		{
+			const struct aiCamera *aicam = aiscn->mCameras[i];
+
+			camera = elf_create_camera(aicam->mName.data);
+
+			elf_set_camera_perspective(camera, aicam->mHorizontalFOV, -1.0, aicam->mClipPlaneNear, aicam->mClipPlaneFar);
+			elf_set_actor_position((elf_actor*)camera, aicam->mPosition.x, aicam->mPosition.y, aicam->mPosition.z);
+
+			elf_add_camera_to_scene(scene, camera);
+		}
+
+		for(i = 0; i < aiscn->mNumLights; i++)
+		{
+			const struct aiLight *ailig = aiscn->mLights[i];
+
+			light = elf_create_light(ailig->mName.data);
+
+			if(ailig->mType == aiLightSource_DIRECTIONAL) elf_set_light_type(light, ELF_SUN_LIGHT);
+			else if(ailig->mType == aiLightSource_POINT) elf_set_light_type(light, ELF_POINT_LIGHT);
+			else if(ailig->mType == aiLightSource_SPOT) elf_set_light_type(light, ELF_SPOT_LIGHT);
+
+			elf_set_light_color(light, ailig->mColorDiffuse.r, ailig->mColorDiffuse.g, ailig->mColorDiffuse.b, 1.0);
+			elf_set_light_cone(light, ailig->mAngleInnerCone, ailig->mAngleOuterCone);
+			elf_set_light_distance(light, 0.0001);
+			elf_set_light_fade_speed(light, (ailig->mAttenuationLinear+ailig->mAttenuationQuadratic)/2.0);
+			elf_set_actor_position((elf_actor*)light, ailig->mPosition.x, ailig->mPosition.y, ailig->mPosition.z);
+			elf_set_actor_direction((elf_actor*)light, ailig->mDirection.x, ailig->mDirection.y, ailig->mDirection.z);
+
+			elf_add_light_to_scene(scene, light);
+		}
 
 		aiReleaseImport(aiscn);
 		aiDetachAllLogStreams();
@@ -1771,7 +1806,7 @@ void elf_draw_scene(elf_scene *scene)
 
 			gfx_mul_matrix4_matrix4(elf_get_camera_projection_matrix(light->shadow_camera), bias, temp_mat1);
 			gfx_mul_matrix4_matrix4(elf_get_camera_modelview_matrix(light->shadow_camera), temp_mat1, temp_mat2);
-			gfx_matrix4_lol_invert(elf_get_camera_modelview_matrix(scene->cur_camera), temp_mat1);
+			gfx_matrix4_get_inverse_fast(elf_get_camera_modelview_matrix(scene->cur_camera), temp_mat1);
 			gfx_mul_matrix4_matrix4(temp_mat1, temp_mat2, light->projection_matrix);
 
 			if(render_target) gfx_set_render_target(render_target);

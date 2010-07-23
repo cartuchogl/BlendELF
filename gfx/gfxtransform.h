@@ -248,7 +248,7 @@ void gfx_set_transform_rotation(gfx_transform *transform, float x, float y, floa
 	transform->rotation[1] = y;
 	transform->rotation[2] = z;
 
-	gfx_set_qua_rotation(x, y, z, transform->orient);
+	gfx_qua_from_euler(x, y, z, transform->orient);
 
 	transform->recalc_matrix = GFX_TRUE;
 }

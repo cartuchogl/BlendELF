@@ -220,30 +220,35 @@ int gfx_get_global_obj_count();
 
 //////////////////////////////// MATH ////////////////////////////////
 
+void gfx_vec_to_euler(float *vec, float *euler);
 void gfx_vec_normalize(float *vec);
 void gfx_vec_dot_vec(float *vec1, float *vec2, float *dot);
 void gfx_vec_cross_product(float *vec1, float *vec2, float *vec3);
+float gfx_vec_length(float *vec);
+
+void gfx_qua_set_identity(float *qua);
 void gfx_qua_normalize(float *qua, float *result);
-void gfx_mul_qua_vec(float *qua, float *vec1, float *vec2);
-void gfx_mul_qua_qua(float *qua1, float *qua2, float *qua3);
-void gfx_qua_slerp(float *qa, float* qb, double t, float *result);
-void gfx_mul_matrix4_vec3(float *m1, float *vec1, float *vec2);
-void gfx_mul_matrix4_vec4(float *m1, float *vec1, float *vec2);
-void gfx_mul_matrix4_matrix4(float *m1, float *m2, float *m3);
+void gfx_qua_get_inverse(float *qua, float *invqua);
+void gfx_qua_from_direction(float *dir, float *qua);
 void gfx_qua_from_angle_axis(float angle, float *axis, float *qua);
+void gfx_qua_from_euler(float x, float y, float z, float *qua);
 void gfx_qua_to_matrix4(float *qua, float *mat);
 void gfx_qua_to_euler(float *qua, float *euler);
-void gfx_qua_get_inverse(float *qua, float *invqua);
-void gfx_qua_set_identity(float *qua);
-void gfx_matrix4_set_identity(float *mat);
-void gfx_matrix4_transpose(float *mat1, float *mat2);
-void gfx_matrix4_lol_invert(float *mat1, float *mat2);
-void gfx_matrix4_get_inverse(float *mat1, float *mat2);
-void gfx_set_qua_rotation(float x, float y, float z, float *qua);
 void gfx_rotate_qua(float x, float y, float z, float* qua);
 void gfx_rotate_qua_local(float x, float y, float z, float* qua);
 void gfx_mul_qua_vec(float *qua, float *vec1, float *vec2);
-float gfx_vec_length(float *vec);
+void gfx_mul_qua_qua(float *qua1, float *qua2, float *qua3);
+void gfx_qua_slerp(float *qa, float* qb, double t, float *result);
+
+void gfx_matrix4_set_identity(float *mat);
+void gfx_matrix4_transpose(float *mat1, float *mat2);
+void gfx_matrix4_get_inverse_fast(float *mat1, float *mat2);
+void gfx_matrix4_get_inverse(float *mat1, float *mat2);
+void gfx_matrix3_to_qua(float *mat, float *qua);
+void gfx_matrix4_to_euler(float *mat, float *eul);
+void gfx_mul_matrix4_vec3(float *m1, float *vec1, float *vec2);
+void gfx_mul_matrix4_vec4(float *m1, float *vec1, float *vec2);
+void gfx_mul_matrix4_matrix4(float *m1, float *m2, float *m3);
 
 //////////////////////////////// TRANSFORM ////////////////////////////////
 
