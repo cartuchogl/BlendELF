@@ -293,34 +293,34 @@ void elf_draw_light_debug(elf_light *light, gfx_shader_params *shader_params)
 
 	if(light->light_type == ELF_POINT_LIGHT)
 	{
-		step = (360.0/((float)64))*GFX_PI_DIV_180;
+		step = (360.0/((float)128))*GFX_PI_DIV_180;
 
-		for(i = 0; i < 64; i++)
+		for(i = 0; i < 128; i++)
 		{
 			vertex_buffer[i*3] = -((float)sin((float)(step*i)))*light->distance;
 			vertex_buffer[i*3+1] = ((float)cos((float)(step*i)))*light->distance;
 			vertex_buffer[i*3+2] = 0.0;
 		}
 
-		gfx_draw_lines(64, eng->lines);
+		gfx_draw_lines(128, eng->lines);
 
-		for(i = 0; i < 64; i++)
+		for(i = 0; i < 128; i++)
 		{
 			vertex_buffer[i*3] = 0.0;
 			vertex_buffer[i*3+1] = -((float)sin((float)(step*i)))*light->distance;
 			vertex_buffer[i*3+2] = ((float)cos((float)(step*i)))*light->distance;
 		}
 
-		gfx_draw_lines(64, eng->lines);
+		gfx_draw_lines(128, eng->lines);
 
-		for(i = 0; i < 64; i++)
+		for(i = 0; i < 128; i++)
 		{
 			vertex_buffer[i*3] = -((float)sin((float)(step*i)))*light->distance;
 			vertex_buffer[i*3+1] = 0.0;
 			vertex_buffer[i*3+2] = ((float)cos((float)(step*i)))*light->distance;
 		}
 
-		gfx_draw_lines(64, eng->lines);
+		gfx_draw_lines(128, eng->lines);
 
 		vertex_buffer[0] = 0.0;
 		vertex_buffer[1] = 0.0;
