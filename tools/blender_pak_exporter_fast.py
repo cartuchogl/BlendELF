@@ -156,6 +156,7 @@ class Material:
 		self.size_bytes += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')	# name
 		self.size_bytes += struct.calcsize('<ffff')*3	# colors
 		self.size_bytes += struct.calcsize('<f')	# specular power
+		self.size_bytes += struct.calcsize('<B')	# lighting
 		self.size_bytes += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')*5	# textures
 		self.size_bytes += struct.calcsize('<f')	# parallax scale
 		self.size_bytes += struct.calcsize('<Bf')	# alpha test, alpha threshold
@@ -169,7 +170,8 @@ class Material:
 		f.write(struct.pack('<ffff', self.diffuse[0], self.diffuse[1], self.diffuse[2], self.diffuse[3]))	# write diffuse color
 		f.write(struct.pack('<ffff', self.ambient[0], self.ambient[1], self.ambient[2], self.ambient[3]))	# write ambient color
 		f.write(struct.pack('<ffff', self.specular[0], self.specular[1], self.specular[2], self.specular[3]))	# write specular color
-		f.write(struct.pack('<f', self.shininess))	# write other specs
+		f.write(struct.pack('<f', self.shininess))	# write shininess
+		f.write(struct.pack('<B', 1))	# write lighting flag
 		write_name_to_file(self.diffuse_map, f)	# write diffuse map
 		write_name_to_file(self.normal_map, f)	# write normal map
 		write_name_to_file(self.height_map, f)	# write height map

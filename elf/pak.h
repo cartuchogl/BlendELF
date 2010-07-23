@@ -305,6 +305,7 @@ int elf_get_material_size_bytes(elf_material *material)
 	size_bytes += sizeof(float)*4;	// ambient color
 	size_bytes += sizeof(float)*4;	// specular color
 	size_bytes += sizeof(float);	// specular power
+	size_bytes += sizeof(unsigned char);	// lighting
 	size_bytes += sizeof(char)*ELF_NAME_LENGTH*5;	// textures
 	size_bytes += sizeof(float);	// parallax scale
 	size_bytes += sizeof(unsigned char);	// alpha test
@@ -866,11 +867,13 @@ elf_material* elf_create_material_from_pak(FILE *file, const char *name, elf_sce
 	fread((char*)&material->ambient_color.r, sizeof(float), 4, file);
 	fread((char*)&material->specular_color.r, sizeof(float), 4, file);
 	fread((char*)&material->spec_power, sizeof(float), 1, file);
+	fread((char*)&material->lighting, sizeof(unsigned char), 1, file);
 
 	elf_set_material_diffuse_color(material, material->diffuse_color.r, material->diffuse_color.g, material->diffuse_color.b, material->diffuse_color.a);
 	elf_set_material_specular_color(material, material->specular_color.r, material->specular_color.g, material->specular_color.b, material->specular_color.a);
 	elf_set_material_ambient_color(material, material->ambient_color.r, material->ambient_color.g, material->ambient_color.b, material->ambient_color.a);
 	elf_set_material_specular_power(material, material->spec_power);
+	elf_set_material_lighting(material, material->lighting);
 
 	fread(texture, sizeof(char), ELF_NAME_LENGTH, file);
 	if(strlen(texture) > 0) rtexture = elf_get_or_load_texture_by_name(scene, texture); else rtexture = NULL;
@@ -1638,6 +1641,7 @@ void elf_write_material_to_file(elf_material *material, FILE *file)
 	fwrite((char*)&material->ambient_color.r, sizeof(float), 4, file);
 	fwrite((char*)&material->specular_color.r, sizeof(float), 4, file);
 	fwrite((char*)&material->spec_power, sizeof(float), 1, file);
+	fwrite((char*)&material->lighting, sizeof(unsigned char), 1, file);
 
 	if(material->diffuse_map) elf_write_name_to_file(material->diffuse_map->name, file);
 	else elf_write_name_to_file("", file);
