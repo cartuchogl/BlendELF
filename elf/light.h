@@ -28,11 +28,11 @@ elf_light* elf_create_light(const char *name)
 
 	gfx_matrix4_set_identity(light->projection_matrix);
 
-	light->dobject = elf_create_physics_object_box(0.25, 0.25, 0.25, 0.0, 0.0, 0.0, 0.0);
+	light->dobject = elf_create_physics_object_sphere(0.5, 0.0, 0.0, 0.0, 0.0);
 	elf_set_physics_object_actor(light->dobject, (elf_actor*)light);
 	elf_inc_ref((elf_object*)light->dobject);
 
-	light->pbb_lengths.x = light->pbb_lengths.y = light->pbb_lengths.z = 0.5;
+	light->pbb_lengths.x = light->pbb_lengths.y = light->pbb_lengths.z = 1.0;
 
 	if(name) light->name = elf_create_string(name);
 
@@ -244,44 +244,185 @@ unsigned char elf_get_light_changed(elf_light *light)
 
 void elf_draw_light_debug(elf_light *light, gfx_shader_params *shader_params)
 {
-	float min[3];
-	float max[3];
 	float *vertex_buffer;
+	float step;
+	float size;
+	int i;
 
 	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(light->transform),
 		shader_params->camera_matrix, shader_params->modelview_matrix);
 
-	min[0] = min[1] = min[2] = -0.25;
-	max[0] = max[1] = max[2] = 0.25;
-
-	gfx_set_color(&shader_params->material_params.color, 0.5, 0.5, 0.2, 1.0);
-	gfx_set_shader_params(shader_params);
-	gfx_draw_bounding_box(min, max);
-
 	vertex_buffer = (float*)gfx_get_vertex_data_buffer(eng->lines);
-
-	vertex_buffer[0] = 0.0;
-	vertex_buffer[1] = 0.0;
-	vertex_buffer[2] = 0.0;
-	vertex_buffer[3] = 0.0;
-	vertex_buffer[4] = 0.0;
-	vertex_buffer[5] = -light->distance;
-	vertex_buffer[6] = -1.5;
-	vertex_buffer[7] = 0.0;
-	vertex_buffer[8] = 0.0;
-	vertex_buffer[9] = 1.5;
-	vertex_buffer[10] = 0.0;
-	vertex_buffer[11] = 0.0;
-	vertex_buffer[12] = 0.0;
-	vertex_buffer[13] = -1.5;
-	vertex_buffer[14] = 0.0;
-	vertex_buffer[15] = 0.0;
-	vertex_buffer[16] = 1.5;
-	vertex_buffer[17] = 0.0;
 
 	if(!light->selected) gfx_set_color(&shader_params->material_params.color, 0.5, 0.5, 0.2, 1.0);
 	else gfx_set_color(&shader_params->material_params.color, 1.0, 0.0, 0.0, 1.0);
 	gfx_set_shader_params(shader_params);
-	gfx_draw_lines(6, eng->lines);
+
+	step = (360.0/((float)32))*GFX_PI_DIV_180;
+
+	for(i = 0; i < 32; i++)
+	{
+		vertex_buffer[i*3] = -((float)sin((float)(step*i)))*0.5;
+		vertex_buffer[i*3+1] = ((float)cos((float)(step*i)))*0.5;
+		vertex_buffer[i*3+2] = 0.0;
+	}
+
+	gfx_draw_line_loop(32, eng->lines);
+
+	for(i = 0; i < 32; i++)
+	{
+		vertex_buffer[i*3] = 0.0;
+		vertex_buffer[i*3+1] = -((float)sin((float)(step*i)))*0.5;
+		vertex_buffer[i*3+2] = ((float)cos((float)(step*i)))*0.5;
+	}
+
+	gfx_draw_line_loop(32, eng->lines);
+
+	for(i = 0; i < 32; i++)
+	{
+		vertex_buffer[i*3] = -((float)sin((float)(step*i)))*0.5;
+		vertex_buffer[i*3+1] = 0.0;
+		vertex_buffer[i*3+2] = ((float)cos((float)(step*i)))*0.5;
+	}
+
+	gfx_draw_line_loop(32, eng->lines);
+
+	if(!light->selected) gfx_set_color(&shader_params->material_params.color, 0.3, 0.3, 0.1, 1.0);
+	else gfx_set_color(&shader_params->material_params.color, 1.0, 0.0, 0.0, 1.0);
+	gfx_set_shader_params(shader_params);
+
+	if(light->light_type == ELF_POINT_LIGHT)
+	{
+		step = (360.0/((float)64))*GFX_PI_DIV_180;
+
+		for(i = 0; i < 64; i++)
+		{
+			vertex_buffer[i*3] = -((float)sin((float)(step*i)))*light->distance;
+			vertex_buffer[i*3+1] = ((float)cos((float)(step*i)))*light->distance;
+			vertex_buffer[i*3+2] = 0.0;
+		}
+
+		gfx_draw_lines(64, eng->lines);
+
+		for(i = 0; i < 64; i++)
+		{
+			vertex_buffer[i*3] = 0.0;
+			vertex_buffer[i*3+1] = -((float)sin((float)(step*i)))*light->distance;
+			vertex_buffer[i*3+2] = ((float)cos((float)(step*i)))*light->distance;
+		}
+
+		gfx_draw_lines(64, eng->lines);
+
+		for(i = 0; i < 64; i++)
+		{
+			vertex_buffer[i*3] = -((float)sin((float)(step*i)))*light->distance;
+			vertex_buffer[i*3+1] = 0.0;
+			vertex_buffer[i*3+2] = ((float)cos((float)(step*i)))*light->distance;
+		}
+
+		gfx_draw_lines(64, eng->lines);
+
+		vertex_buffer[0] = 0.0;
+		vertex_buffer[1] = 0.0;
+		vertex_buffer[2] = 0.5;
+		vertex_buffer[3] = 0.0;
+		vertex_buffer[4] = 0.0;
+		vertex_buffer[5] = -0.5;
+		vertex_buffer[6] = -0.5;
+		vertex_buffer[7] = 0.0;
+		vertex_buffer[8] = 0.0;
+		vertex_buffer[9] = 0.5;
+		vertex_buffer[10] = 0.0;
+		vertex_buffer[11] = 0.0;
+		vertex_buffer[12] = 0.0;
+		vertex_buffer[13] = -0.5;
+		vertex_buffer[14] = 0.0;
+		vertex_buffer[15] = 0.0;
+		vertex_buffer[16] = 0.5;
+		vertex_buffer[17] = 0.0;
+
+		gfx_draw_lines(6, eng->lines);
+	}
+	else if(light->light_type == ELF_SPOT_LIGHT)
+	{
+		step = (360.0/((float)128))*GFX_PI_DIV_180;
+		size = sin((float)GFX_PI_DIV_180*light->inner_cone)*light->distance;
+
+		for(i = 0; i < 128; i++)
+		{
+			vertex_buffer[i*3] = -(float)sin(step*i)*size;
+			vertex_buffer[i*3+1] = (float)cos(step*i)*size;
+			vertex_buffer[i*3+2] = -light->distance;
+		}
+
+		gfx_draw_lines(128, eng->lines);
+
+		size = sin((float)GFX_PI_DIV_180*(light->inner_cone+light->outer_cone))*light->distance;
+
+		for(i = 0; i < 128; i++)
+		{
+			vertex_buffer[i*3] = -(float)sin(step*i)*size;
+			vertex_buffer[i*3+1] = (float)cos(step*i)*size;
+			vertex_buffer[i*3+2] = -light->distance;
+		}
+
+		gfx_draw_lines(128, eng->lines);
+
+		vertex_buffer[0] = 0.0;
+		vertex_buffer[1] = 0.0;
+		vertex_buffer[2] = 0.5;
+		vertex_buffer[3] = 0.0;
+		vertex_buffer[4] = 0.0;
+		vertex_buffer[5] = -0.5;
+		vertex_buffer[6] = -0.5;
+		vertex_buffer[7] = 0.0;
+		vertex_buffer[8] = 0.0;
+		vertex_buffer[9] = 0.5;
+		vertex_buffer[10] = 0.0;
+		vertex_buffer[11] = 0.0;
+		vertex_buffer[12] = 0.0;
+		vertex_buffer[13] = -0.5;
+		vertex_buffer[14] = 0.0;
+		vertex_buffer[15] = 0.0;
+		vertex_buffer[16] = 0.5;
+		vertex_buffer[17] = 0.0;
+		vertex_buffer[18] = 0.0;
+		vertex_buffer[19] = 0.0;
+		vertex_buffer[20] = 0.0;
+		vertex_buffer[21] = size;
+		vertex_buffer[22] = 0.0;
+		vertex_buffer[23] = -light->distance;
+		vertex_buffer[24] = 0.0;
+		vertex_buffer[25] = 0.0;
+		vertex_buffer[26] = 0.0;
+		vertex_buffer[27] = -size;
+		vertex_buffer[28] = 0.0;
+		vertex_buffer[29] = -light->distance;
+
+		gfx_draw_lines(13, eng->lines);
+	}
+	else if(light->light_type == ELF_SUN_LIGHT)
+	{
+		vertex_buffer[0] = 0.0;
+		vertex_buffer[1] = 0.0;
+		vertex_buffer[2] = 0.5;
+		vertex_buffer[3] = 0.0;
+		vertex_buffer[4] = 0.0;
+		vertex_buffer[5] = -light->distance;
+		vertex_buffer[6] = -0.5;
+		vertex_buffer[7] = 0.0;
+		vertex_buffer[8] = 0.0;
+		vertex_buffer[9] = 0.5;
+		vertex_buffer[10] = 0.0;
+		vertex_buffer[11] = 0.0;
+		vertex_buffer[12] = 0.0;
+		vertex_buffer[13] = -0.5;
+		vertex_buffer[14] = 0.0;
+		vertex_buffer[15] = 0.0;
+		vertex_buffer[16] = 0.5;
+		vertex_buffer[17] = 0.0;
+
+		gfx_draw_lines(6, eng->lines);
+	}
 }
 

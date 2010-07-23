@@ -29,7 +29,7 @@ elf_engine* elf_create_engine()
 	engine->texture_anisotropy = 1.0;
 	engine->occlusion_culling = ELF_FALSE;
 
-	engine->lines = gfx_create_vertex_data(256, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
+	engine->lines = gfx_create_vertex_data(512, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
 	gfx_inc_ref((gfx_object*)engine->lines);
 
 	engine->sprite_vertex_array = gfx_create_vertex_array(GFX_FALSE);
