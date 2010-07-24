@@ -991,6 +991,8 @@ void elf_remove_actor_properties(elf_actor *actor);
 void elf_set_actor_selected(elf_actor *actor, unsigned char selected);
 unsigned char elf_get_actor_selected(elf_actor *actor);
 
+/* <!> */ void elf_draw_actor_debug(elf_actor *actor, gfx_shader_params *shader_params);
+
 //////////////////////////////// CAMERA ////////////////////////////////
 
 // <!!

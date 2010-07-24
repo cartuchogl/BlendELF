@@ -648,10 +648,6 @@ void elf_draw_entity_debug(elf_entity *entity, gfx_shader_params *shader_params)
 		max[0] = max[1] = max[2] = 0.2;
 	}
 
-	gfx_set_color(&shader_params->material_params.color, 0.02, 0.02, 0.04, 1.0);
-	gfx_set_shader_params(shader_params);
-	gfx_draw_bounding_box(min, max);
-
 	vertex_buffer = (float*)gfx_get_vertex_data_buffer(eng->lines);
 
 	vertex_buffer[0] = min[0];
@@ -747,6 +743,8 @@ void elf_draw_entity_debug(elf_entity *entity, gfx_shader_params *shader_params)
 	{
 		elf_draw_armature_debug(entity->armature, shader_params);
 	}
+
+	elf_draw_actor_debug((elf_actor*)entity, shader_params);
 }
 
 unsigned char elf_cull_entity(elf_entity *entity, elf_camera *camera)

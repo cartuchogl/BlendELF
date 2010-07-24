@@ -529,7 +529,7 @@ void elf_set_actor_physics(elf_actor *actor, int shape, float mass)
 			if(actor->pbb_lengths.z > actor->pbb_lengths.y) radius = actor->pbb_lengths.z/2.0;
 			else radius = actor->pbb_lengths.y/2.0;
 
-			actor->object = elf_create_physics_object_capsule(ELF_CAPSULE_X, actor->pbb_lengths.x, radius, mass,
+			actor->object = elf_create_physics_object_capsule(ELF_CAPSULE_X, elf_float_max(actor->pbb_lengths.x-radius*2, 0.0), radius, mass,
 				actor->pbb_offset.x, actor->pbb_offset.y, actor->pbb_offset.z);
 			break;
 		}
@@ -538,7 +538,7 @@ void elf_set_actor_physics(elf_actor *actor, int shape, float mass)
 			if(actor->pbb_lengths.z > actor->pbb_lengths.x) radius = actor->pbb_lengths.z/2.0;
 			else radius = actor->pbb_lengths.x/2.0;
 
-			actor->object = elf_create_physics_object_capsule(ELF_CAPSULE_Y, actor->pbb_lengths.y, radius, mass,
+			actor->object = elf_create_physics_object_capsule(ELF_CAPSULE_Y, elf_float_max(actor->pbb_lengths.y-radius*2, 0.0), radius, mass,
 				actor->pbb_offset.x, actor->pbb_offset.y, actor->pbb_offset.z);
 			break;
 		}
@@ -547,7 +547,7 @@ void elf_set_actor_physics(elf_actor *actor, int shape, float mass)
 			if(actor->pbb_lengths.x > actor->pbb_lengths.y) radius = actor->pbb_lengths.x/2.0;
 			else radius = actor->pbb_lengths.y/2.0;
 
-			actor->object = elf_create_physics_object_capsule(ELF_CAPSULE_Z, actor->pbb_lengths.z, radius, mass,
+			actor->object = elf_create_physics_object_capsule(ELF_CAPSULE_Z, elf_float_max(actor->pbb_lengths.z-radius*2, 0.0), radius, mass,
 				actor->pbb_offset.x, actor->pbb_offset.y, actor->pbb_offset.z);
 			break;
 		}
@@ -1074,5 +1074,500 @@ void elf_set_actor_selected(elf_actor *actor, unsigned char selected)
 unsigned char elf_get_actor_selected(elf_actor *actor)
 {
 	return actor->selected;
+}
+
+void elf_draw_actor_debug(elf_actor *actor, gfx_shader_params *shader_params)
+{
+	float min[3];
+	float max[3];
+	float *vertex_buffer;
+	float step;
+	float size;
+	int i;
+	float half_length;
+
+	if(!actor->selected) return;
+
+	if(elf_is_actor_physics(actor)) gfx_set_color(&shader_params->material_params.color, 0.5, 1.0, 0.5, 1.0);
+	else gfx_set_color(&shader_params->material_params.color, 0.5, 0.5, 1.0, 1.0);
+	gfx_set_shader_params(shader_params);
+
+	vertex_buffer = (float*)gfx_get_vertex_data_buffer(eng->lines);
+
+	if(actor->shape == ELF_BOX)
+	{
+		min[0] = -actor->pbb_lengths.x/2+actor->pbb_offset.x;
+		min[1] = -actor->pbb_lengths.y/2+actor->pbb_offset.y;
+		min[2] = -actor->pbb_lengths.z/2+actor->pbb_offset.z;
+		max[0] = actor->pbb_lengths.x/2+actor->pbb_offset.x;
+		max[1] = actor->pbb_lengths.y/2+actor->pbb_offset.y;
+		max[2] = actor->pbb_lengths.z/2+actor->pbb_offset.z;
+
+		vertex_buffer[0] = min[0];
+		vertex_buffer[1] = max[1];
+		vertex_buffer[2] = max[2];
+		vertex_buffer[3] = min[0];
+		vertex_buffer[4] = max[1];
+		vertex_buffer[5] = min[2];
+
+		vertex_buffer[6] = min[0];
+		vertex_buffer[7] = max[1];
+		vertex_buffer[8] = min[2];
+		vertex_buffer[9] = min[0];
+		vertex_buffer[10] = min[1];
+		vertex_buffer[11] = min[2];
+
+		vertex_buffer[12] = min[0];
+		vertex_buffer[13] = min[1];
+		vertex_buffer[14] = min[2];
+		vertex_buffer[15] = min[0];
+		vertex_buffer[16] = min[1];
+		vertex_buffer[17] = max[2];
+
+		vertex_buffer[18] = min[0];
+		vertex_buffer[19] = min[1];
+		vertex_buffer[20] = max[2];
+		vertex_buffer[21] = min[0];
+		vertex_buffer[22] = max[1];
+		vertex_buffer[23] = max[2];
+
+		vertex_buffer[24] = max[0];
+		vertex_buffer[25] = max[1];
+		vertex_buffer[26] = max[2];
+		vertex_buffer[27] = max[0];
+		vertex_buffer[28] = max[1];
+		vertex_buffer[29] = min[2];
+
+		vertex_buffer[30] = max[0];
+		vertex_buffer[31] = max[1];
+		vertex_buffer[32] = min[2];
+		vertex_buffer[33] = max[0];
+		vertex_buffer[34] = min[1];
+		vertex_buffer[35] = min[2];
+
+		vertex_buffer[36] = max[0];
+		vertex_buffer[37] = min[1];
+		vertex_buffer[38] = min[2];
+		vertex_buffer[39] = max[0];
+		vertex_buffer[40] = min[1];
+		vertex_buffer[41] = max[2];
+
+		vertex_buffer[42] = max[0];
+		vertex_buffer[43] = min[1];
+		vertex_buffer[44] = max[2];
+		vertex_buffer[45] = max[0];
+		vertex_buffer[46] = max[1];
+		vertex_buffer[47] = max[2];
+
+		vertex_buffer[48] = min[0];
+		vertex_buffer[49] = max[1];
+		vertex_buffer[50] = max[2];
+		vertex_buffer[51] = max[0];
+		vertex_buffer[52] = max[1];
+		vertex_buffer[53] = max[2];
+
+		vertex_buffer[54] = min[0];
+		vertex_buffer[55] = min[1];
+		vertex_buffer[56] = max[2];
+		vertex_buffer[57] = max[0];
+		vertex_buffer[58] = min[1];
+		vertex_buffer[59] = max[2];
+
+		vertex_buffer[60] = min[0];
+		vertex_buffer[61] = min[1];
+		vertex_buffer[62] = min[2];
+		vertex_buffer[63] = max[0];
+		vertex_buffer[64] = min[1];
+		vertex_buffer[65] = min[2];
+
+		vertex_buffer[66] = min[0];
+		vertex_buffer[67] = max[1];
+		vertex_buffer[68] = min[2];
+		vertex_buffer[69] = max[0];
+		vertex_buffer[70] = max[1];
+		vertex_buffer[71] = min[2];
+
+		gfx_set_shader_params(shader_params);
+		gfx_draw_lines(24, eng->lines);
+	}
+	else if(actor->shape == ELF_SPHERE)
+	{
+		step = (360.0/((float)128))*GFX_PI_DIV_180;
+		
+		if(actor->pbb_lengths.x > actor->pbb_lengths.y && actor->pbb_lengths.x > actor->pbb_lengths.z)
+			size = actor->pbb_lengths.x/2.0;
+		else if(actor->pbb_lengths.y > actor->pbb_lengths.x && actor->pbb_lengths.y > actor->pbb_lengths.z)
+			size = actor->pbb_lengths.y/2.0;
+		else size = actor->pbb_lengths.z/2.0;
+
+		for(i = 0; i < 128; i++)
+		{
+			vertex_buffer[i*3] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = ((float)cos((float)(step*i)))*size+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = actor->pbb_offset.z;
+		}
+
+		gfx_draw_line_loop(128, eng->lines);
+
+		for(i = 0; i < 128; i++)
+		{
+			vertex_buffer[i*3] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = ((float)cos((float)(step*i)))*size+actor->pbb_offset.z;
+		}
+
+		gfx_draw_line_loop(128, eng->lines);
+
+		for(i = 0; i < 128; i++)
+		{
+			vertex_buffer[i*3] = actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = ((float)cos((float)(step*i)))*size+actor->pbb_offset.z;
+		}
+
+		gfx_draw_line_loop(128, eng->lines);
+	}
+	else if(actor->shape == ELF_CAPSULE_X)
+	{
+		step = (360.0/((float)128))*GFX_PI_DIV_180;
+
+		if(actor->pbb_lengths.y > actor->pbb_lengths.z) size = actor->pbb_lengths.y/2.0;
+		else size = actor->pbb_lengths.z/2.0;
+
+		half_length = elf_float_max(actor->pbb_lengths.x-size*2, 0.0)/2.0;
+
+		for(i = 0; i < 32; i++)
+		{
+			vertex_buffer[i*3] = ((float)cos((float)(step*i)))*size+half_length+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = actor->pbb_offset.z;
+		}
+
+		for(i = 32; i < 64; i++)
+		{
+			vertex_buffer[i*3] = ((float)cos((float)(step*i)))*size-half_length+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = actor->pbb_offset.z;
+		}
+
+		for(i = 64; i < 96; i++)
+		{
+			vertex_buffer[i*3] = ((float)cos((float)(step*i)))*size-half_length+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = actor->pbb_offset.z;
+		}
+
+		for(i = 96; i < 128; i++)
+		{
+			vertex_buffer[i*3] = ((float)cos((float)(step*i)))*size+half_length+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = actor->pbb_offset.z;
+		}
+
+		gfx_draw_line_loop(128, eng->lines);
+
+		for(i = 0; i < 32; i++)
+		{
+			vertex_buffer[i*3] = ((float)cos((float)(step*i)))*size+half_length+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.z;
+		}
+
+		for(i = 32; i < 64; i++)
+		{
+			vertex_buffer[i*3] = ((float)cos((float)(step*i)))*size-half_length+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.z;
+		}
+
+		for(i = 64; i < 96; i++)
+		{
+			vertex_buffer[i*3] = ((float)cos((float)(step*i)))*size-half_length+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = +actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.z;
+		}
+
+		for(i = 96; i < 128; i++)
+		{
+			vertex_buffer[i*3] = ((float)cos((float)(step*i)))*size+half_length+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.z;
+		}
+
+		gfx_draw_line_loop(128, eng->lines);
+	}
+	else if(actor->shape == ELF_CAPSULE_Y)
+	{
+		step = (360.0/((float)128))*GFX_PI_DIV_180;
+
+		if(actor->pbb_lengths.x > actor->pbb_lengths.z) size = actor->pbb_lengths.x/2.0;
+		else size = actor->pbb_lengths.z/2.0;
+
+		half_length = elf_float_max(actor->pbb_lengths.y-size*2, 0.0)/2.0;
+
+		for(i = 0; i < 32; i++)
+		{
+			vertex_buffer[i*3] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = ((float)cos((float)(step*i)))*size+half_length+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = actor->pbb_offset.z;
+		}
+
+		for(i = 32; i < 64; i++)
+		{
+			vertex_buffer[i*3] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = ((float)cos((float)(step*i)))*size-half_length+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = actor->pbb_offset.z;
+		}
+
+		for(i = 64; i < 96; i++)
+		{
+			vertex_buffer[i*3] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = ((float)cos((float)(step*i)))*size-half_length+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = actor->pbb_offset.z;
+		}
+
+		for(i = 96; i < 128; i++)
+		{
+			vertex_buffer[i*3] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = ((float)cos((float)(step*i)))*size+half_length+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = actor->pbb_offset.z;
+		}
+
+		gfx_draw_line_loop(128, eng->lines);
+
+		for(i = 0; i < 32; i++)
+		{
+			vertex_buffer[i*3] = actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = ((float)cos((float)(step*i)))*size+half_length+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.z;
+		}
+
+		for(i = 32; i < 64; i++)
+		{
+			vertex_buffer[i*3] = actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = ((float)cos((float)(step*i)))*size-half_length+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.z;
+		}
+
+		for(i = 64; i < 96; i++)
+		{
+			vertex_buffer[i*3] = actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = ((float)cos((float)(step*i)))*size-half_length+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.z;
+		}
+
+		for(i = 96; i < 128; i++)
+		{
+			vertex_buffer[i*3] = actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = ((float)cos((float)(step*i)))*size+half_length+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.z;
+		}
+
+		gfx_draw_line_loop(128, eng->lines);
+	}
+	else if(actor->shape == ELF_CAPSULE_Z)
+	{
+		step = (360.0/((float)128))*GFX_PI_DIV_180;
+
+		if(actor->pbb_lengths.x > actor->pbb_lengths.y) size = actor->pbb_lengths.x/2.0;
+		else size = actor->pbb_lengths.y/2.0;
+
+		half_length = elf_float_max(actor->pbb_lengths.z-size*2, 0.0)/2.0;
+
+		for(i = 0; i < 32; i++)
+		{
+			vertex_buffer[i*3] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = ((float)cos((float)(step*i)))*size+half_length+actor->pbb_offset.z;
+		}
+
+		for(i = 32; i < 64; i++)
+		{
+			vertex_buffer[i*3] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = ((float)cos((float)(step*i)))*size-half_length+actor->pbb_offset.z;
+		}
+
+		for(i = 64; i < 96; i++)
+		{
+			vertex_buffer[i*3] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = ((float)cos((float)(step*i)))*size-half_length+actor->pbb_offset.z;
+		}
+
+		for(i = 96; i < 128; i++)
+		{
+			vertex_buffer[i*3] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = ((float)cos((float)(step*i)))*size+half_length+actor->pbb_offset.z;
+		}
+
+		gfx_draw_line_loop(128, eng->lines);
+
+		for(i = 0; i < 32; i++)
+		{
+			vertex_buffer[i*3] = actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = ((float)cos((float)(step*i)))*size+half_length+actor->pbb_offset.z;
+		}
+
+		for(i = 32; i < 64; i++)
+		{
+			vertex_buffer[i*3] = actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = ((float)cos((float)(step*i)))*size-half_length+actor->pbb_offset.z;
+		}
+
+		for(i = 64; i < 96; i++)
+		{
+			vertex_buffer[i*3] = actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = ((float)cos((float)(step*i)))*size-half_length+actor->pbb_offset.z;
+		}
+
+		for(i = 96; i < 128; i++)
+		{
+			vertex_buffer[i*3] = actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = ((float)cos((float)(step*i)))*size+half_length+actor->pbb_offset.z;
+		}
+
+		gfx_draw_line_loop(128, eng->lines);
+	}
+	else if(actor->shape == ELF_CONE_X)
+	{
+		step = (360.0/((float)128))*GFX_PI_DIV_180;
+		
+		if(actor->pbb_lengths.y > actor->pbb_lengths.z) size = actor->pbb_lengths.y/2.0;
+		else size = actor->pbb_lengths.z/2.0;
+
+		half_length = actor->pbb_lengths.x/2.0;
+
+		for(i = 0; i < 128; i++)
+		{
+			vertex_buffer[i*3] = -half_length+actor->pbb_offset.z;
+			vertex_buffer[i*3+1] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.x;
+			vertex_buffer[i*3+2] = ((float)cos((float)(step*i)))*size+actor->pbb_offset.y;
+		}
+
+		gfx_draw_line_loop(128, eng->lines);
+
+		vertex_buffer[0] = half_length;
+		vertex_buffer[1] = 0.0;
+		vertex_buffer[2] = 0.0;
+		vertex_buffer[3] = -half_length;
+		vertex_buffer[4] = size;
+		vertex_buffer[5] = 0.0;
+		vertex_buffer[6] = half_length;
+		vertex_buffer[7] = 0.0;
+		vertex_buffer[8] = 0.0;
+		vertex_buffer[9] = -half_length;
+		vertex_buffer[10] = -size;
+		vertex_buffer[11] = 0.0;
+		vertex_buffer[12] = half_length;
+		vertex_buffer[13] = 0.0;
+		vertex_buffer[14] = 0.0;
+		vertex_buffer[15] = -half_length;
+		vertex_buffer[16] = 0.0;
+		vertex_buffer[17] = size;
+		vertex_buffer[18] = half_length;
+		vertex_buffer[19] = 0.0;
+		vertex_buffer[20] = 0.0;
+		vertex_buffer[21] = -half_length;
+		vertex_buffer[22] = 0.0;
+		vertex_buffer[23] = -size;
+
+		gfx_draw_lines(8, eng->lines);
+	}
+	else if(actor->shape == ELF_CONE_Y)
+	{
+		step = (360.0/((float)128))*GFX_PI_DIV_180;
+		
+		if(actor->pbb_lengths.x > actor->pbb_lengths.z) size = actor->pbb_lengths.x/2.0;
+		else size = actor->pbb_lengths.z/2.0;
+
+		half_length = actor->pbb_lengths.y/2.0;
+
+		for(i = 0; i < 128; i++)
+		{
+			vertex_buffer[i*3] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = -half_length+actor->pbb_offset.z;
+			vertex_buffer[i*3+2] = ((float)cos((float)(step*i)))*size+actor->pbb_offset.y;
+		}
+
+		gfx_draw_line_loop(128, eng->lines);
+
+		vertex_buffer[0] = 0.0;
+		vertex_buffer[1] = half_length;
+		vertex_buffer[2] = 0.0;
+		vertex_buffer[3] = size;
+		vertex_buffer[4] = -half_length;
+		vertex_buffer[5] = 0.0;
+		vertex_buffer[6] = 0.0;
+		vertex_buffer[7] = half_length;
+		vertex_buffer[8] = 0.0;
+		vertex_buffer[9] = -size;
+		vertex_buffer[10] = -half_length;
+		vertex_buffer[11] = 0.0;
+		vertex_buffer[12] = 0.0;
+		vertex_buffer[13] = half_length;
+		vertex_buffer[14] = 0.0;
+		vertex_buffer[15] = 0.0;
+		vertex_buffer[16] = -half_length;
+		vertex_buffer[17] = size;
+		vertex_buffer[18] = 0.0;
+		vertex_buffer[19] = half_length;
+		vertex_buffer[20] = 0.0;
+		vertex_buffer[21] = 0.0;
+		vertex_buffer[22] = -half_length;
+		vertex_buffer[23] = -size;
+
+		gfx_draw_lines(8, eng->lines);
+	}
+	else if(actor->shape == ELF_CONE_Z)
+	{
+		step = (360.0/((float)128))*GFX_PI_DIV_180;
+		
+		if(actor->pbb_lengths.x > actor->pbb_lengths.y) size = actor->pbb_lengths.x/2.0;
+		else size = actor->pbb_lengths.y/2.0;
+
+		half_length = actor->pbb_lengths.z/2.0;
+
+		for(i = 0; i < 128; i++)
+		{
+			vertex_buffer[i*3] = -((float)sin((float)(step*i)))*size+actor->pbb_offset.x;
+			vertex_buffer[i*3+1] = ((float)cos((float)(step*i)))*size+actor->pbb_offset.y;
+			vertex_buffer[i*3+2] = -half_length+actor->pbb_offset.z;
+		}
+
+		gfx_draw_line_loop(128, eng->lines);
+
+		vertex_buffer[0] = 0.0;
+		vertex_buffer[1] = 0.0;
+		vertex_buffer[2] = half_length;
+		vertex_buffer[3] = size;
+		vertex_buffer[4] = 0.0;
+		vertex_buffer[5] = -half_length;
+		vertex_buffer[6] = 0.0;
+		vertex_buffer[7] = 0.0;
+		vertex_buffer[8] = half_length;
+		vertex_buffer[9] = -size;
+		vertex_buffer[10] = 0.0;
+		vertex_buffer[11] = -half_length;
+		vertex_buffer[12] = 0.0;
+		vertex_buffer[13] = 0.0;
+		vertex_buffer[14] = half_length;
+		vertex_buffer[15] = 0.0;
+		vertex_buffer[16] = size;
+		vertex_buffer[17] = -half_length;
+		vertex_buffer[18] = 0.0;
+		vertex_buffer[19] = 0.0;
+		vertex_buffer[20] = half_length;
+		vertex_buffer[21] = 0.0;
+		vertex_buffer[22] = -size;
+		vertex_buffer[23] = -half_length;
+
+		gfx_draw_lines(8, eng->lines);
+	}
 }
 
