@@ -376,6 +376,7 @@ void gfx_draw_textured_2d_quad_region(float x, float y, float width, float heigh
 
 void gfx_draw_bounding_box(float min[3], float max[3]);
 void gfx_draw_lines(int count, gfx_vertex_data *vertices);
+void gfx_draw_line_loop(int count, gfx_vertex_data *vertices);
 void gfx_draw_circle(int vertices, float size);
 
 //////////////////////////////// SHADER GEN ////////////////////////////////

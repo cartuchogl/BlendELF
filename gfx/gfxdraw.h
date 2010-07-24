@@ -135,6 +135,15 @@ void gfx_draw_lines(int count, gfx_vertex_data *vertices)
 	gfx_draw_vertex_array(driver->line_vertex_array, count, GFX_LINES);
 }
 
+void gfx_draw_line_loop(int count, gfx_vertex_data *vertices)
+{
+	if(count < 2) return;
+	if(count > gfx_get_vertex_data_count(vertices)/3) count -= count-(gfx_get_vertex_data_count(vertices)/3);
+
+	gfx_set_vertex_array_data(driver->line_vertex_array, GFX_VERTEX, vertices);
+	gfx_draw_vertex_array(driver->line_vertex_array, count, GFX_LINE_LOOP);
+}
+
 float gfx_get_absolute_value(float val)
 {
 	if(val < 0.0) return -val;
