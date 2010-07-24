@@ -534,94 +534,59 @@ void elf_draw_particles_debug(elf_particles *particles, gfx_shader_params *shade
 
 	vertex_buffer = (float*)gfx_get_vertex_data_buffer(eng->lines);
 
-	vertex_buffer[0] = min[0];
-	vertex_buffer[1] = max[1];
-	vertex_buffer[2] = max[2];
-	vertex_buffer[3] = min[0];
-	vertex_buffer[4] = max[1];
-	vertex_buffer[5] = min[2];
+	vertex_buffer[0] = 0.0;
+	vertex_buffer[1] = 0.0;
+	vertex_buffer[2] = min[2];
+	vertex_buffer[3] = 0.0;
+	vertex_buffer[4] = 0.0;
+	vertex_buffer[5] = max[2];
 
-	vertex_buffer[6] = min[0];
-	vertex_buffer[7] = max[1];
-	vertex_buffer[8] = min[2];
-	vertex_buffer[9] = min[0];
-	vertex_buffer[10] = min[1];
-	vertex_buffer[11] = min[2];
+	vertex_buffer[6] = 0.0;
+	vertex_buffer[7] = min[1];
+	vertex_buffer[8] = 0.0;
+	vertex_buffer[9] = 0.0;
+	vertex_buffer[10] = max[1];
+	vertex_buffer[11] = 0.0;
 
 	vertex_buffer[12] = min[0];
-	vertex_buffer[13] = min[1];
-	vertex_buffer[14] = min[2];
-	vertex_buffer[15] = min[0];
-	vertex_buffer[16] = min[1];
-	vertex_buffer[17] = max[2];
+	vertex_buffer[13] = 0.0;
+	vertex_buffer[14] = 0.0;
+	vertex_buffer[15] = max[0];
+	vertex_buffer[16] = 0.0;
+	vertex_buffer[17] = 0.0;
 
 	vertex_buffer[18] = min[0];
 	vertex_buffer[19] = min[1];
-	vertex_buffer[20] = max[2];
-	vertex_buffer[21] = min[0];
+	vertex_buffer[20] = min[2];
+	vertex_buffer[21] = max[0];
 	vertex_buffer[22] = max[1];
 	vertex_buffer[23] = max[2];
 
-	vertex_buffer[24] = max[0];
+	vertex_buffer[24] = min[0];
 	vertex_buffer[25] = max[1];
-	vertex_buffer[26] = max[2];
+	vertex_buffer[26] = min[2];
 	vertex_buffer[27] = max[0];
-	vertex_buffer[28] = max[1];
-	vertex_buffer[29] = min[2];
+	vertex_buffer[28] = min[1];
+	vertex_buffer[29] = max[2];
 
 	vertex_buffer[30] = max[0];
-	vertex_buffer[31] = max[1];
+	vertex_buffer[31] = min[1];
 	vertex_buffer[32] = min[2];
-	vertex_buffer[33] = max[0];
-	vertex_buffer[34] = min[1];
-	vertex_buffer[35] = min[2];
+	vertex_buffer[33] = min[0];
+	vertex_buffer[34] = max[1];
+	vertex_buffer[35] = max[2];
 
 	vertex_buffer[36] = max[0];
-	vertex_buffer[37] = min[1];
+	vertex_buffer[37] = max[1];
 	vertex_buffer[38] = min[2];
-	vertex_buffer[39] = max[0];
+	vertex_buffer[39] = min[0];
 	vertex_buffer[40] = min[1];
 	vertex_buffer[41] = max[2];
 
-	vertex_buffer[42] = max[0];
-	vertex_buffer[43] = min[1];
-	vertex_buffer[44] = max[2];
-	vertex_buffer[45] = max[0];
-	vertex_buffer[46] = max[1];
-	vertex_buffer[47] = max[2];
-
-	vertex_buffer[48] = min[0];
-	vertex_buffer[49] = max[1];
-	vertex_buffer[50] = max[2];
-	vertex_buffer[51] = max[0];
-	vertex_buffer[52] = max[1];
-	vertex_buffer[53] = max[2];
-
-	vertex_buffer[54] = min[0];
-	vertex_buffer[55] = min[1];
-	vertex_buffer[56] = max[2];
-	vertex_buffer[57] = max[0];
-	vertex_buffer[58] = min[1];
-	vertex_buffer[59] = max[2];
-
-	vertex_buffer[60] = min[0];
-	vertex_buffer[61] = min[1];
-	vertex_buffer[62] = min[2];
-	vertex_buffer[63] = max[0];
-	vertex_buffer[64] = min[1];
-	vertex_buffer[65] = min[2];
-
-	vertex_buffer[66] = min[0];
-	vertex_buffer[67] = max[1];
-	vertex_buffer[68] = min[2];
-	vertex_buffer[69] = max[0];
-	vertex_buffer[70] = max[1];
-	vertex_buffer[71] = min[2];
-
-	if(!particles->selected) gfx_set_color(&shader_params->material_params.color, 1.0, 1.0, 1.0, 1.0);
+	if(!particles->selected) gfx_set_color(&shader_params->material_params.color, 0.35, 0.75, 0.75, 1.0);
 	else gfx_set_color(&shader_params->material_params.color, 1.0, 0.0, 0.0, 1.0);
 	gfx_set_shader_params(shader_params);
-	gfx_draw_lines(24, eng->lines);
+	gfx_draw_lines(14, eng->lines);
 }
 
 void elf_destroy_particles(elf_particles *particles)

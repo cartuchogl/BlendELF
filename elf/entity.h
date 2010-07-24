@@ -734,7 +734,7 @@ void elf_draw_entity_debug(elf_entity *entity, gfx_shader_params *shader_params)
 	vertex_buffer[70] = max[1];
 	vertex_buffer[71] = min[2];
 
-	if(!entity->selected) gfx_set_color(&shader_params->material_params.color, 0.075, 0.075, 0.15, 1.0);
+	if(!entity->selected) gfx_set_color(&shader_params->material_params.color, 0.1, 0.1, 0.2, 1.0);
 	else gfx_set_color(&shader_params->material_params.color, 1.0, 0.0, 0.0, 1.0);
 	gfx_set_shader_params(shader_params);
 	gfx_draw_lines(24, eng->lines);
