@@ -1737,7 +1737,7 @@ void elf_draw_scene(elf_scene *scene)
 	for(light = (elf_light*)elf_begin_list(scene->lights); light != NULL;
 		light = (elf_light*)elf_next_in_list(scene->lights))
 	{
-		if(!elf_get_light_visible(light)) continue;
+		if(!light->visible) continue;
 
 		// need to call this for frustum culling...
 		if(light->light_type == ELF_SPOT_LIGHT)
@@ -1773,7 +1773,7 @@ void elf_draw_scene(elf_scene *scene)
 		}
 
 		// render shadow map if needed
-		if(light->light_type == ELF_SPOT_LIGHT && elf_get_light_shadow_caster(light))
+		if(light->light_type == ELF_SPOT_LIGHT && light->shadows)
 		{
 			gfx_set_shader_params_default(&scene->shader_params);
 			scene->shader_params.render_params.color_write = GFX_FALSE;
@@ -1822,7 +1822,7 @@ void elf_draw_scene(elf_scene *scene)
 		scene->shader_params.render_params.blend_mode = GFX_ADD;
 		elf_set_camera(scene->cur_camera, &scene->shader_params);
 
-		if(light->light_type == ELF_SPOT_LIGHT && elf_get_light_shadow_caster(light))
+		if(light->light_type == ELF_SPOT_LIGHT && light->shadows)
 		{
 			scene->shader_params.texture_params[GFX_MAX_TEXTURES-1].type = GFX_SHADOW_MAP;
 			scene->shader_params.texture_params[GFX_MAX_TEXTURES-1].texture = eng->shadow_map;

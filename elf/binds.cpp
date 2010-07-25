@@ -5178,21 +5178,21 @@ ELF_API float ELF_APIENTRY elfGetLightFadeSpeed(elf_handle light)
 	}
 	return elf_get_light_fade_speed((elf_light*)light.get());
 }
-ELF_API bool ELF_APIENTRY elfGetLightShadowCaster(elf_handle light)
+ELF_API bool ELF_APIENTRY elfGetLightShadows(elf_handle light)
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
 		if(elf_get_current_script())
 		{
-			elf_set_script_error(ELF_INVALID_HANDLE, "GetLightShadowCaster() -> invalid handle");
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetLightShadows() -> invalid handle");
 		}
 		else
 		{
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetLightShadowCaster() -> invalid handle\n");
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetLightShadows() -> invalid handle\n");
 		}
 		return false;
 	}
-	return (bool)elf_get_light_shadow_caster((elf_light*)light.get());
+	return (bool)elf_get_light_shadows((elf_light*)light.get());
 }
 ELF_API bool ELF_APIENTRY elfGetLightVisible(elf_handle light)
 {
@@ -5357,21 +5357,21 @@ ELF_API void ELF_APIENTRY elfSetLightFadeSpeed(elf_handle light, float fade_spee
 	}
 	elf_set_light_fade_speed((elf_light*)light.get(), fade_speed);
 }
-ELF_API void ELF_APIENTRY elfSetLightShadowCaster(elf_handle light, bool shadow_caster)
+ELF_API void ELF_APIENTRY elfSetLightShadows(elf_handle light, bool shadows)
 {
 	if(!light.get() || elf_get_object_type(light.get()) != ELF_LIGHT)
 	{
 		if(elf_get_current_script())
 		{
-			elf_set_script_error(ELF_INVALID_HANDLE, "SetLightShadowCaster() -> invalid handle");
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetLightShadows() -> invalid handle");
 		}
 		else
 		{
-			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetLightShadowCaster() -> invalid handle\n");
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetLightShadows() -> invalid handle\n");
 		}
 		return;
 	}
-	elf_set_light_shadow_caster((elf_light*)light.get(), shadow_caster);
+	elf_set_light_shadows((elf_light*)light.get(), shadows);
 }
 ELF_API void ELF_APIENTRY elfSetLightVisible(elf_handle light, bool visible)
 {

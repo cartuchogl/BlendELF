@@ -812,14 +812,13 @@ elf_light* elf_create_light_from_pak(FILE *file, const char *name, elf_scene *sc
 	elf_read_actor_header((elf_actor*)light, file, scene);
 
 	fread((char*)&light->light_type, sizeof(unsigned char), 1, file);
-	if(light->light_type == ELF_SPOT_LIGHT) elf_set_light_shadow_caster(light, ELF_TRUE);
 	fread((char*)&light->color.r, sizeof(float), 4, file);
 	fread((char*)&light->distance, sizeof(float), 1, file);
 	fread((char*)&light->fade_speed, sizeof(float), 1, file);
 	fread((char*)&light->inner_cone, sizeof(float), 1, file);
 	fread((char*)&light->outer_cone, sizeof(float), 1, file);
 	fread((char*)&junk, sizeof(unsigned int), 1, file);
-	fread((char*)&light->shadow_caster, sizeof(unsigned char), 1, file);
+	fread((char*)&light->shadows, sizeof(unsigned char), 1, file);
 	fread((char*)&light->shaft, sizeof(unsigned char), 1, file);
 	fread((char*)&light->shaft_size, sizeof(float), 1, file);
 	fread((char*)&light->shaft_intensity, sizeof(float), 1, file);
@@ -829,7 +828,7 @@ elf_light* elf_create_light_from_pak(FILE *file, const char *name, elf_scene *sc
 	elf_set_light_color(light, light->color.r, light->color.g, light->color.b, light->color.a);
 	elf_set_light_distance(light, light->distance);
 	elf_set_light_fade_speed(light, light->fade_speed);
-	elf_set_light_shadow_caster(light, light->shadow_caster);
+	elf_set_light_shadows(light, light->shadows);
 	elf_set_light_cone(light, light->inner_cone, light->outer_cone);
 	if(light->shaft) elf_set_light_shaft(light, light->shaft_size, light->shaft_intensity, light->shaft_fade_off);
 
@@ -1621,7 +1620,7 @@ void elf_write_light_to_file(elf_light *light, FILE *file)
 	fwrite((char*)&light->inner_cone, sizeof(float), 1, file);
 	fwrite((char*)&light->outer_cone, sizeof(float), 1, file);
 	fwrite((char*)&junk, sizeof(int), 1, file);
-	fwrite((char*)&light->shadow_caster, sizeof(unsigned char), 1, file);
+	fwrite((char*)&light->shadows, sizeof(unsigned char), 1, file);
 	fwrite((char*)&light->shaft, sizeof(unsigned char), 1, file);
 	fwrite((char*)&light->shaft_size, sizeof(float), 1, file);
 	fwrite((char*)&light->shaft_intensity, sizeof(float), 1, file);

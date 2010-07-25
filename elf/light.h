@@ -100,11 +100,11 @@ void elf_set_light_fade_speed(elf_light *light, float fade_speed)
 	elf_set_camera_perspective(light->shadow_camera, (light->inner_cone+light->outer_cone)*2, 1.0, 1.0, light->distance+(1.0/(light->fade_speed)));
 }
 
-void elf_set_light_shadow_caster(elf_light *light, unsigned char shadow_caster)
+void elf_set_light_shadows(elf_light *light, unsigned char shadows)
 {
-	if(light->shadow_caster == shadow_caster) return;
+	if(light->shadows == shadows) return;
 
-	light->shadow_caster = shadow_caster;
+	light->shadows = shadows;
 
 	light->moved = ELF_TRUE;
 }
@@ -129,9 +129,9 @@ float elf_get_light_fade_speed(elf_light *light)
 	return light->fade_speed;
 }
 
-unsigned char elf_get_light_shadow_caster(elf_light *light)
+unsigned char elf_get_light_shadows(elf_light *light)
 {
-	return light->shadow_caster;
+	return light->shadows;
 }
 
 unsigned char elf_get_light_visible(elf_light *light)

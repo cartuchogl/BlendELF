@@ -410,7 +410,8 @@ struct elf_light {
 	float shaft_intensity;
 	float shaft_fade_off;
 
-	unsigned char shadow_caster;
+	unsigned char shadows;
+	unsigned char subtractive_shadows;
 	elf_camera *shadow_camera;
 
 	float projection_matrix[16];
@@ -555,6 +556,7 @@ struct elf_scene {
 
 	gfx_shader_program *dof_depth_write;
 	gfx_shader_program *dof_depth_write_alpha;
+	gfx_shader_program *subtractive_shadows;
 
 	elf_pak *pak;
 };

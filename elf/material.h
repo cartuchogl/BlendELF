@@ -259,24 +259,19 @@ void elf_set_texture_params_default(gfx_texture_params *params)
 
 void elf_set_material_alpha_texture(elf_material *material, gfx_shader_params *shader_params)
 {
-	if(!material->alpha_test) return;
+	int i;
 
-	if(material->diffuse_map)
+	for(i = 0; i < 5; i++) elf_set_texture_params_default(&shader_params->texture_params[i]);
+	shader_params->render_params.alpha_test = ELF_FALSE;
+	shader_params->render_params.alpha_threshold = 0.99;
+
+	if(material->diffuse_map && material->alpha_test)
 	{
-		if(material->alpha_test)
-		{
-			shader_params->render_params.alpha_test = ELF_TRUE;
-			shader_params->render_params.alpha_threshold = material->alpha_threshold;
-		}
+		shader_params->render_params.alpha_test = ELF_TRUE;
+		shader_params->render_params.alpha_threshold = material->alpha_threshold;
 		shader_params->texture_params[0].type = ELF_COLOR_MAP;
 		shader_params->texture_params[0].texture = material->diffuse_map->texture;
 		shader_params->texture_params[0].projection_mode = GFX_NONE;
-	}
-	else
-	{
-		shader_params->render_params.alpha_test = ELF_FALSE;
-		shader_params->render_params.alpha_threshold = 0.99;
-		elf_set_texture_params_default(&shader_params->texture_params[0]);
 	}
 }
 
@@ -292,10 +287,9 @@ void elf_set_material_ambient(elf_material *material, gfx_shader_params *shader_
 	memset(&shader_params->material_params.specular_color.r, 0x0, sizeof(float)*4);
 	shader_params->material_params.spec_power = 0.0;
 
-	for(i = 0; i < 5; i++)
-	{
-		elf_set_texture_params_default(&shader_params->texture_params[i]);
-	}
+	for(i = 0; i < 5; i++) elf_set_texture_params_default(&shader_params->texture_params[i]);
+	shader_params->render_params.alpha_test = ELF_FALSE;
+	shader_params->render_params.alpha_threshold = 0.99;
 
 	if(material->diffuse_map)
 	{
@@ -325,10 +319,9 @@ void elf_set_material(elf_material *material, gfx_shader_params *shader_params)
 	memcpy(&shader_params->material_params.specular_color.r, &material->specular_color.r, sizeof(float)*4);
 	shader_params->material_params.spec_power = material->spec_power;
 
-	for(i = 0; i < 5; i++)
-	{
-		elf_set_texture_params_default(&shader_params->texture_params[i]);
-	}
+	for(i = 0; i < 5; i++) elf_set_texture_params_default(&shader_params->texture_params[i]);
+	shader_params->render_params.alpha_test = ELF_FALSE;
+	shader_params->render_params.alpha_threshold = 0.99;
 
 	if(material->diffuse_map)
 	{

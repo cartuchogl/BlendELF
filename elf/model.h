@@ -468,7 +468,6 @@ void elf_draw_model_without_materials(elf_list *materials, elf_model *model, gfx
 			if(material) elf_set_material_alpha_texture(material, shader_params);
 			gfx_set_shader_params(shader_params);
 			gfx_draw_vertex_index(model->areas[i].vertex_index, GFX_TRIANGLES);
-			gfx_set_texture_params_default(shader_params);
 		}
 	}
 }

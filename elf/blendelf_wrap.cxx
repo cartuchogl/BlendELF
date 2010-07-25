@@ -12629,21 +12629,21 @@ fail:
 }
 
 
-static int _wrap_elfGetLightShadowCaster(lua_State* L) {
+static int _wrap_elfGetLightShadows(lua_State* L) {
   int SWIG_arg = 0;
   elf_handle arg1 ;
   elf_handle *argp1 ;
   bool result;
   
-  SWIG_check_num_args("GetLightShadowCaster",1,1)
-  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetLightShadowCaster",1,"handle");
+  SWIG_check_num_args("GetLightShadows",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetLightShadows",1,"handle");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
-    SWIG_fail_ptr("GetLightShadowCaster",1,SWIGTYPE_p_elf_handle);
+    SWIG_fail_ptr("GetLightShadows",1,SWIGTYPE_p_elf_handle);
   }
   arg1 = *argp1;
   
-  result = (bool)elfGetLightShadowCaster(arg1);
+  result = (bool)elfGetLightShadows(arg1);
   lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
   return SWIG_arg;
   
@@ -12935,23 +12935,23 @@ fail:
 }
 
 
-static int _wrap_elfSetLightShadowCaster(lua_State* L) {
+static int _wrap_elfSetLightShadows(lua_State* L) {
   int SWIG_arg = 0;
   elf_handle arg1 ;
   bool arg2 ;
   elf_handle *argp1 ;
   
-  SWIG_check_num_args("SetLightShadowCaster",2,2)
-  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetLightShadowCaster",1,"handle");
-  if(!lua_isboolean(L,2)) SWIG_fail_arg("SetLightShadowCaster",2,"bool");
+  SWIG_check_num_args("SetLightShadows",2,2)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetLightShadows",1,"handle");
+  if(!lua_isboolean(L,2)) SWIG_fail_arg("SetLightShadows",2,"bool");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
-    SWIG_fail_ptr("SetLightShadowCaster",1,SWIGTYPE_p_elf_handle);
+    SWIG_fail_ptr("SetLightShadows",1,SWIGTYPE_p_elf_handle);
   }
   arg1 = *argp1;
   
   arg2 = (lua_toboolean(L, 2)!=0);
-  elfSetLightShadowCaster(arg1,arg2);
+  elfSetLightShadows(arg1,arg2);
   
   return SWIG_arg;
   
@@ -21723,7 +21723,7 @@ static const struct luaL_reg swig_commands[] = {
     { "GetLightColor", _wrap_elfGetLightColor},
     { "GetLightDistance", _wrap_elfGetLightDistance},
     { "GetLightFadeSpeed", _wrap_elfGetLightFadeSpeed},
-    { "GetLightShadowCaster", _wrap_elfGetLightShadowCaster},
+    { "GetLightShadows", _wrap_elfGetLightShadows},
     { "GetLightVisible", _wrap_elfGetLightVisible},
     { "GetLightCone", _wrap_elfGetLightCone},
     { "IsLightShaft", _wrap_elfIsLightShaft},
@@ -21734,7 +21734,7 @@ static const struct luaL_reg swig_commands[] = {
     { "SetLightColor", _wrap_elfSetLightColor},
     { "SetLightDistance", _wrap_elfSetLightDistance},
     { "SetLightFadeSpeed", _wrap_elfSetLightFadeSpeed},
-    { "SetLightShadowCaster", _wrap_elfSetLightShadowCaster},
+    { "SetLightShadows", _wrap_elfSetLightShadows},
     { "SetLightVisible", _wrap_elfSetLightVisible},
     { "SetLightCone", _wrap_elfSetLightCone},
     { "SetLightShaft", _wrap_elfSetLightShaft},
