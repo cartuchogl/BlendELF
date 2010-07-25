@@ -94,7 +94,7 @@ elf_font* elf_create_font_from_file(const char *file_path, int size)
 		font->chars[i].code = (char)i;
 		font->chars[i].offset_x = width+size/7;
 		font->chars[i].offset_y = -(face->glyph->bitmap.rows-face->glyph->bitmap_top);
-		font->chars[i].texture = gfx_create_2d_texture(width, height, 0.0f, GFX_CLAMP, GFX_NEAREST, GFX_LUMINANCE_ALPHA, GFX_LUMINANCE_ALPHA, GFX_UBYTE, data);
+		font->chars[i].texture = gfx_create_2d_texture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_LUMINANCE_ALPHA, GFX_LUMINANCE_ALPHA, GFX_UBYTE, data);
 
 		if(-font->chars[i].offset_y > font->offset_y) font->offset_y = -font->chars[i].offset_y;
 

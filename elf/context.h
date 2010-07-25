@@ -319,6 +319,11 @@ double elf_get_time()
 	return glfwGetTime();
 }
 
+void elf_sleep(float time)
+{
+	glfwSleep(time);
+}
+
 unsigned char elf_is_window_opened()
 {
 	return glfwGetWindowParam(GLFW_OPENED);

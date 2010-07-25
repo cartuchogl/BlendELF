@@ -365,6 +365,7 @@ ELF_API bool ELF_APIENTRY elfIsFullscreen();
 ELF_API const char* ELF_APIENTRY elfGetTitle();
 ELF_API int ELF_APIENTRY elfGetMultisamples();
 ELF_API double ELF_APIENTRY elfGetTime();
+ELF_API void ELF_APIENTRY elfSleep(float time);
 ELF_API bool ELF_APIENTRY elfIsWindowOpened();
 ELF_API elf_vec2i ELF_APIENTRY elfGetMousePosition();
 ELF_API elf_vec2i ELF_APIENTRY elfGetMouseForce();

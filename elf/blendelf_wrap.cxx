@@ -3559,6 +3559,25 @@ fail:
 }
 
 
+static int _wrap_elfSleep(lua_State* L) {
+  int SWIG_arg = 0;
+  float arg1 ;
+  
+  SWIG_check_num_args("Sleep",1,1)
+  if(!lua_isnumber(L,1)) SWIG_fail_arg("Sleep",1,"float");
+  arg1 = (float)lua_tonumber(L, 1);
+  elfSleep(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfIsWindowOpened(lua_State* L) {
   int SWIG_arg = 0;
   bool result;
@@ -21366,6 +21385,7 @@ static const struct luaL_reg swig_commands[] = {
     { "GetTitle", _wrap_elfGetTitle},
     { "GetMultisamples", _wrap_elfGetMultisamples},
     { "GetTime", _wrap_elfGetTime},
+    { "Sleep", _wrap_elfSleep},
     { "IsWindowOpened", _wrap_elfIsWindowOpened},
     { "GetMousePosition", _wrap_elfGetMousePosition},
     { "GetMouseForce", _wrap_elfGetMouseForce},

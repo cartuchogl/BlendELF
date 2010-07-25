@@ -566,6 +566,10 @@ ELF_API double ELF_APIENTRY elfGetTime()
 {
 	return elf_get_time();
 }
+ELF_API void ELF_APIENTRY elfSleep(float time)
+{
+	elf_sleep(time);
+}
 ELF_API bool ELF_APIENTRY elfIsWindowOpened()
 {
 	return (bool)elf_is_window_opened();

@@ -364,6 +364,8 @@ unsigned char elf_run()
 
 	eng->free_run = ELF_TRUE;
 
+	elf_sleep(0.001);
+
 	return ELF_TRUE;
 }
 

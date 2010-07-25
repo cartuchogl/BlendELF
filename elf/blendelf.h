@@ -557,6 +557,7 @@ unsigned char elf_is_fullscreen();
 const char* elf_get_title();
 int elf_get_multisamples();
 double elf_get_time();
+void elf_sleep(float time);
 unsigned char elf_is_window_opened();
 /* <!> */void elf_swap_buffers();
 elf_vec2i elf_get_mouse_position();
