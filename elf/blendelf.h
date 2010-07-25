@@ -300,15 +300,6 @@ extern "C" {
 #define ELF_INVALID_MESH				0x000E
 
 // <!!
-#define ELF_X_PLUS					0x0001	// <mdoc> AXIS TYPES <mdocc> axis codes used by elf.DirectActorAt
-#define ELF_X_MINUS					0x0002
-#define ELF_Y_PLUS					0x0003
-#define ELF_Y_MINUS					0x0004
-#define ELF_Z_PLUS					0x0005
-#define ELF_Z_MINUS					0x0000
-// !!>
-
-// <!!
 #define ELF_ARMATURE_MAGIC				179532122
 #define ELF_CAMERA_MAGIC				179532111
 #define ELF_ENTITY_MAGIC				179532112
@@ -844,17 +835,30 @@ void elf_set_material(elf_material *material, gfx_shader_params *shader_params);
 //////////////////////////////// IPOS ////////////////////////////////
 
 // <!!
-elf_bezier_point* elf_create_bezier_point();
 void elf_destroy_bezier_point(elf_bezier_point *point);
-elf_bezier_curve* elf_create_bezier_curve();
 void elf_destroy_bezier_curve(elf_bezier_curve *curve);
-elf_ipo* elf_create_ipo();
 void elf_destroy_ipo(elf_ipo *ipo);
 // !!>
 
-void elf_add_point_to_bezier_curve(elf_bezier_curve *curve, elf_bezier_point *point);	// <mdoc> IPO FUNCTIONS
+elf_bezier_point* elf_create_bezier_point();	// <mdoc> IPO FUNCTIONS
+void elf_set_bezier_point_position(elf_bezier_point *point, float x, float y);
+void elf_set_bezier_point_control1(elf_bezier_point *point, float x, float y);
+void elf_set_bezier_point_control2(elf_bezier_point *point, float x, float y);
+elf_vec2f elf_get_bezier_point_position(elf_bezier_point *point);
+elf_vec2f elf_get_bezier_point_control1(elf_bezier_point *point);
+elf_vec2f elf_get_bezier_point_control2(elf_bezier_point *point);
 
+elf_bezier_curve* elf_create_bezier_curve();
+void elf_set_bezier_curve_type(elf_bezier_curve *curve, int type);
+int elf_get_bezier_curve_type(elf_bezier_curve *curve);
+void elf_add_point_to_bezier_curve(elf_bezier_curve *curve, elf_bezier_point *point);
+elf_bezier_point* elf_get_point_from_bezier_curve(elf_bezier_curve *curve, int idx);
+float elf_get_bezier_curve_value(elf_bezier_curve *curve, float x);
+
+elf_ipo* elf_create_ipo();
 unsigned char elf_add_curve_to_ipo(elf_ipo *ipo, elf_bezier_curve *curve);
+int elf_get_ipo_curve_count(elf_ipo *ipo);
+elf_bezier_curve* elf_get_curve_from_ipo(elf_ipo *ipo, int idx);
 elf_vec3f elf_get_ipo_loc(elf_ipo *ipo, float x);
 elf_vec3f elf_get_ipo_rot(elf_ipo *ipo, float x);
 elf_vec3f elf_get_ipo_scale(elf_ipo *ipo, float x);
@@ -963,6 +967,9 @@ elf_joint* elf_get_actor_joint_by_index(elf_actor *actor, int idx);
 unsigned char elf_remove_actor_joint_by_name(elf_actor *actor, const char *name);
 unsigned char elf_remove_actor_joint_by_index(elf_actor *actor, int idx);
 unsigned char elf_remove_actor_joint_by_object(elf_actor *actor, elf_joint *joint);
+
+void elf_set_actor_ipo(elf_actor *actor, elf_ipo *ipo);
+elf_ipo* elf_get_actor_ipo(elf_actor *actor);
 
 void elf_set_actor_ipo_frame(elf_actor *actor, float frame);
 void elf_play_actor_ipo(elf_actor *actor, float start, float end, float speed);

@@ -19,6 +19,39 @@ void elf_destroy_bezier_point(elf_bezier_point *point)
 	elf_dec_obj_count();
 }
 
+void elf_set_bezier_point_position(elf_bezier_point *point, float x, float y)
+{
+	point->p.x = x;
+	point->p.y = y;
+}
+
+void elf_set_bezier_point_control1(elf_bezier_point *point, float x, float y)
+{
+	point->c1.x = x;
+	point->c1.y = y;
+}
+
+void elf_set_bezier_point_control2(elf_bezier_point *point, float x, float y)
+{
+	point->c2.x = x;
+	point->c2.y = y;
+}
+
+elf_vec2f elf_get_bezier_point_position(elf_bezier_point *point)
+{
+	return point->p;
+}
+
+elf_vec2f elf_get_bezier_point_control1(elf_bezier_point *point)
+{
+	return point->c1;
+}
+
+elf_vec2f elf_get_bezier_point_control2(elf_bezier_point *point)
+{
+	return point->c2;
+}
+
 elf_bezier_curve* elf_create_bezier_curve()
 {
 	elf_bezier_curve *curve;
@@ -44,6 +77,19 @@ void elf_destroy_bezier_curve(elf_bezier_curve *curve)
 	elf_dec_obj_count();
 }
 
+void elf_set_bezier_curve_type(elf_bezier_curve *curve, int type)
+{
+	if(type >= ELF_LOC_X && type <= ELF_QUA_W)
+	{
+		curve->curve_type = type;
+	}
+}
+
+int elf_get_bezier_curve_type(elf_bezier_curve *curve)
+{
+	return curve->curve_type;
+}
+
 void elf_add_point_to_bezier_curve(elf_bezier_curve *curve, elf_bezier_point *point)
 {
 	int i;
@@ -60,6 +106,16 @@ void elf_add_point_to_bezier_curve(elf_bezier_curve *curve, elf_bezier_point *po
 	}
 
 	elf_append_to_list(curve->points, (elf_object*)point);
+}
+
+int elf_get_curve_point_count(elf_bezier_curve *curve)
+{
+	return elf_get_list_length(curve->points);
+}
+
+elf_bezier_point* elf_get_point_from_bezier_curve(elf_bezier_curve *curve, int idx)
+{
+	return (elf_bezier_point*)elf_get_item_from_list(curve->points, idx);
 }
 
 float elf_get_bezier_curve_value(elf_bezier_curve *curve, float x)
@@ -130,6 +186,16 @@ unsigned char elf_add_curve_to_ipo(elf_ipo *ipo, elf_bezier_curve *curve)
 	if(curve->curve_type >= ELF_QUA_X && curve->curve_type <= ELF_QUA_W) ipo->qua = ELF_TRUE;
 
 	return ELF_TRUE;
+}
+
+int elf_get_ipo_curve_count(elf_ipo *ipo)
+{
+	return elf_get_list_length(ipo->curves);
+}
+
+elf_bezier_curve* elf_get_curve_from_ipo(elf_ipo *ipo, int idx)
+{
+	return (elf_bezier_curve*)elf_get_item_from_list(ipo->curves, idx);
 }
 
 elf_vec3f elf_get_ipo_loc(elf_ipo *ipo, float x)

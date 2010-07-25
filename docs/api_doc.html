@@ -574,8 +574,23 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">bool</span> elf.GetMaterialAlphaTest( <span class="apiobjtype">object</span> material )</div>
 <div class="apifunc"><span class="apikeytype">float</span> elf.GetMaterialAlphaThreshold( <span class="apiobjtype">object</span> material )</div>
 <div class="apitopic">IPO FUNCTIONS</div>
+<div class="apifunc"><span class="apiobjtype">object</span> elf.CreateBezierPoint(  )</div>
+<div class="apifunc">elf.SetBezierPointPosition( <span class="apiobjtype">object</span> point, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y )</div>
+<div class="apifunc">elf.SetBezierPointControl1( <span class="apiobjtype">object</span> point, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y )</div>
+<div class="apifunc">elf.SetBezierPointControl2( <span class="apiobjtype">object</span> point, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y )</div>
+<div class="apifunc"><span class="apikeytype">elf_vec2f</span> elf.GetBezierPointPosition( <span class="apiobjtype">object</span> point )</div>
+<div class="apifunc"><span class="apikeytype">elf_vec2f</span> elf.GetBezierPointControl1( <span class="apiobjtype">object</span> point )</div>
+<div class="apifunc"><span class="apikeytype">elf_vec2f</span> elf.GetBezierPointControl2( <span class="apiobjtype">object</span> point )</div>
+<div class="apifunc"><span class="apiobjtype">object</span> elf.CreateBezierCurve(  )</div>
+<div class="apifunc">elf.SetBezierCurveType( <span class="apiobjtype">object</span> curve, <span class="apikeytype">int</span> type )</div>
+<div class="apifunc"><span class="apikeytype">int</span> elf.GetBezierCurveType( <span class="apiobjtype">object</span> curve )</div>
 <div class="apifunc">elf.AddPointToBezierCurve( <span class="apiobjtype">object</span> curve, <span class="apiobjtype">object</span> point )</div>
+<div class="apifunc"><span class="apiobjtype">object</span> elf.GetPointFromBezierCurve( <span class="apiobjtype">object</span> curve, <span class="apikeytype">int</span> idx )</div>
+<div class="apifunc"><span class="apikeytype">float</span> elf.GetBezierCurveValue( <span class="apiobjtype">object</span> curve, <span class="apikeytype">float</span> x )</div>
+<div class="apifunc"><span class="apiobjtype">object</span> elf.CreateIpo(  )</div>
 <div class="apifunc"><span class="apikeytype">bool</span> elf.AddCurveToIpo( <span class="apiobjtype">object</span> ipo, <span class="apiobjtype">object</span> curve )</div>
+<div class="apifunc"><span class="apikeytype">int</span> elf.GetIpoCurveCount( <span class="apiobjtype">object</span> ipo )</div>
+<div class="apifunc"><span class="apiobjtype">object</span> elf.GetCurveFromIpo( <span class="apiobjtype">object</span> ipo, <span class="apikeytype">int</span> idx )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec3f</span> elf.GetIpoLoc( <span class="apiobjtype">object</span> ipo, <span class="apikeytype">float</span> x )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec3f</span> elf.GetIpoRot( <span class="apiobjtype">object</span> ipo, <span class="apikeytype">float</span> x )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec3f</span> elf.GetIpoScale( <span class="apiobjtype">object</span> ipo, <span class="apikeytype">float</span> x )</div>
@@ -651,6 +666,8 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">bool</span> elf.RemoveActorJointByName( <span class="apiobjtype">object</span> actor, <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apikeytype">bool</span> elf.RemoveActorJointByIndex( <span class="apiobjtype">object</span> actor, <span class="apikeytype">int</span> idx )</div>
 <div class="apifunc"><span class="apikeytype">bool</span> elf.RemoveActorJointByObject( <span class="apiobjtype">object</span> actor, <span class="apiobjtype">object</span> joint )</div>
+<div class="apifunc">elf.SetActorIpo( <span class="apiobjtype">object</span> actor, <span class="apiobjtype">object</span> ipo )</div>
+<div class="apifunc"><span class="apiobjtype">object</span> elf.GetActorIpo( <span class="apiobjtype">object</span> actor )</div>
 <div class="apifunc">elf.SetActorIpoFrame( <span class="apiobjtype">object</span> actor, <span class="apikeytype">float</span> frame )</div>
 <div class="apifunc">elf.PlayActorIpo( <span class="apiobjtype">object</span> actor, <span class="apikeytype">float</span> start, <span class="apikeytype">float</span> end, <span class="apikeytype">float</span> speed )</div>
 <div class="apifunc">elf.LoopActorIpo( <span class="apiobjtype">object</span> actor, <span class="apikeytype">float</span> start, <span class="apikeytype">float</span> end, <span class="apikeytype">float</span> speed )</div>
@@ -752,7 +769,7 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">elf_color</span> elf.GetLightColor( <span class="apiobjtype">object</span> light )</div>
 <div class="apifunc"><span class="apikeytype">float</span> elf.GetLightDistance( <span class="apiobjtype">object</span> light )</div>
 <div class="apifunc"><span class="apikeytype">float</span> elf.GetLightFadeSpeed( <span class="apiobjtype">object</span> light )</div>
-<div class="apifunc"><span class="apikeytype">bool</span> elf.GetLightShadowCaster( <span class="apiobjtype">object</span> light )</div>
+<div class="apifunc"><span class="apikeytype">bool</span> elf.GetLightShadows( <span class="apiobjtype">object</span> light )</div>
 <div class="apifunc"><span class="apikeytype">bool</span> elf.GetLightVisible( <span class="apiobjtype">object</span> light )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec2f</span> elf.GetLightCone( <span class="apiobjtype">object</span> light )</div>
 <div class="apifunc"><span class="apikeytype">bool</span> elf.IsLightShaft( <span class="apiobjtype">object</span> light )</div>
@@ -763,7 +780,7 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc">elf.SetLightColor( <span class="apiobjtype">object</span> light, <span class="apikeytype">float</span> r, <span class="apikeytype">float</span> g, <span class="apikeytype">float</span> b, <span class="apikeytype">float</span> a )</div>
 <div class="apifunc">elf.SetLightDistance( <span class="apiobjtype">object</span> light, <span class="apikeytype">float</span> distance )</div>
 <div class="apifunc">elf.SetLightFadeSpeed( <span class="apiobjtype">object</span> light, <span class="apikeytype">float</span> fade_speed )</div>
-<div class="apifunc">elf.SetLightShadowCaster( <span class="apiobjtype">object</span> light, <span class="apikeytype">bool</span> shadow_caster )</div>
+<div class="apifunc">elf.SetLightShadows( <span class="apiobjtype">object</span> light, <span class="apikeytype">bool</span> shadows )</div>
 <div class="apifunc">elf.SetLightVisible( <span class="apiobjtype">object</span> light, <span class="apikeytype">bool</span> visible )</div>
 <div class="apifunc">elf.SetLightCone( <span class="apiobjtype">object</span> light, <span class="apikeytype">float</span> inner_cone, <span class="apikeytype">float</span> outer_cone )</div>
 <div class="apifunc">elf.SetLightShaft( <span class="apiobjtype">object</span> light, <span class="apikeytype">float</span> size, <span class="apikeytype">float</span> intensity, <span class="apikeytype">float</span> fade_off )</div>

@@ -2206,6 +2206,155 @@ ELF_API float ELF_APIENTRY elfGetMaterialAlphaThreshold(elf_handle material)
 	}
 	return elf_get_material_alpha_threshold((elf_material*)material.get());
 }
+ELF_API elf_handle ELF_APIENTRY elfCreateBezierPoint()
+{
+	elf_handle handle;
+	handle = (elf_object*)elf_create_bezier_point();
+	return handle;
+}
+ELF_API void ELF_APIENTRY elfSetBezierPointPosition(elf_handle point, float x, float y)
+{
+	if(!point.get() || elf_get_object_type(point.get()) != ELF_BEZIER_POINT)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetBezierPointPosition() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetBezierPointPosition() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_bezier_point_position((elf_bezier_point*)point.get(), x, y);
+}
+ELF_API void ELF_APIENTRY elfSetBezierPointControl1(elf_handle point, float x, float y)
+{
+	if(!point.get() || elf_get_object_type(point.get()) != ELF_BEZIER_POINT)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetBezierPointControl1() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetBezierPointControl1() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_bezier_point_control1((elf_bezier_point*)point.get(), x, y);
+}
+ELF_API void ELF_APIENTRY elfSetBezierPointControl2(elf_handle point, float x, float y)
+{
+	if(!point.get() || elf_get_object_type(point.get()) != ELF_BEZIER_POINT)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetBezierPointControl2() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetBezierPointControl2() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_bezier_point_control2((elf_bezier_point*)point.get(), x, y);
+}
+ELF_API elf_vec2f ELF_APIENTRY elfGetBezierPointPosition(elf_handle point)
+{
+	elf_vec2f _e_type;
+	memset(&_e_type, 0x0, sizeof(elf_vec2f));
+	if(!point.get() || elf_get_object_type(point.get()) != ELF_BEZIER_POINT)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetBezierPointPosition() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetBezierPointPosition() -> invalid handle\n");
+		}
+		return _e_type;
+	}
+	_e_type = elf_get_bezier_point_position((elf_bezier_point*)point.get());
+	return _e_type;
+}
+ELF_API elf_vec2f ELF_APIENTRY elfGetBezierPointControl1(elf_handle point)
+{
+	elf_vec2f _e_type;
+	memset(&_e_type, 0x0, sizeof(elf_vec2f));
+	if(!point.get() || elf_get_object_type(point.get()) != ELF_BEZIER_POINT)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetBezierPointControl1() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetBezierPointControl1() -> invalid handle\n");
+		}
+		return _e_type;
+	}
+	_e_type = elf_get_bezier_point_control1((elf_bezier_point*)point.get());
+	return _e_type;
+}
+ELF_API elf_vec2f ELF_APIENTRY elfGetBezierPointControl2(elf_handle point)
+{
+	elf_vec2f _e_type;
+	memset(&_e_type, 0x0, sizeof(elf_vec2f));
+	if(!point.get() || elf_get_object_type(point.get()) != ELF_BEZIER_POINT)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetBezierPointControl2() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetBezierPointControl2() -> invalid handle\n");
+		}
+		return _e_type;
+	}
+	_e_type = elf_get_bezier_point_control2((elf_bezier_point*)point.get());
+	return _e_type;
+}
+ELF_API elf_handle ELF_APIENTRY elfCreateBezierCurve()
+{
+	elf_handle handle;
+	handle = (elf_object*)elf_create_bezier_curve();
+	return handle;
+}
+ELF_API void ELF_APIENTRY elfSetBezierCurveType(elf_handle curve, int type)
+{
+	if(!curve.get() || elf_get_object_type(curve.get()) != ELF_BEZIER_CURVE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetBezierCurveType() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetBezierCurveType() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_bezier_curve_type((elf_bezier_curve*)curve.get(), type);
+}
+ELF_API int ELF_APIENTRY elfGetBezierCurveType(elf_handle curve)
+{
+	if(!curve.get() || elf_get_object_type(curve.get()) != ELF_BEZIER_CURVE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetBezierCurveType() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetBezierCurveType() -> invalid handle\n");
+		}
+		return 0;
+	}
+	return elf_get_bezier_curve_type((elf_bezier_curve*)curve.get());
+}
 ELF_API void ELF_APIENTRY elfAddPointToBezierCurve(elf_handle curve, elf_handle point)
 {
 	if(!curve.get() || elf_get_object_type(curve.get()) != ELF_BEZIER_CURVE)
@@ -2234,6 +2383,46 @@ ELF_API void ELF_APIENTRY elfAddPointToBezierCurve(elf_handle curve, elf_handle 
 	}
 	elf_add_point_to_bezier_curve((elf_bezier_curve*)curve.get(), (elf_bezier_point*)point.get());
 }
+ELF_API elf_handle ELF_APIENTRY elfGetPointFromBezierCurve(elf_handle curve, int idx)
+{
+	elf_handle handle;
+	if(!curve.get() || elf_get_object_type(curve.get()) != ELF_BEZIER_CURVE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetPointFromBezierCurve() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetPointFromBezierCurve() -> invalid handle\n");
+		}
+		return handle;
+	}
+	handle = (elf_object*)elf_get_point_from_bezier_curve((elf_bezier_curve*)curve.get(), idx);
+	return handle;
+}
+ELF_API float ELF_APIENTRY elfGetBezierCurveValue(elf_handle curve, float x)
+{
+	if(!curve.get() || elf_get_object_type(curve.get()) != ELF_BEZIER_CURVE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetBezierCurveValue() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetBezierCurveValue() -> invalid handle\n");
+		}
+		return 0;
+	}
+	return elf_get_bezier_curve_value((elf_bezier_curve*)curve.get(), x);
+}
+ELF_API elf_handle ELF_APIENTRY elfCreateIpo()
+{
+	elf_handle handle;
+	handle = (elf_object*)elf_create_ipo();
+	return handle;
+}
 ELF_API bool ELF_APIENTRY elfAddCurveToIpo(elf_handle ipo, elf_handle curve)
 {
 	if(!ipo.get() || elf_get_object_type(ipo.get()) != ELF_IPO)
@@ -2261,6 +2450,40 @@ ELF_API bool ELF_APIENTRY elfAddCurveToIpo(elf_handle ipo, elf_handle curve)
 		return false;
 	}
 	return (bool)elf_add_curve_to_ipo((elf_ipo*)ipo.get(), (elf_bezier_curve*)curve.get());
+}
+ELF_API int ELF_APIENTRY elfGetIpoCurveCount(elf_handle ipo)
+{
+	if(!ipo.get() || elf_get_object_type(ipo.get()) != ELF_IPO)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetIpoCurveCount() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetIpoCurveCount() -> invalid handle\n");
+		}
+		return 0;
+	}
+	return elf_get_ipo_curve_count((elf_ipo*)ipo.get());
+}
+ELF_API elf_handle ELF_APIENTRY elfGetCurveFromIpo(elf_handle ipo, int idx)
+{
+	elf_handle handle;
+	if(!ipo.get() || elf_get_object_type(ipo.get()) != ELF_IPO)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetCurveFromIpo() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetCurveFromIpo() -> invalid handle\n");
+		}
+		return handle;
+	}
+	handle = (elf_object*)elf_get_curve_from_ipo((elf_ipo*)ipo.get(), idx);
+	return handle;
 }
 ELF_API elf_vec3f ELF_APIENTRY elfGetIpoLoc(elf_handle ipo, float x)
 {
@@ -3553,6 +3776,52 @@ ELF_API bool ELF_APIENTRY elfRemoveActorJointByObject(elf_handle actor, elf_hand
 		return false;
 	}
 	return (bool)elf_remove_actor_joint_by_object((elf_actor*)actor.get(), (elf_joint*)joint.get());
+}
+ELF_API void ELF_APIENTRY elfSetActorIpo(elf_handle actor, elf_handle ipo)
+{
+	if(!actor.get() || !elf_is_actor(actor.get()))
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorIpo() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetActorIpo() -> invalid handle\n");
+		}
+		return;
+	}
+	if(!ipo.get() || elf_get_object_type(ipo.get()) != ELF_IPO)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetActorIpo() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetActorIpo() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_actor_ipo((elf_actor*)actor.get(), (elf_ipo*)ipo.get());
+}
+ELF_API elf_handle ELF_APIENTRY elfGetActorIpo(elf_handle actor)
+{
+	elf_handle handle;
+	if(!actor.get() || !elf_is_actor(actor.get()))
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetActorIpo() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetActorIpo() -> invalid handle\n");
+		}
+		return handle;
+	}
+	handle = (elf_object*)elf_get_actor_ipo((elf_actor*)actor.get());
+	return handle;
 }
 ELF_API void ELF_APIENTRY elfSetActorIpoFrame(elf_handle actor, float frame)
 {

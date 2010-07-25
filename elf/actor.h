@@ -911,6 +911,19 @@ unsigned char elf_remove_actor_joint_by_object(elf_actor *actor, elf_joint *join
 	return elf_remove_from_list(actor->joints, (elf_object*)joint);
 }
 
+void elf_set_actor_ipo(elf_actor *actor, elf_ipo *ipo)
+{
+	if(!ipo) return;
+	if(actor->ipo) elf_dec_ref((elf_object*)actor->ipo);
+	actor->ipo = ipo;
+	if(actor->ipo) elf_inc_ref((elf_object*)actor->ipo);
+}
+
+elf_ipo* elf_get_actor_ipo(elf_actor *actor)
+{
+	return actor->ipo;
+}
+
 void elf_set_actor_ipo_frame(elf_actor *actor, float frame)
 {
 	elf_set_frame_player_frame(actor->ipo_player, frame);

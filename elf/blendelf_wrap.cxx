@@ -7537,6 +7537,280 @@ fail:
 }
 
 
+static int _wrap_elfCreateBezierPoint(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle result;
+  
+  SWIG_check_num_args("CreateBezierPoint",0,0)
+  result = elfCreateBezierPoint();
+  {
+    elf_handle * resultptr = new elf_handle((const elf_handle &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_handle,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfSetBezierPointPosition(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  float arg2 ;
+  float arg3 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("SetBezierPointPosition",3,3)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetBezierPointPosition",1,"handle");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("SetBezierPointPosition",2,"float");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("SetBezierPointPosition",3,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetBezierPointPosition",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  arg3 = (float)lua_tonumber(L, 3);
+  elfSetBezierPointPosition(arg1,arg2,arg3);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfSetBezierPointControl1(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  float arg2 ;
+  float arg3 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("SetBezierPointControl1",3,3)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetBezierPointControl1",1,"handle");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("SetBezierPointControl1",2,"float");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("SetBezierPointControl1",3,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetBezierPointControl1",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  arg3 = (float)lua_tonumber(L, 3);
+  elfSetBezierPointControl1(arg1,arg2,arg3);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfSetBezierPointControl2(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  float arg2 ;
+  float arg3 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("SetBezierPointControl2",3,3)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetBezierPointControl2",1,"handle");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("SetBezierPointControl2",2,"float");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("SetBezierPointControl2",3,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetBezierPointControl2",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  arg3 = (float)lua_tonumber(L, 3);
+  elfSetBezierPointControl2(arg1,arg2,arg3);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetBezierPointPosition(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  elf_vec2f result;
+  
+  SWIG_check_num_args("GetBezierPointPosition",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetBezierPointPosition",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetBezierPointPosition",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = elfGetBezierPointPosition(arg1);
+  {
+    elf_vec2f * resultptr = new elf_vec2f((const elf_vec2f &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_vec2f,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetBezierPointControl1(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  elf_vec2f result;
+  
+  SWIG_check_num_args("GetBezierPointControl1",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetBezierPointControl1",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetBezierPointControl1",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = elfGetBezierPointControl1(arg1);
+  {
+    elf_vec2f * resultptr = new elf_vec2f((const elf_vec2f &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_vec2f,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetBezierPointControl2(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  elf_vec2f result;
+  
+  SWIG_check_num_args("GetBezierPointControl2",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetBezierPointControl2",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetBezierPointControl2",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = elfGetBezierPointControl2(arg1);
+  {
+    elf_vec2f * resultptr = new elf_vec2f((const elf_vec2f &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_vec2f,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfCreateBezierCurve(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle result;
+  
+  SWIG_check_num_args("CreateBezierCurve",0,0)
+  result = elfCreateBezierCurve();
+  {
+    elf_handle * resultptr = new elf_handle((const elf_handle &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_handle,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfSetBezierCurveType(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  int arg2 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("SetBezierCurveType",2,2)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetBezierCurveType",1,"handle");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("SetBezierCurveType",2,"int");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetBezierCurveType",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  elfSetBezierCurveType(arg1,arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetBezierCurveType(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  int result;
+  
+  SWIG_check_num_args("GetBezierCurveType",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetBezierCurveType",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetBezierCurveType",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = (int)elfGetBezierCurveType(arg1);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfAddPointToBezierCurve(lua_State* L) {
   int SWIG_arg = 0;
   elf_handle arg1 ;
@@ -7561,6 +7835,87 @@ static int _wrap_elfAddPointToBezierCurve(lua_State* L) {
   
   elfAddPointToBezierCurve(arg1,arg2);
   
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetPointFromBezierCurve(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  int arg2 ;
+  elf_handle *argp1 ;
+  elf_handle result;
+  
+  SWIG_check_num_args("GetPointFromBezierCurve",2,2)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetPointFromBezierCurve",1,"handle");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("GetPointFromBezierCurve",2,"int");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetPointFromBezierCurve",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  result = elfGetPointFromBezierCurve(arg1,arg2);
+  {
+    elf_handle * resultptr = new elf_handle((const elf_handle &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_handle,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetBezierCurveValue(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  float arg2 ;
+  elf_handle *argp1 ;
+  float result;
+  
+  SWIG_check_num_args("GetBezierCurveValue",2,2)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetBezierCurveValue",1,"handle");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("GetBezierCurveValue",2,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetBezierCurveValue",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  result = (float)elfGetBezierCurveValue(arg1,arg2);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfCreateIpo(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle result;
+  
+  SWIG_check_num_args("CreateIpo",0,0)
+  result = elfCreateIpo();
+  {
+    elf_handle * resultptr = new elf_handle((const elf_handle &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_handle,1); SWIG_arg++;
+  }
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -7596,6 +7951,64 @@ static int _wrap_elfAddCurveToIpo(lua_State* L) {
   
   result = (bool)elfAddCurveToIpo(arg1,arg2);
   lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetIpoCurveCount(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  int result;
+  
+  SWIG_check_num_args("GetIpoCurveCount",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetIpoCurveCount",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetIpoCurveCount",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = (int)elfGetIpoCurveCount(arg1);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetCurveFromIpo(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  int arg2 ;
+  elf_handle *argp1 ;
+  elf_handle result;
+  
+  SWIG_check_num_args("GetCurveFromIpo",2,2)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetCurveFromIpo",1,"handle");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("GetCurveFromIpo",2,"int");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetCurveFromIpo",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  result = elfGetCurveFromIpo(arg1,arg2);
+  {
+    elf_handle * resultptr = new elf_handle((const elf_handle &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_handle,1); SWIG_arg++;
+  }
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -9873,6 +10286,69 @@ static int _wrap_elfRemoveActorJointByObject(lua_State* L) {
   
   result = (bool)elfRemoveActorJointByObject(arg1,arg2);
   lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfSetActorIpo(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle arg2 ;
+  elf_handle *argp1 ;
+  elf_handle *argp2 ;
+  
+  SWIG_check_num_args("SetActorIpo",2,2)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetActorIpo",1,"handle");
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg("SetActorIpo",2,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetActorIpo",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetActorIpo",2,SWIGTYPE_p_elf_handle);
+  }
+  arg2 = *argp2;
+  
+  elfSetActorIpo(arg1,arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetActorIpo(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  elf_handle result;
+  
+  SWIG_check_num_args("GetActorIpo",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetActorIpo",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetActorIpo",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = elfGetActorIpo(arg1);
+  {
+    elf_handle * resultptr = new elf_handle((const elf_handle &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_handle,1); SWIG_arg++;
+  }
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -21553,8 +22029,23 @@ static const struct luaL_reg swig_commands[] = {
     { "GetMaterialParallaxScale", _wrap_elfGetMaterialParallaxScale},
     { "GetMaterialAlphaTest", _wrap_elfGetMaterialAlphaTest},
     { "GetMaterialAlphaThreshold", _wrap_elfGetMaterialAlphaThreshold},
+    { "CreateBezierPoint", _wrap_elfCreateBezierPoint},
+    { "SetBezierPointPosition", _wrap_elfSetBezierPointPosition},
+    { "SetBezierPointControl1", _wrap_elfSetBezierPointControl1},
+    { "SetBezierPointControl2", _wrap_elfSetBezierPointControl2},
+    { "GetBezierPointPosition", _wrap_elfGetBezierPointPosition},
+    { "GetBezierPointControl1", _wrap_elfGetBezierPointControl1},
+    { "GetBezierPointControl2", _wrap_elfGetBezierPointControl2},
+    { "CreateBezierCurve", _wrap_elfCreateBezierCurve},
+    { "SetBezierCurveType", _wrap_elfSetBezierCurveType},
+    { "GetBezierCurveType", _wrap_elfGetBezierCurveType},
     { "AddPointToBezierCurve", _wrap_elfAddPointToBezierCurve},
+    { "GetPointFromBezierCurve", _wrap_elfGetPointFromBezierCurve},
+    { "GetBezierCurveValue", _wrap_elfGetBezierCurveValue},
+    { "CreateIpo", _wrap_elfCreateIpo},
     { "AddCurveToIpo", _wrap_elfAddCurveToIpo},
+    { "GetIpoCurveCount", _wrap_elfGetIpoCurveCount},
+    { "GetCurveFromIpo", _wrap_elfGetCurveFromIpo},
     { "GetIpoLoc", _wrap_elfGetIpoLoc},
     { "GetIpoRot", _wrap_elfGetIpoRot},
     { "GetIpoScale", _wrap_elfGetIpoScale},
@@ -21627,6 +22118,8 @@ static const struct luaL_reg swig_commands[] = {
     { "RemoveActorJointByName", _wrap_elfRemoveActorJointByName},
     { "RemoveActorJointByIndex", _wrap_elfRemoveActorJointByIndex},
     { "RemoveActorJointByObject", _wrap_elfRemoveActorJointByObject},
+    { "SetActorIpo", _wrap_elfSetActorIpo},
+    { "GetActorIpo", _wrap_elfGetActorIpo},
     { "SetActorIpoFrame", _wrap_elfSetActorIpoFrame},
     { "PlayActorIpo", _wrap_elfPlayActorIpo},
     { "LoopActorIpo", _wrap_elfLoopActorIpo},
