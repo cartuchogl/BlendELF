@@ -176,9 +176,6 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 
 			if(shader_params->texture_params[i].texture)
 			{
-				glMatrixMode(GL_TEXTURE);
-				glLoadMatrixf(shader_params->texture_params[i].matrix);
-
 				glBindTexture(GL_TEXTURE_2D, shader_params->texture_params[i].texture->id);
 
 				switch(shader_params->texture_params[i].projection_mode)
@@ -193,9 +190,6 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 			}
 			else
 			{
-				glMatrixMode(GL_TEXTURE);
-				glLoadIdentity();
-
 				glBindTexture(GL_TEXTURE_2D, 0);
 			}
 		}
