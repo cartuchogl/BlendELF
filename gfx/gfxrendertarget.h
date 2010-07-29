@@ -41,17 +41,25 @@ gfx_render_target* gfx_create_render_target(unsigned int width, unsigned int hei
 
 	render_target = (gfx_render_target*)malloc(sizeof(gfx_render_target));
 	memset(render_target, 0x0, sizeof(gfx_render_target));
+	render_target->obj_type = GFX_RENDER_TARGET;
+	render_target->obj_destr = gfx_destroy_render_target;
 
 	glGenFramebuffersEXT(1, &render_target->fb);
+
+	gfx_inc_obj(GFX_RENDER_TARGET);
 
 	return render_target;
 }
 
-void gfx_destroy_render_target(gfx_render_target *render_target)
+void gfx_destroy_render_target(void *data)
 {
+	gfx_render_target *render_target = (gfx_render_target*)data;
+
 	if(render_target->fb) glDeleteFramebuffersEXT(1, &render_target->fb);
 
 	free(render_target);
+
+	gfx_dec_obj(GFX_RENDER_TARGET);
 }
 
 gfx_render_target* gfx_get_cur_render_target()

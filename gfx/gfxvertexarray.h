@@ -9,7 +9,8 @@ gfx_vertex_data* gfx_create_vertex_data(int count, int format, int data_type)
 
 	data = (gfx_vertex_data*)malloc(sizeof(gfx_vertex_data));
 	memset(data, 0x0, sizeof(gfx_vertex_data));
-	data->type = GFX_VERTEX_DATA;
+	data->obj_type = GFX_VERTEX_DATA;
+	data->obj_destr = gfx_destroy_vertex_data;
 
 	data->count = count;
 	data->format = format;
@@ -18,19 +19,21 @@ gfx_vertex_data* gfx_create_vertex_data(int count, int format, int data_type)
 	data->data = malloc(data->size_bytes);
 	memset(data->data, 0x0, data->size_bytes);
 
-	gfx_global_obj_count++;
+	gfx_inc_obj(GFX_VERTEX_DATA);
 
 	return data;
 }
 
-void gfx_destroy_vertex_data(gfx_vertex_data *data)
+void gfx_destroy_vertex_data(void *data)
 {
-	if(data->vbo) glDeleteBuffers(1, &data->vbo);
+	gfx_vertex_data *vertex_data = (gfx_vertex_data*)data;
 
-	free(data->data);
-	free(data);
+	if(vertex_data->vbo) glDeleteBuffers(1, &vertex_data->vbo);
 
-	gfx_global_obj_count--;
+	free(vertex_data->data);
+	free(vertex_data);
+
+	gfx_dec_obj(GFX_VERTEX_DATA);
 }
 
 int gfx_get_vertex_data_count(gfx_vertex_data *data)
@@ -97,18 +100,20 @@ gfx_vertex_array* gfx_create_vertex_array(unsigned char gpu_data)
 
 	vertex_array = (gfx_vertex_array*)malloc(sizeof(gfx_vertex_array));
 	memset(vertex_array, 0x0, sizeof(gfx_vertex_array));
-	vertex_array->type = GFX_VERTEX_ARRAY;
+	vertex_array->obj_type = GFX_VERTEX_ARRAY;
+	vertex_array->obj_destr = gfx_destroy_vertex_array;
 
 	vertex_array->gpu_data = !gpu_data == GFX_FALSE;
 
-	gfx_global_obj_count++;
+	gfx_inc_obj(GFX_VERTEX_ARRAY);
 
 	return vertex_array;
 }
 
-void gfx_destroy_vertex_array(gfx_vertex_array *vertex_array)
+void gfx_destroy_vertex_array(void *data)
 {
 	int i;
+	gfx_vertex_array *vertex_array = (gfx_vertex_array*)data;
 
 	for(i = 0; i < GFX_MAX_VERTEX_ARRAYS; i++)
 	{
@@ -118,7 +123,7 @@ void gfx_destroy_vertex_array(gfx_vertex_array *vertex_array)
 		}
 	}
 
-	gfx_global_obj_count--;
+	gfx_dec_obj(GFX_VERTEX_ARRAY);
 
 	free(vertex_array);
 }
@@ -236,7 +241,8 @@ gfx_vertex_index* gfx_create_vertex_index(unsigned char gpu_data, gfx_vertex_dat
 
 	vertex_index = (gfx_vertex_index*)malloc(sizeof(gfx_vertex_index));
 	memset(vertex_index, 0x0, sizeof(gfx_vertex_index));
-	vertex_index->type = GFX_VERTEX_INDEX;
+	vertex_index->obj_type = GFX_VERTEX_INDEX;
+	vertex_index->obj_destr = gfx_destroy_vertex_index;
 
 	vertex_index->data = data;
 	gfx_inc_ref((gfx_object*)vertex_index->data);
@@ -246,18 +252,20 @@ gfx_vertex_index* gfx_create_vertex_index(unsigned char gpu_data, gfx_vertex_dat
 
 	if(vertex_index->gpu_data) gfx_init_vertex_data_vbo(data);
 
-	gfx_global_obj_count++;
+	gfx_inc_obj(GFX_VERTEX_INDEX);
 
 	return vertex_index;
 }
 
-void gfx_destroy_vertex_index(gfx_vertex_index *vertex_index)
+void gfx_destroy_vertex_index(void *data)
 {
+	gfx_vertex_index *vertex_index = (gfx_vertex_index*)data;
+
 	if(vertex_index->data) gfx_dec_ref((gfx_object*)vertex_index->data);
 
 	free(vertex_index);
 
-	gfx_global_obj_count--;
+	gfx_dec_obj(GFX_VERTEX_INDEX);
 }
 
 int gfx_get_vertex_index_indice_count(gfx_vertex_index *vertex_index)

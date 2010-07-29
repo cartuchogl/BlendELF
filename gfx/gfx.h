@@ -3,16 +3,17 @@
 extern "C" {
 #endif
 
-#define GFX_NONE					0x0000
-
 #define GFX_FALSE					0x0000
 #define GFX_TRUE					0x0001
 
-#define GFX_VERTEX_DATA					0x0000
-#define GFX_VERTEX_ARRAY				0x0001
-#define GFX_VERTEX_INDEX				0x0002
-#define GFX_TEXTURE					0x0003
-#define GFX_OBJECT_TYPE_COUNT				0x0004
+#define GFX_NONE					0x0000
+#define GFX_VERTEX_DATA					0x0001
+#define GFX_VERTEX_ARRAY				0x0002
+#define GFX_VERTEX_INDEX				0x0003
+#define GFX_TEXTURE					0x0004
+#define GFX_RENDER_TARGET				0x0005
+#define GFX_GBUFFER					0x0006
+#define GFX_OBJECT_TYPE_COUNT				0x0007
 
 #define GFX_FLOAT					0x0000
 #define GFX_INT						0x0001
@@ -114,6 +115,7 @@ extern "C" {
 #define GFX_180_DIV_PI					180.0/GFX_PI
 
 typedef struct gfx_object				gfx_object;
+typedef struct gfx_general				gfx_general;
 typedef struct gfx_driver				gfx_driver;
 typedef struct gfx_transform				gfx_transform;
 typedef struct gfx_vertex_data				gfx_vertex_data;
@@ -123,6 +125,7 @@ typedef struct gfx_texture				gfx_texture;
 typedef struct gfx_shader_program			gfx_shader_program;
 typedef struct gfx_render_target			gfx_render_target;
 typedef struct gfx_query				gfx_query;
+typedef struct gfx_gbuffer				gfx_gbuffer;
 
 typedef struct gfx_color {
 	float r, g, b, a;
@@ -206,15 +209,19 @@ typedef struct gfx_shader_config {
 	unsigned char specular;
 } gfx_shader_config;
 
-//////////////////////////////// OBJECT ////////////////////////////////
+//////////////////////////////// GENERAL ////////////////////////////////
 
-void gfx_init_objects();
-void gfx_deinit_objects();
+void gfx_init_general();
+void gfx_deinit_general();
+
 void gfx_inc_ref(gfx_object *obj);
 void gfx_dec_ref(gfx_object *obj);
-void gfx_log_ref_count_table();
+void gfx_inc_obj(int type);
+void gfx_dec_obj(int type);
+
 int gfx_get_object_type(gfx_object *obj);
 int gfx_get_object_ref_count(gfx_object *obj);
+
 int gfx_get_global_ref_count();
 int gfx_get_global_obj_count();
 
@@ -299,7 +306,7 @@ int gfx_get_vertices_drawn(unsigned int draw_mode);
 //////////////////////////////// VERTEX ARRAY/INDEX ////////////////////////////////
 
 gfx_vertex_data* gfx_create_vertex_data(int count, int format, int data_type);
-void gfx_destroy_vertex_data(gfx_vertex_data *data);
+void gfx_destroy_vertex_data(void *data);
 int gfx_get_vertex_data_count(gfx_vertex_data *data);
 int gfx_get_vertex_data_format(gfx_vertex_data *data);
 int gfx_get_vertex_data_size_bytes(gfx_vertex_data *data);
@@ -309,7 +316,7 @@ void gfx_update_vertex_data(gfx_vertex_data *data);
 void gfx_update_vertex_data_sub_data(gfx_vertex_data *data, int start, int length);
 
 gfx_vertex_array* gfx_create_vertex_array(unsigned char gpu_data);
-void gfx_destroy_vertex_array(gfx_vertex_array *vertex_array);
+void gfx_destroy_vertex_array(void *data);
 
 int gfx_get_vertex_array_vertex_count(gfx_vertex_array *vertex_array);
 void gfx_set_vertex_array_data(gfx_vertex_array *vertex_array, int target, gfx_vertex_data *data);
@@ -318,7 +325,7 @@ void gfx_set_vertex_array(gfx_vertex_array *vertex_array);
 void gfx_draw_vertex_array(gfx_vertex_array *vertex_array, int count, int draw_mode);
 
 gfx_vertex_index* gfx_create_vertex_index(unsigned char gpu_data, gfx_vertex_data *data);
-void gfx_destroy_vertex_index(gfx_vertex_index *vertex_index);
+void gfx_destroy_vertex_index(void *data);
 
 int gfx_get_vertex_index_indice_count(gfx_vertex_index *vertex_index);
 void gfx_draw_vertex_index(gfx_vertex_index *vertex_index, unsigned int draw_mode);
@@ -327,8 +334,9 @@ void gfx_draw_vertex_index(gfx_vertex_index *vertex_index, unsigned int draw_mod
 
 int gfx_get_max_texture_size();
 
+gfx_texture* gfx_create_texture();
 gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internal_format, int data_format, void *data);
-void gfx_destroy_texture(gfx_texture *texture);
+void gfx_destroy_texture(void *data);
 
 int gfx_get_texture_width(gfx_texture *texture);
 int gfx_get_texture_height(gfx_texture *texture);
@@ -352,7 +360,7 @@ void gfx_set_shader_program_uniform_mat4(const char *name, float *matrix);
 //////////////////////////////// RENDER TARGET ////////////////////////////////
 
 gfx_render_target* gfx_create_render_target(unsigned int width, unsigned int height);
-void gfx_destroy_render_target(gfx_render_target *render_target);
+void gfx_destroy_render_target(void *data);
 
 gfx_render_target* gfx_get_cur_render_target();
 unsigned char gfx_set_render_target_color_texture(gfx_render_target *render_target, unsigned int n, gfx_texture *color);
@@ -386,7 +394,7 @@ gfx_shader_program* gfx_get_shader_program(gfx_shader_config *config);
 
 //////////////////////////////// QUERY ////////////////////////////////
 
-gfx_query *gfx_create_query();
+gfx_query* gfx_create_query();
 void gfx_destroy_query(gfx_query *query);
 
 void gfx_begin_query(gfx_query *query);
@@ -394,6 +402,24 @@ void gfx_end_query(gfx_query *query);
 unsigned char gfx_is_query_result(gfx_query *query);
 int gfx_get_query_result(gfx_query *query);
 
+//////////////////////////////// G-BUFFER ////////////////////////////////
+
+gfx_gbuffer* gfx_create_gbuffer(int width, int height);
+void gfx_destroy_gbuffer(void *data);
+
+void gfx_bind_gbuffer(gfx_gbuffer *gbuffer, gfx_shader_params *shader_params);
+void gfx_bind_gbuffer_light(gfx_gbuffer *gbuffer, gfx_shader_params *shader_params);
+void gfx_bind_gbuffer_main(gfx_gbuffer *gbuffer, gfx_shader_params *shader_params);
+
+gfx_texture* gfx_get_gbuffer_depth(gfx_gbuffer *gbuffer);
+gfx_texture* gfx_get_gbuffer_light(gfx_gbuffer *gbuffer);
+gfx_texture* gfx_get_gbuffer_main(gfx_gbuffer *gbuffer);
+gfx_texture* gfx_get_gbuffer_buf1(gfx_gbuffer *gbuffer);
+gfx_texture* gfx_get_gbuffer_buf2(gfx_gbuffer *gbuffer);
+gfx_texture* gfx_get_gbuffer_buf3(gfx_gbuffer *gbuffer);
+gfx_texture* gfx_get_gbuffer_buf4(gfx_gbuffer *gbuffer);
+
 #ifdef __cplusplus
 }
 #endif
+

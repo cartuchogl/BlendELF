@@ -1,10 +1,18 @@
 
 #define GFX_OBJECT_HEADER \
-	int type; \
-	int ref_count
+	int obj_type; \
+	int obj_ref_count; \
+	void (*obj_destr)(void*);
 
 struct gfx_object {
 	GFX_OBJECT_HEADER;
+};
+
+struct gfx_general {
+	int ref_count;
+	int obj_count;
+	int ref_table[GFX_OBJECT_TYPE_COUNT];
+	int obj_table[GFX_OBJECT_TYPE_COUNT];
 };
 
 struct gfx_driver {
@@ -136,6 +144,7 @@ struct gfx_shader_program {
 };
 
 struct gfx_render_target {
+	GFX_OBJECT_HEADER;
 	unsigned int fb;
 	unsigned int rb;
 	unsigned int width, height;
@@ -144,5 +153,25 @@ struct gfx_render_target {
 
 struct gfx_query {
 	unsigned int id;
+};
+
+struct gfx_gbuffer {
+	GFX_OBJECT_HEADER;
+
+	int width;
+	int height;
+
+	gfx_render_target *buf_rt;
+	gfx_render_target *light_rt;
+	gfx_render_target *main_rt;
+
+	gfx_texture *depth_tex;
+	gfx_texture *buf1_tex;
+	gfx_texture *buf2_tex;
+	gfx_texture *buf3_tex;
+	gfx_texture *buf4_tex;
+	gfx_texture *light_tex;
+
+	gfx_texture *main_tex;
 };
 

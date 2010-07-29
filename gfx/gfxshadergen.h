@@ -485,3 +485,209 @@ gfx_shader_program* gfx_get_shader_program(gfx_shader_config *config)
 	return shader_program;
 }
 
+void gfx_add_gbuf_vertex_attributes(gfx_document *document, gfx_shader_config *config)
+{
+	gfx_add_line_to_document(document, "attribute vec3 elf_VertexAttr;");
+	gfx_add_line_to_document(document, "attribute vec3 elf_NormalAttr;");
+	if(config->textures) gfx_add_line_to_document(document, "attribute vec2 elf_TexCoordAttr;");
+	if(config->textures & GFX_NORMAL_MAP) gfx_add_line_to_document(document, "attribute vec3 elf_TangentAttr;");
+	if(config->vertex_color) gfx_add_line_to_document(document, "attribute vec4 elf_ColorAttr;");
+}
+
+void gfx_add_gbuf_vertex_uniforms(gfx_document *document, gfx_shader_config *config)
+{
+	gfx_add_line_to_document(document, "uniform mat4 elf_ProjectionMatrix;");
+	gfx_add_line_to_document(document, "uniform mat4 elf_ModelviewMatrix;");
+}
+
+void gfx_add_gbuf_vertex_varyings(gfx_document *document, gfx_shader_config *config)
+{
+	if(config->textures & GFX_HEIGHT_MAP) gfx_add_line_to_document(document, "varying vec3 elf_EyeVector;");
+	gfx_add_line_to_document(document, "varying vec3 elf_Normal;");
+	if(config->textures & GFX_NORMAL_MAP) gfx_add_line_to_document(document, "varying vec3 elf_BiNormal;");
+	if(config->textures & GFX_NORMAL_MAP) gfx_add_line_to_document(document, "varying vec3 elf_Tangent;");
+	if(config->textures) gfx_add_line_to_document(document, "varying vec2 elf_TexCoord;");
+	if(config->vertex_color) gfx_add_line_to_document(document, "varying vec4 elf_VertexColor;");
+}
+
+void gfx_add_gbuf_vertex_init(gfx_document *document, gfx_shader_config *config)
+{
+	gfx_add_line_to_document(document, "void main()");
+	gfx_add_line_to_document(document, "{");
+	gfx_add_line_to_document(document, "\tvec4 vertex = elf_ModelviewMatrix*vec4(elf_VertexAttr, 1.0);");
+}
+
+void gfx_add_gbuf_vertex_texture_calcs(gfx_document *document, gfx_shader_config *config)
+{
+	if(config->textures && config->textures != GFX_SHADOW_MAP) gfx_add_line_to_document(document, "\telf_TexCoord = elf_TexCoordAttr;");
+}
+
+void gfx_add_gbuf_vertex_lighting_calcs(gfx_document *document, gfx_shader_config *config)
+{
+	if(config->textures & GFX_HEIGHT_MAP) gfx_add_line_to_document(document, "\telf_EyeVector = -vertex.xyz;");
+	if(config->textures & GFX_NORMAL_MAP)
+	{
+		gfx_add_line_to_document(document, "\tNormal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
+		gfx_add_line_to_document(document, "\telf_Tangent = vec3(elf_ModelviewMatrix*vec4(elf_TangentAttr, 0.0));");
+		gfx_add_line_to_document(document, "\telf_BiNormal = cross(elf_Normal, elf_Tangent);");
+	}
+	else
+	{
+		gfx_add_line_to_document(document, "\telf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
+	}
+}
+
+void gfx_add_gbuf_vertex_end(gfx_document *document, gfx_shader_config *config)
+{
+	if(config->vertex_color) gfx_add_line_to_document(document, "\telf_VertexColor = elf_ColorAttr;");
+	gfx_add_line_to_document(document, "\tgl_Position = elf_ProjectionMatrix*vertex;");
+	gfx_add_line_to_document(document, "}");
+}
+
+void gfx_add_gbuf_fragment_texture_uniforms(gfx_document *document, gfx_shader_config *config)
+{
+	if(config->textures & GFX_COLOR_MAP) gfx_add_line_to_document(document, "uniform sampler2D elf_ColorMap;");
+	if(config->textures & GFX_NORMAL_MAP) gfx_add_line_to_document(document, "uniform sampler2D elf_NormalMap;");
+	if(config->textures & GFX_SPECULAR_MAP) gfx_add_line_to_document(document, "uniform sampler2D elf_SpecularMap;");
+	if(config->textures & GFX_HEIGHT_MAP) gfx_add_line_to_document(document, "uniform sampler2D elf_HeightMap;");
+	if(config->textures & GFX_LIGHT_MAP) gfx_add_line_to_document(document, "uniform sampler2D elf_LightMap;");
+}
+
+void gfx_add_gbuf_fragment_material_uniforms(gfx_document *document, gfx_shader_config *config)
+{
+	gfx_add_line_to_document(document, "uniform vec4 elf_Color;");
+	gfx_add_line_to_document(document, "uniform vec3 elf_SpecularColor;");
+	gfx_add_line_to_document(document, "uniform float elf_SpecPower;");
+	if(config->textures & GFX_HEIGHT_MAP) gfx_add_line_to_document(document, "uniform float elf_ParallaxScale;");
+}
+
+void gfx_add_gbuf_fragment_varyings(gfx_document *document, gfx_shader_config *config)
+{
+	if(config->textures & GFX_HEIGHT_MAP) gfx_add_line_to_document(document, "varying vec3 elf_EyeVector;");
+	gfx_add_line_to_document(document, "varying vec3 elf_Normal;");
+	if(config->textures & GFX_NORMAL_MAP) gfx_add_line_to_document(document, "varying vec3 elf_BiNormal;");
+	if(config->textures & GFX_NORMAL_MAP) gfx_add_line_to_document(document, "varying vec3 elf_Tangent;");
+	if(config->textures) gfx_add_line_to_document(document, "varying vec2 elf_TexCoord;");
+	if(config->vertex_color) gfx_add_line_to_document(document, "varying vec4 elf_VertexColor;");
+}
+
+void gfx_add_gbuf_fragment_init(gfx_document *document, gfx_shader_config *config)
+{
+	gfx_add_line_to_document(document, "void main()");
+	gfx_add_line_to_document(document, "{");
+}
+
+void gfx_add_gbuf_fragment_parallax_mapping_calcs(gfx_document *document, gfx_shader_config *config)
+{
+	if(config->textures & GFX_HEIGHT_MAP)
+	{
+		gfx_add_line_to_document(document, "\tvec3 E = normalize(elf_EyeVector);");
+		gfx_add_line_to_document(document, "\tfloat parallax_depth = texture2D(elf_HeightMap, elf_TexCoord).r;");
+		gfx_add_line_to_document(document, "\tvec2 elf_HeightTexCoord = E.xy*parallax_depth*elf_ParallaxScale;");
+		gfx_add_line_to_document(document, "\tparallax_depth = (parallax_depth+texture2D(elf_HeightMap, elf_TexCoord+elf_HeightTexCoord).r)*0.5;");
+		gfx_add_line_to_document(document, "\telf_HeightTexCoord = E.xy*parallax_depth*elf_ParallaxScale;");
+		gfx_add_line_to_document(document, "\tparallax_depth = (parallax_depth+texture2D(elf_HeightMap, elf_TexCoord+elf_HeightTexCoord).r)*0.5;");
+		gfx_add_line_to_document(document, "\telf_HeightTexCoord = E.xy*parallax_depth*elf_ParallaxScale;");
+		gfx_add_line_to_document(document, "\telf_HeightTexCoord = elf_TexCoord+elf_HeightTexCoord;");
+	}
+}
+
+void gfx_add_gbuf_fragment_end(gfx_document *document, gfx_shader_config *config)
+{
+	if(config->textures & GFX_NORMAL_MAP)
+	{
+		if(config->textures & GFX_HEIGHT_MAP) gfx_add_line_to_document(document, "\tvec3 normal = texture2D(elf_NormalMap, elf_HeightTexCoord);");
+		if(!(config->textures & GFX_HEIGHT_MAP)) gfx_add_line_to_document(document, "\tvec3 normal = texture2D(elf_NormalMap, elf_TexCoord);");
+		gfx_add_line_to_document(document, "\tnormal -= 0.5;");
+		gfx_add_line_to_document(document, "\tnormal = normalize(normal.x*elf_Tangent+normal.y*elf_BiNormal+normal.z*elf_Normal);");
+		gfx_add_line_to_document(document, "\tgl_FragColor[1] = vec4(normal, 0.0);");		
+	}
+	else
+	{
+		gfx_add_line_to_document(document, "\tgl_FragColor[1] = vec4(normalize(elf_Normal), 0.0);");
+	}
+	gfx_add_line_to_document(document, "\tvec4 color = elf_Color;");
+	if(config->textures & GFX_COLOR_MAP && config->textures & GFX_HEIGHT_MAP) gfx_add_line_to_document(document, "\tcolor *= texture2D(elf_ColorMap, elf_HeightTexCoord);");
+	if(config->textures & GFX_COLOR_MAP && !(config->textures & GFX_HEIGHT_MAP)) gfx_add_line_to_document(document, "\tcolor *= texture2D(elf_ColorMap, elf_TexCoord);");
+	if(config->textures & GFX_LIGHT_MAP && config->textures & GFX_HEIGHT_MAP) gfx_add_line_to_document(document, "\tcolor *= texture2D(elf_LightMap, elf_HeightTexCoord);");
+	if(config->textures & GFX_LIGHT_MAP && !(config->textures & GFX_HEIGHT_MAP)) gfx_add_line_to_document(document, "\tcolor *= texture2D(elf_LightMap, elf_TexCoord);");
+	gfx_add_line_to_document(document, "\tgl_FragColor[2] = color;");
+	gfx_add_line_to_document(document, "}");
+}
+
+gfx_shader_program* gfx_get_gbuf_shader_program(gfx_shader_config *config)
+{
+	gfx_document *document;
+	gfx_shader_program *shader_program;
+	gfx_shader_program *lshpr;
+	char *vert_shdr;
+	char *frag_shdr;
+
+	shader_program = driver->shader_programs;
+	while(shader_program)
+	{
+		if(!memcmp(&shader_program->config, config, sizeof(gfx_shader_config)))
+			return shader_program;
+		shader_program = shader_program->next;
+	}
+
+	document = gfx_create_document();
+
+	// --------------------- VERTEX SHADER --------------------- //
+
+	gfx_add_gbuf_vertex_attributes(document, config);
+	gfx_add_gbuf_vertex_uniforms(document, config);
+	gfx_add_gbuf_vertex_varyings(document, config);
+	gfx_add_gbuf_vertex_init(document, config);
+	gfx_add_gbuf_vertex_texture_calcs(document, config);
+	gfx_add_gbuf_vertex_lighting_calcs(document, config);
+	gfx_add_gbuf_vertex_end(document, config);
+
+	vert_shdr = (char*)malloc(sizeof(char)*gfx_get_document_chars(document)+1);
+	gfx_document_to_buffer(document, vert_shdr);
+	vert_shdr[gfx_get_document_chars(document)] = '\0';
+	//gfx_write_to_log(vert_shdr);
+
+	gfx_clear_document(document);
+
+	// --------------------- FRAGMENT SHADER --------------------- //
+
+	gfx_add_gbuf_fragment_texture_uniforms(document, config);
+	gfx_add_gbuf_fragment_material_uniforms(document, config);
+	gfx_add_gbuf_fragment_varyings(document, config);
+	gfx_add_gbuf_fragment_init(document, config);
+	gfx_add_gbuf_fragment_parallax_mapping_calcs(document, config);
+	gfx_add_gbuf_fragment_end(document, config);
+
+	frag_shdr = (char*)malloc(sizeof(char)*(gfx_get_document_chars(document)+1));
+	gfx_document_to_buffer(document, frag_shdr);
+	frag_shdr[gfx_get_document_chars(document)] = '\0';
+	//gfx_write_to_log(frag_shdr);
+
+	// ----------------------------------------------------------- //
+
+	gfx_destroy_document(document);
+
+	shader_program = gfx_create_shader_program(vert_shdr, frag_shdr);
+
+	free(vert_shdr);
+	free(frag_shdr);
+
+	if(shader_program)
+	{
+		memcpy(&shader_program->config, config, sizeof(gfx_shader_config));
+
+		if(!driver->shader_programs) driver->shader_programs = shader_program;
+		else
+		{
+			lshpr = driver->shader_programs;
+			while(lshpr->next) lshpr = lshpr->next;
+			lshpr->next = shader_program;
+		}
+	}
+
+	//gfx_write_to_log("---------------------------------------\n");
+
+	return shader_program;
+}
+

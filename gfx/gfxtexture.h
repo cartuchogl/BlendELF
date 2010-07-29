@@ -4,6 +4,20 @@ int gfx_get_max_texture_size()
 	return driver->max_texture_size;
 }
 
+gfx_texture* gfx_create_texture()
+{
+	gfx_texture *texture;
+
+	texture = (gfx_texture*)malloc(sizeof(gfx_texture));
+	memset(texture, 0x0, sizeof(gfx_texture));
+	texture->obj_type = GFX_TEXTURE;
+	texture->obj_destr = gfx_destroy_texture;
+
+	gfx_inc_obj(GFX_TEXTURE);
+
+	return texture;
+}
+
 gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internal_format, int data_format, void *data)
 {
 	gfx_texture *texture;
@@ -26,8 +40,7 @@ gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, floa
 		return NULL;
 	}
 
-	texture = (gfx_texture*)malloc(sizeof(gfx_texture));
-	memset(texture, 0x0, sizeof(gfx_texture));
+	texture = gfx_create_texture();
 
 	texture->width = width;
 	texture->height = height;
@@ -69,7 +82,7 @@ gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, floa
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	}
 
-	if(anisotropy > 1.0f)
+	if(anisotropy > 1.0)
 	{
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy);
 	}
@@ -83,11 +96,16 @@ gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, floa
 	return texture;
 }
 
-void gfx_destroy_texture(gfx_texture *texture)
+void gfx_destroy_texture(void *data)
 {
+	gfx_texture *texture = (gfx_texture*)data;
+
 	if(texture->id) glDeleteTextures(1, &texture->id);
 
 	free(texture);
+
+	gfx_dec_obj(GFX_TEXTURE);
+
 }
 
 int gfx_get_texture_width(gfx_texture *texture)

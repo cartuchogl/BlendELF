@@ -208,26 +208,26 @@ elf_post_process* elf_create_post_process()
 
 void elf_destroy_post_process(elf_post_process *post_process)
 {
-	gfx_destroy_render_target(post_process->main_rt);
-	gfx_destroy_texture(post_process->main_rt_color[0]);
-	if(post_process->main_rt_color[1]) gfx_destroy_texture(post_process->main_rt_color[1]);
-	gfx_destroy_texture(post_process->main_rt_depth);
+	gfx_dec_ref((gfx_object*)post_process->main_rt);
+	gfx_dec_ref((gfx_object*)post_process->main_rt_color[0]);
+	if(post_process->main_rt_color[1]) gfx_dec_ref((gfx_object*)post_process->main_rt_color[1]);
+	gfx_dec_ref((gfx_object*)post_process->main_rt_depth);
 
-	gfx_destroy_render_target(post_process->rt_high);
-	gfx_destroy_render_target(post_process->rt_med);
-	gfx_destroy_render_target(post_process->rt_low);
-	gfx_destroy_render_target(post_process->rt_tiny);
+	gfx_dec_ref((gfx_object*)post_process->rt_high);
+	gfx_dec_ref((gfx_object*)post_process->rt_med);
+	gfx_dec_ref((gfx_object*)post_process->rt_low);
+	gfx_dec_ref((gfx_object*)post_process->rt_tiny);
 
-	gfx_destroy_texture(post_process->rt_tex_high_1);
-	gfx_destroy_texture(post_process->rt_tex_high_2);
-	gfx_destroy_texture(post_process->rt_tex_high_depth);
-	gfx_destroy_texture(post_process->rt_tex_med_1);
-	gfx_destroy_texture(post_process->rt_tex_med_2);
-	gfx_destroy_texture(post_process->rt_tex_med_3);
-	gfx_destroy_texture(post_process->rt_tex_low_1);
-	gfx_destroy_texture(post_process->rt_tex_low_2);
-	gfx_destroy_texture(post_process->rt_tex_tiny_1);
-	gfx_destroy_texture(post_process->rt_tex_tiny_2);
+	gfx_dec_ref((gfx_object*)post_process->rt_tex_high_1);
+	gfx_dec_ref((gfx_object*)post_process->rt_tex_high_2);
+	gfx_dec_ref((gfx_object*)post_process->rt_tex_high_depth);
+	gfx_dec_ref((gfx_object*)post_process->rt_tex_med_1);
+	gfx_dec_ref((gfx_object*)post_process->rt_tex_med_2);
+	gfx_dec_ref((gfx_object*)post_process->rt_tex_med_3);
+	gfx_dec_ref((gfx_object*)post_process->rt_tex_low_1);
+	gfx_dec_ref((gfx_object*)post_process->rt_tex_low_2);
+	gfx_dec_ref((gfx_object*)post_process->rt_tex_tiny_1);
+	gfx_dec_ref((gfx_object*)post_process->rt_tex_tiny_2);
 
 	if(post_process->hipass_shdr) gfx_destroy_shader_program(post_process->hipass_shdr);
 	if(post_process->blur_shdr) gfx_destroy_shader_program(post_process->blur_shdr);
@@ -245,36 +245,32 @@ void elf_destroy_post_process(elf_post_process *post_process)
 void elf_init_post_process_buffers(elf_post_process *post_process)
 {
 
-	if(post_process->main_rt) gfx_destroy_render_target(post_process->main_rt);
-	if(post_process->main_rt_color[0]) gfx_destroy_texture(post_process->main_rt_color[0]);
-	if(post_process->main_rt_color[1]) gfx_destroy_texture(post_process->main_rt_color[1]);
-	if(post_process->main_rt_depth) gfx_destroy_texture(post_process->main_rt_depth);
+	if(post_process->main_rt) gfx_dec_ref((gfx_object*)post_process->main_rt);
+	if(post_process->main_rt_color[0]) gfx_dec_ref((gfx_object*)post_process->main_rt_color[0]);
+	if(post_process->main_rt_color[1]) gfx_dec_ref((gfx_object*)post_process->main_rt_color[1]);
+	if(post_process->main_rt_depth) gfx_dec_ref((gfx_object*)post_process->main_rt_depth);
 
-	if(post_process->rt_high) gfx_destroy_render_target(post_process->rt_high);
-	if(post_process->rt_med) gfx_destroy_render_target(post_process->rt_med);
-	if(post_process->rt_low) gfx_destroy_render_target(post_process->rt_low);
-	if(post_process->rt_tiny) gfx_destroy_render_target(post_process->rt_tiny);
+	if(post_process->rt_high) gfx_dec_ref((gfx_object*)post_process->rt_high);
+	if(post_process->rt_med) gfx_dec_ref((gfx_object*)post_process->rt_med);
+	if(post_process->rt_low) gfx_dec_ref((gfx_object*)post_process->rt_low);
+	if(post_process->rt_tiny) gfx_dec_ref((gfx_object*)post_process->rt_tiny);
 
-	if(post_process->rt_tex_high_1) gfx_destroy_texture(post_process->rt_tex_high_1);
-	if(post_process->rt_tex_high_2) gfx_destroy_texture(post_process->rt_tex_high_2);
-	if(post_process->rt_tex_high_depth) gfx_destroy_texture(post_process->rt_tex_high_depth);
-	if(post_process->rt_tex_med_1) gfx_destroy_texture(post_process->rt_tex_med_1);
-	if(post_process->rt_tex_med_2) gfx_destroy_texture(post_process->rt_tex_med_2);
-	if(post_process->rt_tex_med_3) gfx_destroy_texture(post_process->rt_tex_med_3);
-	if(post_process->rt_tex_low_1) gfx_destroy_texture(post_process->rt_tex_low_1);
-	if(post_process->rt_tex_low_2) gfx_destroy_texture(post_process->rt_tex_low_2);
-	if(post_process->rt_tex_tiny_1) gfx_destroy_texture(post_process->rt_tex_tiny_1);
-	if(post_process->rt_tex_tiny_2) gfx_destroy_texture(post_process->rt_tex_tiny_2);
+	if(post_process->rt_tex_high_1) gfx_dec_ref((gfx_object*)post_process->rt_tex_high_1);
+	if(post_process->rt_tex_high_2) gfx_dec_ref((gfx_object*)post_process->rt_tex_high_2);
+	if(post_process->rt_tex_high_depth) gfx_dec_ref((gfx_object*)post_process->rt_tex_high_depth);
+	if(post_process->rt_tex_med_1) gfx_dec_ref((gfx_object*)post_process->rt_tex_med_1);
+	if(post_process->rt_tex_med_2) gfx_dec_ref((gfx_object*)post_process->rt_tex_med_2);
+	if(post_process->rt_tex_med_3) gfx_dec_ref((gfx_object*)post_process->rt_tex_med_3);
+	if(post_process->rt_tex_low_1) gfx_dec_ref((gfx_object*)post_process->rt_tex_low_1);
+	if(post_process->rt_tex_low_2) gfx_dec_ref((gfx_object*)post_process->rt_tex_low_2);
+	if(post_process->rt_tex_tiny_1) gfx_dec_ref((gfx_object*)post_process->rt_tex_tiny_1);
+	if(post_process->rt_tex_tiny_2) gfx_dec_ref((gfx_object*)post_process->rt_tex_tiny_2);
 
 	post_process->buffer_width = elf_get_window_width()/4;
 	post_process->buffer_height = elf_get_window_height()/4;
 
-	post_process->main_rt_color[0] = gfx_create_2d_texture(
-			elf_get_window_width(), elf_get_window_height(), 0.0f,
-			GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
-	post_process->main_rt_depth = gfx_create_2d_texture(
-			elf_get_window_width(), elf_get_window_height(), 0.0f,
-			GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
+	post_process->main_rt_color[0] = gfx_create_2d_texture(elf_get_window_width(), elf_get_window_height(), 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
+	post_process->main_rt_depth = gfx_create_2d_texture(elf_get_window_width(), elf_get_window_height(), 0.0, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
 	post_process->main_rt = gfx_create_render_target(elf_get_window_width(), elf_get_window_height());
 
 	gfx_set_render_target_color_texture(post_process->main_rt, 0, post_process->main_rt_color[0]);
@@ -302,11 +298,30 @@ void elf_init_post_process_buffers(elf_post_process *post_process)
 	gfx_set_render_target_color_texture(post_process->rt_low, 0, post_process->rt_tex_low_1);
 	gfx_set_render_target_color_texture(post_process->rt_tiny, 0, post_process->rt_tex_tiny_1);
 
+	gfx_inc_ref((gfx_object*)post_process->main_rt);
+	gfx_inc_ref((gfx_object*)post_process->main_rt_color[0]);
+	gfx_inc_ref((gfx_object*)post_process->main_rt_depth);
+
+	gfx_inc_ref((gfx_object*)post_process->rt_high);
+	gfx_inc_ref((gfx_object*)post_process->rt_med);
+	gfx_inc_ref((gfx_object*)post_process->rt_low);
+	gfx_inc_ref((gfx_object*)post_process->rt_tiny);
+
+	gfx_inc_ref((gfx_object*)post_process->rt_tex_high_1);
+	gfx_inc_ref((gfx_object*)post_process->rt_tex_high_2);
+	gfx_inc_ref((gfx_object*)post_process->rt_tex_high_depth);
+	gfx_inc_ref((gfx_object*)post_process->rt_tex_med_1);
+	gfx_inc_ref((gfx_object*)post_process->rt_tex_med_2);
+	gfx_inc_ref((gfx_object*)post_process->rt_tex_med_3);
+	gfx_inc_ref((gfx_object*)post_process->rt_tex_low_1);
+	gfx_inc_ref((gfx_object*)post_process->rt_tex_low_2);
+	gfx_inc_ref((gfx_object*)post_process->rt_tex_tiny_1);
+	gfx_inc_ref((gfx_object*)post_process->rt_tex_tiny_2);
+
 	if(!post_process->main_rt_color[1] && (int)post_process->bloom+(int)post_process->dof+(int)post_process->ssao > 1)
 	{
-		post_process->main_rt_color[1] = gfx_create_2d_texture(
-			elf_get_window_width(), elf_get_window_height(), 0.0f,
-			GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
+		post_process->main_rt_color[1] = gfx_create_2d_texture(elf_get_window_width(), elf_get_window_height(), 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
+		gfx_inc_ref((gfx_object*)post_process->main_rt_color[1]);
 	}
 }
 
@@ -316,12 +331,6 @@ void elf_begin_post_process(elf_post_process *post_process, elf_scene *scene)
 	gfx_set_shader_params(&post_process->shader_params);
 
 	gfx_set_render_target(post_process->main_rt);
-
-	//if(post_process->ssao)
-	//{
-	//	gfx_set_render_target_color_texture(post_process->main_rt, 0, post_process->main_rt_ssao_depth);
-	//	gfx_clear_color_buffer(1.0, 1.0, 1.0, 1.0);
-	//}
 
 	gfx_set_render_target_color_texture(post_process->main_rt, 0, post_process->main_rt_color[0]);
 	
@@ -363,8 +372,8 @@ void elf_end_post_process(elf_post_process *post_process, elf_scene *scene)
 		}
 
 		gfx_set_viewport(0, 0, elf_get_window_width(), elf_get_window_height());
-		gfx_get_orthographic_projection_matrix(0.0f, (float)elf_get_window_width(),
-			0.0f, (float)elf_get_window_height(), -1.0f, 1.0f,
+		gfx_get_orthographic_projection_matrix(0.0, (float)elf_get_window_width(),
+			0.0, (float)elf_get_window_height(), -1.0, 1.0,
 			post_process->shader_params.projection_matrix);
 
 		if((cam = elf_get_scene_active_camera(scene)))
@@ -382,7 +391,7 @@ void elf_end_post_process(elf_post_process *post_process, elf_scene *scene)
 		gfx_set_shader_params(&post_process->shader_params);
 		gfx_set_shader_program_uniform_1f("amount", post_process->ssao_amount);
 
-		gfx_draw_textured_2d_quad(0.0f, 0.0f, (float)elf_get_window_width(), (float)elf_get_window_height());
+		gfx_draw_textured_2d_quad(0.0, 0.0, (float)elf_get_window_width(), (float)elf_get_window_height());
 
 		source_rt = !source_rt;
 		
@@ -673,14 +682,14 @@ void elf_end_post_process(elf_post_process *post_process, elf_scene *scene)
 	gfx_set_shader_params(&post_process->shader_params);
 
 	/*gfx_set_viewport(0, 0, elf_get_window_width(), elf_get_window_height());
-	gfx_get_orthographic_projection_matrix(0.0f, (float)elf_get_window_width(),
-		0.0f, (float)elf_get_window_height(), -1.0f, 1.0f,
+	gfx_get_orthographic_projection_matrix(0.0, (float)elf_get_window_width(),
+		0.0f, (float)elf_get_window_height(), -1.0, 1.0,
 		post_process->shader_params.projection_matrix);
 	
 	post_process->shader_params.texture_params[0].texture = post_process->main_rt_color[cur_main_rt];
 	gfx_set_shader_params(&post_process->shader_params);
 
-	gfx_draw_textured_2d_quad(0.0f, 0.0f, (float)elf_get_window_width(), (float)elf_get_window_height());*/
+	gfx_draw_textured_2d_quad(0.0, 0.0, (float)elf_get_window_width(), (float)elf_get_window_height());*/
 }
 
 void elf_set_post_process_bloom(elf_post_process *post_process, float threshold)
@@ -716,9 +725,8 @@ void elf_set_post_process_dof(elf_post_process *post_process, float focal_range,
 	if(post_process->dof_focal_distance < 0.0) post_process->dof_focal_distance = 0.0;
 	if(!post_process->main_rt_color[1] && (int)post_process->bloom+(int)post_process->dof+(int)post_process->ssao > 1)
 	{
-		post_process->main_rt_color[1] = gfx_create_2d_texture(
-			elf_get_window_width(), elf_get_window_height(), 0.0f,
-			GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
+		post_process->main_rt_color[1] = gfx_create_2d_texture(elf_get_window_width(), elf_get_window_height(), 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
+		gfx_inc_ref((gfx_object*)post_process->main_rt_color[1]);
 	}
 }
 
@@ -744,20 +752,14 @@ void elf_set_post_process_ssao(elf_post_process *post_process, float amount)
 
 	if(!post_process->main_rt_color[1] && (int)post_process->bloom+(int)post_process->dof+(int)post_process->ssao > 1)
 	{
-		post_process->main_rt_color[1] = gfx_create_2d_texture(
-			elf_get_window_width(), elf_get_window_height(), 0.0f,
-			GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
+		post_process->main_rt_color[1] = gfx_create_2d_texture(elf_get_window_width(), elf_get_window_height(), 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
+		gfx_inc_ref((gfx_object*)post_process->main_rt_color[1]);
 	}
 }
 
 void elf_disable_post_process_ssao(elf_post_process *post_process)
 {
 	post_process->ssao = ELF_FALSE;
-	if(post_process->main_rt_ssao_depth)
-	{
-		gfx_destroy_texture(post_process->main_rt_ssao_depth);
-		post_process->main_rt_ssao_depth = NULL;
-	}
 }
 
 float elf_get_post_process_ssao_amount(elf_post_process *post_process)
@@ -773,9 +775,8 @@ void elf_set_post_process_light_shafts(elf_post_process *post_process, float int
 
 	if(!post_process->main_rt_color[1] && (int)post_process->bloom+(int)post_process->dof+(int)post_process->ssao > 1)
 	{
-		post_process->main_rt_color[1] = gfx_create_2d_texture(
-			elf_get_window_width(), elf_get_window_height(), 0.0f,
-			GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
+		post_process->main_rt_color[1] = gfx_create_2d_texture(elf_get_window_width(), elf_get_window_height(), 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
+		gfx_inc_ref((gfx_object*)post_process->main_rt_color[1]);
 	}
 }
 
@@ -808,3 +809,4 @@ unsigned char elf_is_post_process_light_shafts(elf_post_process *post_process)
 {
 	return post_process->light_shafts;
 }
+

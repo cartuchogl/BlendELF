@@ -589,7 +589,6 @@ struct elf_post_process {
 
 	gfx_texture *main_rt_color[2];
 	gfx_texture *main_rt_depth;
-	gfx_texture *main_rt_ssao_depth;
 	gfx_render_target *main_rt;
 
 	gfx_texture *rt_tex_high_1;

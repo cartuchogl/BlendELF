@@ -16,15 +16,13 @@
 
 #include "gfx.h"
 
+gfx_general *gfx_gen = NULL;
 gfx_driver *driver = NULL;
-int gfx_global_obj_count = 0;
-int gfx_global_ref_count_table[GFX_OBJECT_TYPE_COUNT];
-int gfx_global_ref_count = 0;
 
 extern void elf_write_to_log(const char *fmt, ...);
 
 #include "gfxtypes.h"
-#include "gfxobject.h"
+#include "gfxgeneral.h"
 #include "gfxmath.h"
 #include "gfxtransform.h"
 #include "gfxvertexarray.h"
@@ -34,6 +32,7 @@ extern void elf_write_to_log(const char *fmt, ...);
 #include "gfxrendertarget.h"
 #include "gfxshaderparams.h"
 #include "gfxquery.h"
+#include "gfxgbuffer.h"
 #include "gfxdraw.h"
 
 unsigned char gfx_init()
@@ -42,7 +41,7 @@ unsigned char gfx_init()
 
 	if(driver) return GFX_TRUE;
 
-	gfx_init_objects();
+	gfx_gen = gfx_create_general();
 
 	driver = (gfx_driver*)malloc(sizeof(gfx_driver));
 	memset(driver, 0x0, sizeof(gfx_driver));
@@ -260,7 +259,35 @@ void gfx_deinit()
 	free(driver);
 	driver = NULL;
 
-	gfx_deinit_objects();
+	if(gfx_get_global_ref_count() > 0)
+	{
+		elf_write_to_log("error: possible memory leak in GFX, [%d] references not dereferenced\n",
+			gfx_get_global_ref_count());
+		gfx_dump_ref_table();
+	}
+
+	if(gfx_get_global_ref_count() < 0)
+	{
+		elf_write_to_log("error: possible double free in GFX, [%d] negative reference count\n",
+			gfx_get_global_ref_count());
+		gfx_dump_ref_table();
+	}
+
+	if(gfx_get_global_obj_count() > 0)
+	{
+		elf_write_to_log("error: possible memory leak in GFX, [%d] objects not destroyed\n",
+			gfx_get_global_obj_count());
+		gfx_dump_obj_table();
+	}
+
+	if(gfx_get_global_obj_count() < 0)
+	{
+		elf_write_to_log("error: possible double free in GFX, [%d] negative object count\n",
+			gfx_get_global_obj_count());
+		gfx_dump_obj_table();
+	}
+
+	gfx_destroy_general(gfx_gen);
 }
 
 void gfx_clear_buffers(float r, float g, float b, float a, float d)
