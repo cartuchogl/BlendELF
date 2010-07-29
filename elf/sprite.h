@@ -5,7 +5,8 @@ elf_sprite* elf_create_sprite(const char *name)
 
 	sprite = (elf_sprite*)malloc(sizeof(elf_sprite));
 	memset(sprite, 0x0, sizeof(elf_sprite));
-	sprite->type = ELF_SPRITE;
+	sprite->obj_type = ELF_SPRITE;
+	sprite->obj_destr = elf_destroy_sprite;
 
 	elf_init_actor((elf_actor*)sprite, ELF_FALSE);
 
@@ -29,7 +30,7 @@ elf_sprite* elf_create_sprite(const char *name)
 
 	sprite->id = ++gen->sprite_id_counter;
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_SPRITE);
 
 	return sprite;
 }
@@ -59,8 +60,10 @@ void elf_sprite_post_draw(elf_sprite *sprite)
 	elf_actor_post_draw((elf_actor*)sprite);
 }
 
-void elf_destroy_sprite(elf_sprite *sprite)
+void elf_destroy_sprite(void *data)
 {
+	elf_sprite *sprite = (elf_sprite*)data;
+
 	elf_clean_actor((elf_actor*)sprite);
 
 	if(sprite->query) gfx_destroy_query(sprite->query);
@@ -70,7 +73,7 @@ void elf_destroy_sprite(elf_sprite *sprite)
 
 	free(sprite);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_SPRITE);
 }
 
 void elf_calc_sprite_bounds(elf_sprite *sprite)

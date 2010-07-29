@@ -10,7 +10,7 @@ char* elf_create_string(const char *str)
 
 	memcpy(nstr, str, sizeof(char)*strlen(str));
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_STRING);
 
 	return nstr;
 }
@@ -19,7 +19,7 @@ void elf_destroy_string(char *str)
 {
 	free(str);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_STRING);
 }
 
 elf_string* elf_create_string_object()
@@ -28,16 +28,23 @@ elf_string* elf_create_string_object()
 
 	string = (elf_string*)malloc(sizeof(elf_string));
 	memset(string, 0x0, sizeof(elf_string));
-	string->type = ELF_STRING;
+	string->obj_type = ELF_STRING;
+	string->obj_destr = elf_destroy_string_object;
+
+	elf_inc_obj(ELF_STRING);
 
 	return string;
 }
 
-void elf_destroy_string_object(elf_string *string)
+void elf_destroy_string_object(void *data)
 {
+	elf_string *string = (elf_string*)data;
+
 	if(string->str) elf_destroy_string(string->str);
 
 	free(string);
+
+	elf_dec_obj(ELF_STRING);
 }
 
 char* elf_remove_char_from_string(char *str, int idx)
@@ -53,7 +60,7 @@ char* elf_remove_char_from_string(char *str, int idx)
 	if(sizeof(char)*(strlen(str)-idx) > 0)
 		memcpy(&nstr[idx], &str[idx+1], sizeof(char)*(strlen(str)-idx));
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_STRING);
 
 	return nstr;
 }
@@ -67,7 +74,7 @@ char* elf_append_char_to_string(char *str, char c)
 	nstr[strlen(str)] = c;
 	nstr[strlen(str)+1] = '\0';
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_STRING);
 
 	return nstr;
 }
@@ -87,7 +94,7 @@ char* elf_insert_char_to_string(char *str, int idx, char c)
 	nstr[idx] = c;
 	nstr[strlen(str)+1] = '\0';
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_STRING);
 
 	return nstr;
 }
@@ -104,7 +111,7 @@ char* elf_merge_strings(const char *str1, const char *str2)
 	memcpy(&nstr[strlen(str1)], str2, sizeof(char)*strlen(str2));
 	nstr[strlen(str1)+strlen(str2)] = '\0';
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_STRING);
 
 	return nstr;
 }
@@ -125,7 +132,7 @@ char* elf_merge_strings3(const char *str1, const char *str2, const char *str3)
 	memcpy(&nstr[strlen(str1)], str2, sizeof(char)*strlen(str2));
 	memcpy(&nstr[strlen(str1)+strlen(str2)], str3, sizeof(char)*strlen(str3));
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_STRING);
 
 	return nstr;
 }
@@ -138,7 +145,7 @@ char* elf_sub_string(char *str, int start, int len)
 	{
 		nstr = (char*)malloc(sizeof(char)*1);
 		nstr[0] = '\0';
-		elf_inc_obj_count();
+		elf_inc_obj(ELF_STRING);
 		return nstr;
 	}
 
@@ -147,7 +154,7 @@ char* elf_sub_string(char *str, int start, int len)
 	{
 		nstr = (char*)malloc(sizeof(char)*1);
 		nstr[0] = '\0';
-		elf_inc_obj_count();
+		elf_inc_obj(ELF_STRING);
 		return nstr;
 	}
 
@@ -155,7 +162,7 @@ char* elf_sub_string(char *str, int start, int len)
 	memcpy(nstr, &str[start], sizeof(char)*len);
 	nstr[len] = '\0';
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_STRING);
 
 	return nstr;
 }

@@ -5,9 +5,10 @@ elf_image* elf_create_image()
 
 	image = (elf_image*)malloc(sizeof(elf_image));
 	memset(image, 0x0, sizeof(elf_image));
-	image->type = ELF_IMAGE;
+	image->obj_type = ELF_IMAGE;
+	image->obj_destr = elf_destroy_image;
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_IMAGE);
 
 	return image;
 }
@@ -94,13 +95,15 @@ elf_image* elf_create_image_from_file(const char *file_path)
 	return image;
 }
 
-void elf_destroy_image(elf_image *image)
+void elf_destroy_image(void *data)
 {
+	elf_image *image = (elf_image*)data;
+
 	if(image->data) free(image->data);
 
 	free(image);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_IMAGE);
 }
 
 void elf_set_image_pixel(elf_image *image, int x, int y, float r, float g, float b, float a)

@@ -5,7 +5,8 @@ elf_material* elf_create_material(const char *name)
 
 	material = (elf_material*)malloc(sizeof(elf_material));
 	memset(material, 0x0, sizeof(elf_material));
-	material->type = ELF_MATERIAL;
+	material->obj_type = ELF_MATERIAL;
+	material->obj_destr = elf_destroy_material;
 
 	material->diffuse_color.r = material->diffuse_color.g = material->diffuse_color.b = material->diffuse_color.a = 1.0;
 	material->ambient_color.r = material->ambient_color.g = material->ambient_color.b = material->ambient_color.a = 1.0;
@@ -19,15 +20,17 @@ elf_material* elf_create_material(const char *name)
 
 	if(name) material->name = elf_create_string(name);
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_MATERIAL);
 
 	material->id = ++gen->material_id_counter;
 
 	return material;
 }
 
-void elf_destroy_material(elf_material *material)
+void elf_destroy_material(void *data)
 {
+	elf_material *material = (elf_material*)data;
+
 	if(material->name) elf_destroy_string(material->name);
 	if(material->file_path) elf_destroy_string(material->file_path);
 
@@ -39,7 +42,7 @@ void elf_destroy_material(elf_material *material)
 
 	free(material);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_MATERIAL);
 }
 
 void elf_set_material_diffuse_color(elf_material *material, float r, float g, float b, float a)

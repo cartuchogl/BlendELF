@@ -5,7 +5,8 @@ elf_entity* elf_create_entity(const char *name)
 
 	entity = (elf_entity*)malloc(sizeof(elf_entity));
 	memset(entity, 0x0, sizeof(elf_entity));
-	entity->type = ELF_ENTITY;
+	entity->obj_type = ELF_ENTITY;
+	entity->obj_destr = elf_destroy_entity;
 
 	elf_init_actor((elf_actor*)entity, ELF_FALSE);
 
@@ -31,7 +32,7 @@ elf_entity* elf_create_entity(const char *name)
 
 	entity->id = ++gen->entity_id_counter;
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_ENTITY);
 
 	return entity;
 }
@@ -83,8 +84,10 @@ void elf_entity_post_draw(elf_entity *entity)
 	elf_actor_post_draw((elf_actor*)entity);
 }
 
-void elf_destroy_entity(elf_entity *entity)
+void elf_destroy_entity(void *data)
 {
+	elf_entity *entity = (elf_entity*)data;
+
 	elf_clean_actor((elf_actor*)entity);
 
 	if(entity->model) elf_dec_ref((elf_object*)entity->model);
@@ -98,7 +101,7 @@ void elf_destroy_entity(elf_entity *entity)
 
 	free(entity);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_ENTITY);
 }
 
 void elf_eval_entity_aabb_corner(elf_entity *entity, elf_vec4f *orient, elf_vec3f *corner, elf_vec3f *result)

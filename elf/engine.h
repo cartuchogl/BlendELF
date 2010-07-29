@@ -7,7 +7,8 @@ elf_engine* elf_create_engine()
 
 	engine = (elf_engine*)malloc(sizeof(elf_engine));
 	memset(engine, 0x0, sizeof(elf_engine));
-	engine->type = ELF_ENGINE;
+	engine->obj_type = ELF_ENGINE;
+	engine->obj_destr = elf_destroy_engine;
 
 	engine->fps_timer = elf_create_timer();
 	engine->fps_limit_timer = elf_create_timer();
@@ -161,11 +162,15 @@ elf_engine* elf_create_engine()
 
 	gfx_set_vertex_array_data(engine->sprite_vertex_array, GFX_NORMAL, vertex_data);
 
+	gfx_inc_obj(ELF_ENGINE);
+
 	return engine;
 }
 
-void elf_destroy_engine(elf_engine *engine)
+void elf_destroy_engine(void *data)
 {
+	elf_engine *engine = (elf_engine*)data;
+
 	gfx_dec_ref((gfx_object*)engine->lines);
 	gfx_dec_ref((gfx_object*)engine->sprite_vertex_array);
 
@@ -182,7 +187,7 @@ void elf_destroy_engine(elf_engine *engine)
 
 	free(engine);
 
-	gfx_deinit();
+	gfx_dec_obj(ELF_ENGINE);
 }
 
 unsigned char elf_init_engine()
@@ -375,6 +380,7 @@ void elf_deinit()
 	elf_deinit_scripting();
 	elf_deinit_engine();
 	elf_deinit_audio();
+	gfx_deinit();
 	elf_deinit_context();
 	elf_deinit_general();
 }
@@ -780,51 +786,57 @@ elf_object* elf_get_actor()
 	return eng->actor;
 }
 
-elf_directory* elf_create_directory()
-{
-	elf_directory *directory;
-
-	directory = (elf_directory*)malloc(sizeof(elf_directory));
-	memset(directory, 0x0, sizeof(elf_directory));
-	directory->type = ELF_DIRECTORY;
-
-	directory->items = elf_create_list();
-
-	elf_inc_obj_count();
-
-	return directory;
-}
-
-void elf_destroy_directory_item(elf_directory_item *directory_item)
-{
-	if(directory_item->name) elf_destroy_string(directory_item->name);
-
-	free(directory_item);
-
-	elf_dec_obj_count();
-}
-
 elf_directory_item* elf_create_directory_item()
 {
 	elf_directory_item *dir_item;
 
 	dir_item = (elf_directory_item*)malloc(sizeof(elf_directory_item));
 	memset(dir_item, 0x0, sizeof(elf_directory_item));
-	dir_item->type = ELF_DIRECTORY_ITEM;
+	dir_item->obj_type = ELF_DIRECTORY_ITEM;
+	dir_item->obj_destr = elf_destroy_directory_item;
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_DIRECTORY_ITEM);
 
 	return dir_item;
 }
 
-void elf_destroy_directory(elf_directory *directory)
+void elf_destroy_directory_item(void *data)
 {
+	elf_directory_item *directory_item = (elf_directory_item*)data;
+
+	if(directory_item->name) elf_destroy_string(directory_item->name);
+
+	free(directory_item);
+
+	elf_dec_obj(ELF_DIRECTORY_ITEM);
+}
+
+elf_directory* elf_create_directory()
+{
+	elf_directory *directory;
+
+	directory = (elf_directory*)malloc(sizeof(elf_directory));
+	memset(directory, 0x0, sizeof(elf_directory));
+	directory->obj_type = ELF_DIRECTORY;
+	directory->obj_destr = elf_destroy_directory;
+
+	directory->items = elf_create_list();
+
+	elf_inc_obj(ELF_DIRECTORY);
+
+	return directory;
+}
+
+void elf_destroy_directory(void *data)
+{
+	elf_directory *directory = (elf_directory*)data;
+
 	if(directory->path) elf_destroy_string(directory->path);
 	elf_destroy_list(directory->items);
 
 	free(directory);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_DIRECTORY);
 }
 
 void elf_append_folder_to_directory_item_list(elf_list *items, elf_directory_item *nitem)

@@ -5,20 +5,23 @@ elf_frame_player *elf_create_frame_player()
 
 	player = (elf_frame_player*)malloc(sizeof(elf_frame_player));
 	memset(player, 0x0, sizeof(elf_frame_player));
-	player->type = ELF_FRAME_PLAYER;
+	player->obj_type = ELF_FRAME_PLAYER;
+	player->obj_destr = elf_destroy_frame_player;
 
 	player->cur_frame = 1.0;
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_FRAME_PLAYER);
 	
 	return player;
 }
 
-void elf_destroy_frame_player(elf_frame_player *player)
+void elf_destroy_frame_player(void *data)
 {
+	elf_frame_player *player = (elf_frame_player*)data;
+
 	free(player);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_FRAME_PLAYER);
 }
 
 void elf_update_frame_player(elf_frame_player *player)

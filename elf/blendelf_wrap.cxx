@@ -22527,9 +22527,9 @@ static swig_lua_var_info swig_variables[] = {
 };
 
 static swig_lua_const_info swig_constants[] = {
+{ SWIG_LUA_INT,     (char *)"NONE", (long) 0x0000, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"FALSE", (long) 0x0000, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"TRUE", (long) 0x0001, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"NONE", (long) 0x0000, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"KEY_ESC", (long) 135, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"KEY_F1", (long) 136, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"KEY_F2", (long) 137, 0, 0, 0},
@@ -22683,7 +22683,8 @@ static swig_lua_const_info swig_constants[] = {
 { SWIG_LUA_INT,     (char *)"VERTICE", (long) 0x0046, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"FACE", (long) 0x0047, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"MESH_DATA", (long) 0x0048, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"OBJECT_TYPE_COUNT", (long) 0x0049, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"LIST_PTR", (long) 0x0049, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"OBJECT_TYPE_COUNT", (long) 0x004A, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"PERSPECTIVE", (long) 0x0000, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ORTHOGRAPHIC", (long) 0x0001, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"BOX", (long) 0x0001, 0, 0, 0},

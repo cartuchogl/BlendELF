@@ -5,25 +5,28 @@ elf_property* elf_create_property(const char *name)
 
 	property = (elf_property*)malloc(sizeof(elf_property));
 	memset(property, 0x0, sizeof(elf_property));
-	property->type = ELF_PROPERTY;
+	property->obj_type = ELF_PROPERTY;
+	property->obj_destr = elf_destroy_property;
 
 	property->property_type = ELF_PROPERTY_INT;
 
 	if(property) property->name = elf_create_string(name);
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_PROPERTY);
 
 	return property;
 }
 
-void elf_destroy_property(elf_property *property)
+void elf_destroy_property(void *data)
 {
+	elf_property *property = (elf_property*)data;
+
 	if(property->name) elf_destroy_string(property->name);
 	if(property->sval) elf_destroy_string(property->sval);
 
 	free(property);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_PROPERTY);
 }
 
 int elf_get_property_type(elf_property *property)

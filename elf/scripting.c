@@ -25,7 +25,8 @@ elf_scripting* elf_create_scripting()
 
 	scripting = (elf_scripting*)malloc(sizeof(elf_scripting));
 	memset(scripting, 0x0, sizeof(elf_scripting));
-	scripting->type = ELF_SCRIPTING;
+	scripting->obj_type = ELF_SCRIPTING;
+	scripting->obj_destr = elf_destroy_scripting;
 
 	scripting->L = lua_open();
 	if(!scripting->L)
@@ -40,16 +41,22 @@ elf_scripting* elf_create_scripting()
 	scripting->cur_scripts = elf_create_list();
 	elf_inc_ref((elf_object*)scripting->cur_scripts);
 
+	elf_inc_obj(ELF_SCRIPTING);
+
 	return scripting;
 }
 
-void elf_destroy_scripting(elf_scripting *scripting)
+void elf_destroy_scripting(void *data)
 {
+	elf_scripting *scripting = (elf_scripting*)data;
+
 	if(scripting->L) lua_close(scripting->L);
 
 	elf_dec_ref((elf_object*)scripting->cur_scripts);
 
 	free(scripting);
+
+	elf_dec_obj(ELF_SCRIPTING);
 }
 
 unsigned char elf_init_scripting()

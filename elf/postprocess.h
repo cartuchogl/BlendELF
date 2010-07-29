@@ -187,7 +187,8 @@ elf_post_process* elf_create_post_process()
 
 	post_process = (elf_post_process*)malloc(sizeof(elf_post_process));
 	memset(post_process, 0x0, sizeof(elf_post_process));
-	post_process->type = ELF_POST_PROCESS;
+	post_process->obj_type = ELF_POST_PROCESS;
+	post_process->obj_destr = elf_destroy_post_process;
 
 	elf_init_post_process_buffers(post_process);
 
@@ -203,11 +204,15 @@ elf_post_process* elf_create_post_process()
 
 	gfx_set_shader_params_default(&post_process->shader_params);
 
+	elf_inc_obj(ELF_POST_PROCESS);
+
 	return post_process;
 }
 
-void elf_destroy_post_process(elf_post_process *post_process)
+void elf_destroy_post_process(void *data)
 {
+	elf_post_process *post_process = (elf_post_process*)data;
+
 	gfx_dec_ref((gfx_object*)post_process->main_rt);
 	gfx_dec_ref((gfx_object*)post_process->main_rt_color[0]);
 	if(post_process->main_rt_color[1]) gfx_dec_ref((gfx_object*)post_process->main_rt_color[1]);
@@ -240,6 +245,8 @@ void elf_destroy_post_process(elf_post_process *post_process)
 	gfx_destroy_transform(post_process->light_shaft_transform);
 
 	free(post_process);
+
+	elf_dec_obj(ELF_POST_PROCESS);
 }
 
 void elf_init_post_process_buffers(elf_post_process *post_process)

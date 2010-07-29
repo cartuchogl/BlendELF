@@ -5,13 +5,14 @@ elf_model* elf_create_model(const char *name)
 
 	model = (elf_model*)malloc(sizeof(elf_model));
 	memset(model, 0x0, sizeof(elf_model));
-	model->type = ELF_MODEL;
+	model->obj_type = ELF_MODEL;
+	model->obj_destr = elf_destroy_model;
 
 	model->id = ++gen->model_id_counter;
 
 	if(name) model->name = elf_create_string(name);
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_MODEL);
 
 	return model;
 }
@@ -241,9 +242,10 @@ void elf_generate_model_tangents(elf_model *model)
 	free(tangents);
 }
 
-void elf_destroy_model(elf_model *model)
+void elf_destroy_model(void *data)
 {
 	int i;
+	elf_model *model = (elf_model*)data;
 
 	if(model->name) elf_destroy_string(model->name);
 	if(model->file_path) elf_destroy_string(model->file_path);
@@ -274,7 +276,7 @@ void elf_destroy_model(elf_model *model)
 
 	free(model);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_MODEL);
 }
 
 void elf_set_model_name(elf_model *model, const char *name)

@@ -5,7 +5,8 @@ elf_light* elf_create_light(const char *name)
 
 	light = (elf_light*)malloc(sizeof(elf_light));
 	memset(light, 0x0, sizeof(elf_light));
-	light->type = ELF_LIGHT;
+	light->obj_type = ELF_LIGHT;
+	light->obj_destr = elf_destroy_light;
 
 	elf_init_actor((elf_actor*)light, ELF_FALSE);
 
@@ -36,7 +37,7 @@ elf_light* elf_create_light(const char *name)
 
 	if(name) light->name = elf_create_string(name);
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_LIGHT);
 
 	return light;
 }
@@ -58,15 +59,17 @@ void elf_light_post_draw(elf_light *light)
 	elf_actor_post_draw((elf_actor*)light);
 }
 
-void elf_destroy_light(elf_light *light)
+void elf_destroy_light(void *data)
 {
+	elf_light *light = (elf_light*)data;
+
 	elf_clean_actor((elf_actor*)light);
 
 	elf_destroy_camera(light->shadow_camera);
 
 	free(light);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_LIGHT);
 }
 
 void elf_set_light_type(elf_light *light, int type)

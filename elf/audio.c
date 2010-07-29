@@ -152,7 +152,8 @@ elf_audio_device* elf_create_audio_device()
 
 	device = (elf_audio_device*)malloc(sizeof(elf_audio_device));
 	memset(device, 0x0, sizeof(elf_audio_device));
-	device->type = ELF_AUDIO_DEVICE;
+	device->obj_type = ELF_AUDIO_DEVICE;
+	device->obj_destr = elf_destroy_audio_device;
 
 	device->volume = 1.0;
 	device->rolloff = 1.0;
@@ -160,11 +161,15 @@ elf_audio_device* elf_create_audio_device()
 	device->sources = elf_create_list();
 	elf_inc_ref((elf_object*)device->sources);
 
+	elf_inc_obj(ELF_AUDIO_DEVICE);
+
 	return device;
 }
 
-void elf_destroy_audio_device(elf_audio_device *device)
+void elf_destroy_audio_device(void *data)
 {
+	elf_audio_device *device = (elf_audio_device*)data;
+
 	if(device->sources) elf_dec_ref((elf_object*)device->sources);
 
 	if(device->device)
@@ -175,6 +180,8 @@ void elf_destroy_audio_device(elf_audio_device *device)
 	}
 
 	free(device);
+
+	elf_dec_obj(ELF_AUDIO_DEVICE);
 }
 
 unsigned char elf_init_audio()
@@ -297,13 +304,18 @@ elf_sound* elf_create_sound()
 
 	sound = (elf_sound*)malloc(sizeof(elf_sound));
 	memset(sound, 0x0, sizeof(elf_sound));
-	sound->type = ELF_SOUND;
+	sound->obj_type = ELF_SOUND;
+	sound->obj_destr = elf_destroy_sound;
+
+	elf_inc_obj(ELF_SOUND);
 
 	return sound;
 }
 
-void elf_destroy_sound(elf_sound *sound)
+void elf_destroy_sound(void *data)
 {
+	elf_sound *sound = (elf_sound*)data;
+
 	if(sound->file_path) elf_destroy_string(sound->file_path);
 	if(!sound->streamed)
 	{
@@ -316,6 +328,8 @@ void elf_destroy_sound(elf_sound *sound)
 		if(sound->file_type == ELF_WAV) fclose(sound->file);
 	}
 	free(sound);
+
+	elf_dec_obj(ELF_SOUND);
 }
 
 unsigned char elf_init_sound_with_ogg(elf_sound *snd, const char *file_path)
@@ -780,7 +794,10 @@ elf_audio_source* elf_create_audio_source()
 
 	source = (elf_audio_source*)malloc(sizeof(elf_audio_source));
 	memset(source, 0x0, sizeof(elf_audio_source));
-	source->type = ELF_AUDIO_SOURCE;
+	source->obj_type = ELF_AUDIO_SOURCE;
+	source->obj_destr = elf_destroy_audio_source;
+
+	elf_inc_obj(ELF_AUDIO_SOURCE);
 
 	return source;
 }
@@ -869,8 +886,10 @@ void elf_stream_audio_source(elf_audio_source *source)
 	}
 }
 
-void elf_destroy_audio_source(elf_audio_source *source)
+void elf_destroy_audio_source(void *data)
 {
+	elf_audio_source *source = (elf_audio_source*)data;
+
 	if(source->sound)
 	{
 		source->sound->streaming = ELF_FALSE;
@@ -879,6 +898,8 @@ void elf_destroy_audio_source(elf_audio_source *source)
 	if(source->source) alDeleteSources(1, &source->source);
 
 	free(source);
+
+	elf_dec_obj(ELF_AUDIO_SOURCE);
 }
 
 void elf_set_sound_volume(elf_audio_source *source, float volume)

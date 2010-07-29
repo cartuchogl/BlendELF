@@ -58,8 +58,8 @@ elf_scene* elf_create_scene(const char *name)
 
 	scene = (elf_scene*)malloc(sizeof(elf_scene));
 	memset(scene, 0x0, sizeof(elf_scene));
-
-	scene->type = ELF_SCENE;
+	scene->obj_type = ELF_SCENE;
+	scene->obj_destr = elf_destroy_scene;
 
 	scene->models = elf_create_list();
 	scene->scripts = elf_create_list();
@@ -102,7 +102,7 @@ elf_scene* elf_create_scene(const char *name)
 
 	scene->id = ++gen->scene_id_counter;
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_SCENE);
 
 	return scene;
 }
@@ -577,8 +577,10 @@ void elf_scene_post_draw(elf_scene *scene)
 	}
 }
 
-void elf_destroy_scene(elf_scene *scene)
+void elf_destroy_scene(void *data)
 {
+	elf_scene *scene = (elf_scene*)data;
+
 	elf_actor *actor;
 
 	if(scene->name) elf_destroy_string(scene->name);
@@ -617,7 +619,7 @@ void elf_destroy_scene(elf_scene *scene)
 
 	if(scene->pak) elf_dec_ref((elf_object*)scene->pak);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_SCENE);
 
 	free(scene);
 }

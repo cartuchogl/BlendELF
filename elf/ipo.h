@@ -5,18 +5,21 @@ elf_bezier_point* elf_create_bezier_point()
 
 	point = (elf_bezier_point*)malloc(sizeof(elf_bezier_point));
 	memset(point, 0x0, sizeof(elf_bezier_point));
-	point->type = ELF_BEZIER_POINT;
+	point->obj_type = ELF_BEZIER_POINT;
+	point->obj_destr = elf_destroy_bezier_point;
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_BEZIER_POINT);
 
 	return point;
 }
 
-void elf_destroy_bezier_point(elf_bezier_point *point)
+void elf_destroy_bezier_point(void *data)
 {
+	elf_bezier_point *point = (elf_bezier_point*)data;
+
 	free(point);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_BEZIER_POINT);
 }
 
 void elf_set_bezier_point_position(elf_bezier_point *point, float x, float y)
@@ -58,23 +61,26 @@ elf_bezier_curve* elf_create_bezier_curve()
 
 	curve = (elf_bezier_curve*)malloc(sizeof(elf_bezier_curve));
 	memset(curve, 0x0, sizeof(elf_bezier_curve));
-	curve->type = ELF_BEZIER_CURVE;
+	curve->obj_type = ELF_BEZIER_CURVE;
+	curve->obj_destr = elf_destroy_bezier_curve;
 
 	curve->points = elf_create_list();
 	elf_inc_ref((elf_object*)curve->points);
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_BEZIER_CURVE);
 
 	return curve;
 }
 
-void elf_destroy_bezier_curve(elf_bezier_curve *curve)
+void elf_destroy_bezier_curve(void *data)
 {
+	elf_bezier_curve *curve = (elf_bezier_curve*)data;
+
 	elf_dec_ref((elf_object*)curve->points);
 
 	free(curve);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_BEZIER_CURVE);
 }
 
 void elf_set_bezier_curve_type(elf_bezier_curve *curve, int type)
@@ -149,23 +155,26 @@ elf_ipo* elf_create_ipo()
 
 	ipo = (elf_ipo*)malloc(sizeof(elf_ipo));
 	memset(ipo, 0x0, sizeof(elf_ipo));
-	ipo->type = ELF_IPO;
+	ipo->obj_type = ELF_IPO;
+	ipo->obj_destr = elf_destroy_ipo;
 
 	ipo->curves = elf_create_list();
 	elf_inc_ref((elf_object*)ipo->curves);
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_IPO);
 
 	return ipo;
 }
 
-void elf_destroy_ipo(elf_ipo *ipo)
+void elf_destroy_ipo(void *data)
 {
+	elf_ipo *ipo = (elf_ipo*)data;
+
 	elf_dec_ref((elf_object*)ipo->curves);
 
 	free(ipo);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_IPO);
 }
 
 unsigned char elf_add_curve_to_ipo(elf_ipo *ipo, elf_bezier_curve *curve)

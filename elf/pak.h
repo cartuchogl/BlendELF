@@ -5,20 +5,23 @@ elf_pak_index* elf_create_pak_index()
 
 	index = (elf_pak_index*)malloc(sizeof(elf_pak_index));
 	memset(index, 0x0, sizeof(elf_pak_index));
-	index->type = ELF_PAK_INDEX;
+	index->obj_type = ELF_PAK_INDEX;
+	index->obj_destr = elf_destroy_pak_index;
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_PAK_INDEX);
 
 	return index;
 }
 
-void elf_destroy_pak_index(elf_pak_index *index)
+void elf_destroy_pak_index(void *data)
 {
+	elf_pak_index *index = (elf_pak_index*)data;
+
 	if(index->name) elf_destroy_string(index->name);
 
 	free(index);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_PAK_INDEX);
 }
 
 elf_pak* elf_create_pak_from_file(const char *file_path)
@@ -53,9 +56,10 @@ elf_pak* elf_create_pak_from_file(const char *file_path)
 
 	pak = (elf_pak*)malloc(sizeof(elf_pak));
 	memset(pak, 0x0, sizeof(elf_pak));
-	pak->type = ELF_PAK;
+	pak->obj_type = ELF_PAK;
+	pak->obj_destr = elf_destroy_pak;
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_PAK);
 
 	pak->file_path = elf_create_string(file_path);
 
@@ -100,15 +104,17 @@ elf_pak* elf_create_pak_from_file(const char *file_path)
 	return pak;
 }
 
-void elf_destroy_pak(elf_pak *pak)
+void elf_destroy_pak(void *data)
 {
+	elf_pak *pak = (elf_pak*)data;
+
 	if(pak->file_path) elf_destroy_string(pak->file_path);
 
 	elf_dec_ref((elf_object*)pak->indexes);
 
 	free(pak);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_PAK);
 }
 
 const char* elf_get_pak_file_path(elf_pak *pak)
@@ -142,7 +148,7 @@ elf_pak_index* elf_get_pak_index_by_index(elf_pak *pak, int idx)
 
 unsigned char elf_get_pak_index_type(elf_pak_index *index)
 {
-	return index->type;
+	return index->obj_type;
 }
 
 const char* elf_get_pak_index_name(elf_pak_index *index)
@@ -564,7 +570,7 @@ void elf_read_actor_header(elf_actor *actor, FILE *file, elf_scene *scene)
 			fread((char*)&length, sizeof(int), 1, file);
 
 			property->sval = (char*)malloc(sizeof(char)*(length+1));
-			elf_inc_obj_count();
+			elf_inc_obj(ELF_STRING);
 
 			fread(property->sval, sizeof(char), length, file);
 			property->sval[length] = '\0';
@@ -1837,7 +1843,7 @@ void elf_write_resource_index_to_file(elf_resource *resource, unsigned int *offs
 	unsigned char ucval;
 	unsigned int ival;
 
-	ucval = resource->type;
+	ucval = resource->obj_type;
 	fwrite((char*)&ucval, sizeof(unsigned char), 1, file);
 
 	elf_write_name_to_file(resource->name, file);
@@ -1845,7 +1851,7 @@ void elf_write_resource_index_to_file(elf_resource *resource, unsigned int *offs
 	ival = *offset;
 	fwrite((char*)&ival, sizeof(int), 1, file);
 
-	switch(resource->type)
+	switch(resource->obj_type)
 	{
 		case ELF_SCENE: *offset += elf_get_scene_size_bytes((elf_scene*)resource); break;
 		case ELF_SCRIPT: *offset += elf_get_script_size_bytes((elf_script*)resource); break;
@@ -1879,7 +1885,7 @@ void elf_write_resources_to_file(elf_list *resources, FILE *file)
 	for(res = (elf_resource*)elf_begin_list(resources); res;
 		res = (elf_resource*)elf_next_in_list(resources))
 	{
-		switch(res->type)
+		switch(res->obj_type)
 		{
 			case ELF_SCENE: elf_write_scene_to_file((elf_scene*)res, file); break;
 			case ELF_SCRIPT: elf_write_script_to_file((elf_script*)res, file); break;

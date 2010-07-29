@@ -5,7 +5,8 @@ elf_config* elf_create_config()
 
 	config = (elf_config*)malloc(sizeof(elf_config));
 	memset(config, 0x0, sizeof(elf_config));
-	config->type = ELF_CONFIG;
+	config->obj_type = ELF_CONFIG;
+	config->obj_destr = elf_destroy_config;
 
 	config->window_size[0] = 1024;
 	config->window_size[1] = 768;
@@ -16,19 +17,21 @@ elf_config* elf_create_config()
 	config->start = elf_create_string("");
 	config->log = elf_create_string("elf.log");
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_CONFIG);
 
 	return config;
 }
 
-void elf_destroy_config(elf_config *config)
+void elf_destroy_config(void *data)
 {
+	elf_config *config = (elf_config*)data;
+
 	if(config->start) elf_destroy_string(config->start);
 	if(config->log) elf_destroy_string(config->log);
 
 	free(config);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_CONFIG);
 }
 
 elf_config* elf_read_config(const char *file_path)

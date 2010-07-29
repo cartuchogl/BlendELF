@@ -5,18 +5,21 @@ elf_particle* elf_create_particle()
 
 	particle = (elf_particle*)malloc(sizeof(elf_particle));
 	memset(particle, 0x0, sizeof(elf_particle));
-	particle->type = ELF_PARTICLE;
+	particle->obj_type = ELF_PARTICLE;
+	particle->obj_destr = elf_destroy_particle;
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_PARTICLE);
 
 	return particle;
 }
 
-void elf_destroy_particle(elf_particle *particle)
+void elf_destroy_particle(void *data)
 {
+	elf_particle *particle = (elf_particle*)data;
+
 	free(particle);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_PARTICLE);
 }
 
 elf_particles* elf_create_particles(const char *name, int max_count)
@@ -30,7 +33,8 @@ elf_particles* elf_create_particles(const char *name, int max_count)
 
 	particles = (elf_particles*)malloc(sizeof(elf_particles));
 	memset(particles, 0x0, sizeof(elf_particles));
-	particles->type = ELF_PARTICLES;
+	particles->obj_type = ELF_PARTICLES;
+	particles->obj_destr = elf_destroy_particles;
 
 	elf_init_actor((elf_actor*)particles, ELF_FALSE);
 
@@ -129,7 +133,7 @@ elf_particles* elf_create_particles(const char *name, int max_count)
 
 	particles->id = ++gen->particles_id_counter;
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_PARTICLES);
 
 	return particles;
 }
@@ -589,8 +593,10 @@ void elf_draw_particles_debug(elf_particles *particles, gfx_shader_params *shade
 	gfx_draw_lines(14, eng->lines);
 }
 
-void elf_destroy_particles(elf_particles *particles)
+void elf_destroy_particles(void *data)
 {
+	elf_particles *particles = (elf_particles*)data;
+
 	elf_clean_actor((elf_actor*)particles);
 
 	elf_dec_ref((elf_object*)particles->particles);
@@ -605,7 +611,7 @@ void elf_destroy_particles(elf_particles *particles)
 
 	free(particles);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_PARTICLES);
 }
 
 const char* elf_get_particles_name(elf_particles *particles)

@@ -5,7 +5,8 @@ elf_camera* elf_create_camera(const char *name)
 
 	camera = (elf_camera*)malloc(sizeof(elf_camera));
 	memset(camera, 0x0, sizeof(elf_camera));
-	camera->type = ELF_CAMERA;
+	camera->obj_type = ELF_CAMERA;
+	camera->obj_destr = elf_destroy_camera;
 
 	elf_init_actor((elf_actor*)camera, ELF_TRUE);
 
@@ -38,7 +39,7 @@ elf_camera* elf_create_camera(const char *name)
 
 	camera->id = ++gen->camera_id_counter;
 	
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_CAMERA);
 
 	return camera;
 }
@@ -64,13 +65,15 @@ void elf_camera_post_draw(elf_camera *camera)
 	elf_actor_post_draw((elf_actor*)camera);
 }
 
-void elf_destroy_camera(elf_camera *camera)
+void elf_destroy_camera(void *data)
 {
+	elf_camera *camera = (elf_camera*)data;
+
 	elf_clean_actor((elf_actor*)camera);
 
 	free(camera);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_CAMERA);
 }
 
 void elf_set_camera_viewport(elf_camera *camera, int x, int y, int width, int height)

@@ -112,7 +112,8 @@ elf_physics_world* elf_create_physics_world()
 
 	world = (elf_physics_world*)malloc(sizeof(elf_physics_world));
 	memset(world, 0x0, sizeof(elf_physics_world));
-	world->type = ELF_PHYSICS_WORLD;
+	world->obj_type = ELF_PHYSICS_WORLD;
+	world->obj_destr = elf_destroy_physics_world;
 
 	world->collisionConfiguration = new btDefaultCollisionConfiguration();
 	world->dispatcher = new btCollisionDispatcher(world->collisionConfiguration);
@@ -120,13 +121,17 @@ elf_physics_world* elf_create_physics_world()
 	world->solver = new btSequentialImpulseConstraintSolver();
 	world->world = new btDiscreteDynamicsWorld(world->dispatcher, world->broadphase, world->solver, world->collisionConfiguration);
 	world->world->getDispatchInfo().m_enableSPU = true;
-	world->world->setGravity(btVector3(0.0f, 0.0f, -9.81f));
+	world->world->setGravity(btVector3(0.0, 0.0, -9.81));
+
+	elf_inc_obj(ELF_PHYSICS_WORLD);
 
 	return world;
 }
 
-void elf_destroy_physics_world(elf_physics_world *world)
+void elf_destroy_physics_world(void *data)
 {
+	elf_physics_world *world = (elf_physics_world*)data;
+
 	delete world->world;
 	delete world->solver;
 	delete world->broadphase;
@@ -134,6 +139,8 @@ void elf_destroy_physics_world(elf_physics_world *world)
 	delete world->collisionConfiguration;
 
 	free(world);
+
+	elf_dec_obj(ELF_PHYSICS_WORLD);
 }
 
 void elf_update_physics_world(elf_physics_world *world, float time)
@@ -279,16 +286,23 @@ elf_collision* elf_create_collision()
 
 	collision = (elf_collision*)malloc(sizeof(elf_collision));
 	memset(collision, 0x0, sizeof(elf_collision));
-	collision->type = ELF_COLLISION;
+	collision->obj_type = ELF_COLLISION;
+	collision->obj_destr = elf_destroy_collision;
+
+	elf_inc_obj(ELF_COLLISION);
 
 	return collision;
 }
 
-void elf_destroy_collision(elf_collision *collision)
+void elf_destroy_collision(void *data)
 {
+	elf_collision *collision = (elf_collision*)data;
+
 	if(collision->actor) elf_dec_ref((elf_object*)collision->actor);
 
 	free(collision);
+
+	elf_dec_obj(ELF_COLLISION);
 }
 
 elf_actor* elf_get_collision_actor(elf_collision *collision)
@@ -317,7 +331,10 @@ elf_joint* elf_create_joint()
 
 	joint = (elf_joint*)malloc(sizeof(elf_joint));
 	memset(joint, 0x0, sizeof(elf_joint));
-	joint->type = ELF_JOINT;
+	joint->obj_type = ELF_JOINT;
+	joint->obj_destr = elf_destroy_joint;
+
+	elf_inc_obj(ELF_JOINT);
 
 	return joint;
 }
@@ -496,8 +513,10 @@ void elf_clear_joint(elf_joint *joint)
 	joint->world = NULL;
 }
 
-void elf_destroy_joint(elf_joint *joint)
+void elf_destroy_joint(void *data)
 {
+	elf_joint *joint = (elf_joint*)data;
+
 	if(joint->name) elf_destroy_string(joint->name);
 	if(joint->constraint)
 	{
@@ -505,6 +524,8 @@ void elf_destroy_joint(elf_joint *joint)
 		delete joint->constraint;
 	}
 	free(joint);
+
+	elf_dec_obj(ELF_JOINT);
 }
 
 const char* elf_get_joint_name(elf_joint *joint)
@@ -558,7 +579,8 @@ elf_physics_tri_mesh* elf_create_physics_tri_mesh(float *verts, unsigned int *id
 
 	tri_mesh = (elf_physics_tri_mesh*)malloc(sizeof(elf_physics_tri_mesh));
 	memset(tri_mesh, 0x0, sizeof(elf_physics_tri_mesh));
-	tri_mesh->type = ELF_PHYSICS_TRI_MESH;
+	tri_mesh->obj_type = ELF_PHYSICS_TRI_MESH;
+	tri_mesh->obj_destr = elf_destroy_physics_tri_mesh;
 
 	tri_mesh->triMesh = new btTriangleMesh();
 
@@ -571,14 +593,20 @@ elf_physics_tri_mesh* elf_create_physics_tri_mesh(float *verts, unsigned int *id
 			);
 	}
 
+	elf_inc_obj(ELF_PHYSICS_TRI_MESH);
+
 	return tri_mesh;
 }
 
-void elf_destroy_physics_tri_mesh(elf_physics_tri_mesh *tri_mesh)
+void elf_destroy_physics_tri_mesh(void *data)
 {
+	elf_physics_tri_mesh *tri_mesh = (elf_physics_tri_mesh*)data;
+
 	delete tri_mesh->triMesh;
 
 	free(tri_mesh);
+
+	elf_dec_obj(ELF_PHYSICS_TRI_MESH);
 }
 
 elf_physics_object* elf_create_physics_object()
@@ -587,10 +615,13 @@ elf_physics_object* elf_create_physics_object()
 
 	object = (elf_physics_object*)malloc(sizeof(elf_physics_object));
 	memset(object, 0x0, sizeof(elf_physics_object));
-	object->type = ELF_PHYSICS_OBJECT;
+	object->obj_type = ELF_PHYSICS_OBJECT;
+	object->obj_destr = elf_destroy_physics_object;
 
 	object->collisions = elf_create_list();
 	elf_inc_ref((elf_object*)object->collisions);
+
+	elf_inc_obj(ELF_PHYSICS_OBJECT);
 
 	return object;
 }
@@ -767,8 +798,10 @@ void elf_set_physics_object_world(elf_physics_object *object, elf_physics_world 
 	}
 }
 
-void elf_destroy_physics_object(elf_physics_object *object)
+void elf_destroy_physics_object(void *data)
 {
+	elf_physics_object *object = (elf_physics_object*)data;
+
 	if(object->body)
 	{
 		if(object->world) object->world->world->removeRigidBody(object->body);
@@ -780,6 +813,8 @@ void elf_destroy_physics_object(elf_physics_object *object)
 	elf_dec_ref((elf_object*)object->collisions);
 
 	free(object);
+
+	elf_dec_obj(ELF_PHYSICS_OBJECT);
 }
 
 void elf_set_physics_object_actor(elf_physics_object *object, elf_actor *actor)

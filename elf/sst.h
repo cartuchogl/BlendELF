@@ -26,7 +26,7 @@ char* elf_read_next(const char *text, int *pos)
 	memcpy(str, &text[start], sizeof(char)*(end-start));
 	str[end-start] = '\0';
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_STRING);
 
 	return str;
 }

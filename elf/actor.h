@@ -24,7 +24,7 @@ void elf_actor_ipo_callback(elf_frame_player *player)
 	if(actor->ipo->scale)
 	{
 		scale = elf_get_ipo_scale(actor->ipo, frame);
-		if(actor->type == ELF_ENTITY) elf_set_entity_scale((elf_entity*)actor, scale.x, scale.y, scale.z);
+		if(actor->obj_type == ELF_ENTITY) elf_set_entity_scale((elf_entity*)actor, scale.x, scale.y, scale.z);
 	}
 	if(actor->ipo->qua)
 	{
@@ -225,7 +225,7 @@ void elf_set_actor_position(elf_actor *actor, float x, float y, float z)
 	if(actor->object) elf_set_physics_object_position(actor->object, x, y, z);
 	if(actor->dobject) elf_set_physics_object_position(actor->dobject, x, y, z);
 
-	if(actor->type == ELF_LIGHT) elf_set_actor_position((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
+	if(actor->obj_type == ELF_LIGHT) elf_set_actor_position((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
 }
 
 void elf_set_actor_rotation(elf_actor *actor, float x, float y, float z)
@@ -240,7 +240,7 @@ void elf_set_actor_rotation(elf_actor *actor, float x, float y, float z)
 	if(actor->object) elf_set_physics_object_orientation(actor->object, orient[0], orient[1], orient[2], orient[3]);
 	if(actor->dobject) elf_set_physics_object_orientation(actor->dobject, orient[0], orient[1], orient[2], orient[3]);
 
-	if(actor->type == ELF_LIGHT) elf_set_actor_rotation((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
+	if(actor->obj_type == ELF_LIGHT) elf_set_actor_rotation((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
 }
 
 void elf_set_actor_orientation(elf_actor *actor, float x, float y, float z, float w)
@@ -252,7 +252,7 @@ void elf_set_actor_orientation(elf_actor *actor, float x, float y, float z, floa
 	if(actor->object) elf_set_physics_object_orientation(actor->object, x, y, z, w);
 	if(actor->dobject) elf_set_physics_object_orientation(actor->dobject, x, y, z, w);
 
-	if(actor->type == ELF_LIGHT) elf_set_actor_orientation((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z, w);
+	if(actor->obj_type == ELF_LIGHT) elf_set_actor_orientation((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z, w);
 }
 
 void elf_rotate_actor(elf_actor *actor, float x, float y, float z)
@@ -267,7 +267,7 @@ void elf_rotate_actor(elf_actor *actor, float x, float y, float z)
 	if(actor->object) elf_set_physics_object_orientation(actor->object, orient[0], orient[1], orient[2], orient[3]);
 	if(actor->dobject) elf_set_physics_object_orientation(actor->dobject, orient[0], orient[1], orient[2], orient[3]);
 
-	if(actor->type == ELF_LIGHT) elf_rotate_actor((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
+	if(actor->obj_type == ELF_LIGHT) elf_rotate_actor((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
 }
 
 void elf_rotate_actor_local(elf_actor *actor, float x, float y, float z)
@@ -282,7 +282,7 @@ void elf_rotate_actor_local(elf_actor *actor, float x, float y, float z)
 	if(actor->object) elf_set_physics_object_orientation(actor->object, orient[0], orient[1], orient[2], orient[3]);
 	if(actor->dobject) elf_set_physics_object_orientation(actor->dobject, orient[0], orient[1], orient[2], orient[3]);
 
-	if(actor->type == ELF_LIGHT) elf_rotate_actor_local((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
+	if(actor->obj_type == ELF_LIGHT) elf_rotate_actor_local((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
 }
 
 void elf_move_actor(elf_actor *actor, float x, float y, float z)
@@ -297,7 +297,7 @@ void elf_move_actor(elf_actor *actor, float x, float y, float z)
 	if(actor->object) elf_set_physics_object_position(actor->object, position[0], position[1], position[2]);
 	if(actor->dobject) elf_set_physics_object_position(actor->dobject, position[0], position[1], position[2]);
 
-	if(actor->type == ELF_LIGHT) elf_move_actor((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
+	if(actor->obj_type == ELF_LIGHT) elf_move_actor((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
 }
 
 void elf_move_actor_local(elf_actor *actor, float x, float y, float z)
@@ -312,7 +312,7 @@ void elf_move_actor_local(elf_actor *actor, float x, float y, float z)
 	if(actor->object) elf_set_physics_object_position(actor->object, position[0], position[1], position[2]);
 	if(actor->dobject) elf_set_physics_object_position(actor->dobject, position[0], position[1], position[2]);
 
-	if(actor->type == ELF_LIGHT) elf_move_actor_local((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
+	if(actor->obj_type == ELF_LIGHT) elf_move_actor_local((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
 }
 
 void elf_set_actor_position_relative_to(elf_actor *actor, elf_actor *to, float x, float y, float z)
@@ -336,6 +336,8 @@ void elf_set_actor_position_relative_to(elf_actor *actor, elf_actor *to, float x
 	result.z += pos.z;
 
 	elf_set_actor_position(actor, result.x, result.y, result.z);
+
+	if(actor->obj_type == ELF_LIGHT) elf_set_actor_position_relative_to((elf_actor*)((elf_light*)actor)->shadow_camera, to, x, y, z);
 }
 
 void elf_set_actor_rotation_relative_to(elf_actor *actor, elf_actor *to, float x, float y, float z)
@@ -351,6 +353,8 @@ void elf_set_actor_rotation_relative_to(elf_actor *actor, elf_actor *to, float x
 	gfx_mul_qua_qua(&orient.x, &lorient.x, &result.x);
 
 	elf_set_actor_orientation(actor, result.x, result.y, result.z, result.w);
+
+	if(actor->obj_type == ELF_LIGHT) elf_set_actor_rotation_relative_to((elf_actor*)((elf_light*)actor)->shadow_camera, to, x, y, z);
 }
 
 void elf_direct_actor_at(elf_actor *actor, elf_actor *at)
@@ -510,7 +514,7 @@ void elf_set_actor_physics(elf_actor *actor, int shape, float mass)
 		}
 		case ELF_MESH:
 		{
-			if(actor->type != ELF_ENTITY) return;
+			if(actor->obj_type != ELF_ENTITY) return;
 			entity = (elf_entity*)actor;
 			if(!entity->model || !elf_get_model_indices(entity->model)) return;
 			if(!entity->model->tri_mesh)

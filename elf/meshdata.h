@@ -5,18 +5,21 @@ elf_vertice* elf_create_vertice()
 
 	vertice = (elf_vertice*)malloc(sizeof(elf_vertice));
 	memset(vertice, 0x0, sizeof(elf_vertice));
-	vertice->type = ELF_VERTICE;
+	vertice->obj_type = ELF_VERTICE;
+	vertice->obj_destr = elf_destroy_vertice;
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_VERTICE);
 
 	return vertice;
 }
 
-void elf_destroy_vertice(elf_vertice *vertice)
+void elf_destroy_vertice(void *data)
 {
+	elf_vertice *vertice = (elf_vertice*)data;
+
 	free(vertice);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_VERTICE);
 }
 
 void elf_set_vertice_position(elf_vertice *vertice, float x, float y, float z)
@@ -60,18 +63,21 @@ elf_face* elf_create_face()
 
 	face = (elf_face*)malloc(sizeof(elf_face));
 	memset(face, 0x0, sizeof(elf_face));
-	face->type = ELF_FACE;
+	face->obj_type = ELF_FACE;
+	face->obj_destr = elf_destroy_face;
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_FACE);
 
 	return face;
 }
 
-void elf_destroy_face(elf_face *face)
+void elf_destroy_face(void *data)
 {
+	elf_face *face = (elf_face*)data;
+
 	free(face);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_FACE);
 }
 
 int elf_get_face_v1(elf_face *face)
@@ -95,9 +101,8 @@ elf_mesh_data* elf_create_mesh_data()
 
 	mesh_data = (elf_mesh_data*)malloc(sizeof(elf_mesh_data));
 	memset(mesh_data, 0x0, sizeof(elf_mesh_data));
-	mesh_data->type = ELF_MESH_DATA;
-
-	elf_inc_obj_count();
+	mesh_data->obj_type = ELF_MESH_DATA;
+	mesh_data->obj_destr = elf_destroy_mesh_data;
 
 	mesh_data->vertices = elf_create_list();
 	mesh_data->faces = elf_create_list();
@@ -105,17 +110,21 @@ elf_mesh_data* elf_create_mesh_data()
 	elf_inc_ref((elf_object*)mesh_data->vertices);
 	elf_inc_ref((elf_object*)mesh_data->faces);
 
+	elf_inc_obj(ELF_MESH_DATA);
+
 	return mesh_data;
 }
 
-void elf_destroy_mesh_data(elf_mesh_data *mesh_data)
+void elf_destroy_mesh_data(void *data)
 {
+	elf_mesh_data *mesh_data = (elf_mesh_data*)data;
+
 	elf_dec_ref((elf_object*)mesh_data->vertices);
 	elf_dec_ref((elf_object*)mesh_data->faces);
 
 	free(mesh_data);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_MESH_DATA);
 }
 
 int elf_get_mesh_data_vertice_count(elf_mesh_data *mesh_data)

@@ -5,20 +5,23 @@ elf_bone* elf_create_bone(const char *name)
 
 	bone = (elf_bone*)malloc(sizeof(elf_bone));
 	memset(bone, 0x0, sizeof(elf_bone));
-	bone->type = ELF_BONE;
+	bone->obj_type = ELF_BONE;
+	bone->obj_destr = elf_destroy_bone;
 
 	if(name) bone->name = elf_create_string(name);
 
 	bone->children = elf_create_list();
 	elf_inc_ref((elf_object*)bone->children);
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_BONE);
 
 	return bone;
 }
 
-void elf_destroy_bone(elf_bone *bone)
+void elf_destroy_bone(void *data)
 {
+	elf_bone *bone = (elf_bone*)data;
+
 	if(bone->name) elf_destroy_string(bone->name);
 	if(bone->frames) free(bone->frames);
 	
@@ -26,7 +29,7 @@ void elf_destroy_bone(elf_bone *bone)
 
 	free(bone);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_BONE);
 }
 
 elf_armature* elf_get_bone_armature(elf_bone *bone)
@@ -172,7 +175,8 @@ elf_armature* elf_create_armature(const char *name)
 
 	armature = (elf_armature*)malloc(sizeof(elf_armature));
 	memset(armature, 0x0, sizeof(elf_armature));
-	armature->type = ELF_ARMATURE;
+	armature->obj_type = ELF_ARMATURE;
+	armature->obj_destr = elf_destroy_armature;
 
 	armature->root_bones = elf_create_list();
 	elf_inc_ref((elf_object*)armature->root_bones);
@@ -181,7 +185,7 @@ elf_armature* elf_create_armature(const char *name)
 
 	armature->id = ++gen->armature_id_counter;
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_ARMATURE);
 
 	return armature;
 }
@@ -289,8 +293,10 @@ void elf_deform_entity_with_armature(elf_armature *armature, elf_entity *entity,
 	gfx_update_vertex_data(entity->normals);
 }
 
-void elf_destroy_armature(elf_armature *armature)
+void elf_destroy_armature(void *data)
 {
+	elf_armature *armature = (elf_armature*)data;
+
 	if(armature->name) elf_destroy_string(armature->name);
 	if(armature->file_path) elf_destroy_string(armature->file_path);
 
@@ -300,7 +306,7 @@ void elf_destroy_armature(elf_armature *armature)
 
 	free(armature);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_ARMATURE);
 }
 
 elf_bone* elf_get_bone_from_armature_by_name(const char *name, elf_armature *armature)

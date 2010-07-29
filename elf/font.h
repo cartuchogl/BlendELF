@@ -5,9 +5,10 @@ elf_font* elf_create_font()
 
 	font = (elf_font*)malloc(sizeof(elf_font));
 	memset(font, 0x0, sizeof(elf_font));
-	font->type = ELF_FONT;
+	font->obj_type = ELF_FONT;
+	font->obj_destr = elf_destroy_font;
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_FONT);
 
 	return font;
 }
@@ -108,9 +109,10 @@ elf_font* elf_create_font_from_file(const char *file_path, int size)
 	return font;
 }
 
-void elf_destroy_font(elf_font *font)
+void elf_destroy_font(void *data)
 {
 	int i;
+	elf_font *font = (elf_font*)data;
 
 	if(font->name) elf_destroy_string(font->name);
 	if(font->file_path) elf_destroy_string(font->file_path);
@@ -120,7 +122,7 @@ void elf_destroy_font(elf_font *font)
 
 	free(font);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_FONT);
 }
 
 const char* elf_get_font_name(elf_font *font)

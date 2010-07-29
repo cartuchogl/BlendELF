@@ -6,7 +6,7 @@ elf_list_ptr* elf_create_list_ptr()
 	ptr = (elf_list_ptr*)malloc(sizeof(elf_list_ptr));
 	memset(ptr, 0x0, sizeof(elf_list_ptr));
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_LIST_PTR);
 
 	return ptr;
 }
@@ -17,7 +17,7 @@ void elf_destroy_list_ptr(elf_list_ptr *ptr)
 
 	free(ptr);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_LIST_PTR);
 }
 
 void elf_destroy_list_ptrs(elf_list_ptr *ptr)
@@ -33,20 +33,23 @@ elf_list* elf_create_list()
 
 	list = (elf_list*)malloc(sizeof(elf_list));
 	memset(list, 0x0, sizeof(elf_list));
-	list->type = ELF_LIST;
+	list->obj_type = ELF_LIST;
+	list->obj_destr = elf_destroy_list;
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_LIST);
 
 	return list;
 }
 
-void elf_destroy_list(elf_list *list)
+void elf_destroy_list(void *data)
 {
+	elf_list *list = (elf_list*)data;
+
 	if(list->first) elf_destroy_list_ptrs(list->first);
 
 	free(list);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_LIST);
 }
 
 int elf_get_list_length(elf_list *list)

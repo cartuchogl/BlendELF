@@ -5,11 +5,12 @@ elf_texture *elf_create_texture()
 
 	texture = (elf_texture*)malloc(sizeof(elf_texture));
 	memset(texture, 0x0, sizeof(elf_texture));
-	texture->type = ELF_TEXTURE;
+	texture->obj_type = ELF_TEXTURE;
+	texture->obj_destr = elf_destroy_texture;
 
 	texture->id = ++gen->texture_id_counter;
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_TEXTURE);
 
 	return texture;
 }
@@ -89,15 +90,17 @@ elf_texture* elf_create_texture_from_image(elf_image *image)
 	return texture;
 }
 
-void elf_destroy_texture(elf_texture *texture)
+void elf_destroy_texture(void *data)
 {
+	elf_texture *texture = (elf_texture*)data;
+
 	if(texture->name) elf_destroy_string(texture->name);
 	if(texture->file_path) elf_destroy_string(texture->file_path);
 
 	if(texture->texture) gfx_destroy_texture(texture->texture);
 	if(texture->data) free(texture->data);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_TEXTURE);
 
 	free(texture);
 }

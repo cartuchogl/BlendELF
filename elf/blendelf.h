@@ -8,10 +8,10 @@ extern "C" {
 #endif
 // !!>
 
+#define ELF_NONE					0x0000	// <mdoc> NONE VALUE
+
 #define ELF_FALSE					0x0000	// <mdoc> TRUTH VALUES <mdocc> The thruth value flags. Usually you can just use normal Lua true and false but there are some special cases.
 #define ELF_TRUE					0x0001
-
-#define ELF_NONE					0x0000 // <mdoc> NONE VALUE
 
 #define ELF_KEY_ESC					135	// <mdoc> KEY CODES <mdocc> The key codes used by elf.GetKeyState
 #define ELF_KEY_F1					136
@@ -113,7 +113,7 @@ extern "C" {
 #define ELF_BUTTON_MIDDLE				0x0001
 #define ELF_BUTTON_RIGHT				0x0002
 
-#define ELF_TEXTURE					0x0000	// <mdoc> ELF OBJECT TYEPS <mdocc> The  object types returned by elf.GetObjectType
+#define ELF_TEXTURE					0x0000	// <mdoc> ELF OBJECT TYPES <mdocc> The  object types returned by elf.GetObjectType
 #define ELF_MATERIAL					0x0001
 #define ELF_MODEL					0x0002
 #define ELF_CAMERA					0x0003
@@ -170,7 +170,8 @@ extern "C" {
 #define ELF_VERTICE					0x0046
 #define ELF_FACE					0x0047
 #define ELF_MESH_DATA					0x0048
-#define ELF_OBJECT_TYPE_COUNT				0x0049	// <mdoc> NUMBER OF OBJECT TYPES
+#define ELF_LIST_PTR					0x0049
+#define ELF_OBJECT_TYPE_COUNT				0x004A	// <mdoc> NUMBER OF OBJECT TYPES
 
 #define ELF_PERSPECTIVE					0x0000	// <mdoc> CAMERA MODE <mdocc> The camera modes used by camera internal functions
 #define ELF_ORTHOGRAPHIC				0x0001
@@ -432,10 +433,11 @@ void elf_set_log_file_path(const char *file_path);
 
 void elf_inc_ref(elf_object *obj);
 void elf_dec_ref(elf_object *obj);
-void elf_log_ref_count_table();
+void elf_inc_obj(int type);
+void elf_dec_obj(int type);
 
-void elf_inc_obj_count();
-void elf_dec_obj_count();
+void elf_dump_ref_table();
+void elf_dump_obj_table();
 // !!>
 
 int elf_get_object_type(elf_object *obj);	// <mdoc> OBJECT FUNCTIONS <mdocc> The object functions can be performed on any generic ELF objects.
@@ -457,7 +459,7 @@ void elf_set_unique_name_for_resource(elf_list *named_objects, elf_resource *obj
 
 // <!!
 elf_string* elf_create_string_object();
-void elf_destroy_string_object(elf_string *string);
+void elf_destroy_string_object(void *data);
 char* elf_create_string(const char *str);
 void elf_destroy_string(char *str);
 char* elf_remove_char_from_string(char *str, int idx);
@@ -476,7 +478,7 @@ int elf_rfind_chars_from_string(const char *str, const char *chrs);
 //////////////////////////////// LIST ////////////////////////////////
 
 elf_list* elf_create_list();	// <mdoc> LIST FUNCTIONS
-/* <!> */ void elf_destroy_list(elf_list *list);
+/* <!> */ void elf_destroy_list(void *data);
 int elf_get_list_length(elf_list *list);
 void elf_insert_to_list(elf_list *list, int idx, elf_object *obj);
 void elf_append_to_list(elf_list *list, elf_object *obj);
@@ -494,7 +496,7 @@ void elf_rseek_list(elf_list *list, elf_object *ptr);
 
 // <!!
 elf_config* elf_create_config();
-void elf_destroy_config(elf_config *config);
+void elf_destroy_config(void *data);
 // !!>
 
 elf_config* elf_read_config(const char *file_path);	// <mdoc> CONFIGURATION FUNCTIONS
@@ -507,7 +509,7 @@ int elf_get_config_shadow_map_size(elf_config *config);
 const char* elf_get_config_start(elf_config *config);
 const char* elf_get_config_log(elf_config *config);
 
-//////////////////////////////// LOG ////////////////////////////////
+///////////////////////////////// LOG /////////////////////////////////
 
 // <!!
 void elf_start_log(const char *text);
@@ -516,20 +518,20 @@ void elf_set_error(int code, const char *fmt, ...);
 void elf_set_error_no_save(int code, const char *fmt, ...);
 // !!>
 
-//////////////////////////////// CONTEXT ////////////////////////////////
+/////////////////////////////// CONTEXT ///////////////////////////////
 
 // <!!
 elf_video_mode* elf_create_video_mode();
-void elf_destroy_video_mode(elf_video_mode *video_mode);
+void elf_destroy_video_mode(void *data);
 
 elf_key_event* elf_create_key_event();
-void elf_destroy_key_event(elf_key_event *key_event);
+void elf_destroy_key_event(void *data);
 
 elf_char_event* elf_create_char_event();
-void elf_destroy_char_event(elf_char_event *char_event);
+void elf_destroy_char_event(void *data);
 
 elf_context* elf_create_context();
-void elf_destroy_context(elf_context *context);
+void elf_destroy_context(void *data);
 
 unsigned char elf_init_context(int width, int height,
 		const char *title, unsigned char fullscreen);
@@ -567,7 +569,7 @@ elf_object* elf_get_event(int idx);
 int elf_get_key_event_key(elf_key_event *key_event);
 int elf_get_key_event_state(elf_key_event *key_event);
 
-//////////////////////////////// ENGINE ////////////////////////////////
+//////////////////////////////// ENGINE ///////////////////////////////
 
 // <!!
 void elf_write_to_log(const char *fmt, ...);
@@ -575,7 +577,7 @@ void elf_set_error(int code, const char *fmt, ...);
 void elf_set_error_no_save(int code, const char *fmt, ...);
 
 elf_engine* elf_create_engine();
-void elf_destroy_engine(elf_engine *engine);
+void elf_destroy_engine(void *data);
 
 unsigned char elf_init_engine();
 void elf_deinit_engine();
@@ -668,10 +670,10 @@ unsigned char elf_is_debug_draw();
 elf_object* elf_get_actor();
 
 // <!!
-elf_directory* elf_create_directory();
 elf_directory_item* elf_create_directory_item();
-void elf_destroy_directory(elf_directory *directory);
-void elf_destroy_directory_item(elf_directory_item *directory_item);
+void elf_destroy_directory_item(void *data);
+elf_directory* elf_create_directory();
+void elf_destroy_directory(void *data);
 // !!>
 
 elf_directory* elf_read_directory(const char *path);
@@ -704,9 +706,9 @@ float elf_random_float_range(float min, float max);
 int elf_random_int();
 int elf_random_int_range(int min, int max);
 
-//////////////////////////////// TIMER ////////////////////////////////
+///////////////////////////// FRAME PLAYER ////////////////////////////
 
-/* <!> */ void elf_destroy_frame_player(elf_frame_player *player);
+/* <!> */ void elf_destroy_frame_player(void *data);
 
 elf_frame_player *elf_create_frame_player();	// <mdoc> FRAME PLAYER FUNCTIONS
 void elf_update_frame_player(elf_frame_player *player);
@@ -728,8 +730,10 @@ void* elf_get_frame_player_user_data(elf_frame_player *player);
 void elf_set_frame_player_callback(elf_frame_player *player, void (*callback)(elf_frame_player*));
 // !!>
 
+//////////////////////////////// TIMER ////////////////////////////////
+
 elf_timer *elf_create_timer();	// <mdoc> TIMER FUNCTIONS
-/* <!> */ void elf_destroy_timer(elf_timer *timer);
+/* <!> */ void elf_destroy_timer(void *data);
 void elf_start_timer(elf_timer *timer);
 double elf_get_elapsed_time(elf_timer *timer);
 
@@ -738,7 +742,7 @@ double elf_get_elapsed_time(elf_timer *timer);
 /* <!> */ elf_image* elf_create_image();
 elf_image* elf_create_empty_image(int width, int height, int bpp);	// <mdoc> IMAGE FUNCTIONS
 elf_image* elf_create_image_from_file(const char *file_path);
-/* <!> */ void elf_destroy_image(elf_image *image);
+/* <!> */ void elf_destroy_image(void *data);
 
 void elf_set_image_pixel(elf_image *image, int x, int y, float r, float g, float b, float a);
 
@@ -752,11 +756,11 @@ void* elf_get_image_data(elf_image *image);
 unsigned char elf_save_image_data(const char *file_path, int width, int height, unsigned char bpp, void *data);
 // !!>
 
-//////////////////////////////// TEXTURE ////////////////////////////////
+/////////////////////////////// TEXTURE ///////////////////////////////
 
 // <!!
 elf_texture *elf_create_texture();
-void elf_destroy_texture(elf_texture *texture);
+void elf_destroy_texture(void *data);
 // !!>
 
 elf_texture* elf_create_texture_from_file(const char *file_path);	// <mdoc> TEXTURE FUNCTIONS
@@ -777,9 +781,7 @@ void elf_set_texture(int slot, elf_texture *texture, gfx_shader_params *shader_p
 
 //////////////////////////////// MATERIAL ////////////////////////////////
 
-// <!!
-void elf_destroy_material(elf_material *material);
-// !!>
+/* <!> */void elf_destroy_material(void *data);
 
 elf_material* elf_create_material(const char *name);	// <mdoc> MATERIAL FUNCTIONS
 
@@ -835,9 +837,9 @@ void elf_set_material(elf_material *material, gfx_shader_params *shader_params);
 //////////////////////////////// IPOS ////////////////////////////////
 
 // <!!
-void elf_destroy_bezier_point(elf_bezier_point *point);
-void elf_destroy_bezier_curve(elf_bezier_curve *curve);
-void elf_destroy_ipo(elf_ipo *ipo);
+void elf_destroy_bezier_point(void *data);
+void elf_destroy_bezier_curve(void *data);
+void elf_destroy_ipo(void *data);
 // !!>
 
 elf_bezier_point* elf_create_bezier_point();	// <mdoc> IPO FUNCTIONS
@@ -868,7 +870,7 @@ elf_vec4f elf_get_ipo_qua(elf_ipo *ipo, float x);
 
 
 elf_property* elf_create_property(const char *name);	// <mdoc> PROPERTY FUNCTIONS
-/* <!> */ void elf_destroy_property(elf_property *property);
+/* <!> */ void elf_destroy_property(void *data);
 
 int elf_get_property_type(elf_property *property);
 
@@ -1007,7 +1009,7 @@ unsigned char elf_get_actor_selected(elf_actor *actor);
 void elf_update_camera(elf_camera *camera);
 void elf_camera_pre_draw(elf_camera *camera);
 void elf_camear_post_draw(elf_camera *camera);
-void elf_destroy_camera(elf_camera *camera);
+void elf_destroy_camera(void *data);
 // !!>
 
 elf_camera* elf_create_camera(const char *name);	// <mdoc> CAMERA FUNCTIONS
@@ -1039,7 +1041,7 @@ elf_vec3f elf_un_project_camera_point(elf_camera *camera, float x, float y, floa
 //////////////////////////////// MESH ////////////////////////////////
 
 elf_vertice* elf_create_vertice();	// <mdoc> MESH DATA FUNCTIONS
-/* <!> */ void elf_destroy_vertice(elf_vertice *vertice);
+/* <!> */ void elf_destroy_vertice(void *data);
 
 void elf_set_vertice_position(elf_vertice *vertice, float x, float y, float z);
 void elf_set_vertice_normal(elf_vertice *vertice, float x, float y, float z);
@@ -1051,7 +1053,7 @@ elf_vec2f elf_get_vertice_tex_coord(elf_vertice *vertice);
 
 // <!!
 elf_face* elf_create_face();
-void elf_destroy_face(elf_face *face);
+void elf_destroy_face(void *data);
 // !!>
 
 int elf_get_face_v1(elf_face *face);
@@ -1059,7 +1061,7 @@ int elf_get_face_v2(elf_face *face);
 int elf_get_face_v3(elf_face *face);
 
 elf_mesh_data* elf_create_mesh_data();
-/* <!> */ void elf_destroy_mesh_data(elf_mesh_data *mesh_data);
+/* <!> */ void elf_destroy_mesh_data(void *data);
 
 int elf_get_mesh_data_vertice_count(elf_mesh_data *mesh_data);
 int elf_get_mesh_data_face_count(elf_mesh_data *mesh_data);
@@ -1074,7 +1076,7 @@ elf_face* elf_get_face_from_mesh_data(elf_mesh_data *mesh_data, int idx);
 
 // <!!
 elf_model* elf_create_model(const char *name);
-void elf_destroy_model(elf_model *model);
+void elf_destroy_model(void *data);
 void elf_generate_model_tangents(elf_model *model);
 // !!>
 
@@ -1108,7 +1110,7 @@ void elf_draw_model_bouding_box(elf_model *model, gfx_shader_params *shader_para
 void elf_update_entity(elf_entity *entity);
 void elf_entity_pre_draw(elf_entity *entity);
 void elf_entity_post_draw(elf_entity *entity);
-void elf_destroy_entity(elf_entity *entity);
+void elf_destroy_entity(void *data);
 void elf_calc_entity_aabb(elf_entity *entity);
 void elf_calc_entity_bounding_volumes(elf_entity *entity, unsigned char new_model);
 // !!>
@@ -1170,7 +1172,7 @@ unsigned char elf_get_entity_changed(elf_entity *entity);
 void elf_update_light(elf_light *light);
 void elf_light_pre_draw(elf_light *light);
 void elf_light_post_draw(elf_light *light);
-void elf_destroy_light(elf_light *light);
+void elf_destroy_light(void *data);
 // !!>
 
 elf_light* elf_create_light(const char *name);	// <mdoc> LIGHT FUNCTIONS
@@ -1207,7 +1209,7 @@ unsigned char elf_get_light_changed(elf_light *light);
 
 // <!!
 elf_bone* elf_create_bone(const char *name);
-void elf_destroy_bone(elf_bone *bone);
+void elf_destroy_bone(void *data);
 // !!>
 
 elf_armature* elf_get_bone_armature(elf_bone *bone);	// <mdoc> BONE FUNCTIONS
@@ -1221,7 +1223,7 @@ elf_vec4f elf_get_bone_orientation(elf_bone *bone);
 
 // <!!
 void elf_update_armature(elf_armature *armature);
-void elf_destroy_armature(elf_armature *armature);
+void elf_destroy_armature(void *data);
 // !!>
 
 elf_armature* elf_create_armature(const char *name);	// <mdoc> ARMATURE FUNCTIONS
@@ -1240,11 +1242,11 @@ void elf_draw_armature_debug(elf_armature *armature, gfx_shader_params *shader_p
 
 // <!!
 elf_particle* elf_create_particle();
-void elf_destroy_particle(elf_particle *particle);
+void elf_destroy_particle(void *data);
 void elf_particles_pre_draw(elf_particles *particles);
 void elf_particles_post_draw(elf_particles *particles);
 void elf_update_particles(elf_particles *particles, float sync);
-void elf_destroy_particles(elf_particles *particles);
+void elf_destroy_particles(void *data);
 // !!>
 
 elf_particles* elf_create_particles(const char *name, int max_count);	// <mdoc> PARTICLES FUNCTIONS
@@ -1318,7 +1320,7 @@ unsigned char elf_cull_particles(elf_particles *particles, elf_camera *camera);
 void elf_update_sprite(elf_sprite *sprite);
 void elf_sprite_pre_draw(elf_sprite *sprite, elf_camera *camera);
 void elf_sprite_post_draw(elf_sprite *sprite);
-void elf_destroy_sprite(elf_sprite *sprite);
+void elf_destroy_sprite(void *data);
 // !!>
 
 elf_sprite* elf_create_sprite(const char *name);
@@ -1346,7 +1348,7 @@ void elf_draw_sprite_debug(elf_sprite *sprite, gfx_shader_params *shader_params)
 void elf_update_scene(elf_scene *scene, float sync);
 void elf_scene_pre_draw(elf_scene *scene);
 void elf_scene_post_draw(elf_scene *scene);
-void elf_destroy_scene(elf_scene *scene);
+void elf_destroy_scene(void *data);
 // !!>
 
 elf_scene* elf_create_scene(const char *name);
@@ -1455,9 +1457,10 @@ elf_list* elf_get_scene_models(elf_scene *scene);
 //////////////////////////////// PAK ////////////////////////////////
 
 // <!!
-void elf_destroy_pak_index(elf_pak_index *index);
+elf_pak_index* elf_create_pak_index();
+void elf_destroy_pak_index(void *data);
 elf_pak* elf_create_pak_from_file(const char *file_path);
-void elf_destroy_pak(elf_pak *pak);
+void elf_destroy_pak(void *data);
 
 const char* elf_get_pak_file_path(elf_pak *pak);
 int elf_get_pak_index_count(elf_pak *pak);
@@ -1515,7 +1518,7 @@ unsigned char elf_save_scene_to_pak(elf_scene *scene, const char *file_path);
 
 // <!!
 elf_post_process* elf_create_post_process();
-void elf_destroy_post_process(elf_post_process *post_process);
+void elf_destroy_post_process(void *data);
 
 void elf_init_post_process_buffers(elf_post_process *post_process);
 
@@ -1548,7 +1551,7 @@ unsigned char elf_is_post_process_light_shafts(elf_post_process *post_process);
 //////////////////////////////// SCRIPT ////////////////////////////////
 
 // <!!
-void elf_destroy_script(elf_script *script);
+void elf_destroy_script(void *data);
 // !!>
 
 elf_script* elf_create_script(const char *name);	// <mdoc> SCRIPT FUNCTIONS
@@ -1566,7 +1569,7 @@ unsigned char elf_is_script_error(elf_script *script);
 
 // <!!
 elf_scripting* elf_create_scripting();
-void elf_destroy_scripting(elf_scripting *scripting);
+void elf_destroy_scripting(void *data);
 
 unsigned char elf_init_scripting();
 void elf_update_scripting();
@@ -1583,7 +1586,7 @@ unsigned char elf_run_script(elf_script *script);
 
 // <!!
 elf_audio_device* elf_create_audio_device();
-void elf_destroy_audio_device(elf_audio_device *device);
+void elf_destroy_audio_device(void *data);
 unsigned char elf_init_audio();
 void elf_update_audio();
 void elf_deinit_audio();
@@ -1599,7 +1602,7 @@ void elf_set_audio_listener_orientation(float *params);
 
 // <!!
 elf_sound* elf_create_sound();
-void elf_destroy_sound(elf_sound *sound);
+void elf_destroy_sound(void *data);
 // !!>
 
 elf_sound* elf_load_sound(const char *file_path);
@@ -1613,7 +1616,7 @@ elf_audio_source* elf_loop_entity_sound(elf_entity *entity, elf_sound *sound, fl
 // <!!
 elf_audio_source* elf_create_audio_source();
 void elf_stream_audio_source(elf_audio_source *source);
-void elf_destroy_audio_source(elf_audio_source *source);
+void elf_destroy_audio_source(void *data);
 // !!>
 void elf_set_sound_volume(elf_audio_source *source, float volume);
 float elf_get_sound_volume(elf_audio_source *source);
@@ -1631,10 +1634,10 @@ void elf_set_sound_position(elf_audio_source *source, float x, float y, float z)
 
 // <!!
 elf_collision* elf_create_collision();
-void elf_destroy_collision(elf_collision *collision);
+void elf_destroy_collision(void *data);
 
 elf_physics_world* elf_create_physics_world();
-void elf_destroy_physics_world(elf_physics_world *world);
+void elf_destroy_physics_world(void *data);
 void elf_update_physics_world(elf_physics_world *world, float time);
 
 void elf_set_physics_world_gravity(elf_physics_world *world, float x, float y, float z);
@@ -1656,7 +1659,7 @@ elf_joint* elf_create_hinge_joint(elf_actor *actor1, elf_actor *actor2, const ch
 elf_joint* elf_create_ball_joint(elf_actor *actor1, elf_actor *actor2, const char *name, float px, float py, float pz);
 elf_joint* elf_create_cone_twist_joint(elf_actor *actor1, elf_actor *actor2, const char *name, float px, float py, float pz, float ax, float ay, float az);
 void elf_clear_joint(elf_joint *joint);
-void elf_destroy_joint(elf_joint *joint);
+void elf_destroy_joint(void *data);
 // !!>
 
 const char* elf_get_joint_name(elf_joint *joint);	// <mdoc> JOINT FUNCTIONS
@@ -1668,7 +1671,7 @@ elf_vec3f elf_get_joint_axis(elf_joint *joint);
 
 // <!!
 elf_physics_tri_mesh* elf_create_physics_tri_mesh(float *verts, unsigned int *idx, int indice_count);
-void elf_destroy_physics_tri_mesh(elf_physics_tri_mesh *tri_mesh);
+void elf_destroy_physics_tri_mesh(void *data);
 
 elf_physics_object* elf_create_physics_object();
 elf_physics_object* elf_create_physics_object_mesh(elf_physics_tri_mesh *tri_mesh, float mass);
@@ -1677,7 +1680,7 @@ elf_physics_object* elf_create_physics_object_box(float hx, float hy, float hz, 
 elf_physics_object* elf_create_physics_object_capsule(unsigned char type, float length, float radius, float mass, float ox, float oy, float oz);
 elf_physics_object* elf_create_physics_object_cone(unsigned char type, float length, float radius, float mass, float ox, float oy, float oz);
 void elf_set_physics_object_world(elf_physics_object *object, elf_physics_world *world);
-void elf_destroy_physics_object(elf_physics_object *object);
+void elf_destroy_physics_object(void *data);
 
 void elf_set_physics_object_actor(elf_physics_object *object, elf_actor *actor);
 void elf_remove_physics_object_collisions(elf_physics_object *objects);
@@ -1724,7 +1727,7 @@ float elf_get_physics_object_restitution(elf_physics_object *object);
 
 // <!!
 elf_font* elf_create_font();
-void elf_destroy_font(elf_font *font);
+void elf_destroy_font(void *data);
 // !!>
 
 elf_font* elf_create_font_from_file(const char *file_path, int size);	// <mdoc> FONT FUNCTIONS
@@ -1753,7 +1756,7 @@ void elf_set_gui_object_visible(elf_gui_object *object, unsigned char visible);
 void elf_set_gui_object_script(elf_gui_object *object, elf_script *script);
 
 // <!!
-void elf_destroy_label(elf_label *label);
+void elf_destroy_label(void *data);
 void elf_draw_label(elf_label *label, gfx_shader_params *shader_params);
 void elf_recalc_label(elf_label *label);
 // !!>
@@ -1767,7 +1770,7 @@ void elf_set_label_font(elf_label *label, elf_font *font);
 void elf_set_label_text(elf_label *label, const char *text);
 
 // <!!
-void elf_destroy_button(elf_button *button);
+void elf_destroy_button(void *data);
 void elf_draw_button(elf_button *button, gfx_shader_params *shader_params);
 void elf_recalc_button(elf_button *button);
 // !!>
@@ -1784,7 +1787,7 @@ void elf_set_button_over_texture(elf_button *button, elf_texture *over);
 void elf_set_button_on_texture(elf_button *button, elf_texture *on);
 
 // <!!
-void elf_destroy_picture(elf_picture *picture);
+void elf_destroy_picture(void *data);
 void elf_draw_picture(elf_picture *picture, gfx_shader_params *shader_params);
 void elf_recalc_picture(elf_picture *picture);
 // !!>
@@ -1798,7 +1801,7 @@ void elf_set_picture_texture(elf_picture *picture, elf_texture *texture);
 void elf_set_picture_scale(elf_picture *picture, float x, float y);
 
 // <!!
-void elf_destroy_text_field(elf_text_field *text_field);
+void elf_destroy_text_field(void *data);
 void elf_draw_text_field(elf_text_field *text_field, elf_area *area, gfx_shader_params *shader_params);
 void elf_recalc_text_field(elf_text_field *text_field);
 // !!>
@@ -1819,7 +1822,7 @@ void elf_set_text_field_cursor_position(elf_text_field *text_field, int idx);
 void elf_set_text_field_text(elf_text_field *text_field, const char *text);
 
 // <!!
-void elf_destroy_slider(elf_slider *slider);
+void elf_destroy_slider(void *data);
 void elf_draw_slider(elf_slider *slider, gfx_shader_params *shader_params);
 void elf_recalc_slider(elf_slider *slider);
 // !!>
@@ -1835,7 +1838,7 @@ void elf_set_slider_slider_texture(elf_slider *slider, elf_texture *slider_textu
 void elf_set_slider_value(elf_slider *slider, float value);
 
 // <!!
-void elf_destroy_screen(elf_screen *screen);
+void elf_destroy_screen(void *data);
 void elf_draw_screen(elf_screen *screen, elf_area *area, gfx_shader_params *shader_params);
 void elf_recalc_screen(elf_screen *screen);
 // !!>
@@ -1849,7 +1852,7 @@ void elf_force_focus_to_screen(elf_screen *screen);
 void elf_release_focus_from_screen(elf_screen *screen);
 
 // <!!
-void elf_destroy_text_list(elf_text_list *text_list);
+void elf_destroy_text_list(void *data);
 void elf_draw_text_list(elf_text_list *text_list, elf_area *area, gfx_shader_params *shader_params);
 void elf_recalc_text_list(elf_text_list *text_list);
 // !!>
@@ -1880,7 +1883,7 @@ void elf_set_text_list_offset(elf_text_list *text_list, int offset);
 void elf_set_text_list_selection(elf_text_list *text_list, int selection);
 
 // <!!
-void elf_destroy_check_box(elf_check_box *check_box);
+void elf_destroy_check_box(void *data);
 void elf_draw_check_box(elf_check_box *check_box, gfx_shader_params *shader_params);
 void elf_recalc_check_box(elf_check_box *check_box);
 // !!>
@@ -1898,7 +1901,7 @@ void elf_set_check_box_state(elf_check_box *check_box, unsigned char state);
 /* <!> */ void elf_recalc_gui_object(elf_gui_object *object);
 
 // <!!
-void elf_destroy_gui(elf_gui *gui);
+void elf_destroy_gui(void *data);
 void elf_update_gui(elf_gui *gui, float step);
 void elf_draw_gui(elf_gui *gui);
 // !!>

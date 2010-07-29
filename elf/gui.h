@@ -72,20 +72,23 @@ elf_label* elf_create_label(const char *name)
 
 	label = (elf_label*)malloc(sizeof(elf_label));
 	memset(label, 0x0, sizeof(elf_label));
-	label->type = ELF_LABEL;
+	label->obj_type = ELF_LABEL;
+	label->obj_destr = elf_destroy_label;
 
 	label->color.r = label->color.g = label->color.b = label->color.a = 1.0;
 	label->visible = ELF_TRUE;
 
 	if(name) label->name = elf_create_string(name);
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_LABEL);
 
 	return label;
 }
 
-void elf_destroy_label(elf_label *label)
+void elf_destroy_label(void *data)
 {
+	elf_label *label = (elf_label*)data;
+
 	if(label->name) elf_destroy_string(label->name);
 	if(label->text) elf_destroy_string(label->text);
 
@@ -93,7 +96,7 @@ void elf_destroy_label(elf_label *label)
 
 	free(label);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_LABEL);
 }
 
 void elf_draw_label(elf_label *label, gfx_shader_params *shader_params)
@@ -153,20 +156,23 @@ elf_button* elf_create_button(const char *name)
 
 	button = (elf_button*)malloc(sizeof(elf_button));
 	memset(button, 0x0, sizeof(elf_button));
-	button->type = ELF_BUTTON;
+	button->obj_type = ELF_BUTTON;
+	button->obj_destr = elf_destroy_button;
 
 	button->color.r = button->color.g = button->color.b = button->color.a = 1.0;
 	button->visible = ELF_TRUE;
 
 	if(name) button->name = elf_create_string(name);
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_BUTTON);
 
 	return button;
 }
 
-void elf_destroy_button(elf_button *button)
+void elf_destroy_button(void *data)
 {
+	elf_button *button = (elf_button*)data;
+
 	if(button->name) elf_destroy_string(button->name);
 
 	if(button->off) elf_dec_ref((elf_object*)button->off);
@@ -177,7 +183,7 @@ void elf_destroy_button(elf_button *button)
 
 	free(button);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_BUTTON);
 }
 
 void elf_draw_button(elf_button *button, gfx_shader_params *shader_params)
@@ -276,7 +282,8 @@ elf_picture* elf_create_picture(const char *name)
 
 	picture = (elf_picture*)malloc(sizeof(elf_picture));
 	memset(picture, 0x0, sizeof(elf_picture));
-	picture->type = ELF_PICTURE;
+	picture->obj_type = ELF_PICTURE;
+	picture->obj_destr = elf_destroy_picture;
 
 	picture->color.r = picture->color.g = picture->color.b = picture->color.a = 1.0;
 	picture->scale.x = picture->scale.y = 1.0;
@@ -284,20 +291,21 @@ elf_picture* elf_create_picture(const char *name)
 
 	if(name) picture->name = elf_create_string(name);
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_PICTURE);
 
 	return picture;
 }
 
-void elf_destroy_picture(elf_picture *picture)
+void elf_destroy_picture(void *data)
 {
-	if(picture->name) elf_destroy_string(picture->name);
+	elf_picture *picture = (elf_picture*)data;
 
+	if(picture->name) elf_destroy_string(picture->name);
 	if(picture->texture) elf_dec_ref((elf_object*)picture->texture);
 
 	free(picture);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_PICTURE);
 }
 
 void elf_draw_picture(elf_picture *picture, gfx_shader_params *shader_params)
@@ -358,7 +366,8 @@ elf_text_field* elf_create_text_field(const char *name)
 
 	text_field = (elf_text_field*)malloc(sizeof(elf_text_field));
 	memset(text_field, 0x0, sizeof(elf_text_field));
-	text_field->type = ELF_TEXT_FIELD;
+	text_field->obj_type = ELF_TEXT_FIELD;
+	text_field->obj_destr = elf_destroy_text_field;
 
 	text_field->color.r = text_field->color.g = text_field->color.b = text_field->color.a = 1.0;
 	text_field->text_color.r = text_field->text_color.g = text_field->text_color.b = text_field->text_color.a = 1.0;
@@ -367,13 +376,15 @@ elf_text_field* elf_create_text_field(const char *name)
 
 	if(name) text_field->name = elf_create_string(name);
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_TEXT_FIELD);
 
 	return text_field;
 }
 
-void elf_destroy_text_field(elf_text_field *text_field)
+void elf_destroy_text_field(void *data)
 {
+	elf_text_field *text_field = (elf_text_field*)data;
+
 	if(text_field->name) elf_destroy_string(text_field->name);
 
 	if(text_field->texture) elf_dec_ref((elf_object*)text_field->texture);
@@ -383,7 +394,7 @@ void elf_destroy_text_field(elf_text_field *text_field)
 
 	free(text_field);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_TEXT_FIELD);
 }
 
 void elf_draw_text_field(elf_text_field *text_field, elf_area *area, gfx_shader_params *shader_params)
@@ -595,7 +606,8 @@ elf_slider* elf_create_slider(const char *name)
 
 	slider = (elf_slider*)malloc(sizeof(elf_slider));
 	memset(slider, 0x0, sizeof(elf_slider));
-	slider->type = ELF_SLIDER;
+	slider->obj_type = ELF_SLIDER;
+	slider->obj_destr = elf_destroy_slider;
 
 	slider->color.r = slider->color.g = slider->color.b = slider->color.a = 1.0; 
 	slider->visible = ELF_TRUE;
@@ -603,13 +615,15 @@ elf_slider* elf_create_slider(const char *name)
 
 	if(name) slider->name = elf_create_string(name);
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_SLIDER);
 
 	return slider;
 }
 
-void elf_destroy_slider(elf_slider *slider)
+void elf_destroy_slider(void *data)
 {
+	elf_slider *slider = (elf_slider*)data;
+
 	if(slider->name) elf_destroy_string(slider->name);
 
 	if(slider->background) elf_dec_ref((elf_object*)slider->background);
@@ -619,7 +633,7 @@ void elf_destroy_slider(elf_slider *slider)
 
 	free(slider);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_SLIDER);
 }
 
 void elf_draw_slider(elf_slider *slider, gfx_shader_params *shader_params)
@@ -709,7 +723,8 @@ elf_screen* elf_create_screen(const char *name)
 
 	screen = (elf_screen*)malloc(sizeof(elf_screen));
 	memset(screen, 0x0, sizeof(elf_screen));
-	screen->type = ELF_SCREEN;
+	screen->obj_type = ELF_SCREEN;
+	screen->obj_destr = elf_destroy_screen;
 
 	screen->color.r = screen->color.g = screen->color.b = screen->color.a = 1.0;
 	screen->visible = ELF_TRUE;
@@ -722,15 +737,16 @@ elf_screen* elf_create_screen(const char *name)
 
 	if(name) screen->name = elf_create_string(name);
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_SCREEN);
 
 	return screen;
 }
 
-void elf_destroy_screen(elf_screen *screen)
+void elf_destroy_screen(void *data)
 {
-	if(screen->name) elf_destroy_string(screen->name);
+	elf_screen *screen = (elf_screen*)data;
 
+	if(screen->name) elf_destroy_string(screen->name);
 	if(screen->texture) elf_dec_ref((elf_object*)screen->texture);
 
 	elf_dec_ref((elf_object*)screen->children);
@@ -738,7 +754,7 @@ void elf_destroy_screen(elf_screen *screen)
 
 	free(screen);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_SCREEN);
 }
 
 void elf_draw_screen(elf_screen *screen, elf_area *area, gfx_shader_params *shader_params)
@@ -784,25 +800,25 @@ void elf_draw_screen(elf_screen *screen, elf_area *area, gfx_shader_params *shad
 	for(object = (elf_gui_object*)elf_begin_list(screen->children); object;
 		object = (elf_gui_object*)elf_next_in_list(screen->children))
 	{
-		if(object->type == ELF_LABEL) elf_draw_label((elf_label*)object, shader_params);
-		else if(object->type == ELF_BUTTON) elf_draw_button((elf_button*)object, shader_params);
-		else if(object->type == ELF_PICTURE) elf_draw_picture((elf_picture*)object, shader_params);
-		else if(object->type == ELF_TEXT_FIELD)
+		if(object->obj_type == ELF_LABEL) elf_draw_label((elf_label*)object, shader_params);
+		else if(object->obj_type == ELF_BUTTON) elf_draw_button((elf_button*)object, shader_params);
+		else if(object->obj_type == ELF_PICTURE) elf_draw_picture((elf_picture*)object, shader_params);
+		else if(object->obj_type == ELF_TEXT_FIELD)
 		{
 			elf_draw_text_field((elf_text_field*)object, area, shader_params);
 			gfx_set_viewport(x, y, width, height);
 			gfx_get_orthographic_projection_matrix((float)x, (float)x+width, (float)y, (float)y+height,
 				-1.0, 1.0, shader_params->projection_matrix);
 		}
-		else if(object->type == ELF_TEXT_LIST)
+		else if(object->obj_type == ELF_TEXT_LIST)
 		{
 			elf_draw_text_list((elf_text_list*)object, area, shader_params);
 			gfx_set_viewport(x, y, width, height);
 			gfx_get_orthographic_projection_matrix((float)x, (float)x+width, (float)y, (float)y+height,
 				-1.0, 1.0, shader_params->projection_matrix);
 		}
-		else if(object->type == ELF_SLIDER) elf_draw_slider((elf_slider*)object, shader_params);
-		else if(object->type == ELF_CHECK_BOX) elf_draw_check_box((elf_check_box*)object, shader_params);
+		else if(object->obj_type == ELF_SLIDER) elf_draw_slider((elf_slider*)object, shader_params);
+		else if(object->obj_type == ELF_CHECK_BOX) elf_draw_check_box((elf_check_box*)object, shader_params);
 	}
 
 	for(object = (elf_gui_object*)elf_begin_list(screen->screens); object;
@@ -859,7 +875,7 @@ void elf_force_focus_to_screen(elf_screen *screen)
 
 	if(!screen->root) return;
 
-	if(screen->root->target && screen->root->target->type == ELF_BUTTON)
+	if(screen->root->target && screen->root->target->obj_type == ELF_BUTTON)
 	{
 		button = (elf_button*)screen->root->target;
 		button->state = ELF_OFF;
@@ -885,7 +901,8 @@ elf_text_list* elf_create_text_list(const char *name)
 
 	text_list = (elf_text_list*)malloc(sizeof(elf_text_list));
 	memset(text_list, 0x0, sizeof(elf_text_list));
-	text_list->type = ELF_TEXT_LIST;
+	text_list->obj_type = ELF_TEXT_LIST;
+	text_list->obj_destr = elf_destroy_text_list;
 
 	text_list->color.r = text_list->color.g = text_list->color.b = text_list->color.a = 1.0;
 	text_list->selection_color.r = text_list->selection_color.g = text_list->selection_color.b = text_list->selection_color.a = 0.5;
@@ -901,13 +918,15 @@ elf_text_list* elf_create_text_list(const char *name)
 
 	if(name) text_list->name = elf_create_string(name);
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_TEXT_LIST);
 
 	return text_list;
 }
 
-void elf_destroy_text_list(elf_text_list *text_list)
+void elf_destroy_text_list(void *data)
 {
+	elf_text_list *text_list = (elf_text_list*)data;
+
 	if(text_list->name) elf_destroy_string(text_list->name);
 	if(text_list->font) elf_dec_ref((elf_object*)text_list->font);
 
@@ -915,7 +934,7 @@ void elf_destroy_text_list(elf_text_list *text_list)
 
 	free(text_list);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_TEXT_LIST);
 }
 
 void elf_draw_text_list(elf_text_list *text_list, elf_area *area, gfx_shader_params *shader_params)
@@ -1199,20 +1218,23 @@ elf_check_box* elf_create_check_box(const char *name)
 
 	check_box = (elf_check_box*)malloc(sizeof(elf_check_box));
 	memset(check_box, 0x0, sizeof(elf_check_box));
-	check_box->type = ELF_CHECK_BOX;
+	check_box->obj_type = ELF_CHECK_BOX;
+	check_box->obj_destr = elf_destroy_check_box;
 
 	check_box->color.r = check_box->color.g = check_box->color.b = check_box->color.a = 1.0;
 	check_box->visible = ELF_TRUE;
 
 	if(name) check_box->name = elf_create_string(name);
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_CHECK_BOX);
 
 	return check_box;
 }
 
-void elf_destroy_check_box(elf_check_box *check_box)
+void elf_destroy_check_box(void *data)
 {
+	elf_check_box *check_box = (elf_check_box*)data;
+
 	if(check_box->name) elf_destroy_string(check_box->name);
 
 	if(check_box->off) elf_dec_ref((elf_object*)check_box->off);
@@ -1222,7 +1244,7 @@ void elf_destroy_check_box(elf_check_box *check_box)
 
 	free(check_box);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_CHECK_BOX);
 }
 
 void elf_draw_check_box(elf_check_box *check_box, gfx_shader_params *shader_params)
@@ -1302,14 +1324,14 @@ void elf_recalc_gui_object(elf_gui_object *object)
 {
 	elf_gui_object *obj;
 
-	if(object->type == ELF_LABEL) elf_recalc_label((elf_label*)object);
-	else if(object->type == ELF_BUTTON) elf_recalc_button((elf_button*)object);
-	else if(object->type == ELF_PICTURE) elf_recalc_picture((elf_picture*)object);
-	else if(object->type == ELF_TEXT_FIELD) elf_recalc_text_field((elf_text_field*)object);
-	else if(object->type == ELF_SLIDER) elf_recalc_slider((elf_slider*)object);
-	else if(object->type == ELF_SCREEN) elf_recalc_screen((elf_screen*)object);
-	else if(object->type == ELF_TEXT_LIST) elf_recalc_text_list((elf_text_list*)object);
-	else if(object->type == ELF_CHECK_BOX) elf_recalc_check_box((elf_check_box*)object);
+	if(object->obj_type == ELF_LABEL) elf_recalc_label((elf_label*)object);
+	else if(object->obj_type == ELF_BUTTON) elf_recalc_button((elf_button*)object);
+	else if(object->obj_type == ELF_PICTURE) elf_recalc_picture((elf_picture*)object);
+	else if(object->obj_type == ELF_TEXT_FIELD) elf_recalc_text_field((elf_text_field*)object);
+	else if(object->obj_type == ELF_SLIDER) elf_recalc_slider((elf_slider*)object);
+	else if(object->obj_type == ELF_SCREEN) elf_recalc_screen((elf_screen*)object);
+	else if(object->obj_type == ELF_TEXT_LIST) elf_recalc_text_list((elf_text_list*)object);
+	else if(object->obj_type == ELF_CHECK_BOX) elf_recalc_check_box((elf_check_box*)object);
 
 	if(object->parent)
 	{
@@ -1379,7 +1401,8 @@ elf_gui* elf_create_gui()
 
 	gui = (elf_gui*)malloc(sizeof(elf_gui));
 	memset(gui, 0x0, sizeof(elf_gui));
-	gui->type = ELF_GUI;
+	gui->obj_type = ELF_GUI;
+	gui->obj_destr = elf_destroy_gui;
 
 	gui->visible = ELF_TRUE;
 
@@ -1396,14 +1419,15 @@ elf_gui* elf_create_gui()
 	gui->width = elf_get_window_width();
 	gui->height = elf_get_window_height();
 
-	elf_inc_obj_count();
+	elf_inc_obj(ELF_GUI);
 
 	return gui;
 }
 
-void elf_destroy_gui(elf_gui *gui)
+void elf_destroy_gui(void *data)
 {
 	elf_gui_object *object;
+	elf_gui *gui = (elf_gui*)data;
 
 	if(gui->name) elf_destroy_string(gui->name);
 
@@ -1419,7 +1443,7 @@ void elf_destroy_gui(elf_gui *gui)
 
 	free(gui);
 
-	elf_dec_obj_count();
+	elf_dec_obj(ELF_GUI);
 }
 
 elf_gui_object* elf_trace_top_object(elf_gui_object *object, unsigned char click)
@@ -1433,7 +1457,7 @@ elf_gui_object* elf_trace_top_object(elf_gui_object *object, unsigned char click
 	mouse_pos = elf_get_mouse_position();
 	mouse_pos.y = elf_get_window_height()-mouse_pos.y;
 
-	if(object->type == ELF_GUI && ((elf_gui*)object)->focus_screen)
+	if(object->obj_type == ELF_GUI && ((elf_gui*)object)->focus_screen)
 	{
 		return elf_trace_top_object((elf_gui_object*)((elf_gui*)object)->focus_screen, click);
 	}
@@ -1631,7 +1655,7 @@ void elf_update_gui(elf_gui *gui, float step)
 
 	if(gui->trace)
 	{
-		if(gui->trace->type == ELF_BUTTON)
+		if(gui->trace->obj_type == ELF_BUTTON)
 		{
 			if(!gui->target)
 			{
@@ -1646,7 +1670,7 @@ void elf_update_gui(elf_gui *gui, float step)
 
 	if(prev_trace && prev_trace != gui->trace)
 	{
-		if(prev_trace->type == ELF_BUTTON)
+		if(prev_trace->obj_type == ELF_BUTTON)
 		{
 			((elf_button*)prev_trace)->state = ELF_OFF;
 		}
@@ -1677,11 +1701,11 @@ void elf_update_gui(elf_gui *gui, float step)
 
 		if(gui->target)
 		{
-			if(gui->target->type == ELF_BUTTON)
+			if(gui->target->obj_type == ELF_BUTTON)
 			{
 				((elf_button*)gui->target)->state = ELF_ON;
 			}
-			else if(gui->target->type == ELF_TEXT_FIELD)
+			else if(gui->target->obj_type == ELF_TEXT_FIELD)
 			{
 				gui->active_text_field = (elf_text_field*)gui->target;
 
@@ -1699,7 +1723,7 @@ void elf_update_gui(elf_gui *gui, float step)
 					eng->actor = NULL;
 				}
 			}
-			else if(gui->target->type == ELF_SLIDER)
+			else if(gui->target->obj_type == ELF_SLIDER)
 			{
 				slider = (elf_slider*)gui->target;
 				if(slider->width > slider->height)
@@ -1729,7 +1753,7 @@ void elf_update_gui(elf_gui *gui, float step)
 					eng->actor = NULL;
 				}
 			}
-			else if(gui->target->type == ELF_TEXT_LIST)
+			else if(gui->target->obj_type == ELF_TEXT_LIST)
 			{
 				text_list = (elf_text_list*)gui->target;
 				if(text_list->font && elf_get_list_length(text_list->items) > 0)
@@ -1755,7 +1779,7 @@ void elf_update_gui(elf_gui *gui, float step)
 					}
 				}
 			}
-			else if(gui->target->type == ELF_CHECK_BOX)
+			else if(gui->target->obj_type == ELF_CHECK_BOX)
 			{
 				((elf_check_box*)gui->target)->state = !((elf_check_box*)gui->target)->state;
 
@@ -1779,7 +1803,7 @@ void elf_update_gui(elf_gui *gui, float step)
 	{
 		if(gui->target)
 		{
-			if(gui->target->type == ELF_BUTTON)
+			if(gui->target->obj_type == ELF_BUTTON)
 			{
 				if(gui->target == gui->trace)
 				{
@@ -1807,7 +1831,7 @@ void elf_update_gui(elf_gui *gui, float step)
 	{
 		if(gui->target)
 		{
-			if(gui->target->type == ELF_SLIDER)
+			if(gui->target->obj_type == ELF_SLIDER)
 			{
 				slider = (elf_slider*)gui->target;
 				if(slider->width > slider->height)
@@ -1892,7 +1916,7 @@ void elf_update_gui(elf_gui *gui, float step)
 	{
 		event = elf_get_event(i);
 
-		if(event->type == ELF_CHAR_EVENT)
+		if(event->obj_type == ELF_CHAR_EVENT)
 		{
 			if(((elf_char_event*)event)->state == ELF_TRUE)
 			{
@@ -1909,7 +1933,7 @@ void elf_update_gui(elf_gui *gui, float step)
 			}
 		}
 
-		if(event->type == ELF_KEY_EVENT)
+		if(event->obj_type == ELF_KEY_EVENT)
 		{
 			if(((elf_key_event*)event)->state == ELF_TRUE)
 			{
@@ -1951,25 +1975,25 @@ void elf_draw_gui(elf_gui *gui)
 	for(object = (elf_gui_object*)elf_begin_list(gui->children); object;
 		object = (elf_gui_object*)elf_next_in_list(gui->children))
 	{
-		if(object->type == ELF_LABEL) elf_draw_label((elf_label*)object, &gui->shader_params);
-		else if(object->type == ELF_BUTTON) elf_draw_button((elf_button*)object, &gui->shader_params);
-		else if(object->type == ELF_PICTURE) elf_draw_picture((elf_picture*)object, &gui->shader_params);
-		else if(object->type == ELF_TEXT_FIELD)
+		if(object->obj_type == ELF_LABEL) elf_draw_label((elf_label*)object, &gui->shader_params);
+		else if(object->obj_type == ELF_BUTTON) elf_draw_button((elf_button*)object, &gui->shader_params);
+		else if(object->obj_type == ELF_PICTURE) elf_draw_picture((elf_picture*)object, &gui->shader_params);
+		else if(object->obj_type == ELF_TEXT_FIELD)
 		{
 			elf_draw_text_field((elf_text_field*)object, &area, &gui->shader_params);
 			gfx_set_viewport(gui->pos.x, gui->pos.y, gui->width, gui->height);
 			gfx_get_orthographic_projection_matrix((float)gui->pos.x, (float)gui->pos.x+gui->width, (float)gui->pos.y, (float)gui->pos.y+gui->height,
 				-1.0, 1.0, gui->shader_params.projection_matrix);
 		}
-		else if(object->type == ELF_TEXT_LIST)
+		else if(object->obj_type == ELF_TEXT_LIST)
 		{
 			elf_draw_text_list((elf_text_list*)object, &area, &gui->shader_params);
 			gfx_set_viewport(gui->pos.x, gui->pos.y, gui->width, gui->height);
 			gfx_get_orthographic_projection_matrix((float)gui->pos.x, (float)gui->pos.x+gui->width, (float)gui->pos.y, (float)gui->pos.y+gui->height,
 				-1.0, 1.0, gui->shader_params.projection_matrix);
 		}
-		else if(object->type == ELF_SLIDER) elf_draw_slider((elf_slider*)object, &gui->shader_params);
-		else if(object->type == ELF_CHECK_BOX) elf_draw_check_box((elf_check_box*)object, &gui->shader_params);
+		else if(object->obj_type == ELF_SLIDER) elf_draw_slider((elf_slider*)object, &gui->shader_params);
+		else if(object->obj_type == ELF_CHECK_BOX) elf_draw_check_box((elf_check_box*)object, &gui->shader_params);
 	}
 
 	for(object = (elf_gui_object*)elf_begin_list(gui->screens); object;
@@ -1989,12 +2013,12 @@ void elf_draw_gui(elf_gui *gui)
 
 unsigned char elf_add_gui_object(elf_gui_object *parent, elf_gui_object *object)
 {
-	if(parent->type != ELF_GUI && parent->type != ELF_SCREEN) return ELF_FALSE;
+	if(parent->obj_type != ELF_GUI && parent->obj_type != ELF_SCREEN) return ELF_FALSE;
 	if(object->parent) elf_remove_gui_object_by_object(object->parent, object);
 	elf_set_gui_object_root(object, parent->root);
 	object->parent = parent;
 	elf_recalc_gui_object(object);
-	if(object->type != ELF_SCREEN) elf_append_to_list(parent->children, (elf_object*)object);
+	if(object->obj_type != ELF_SCREEN) elf_append_to_list(parent->children, (elf_object*)object);
 	else elf_append_to_list(parent->screens, (elf_object*)object);
 	return ELF_TRUE;
 }
@@ -2031,7 +2055,7 @@ elf_gui_object* elf_get_gui_object_by_index(elf_gui_object *parent, int idx)
 	elf_gui_object *object;
 	int i;
 
-	if(parent->type != ELF_GUI && parent->type == ELF_SCREEN) return ELF_FALSE;
+	if(parent->obj_type != ELF_GUI && parent->obj_type == ELF_SCREEN) return ELF_FALSE;
 
 	if(idx < 0 || idx > elf_get_list_length(parent->children)+elf_get_list_length(parent->screens)-1) return ELF_FALSE;
 
@@ -2060,7 +2084,7 @@ unsigned char elf_remove_gui_object_by_name(elf_gui_object *parent, const char *
 {
 	elf_gui_object *object;
 
-	if(parent->type != ELF_GUI && parent->type != ELF_SCREEN) return ELF_FALSE;
+	if(parent->obj_type != ELF_GUI && parent->obj_type != ELF_SCREEN) return ELF_FALSE;
 
 	for(object = (elf_gui_object*)elf_begin_list(parent->children); object;
 		object = (elf_gui_object*)elf_next_in_list(parent->children))
@@ -2108,7 +2132,7 @@ unsigned char elf_remove_gui_object_by_index(elf_gui_object *parent, int idx)
 	elf_gui_object *object;
 	int i;
 
-	if(parent->type != ELF_GUI && parent->type == ELF_SCREEN) return ELF_FALSE;
+	if(parent->obj_type != ELF_GUI && parent->obj_type == ELF_SCREEN) return ELF_FALSE;
 
 	if(idx < 0 || idx > elf_get_list_length(parent->children)+elf_get_list_length(parent->screens)-1) return ELF_FALSE;
 
@@ -2161,7 +2185,7 @@ unsigned char elf_remove_gui_object_by_index(elf_gui_object *parent, int idx)
 
 unsigned char elf_remove_gui_object_by_object(elf_gui_object *parent, elf_gui_object *object)
 {
-	if(parent->type != ELF_GUI && parent->type != ELF_SCREEN) return ELF_FALSE;
+	if(parent->obj_type != ELF_GUI && parent->obj_type != ELF_SCREEN) return ELF_FALSE;
 	
 	if(object->root)
 	{
@@ -2174,13 +2198,13 @@ unsigned char elf_remove_gui_object_by_object(elf_gui_object *parent, elf_gui_ob
 	}
 	object->parent = NULL;
 	elf_clear_gui_object_root(object);
-	if(object->type != ELF_SCREEN) return elf_remove_from_list(parent->children, (elf_object*)object);
+	if(object->obj_type != ELF_SCREEN) return elf_remove_from_list(parent->children, (elf_object*)object);
 	else return elf_remove_from_list(parent->screens, (elf_object*)object);
 }
 
 elf_gui_object* elf_get_gui_trace(elf_gui *gui)
 {
-	if(!gui->trace || gui->trace->type == ELF_GUI) return NULL;
+	if(!gui->trace || gui->trace->obj_type == ELF_GUI) return NULL;
 	return gui->trace;
 }
 

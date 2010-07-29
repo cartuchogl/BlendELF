@@ -1,7 +1,8 @@
 
 #define ELF_OBJECT_HEADER \
-	int type; \
-	int ref_count
+	int obj_type; \
+	int obj_ref_count; \
+	void (*obj_destr)(void*)
 
 #define ELF_RESOURCE_HEADER \
 	ELF_OBJECT_HEADER; \
@@ -100,10 +101,10 @@ struct elf_general {
 	int particles_id_counter;
 	int sprite_id_counter;
 
-	int global_ref_count;
-	int global_obj_count;
-
+	int ref_count;
+	int obj_count;
 	int ref_table[ELF_OBJECT_TYPE_COUNT];
+	int obj_table[ELF_OBJECT_TYPE_COUNT];
 };
 
 struct elf_config {
