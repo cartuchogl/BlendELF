@@ -212,7 +212,8 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 		if(memcmp(&driver->shader_config, &shader_config, sizeof(gfx_shader_config)))
 		{
 			memcpy(&driver->shader_config, &shader_config, sizeof(gfx_shader_config));
-			shader_program = gfx_get_shader_program(&shader_config);
+			if(shader_params->gbuffer_active) shader_program = gfx_get_gbuf_shader_program(&shader_config);
+			else shader_program = gfx_get_shader_program(&shader_config);
 			if(shader_program) glUseProgram(shader_program->id);
 			else return;
 		}

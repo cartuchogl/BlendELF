@@ -162,7 +162,7 @@ elf_engine* elf_create_engine()
 
 	gfx_set_vertex_array_data(engine->sprite_vertex_array, GFX_NORMAL, vertex_data);
 
-	gfx_inc_obj(ELF_ENGINE);
+	elf_inc_obj(ELF_ENGINE);
 
 	return engine;
 }
@@ -187,7 +187,7 @@ void elf_destroy_engine(void *data)
 
 	free(engine);
 
-	gfx_dec_obj(ELF_ENGINE);
+	elf_dec_obj(ELF_ENGINE);
 }
 
 unsigned char elf_init_engine()

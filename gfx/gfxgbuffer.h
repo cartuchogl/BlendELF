@@ -64,14 +64,17 @@ void gfx_destroy_gbuffer(void *data)
 
 void gfx_bind_gbuffer(gfx_gbuffer *gbuffer, gfx_shader_params *shader_params)
 {
+	gfx_set_render_target(gbuffer->buf_rt);
 }
 
 void gfx_bind_gbuffer_light(gfx_gbuffer *gbuffer, gfx_shader_params *shader_params)
 {
+	gfx_set_render_target(gbuffer->light_rt);
 }
 
 void gfx_bind_gbuffer_main(gfx_gbuffer *gbuffer, gfx_shader_params *shader_params)
 {
+	gfx_set_render_target(gbuffer->main_rt);
 }
 
 gfx_texture* gfx_get_gbuffer_depth(gfx_gbuffer *gbuffer)

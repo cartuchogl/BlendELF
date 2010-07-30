@@ -198,6 +198,8 @@ typedef struct gfx_shader_params {
 	int viewport_height;
 	float projection_matrix[16];
 	float modelview_matrix[16];
+	gfx_gbuffer *gbuffer;
+	unsigned char gbuffer_active;
 	gfx_shader_program *shader_program;
 } gfx_shader_params;
 
