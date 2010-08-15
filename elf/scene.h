@@ -1568,90 +1568,213 @@ void elf_draw_scene(elf_scene *scene)
 
 	render_target = gfx_get_cur_render_target();
 
-	// draw depth buffer
-	gfx_set_shader_params_default(&scene->shader_params);
-	elf_set_camera(scene->cur_camera, &scene->shader_params);
-	scene->shader_params.render_params.color_write = ELF_FALSE;
-	scene->shader_params.render_params.alpha_write = ELF_FALSE;
-
-	scene->entity_queue_count = 0;
-	elf_begin_list(scene->entity_queue);
-
-	for(ent = (elf_entity*)elf_begin_list(scene->entities); ent != NULL;
-		ent = (elf_entity*)elf_next_in_list(scene->entities))
-	{
-		if(!elf_cull_entity(ent, scene->cur_camera))
-		{
-			if(scene->entity_queue_count < elf_get_list_length(scene->entity_queue))
-			{
-				elf_set_list_cur_ptr(scene->entity_queue, (elf_object*)ent);
-				elf_next_in_list(scene->entity_queue);
-			}
-			else
-			{
-				elf_append_to_list(scene->entity_queue, (elf_object*)ent);
-			}
-			scene->entity_queue_count++;
-			elf_draw_entity(ent, ELF_DRAW_DEPTH, &scene->shader_params);
-			ent->culled = ELF_FALSE;
-		}
-		else
-		{
-			ent->culled = ELF_TRUE;
-		}
-	}
-
-	scene->sprite_queue_count = 0;
-	elf_begin_list(scene->sprite_queue);
-
-	for(spr = (elf_sprite*)elf_begin_list(scene->sprites); spr != NULL;
-		spr = (elf_sprite*)elf_next_in_list(scene->sprites))
-	{
-		if(!elf_cull_sprite(spr, scene->cur_camera))
-		{
-			if(scene->sprite_queue_count < elf_get_list_length(scene->sprite_queue))
-			{
-				elf_set_list_cur_ptr(scene->sprite_queue, (elf_object*)spr);
-				elf_next_in_list(scene->sprite_queue);
-			}
-			else
-			{
-				elf_append_to_list(scene->sprite_queue, (elf_object*)spr);
-			}
-			scene->sprite_queue_count++;
-			elf_draw_sprite(spr, ELF_DRAW_DEPTH, &scene->shader_params);
-			spr->culled = ELF_FALSE;
-		}
-		else
-		{
-			spr->culled = ELF_TRUE;
-		}
-	}
-
-	// initiate occlusion queries
 	if(eng->occlusion_culling)
 	{
+		// draw occluders to depth buffer
 		gfx_set_shader_params_default(&scene->shader_params);
 		elf_set_camera(scene->cur_camera, &scene->shader_params);
-		scene->shader_params.render_params.depth_write = GFX_FALSE;
-		scene->shader_params.render_params.depth_func = GFX_LEQUAL;
-		scene->shader_params.render_params.color_write = GFX_FALSE;
-		scene->shader_params.render_params.alpha_write = GFX_FALSE;
-		scene->shader_params.render_params.cull_face = GFX_FALSE;
-		scene->shader_params.render_params.offset_bias = -1.0;
-		scene->shader_params.render_params.offset_scale = -1.0;
+		scene->shader_params.render_params.color_write = ELF_FALSE;
+		scene->shader_params.render_params.alpha_write = ELF_FALSE;
 
-		for(i = 0, ent = (elf_entity*)elf_begin_list(scene->entity_queue);
-			i < scene->entity_queue_count && ent != NULL;
-			i++, ent = (elf_entity*)elf_next_in_list(scene->entity_queue))
+		found = ELF_FALSE;
+		scene->entity_queue_count = 0;
+		elf_begin_list(scene->entity_queue);
+
+		for(ent = (elf_entity*)elf_begin_list(scene->entities); ent != NULL;
+			ent = (elf_entity*)elf_next_in_list(scene->entities))
 		{
-			gfx_begin_query(ent->query);
-			elf_draw_entity_bounding_box(ent, &scene->shader_params);
-			gfx_end_query(ent->query);
+			if(!elf_cull_entity(ent, scene->cur_camera))
+			{
+				if(scene->entity_queue_count < elf_get_list_length(scene->entity_queue))
+				{
+					elf_set_list_cur_ptr(scene->entity_queue, (elf_object*)ent);
+					elf_next_in_list(scene->entity_queue);
+				}
+				else
+				{
+					elf_append_to_list(scene->entity_queue, (elf_object*)ent);
+				}
+				scene->entity_queue_count++;
+				if(ent->occluder)
+				{
+					elf_draw_entity(ent, ELF_DRAW_DEPTH, &scene->shader_params);
+					found = ELF_TRUE;
+				}
+				ent->culled = ELF_FALSE;
+			}
+			else
+			{
+				ent->culled = ELF_TRUE;
+			}
 		}
 
-		scene->shader_params.render_params.offset_bias = 0.0;
-		scene->shader_params.render_params.offset_scale = 0.0;
+		scene->sprite_queue_count = 0;
+		elf_begin_list(scene->sprite_queue);
+
+		for(spr = (elf_sprite*)elf_begin_list(scene->sprites); spr != NULL;
+			spr = (elf_sprite*)elf_next_in_list(scene->sprites))
+		{
+			if(!elf_cull_sprite(spr, scene->cur_camera))
+			{
+				if(scene->sprite_queue_count < elf_get_list_length(scene->sprite_queue))
+				{
+					elf_set_list_cur_ptr(scene->sprite_queue, (elf_object*)spr);
+					elf_next_in_list(scene->sprite_queue);
+				}
+				else
+				{
+					elf_append_to_list(scene->sprite_queue, (elf_object*)spr);
+				}
+				scene->sprite_queue_count++;
+				if(spr->occluder)
+				{
+					found = ELF_TRUE;
+					elf_draw_sprite(spr, ELF_DRAW_DEPTH, &scene->shader_params);
+				}
+				spr->culled = ELF_FALSE;
+			}
+			else
+			{
+				spr->culled = ELF_TRUE;
+			}
+		}
+
+		if(found)
+		{
+			// initiate occlusion queries
+			gfx_set_shader_params_default(&scene->shader_params);
+			elf_set_camera(scene->cur_camera, &scene->shader_params);
+			scene->shader_params.render_params.depth_write = GFX_FALSE;
+			scene->shader_params.render_params.depth_func = GFX_LEQUAL;
+			scene->shader_params.render_params.color_write = GFX_FALSE;
+			scene->shader_params.render_params.alpha_write = GFX_FALSE;
+			scene->shader_params.render_params.cull_face = GFX_FALSE;
+
+			for(i = 0, ent = (elf_entity*)elf_begin_list(scene->entity_queue);
+				i < scene->entity_queue_count && ent != NULL;
+				i++, ent = (elf_entity*)elf_next_in_list(scene->entity_queue))
+			{
+				gfx_begin_query(ent->query);
+				elf_draw_entity_bounding_box(ent, &scene->shader_params);
+				gfx_end_query(ent->query);
+			}
+
+			// draw depth buffer
+			gfx_set_shader_params_default(&scene->shader_params);
+			elf_set_camera(scene->cur_camera, &scene->shader_params);
+			scene->shader_params.render_params.color_write = ELF_FALSE;
+			scene->shader_params.render_params.alpha_write = ELF_FALSE;
+
+			for(i = 0, ent = (elf_entity*)elf_begin_list(scene->entity_queue);
+				i < scene->entity_queue_count && ent != NULL;
+				i++, ent = (elf_entity*)elf_next_in_list(scene->entity_queue))
+			{
+				if(ent->occluder) continue;
+
+				if(gfx_get_query_result(ent->query) < 1)
+				{
+					elf_remove_from_list(scene->entity_queue, (elf_object*)ent);
+					scene->entity_queue_count--; i--;
+				}
+				else
+				{
+					elf_draw_entity(ent, ELF_DRAW_DEPTH, &scene->shader_params);
+				}
+			}
+
+			for(i = 0, spr = (elf_sprite*)elf_begin_list(scene->sprite_queue);
+				i < scene->sprite_queue_count && spr != NULL;
+				i++, spr = (elf_sprite*)elf_next_in_list(scene->sprite_queue))
+			{
+				if(spr->occluder) continue;
+
+				elf_draw_sprite(spr, ELF_DRAW_DEPTH, &scene->shader_params);
+			}
+		}
+		else
+		{
+			// draw depth buffer
+			gfx_set_shader_params_default(&scene->shader_params);
+			elf_set_camera(scene->cur_camera, &scene->shader_params);
+			scene->shader_params.render_params.color_write = ELF_FALSE;
+			scene->shader_params.render_params.alpha_write = ELF_FALSE;
+
+			for(i = 0, ent = (elf_entity*)elf_begin_list(scene->entity_queue);
+				i < scene->entity_queue_count && ent != NULL;
+				i++, ent = (elf_entity*)elf_next_in_list(scene->entity_queue))
+			{
+				elf_draw_entity(ent, ELF_DRAW_DEPTH, &scene->shader_params);
+			}
+
+			for(i = 0, spr = (elf_sprite*)elf_begin_list(scene->sprite_queue);
+				i < scene->sprite_queue_count && spr != NULL;
+				i++, spr = (elf_sprite*)elf_next_in_list(scene->sprite_queue))
+			{
+				elf_draw_sprite(spr, ELF_DRAW_DEPTH, &scene->shader_params);
+			}
+		}
+	}
+	else
+	{
+		// draw depth buffer
+		gfx_set_shader_params_default(&scene->shader_params);
+		elf_set_camera(scene->cur_camera, &scene->shader_params);
+		scene->shader_params.render_params.color_write = ELF_FALSE;
+		scene->shader_params.render_params.alpha_write = ELF_FALSE;
+
+		scene->entity_queue_count = 0;
+		elf_begin_list(scene->entity_queue);
+
+		for(ent = (elf_entity*)elf_begin_list(scene->entities); ent != NULL;
+			ent = (elf_entity*)elf_next_in_list(scene->entities))
+		{
+			if(!elf_cull_entity(ent, scene->cur_camera))
+			{
+				if(scene->entity_queue_count < elf_get_list_length(scene->entity_queue))
+				{
+					elf_set_list_cur_ptr(scene->entity_queue, (elf_object*)ent);
+					elf_next_in_list(scene->entity_queue);
+				}
+				else
+				{
+					elf_append_to_list(scene->entity_queue, (elf_object*)ent);
+				}
+				scene->entity_queue_count++;
+				elf_draw_entity(ent, ELF_DRAW_DEPTH, &scene->shader_params);
+				ent->culled = ELF_FALSE;
+			}
+			else
+			{
+				ent->culled = ELF_TRUE;
+			}
+		}
+
+		scene->sprite_queue_count = 0;
+		elf_begin_list(scene->sprite_queue);
+
+		for(spr = (elf_sprite*)elf_begin_list(scene->sprites); spr != NULL;
+			spr = (elf_sprite*)elf_next_in_list(scene->sprites))
+		{
+			if(!elf_cull_sprite(spr, scene->cur_camera))
+			{
+				if(scene->sprite_queue_count < elf_get_list_length(scene->sprite_queue))
+				{
+					elf_set_list_cur_ptr(scene->sprite_queue, (elf_object*)spr);
+					elf_next_in_list(scene->sprite_queue);
+				}
+				else
+				{
+					elf_append_to_list(scene->sprite_queue, (elf_object*)spr);
+				}
+				scene->sprite_queue_count++;
+				elf_draw_sprite(spr, ELF_DRAW_DEPTH, &scene->shader_params);
+				spr->culled = ELF_FALSE;
+			}
+			else
+			{
+				spr->culled = ELF_TRUE;
+			}
+		}
 	}
 
 	eng->ambient_color = scene->ambient_color;
@@ -1824,35 +1947,27 @@ void elf_draw_scene(elf_scene *scene)
 			eofs = elf_mul_qua_vec3f(eori, ent->bb_offset);
 			epos = elf_add_vec3f_vec3f(epos, eofs);
 
-			if((eng->occlusion_culling && gfx_get_query_result(ent->query) > 0) || !eng->occlusion_culling ||
-				elf_camera_inside_sphere(scene->cur_camera, &epos.x, ent->cull_radius))
+			if(light->light_type == ELF_SPOT_LIGHT)
 			{
-				if(light->light_type == ELF_SPOT_LIGHT)
+				if(!elf_cull_entity(ent, light->shadow_camera))
 				{
-					if(!elf_cull_entity(ent, light->shadow_camera))
-					{
-						elf_draw_entity(ent, ELF_DRAW_WITH_LIGHTING, &scene->shader_params);
-					}
+					elf_draw_entity(ent, ELF_DRAW_WITH_LIGHTING, &scene->shader_params);
 				}
-				else if(light->light_type == ELF_POINT_LIGHT)
-				{
-					dvec = elf_sub_vec3f_vec3f(epos, lpos);
-					dist = elf_get_vec3f_length(dvec);
-					dist -= ent->cull_radius;
-					att = 1.0-elf_float_max(dist-light->distance, 0.0)*light->fade_speed;
-					if(att > 0.0)
-					{
-						elf_draw_entity(ent, ELF_DRAW_WITH_LIGHTING, &scene->shader_params);
-					}
-				}
-				else
+			}
+			else if(light->light_type == ELF_POINT_LIGHT)
+			{
+				dvec = elf_sub_vec3f_vec3f(epos, lpos);
+				dist = elf_get_vec3f_length(dvec);
+				dist -= ent->cull_radius;
+				att = 1.0-elf_float_max(dist-light->distance, 0.0)*light->fade_speed;
+				if(att > 0.0)
 				{
 					elf_draw_entity(ent, ELF_DRAW_WITH_LIGHTING, &scene->shader_params);
 				}
 			}
 			else
 			{
-				ent->culled = ELF_TRUE;
+				elf_draw_entity(ent, ELF_DRAW_WITH_LIGHTING, &scene->shader_params);
 			}
 		}
 
