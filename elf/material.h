@@ -258,118 +258,136 @@ void elf_set_texture_params_default(gfx_texture_params *params)
 	params->type = ELF_COLOR_MAP;
 	params->texture = NULL;
 	params->projection_mode = GFX_NONE;
+	params->parallax_scale = 0.0;
 }
 
-void elf_set_material_alpha_texture(elf_material *material, gfx_shader_params *shader_params)
+void elf_set_material(elf_material *material, int mode, gfx_shader_params *shader_params)
 {
 	int i;
 
-	for(i = 0; i < 5; i++) elf_set_texture_params_default(&shader_params->texture_params[i]);
-	shader_params->render_params.alpha_test = ELF_FALSE;
-	shader_params->render_params.alpha_threshold = 0.99;
-
-	if(material->diffuse_map && material->alpha_test)
+	if(mode == ELF_DRAW_DEPTH)
 	{
-		shader_params->render_params.alpha_test = ELF_TRUE;
-		shader_params->render_params.alpha_threshold = material->alpha_threshold;
-		shader_params->texture_params[0].type = ELF_COLOR_MAP;
-		shader_params->texture_params[0].texture = material->diffuse_map->texture;
-		shader_params->texture_params[0].projection_mode = GFX_NONE;
-	}
-}
-
-void elf_set_material_ambient(elf_material *material, gfx_shader_params *shader_params)
-{
-	int i;
-
-	shader_params->material_params.color.r = material->ambient_color.r*eng->ambient_color.r;
-	shader_params->material_params.color.g = material->ambient_color.g*eng->ambient_color.g;
-	shader_params->material_params.color.b = material->ambient_color.b*eng->ambient_color.b;
-	shader_params->material_params.color.a = 1.0;
-
-	memset(&shader_params->material_params.specular_color.r, 0x0, sizeof(float)*4);
-	shader_params->material_params.spec_power = 0.0;
-
-	for(i = 0; i < 5; i++) elf_set_texture_params_default(&shader_params->texture_params[i]);
-	shader_params->render_params.alpha_test = ELF_FALSE;
-	shader_params->render_params.alpha_threshold = 0.99;
-
-	if(material->diffuse_map)
-	{
-		if(material->alpha_test)
+		if(material->diffuse_map && material->alpha_test)
 		{
 			shader_params->render_params.alpha_test = ELF_TRUE;
 			shader_params->render_params.alpha_threshold = material->alpha_threshold;
+			shader_params->texture_params[0].type = ELF_COLOR_MAP;
+			shader_params->texture_params[0].texture = material->diffuse_map->texture;
+			shader_params->texture_params[0].projection_mode = GFX_NONE;
 		}
-		shader_params->texture_params[0].type = ELF_COLOR_MAP;
-		shader_params->texture_params[0].texture = material->diffuse_map->texture;
-		shader_params->texture_params[0].projection_mode = GFX_NONE;
-	}
-
-	if(material->light_map)
-	{
-		shader_params->texture_params[1].type = ELF_LIGHT_MAP;
-		shader_params->texture_params[1].texture = material->light_map->texture;
-		shader_params->texture_params[1].projection_mode = GFX_NONE;
-	}
-}
-
-void elf_set_material(elf_material *material, gfx_shader_params *shader_params)
-{
-	int i;
-
-	memcpy(&shader_params->material_params.color.r, &material->diffuse_color.r, sizeof(float)*4);
-	memcpy(&shader_params->material_params.specular_color.r, &material->specular_color.r, sizeof(float)*4);
-	shader_params->material_params.spec_power = material->spec_power;
-
-	for(i = 0; i < 5; i++) elf_set_texture_params_default(&shader_params->texture_params[i]);
-	shader_params->render_params.alpha_test = ELF_FALSE;
-	shader_params->render_params.alpha_threshold = 0.99;
-
-	if(material->diffuse_map)
-	{
-		if(material->alpha_test)
+		else
 		{
-			shader_params->render_params.alpha_test = ELF_TRUE;
-			shader_params->render_params.alpha_threshold = material->alpha_threshold;
+			shader_params->render_params.alpha_test = ELF_FALSE;
+			shader_params->render_params.alpha_threshold = 0.99;
+			elf_set_texture_params_default(&shader_params->texture_params[0]);
 		}
-		shader_params->texture_params[0].type = ELF_COLOR_MAP;
-		shader_params->texture_params[0].texture = material->diffuse_map->texture;
-		shader_params->texture_params[0].projection_mode = GFX_NONE;
 	}
-	else
+	else if(mode == ELF_DRAW_AMBIENT)
 	{
-		shader_params->render_params.alpha_test = ELF_FALSE;
-		shader_params->render_params.alpha_threshold = 0.99;
-	}
+		elf_set_texture_params_default(&shader_params->texture_params[0]);
+		elf_set_texture_params_default(&shader_params->texture_params[2]);
+		elf_set_texture_params_default(&shader_params->texture_params[4]);
 
-	if(material->normal_map)
-	{
-		shader_params->texture_params[1].type = ELF_NORMAL_MAP;
-		shader_params->texture_params[1].texture = material->normal_map->texture;
-		shader_params->texture_params[1].projection_mode = GFX_NONE;
-	}
+		shader_params->material_params.color.r = material->ambient_color.r*eng->ambient_color.r;
+		shader_params->material_params.color.g = material->ambient_color.g*eng->ambient_color.g;
+		shader_params->material_params.color.b = material->ambient_color.b*eng->ambient_color.b;
+		shader_params->material_params.color.a = 1.0;
 
-	if(material->height_map)
-	{
-		shader_params->texture_params[2].type = ELF_HEIGHT_MAP;
-		shader_params->texture_params[2].texture = material->height_map->texture;
-		shader_params->texture_params[2].projection_mode = GFX_NONE;
-		shader_params->texture_params[2].parallax_scale = material->parallax_scale*0.05;
-	}
+		if(material->diffuse_map)
+		{
+			shader_params->texture_params[0].type = ELF_COLOR_MAP;
+			shader_params->texture_params[0].texture = material->diffuse_map->texture;
+			shader_params->texture_params[0].projection_mode = GFX_NONE;
+		}
 
-	if(material->specular_map)
-	{
-		shader_params->texture_params[3].type = ELF_SPECULAR_MAP;
-		shader_params->texture_params[3].texture = material->specular_map->texture;
-		shader_params->texture_params[3].projection_mode = GFX_NONE;
-	}
+		if(material->height_map)
+		{
+			shader_params->texture_params[2].type = ELF_HEIGHT_MAP;
+			shader_params->texture_params[2].texture = material->height_map->texture;
+			shader_params->texture_params[2].projection_mode = GFX_NONE;
+			shader_params->texture_params[2].parallax_scale = material->parallax_scale*0.05;
+		}
 
-	if(material->light_map)
+		if(material->light_map)
+		{
+			shader_params->texture_params[4].type = ELF_LIGHT_MAP;
+			shader_params->texture_params[4].texture = material->light_map->texture;
+			shader_params->texture_params[4].projection_mode = GFX_NONE;
+		}
+	}
+	else if(mode == ELF_DRAW_WITHOUT_LIGHTING)
 	{
-		shader_params->texture_params[4].type = ELF_LIGHT_MAP;
-		shader_params->texture_params[4].texture = material->light_map->texture;
-		shader_params->texture_params[4].projection_mode = GFX_NONE;
+		elf_set_texture_params_default(&shader_params->texture_params[0]);
+		elf_set_texture_params_default(&shader_params->texture_params[2]);
+		elf_set_texture_params_default(&shader_params->texture_params[4]);
+
+		memcpy(&shader_params->material_params.color.r, &material->diffuse_color.r, sizeof(float)*4);
+
+		if(material->diffuse_map)
+		{
+			shader_params->texture_params[0].type = ELF_COLOR_MAP;
+			shader_params->texture_params[0].texture = material->diffuse_map->texture;
+			shader_params->texture_params[0].projection_mode = GFX_NONE;
+		}
+
+		if(material->height_map)
+		{
+			shader_params->texture_params[2].type = ELF_HEIGHT_MAP;
+			shader_params->texture_params[2].texture = material->height_map->texture;
+			shader_params->texture_params[2].projection_mode = GFX_NONE;
+			shader_params->texture_params[2].parallax_scale = material->parallax_scale*0.05;
+		}
+
+		if(material->light_map)
+		{
+			shader_params->texture_params[4].type = ELF_LIGHT_MAP;
+			shader_params->texture_params[4].texture = material->light_map->texture;
+			shader_params->texture_params[4].projection_mode = GFX_NONE;
+		}
+	}
+	else if(mode == ELF_DRAW_WITH_LIGHTING)
+	{
+		for(i = 0; i < 5; i++) elf_set_texture_params_default(&shader_params->texture_params[i]);
+
+		memcpy(&shader_params->material_params.color.r, &material->diffuse_color.r, sizeof(float)*4);
+		memcpy(&shader_params->material_params.specular_color.r, &material->specular_color.r, sizeof(float)*4);
+		shader_params->material_params.spec_power = material->spec_power;
+
+		if(material->diffuse_map)
+		{
+			shader_params->texture_params[0].type = ELF_COLOR_MAP;
+			shader_params->texture_params[0].texture = material->diffuse_map->texture;
+			shader_params->texture_params[0].projection_mode = GFX_NONE;
+		}
+
+		if(material->normal_map)
+		{
+			shader_params->texture_params[1].type = ELF_NORMAL_MAP;
+			shader_params->texture_params[1].texture = material->normal_map->texture;
+			shader_params->texture_params[1].projection_mode = GFX_NONE;
+		}
+
+		if(material->height_map)
+		{
+			shader_params->texture_params[2].type = ELF_HEIGHT_MAP;
+			shader_params->texture_params[2].texture = material->height_map->texture;
+			shader_params->texture_params[2].projection_mode = GFX_NONE;
+			shader_params->texture_params[2].parallax_scale = material->parallax_scale*0.05;
+		}
+
+		if(material->specular_map)
+		{
+			shader_params->texture_params[3].type = ELF_SPECULAR_MAP;
+			shader_params->texture_params[3].texture = material->specular_map->texture;
+			shader_params->texture_params[3].projection_mode = GFX_NONE;
+		}
+
+		if(material->light_map)
+		{
+			shader_params->texture_params[4].type = ELF_LIGHT_MAP;
+			shader_params->texture_params[4].texture = material->light_map->texture;
+			shader_params->texture_params[4].projection_mode = GFX_NONE;
+		}
 	}
 }
 

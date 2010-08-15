@@ -187,6 +187,30 @@ unsigned char elf_get_sprite_face_camera(elf_sprite *sprite)
 	return sprite->face_camera;
 }
 
+void elf_set_sprite_visible(elf_sprite *sprite, unsigned char visible)
+{
+	if(sprite->visible == visible) return;
+
+	sprite->visible = !visible == ELF_FALSE;
+
+	sprite->moved = ELF_TRUE;
+}
+
+unsigned char elf_get_sprite_visible(elf_sprite *sprite)
+{
+	return sprite->visible;
+}
+
+void elf_set_sprite_occluder(elf_sprite *sprite, unsigned char occluder)
+{
+	sprite->occluder = !occluder == ELF_FALSE;
+}
+
+unsigned char elf_get_sprite_occluder(elf_sprite *sprite)
+{
+	return sprite->occluder;
+}
+
 unsigned char elf_cull_sprite(elf_sprite *sprite, elf_camera *camera)
 {
 	if(!sprite->material || !sprite->visible) return ELF_TRUE;
@@ -194,58 +218,16 @@ unsigned char elf_cull_sprite(elf_sprite *sprite, elf_camera *camera)
 	return !elf_sphere_inside_frustum(camera, &sprite->position.x, sprite->cull_radius);
 }
 
-void elf_draw_sprite(elf_sprite *sprite, gfx_shader_params *shader_params)
+void elf_draw_sprite(elf_sprite *sprite, int mode, gfx_shader_params *shader_params)
 {
-	if(!sprite->material || !sprite->visible || !sprite->material->lighting) return;
+	if(!sprite->material || !sprite->visible ||
+		(mode == ELF_DRAW_WITHOUT_LIGHTING && sprite->material->lighting)) return;
 
 	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(sprite->transform),
 			shader_params->camera_matrix, shader_params->modelview_matrix);
 
-	elf_set_material(sprite->material, shader_params);
+	elf_set_material(sprite->material, mode, shader_params);
 	gfx_set_shader_params(shader_params);
-
-	gfx_draw_vertex_array(eng->sprite_vertex_array, 12, GFX_TRIANGLES);
-}
-
-void elf_draw_sprite_ambient(elf_sprite *sprite, gfx_shader_params *shader_params)
-{
-	if(!sprite->material || !sprite->visible) return;
-
-	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(sprite->transform),
-			shader_params->camera_matrix, shader_params->modelview_matrix);
-
-	elf_set_material(sprite->material, shader_params);
-	shader_params->material_params.color.r = eng->ambient_color.r*sprite->material->ambient_color.r;
-	shader_params->material_params.color.g = eng->ambient_color.g*sprite->material->ambient_color.g;
-	shader_params->material_params.color.b = eng->ambient_color.b*sprite->material->ambient_color.b;
-	gfx_set_shader_params(shader_params);
-
-	gfx_draw_vertex_array(eng->sprite_vertex_array, 12, GFX_TRIANGLES);
-}
-
-void elf_draw_sprite_non_lighted(elf_sprite *sprite, gfx_shader_params *shader_params)
-{
-	if(!sprite->material || !sprite->visible || sprite->material->lighting) return;
-
-	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(sprite->transform),
-			shader_params->camera_matrix, shader_params->modelview_matrix);
-
-	elf_set_material(sprite->material, shader_params);
-	gfx_set_shader_params(shader_params);
-
-	gfx_draw_vertex_array(eng->sprite_vertex_array, 12, GFX_TRIANGLES);
-}
-
-void elf_draw_sprite_without_materials(elf_sprite *sprite, gfx_shader_params *shader_params)
-{
-	if(!sprite->material || !sprite->visible) return;
-
-	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(sprite->transform),
-			shader_params->camera_matrix, shader_params->modelview_matrix);
-
-	elf_set_material_alpha_texture(sprite->material, shader_params);
-	gfx_set_shader_params(shader_params);
-	gfx_set_texture_params_default(shader_params);
 
 	gfx_draw_vertex_array(eng->sprite_vertex_array, 12, GFX_TRIANGLES);
 }

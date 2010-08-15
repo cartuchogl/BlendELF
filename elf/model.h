@@ -343,7 +343,7 @@ unsigned int* elf_get_model_indices(elf_model *model)
 	return model->index;
 }
 
-void elf_draw_model(elf_list *materials, elf_model *model, gfx_shader_params *shader_params)
+void elf_draw_model(elf_list *materials, elf_model *model, int mode, gfx_shader_params *shader_params)
 {
 	int i;
 	elf_material *material;
@@ -351,18 +351,22 @@ void elf_draw_model(elf_list *materials, elf_model *model, gfx_shader_params *sh
 
 	if(!model->vertex_array) return;
 
-	found = ELF_FALSE;
-	for(material = (elf_material*)elf_begin_list(materials); material;
-		material = (elf_material*)elf_next_in_list(materials))
+	if(mode == ELF_DRAW_WITHOUT_LIGHTING)
 	{
-		if(material->lighting)
-		{
-			found = ELF_TRUE;
-			break;
-		}
-	}
+		found = ELF_FALSE;
 
-	if(!found) return;
+		for(material = (elf_material*)elf_begin_list(materials); material;
+			material = (elf_material*)elf_next_in_list(materials))
+		{
+			if(!material->lighting)
+			{
+				found = ELF_TRUE;
+				break;
+			}
+		}
+
+		if(!found) return;
+	}
 
 	gfx_set_vertex_array(model->vertex_array);
 
@@ -373,102 +377,20 @@ void elf_draw_model(elf_list *materials, elf_model *model, gfx_shader_params *sh
 		{
 			if(material)
 			{
-				elf_set_material(material, shader_params);
+				if(mode == ELF_DRAW_WITH_LIGHTING)
+				{
+					if(!material->lighting) continue;
+				}
+				else if(mode == ELF_DRAW_WITHOUT_LIGHTING)
+				{
+					if(material->lighting) continue;
+				}
 
-				if(!material->lighting) continue;
-
-				gfx_set_shader_params(shader_params);
-			}
-			gfx_draw_vertex_index(model->areas[i].vertex_index, GFX_TRIANGLES);
-		}
-	}
-}
-
-void elf_draw_model_ambient(elf_list *materials, elf_model *model, gfx_shader_params *shader_params)
-{
-	int i;
-	elf_material *material;
-
-	if(!model->vertex_array) return;
-
-	gfx_set_vertex_array(model->vertex_array);
-
-	for(i = 0, material = (elf_material*)elf_begin_list(materials); i < (int)model->area_count;
-		i++, material = (elf_material*)elf_next_in_list(materials))
-	{
-		if(model->areas[i].vertex_index)
-		{
-			if(material && material->lighting)
-			{
-				elf_set_material_ambient(material, shader_params);
-				gfx_set_shader_params(shader_params);
-			}
-			else
-			{
-				continue;
-			}
-			gfx_draw_vertex_index(model->areas[i].vertex_index, GFX_TRIANGLES);
-		}
-	}
-}
-
-void elf_draw_model_non_lighted(elf_list *materials, elf_model *model, gfx_shader_params *shader_params)
-{
-	int i;
-	elf_material *material;
-	unsigned char found;
-
-	if(!model->vertex_array) return;
-
-	found = ELF_FALSE;
-	for(material = (elf_material*)elf_begin_list(materials); material;
-		material = (elf_material*)elf_next_in_list(materials))
-	{
-		if(!material->lighting)
-		{
-			found = ELF_TRUE;
-			break;
-		}
-	}
-
-	if(!found) return;
-
-	gfx_set_vertex_array(model->vertex_array);
-
-	for(i = 0, material = (elf_material*)elf_begin_list(materials); i < (int)model->area_count;
-		i++, material = (elf_material*)elf_next_in_list(materials))
-	{
-		if(model->areas[i].vertex_index)
-		{
-			if(material)
-			{
-				elf_set_material(material, shader_params);
-
-				if(material->lighting) continue;
+				elf_set_material(material, mode, shader_params);
 
 				gfx_set_shader_params(shader_params);
 			}
-			gfx_draw_vertex_index(model->areas[i].vertex_index, GFX_TRIANGLES);
-		}
-	}
-}
 
-void elf_draw_model_without_materials(elf_list *materials, elf_model *model, gfx_shader_params *shader_params)
-{
-	int i;
-	elf_material *material;
-
-	if(!model->vertex_array) return;
-
-	gfx_set_vertex_array(model->vertex_array);
-
-	for(i = 0, material = (elf_material*)elf_begin_list(materials); i < (int)model->area_count;
-		i++, material = (elf_material*)elf_next_in_list(materials))
-	{
-		if(model->areas[i].vertex_index)
-		{
-			if(material) elf_set_material_alpha_texture(material, shader_params);
-			gfx_set_shader_params(shader_params);
 			gfx_draw_vertex_index(model->areas[i].vertex_index, GFX_TRIANGLES);
 		}
 	}

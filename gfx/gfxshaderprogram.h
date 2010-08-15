@@ -91,7 +91,7 @@ gfx_shader_program* gfx_create_shader_program(const char* vertex, const char* fr
 
 	glGetProgramiv(shader_program->id, GL_VALIDATE_STATUS, &success);
 
-#ifndef ELF_MACOSX		// NANDEYANE!!??? *SCHLAP* stupid apple GLSL compiler...
+#ifndef ELF_MACOSX		// stupid apple GLSL compiler...
 	if(!success)
 	{
 		glGetProgramiv(shader_program->id, GL_INFO_LOG_LENGTH, &info_log_length);
@@ -109,6 +109,7 @@ gfx_shader_program* gfx_create_shader_program(const char* vertex, const char* fr
 #endif
 
 	shader_program->projection_matrix_loc = glGetUniformLocation(shader_program->id, "elf_ProjectionMatrix");
+	shader_program->inv_projection_matrix_loc = glGetUniformLocation(shader_program->id, "elf_InvProjectionMatrix");
 	shader_program->modelview_matrix_loc = glGetUniformLocation(shader_program->id, "elf_ModelviewMatrix");
 	shader_program->texture0_loc = glGetUniformLocation(shader_program->id, "elf_Texture0");
 	shader_program->texture1_loc = glGetUniformLocation(shader_program->id, "elf_Texture1");

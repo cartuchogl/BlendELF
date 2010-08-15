@@ -313,7 +313,7 @@ elf_bone* elf_get_bone_from_armature_by_name(const char *name, elf_armature *arm
 {
 	int i;
 
-	for(i = 0; i < (int)armature->bones; i++)
+	for(i = 0; i < (int)armature->bone_count; i++)
 	{
 		if(armature->bones[i] && !strcmp(armature->bones[i]->name, name))
 		{

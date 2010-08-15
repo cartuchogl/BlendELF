@@ -67,12 +67,11 @@ gfx_render_target* gfx_get_cur_render_target()
 	return driver->render_target;
 }
 
-unsigned char gfx_set_render_target_color_texture(gfx_render_target *render_target, unsigned int n, gfx_texture *color)
+void gfx_set_render_target_color_texture(gfx_render_target *render_target, unsigned int n, gfx_texture *color)
 {
-	unsigned char status;
 	gfx_render_target *rt;
 
-	if((int)n > driver->max_draw_buffers-1) return GFX_FALSE;
+	if((int)n > driver->max_draw_buffers-1) return;
 
 	if(driver->render_target != render_target)
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, render_target->fb);
@@ -80,9 +79,7 @@ unsigned char gfx_set_render_target_color_texture(gfx_render_target *render_targ
 	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT+n,
 		GL_TEXTURE_2D, color->id, 0);
 
-	status = gfx_check_render_target();
-
-	if(status) render_target->targets[n] = GFX_TRUE;
+	render_target->targets[n] = GFX_TRUE;
 
 	if(!driver->render_target)
 	{
@@ -94,13 +91,10 @@ unsigned char gfx_set_render_target_color_texture(gfx_render_target *render_targ
 		driver->render_target = NULL;
 		gfx_set_render_target(rt);
 	}
-
-	return status;
 }
 
-unsigned char gfx_set_render_target_depth_texture(gfx_render_target *render_target, gfx_texture *depth)
+void gfx_set_render_target_depth_texture(gfx_render_target *render_target, gfx_texture *depth)
 {
-	unsigned char status;
 	gfx_render_target *rt;
 
 	if(driver->render_target != render_target)
@@ -121,8 +115,6 @@ unsigned char gfx_set_render_target_depth_texture(gfx_render_target *render_targ
 			GL_TEXTURE_2D, 0);
 	}
 
-	status = gfx_check_render_target();
-
 	if(!driver->render_target)
 	{
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
@@ -133,8 +125,6 @@ unsigned char gfx_set_render_target_depth_texture(gfx_render_target *render_targ
 		driver->render_target = NULL;
 		gfx_set_render_target(rt);
 	}
-
-	return status;
 }
 
 unsigned char gfx_set_render_target(gfx_render_target *render_target)

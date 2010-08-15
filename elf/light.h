@@ -229,15 +229,6 @@ void elf_set_light(elf_light *light, elf_camera *camera, gfx_shader_params *shad
 	shader_params->light_params.fade_speed = light->fade_speed;
 	shader_params->light_params.inner_cone = light->inner_cone;
 	shader_params->light_params.outer_cone = light->outer_cone;
-
-	/*if(light->shadow_caster)
-	{
-		shader_params->texture_params[GFX_MAX_TEXTURES-1].type = GFX_SHADOW_MAP;
-		shader_params->texture_params[GFX_MAX_TEXTURES-1].texture = light->shadow_map;
-		shader_params->texture_params[GFX_MAX_TEXTURES-1].projection_mode = GFX_SHADOW_PROJECTION;
-		memcpy(shader_params->texture_params[GFX_MAX_TEXTURES-1].matrix,
-			light->projection_matrix, sizeof(float)*16);
-	}*/
 }
 
 unsigned char elf_get_light_changed(elf_light *light)

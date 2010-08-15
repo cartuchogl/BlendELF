@@ -160,7 +160,7 @@ extern "C" {
 #define ELF_BEZIER_CURVE				0x003C
 #define ELF_IPO						0x003D
 #define ELF_FRAME_PLAYER				0x003E
-#define ELF_PROPERTY					0x004F
+#define ELF_PROPERTY					0x003F
 #define ELF_CLIENT					0x0040
 #define ELF_SCRIPTING					0x0041
 #define ELF_PHYSICS_TRI_MESH				0x0042
@@ -314,6 +314,11 @@ extern "C" {
 #define ELF_TEXTURE_MAGIC				179532108
 
 #define ELF_NAME_LENGTH 128
+
+#define ELF_DRAW_DEPTH					0x0000
+#define ELF_DRAW_AMBIENT				0x0001
+#define ELF_DRAW_WITHOUT_LIGHTING			0x0002
+#define ELF_DRAW_WITH_LIGHTING				0x0003
 // !!>
 
 typedef struct elf_vec2i				elf_vec2i;
@@ -639,6 +644,12 @@ int elf_get_shadow_map_size();
 
 int elf_get_polygons_rendered();
 
+void elf_set_fog(float start, float end, float r, float g, float b);
+void elf_disable_fog();
+float elf_get_fog_start();
+float elf_get_fog_end();
+elf_color elf_get_fog_color();
+
 void elf_set_bloom(float threshold);
 void elf_disable_bloom();
 float elf_get_bloom_threshold();
@@ -654,8 +665,9 @@ float elf_get_ssao_amount();
 
 void elf_set_light_shafts(float intensity);
 void elf_disable_light_shafts();
-float elf_get_light_shafts_inteisity();
+float elf_get_light_shafts_intensity();
 
+unsigned char elf_is_fog();
 unsigned char elf_is_bloom();
 unsigned char elf_is_ssao();
 unsigned char elf_is_dof();
@@ -829,9 +841,7 @@ unsigned char elf_get_material_alpha_test(elf_material *material);
 float elf_get_material_alpha_threshold(elf_material *material);
 
 // <!!
-void elf_set_material_alpha_texture(elf_material *material, gfx_shader_params *shader_params);
-void elf_set_material_ambient(elf_material *material, gfx_shader_params *shader_params);
-void elf_set_material(elf_material *material, gfx_shader_params *shader_params);
+void elf_set_material(elf_material *material, int mode, gfx_shader_params *shader_params);
 // !!>
 
 //////////////////////////////// IPOS ////////////////////////////////
@@ -1036,6 +1046,7 @@ unsigned char elf_camera_inside_sphere(elf_camera *camera, float *pos, float rad
 void elf_draw_camera_debug(elf_camera *camera, gfx_shader_params *shader_params);
 // !!>
 
+elf_vec3f elf_project_camera_point(elf_camera *camera, float x, float y, float z);
 elf_vec3f elf_un_project_camera_point(elf_camera *camera, float x, float y, float z);
 
 //////////////////////////////// MESH ////////////////////////////////
@@ -1097,10 +1108,7 @@ float* elf_get_model_tex_coords(elf_model *model);
 float* elf_get_model_tangents(elf_model *model);
 unsigned int* elf_get_model_indices(elf_model *model);
 
-void elf_draw_model(elf_list *material, elf_model *model, gfx_shader_params *shader_params);
-void elf_draw_model_ambient(elf_list *material, elf_model *model, gfx_shader_params *shader_params);
-void elf_draw_model_non_lighted(elf_list *material, elf_model *model, gfx_shader_params *shader_params);
-void elf_draw_model_without_materials(elf_list *materials, elf_model *model, gfx_shader_params *shader_params);
+void elf_draw_model(elf_list *material, elf_model *model, int mode, gfx_shader_params *shader_params);
 void elf_draw_model_bouding_box(elf_model *model, gfx_shader_params *shader_params);
 // !!>
 
@@ -1134,6 +1142,9 @@ elf_material* elf_get_entity_material(elf_entity *entity, int idx);
 void elf_set_entity_visible(elf_entity *entity, unsigned char visible);
 unsigned char elf_get_entity_visible(elf_entity *entity);
 
+void elf_set_entity_occluder(elf_entity *entity, unsigned char occluder);
+unsigned char elf_get_entity_occluder(elf_entity *entity);
+
 void elf_set_entity_physics(elf_entity *entity, int type, float mass);
 void elf_disable_entity_physics(elf_entity *entity);
 
@@ -1155,10 +1166,7 @@ elf_armature* elf_get_entity_armature(elf_entity *entity);
 
 // <!!
 void elf_reset_entity_debug_physics_object(elf_entity *entity);
-void elf_draw_entity(elf_entity *entity, gfx_shader_params *shader_params);
-void elf_draw_entity_ambient(elf_entity *entity, gfx_shader_params *shader_params);
-void elf_draw_entity_non_lighted(elf_entity *entity, gfx_shader_params *shader_params);
-void elf_draw_entity_without_materials(elf_entity *entity, gfx_shader_params *shader_params);
+void elf_draw_entity(elf_entity *entity, int mode, gfx_shader_params *shader_params);
 void elf_draw_entity_bounding_box(elf_entity *entity, gfx_shader_params *shader_params);
 void elf_draw_entity_debug(elf_entity *entity, gfx_shader_params *shader_params);
 unsigned char elf_cull_entity(elf_entity *entity, elf_camera *camera);
@@ -1333,12 +1341,15 @@ elf_material* elf_get_sprite_material(elf_sprite *sprite);
 elf_vec2f elf_get_sprite_scale(elf_sprite *sprite);
 unsigned char elf_get_sprite_face_camera(elf_sprite *sprite);
 
+void elf_set_sprite_visible(elf_sprite *sprite, unsigned char visible);
+unsigned char elf_get_sprite_visible(elf_sprite *sprite);
+
+void elf_set_sprite_occluder(elf_sprite *sprite, unsigned char occluder);
+unsigned char elf_get_sprite_occluder(elf_sprite *sprite);
+
 // <!!
 unsigned char elf_cull_sprite(elf_sprite *sprite, elf_camera *camera);
-void elf_draw_sprite(elf_sprite *sprite, gfx_shader_params *shader_params);
-void elf_draw_sprite_ambient(elf_sprite *sprite, gfx_shader_params *shader_params);
-void elf_draw_sprite_non_lighted(elf_sprite *sprite, gfx_shader_params *shader_params);
-void elf_draw_sprite_without_materials(elf_sprite *sprite, gfx_shader_params *shader_params);
+void elf_draw_sprite(elf_sprite *sprite, int mode, gfx_shader_params *shader_params);
 void elf_draw_sprite_debug(elf_sprite *sprite, gfx_shader_params *shader_params);
 // !!>
 
@@ -1522,8 +1533,7 @@ void elf_destroy_post_process(void *data);
 
 void elf_init_post_process_buffers(elf_post_process *post_process);
 
-void elf_begin_post_process(elf_post_process *post_process, elf_scene *scene);
-void elf_end_post_process(elf_post_process *post_process, elf_scene *scene);
+void elf_run_post_process(elf_post_process *post_process, elf_scene *scene);
 
 void elf_set_post_process_bloom(elf_post_process *post_process, float threshold);
 void elf_disable_post_process_bloom(elf_post_process *post_process);

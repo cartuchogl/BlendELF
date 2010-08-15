@@ -429,6 +429,16 @@ unsigned char elf_get_entity_visible(elf_entity *entity)
 	return entity->visible;
 }
 
+void elf_set_entity_occluder(elf_entity *entity, unsigned char occluder)
+{
+	entity->occluder = !occluder == ELF_FALSE;
+}
+
+unsigned char elf_get_entity_occluder(elf_entity *entity)
+{
+	return entity->occluder;
+}
+
 void elf_set_entity_physics(elf_entity *entity, int type, float mass)
 {
 	elf_set_actor_physics((elf_actor*)entity, type, mass);
@@ -572,7 +582,7 @@ void elf_post_draw_entity(elf_entity *entity)
 	}
 }
 
-void elf_draw_entity(elf_entity *entity, gfx_shader_params *shader_params)
+void elf_draw_entity(elf_entity *entity, int mode, gfx_shader_params *shader_params)
 {
 	if(!entity->model || !entity->visible) return;
 
@@ -580,43 +590,7 @@ void elf_draw_entity(elf_entity *entity, gfx_shader_params *shader_params)
 			shader_params->camera_matrix, shader_params->modelview_matrix);
 
 	elf_pre_draw_entity(entity);
-	elf_draw_model(entity->materials, entity->model, shader_params);
-	elf_post_draw_entity(entity);
-}
-
-void elf_draw_entity_ambient(elf_entity *entity, gfx_shader_params *shader_params)
-{
-	if(!entity->model || !entity->visible) return;
-
-	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(entity->transform),
-		shader_params->camera_matrix, shader_params->modelview_matrix);
-
-	elf_pre_draw_entity(entity);
-	elf_draw_model_ambient(entity->materials, entity->model, shader_params);
-	elf_post_draw_entity(entity);
-}
-
-void elf_draw_entity_non_lighted(elf_entity *entity, gfx_shader_params *shader_params)
-{
-	if(!entity->model || !entity->visible) return;
-
-	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(entity->transform),
-			shader_params->camera_matrix, shader_params->modelview_matrix);
-
-	elf_pre_draw_entity(entity);
-	elf_draw_model_non_lighted(entity->materials, entity->model, shader_params);
-	elf_post_draw_entity(entity);
-}
-
-void elf_draw_entity_without_materials(elf_entity *entity, gfx_shader_params *shader_params)
-{
-	if(!entity->model || !entity->visible) return;
-
-	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(entity->transform),
-		shader_params->camera_matrix, shader_params->modelview_matrix);
-
-	elf_pre_draw_entity(entity);
-	elf_draw_model_without_materials(entity->materials, entity->model, shader_params);
+	elf_draw_model(entity->materials, entity->model, mode, shader_params);
 	elf_post_draw_entity(entity);
 }
 

@@ -46,15 +46,15 @@ void gfx_project(float x, float y, float z, float modl[16], float proj[16], int 
 	ftempo[6] = proj[2] * ftempo[0] + proj[6] * ftempo[1] + proj[10] * ftempo[2] + proj[14] * ftempo[3];
 	ftempo[7] = -ftempo[2];
 
-	if(ftempo[7] == 0.0f) return;
-	ftempo[7] = 1.0f / ftempo[7];
+	if(ftempo[7] == 0.0) return;
+	ftempo[7] = 1.0 / ftempo[7];
 	ftempo[4] *= ftempo[7];
 	ftempo[5] *= ftempo[7];
 	ftempo[6] *= ftempo[7];
 
-	win_coord[0] = (ftempo[4] * 0.5f + 0.5f) * viewp[2] + viewp[0];
-	win_coord[1] = (ftempo[5] * 0.5f + 0.5f) * viewp[3] + viewp[1];
-	win_coord[2] = (1.0f + ftempo[6]) * 0.5f;
+	win_coord[0] = viewp[0] + viewp[2] * (ftempo[4]+1.0) * 0.5;
+	win_coord[1] = viewp[1] + viewp[3] * (ftempo[5]+1.0) * 0.5;
+	win_coord[2] = (ftempo[6] + 1.0) * 0.5;
 }
 
 void gfx_un_project(float x, float y, float z, float modl[16], float proj[16], int viewp[4], float obj_coord[3])

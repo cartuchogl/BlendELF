@@ -453,6 +453,11 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc">elf.SetShadowMapSize( <span class="apikeytype">int</span> size )</div>
 <div class="apifunc"><span class="apikeytype">int</span> elf.GetShadowMapSize(  )</div>
 <div class="apifunc"><span class="apikeytype">int</span> elf.GetPolygonsRendered(  )</div>
+<div class="apifunc">elf.SetFog( <span class="apikeytype">float</span> start, <span class="apikeytype">float</span> end, <span class="apikeytype">float</span> r, <span class="apikeytype">float</span> g, <span class="apikeytype">float</span> b )</div>
+<div class="apifunc">elf.DisableFog(  )</div>
+<div class="apifunc"><span class="apikeytype">float</span> elf.GetFogStart(  )</div>
+<div class="apifunc"><span class="apikeytype">float</span> elf.GetFogEnd(  )</div>
+<div class="apifunc"><span class="apikeytype">elf_color</span> elf.GetFogColor(  )</div>
 <div class="apifunc">elf.SetBloom( <span class="apikeytype">float</span> threshold )</div>
 <div class="apifunc">elf.DisableBloom(  )</div>
 <div class="apifunc"><span class="apikeytype">float</span> elf.GetBloomThreshold(  )</div>
@@ -465,7 +470,8 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">float</span> elf.GetSsaoAmount(  )</div>
 <div class="apifunc">elf.SetLightShafts( <span class="apikeytype">float</span> intensity )</div>
 <div class="apifunc">elf.DisableLightShafts(  )</div>
-<div class="apifunc"><span class="apikeytype">float</span> elf.GetLightShaftsInteisity(  )</div>
+<div class="apifunc"><span class="apikeytype">float</span> elf.GetLightShaftsIntensity(  )</div>
+<div class="apifunc"><span class="apikeytype">bool</span> elf.IsFog(  )</div>
 <div class="apifunc"><span class="apikeytype">bool</span> elf.IsBloom(  )</div>
 <div class="apifunc"><span class="apikeytype">bool</span> elf.IsSsao(  )</div>
 <div class="apifunc"><span class="apikeytype">bool</span> elf.IsDof(  )</div>
@@ -704,6 +710,7 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">float</span> elf.GetCameraAspect( <span class="apiobjtype">object</span> camera )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec2f</span> elf.GetCameraClip( <span class="apiobjtype">object</span> camera )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec2f</span> elf.GetCameraFarPlaneSize( <span class="apiobjtype">object</span> camera )</div>
+<div class="apifunc"><span class="apikeytype">elf_vec3f</span> elf.ProjectCameraPoint( <span class="apiobjtype">object</span> camera, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec3f</span> elf.UnProjectCameraPoint( <span class="apiobjtype">object</span> camera, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apitopic">MESH DATA FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">object</span> elf.CreateVertice(  )</div>
@@ -747,6 +754,8 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apiobjtype">object</span> elf.GetEntityMaterial( <span class="apiobjtype">object</span> entity, <span class="apikeytype">int</span> idx )</div>
 <div class="apifunc">elf.SetEntityVisible( <span class="apiobjtype">object</span> entity, <span class="apikeytype">bool</span> visible )</div>
 <div class="apifunc"><span class="apikeytype">bool</span> elf.GetEntityVisible( <span class="apiobjtype">object</span> entity )</div>
+<div class="apifunc">elf.SetEntityOccluder( <span class="apiobjtype">object</span> entity, <span class="apikeytype">bool</span> occluder )</div>
+<div class="apifunc"><span class="apikeytype">bool</span> elf.GetEntityOccluder( <span class="apiobjtype">object</span> entity )</div>
 <div class="apifunc">elf.SetEntityPhysics( <span class="apiobjtype">object</span> entity, <span class="apikeytype">int</span> type, <span class="apikeytype">float</span> mass )</div>
 <div class="apifunc">elf.DisableEntityPhysics( <span class="apiobjtype">object</span> entity )</div>
 <div class="apifunc">elf.SetEntityArmature( <span class="apiobjtype">object</span> entity, <span class="apiobjtype">object</span> armature )</div>
@@ -860,6 +869,10 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apiobjtype">object</span> elf.GetSpriteMaterial( <span class="apiobjtype">object</span> sprite )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec2f</span> elf.GetSpriteScale( <span class="apiobjtype">object</span> sprite )</div>
 <div class="apifunc"><span class="apikeytype">bool</span> elf.GetSpriteFaceCamera( <span class="apiobjtype">object</span> sprite )</div>
+<div class="apifunc">elf.SetSpriteVisible( <span class="apiobjtype">object</span> sprite, <span class="apikeytype">bool</span> visible )</div>
+<div class="apifunc"><span class="apikeytype">bool</span> elf.GetSpriteVisible( <span class="apiobjtype">object</span> sprite )</div>
+<div class="apifunc">elf.SetSpriteOccluder( <span class="apiobjtype">object</span> sprite, <span class="apikeytype">bool</span> occluder )</div>
+<div class="apifunc"><span class="apikeytype">bool</span> elf.GetSpriteOccluder( <span class="apiobjtype">object</span> sprite )</div>
 <div class="apifunc"><span class="apiobjtype">object</span> elf.CreateScene( <span class="apikeytype">string</span> name )</div>
 <div class="apitopic">SCENE FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">object</span> elf.CreateSceneFromFile( <span class="apikeytype">string</span> file_path )</div>

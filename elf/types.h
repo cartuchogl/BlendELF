@@ -181,16 +181,26 @@ struct elf_engine {
 	unsigned char f10_exit;
 	unsigned char quit;
 
+	gfx_gbuffer *gbuffer;
+
 	elf_post_process *post_process;
 
 	gfx_texture *shadow_map;
 	gfx_render_target *shadow_target;
+
 	int shadow_map_size;
 	unsigned char texture_compress;
 	float texture_anisotropy;
+
 	unsigned char occlusion_culling;
 	unsigned char debug_draw;
+
 	elf_color ambient_color;
+
+	unsigned char fog;
+	float fog_start;
+	float fog_end;
+	elf_color fog_color;
 
 	gfx_vertex_data *lines;
 	gfx_vertex_array *sprite_vertex_array;
@@ -394,6 +404,7 @@ struct elf_entity {
 
 	gfx_query *query;
 	unsigned char visible;
+	unsigned char occluder;
 	unsigned char culled;
 };
 
@@ -412,7 +423,6 @@ struct elf_light {
 	float shaft_fade_off;
 
 	unsigned char shadows;
-	unsigned char subtractive_shadows;
 	elf_camera *shadow_camera;
 
 	float projection_matrix[16];
@@ -521,6 +531,7 @@ struct elf_sprite {
 
 	gfx_query *query;
 	unsigned char visible;
+	unsigned char occluder;
 	unsigned char culled;
 };
 
@@ -555,9 +566,7 @@ struct elf_scene {
 
 	gfx_shader_params shader_params;
 
-	gfx_shader_program *dof_depth_write;
-	gfx_shader_program *dof_depth_write_alpha;
-	gfx_shader_program *subtractive_shadows;
+	gfx_shader_program *compose_main_shdr;
 
 	elf_pak *pak;
 };
@@ -616,6 +625,9 @@ struct elf_post_process {
 	gfx_shader_program *ssao_combine_shdr;
 	gfx_shader_program *light_shaft_shdr;
 
+	unsigned char bloom;
+	float bloom_threshold;
+
 	unsigned char dof;
 	float dof_focal_range;
 	float dof_focal_distance;
@@ -623,9 +635,6 @@ struct elf_post_process {
 
 	unsigned char ssao;
 	float ssao_amount;
-
-	unsigned char bloom;
-	float bloom_threshold;
 
 	unsigned char light_shafts;
 	float light_shafts_intensity;

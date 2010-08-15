@@ -80,10 +80,15 @@ unsigned char gfx_init()
 	driver->texture_internal_formats[GFX_RGB32F] = GL_RGB32F_ARB;
 	driver->texture_internal_formats[GFX_RGBA16F] = GL_RGBA16F_ARB;
 	driver->texture_internal_formats[GFX_RGBA32F] = GL_RGBA32F_ARB;
-	driver->texture_internal_formats[GFX_ALPHA32F] = GL_ALPHA32F_ARB;
 	driver->texture_internal_formats[GFX_COMPRESSED_RGB] = GL_COMPRESSED_RGB;
 	driver->texture_internal_formats[GFX_COMPRESSED_RGBA] = GL_COMPRESSED_RGBA;
 	driver->texture_internal_formats[GFX_DEPTH_COMPONENT] = GL_DEPTH_COMPONENT;
+	driver->texture_internal_formats[GFX_R] = GL_R;
+	driver->texture_internal_formats[GFX_RG] = GL_RG;
+	driver->texture_internal_formats[GFX_R16F] = GL_R16F;
+	driver->texture_internal_formats[GFX_R32F] = GL_R32F;
+	driver->texture_internal_formats[GFX_RG16F] = GL_RG16F;
+	driver->texture_internal_formats[GFX_RG32F] = GL_RG32F;
 
 	driver->texture_data_formats[GFX_LUMINANCE] = GL_LUMINANCE;
 	driver->texture_data_formats[GFX_LUMINANCE_ALPHA] = GL_LUMINANCE_ALPHA;
@@ -95,10 +100,15 @@ unsigned char gfx_init()
 	driver->texture_data_formats[GFX_RGB32F] = GL_RGB;
 	driver->texture_data_formats[GFX_RGBA16F] = GL_RGBA;
 	driver->texture_data_formats[GFX_RGBA32F] = GL_RGBA;
-	driver->texture_data_formats[GFX_ALPHA32F] = GL_ALPHA;
 	driver->texture_data_formats[GFX_COMPRESSED_RGB] = GL_RGB;
 	driver->texture_data_formats[GFX_COMPRESSED_RGBA] = GL_RGBA;
 	driver->texture_data_formats[GFX_DEPTH_COMPONENT] = GL_DEPTH_COMPONENT;
+	driver->texture_data_formats[GFX_R] = GL_R;
+	driver->texture_data_formats[GFX_RG] = GL_RG;
+	driver->texture_data_formats[GFX_R16F] = GL_R;
+	driver->texture_data_formats[GFX_R32F] = GL_R;
+	driver->texture_data_formats[GFX_RG16F] = GL_RG;
+	driver->texture_data_formats[GFX_RG32F] = GL_RG;
 
 	driver->vertex_data_draw_modes[GFX_VERTEX_DATA_STATIC] = GL_STATIC_DRAW;
 	driver->vertex_data_draw_modes[GFX_VERTEX_DATA_DYNAMIC] = GL_DYNAMIC_DRAW;
@@ -129,12 +139,18 @@ unsigned char gfx_init()
 		return GFX_FALSE;
 	}
 
-	//if(!glewIsSupported("GL_ARB_texture_float"))
-	//{
-	//	elf_write_to_log("GL_ARB_texture_float not supported!\n");
-	//	return GFX_FALSE;
-	//}
+	if(!glewIsSupported("GL_ARB_texture_float"))
+	{
+		elf_write_to_log("GL_ARB_texture_float not supported!\n");
+		return GFX_FALSE;
+	}
 
+
+	if(!glewIsSupported("GL_ARB_texture_rg"))
+	{
+		elf_write_to_log("GL_ARB_texture_rg not supported!\n");
+		return GFX_FALSE;
+	}
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &driver->max_texture_size);
 	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &driver->max_texture_image_units);
 	glGetIntegerv(GL_MAX_DRAW_BUFFERS, &driver->max_draw_buffers);
@@ -325,3 +341,24 @@ int gfx_get_vertices_drawn(unsigned int draw_mode)
 {
 	return driver->vertices_drawn[draw_mode];
 }
+
+void gfx_print_gl_error()
+{
+	GLenum err;
+
+	err = glGetError();
+
+	printf("%s\n", glewGetErrorString(err));
+}
+
+void gfx_set_scissor(int x, int y, int width, int height)
+{
+	glScissor(x, y, width, height);
+	glEnable(GL_SCISSOR_TEST);
+}
+
+void gfx_disable_scissor()
+{
+	glDisable(GL_SCISSOR_TEST);
+}
+

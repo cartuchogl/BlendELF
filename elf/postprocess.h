@@ -42,6 +42,28 @@ const char *blur_shader =
 "\tgl_FragColor = tex;\n"
 "}\n";
 
+const char *fog_combine_shader = 
+"uniform sampler2D elf_Texture0;\n"
+"uniform sampler2D elf_Texture1;\n"
+"uniform sampler2D elf_Texture2;\n"
+"varying vec2 elf_TexCoord;\n"
+"uniform mat4 elf_InvProjectionMatrix;"
+"uniform float elf_FogStart;\n"
+"uniform float elf_FogEnd;\n"
+"uniform vec3 elf_FogColor;\n"
+"\n"
+"void main()\n"
+"{\n"
+"\tfloat mask = texture2D(elf_Texture2, elf_TexCoord).a;\n"
+"\tvec4 col = texture2D(elf_Texture1, elf_TexCoord);\n"
+"\tif(mask < 0.99) {gl_FragColor = col; return;}\n"
+"\tfloat depth = texture2D(elf_Texture0, elf_TexCoord).r*2.0-1.0;\n"
+"\tvec4 vertex = elf_InvProjectionMatrix*vec4(elf_TexCoord.x*2.0-1.0, elf_TexCoord.y*2.0-1.0, depth, 1.0);\n"
+"\tvertex = vec4(vertex.xyz/vertex.w, 1.0);\n"
+"\tfloat fog_factor = clamp((elf_FogEnd+vertex.z)/(elf_FogEnd-elf_FogStart), 0.0, 1.0);\n"
+"\tgl_FragColor = vec4(col*fog_factor+elf_FogColor*(1.0-fog_factor), 1.0);\n"
+"}\n";
+
 const char *bloom_combine_shader = 
 "uniform sampler2D elf_Texture0;\n"
 "uniform sampler2D elf_Texture1;\n"
@@ -61,13 +83,21 @@ const char *bloom_combine_shader =
 const char *dof_combine_shader = 
 "uniform sampler2D elf_Texture0;\n"
 "uniform sampler2D elf_Texture1;\n"
+"uniform sampler2D elf_Texture2;\n"
 "varying vec2 elf_TexCoord;\n"
+"uniform mat4 elf_InvProjectionMatrix;"
+"uniform float elf_FocalRange;\n"
+"uniform float elf_FocalDistance;\n"
 "\n"
 "void main()\n"
 "{\n"
-"\tvec4 col = texture2D(elf_Texture0, elf_TexCoord);\n"
-"\tvec4 blur = texture2D(elf_Texture1, elf_TexCoord);\n"
-"\tgl_FragColor = vec4(col.rgb, 0.0)+col.a*vec4(blur.rgb-col.rgb, 1.0);\n"
+"\tfloat depth = texture2D(elf_Texture0, elf_TexCoord).r*2.0-1.0;\n"
+"\tvec4 col = texture2D(elf_Texture1, elf_TexCoord);\n"
+"\tvec4 blur = texture2D(elf_Texture2, elf_TexCoord);\n"
+"\tvec4 vertex = elf_InvProjectionMatrix*vec4(elf_TexCoord.x*2.0-1.0, elf_TexCoord.y*2.0-1.0, depth, 1.0);\n"
+"\tvertex = vec4(vertex.xyz/vertex.w, 1.0);\n"
+"\tfloat ratio = clamp(abs(-vertex.z-elf_FocalDistance)/elf_FocalRange, 0.0, 1.0);\n"
+"\tgl_FragColor = vec4(col.rgb, 0.0)+ratio*vec4(blur.rgb-col.rgb, 1.0);\n"
 "}\n";
 
 const char *ssao_shader =
@@ -251,11 +281,9 @@ void elf_destroy_post_process(void *data)
 
 void elf_init_post_process_buffers(elf_post_process *post_process)
 {
-
 	if(post_process->main_rt) gfx_dec_ref((gfx_object*)post_process->main_rt);
 	if(post_process->main_rt_color[0]) gfx_dec_ref((gfx_object*)post_process->main_rt_color[0]);
 	if(post_process->main_rt_color[1]) gfx_dec_ref((gfx_object*)post_process->main_rt_color[1]);
-	if(post_process->main_rt_depth) gfx_dec_ref((gfx_object*)post_process->main_rt_depth);
 
 	if(post_process->rt_high) gfx_dec_ref((gfx_object*)post_process->rt_high);
 	if(post_process->rt_med) gfx_dec_ref((gfx_object*)post_process->rt_med);
@@ -277,7 +305,8 @@ void elf_init_post_process_buffers(elf_post_process *post_process)
 	post_process->buffer_height = elf_get_window_height()/4;
 
 	post_process->main_rt_color[0] = gfx_create_2d_texture(elf_get_window_width(), elf_get_window_height(), 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
-	post_process->main_rt_depth = gfx_create_2d_texture(elf_get_window_width(), elf_get_window_height(), 0.0, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
+	post_process->main_rt_depth = gfx_create_2d_texture(elf_get_window_width(), elf_get_window_height(), 0.0, GFX_CLAMP, GFX_NEAREST, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
+
 	post_process->main_rt = gfx_create_render_target(elf_get_window_width(), elf_get_window_height());
 
 	gfx_set_render_target_color_texture(post_process->main_rt, 0, post_process->main_rt_color[0]);
@@ -305,9 +334,9 @@ void elf_init_post_process_buffers(elf_post_process *post_process)
 	gfx_set_render_target_color_texture(post_process->rt_low, 0, post_process->rt_tex_low_1);
 	gfx_set_render_target_color_texture(post_process->rt_tiny, 0, post_process->rt_tex_tiny_1);
 
-	gfx_inc_ref((gfx_object*)post_process->main_rt);
 	gfx_inc_ref((gfx_object*)post_process->main_rt_color[0]);
 	gfx_inc_ref((gfx_object*)post_process->main_rt_depth);
+	gfx_inc_ref((gfx_object*)post_process->main_rt);
 
 	gfx_inc_ref((gfx_object*)post_process->rt_high);
 	gfx_inc_ref((gfx_object*)post_process->rt_med);
@@ -332,23 +361,12 @@ void elf_init_post_process_buffers(elf_post_process *post_process)
 	}
 }
 
-void elf_begin_post_process(elf_post_process *post_process, elf_scene *scene)
-{
-	gfx_set_shader_params_default(&post_process->shader_params);
-	gfx_set_shader_params(&post_process->shader_params);
-
-	gfx_set_render_target(post_process->main_rt);
-
-	gfx_set_render_target_color_texture(post_process->main_rt, 0, post_process->main_rt_color[0]);
-	
-	gfx_clear_buffers(0.0, 0.0, 0.0, 1.0, 1.0);
-}
-
-void elf_end_post_process(elf_post_process *post_process, elf_scene *scene)
+void elf_run_post_process(elf_post_process *post_process, elf_scene *scene)
 {
 	unsigned int source_rt = 0;
 	elf_camera *cam;
 	elf_entity *ent;
+	elf_sprite *spr;
 	elf_light *light;
 	int i;
 	elf_vec3f light_pos;
@@ -394,7 +412,6 @@ void elf_end_post_process(elf_post_process *post_process, elf_scene *scene)
 		post_process->shader_params.shader_program = post_process->ssao_shdr;
 
 		post_process->shader_params.texture_params[0].texture = post_process->main_rt_color[source_rt];
-		post_process->shader_params.texture_params[1].texture = post_process->main_rt_depth;
 		gfx_set_shader_params(&post_process->shader_params);
 		gfx_set_shader_program_uniform_1f("amount", post_process->ssao_amount);
 
@@ -450,16 +467,25 @@ void elf_end_post_process(elf_post_process *post_process, elf_scene *scene)
 			0.0, (float)elf_get_window_height(), -1.0, 1.0,
 			post_process->shader_params.projection_matrix);
 
+		gfx_matrix4_get_inverse(scene->cur_camera->projection_matrix, post_process->shader_params.inv_projection_matrix);
+
 		post_process->shader_params.shader_program = post_process->dof_combine_shdr;
-		post_process->shader_params.texture_params[0].texture = post_process->main_rt_color[source_rt];
-		post_process->shader_params.texture_params[1].texture = post_process->rt_tex_high_1;
+		post_process->shader_params.texture_params[0].texture = post_process->main_rt_depth;
+		post_process->shader_params.texture_params[1].texture = post_process->main_rt_color[0];
+		post_process->shader_params.texture_params[2].texture = post_process->rt_tex_high_1;
+
 		gfx_set_shader_params(&post_process->shader_params);
+
+		gfx_set_shader_program_uniform_1f("elf_FocalRange", post_process->dof_focal_range);
+		gfx_set_shader_program_uniform_1f("elf_FocalDistance", post_process->dof_focal_distance);
 
 		gfx_draw_textured_2d_quad(0.0, 0.0, (float)elf_get_window_width(), (float)elf_get_window_height());
 
 		source_rt = !source_rt;
 		
 		post_process->shader_params.texture_params[0].texture = NULL;
+		post_process->shader_params.texture_params[1].texture = NULL;
+		post_process->shader_params.texture_params[2].texture = NULL;
 	}
 
 	// BLOOM
@@ -599,7 +625,14 @@ void elf_end_post_process(elf_post_process *post_process, elf_scene *scene)
 						i < scene->entity_queue_count && ent != NULL;
 						i++, ent = (elf_entity*)elf_next_in_list(scene->entity_queue))
 					{
-						elf_draw_entity_without_materials(ent, &scene->shader_params);
+						elf_draw_entity(ent, ELF_DRAW_DEPTH, &scene->shader_params);
+					}
+
+					for(i = 0, spr = (elf_sprite*)elf_begin_list(scene->sprite_queue);
+						i < scene->sprite_queue_count && spr != NULL;
+						i++, spr = (elf_sprite*)elf_next_in_list(scene->sprite_queue))
+					{
+						elf_draw_sprite(spr, ELF_DRAW_DEPTH, &scene->shader_params);
 					}
 
 					first_shaft = ELF_FALSE;
@@ -690,7 +723,7 @@ void elf_end_post_process(elf_post_process *post_process, elf_scene *scene)
 
 	/*gfx_set_viewport(0, 0, elf_get_window_width(), elf_get_window_height());
 	gfx_get_orthographic_projection_matrix(0.0, (float)elf_get_window_width(),
-		0.0f, (float)elf_get_window_height(), -1.0, 1.0,
+		0.0, (float)elf_get_window_height(), -1.0, 1.0,
 		post_process->shader_params.projection_matrix);
 	
 	post_process->shader_params.texture_params[0].texture = post_process->main_rt_color[cur_main_rt];
@@ -710,6 +743,7 @@ void elf_set_post_process_bloom(elf_post_process *post_process, float threshold)
 		post_process->main_rt_color[1] = gfx_create_2d_texture(
 			elf_get_window_width(), elf_get_window_height(), 0.0,
 			GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
+		gfx_inc_ref((gfx_object*)post_process->main_rt_color[1]);
 	}
 }
 

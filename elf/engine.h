@@ -347,8 +347,16 @@ unsigned char elf_run()
 
 	gfx_reset_vertices_drawn();
 
-	if(eng->scene && eng->post_process) elf_begin_post_process(eng->post_process, eng->scene);
-	else gfx_clear_buffers(0.0, 0.0, 0.0, 0.0, 1.0);
+	if(eng->post_process)
+	{
+		gfx_set_render_target(eng->post_process->main_rt);
+		gfx_set_render_target_color_texture(eng->post_process->main_rt, 0, eng->post_process->main_rt_color[0]);
+		gfx_clear_buffers(0.0, 0.0, 0.0, 1.0, 1.0);
+	}
+	else
+	{
+		gfx_clear_buffers(0.0, 0.0, 0.0, 1.0, 1.0);
+	}
 
 	if(eng->scene)
 	{
@@ -357,7 +365,7 @@ unsigned char elf_run()
 		elf_scene_post_draw(eng->scene);
 	}
 
-	if(eng->scene && eng->post_process) elf_end_post_process(eng->post_process, eng->scene);
+	if(eng->scene && eng->post_process) elf_run_post_process(eng->post_process, eng->scene);
 	if(eng->scene && eng->debug_draw) elf_draw_scene_debug(eng->scene);
 	if(eng->gui) elf_draw_gui(eng->gui);
 
@@ -619,6 +627,35 @@ int elf_get_polygons_rendered()
 	return gfx_get_vertices_drawn(GFX_TRIANGLES)/3+gfx_get_vertices_drawn(GFX_TRIANGLE_STRIP)/3;
 }
 
+void elf_set_fog(float start, float end, float r, float g, float b)
+{
+	eng->fog_start = start;
+	eng->fog_end = end;
+	eng->fog_color.r = r;
+	eng->fog_color.g = g;
+	eng->fog_color.b = b;
+}
+
+void elf_disable_fog()
+{
+	eng->fog = ELF_FALSE;
+}
+
+float elf_get_fog_start()
+{
+	return eng->fog_start;
+}
+
+float elf_get_fog_end()
+{
+	return eng->fog_end;
+}
+
+elf_color elf_get_fog_color()
+{
+	return eng->fog_color;
+}
+
 void elf_set_bloom(float threshold)
 {
 	if(!eng->post_process) eng->post_process = elf_create_post_process();
@@ -731,10 +768,15 @@ void elf_disable_light_shafts()
 	}
 }
 
-float elf_get_light_shafts_inteisity()
+float elf_get_light_shafts_intensity()
 {
 	if(eng->post_process) return elf_get_post_process_light_shafts_intensity(eng->post_process);
 	return 0.0;
+}
+
+unsigned char elf_is_fog()
+{
+	return eng->fog;
 }
 
 unsigned char elf_is_bloom()

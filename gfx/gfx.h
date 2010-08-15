@@ -52,11 +52,16 @@ extern "C" {
 #define GFX_RGB32F					0x0007
 #define GFX_RGBA16F					0x0008
 #define GFX_RGBA32F					0x0009
-#define GFX_ALPHA32F					0x000A
-#define GFX_DEPTH_COMPONENT				0x000B
-#define GFX_COMPRESSED_RGB				0x000C
-#define GFX_COMPRESSED_RGBA				0x000D
-#define GFX_MAX_TEXTURE_FORMATS				0x000E
+#define GFX_DEPTH_COMPONENT				0x000A
+#define GFX_COMPRESSED_RGB				0x000B
+#define GFX_COMPRESSED_RGBA				0x000C
+#define GFX_R						0x000D
+#define GFX_RG						0x000E
+#define GFX_R16F					0x000F
+#define GFX_R32F					0x0010
+#define GFX_RG16F					0x0011
+#define GFX_RG32F					0x0012
+#define GFX_MAX_TEXTURE_FORMATS				0x0013
 
 #define GFX_CLAMP					0x0000
 #define GFX_REPEAT					0x0001
@@ -114,6 +119,10 @@ extern "C" {
 #define GFX_PI_DIV_180					GFX_PI/180.0
 #define GFX_180_DIV_PI					180.0/GFX_PI
 
+#define GFX_GBUFFER_DEPTH				0x0001
+#define GFX_GBUFFER_FILL				0x0002
+#define GFX_GBUFFER_LIGHTING				0x0003
+
 typedef struct gfx_object				gfx_object;
 typedef struct gfx_general				gfx_general;
 typedef struct gfx_driver				gfx_driver;
@@ -147,7 +156,6 @@ typedef struct gfx_render_params {
 	unsigned char alpha_write;
 	unsigned char alpha_test;
 	float alpha_threshold;
-	unsigned char alpha_test_in_shader;
 	unsigned char cull_face;
 	unsigned char blend_mode;
 	float offset_scale;
@@ -197,18 +205,19 @@ typedef struct gfx_shader_params {
 	int viewport_width;
 	int viewport_height;
 	float projection_matrix[16];
+	float inv_projection_matrix[16];
 	float modelview_matrix[16];
 	gfx_gbuffer *gbuffer;
-	unsigned char gbuffer_active;
+	unsigned char gbuffer_mode;
 	gfx_shader_program *shader_program;
 } gfx_shader_params;
 
 typedef struct gfx_shader_config {
 	unsigned int textures;
 	unsigned char light;
-	unsigned char vertex_color;
-	unsigned char alpha_test_in_shader;
+	unsigned char gbuffer_mode;
 	unsigned char specular;
+	unsigned char vertex_color;
 } gfx_shader_config;
 
 //////////////////////////////// GENERAL ////////////////////////////////
@@ -252,7 +261,7 @@ void gfx_qua_slerp(float *qa, float* qb, double t, float *result);
 void gfx_matrix4_set_identity(float *mat);
 void gfx_matrix4_transpose(float *mat1, float *mat2);
 void gfx_matrix4_get_inverse_fast(float *mat1, float *mat2);
-void gfx_matrix4_get_inverse(float *mat1, float *mat2);
+unsigned char gfx_matrix4_get_inverse(float *mat1, float *mat2);
 void gfx_matrix3_to_qua(float *mat, float *qua);
 void gfx_matrix4_to_euler(float *mat, float *eul);
 void gfx_mul_matrix4_vec3(float *m1, float *vec1, float *vec2);
@@ -304,6 +313,11 @@ void gfx_read_pixels(int x, int y, unsigned int width, unsigned int height, unsi
 
 void gfx_reset_vertices_drawn();
 int gfx_get_vertices_drawn(unsigned int draw_mode);
+
+void gfx_print_gl_error();
+
+void gfx_set_scissor(int x, int y, int width, int height);
+void gfx_disable_scissor();
 
 //////////////////////////////// VERTEX ARRAY/INDEX ////////////////////////////////
 
@@ -365,8 +379,8 @@ gfx_render_target* gfx_create_render_target(unsigned int width, unsigned int hei
 void gfx_destroy_render_target(void *data);
 
 gfx_render_target* gfx_get_cur_render_target();
-unsigned char gfx_set_render_target_color_texture(gfx_render_target *render_target, unsigned int n, gfx_texture *color);
-unsigned char gfx_set_render_target_depth_texture(gfx_render_target *render_target, gfx_texture *depth);
+void gfx_set_render_target_color_texture(gfx_render_target *render_target, unsigned int n, gfx_texture *color);
+void gfx_set_render_target_depth_texture(gfx_render_target *render_target, gfx_texture *depth);
 unsigned char gfx_set_render_target(gfx_render_target *render_target);
 void gfx_disable_render_target();
 
@@ -414,7 +428,8 @@ void gfx_bind_gbuffer_light(gfx_gbuffer *gbuffer, gfx_shader_params *shader_para
 void gfx_bind_gbuffer_main(gfx_gbuffer *gbuffer, gfx_shader_params *shader_params);
 
 gfx_texture* gfx_get_gbuffer_depth(gfx_gbuffer *gbuffer);
-gfx_texture* gfx_get_gbuffer_light(gfx_gbuffer *gbuffer);
+gfx_texture* gfx_get_gbuffer_diffuse(gfx_gbuffer *gbuffer);
+gfx_texture* gfx_get_gbuffer_specular(gfx_gbuffer *gbuffer);
 gfx_texture* gfx_get_gbuffer_main(gfx_gbuffer *gbuffer);
 gfx_texture* gfx_get_gbuffer_buf1(gfx_gbuffer *gbuffer);
 gfx_texture* gfx_get_gbuffer_buf2(gfx_gbuffer *gbuffer);

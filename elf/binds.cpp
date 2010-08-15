@@ -809,6 +809,26 @@ ELF_API int ELF_APIENTRY elfGetPolygonsRendered()
 {
 	return elf_get_polygons_rendered();
 }
+ELF_API void ELF_APIENTRY elfSetFog(float start, float end, float r, float g, float b)
+{
+	elf_set_fog(start, end, r, g, b);
+}
+ELF_API void ELF_APIENTRY elfDisableFog()
+{
+	elf_disable_fog();
+}
+ELF_API float ELF_APIENTRY elfGetFogStart()
+{
+	return elf_get_fog_start();
+}
+ELF_API float ELF_APIENTRY elfGetFogEnd()
+{
+	return elf_get_fog_end();
+}
+ELF_API elf_color ELF_APIENTRY elfGetFogColor()
+{
+	return elf_get_fog_color();
+}
 ELF_API void ELF_APIENTRY elfSetBloom(float threshold)
 {
 	elf_set_bloom(threshold);
@@ -857,9 +877,13 @@ ELF_API void ELF_APIENTRY elfDisableLightShafts()
 {
 	elf_disable_light_shafts();
 }
-ELF_API float ELF_APIENTRY elfGetLightShaftsInteisity()
+ELF_API float ELF_APIENTRY elfGetLightShaftsIntensity()
 {
-	return elf_get_light_shafts_inteisity();
+	return elf_get_light_shafts_intensity();
+}
+ELF_API bool ELF_APIENTRY elfIsFog()
+{
+	return (bool)elf_is_fog();
 }
 ELF_API bool ELF_APIENTRY elfIsBloom()
 {
@@ -4399,6 +4423,25 @@ ELF_API elf_vec2f ELF_APIENTRY elfGetCameraFarPlaneSize(elf_handle camera)
 	_e_type = elf_get_camera_far_plane_size((elf_camera*)camera.get());
 	return _e_type;
 }
+ELF_API elf_vec3f ELF_APIENTRY elfProjectCameraPoint(elf_handle camera, float x, float y, float z)
+{
+	elf_vec3f _e_type;
+	memset(&_e_type, 0x0, sizeof(elf_vec3f));
+	if(!camera.get() || elf_get_object_type(camera.get()) != ELF_CAMERA)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "ProjectCameraPoint() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "ProjectCameraPoint() -> invalid handle\n");
+		}
+		return _e_type;
+	}
+	_e_type = elf_project_camera_point((elf_camera*)camera.get(), x, y, z);
+	return _e_type;
+}
 ELF_API elf_vec3f ELF_APIENTRY elfUnProjectCameraPoint(elf_handle camera, float x, float y, float z)
 {
 	elf_vec3f _e_type;
@@ -5087,6 +5130,38 @@ ELF_API bool ELF_APIENTRY elfGetEntityVisible(elf_handle entity)
 		return false;
 	}
 	return (bool)elf_get_entity_visible((elf_entity*)entity.get());
+}
+ELF_API void ELF_APIENTRY elfSetEntityOccluder(elf_handle entity, bool occluder)
+{
+	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetEntityOccluder() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetEntityOccluder() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_entity_occluder((elf_entity*)entity.get(), occluder);
+}
+ELF_API bool ELF_APIENTRY elfGetEntityOccluder(elf_handle entity)
+{
+	if(!entity.get() || elf_get_object_type(entity.get()) != ELF_ENTITY)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetEntityOccluder() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetEntityOccluder() -> invalid handle\n");
+		}
+		return false;
+	}
+	return (bool)elf_get_entity_occluder((elf_entity*)entity.get());
 }
 ELF_API void ELF_APIENTRY elfSetEntityPhysics(elf_handle entity, int type, float mass)
 {
@@ -6914,6 +6989,70 @@ ELF_API bool ELF_APIENTRY elfGetSpriteFaceCamera(elf_handle sprite)
 		return false;
 	}
 	return (bool)elf_get_sprite_face_camera((elf_sprite*)sprite.get());
+}
+ELF_API void ELF_APIENTRY elfSetSpriteVisible(elf_handle sprite, bool visible)
+{
+	if(!sprite.get() || elf_get_object_type(sprite.get()) != ELF_SPRITE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetSpriteVisible() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetSpriteVisible() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_sprite_visible((elf_sprite*)sprite.get(), visible);
+}
+ELF_API bool ELF_APIENTRY elfGetSpriteVisible(elf_handle sprite)
+{
+	if(!sprite.get() || elf_get_object_type(sprite.get()) != ELF_SPRITE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSpriteVisible() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetSpriteVisible() -> invalid handle\n");
+		}
+		return false;
+	}
+	return (bool)elf_get_sprite_visible((elf_sprite*)sprite.get());
+}
+ELF_API void ELF_APIENTRY elfSetSpriteOccluder(elf_handle sprite, bool occluder)
+{
+	if(!sprite.get() || elf_get_object_type(sprite.get()) != ELF_SPRITE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetSpriteOccluder() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetSpriteOccluder() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_sprite_occluder((elf_sprite*)sprite.get(), occluder);
+}
+ELF_API bool ELF_APIENTRY elfGetSpriteOccluder(elf_handle sprite)
+{
+	if(!sprite.get() || elf_get_object_type(sprite.get()) != ELF_SPRITE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetSpriteOccluder() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetSpriteOccluder() -> invalid handle\n");
+		}
+		return false;
+	}
+	return (bool)elf_get_sprite_occluder((elf_sprite*)sprite.get());
 }
 ELF_API elf_handle ELF_APIENTRY elfCreateScene(const char* name)
 {

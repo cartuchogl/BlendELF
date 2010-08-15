@@ -333,6 +333,25 @@ void elf_draw_camera_debug(elf_camera *camera, gfx_shader_params *shader_params)
 	gfx_draw_lines(6, eng->lines);
 }
 
+elf_vec3f elf_project_camera_point(elf_camera *camera, float x, float y, float z)
+{
+	elf_vec3f result;
+	int viewp[4];
+
+	viewp[0] = camera->viewp_x;
+	viewp[1] = camera->viewp_y;
+	viewp[2] = camera->viewp_width;
+	viewp[3] = camera->viewp_height;
+
+	if(viewp[2] <= 0) viewp[2] = elf_get_window_width();
+	if(viewp[3] <= 0) viewp[3] = elf_get_window_height();
+
+	gfx_project(x, y, z, elf_get_camera_modelview_matrix(camera),
+		elf_get_camera_projection_matrix(camera), viewp, &result.x);
+
+	return result;
+}
+
 elf_vec3f elf_un_project_camera_point(elf_camera *camera, float x, float y, float z)
 {
 	elf_vec3f result;
@@ -342,6 +361,9 @@ elf_vec3f elf_un_project_camera_point(elf_camera *camera, float x, float y, floa
 	viewp[1] = camera->viewp_y;
 	viewp[2] = camera->viewp_width;
 	viewp[3] = camera->viewp_height;
+
+	if(viewp[2] <= 0) viewp[2] = elf_get_window_width();
+	if(viewp[3] <= 0) viewp[3] = elf_get_window_height();
 
 	gfx_un_project(x, camera->viewp_height-y, z, elf_get_camera_modelview_matrix(camera),
 		elf_get_camera_projection_matrix(camera), viewp, &result.x);

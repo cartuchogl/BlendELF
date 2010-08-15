@@ -20,7 +20,6 @@ void gfx_set_shader_params_default(gfx_shader_params *shader_params)
 	shader_params->render_params.alpha_write = GFX_TRUE;
 	shader_params->render_params.alpha_test = GFX_FALSE;
 	shader_params->render_params.alpha_threshold = 0.99;
-	shader_params->render_params.alpha_test_in_shader = GFX_FALSE;
 	shader_params->render_params.cull_face = GFX_TRUE;
 	shader_params->render_params.blend_mode = GFX_NONE;
 	shader_params->render_params.offset_bias = 0.0;
@@ -45,6 +44,7 @@ void gfx_set_shader_params_default(gfx_shader_params *shader_params)
 	}
 
 	gfx_matrix4_set_identity(shader_params->projection_matrix);
+	gfx_matrix4_set_identity(shader_params->inv_projection_matrix);
 	gfx_matrix4_set_identity(shader_params->modelview_matrix);
 
 	shader_params->shader_program = NULL;
@@ -105,7 +105,7 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 		if(shader_params->render_params.cull_face) glEnable(GL_CULL_FACE);
 		else glDisable(GL_CULL_FACE);
 
-		if(shader_params->render_params.alpha_test && !shader_params->render_params.alpha_test_in_shader)
+		if(shader_params->render_params.alpha_test)
 		{
 			glEnable(GL_ALPHA_TEST);
 			glAlphaFunc(GL_GREATER, shader_params->render_params.alpha_threshold);
@@ -212,7 +212,7 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 		if(memcmp(&driver->shader_config, &shader_config, sizeof(gfx_shader_config)))
 		{
 			memcpy(&driver->shader_config, &shader_config, sizeof(gfx_shader_config));
-			if(shader_params->gbuffer_active) shader_program = gfx_get_gbuf_shader_program(&shader_config);
+			if(shader_params->gbuffer_mode > 0) shader_program = gfx_get_gbuf_shader_program(&shader_config);
 			else shader_program = gfx_get_shader_program(&shader_config);
 			if(shader_program) glUseProgram(shader_program->id);
 			else return;
@@ -226,6 +226,9 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 	if(shader_program->projection_matrix_loc != -1)
 		glUniformMatrix4fv(shader_program->projection_matrix_loc,
 			1, GL_FALSE, shader_params->projection_matrix);
+	if(shader_program->inv_projection_matrix_loc != -1)
+		glUniformMatrix4fv(shader_program->inv_projection_matrix_loc,
+			1, GL_FALSE, shader_params->inv_projection_matrix);
 	if(shader_program->modelview_matrix_loc != -1)
 		glUniformMatrix4fv(shader_program->modelview_matrix_loc,
 			1, GL_FALSE, shader_params->modelview_matrix);

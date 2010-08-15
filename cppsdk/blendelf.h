@@ -146,7 +146,7 @@
 #define ELF_BEZIER_CURVE 0x003C
 #define ELF_IPO 0x003D
 #define ELF_FRAME_PLAYER 0x003E
-#define ELF_PROPERTY 0x004F
+#define ELF_PROPERTY 0x003F
 #define ELF_CLIENT 0x0040
 #define ELF_SCRIPTING 0x0041
 #define ELF_PHYSICS_TRI_MESH 0x0042
@@ -418,6 +418,11 @@ ELF_API float ELF_APIENTRY elfGetTextureAnisotropy();
 ELF_API void ELF_APIENTRY elfSetShadowMapSize(int size);
 ELF_API int ELF_APIENTRY elfGetShadowMapSize();
 ELF_API int ELF_APIENTRY elfGetPolygonsRendered();
+ELF_API void ELF_APIENTRY elfSetFog(float start, float end, float r, float g, float b);
+ELF_API void ELF_APIENTRY elfDisableFog();
+ELF_API float ELF_APIENTRY elfGetFogStart();
+ELF_API float ELF_APIENTRY elfGetFogEnd();
+ELF_API elf_color ELF_APIENTRY elfGetFogColor();
 ELF_API void ELF_APIENTRY elfSetBloom(float threshold);
 ELF_API void ELF_APIENTRY elfDisableBloom();
 ELF_API float ELF_APIENTRY elfGetBloomThreshold();
@@ -430,7 +435,8 @@ ELF_API void ELF_APIENTRY elfDisableSsao();
 ELF_API float ELF_APIENTRY elfGetSsaoAmount();
 ELF_API void ELF_APIENTRY elfSetLightShafts(float intensity);
 ELF_API void ELF_APIENTRY elfDisableLightShafts();
-ELF_API float ELF_APIENTRY elfGetLightShaftsInteisity();
+ELF_API float ELF_APIENTRY elfGetLightShaftsIntensity();
+ELF_API bool ELF_APIENTRY elfIsFog();
 ELF_API bool ELF_APIENTRY elfIsBloom();
 ELF_API bool ELF_APIENTRY elfIsSsao();
 ELF_API bool ELF_APIENTRY elfIsDof();
@@ -659,6 +665,7 @@ ELF_API float ELF_APIENTRY elfGetCameraFov(elf_handle camera);
 ELF_API float ELF_APIENTRY elfGetCameraAspect(elf_handle camera);
 ELF_API elf_vec2f ELF_APIENTRY elfGetCameraClip(elf_handle camera);
 ELF_API elf_vec2f ELF_APIENTRY elfGetCameraFarPlaneSize(elf_handle camera);
+ELF_API elf_vec3f ELF_APIENTRY elfProjectCameraPoint(elf_handle camera, float x, float y, float z);
 ELF_API elf_vec3f ELF_APIENTRY elfUnProjectCameraPoint(elf_handle camera, float x, float y, float z);
 ELF_API elf_handle ELF_APIENTRY elfCreateVertice();
 ELF_API void ELF_APIENTRY elfSetVerticePosition(elf_handle vertice, float x, float y, float z);
@@ -699,6 +706,8 @@ ELF_API void ELF_APIENTRY elfRemoveEntityMaterial(elf_handle entity, int idx);
 ELF_API elf_handle ELF_APIENTRY elfGetEntityMaterial(elf_handle entity, int idx);
 ELF_API void ELF_APIENTRY elfSetEntityVisible(elf_handle entity, bool visible);
 ELF_API bool ELF_APIENTRY elfGetEntityVisible(elf_handle entity);
+ELF_API void ELF_APIENTRY elfSetEntityOccluder(elf_handle entity, bool occluder);
+ELF_API bool ELF_APIENTRY elfGetEntityOccluder(elf_handle entity);
 ELF_API void ELF_APIENTRY elfSetEntityPhysics(elf_handle entity, int type, float mass);
 ELF_API void ELF_APIENTRY elfDisableEntityPhysics(elf_handle entity);
 ELF_API void ELF_APIENTRY elfSetEntityArmature(elf_handle entity, elf_handle armature);
@@ -808,6 +817,10 @@ ELF_API void ELF_APIENTRY elfSetSpriteFaceCamera(elf_handle sprite, bool face_ca
 ELF_API elf_handle ELF_APIENTRY elfGetSpriteMaterial(elf_handle sprite);
 ELF_API elf_vec2f ELF_APIENTRY elfGetSpriteScale(elf_handle sprite);
 ELF_API bool ELF_APIENTRY elfGetSpriteFaceCamera(elf_handle sprite);
+ELF_API void ELF_APIENTRY elfSetSpriteVisible(elf_handle sprite, bool visible);
+ELF_API bool ELF_APIENTRY elfGetSpriteVisible(elf_handle sprite);
+ELF_API void ELF_APIENTRY elfSetSpriteOccluder(elf_handle sprite, bool occluder);
+ELF_API bool ELF_APIENTRY elfGetSpriteOccluder(elf_handle sprite);
 ELF_API elf_handle ELF_APIENTRY elfCreateScene(const char* name);
 ELF_API elf_handle ELF_APIENTRY elfCreateSceneFromFile(const char* file_path);
 ELF_API bool ELF_APIENTRY elfSaveScene(elf_handle scene, const char* file_path);

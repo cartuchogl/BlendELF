@@ -1,55 +1,27 @@
 
-const char *dof_depth_write_vert =
-"uniform mat4 elf_ProjectionMatrix;\n"
-"uniform mat4 elf_ModelviewMatrix;\n"
-"attribute vec3 elf_VertexAttr;\n"
-"uniform float elf_FocalRange;\n"
-"uniform float elf_FocalDistance;\n"
-"varying float elf_Blur;\n"
-"\n"
-"void main()\n"
-"{\n"
-"\tvec4 vertex = elf_ModelviewMatrix*vec4(elf_VertexAttr, 1.0);\n"
-"\telf_Blur = clamp(abs(-vertex.z-elf_FocalDistance)/elf_FocalRange, 0.0, 1.0);\n"
-"\tgl_Position = elf_ProjectionMatrix*vertex;\n"
-"}\n";
-
-const char *dof_depth_write_frag =
-"varying float elf_Blur;\n"
-"\n"
-"void main()\n"
-"{\n"
-"\tgl_FragColor.a = elf_Blur;\n"
-"}\n";
-
-const char *dof_depth_write_alpha_vert =
-"uniform mat4 elf_ProjectionMatrix;\n"
-"uniform mat4 elf_ModelviewMatrix;\n"
+const char* compose_main_vert =
 "attribute vec3 elf_VertexAttr;\n"
 "attribute vec2 elf_TexCoordAttr;\n"
-"uniform float elf_FocalRange;\n"
-"uniform float elf_FocalDistance;\n"
+"uniform mat4 elf_ModelviewMatrix;\n"
+"uniform mat4 elf_ProjectionMatrix;\n"
 "varying vec2 elf_TexCoord;\n"
-"varying float elf_Blur;\n"
-"\n"
 "void main()\n"
 "{\n"
-"\tvec4 vertex = elf_ModelviewMatrix*vec4(elf_VertexAttr, 1.0);\n"
 "\telf_TexCoord = elf_TexCoordAttr;\n"
-"\telf_Blur = clamp(abs(-vertex.z-elf_FocalDistance)/elf_FocalRange, 0.0, 1.0);\n"
-"\tgl_Position = elf_ProjectionMatrix*vertex;\n"
+"\tgl_Position = elf_ProjectionMatrix*(elf_ModelviewMatrix*vec4(elf_VertexAttr, 1.0))\n;"
 "}\n";
 
-const char *dof_depth_write_alpha_frag =
-"uniform sampler2D elf_ColorMap;\n"
-"uniform float elf_AlphaThreshold;\n"
+const char* compose_main_frag =
+"uniform sampler2D elf_Texture0;\n"
+"uniform sampler2D elf_Texture1;\n"
+"uniform sampler2D elf_Texture2;\n"
 "varying vec2 elf_TexCoord;\n"
-"varying float elf_Blur;\n"
-"\n"
 "void main()\n"
 "{\n"
-"\tif(texture2D(elf_ColorMap, elf_TexCoord).a < elf_AlphaThreshold) discard;\n"
-"\tgl_FragColor.a = elf_Blur;\n"
+"\tvec3 diffuse = texture2D(elf_Texture1, elf_TexCoord).rgb;\n"
+"\tvec3 specular = texture2D(elf_Texture2, elf_TexCoord).rgb;\n"
+"\tvec3 color = texture2D(elf_Texture0, elf_TexCoord).rgb;\n"
+"\tgl_FragColor = vec4(color*diffuse+specular, 1.0);\n"
 "}\n";
 
 elf_scene* elf_create_scene(const char *name)
@@ -95,10 +67,9 @@ elf_scene* elf_create_scene(const char *name)
 	scene->physics = ELF_TRUE;
 	scene->run_scripts = ELF_TRUE;
 
-	scene->dof_depth_write = gfx_create_shader_program(dof_depth_write_vert, dof_depth_write_frag);
-	scene->dof_depth_write_alpha = gfx_create_shader_program(dof_depth_write_alpha_vert, dof_depth_write_alpha_frag);
-
 	if(name) scene->name = elf_create_string(name);
+
+	scene->compose_main_shdr = gfx_create_shader_program(compose_main_vert, compose_main_frag);
 
 	scene->id = ++gen->scene_id_counter;
 
@@ -614,10 +585,9 @@ void elf_destroy_scene(void *data)
 	elf_destroy_physics_world(scene->world);
 	elf_destroy_physics_world(scene->dworld);
 
-	if(scene->dof_depth_write) gfx_destroy_shader_program(scene->dof_depth_write);
-	if(scene->dof_depth_write_alpha) gfx_destroy_shader_program(scene->dof_depth_write_alpha);
-
 	if(scene->pak) elf_dec_ref((elf_object*)scene->pak);
+
+	if(scene->compose_main_shdr) gfx_destroy_shader_program(scene->compose_main_shdr);
 
 	elf_dec_obj(ELF_SCENE);
 
@@ -1584,7 +1554,7 @@ void elf_draw_scene(elf_scene *scene)
 	float temp_mat1[16];
 	float temp_mat2[16];
 	gfx_render_target *render_target;
-	int i, j;
+	int i;
 	elf_vec3f lpos;
 	elf_vec3f epos;
 	elf_vec3f eofs;
@@ -1622,7 +1592,7 @@ void elf_draw_scene(elf_scene *scene)
 				elf_append_to_list(scene->entity_queue, (elf_object*)ent);
 			}
 			scene->entity_queue_count++;
-			elf_draw_entity_without_materials(ent, &scene->shader_params);
+			elf_draw_entity(ent, ELF_DRAW_DEPTH, &scene->shader_params);
 			ent->culled = ELF_FALSE;
 		}
 		else
@@ -1649,7 +1619,7 @@ void elf_draw_scene(elf_scene *scene)
 				elf_append_to_list(scene->sprite_queue, (elf_object*)spr);
 			}
 			scene->sprite_queue_count++;
-			elf_draw_sprite_without_materials(spr, &scene->shader_params);
+			elf_draw_sprite(spr, ELF_DRAW_DEPTH, &scene->shader_params);
 			spr->culled = ELF_FALSE;
 		}
 		else
@@ -1702,14 +1672,14 @@ void elf_draw_scene(elf_scene *scene)
 			i < scene->entity_queue_count && ent != NULL;
 			i++, ent = (elf_entity*)elf_next_in_list(scene->entity_queue))
 		{
-			elf_draw_entity_ambient(ent, &scene->shader_params);
+			elf_draw_entity(ent, ELF_DRAW_AMBIENT, &scene->shader_params);
 		}
 
 		for(i = 0, spr = (elf_sprite*)elf_begin_list(scene->sprite_queue);
 			i < scene->sprite_queue_count && spr != NULL;
 			i++, spr = (elf_sprite*)elf_next_in_list(scene->sprite_queue))
 		{
-			elf_draw_sprite_ambient(spr, &scene->shader_params);
+			elf_draw_sprite(spr, ELF_DRAW_AMBIENT, &scene->shader_params);
 		}
 	}
 
@@ -1725,14 +1695,14 @@ void elf_draw_scene(elf_scene *scene)
 		i < scene->entity_queue_count && ent != NULL;
 		i++, ent = (elf_entity*)elf_next_in_list(scene->entity_queue))
 	{
-		elf_draw_entity_non_lighted(ent, &scene->shader_params);
+		elf_draw_entity(ent, ELF_DRAW_WITHOUT_LIGHTING, &scene->shader_params);
 	}
 
 	for(i = 0, spr = (elf_sprite*)elf_begin_list(scene->sprite_queue);
 		i < scene->sprite_queue_count && spr != NULL;
 		i++, spr = (elf_sprite*)elf_next_in_list(scene->sprite_queue))
 	{
-		elf_draw_sprite_non_lighted(spr, &scene->shader_params);
+		elf_draw_sprite(spr, ELF_DRAW_WITHOUT_LIGHTING, &scene->shader_params);
 	}
 
 	// render lighting
@@ -1793,7 +1763,7 @@ void elf_draw_scene(elf_scene *scene)
 			{
 				if(!elf_cull_entity(ent, light->shadow_camera))
 				{
-					elf_draw_entity_without_materials(ent, &scene->shader_params);
+					elf_draw_entity(ent, ELF_DRAW_DEPTH, &scene->shader_params);
 				}
 			}
 
@@ -1802,7 +1772,7 @@ void elf_draw_scene(elf_scene *scene)
 			{
 				if(!elf_cull_sprite(spr, light->shadow_camera))
 				{
-					elf_draw_sprite_without_materials(spr, &scene->shader_params);
+					elf_draw_sprite(spr, ELF_DRAW_DEPTH, &scene->shader_params);
 				}
 			}
 
@@ -1861,7 +1831,7 @@ void elf_draw_scene(elf_scene *scene)
 				{
 					if(!elf_cull_entity(ent, light->shadow_camera))
 					{
-						elf_draw_entity(ent, &scene->shader_params);
+						elf_draw_entity(ent, ELF_DRAW_WITH_LIGHTING, &scene->shader_params);
 					}
 				}
 				else if(light->light_type == ELF_POINT_LIGHT)
@@ -1872,12 +1842,12 @@ void elf_draw_scene(elf_scene *scene)
 					att = 1.0-elf_float_max(dist-light->distance, 0.0)*light->fade_speed;
 					if(att > 0.0)
 					{
-						elf_draw_entity(ent, &scene->shader_params);
+						elf_draw_entity(ent, ELF_DRAW_WITH_LIGHTING, &scene->shader_params);
 					}
 				}
 				else
 				{
-					elf_draw_entity(ent, &scene->shader_params);
+					elf_draw_entity(ent, ELF_DRAW_WITH_LIGHTING, &scene->shader_params);
 				}
 			}
 			else
@@ -1895,7 +1865,7 @@ void elf_draw_scene(elf_scene *scene)
 			{
 				if(!elf_cull_sprite(spr, light->shadow_camera))
 				{
-					elf_draw_sprite(spr, &scene->shader_params);
+					elf_draw_sprite(spr, ELF_DRAW_WITH_LIGHTING, &scene->shader_params);
 				}
 			}
 			else if(light->light_type == ELF_POINT_LIGHT)
@@ -1906,12 +1876,12 @@ void elf_draw_scene(elf_scene *scene)
 				att = 1.0-elf_float_max(dist-light->distance, 0.0)*light->fade_speed;
 				if(att > 0.0)
 				{
-					elf_draw_sprite(spr, &scene->shader_params);
+					elf_draw_sprite(spr, ELF_DRAW_WITH_LIGHTING, &scene->shader_params);
 				}
 			}
 			else
 			{
-				elf_draw_sprite(spr, &scene->shader_params);
+				elf_draw_sprite(spr, ELF_DRAW_WITH_LIGHTING, &scene->shader_params);
 			}
 		}
 	}
@@ -1933,57 +1903,544 @@ void elf_draw_scene(elf_scene *scene)
 		}
 	}
 
-	// render stuff for dof...
-	if(elf_is_dof())
+	// reset state just to be sure...
+	gfx_set_shader_params_default(&scene->shader_params);
+	gfx_set_shader_params(&scene->shader_params);
+
+	// keep the query lists compact
+
+	if(elf_get_list_length(scene->entity_queue) > scene->entity_queue_count)
 	{
+		ent = (elf_entity*)elf_rbegin_list(scene->entity_queue);
+		if(ent) elf_remove_from_list(scene->entity_queue, (elf_object*)ent);
+	}
+
+	if(elf_get_list_length(scene->sprite_queue) > scene->sprite_queue_count)
+	{
+		spr = (elf_sprite*)elf_rbegin_list(scene->sprite_queue);
+		if(spr) elf_remove_from_list(scene->sprite_queue, (elf_object*)spr);
+	}
+}
+
+/*void elf_draw_scene(elf_scene *scene)
+{
+	elf_entity *ent;
+	elf_sprite *spr;
+	elf_light *lig;
+	elf_particles *par;
+	float bias[16] = {0.5, 0.0, 0.0, 0.0,
+			0.0, 0.5, 0.0, 0.0,
+			0.0, 0.0, 0.5, 0.0,
+			0.5, 0.5, 0.5, 1.0};
+	float temp_mat1[16];
+	float temp_mat2[16];
+	float inv_projection_matrix[16];
+	unsigned char found;
+	int i;
+	elf_vec4f cam_orient;
+	elf_vec3f lpos;
+	float ldist;
+	elf_vec3f ldvec;
+	elf_vec3f lsspos;
+	elf_vec3f ldsspos;
+	elf_vec2f lmin;
+	elf_vec2f lmax;
+	int wwidth;
+	int wheight;
+
+	if(!scene->cur_camera) return;
+
+	gfx_bind_gbuffer(eng->gbuffer, &scene->shader_params);
+	gfx_clear_buffers(0.0, 0.0, 0.0, 0.0, 1.0);
+
+	if(eng->occlusion_culling)
+	{
+		// draw occluders to depth buffer
 		gfx_set_shader_params_default(&scene->shader_params);
-		scene->shader_params.render_params.depth_write = GFX_FALSE;
-		scene->shader_params.render_params.depth_func = GFX_EQUAL;
-		scene->shader_params.render_params.color_write = GFX_FALSE;
-		scene->shader_params.shader_program = scene->dof_depth_write;
 		elf_set_camera(scene->cur_camera, &scene->shader_params);
+		scene->shader_params.render_params.color_write = ELF_FALSE;
+		scene->shader_params.render_params.alpha_write = ELF_FALSE;
+		scene->shader_params.gbuffer = eng->gbuffer;
+		scene->shader_params.gbuffer_mode = GFX_GBUFFER_DEPTH;
 
-		gfx_set_shader_params(&scene->shader_params);
-		gfx_set_shader_program_uniform_1f("elf_FocalRange", elf_get_dof_focal_range());
-		gfx_set_shader_program_uniform_1f("elf_FocalDistance", elf_get_dof_focal_distance());
+		found = ELF_FALSE;
+		scene->entity_queue_count = 0;
+		elf_begin_list(scene->entity_queue);
 
-		for(i = 0, ent = (elf_entity*)elf_begin_list(scene->entity_queue);
-			i < scene->entity_queue_count && ent != NULL;
-			i++, ent = (elf_entity*)elf_next_in_list(scene->entity_queue))
+		for(ent = (elf_entity*)elf_begin_list(scene->entities); ent != NULL;
+			ent = (elf_entity*)elf_next_in_list(scene->entities))
 		{
-			if((!ent->culled || !eng->occlusion_culling) && ent->model && ent->model->vertex_array && ent->visible)
+			if(!elf_cull_entity(ent, scene->cur_camera))
 			{
-				elf_pre_draw_entity(ent);
-
-				gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(ent->transform),
-					scene->shader_params.camera_matrix, scene->shader_params.modelview_matrix);
-
-				gfx_set_vertex_array(ent->model->vertex_array);
-				gfx_set_shader_params(&scene->shader_params);
-
-				for(j = 0; j < (int)ent->model->area_count; j++)
+				if(scene->entity_queue_count < elf_get_list_length(scene->entity_queue))
 				{
-					if(ent->model->areas[j].vertex_index)
-					{
-						gfx_draw_vertex_index(ent->model->areas[j].vertex_index, GFX_TRIANGLES);
-					}
+					elf_set_list_cur_ptr(scene->entity_queue, (elf_object*)ent);
+					elf_next_in_list(scene->entity_queue);
+				}
+				else
+				{
+					elf_append_to_list(scene->entity_queue, (elf_object*)ent);
+				}
+				scene->entity_queue_count++;
+				if(ent->occluder)
+				{
+					elf_draw_entity(ent, ELF_DRAW_DEPTH, &scene->shader_params);
+					found = ELF_TRUE;
+				}
+				ent->culled = ELF_FALSE;
+			}
+			else
+			{
+				ent->culled = ELF_TRUE;
+			}
+		}
+
+		scene->sprite_queue_count = 0;
+		elf_begin_list(scene->sprite_queue);
+
+		for(spr = (elf_sprite*)elf_begin_list(scene->sprites); spr != NULL;
+			spr = (elf_sprite*)elf_next_in_list(scene->sprites))
+		{
+			if(!elf_cull_sprite(spr, scene->cur_camera))
+			{
+				if(scene->sprite_queue_count < elf_get_list_length(scene->sprite_queue))
+				{
+					elf_set_list_cur_ptr(scene->sprite_queue, (elf_object*)spr);
+					elf_next_in_list(scene->sprite_queue);
+				}
+				else
+				{
+					elf_append_to_list(scene->sprite_queue, (elf_object*)spr);
+				}
+				scene->sprite_queue_count++;
+				if(spr->occluder)
+				{
+					found = ELF_TRUE;
+					elf_draw_sprite(spr, ELF_DRAW_DEPTH, &scene->shader_params);
+				}
+				spr->culled = ELF_FALSE;
+			}
+			else
+			{
+				spr->culled = ELF_TRUE;
+			}
+		}
+
+		if(found)
+		{
+			// initiate occlusion queries
+			gfx_set_shader_params_default(&scene->shader_params);
+			elf_set_camera(scene->cur_camera, &scene->shader_params);
+			scene->shader_params.render_params.depth_write = GFX_FALSE;
+			scene->shader_params.render_params.depth_func = GFX_LEQUAL;
+			scene->shader_params.render_params.color_write = GFX_FALSE;
+			scene->shader_params.render_params.alpha_write = GFX_FALSE;
+			scene->shader_params.render_params.cull_face = GFX_FALSE;
+
+			for(i = 0, ent = (elf_entity*)elf_begin_list(scene->entity_queue);
+				i < scene->entity_queue_count && ent != NULL;
+				i++, ent = (elf_entity*)elf_next_in_list(scene->entity_queue))
+			{
+				gfx_begin_query(ent->query);
+				elf_draw_entity_bounding_box(ent, &scene->shader_params);
+				gfx_end_query(ent->query);
+			}
+
+			// draw depth buffer
+			gfx_set_shader_params_default(&scene->shader_params);
+			elf_set_camera(scene->cur_camera, &scene->shader_params);
+			scene->shader_params.render_params.color_write = ELF_FALSE;
+			scene->shader_params.render_params.alpha_write = ELF_FALSE;
+			scene->shader_params.gbuffer = eng->gbuffer;
+			scene->shader_params.gbuffer_mode = GFX_GBUFFER_DEPTH;
+
+			for(i = 0, ent = (elf_entity*)elf_begin_list(scene->entity_queue);
+				i < scene->entity_queue_count && ent != NULL;
+				i++, ent = (elf_entity*)elf_next_in_list(scene->entity_queue))
+			{
+				if(ent->occluder) continue;
+
+				if(gfx_get_query_result(ent->query) < 1)
+				{
+					elf_remove_from_list(scene->entity_queue, (elf_object*)ent);
+					scene->entity_queue_count--; i--;
+				}
+				else
+				{
+					elf_draw_entity(ent, ELF_DRAW_DEPTH, &scene->shader_params);
 				}
 			}
-		}
 
-		for(i = 0, spr = (elf_sprite*)elf_begin_list(scene->sprite_queue);
-			i < scene->sprite_queue_count && spr != NULL;
-			i++, spr = (elf_sprite*)elf_next_in_list(scene->sprite_queue))
-		{
-			if(spr->material && spr->visible)
+			for(i = 0, spr = (elf_sprite*)elf_begin_list(scene->sprite_queue);
+				i < scene->sprite_queue_count && spr != NULL;
+				i++, spr = (elf_sprite*)elf_next_in_list(scene->sprite_queue))
 			{
-				gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(spr->transform),
-					scene->shader_params.camera_matrix, scene->shader_params.modelview_matrix);
+				if(spr->occluder) continue;
 
-				gfx_set_shader_params(&scene->shader_params);
-				gfx_draw_vertex_array(eng->sprite_vertex_array, 12, GFX_TRIANGLES);
+				elf_draw_sprite(spr, ELF_DRAW_DEPTH, &scene->shader_params);
 			}
 		}
+		else
+		{
+			// draw depth buffer
+			gfx_set_shader_params_default(&scene->shader_params);
+			elf_set_camera(scene->cur_camera, &scene->shader_params);
+			scene->shader_params.render_params.color_write = ELF_FALSE;
+			scene->shader_params.render_params.alpha_write = ELF_FALSE;
+			scene->shader_params.gbuffer = eng->gbuffer;
+			scene->shader_params.gbuffer_mode = GFX_GBUFFER_DEPTH;
+
+			for(i = 0, ent = (elf_entity*)elf_begin_list(scene->entity_queue);
+				i < scene->entity_queue_count && ent != NULL;
+				i++, ent = (elf_entity*)elf_next_in_list(scene->entity_queue))
+			{
+				elf_draw_entity(ent, ELF_DRAW_DEPTH, &scene->shader_params);
+			}
+
+			for(i = 0, spr = (elf_sprite*)elf_begin_list(scene->sprite_queue);
+				i < scene->sprite_queue_count && spr != NULL;
+				i++, spr = (elf_sprite*)elf_next_in_list(scene->sprite_queue))
+			{
+				elf_draw_sprite(spr, ELF_DRAW_DEPTH, &scene->shader_params);
+			}
+		}
+	}
+	else
+	{
+		// draw depth buffer
+		gfx_set_shader_params_default(&scene->shader_params);
+		elf_set_camera(scene->cur_camera, &scene->shader_params);
+		scene->shader_params.render_params.color_write = ELF_FALSE;
+		scene->shader_params.render_params.alpha_write = ELF_FALSE;
+		scene->shader_params.gbuffer = eng->gbuffer;
+		scene->shader_params.gbuffer_mode = GFX_GBUFFER_DEPTH;
+
+		scene->entity_queue_count = 0;
+		elf_begin_list(scene->entity_queue);
+
+		for(ent = (elf_entity*)elf_begin_list(scene->entities); ent != NULL;
+			ent = (elf_entity*)elf_next_in_list(scene->entities))
+		{
+			if(!elf_cull_entity(ent, scene->cur_camera))
+			{
+				if(scene->entity_queue_count < elf_get_list_length(scene->entity_queue))
+				{
+					elf_set_list_cur_ptr(scene->entity_queue, (elf_object*)ent);
+					elf_next_in_list(scene->entity_queue);
+				}
+				else
+				{
+					elf_append_to_list(scene->entity_queue, (elf_object*)ent);
+				}
+				scene->entity_queue_count++;
+				elf_draw_entity(ent, ELF_DRAW_DEPTH, &scene->shader_params);
+				ent->culled = ELF_FALSE;
+			}
+			else
+			{
+				ent->culled = ELF_TRUE;
+			}
+		}
+
+		scene->sprite_queue_count = 0;
+		elf_begin_list(scene->sprite_queue);
+
+		for(spr = (elf_sprite*)elf_begin_list(scene->sprites); spr != NULL;
+			spr = (elf_sprite*)elf_next_in_list(scene->sprites))
+		{
+			if(!elf_cull_sprite(spr, scene->cur_camera))
+			{
+				if(scene->sprite_queue_count < elf_get_list_length(scene->sprite_queue))
+				{
+					elf_set_list_cur_ptr(scene->sprite_queue, (elf_object*)spr);
+					elf_next_in_list(scene->sprite_queue);
+				}
+				else
+				{
+					elf_append_to_list(scene->sprite_queue, (elf_object*)spr);
+				}
+				scene->sprite_queue_count++;
+				elf_draw_sprite(spr, ELF_DRAW_DEPTH, &scene->shader_params);
+				spr->culled = ELF_FALSE;
+			}
+			else
+			{
+				spr->culled = ELF_TRUE;
+			}
+		}
+	}
+
+	// draw gbuffers
+	gfx_set_shader_params_default(&scene->shader_params);
+	elf_set_camera(scene->cur_camera, &scene->shader_params);
+	scene->shader_params.render_params.depth_write = GFX_FALSE;
+	scene->shader_params.render_params.depth_func = GFX_EQUAL;
+	scene->shader_params.gbuffer = eng->gbuffer;
+	scene->shader_params.gbuffer_mode = GFX_GBUFFER_FILL;
+
+	for(i = 0, ent = (elf_entity*)elf_begin_list(scene->entity_queue);
+		i < scene->entity_queue_count && ent != NULL;
+		i++, ent = (elf_entity*)elf_next_in_list(scene->entity_queue))
+	{
+		elf_draw_entity(ent, ELF_DRAW_WITH_LIGHTING, &scene->shader_params);
+	}
+
+	for(i = 0, spr = (elf_sprite*)elf_begin_list(scene->sprite_queue);
+		i < scene->sprite_queue_count && spr != NULL;
+		i++, spr = (elf_sprite*)elf_next_in_list(scene->sprite_queue))
+	{
+		elf_draw_sprite(spr, ELF_DRAW_WITH_LIGHTING, &scene->shader_params);
+	}
+
+	// get inverse projection matrix for retrieving vertex position from depth
+	gfx_matrix4_get_inverse(scene->cur_camera->projection_matrix, inv_projection_matrix);
+
+	// draw lighting
+	gfx_bind_gbuffer_light(eng->gbuffer, &scene->shader_params);
+	gfx_clear_color_buffer(0.0, 0.0, 0.0, 1.0);
+
+	cam_orient = elf_get_actor_orientation((elf_actor*)scene->cur_camera);
+	wwidth = elf_get_window_width();
+	wheight = elf_get_window_height();
+
+	for(lig = (elf_light*)elf_begin_list(scene->lights); lig;
+		lig = (elf_light*)elf_next_in_list(scene->lights))
+	{
+		if(!lig->visible) continue;
+
+		// cull lights that aren't affecting any pixels on the screen
+		lpos = elf_get_actor_position((elf_actor*)lig);
+		ldist = lig->distance+1.0/lig->fade_speed;
+
+		ldvec.x = 0.0; ldvec.y = ldist; ldvec.z = 0.0;
+		ldvec = elf_mul_qua_vec3f(cam_orient, ldvec);
+		ldvec = elf_add_vec3f_vec3f(lpos, ldvec);
+
+		lsspos = elf_project_camera_point(scene->cur_camera, lpos.x, lpos.y, lpos.z);
+		ldsspos = elf_project_camera_point(scene->cur_camera, ldvec.x, ldvec.y, ldvec.z);
+
+		ldvec = elf_sub_vec3f_vec3f(ldsspos, lsspos);
+		ldist = elf_get_vec3f_length(ldvec);
+
+		lmin.x = lsspos.x-ldist;
+		lmin.y = lsspos.y-ldist;
+		lmax.x = lsspos.x+ldist;
+		lmax.y = lsspos.y+ldist;
+
+		if(lmin.x < 0) lmin.x = 0;
+		if(lmin.y < 0) lmin.y = 0;
+		if(lmin.x > wwidth) lmin.x = wwidth;
+		if(lmin.y > wheight) lmin.y = wheight;
+		if(lmax.x < 0) lmax.x = 0;
+		if(lmax.y < 0) lmax.y = 0;
+		if(lmax.x > wwidth) lmax.x = wwidth;
+		if(lmax.y > wheight) lmax.y = wheight;
+
+		if(lmax.x-lmin.x == 0) continue;
+		if(lmax.y-lmin.y == 0) continue;
+
+		// need to call this for frustum culling...
+		if(lig->light_type == ELF_SPOT_LIGHT)
+		{
+			elf_set_camera_viewport(lig->shadow_camera, 0, 0, elf_get_shadow_map_size(), elf_get_shadow_map_size());
+			elf_set_camera(lig->shadow_camera, &scene->shader_params);
+
+			// check are there any entities visible for the spot, if there aren't don't bother continuing, just skip to the next light
+			found = ELF_FALSE;
+			for(i = 0, ent = (elf_entity*)elf_begin_list(scene->entity_queue);
+				i < scene->entity_queue_count && ent != NULL;
+				i++, ent = (elf_entity*)elf_next_in_list(scene->entity_queue))
+			{
+				if(!elf_cull_entity(ent, lig->shadow_camera))
+				{
+					found = ELF_TRUE;
+					break;
+				}
+			}
+
+			for(i = 0, spr = (elf_sprite*)elf_begin_list(scene->sprite_queue);
+				i < scene->sprite_queue_count && spr != NULL;
+				i++, spr = (elf_sprite*)elf_next_in_list(scene->sprite_queue))
+			{
+				if(!elf_cull_sprite(spr, lig->shadow_camera))
+				{
+					found = ELF_TRUE;
+					break;
+				}
+			}
+
+			if(!found) continue;
+
+			// render shadow map if needed
+			if(lig->shadows)
+			{
+				gfx_disable_scissor();
+
+				gfx_set_shader_params_default(&scene->shader_params);
+				scene->shader_params.render_params.color_write = GFX_FALSE;
+				scene->shader_params.render_params.alpha_write = GFX_FALSE;
+				scene->shader_params.render_params.offset_bias = 2.0;
+				scene->shader_params.render_params.offset_scale = 4.0;
+				elf_set_camera(lig->shadow_camera, &scene->shader_params);
+				gfx_set_shader_params(&scene->shader_params);
+
+				gfx_set_render_target(eng->shadow_target);
+				gfx_clear_depth_buffer(1.0);
+
+				for(ent = (elf_entity*)elf_begin_list(scene->entities); ent != NULL;
+					ent = (elf_entity*)elf_next_in_list(scene->entities))
+				{
+					if(!elf_cull_entity(ent, lig->shadow_camera))
+					{
+						elf_draw_entity(ent, ELF_DRAW_DEPTH, &scene->shader_params);
+					}
+				}
+
+				for(spr = (elf_sprite*)elf_begin_list(scene->sprites); spr != NULL;
+					spr = (elf_sprite*)elf_next_in_list(scene->sprites))
+				{
+					if(!elf_cull_sprite(spr, lig->shadow_camera))
+					{
+						elf_draw_sprite(spr, ELF_DRAW_DEPTH, &scene->shader_params);
+					}
+				}
+
+				gfx_mul_matrix4_matrix4(elf_get_camera_projection_matrix(lig->shadow_camera), bias, temp_mat1);
+				gfx_mul_matrix4_matrix4(elf_get_camera_modelview_matrix(lig->shadow_camera), temp_mat1, temp_mat2);
+				gfx_matrix4_get_inverse_fast(elf_get_camera_modelview_matrix(scene->cur_camera), temp_mat1);
+				gfx_mul_matrix4_matrix4(temp_mat1, temp_mat2, lig->projection_matrix);
+			}
+		}
+
+		gfx_set_scissor((int)lmin.x, (int)lmin.y, (int)(lmax.x-lmin.x), (int)(lmax.y-lmin.y));
+
+		gfx_bind_gbuffer_light(eng->gbuffer, &scene->shader_params);
+
+		gfx_set_shader_params_default(&scene->shader_params);
+
+		if(lig->light_type == ELF_SPOT_LIGHT && lig->shadows)
+		{
+			scene->shader_params.texture_params[GFX_MAX_TEXTURES-1].type = GFX_SHADOW_MAP;
+			scene->shader_params.texture_params[GFX_MAX_TEXTURES-1].texture = eng->shadow_map;
+			scene->shader_params.texture_params[GFX_MAX_TEXTURES-1].projection_mode = GFX_SHADOW_PROJECTION;
+			memcpy(scene->shader_params.texture_params[GFX_MAX_TEXTURES-1].matrix,
+				lig->projection_matrix, sizeof(float)*16);
+		}
+
+		gfx_set_viewport(0, 0, elf_get_window_width(), elf_get_window_height());
+		gfx_get_orthographic_projection_matrix(0.0, (float)elf_get_window_width(),
+			0.0, (float)elf_get_window_height(), -1.0, 1.0,
+			scene->shader_params.projection_matrix);
+		scene->shader_params.render_params.depth_test = GFX_FALSE;
+		scene->shader_params.render_params.depth_write = GFX_FALSE;
+		scene->shader_params.render_params.blend_mode = GFX_ADD;
+		scene->shader_params.gbuffer_mode = GFX_GBUFFER_LIGHTING;
+		memcpy(scene->shader_params.inv_projection_matrix, inv_projection_matrix, sizeof(float)*16);
+		scene->shader_params.texture_params[0].texture = gfx_get_gbuffer_depth(eng->gbuffer);
+		scene->shader_params.texture_params[1].texture = gfx_get_gbuffer_buf1(eng->gbuffer);
+		scene->shader_params.texture_params[2].texture = gfx_get_gbuffer_buf3(eng->gbuffer);
+
+		elf_set_light(lig, scene->cur_camera, &scene->shader_params);
+
+		gfx_set_shader_params(&scene->shader_params);
+
+		gfx_draw_textured_2d_quad(0.0, 0.0, (float)elf_get_window_width(), (float)elf_get_window_height());
+	}
+
+	gfx_disable_scissor();
+
+	gfx_bind_gbuffer_main(eng->gbuffer, &scene->shader_params);
+
+	// combine lighting
+	gfx_set_shader_params_default(&scene->shader_params);
+	scene->shader_params.render_params.depth_test = GFX_FALSE;
+	scene->shader_params.render_params.depth_write = GFX_FALSE;
+	scene->shader_params.shader_program = scene->compose_main_shdr;
+	scene->shader_params.texture_params[0].texture = gfx_get_gbuffer_buf2(eng->gbuffer);
+	scene->shader_params.texture_params[1].texture = gfx_get_gbuffer_diffuse(eng->gbuffer);
+	scene->shader_params.texture_params[2].texture = gfx_get_gbuffer_specular(eng->gbuffer);
+
+	gfx_set_viewport(0, 0, elf_get_window_width(), elf_get_window_height());
+	gfx_get_orthographic_projection_matrix(0.0, (float)elf_get_window_width(),
+		0.0, (float)elf_get_window_height(), -1.0, 1.0,
+		scene->shader_params.projection_matrix);
+	
+	gfx_set_shader_params(&scene->shader_params);
+
+	gfx_draw_textured_2d_quad(0.0, 0.0, (float)elf_get_window_width(), (float)elf_get_window_height());
+
+	// draw ambient
+	if(!elf_about_zero(scene->ambient_color.r) ||
+		!elf_about_zero(scene->ambient_color.g) ||
+		!elf_about_zero(scene->ambient_color.b) )
+	{
+		scene->shader_params.shader_program = NULL;
+		scene->shader_params.render_params.blend_mode = GFX_ADD;
+		scene->shader_params.texture_params[0].texture = gfx_get_gbuffer_buf2(eng->gbuffer);
+		scene->shader_params.texture_params[1].texture = NULL;
+		scene->shader_params.texture_params[2].texture = NULL;
+		memcpy(&scene->shader_params.material_params.color.r, &scene->ambient_color.r, sizeof(float)*4);
+
+		gfx_set_shader_params(&scene->shader_params);
+
+		gfx_draw_textured_2d_quad(0.0, 0.0, (float)elf_get_window_width(), (float)elf_get_window_height());
+	}
+
+	// draw non lighted stuff
+	gfx_set_shader_params_default(&scene->shader_params);
+	elf_set_camera(scene->cur_camera, &scene->shader_params);
+	scene->shader_params.render_params.depth_write = GFX_FALSE;
+	scene->shader_params.render_params.depth_func = GFX_EQUAL;
+
+	for(i = 0, ent = (elf_entity*)elf_begin_list(scene->entity_queue);
+		i < scene->entity_queue_count && ent != NULL;
+		i++, ent = (elf_entity*)elf_next_in_list(scene->entity_queue))
+	{
+		elf_draw_entity(ent, ELF_DRAW_WITHOUT_LIGHTING, &scene->shader_params);
+	}
+
+	for(i = 0, spr = (elf_sprite*)elf_begin_list(scene->sprite_queue);
+		i < scene->sprite_queue_count && spr != NULL;
+		i++, spr = (elf_sprite*)elf_next_in_list(scene->sprite_queue))
+	{
+		elf_draw_sprite(spr, ELF_DRAW_WITHOUT_LIGHTING, &scene->shader_params);
+	}
+
+	// render particles
+	gfx_set_shader_params_default(&scene->shader_params);
+	scene->shader_params.render_params.depth_write = GFX_FALSE;
+	scene->shader_params.render_params.depth_func = GFX_LEQUAL;
+	scene->shader_params.render_params.color_write = GFX_TRUE;
+	scene->shader_params.render_params.alpha_write = GFX_TRUE;
+	elf_set_camera(scene->cur_camera, &scene->shader_params);
+	
+	for(par = (elf_particles*)elf_begin_list(scene->particles); par;
+		par = (elf_particles*)elf_next_in_list(scene->particles))
+	{
+		if(!elf_cull_particles(par, scene->cur_camera))
+		{
+			elf_draw_particles(par, scene->cur_camera, &scene->shader_params);
+		}
+	}
+
+	gfx_disable_render_target();
+
+	if(!eng->post_process)
+	{
+		// draw final image
+		gfx_set_shader_params_default(&scene->shader_params);
+		scene->shader_params.render_params.depth_test = GFX_FALSE;
+		scene->shader_params.render_params.depth_write = GFX_FALSE;
+		scene->shader_params.texture_params[0].texture = gfx_get_gbuffer_main(eng->gbuffer);
+
+		gfx_set_viewport(0, 0, elf_get_window_width(), elf_get_window_height());
+		gfx_get_orthographic_projection_matrix(0.0, (float)elf_get_window_width(),
+			0.0, (float)elf_get_window_height(), -1.0, 1.0,
+			scene->shader_params.projection_matrix);
+	
+		gfx_set_shader_params(&scene->shader_params);
+
+		gfx_draw_textured_2d_quad(0.0, 0.0, (float)elf_get_window_width(), (float)elf_get_window_height());
 	}
 
 	// reset state just to be sure...
@@ -2003,7 +2460,7 @@ void elf_draw_scene(elf_scene *scene)
 		spr = (elf_sprite*)elf_rbegin_list(scene->sprite_queue);
 		if(spr) elf_remove_from_list(scene->sprite_queue, (elf_object*)spr);
 	}
-}
+}*/
 
 void elf_draw_scene_debug(elf_scene *scene)
 {
@@ -2080,8 +2537,6 @@ void elf_draw_scene_debug(elf_scene *scene)
 	gfx_set_shader_params_default(&scene->shader_params);
 	gfx_set_shader_params(&scene->shader_params);
 }
-
-
 
 elf_list* elf_get_scene_scripts(elf_scene *scene)
 {

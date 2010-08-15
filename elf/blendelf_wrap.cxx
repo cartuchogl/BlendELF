@@ -4551,6 +4551,107 @@ fail:
 }
 
 
+static int _wrap_elfSetFog(lua_State* L) {
+  int SWIG_arg = 0;
+  float arg1 ;
+  float arg2 ;
+  float arg3 ;
+  float arg4 ;
+  float arg5 ;
+  
+  SWIG_check_num_args("SetFog",5,5)
+  if(!lua_isnumber(L,1)) SWIG_fail_arg("SetFog",1,"float");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("SetFog",2,"float");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("SetFog",3,"float");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("SetFog",4,"float");
+  if(!lua_isnumber(L,5)) SWIG_fail_arg("SetFog",5,"float");
+  arg1 = (float)lua_tonumber(L, 1);
+  arg2 = (float)lua_tonumber(L, 2);
+  arg3 = (float)lua_tonumber(L, 3);
+  arg4 = (float)lua_tonumber(L, 4);
+  arg5 = (float)lua_tonumber(L, 5);
+  elfSetFog(arg1,arg2,arg3,arg4,arg5);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfDisableFog(lua_State* L) {
+  int SWIG_arg = 0;
+  
+  SWIG_check_num_args("DisableFog",0,0)
+  elfDisableFog();
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetFogStart(lua_State* L) {
+  int SWIG_arg = 0;
+  float result;
+  
+  SWIG_check_num_args("GetFogStart",0,0)
+  result = (float)elfGetFogStart();
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetFogEnd(lua_State* L) {
+  int SWIG_arg = 0;
+  float result;
+  
+  SWIG_check_num_args("GetFogEnd",0,0)
+  result = (float)elfGetFogEnd();
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetFogColor(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_color result;
+  
+  SWIG_check_num_args("GetFogColor",0,0)
+  result = elfGetFogColor();
+  {
+    elf_color * resultptr = new elf_color((const elf_color &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_color,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfSetBloom(lua_State* L) {
   int SWIG_arg = 0;
   float arg1 ;
@@ -4762,13 +4863,30 @@ fail:
 }
 
 
-static int _wrap_elfGetLightShaftsInteisity(lua_State* L) {
+static int _wrap_elfGetLightShaftsIntensity(lua_State* L) {
   int SWIG_arg = 0;
   float result;
   
-  SWIG_check_num_args("GetLightShaftsInteisity",0,0)
-  result = (float)elfGetLightShaftsInteisity();
+  SWIG_check_num_args("GetLightShaftsIntensity",0,0)
+  result = (float)elfGetLightShaftsIntensity();
   lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfIsFog(lua_State* L) {
+  int SWIG_arg = 0;
+  bool result;
+  
+  SWIG_check_num_args("IsFog",0,0)
+  result = (bool)elfIsFog();
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -11348,6 +11466,44 @@ fail:
 }
 
 
+static int _wrap_elfProjectCameraPoint(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  float arg2 ;
+  float arg3 ;
+  float arg4 ;
+  elf_handle *argp1 ;
+  elf_vec3f result;
+  
+  SWIG_check_num_args("ProjectCameraPoint",4,4)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("ProjectCameraPoint",1,"handle");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("ProjectCameraPoint",2,"float");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("ProjectCameraPoint",3,"float");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("ProjectCameraPoint",4,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("ProjectCameraPoint",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  arg3 = (float)lua_tonumber(L, 3);
+  arg4 = (float)lua_tonumber(L, 4);
+  result = elfProjectCameraPoint(arg1,arg2,arg3,arg4);
+  {
+    elf_vec3f * resultptr = new elf_vec3f((const elf_vec3f &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_vec3f,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfUnProjectCameraPoint(lua_State* L) {
   int SWIG_arg = 0;
   elf_handle arg1 ;
@@ -12492,6 +12648,60 @@ static int _wrap_elfGetEntityVisible(lua_State* L) {
   arg1 = *argp1;
   
   result = (bool)elfGetEntityVisible(arg1);
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfSetEntityOccluder(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  bool arg2 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("SetEntityOccluder",2,2)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetEntityOccluder",1,"handle");
+  if(!lua_isboolean(L,2)) SWIG_fail_arg("SetEntityOccluder",2,"bool");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetEntityOccluder",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (lua_toboolean(L, 2)!=0);
+  elfSetEntityOccluder(arg1,arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetEntityOccluder(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  bool result;
+  
+  SWIG_check_num_args("GetEntityOccluder",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetEntityOccluder",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetEntityOccluder",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = (bool)elfGetEntityOccluder(arg1);
   lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
   return SWIG_arg;
   
@@ -15603,6 +15813,114 @@ static int _wrap_elfGetSpriteFaceCamera(lua_State* L) {
   arg1 = *argp1;
   
   result = (bool)elfGetSpriteFaceCamera(arg1);
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfSetSpriteVisible(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  bool arg2 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("SetSpriteVisible",2,2)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetSpriteVisible",1,"handle");
+  if(!lua_isboolean(L,2)) SWIG_fail_arg("SetSpriteVisible",2,"bool");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetSpriteVisible",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (lua_toboolean(L, 2)!=0);
+  elfSetSpriteVisible(arg1,arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetSpriteVisible(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  bool result;
+  
+  SWIG_check_num_args("GetSpriteVisible",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetSpriteVisible",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetSpriteVisible",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = (bool)elfGetSpriteVisible(arg1);
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfSetSpriteOccluder(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  bool arg2 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("SetSpriteOccluder",2,2)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetSpriteOccluder",1,"handle");
+  if(!lua_isboolean(L,2)) SWIG_fail_arg("SetSpriteOccluder",2,"bool");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetSpriteOccluder",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (lua_toboolean(L, 2)!=0);
+  elfSetSpriteOccluder(arg1,arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetSpriteOccluder(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  bool result;
+  
+  SWIG_check_num_args("GetSpriteOccluder",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetSpriteOccluder",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetSpriteOccluder",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = (bool)elfGetSpriteOccluder(arg1);
   lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
   return SWIG_arg;
   
@@ -21913,6 +22231,11 @@ static const struct luaL_reg swig_commands[] = {
     { "SetShadowMapSize", _wrap_elfSetShadowMapSize},
     { "GetShadowMapSize", _wrap_elfGetShadowMapSize},
     { "GetPolygonsRendered", _wrap_elfGetPolygonsRendered},
+    { "SetFog", _wrap_elfSetFog},
+    { "DisableFog", _wrap_elfDisableFog},
+    { "GetFogStart", _wrap_elfGetFogStart},
+    { "GetFogEnd", _wrap_elfGetFogEnd},
+    { "GetFogColor", _wrap_elfGetFogColor},
     { "SetBloom", _wrap_elfSetBloom},
     { "DisableBloom", _wrap_elfDisableBloom},
     { "GetBloomThreshold", _wrap_elfGetBloomThreshold},
@@ -21925,7 +22248,8 @@ static const struct luaL_reg swig_commands[] = {
     { "GetSsaoAmount", _wrap_elfGetSsaoAmount},
     { "SetLightShafts", _wrap_elfSetLightShafts},
     { "DisableLightShafts", _wrap_elfDisableLightShafts},
-    { "GetLightShaftsInteisity", _wrap_elfGetLightShaftsInteisity},
+    { "GetLightShaftsIntensity", _wrap_elfGetLightShaftsIntensity},
+    { "IsFog", _wrap_elfIsFog},
     { "IsBloom", _wrap_elfIsBloom},
     { "IsSsao", _wrap_elfIsSsao},
     { "IsDof", _wrap_elfIsDof},
@@ -22154,6 +22478,7 @@ static const struct luaL_reg swig_commands[] = {
     { "GetCameraAspect", _wrap_elfGetCameraAspect},
     { "GetCameraClip", _wrap_elfGetCameraClip},
     { "GetCameraFarPlaneSize", _wrap_elfGetCameraFarPlaneSize},
+    { "ProjectCameraPoint", _wrap_elfProjectCameraPoint},
     { "UnProjectCameraPoint", _wrap_elfUnProjectCameraPoint},
     { "CreateVertice", _wrap_elfCreateVertice},
     { "SetVerticePosition", _wrap_elfSetVerticePosition},
@@ -22194,6 +22519,8 @@ static const struct luaL_reg swig_commands[] = {
     { "GetEntityMaterial", _wrap_elfGetEntityMaterial},
     { "SetEntityVisible", _wrap_elfSetEntityVisible},
     { "GetEntityVisible", _wrap_elfGetEntityVisible},
+    { "SetEntityOccluder", _wrap_elfSetEntityOccluder},
+    { "GetEntityOccluder", _wrap_elfGetEntityOccluder},
     { "SetEntityPhysics", _wrap_elfSetEntityPhysics},
     { "DisableEntityPhysics", _wrap_elfDisableEntityPhysics},
     { "SetEntityArmature", _wrap_elfSetEntityArmature},
@@ -22303,6 +22630,10 @@ static const struct luaL_reg swig_commands[] = {
     { "GetSpriteMaterial", _wrap_elfGetSpriteMaterial},
     { "GetSpriteScale", _wrap_elfGetSpriteScale},
     { "GetSpriteFaceCamera", _wrap_elfGetSpriteFaceCamera},
+    { "SetSpriteVisible", _wrap_elfSetSpriteVisible},
+    { "GetSpriteVisible", _wrap_elfGetSpriteVisible},
+    { "SetSpriteOccluder", _wrap_elfSetSpriteOccluder},
+    { "GetSpriteOccluder", _wrap_elfGetSpriteOccluder},
     { "CreateScene", _wrap_elfCreateScene},
     { "CreateSceneFromFile", _wrap_elfCreateSceneFromFile},
     { "SaveScene", _wrap_elfSaveScene},
@@ -22673,7 +23004,7 @@ static swig_lua_const_info swig_constants[] = {
 { SWIG_LUA_INT,     (char *)"BEZIER_CURVE", (long) 0x003C, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"IPO", (long) 0x003D, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"FRAME_PLAYER", (long) 0x003E, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"PROPERTY", (long) 0x004F, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"PROPERTY", (long) 0x003F, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"CLIENT", (long) 0x0040, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"SCRIPTING", (long) 0x0041, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"PHYSICS_TRI_MESH", (long) 0x0042, 0, 0, 0},

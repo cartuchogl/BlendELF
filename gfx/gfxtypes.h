@@ -111,6 +111,7 @@ struct gfx_shader_program {
 	gfx_shader_program *next;
 	unsigned int id;
 	int projection_matrix_loc;
+	int inv_projection_matrix_loc;
 	int modelview_matrix_loc;
 	int texture0_loc;
 	int texture1_loc;
@@ -170,7 +171,8 @@ struct gfx_gbuffer {
 	gfx_texture *buf2_tex;
 	gfx_texture *buf3_tex;
 	gfx_texture *buf4_tex;
-	gfx_texture *light_tex;
+	gfx_texture *diffuse_tex;
+	gfx_texture *specular_tex;
 
 	gfx_texture *main_tex;
 };

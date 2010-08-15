@@ -413,127 +413,103 @@ void gfx_matrix4_get_inverse_fast(float *mat1, float *mat2)
 	mat2[14] = -(mat1[12] * mat2[2] + mat1[13] * mat2[6] + mat1[14] * mat2[10]);
 }
 
-void gfx_matrix4_get_inverse(float *mat1, float *mat2)
+#define MATSWAP(a,b) {temp=(a);(a)=(b);(b)=temp;}
+
+unsigned char gfx_matrix4_get_inverse(float *mat1, float *mat2)
 {
-	float det;
+	float matr[4][4], ident[4][4];
+	int i, j, k, l, ll;
+	int icol=0, irow=0;
+	int indxc[4], indxr[4], ipiv[4];
+	float big, dum, pivinv, temp;
 
-	det = gfx_matrix4_get_determinant(mat1);
+	for(i = 0; i < 4; i++) {
+		for (j=0; j<4; j++) {
+			matr[i][j] = mat1[4*i+j];
+			ident[i][j] = 0.0;
+		}
+		ident[i][i] = 1.0;
+	} 
 
-	if(det == 0.0) return;
+	for(j = 0; j <= 3; j++) ipiv[j] = 0;
+	for(i = 0; i <= 3; i++)
+	{
+		big = 0.0;
 
-	det = 1.0/det;
+		for (j = 0; j <= 3; j++)
+		{
+			if(ipiv[j] != 1)
+			{
+				for(k = 0; k <= 3; k++)
+				{
+					if(ipiv[k] == 0)
+					{
+						if(fabs(matr[j][k]) >= big)
+						{
+							big = (float)fabs(matr[j][k]);
+							irow=j;
+							icol=k;
+						}
+					}
+					else if(ipiv[k] > 1)
+					{
+						return GFX_FALSE;
+					}
+				} 
+			}
+		}
 
-	mat2[_m11] = (mat1[_m22] * mat1[_m33] * mat1[_m44] +
-		mat1[_m23] * mat1[_m34] * mat1[_m42] +
-		mat1[_m24] * mat1[_m32] * mat1[_m43] -
-		mat1[_m22] * mat1[_m34] * mat1[_m43] -
-		mat1[_m23] * mat1[_m32] * mat1[_m44] -
-		mat1[_m24] * mat1[_m33] * mat1[_m42])*det;
+		++(ipiv[icol]);
 
-	mat2[_m12] = (mat1[_m12] * mat1[_m34] * mat1[_m43] +
-		mat1[_m13] * mat1[_m32] * mat1[_m44] +
-		mat1[_m14] * mat1[_m33] * mat1[_m42] -
-		mat1[_m12] * mat1[_m33] * mat1[_m44] -
-		mat1[_m13] * mat1[_m34] * mat1[_m42] -
-		mat1[_m14] * mat1[_m32] * mat1[_m43])*det;
+		if(irow != icol)
+		{
+			for(l = 0; l <= 3;l++) MATSWAP(matr[irow][l], matr[icol][l]);
+			for(l = 0; l <= 3;l++) MATSWAP(ident[irow][l], ident[icol][l]);
+		}
 
-	mat2[_m13] = (mat1[_m12] * mat1[_m23] * mat1[_m44] +
-		mat1[_m13] * mat1[_m24] * mat1[_m42] +
-		mat1[_m14] * mat1[_m22] * mat1[_m43] -
-		mat1[_m12] * mat1[_m24] * mat1[_m43] -
-		mat1[_m13] * mat1[_m22] * mat1[_m44] -
-		mat1[_m14] * mat1[_m23] * mat1[_m42])*det;
+		indxr[i]=irow;
+		indxc[i]=icol;
 
-	mat2[_m14] = (mat1[_m12] * mat1[_m24] * mat1[_m33] +
-		mat1[_m13] * mat1[_m22] * mat1[_m34] +
-		mat1[_m14] * mat1[_m23] * mat1[_m32] -
-		mat1[_m12] * mat1[_m23] * mat1[_m34] -
-		mat1[_m13] * mat1[_m24] * mat1[_m32] -
-		mat1[_m14] * mat1[_m22] * mat1[_m33])*det;
+		if(matr[icol][icol] == 0.0) return GFX_FALSE; 
 
-	mat2[_m21] = (mat1[_m21] * mat1[_m34] * mat1[_m43] +
-		mat1[_m23] * mat1[_m31] * mat1[_m44] +
-		mat1[_m24] * mat1[_m33] * mat1[_m41] -
-		mat1[_m21] * mat1[_m33] * mat1[_m44] -
-		mat1[_m23] * mat1[_m34] * mat1[_m41] -
-		mat1[_m24] * mat1[_m31] * mat1[_m43])*det;
+		pivinv = 1.0 / matr[icol][icol];
+		matr[icol][icol]=1.0;
 
-	mat2[_m22] = (mat1[_m11] * mat1[_m33] * mat1[_m44] +
-		mat1[_m13] * mat1[_m34] * mat1[_m41] +
-		mat1[_m14] * mat1[_m31] * mat1[_m43] -
-		mat1[_m11] * mat1[_m34] * mat1[_m43] -
-		mat1[_m13] * mat1[_m31] * mat1[_m44] -
-		mat1[_m14] * mat1[_m33] * mat1[_m41])*det;
+		for(l = 0; l <= 3 ; l++) matr[icol][l] *= pivinv;
+		for(l = 0; l <= 3 ; l++) ident[icol][l] *= pivinv;
 
-	mat2[_m23] = (mat1[_m11] * mat1[_m24] * mat1[_m43] +
-		mat1[_m13] * mat1[_m21] * mat1[_m44] +
-		mat1[_m14] * mat1[_m23] * mat1[_m41] -
-		mat1[_m11] * mat1[_m23] * mat1[_m44] -
-		mat1[_m13] * mat1[_m24] * mat1[_m41] -
-		mat1[_m14] * mat1[_m21] * mat1[_m43])*det;
+		for(ll = 0; ll <= 3; ll++)
+		{
+			if (ll != icol)
+			{
+				dum=matr[ll][icol];
+				matr[ll][icol]=0.0;
+				for (l=0;l<=3;l++) matr[ll][l] -= matr[icol][l]*dum;
+				for (l=0;l<=3;l++) ident[ll][l] -= ident[icol][l]*dum;
+			}
+		}
+	}
 
-	mat2[_m24] = (mat1[_m11] * mat1[_m23] * mat1[_m34] +
-		mat1[_m13] * mat1[_m24] * mat1[_m31] +
-		mat1[_m14] * mat1[_m21] * mat1[_m33] -
-		mat1[_m11] * mat1[_m24] * mat1[_m33] -
-		mat1[_m13] * mat1[_m21] * mat1[_m34] -
-		mat1[_m14] * mat1[_m23] * mat1[_m31])*det;
+	for(l = 3; l >= 0; l--)
+	{
+		if(indxr[l] != indxc[l])
+		{
+			for(k = 0; k <= 3; k++)
+			{
+				MATSWAP(matr[k][indxr[l]], matr[k][indxc[l]]);
+			}
+		}
+	}
 
-	mat2[_m31] = (mat1[_m21] * mat1[_m32] * mat1[_m44] +
-		mat1[_m22] * mat1[_m34] * mat1[_m41] +
-		mat1[_m24] * mat1[_m31] * mat1[_m42] -
-		mat1[_m21] * mat1[_m34] * mat1[_m42] -
-		mat1[_m22] * mat1[_m31] * mat1[_m44] -
-		mat1[_m24] * mat1[_m32] * mat1[_m41])*det;
+	for(i = 0; i < 4; i++)
+	{
+		for(j = 0; j < 4; j++)
+		{
+			mat2[4*i+j] = matr[i][j];
+		}
+	}
 
-	mat2[_m32] = (mat1[_m11] * mat1[_m34] * mat1[_m42] +
-		mat1[_m12] * mat1[_m31] * mat1[_m44] +
-		mat1[_m14] * mat1[_m32] * mat1[_m41] -
-		mat1[_m11] * mat1[_m32] * mat1[_m44] -
-		mat1[_m12] * mat1[_m34] * mat1[_m41] -
-		mat1[_m14] * mat1[_m31] * mat1[_m42])*det;
-
-	mat2[_m33] = (mat1[_m11] * mat1[_m22] * mat1[_m44] +
-		mat1[_m12] * mat1[_m24] * mat1[_m41] +
-		mat1[_m14] * mat1[_m21] * mat1[_m42] -
-		mat1[_m11] * mat1[_m24] * mat1[_m42] -
-		mat1[_m12] * mat1[_m21] * mat1[_m44] -
-		mat1[_m14] * mat1[_m22] * mat1[_m41])*det;
-
-	mat2[_m34] = (mat1[_m11] * mat1[_m24] * mat1[_m32] +
-		mat1[_m12] * mat1[_m21] * mat1[_m34] +
-		mat1[_m14] * mat1[_m22] * mat1[_m31] -
-		mat1[_m11] * mat1[_m22] * mat1[_m34] -
-		mat1[_m12] * mat1[_m24] * mat1[_m31] -
-		mat1[_m14] * mat1[_m21] * mat1[_m32])*det;
-
-	mat2[_m41] = (mat1[_m21] * mat1[_m33] * mat1[_m42] +
-		mat1[_m22] * mat1[_m31] * mat1[_m43] +
-		mat1[_m23] * mat1[_m32] * mat1[_m41] -
-		mat1[_m21] * mat1[_m32] * mat1[_m43] -
-		mat1[_m22] * mat1[_m33] * mat1[_m41] -
-		mat1[_m24] * mat1[_m31] * mat1[_m42])*det;
-
-	mat2[_m42] = (mat1[_m11] * mat1[_m32] * mat1[_m43] +
-		mat1[_m12] * mat1[_m33] * mat1[_m41] +
-		mat1[_m13] * mat1[_m31] * mat1[_m42] -
-		mat1[_m11] * mat1[_m33] * mat1[_m42] -
-		mat1[_m12] * mat1[_m31] * mat1[_m43] -
-		mat1[_m13] * mat1[_m32] * mat1[_m41])*det;
-
-	mat2[_m43] = (mat1[_m11] * mat1[_m23] * mat1[_m42] +
-		mat1[_m12] * mat1[_m21] * mat1[_m43] +
-		mat1[_m13] * mat1[_m22] * mat1[_m41] -
-		mat1[_m11] * mat1[_m22] * mat1[_m43] -
-		mat1[_m12] * mat1[_m23] * mat1[_m41] -
-		mat1[_m13] * mat1[_m21] * mat1[_m42])*det;
-
-	mat2[_m44] = (mat1[_m11] * mat1[_m22] * mat1[_m33] +
-		mat1[_m12] * mat1[_m23] * mat1[_m31] +
-		mat1[_m13] * mat1[_m21] * mat1[_m32] -
-		mat1[_m11] * mat1[_m23] * mat1[_m32] -
-		mat1[_m12] * mat1[_m21] * mat1[_m33] -
-		mat1[_m13] * mat1[_m22] * mat1[_m31])*det;
+	return GFX_TRUE;
 }
 
 void gfx_matrix3_to_qua(float *mat, float *qua)
