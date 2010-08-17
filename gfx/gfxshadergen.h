@@ -152,7 +152,10 @@ void gfx_get_shader_program_config(gfx_shader_params *shader_params, gfx_shader_
 	{
 		shader_config->specular = GFX_TRUE;
 	}
-	shader_config->gbuffer_mode = shader_params->gbuffer_mode;
+
+	shader_config->gbuffer = shader_params->gbuffer_mode;
+	shader_config->fog = shader_params->fog_params.mode;
+	shader_config->blend = shader_params->render_params.blend_mode;
 }
 
 void gfx_add_vertex_attributes(gfx_document *document, gfx_shader_config *config)
@@ -248,6 +251,16 @@ void gfx_add_fragment_texture_uniforms(gfx_document *document, gfx_shader_config
 	if(config->textures & GFX_HEIGHT_MAP) gfx_add_line_to_document(document, "uniform float elf_ParallaxScale;");
 }
 
+void gfx_add_fragment_fog_uniforms(gfx_document *document, gfx_shader_config *config)
+{
+	if(config->fog)
+	{
+		gfx_add_line_to_document(document, "uniform float elf_FogStart;");
+		gfx_add_line_to_document(document, "uniform float elf_FogEnd;");
+		gfx_add_line_to_document(document, "uniform vec3 elf_FogColor;");
+	}
+}
+
 void gfx_add_fragment_material_uniforms(gfx_document *document, gfx_shader_config *config)
 {
 	gfx_add_line_to_document(document, "uniform vec4 elf_Color;");
@@ -290,13 +303,6 @@ void gfx_add_fragment_init(gfx_document *document, gfx_shader_config *config)
 		gfx_add_line_to_document(document, "\tvec4 diffuse = vec4(0.0, 0.0, 0.0, 1.0);");
 		gfx_add_line_to_document(document, "\tvec3 specular = vec3(0.0, 0.0, 0.0);");
 	}
-}
-
-void gfx_add_fragment_end(gfx_document *document, gfx_shader_config *config)
-{
-	if(config->vertex_color) gfx_add_line_to_document(document, "\tfinal_color *= elf_VertexColor;");
-	gfx_add_line_to_document(document, "\tgl_FragColor = final_color;");
-	gfx_add_line_to_document(document, "}");
 }
 
 void gfx_add_fragment_shadow_calcs(gfx_document *document, gfx_shader_config *config)
@@ -390,6 +396,20 @@ void gfx_add_fragment_post_lighting_calcs(gfx_document *document, gfx_shader_con
 	if(config->light == GFX_SPOT_LIGHT) gfx_add_line_to_document(document, "\tfinal_color.rgb *= spot;");
 }
 
+void gfx_add_fragment_end(gfx_document *document, gfx_shader_config *config)
+{
+	if(config->fog)
+	{
+		if(config->blend == GFX_ADD)
+			gfx_add_line_to_document(document, "\tfinal_color.rgb = mix(elf_FogColor*(final_color.r*0.3+final_color.g*0.59+final_color.b*0.11), final_color.rgb, clamp((elf_FogEnd-gl_FragCoord.z/gl_FragCoord.w)/(elf_FogEnd-elf_FogStart), 0.0, 1.0));");
+		else
+			gfx_add_line_to_document(document, "\tfinal_color.rgb = mix(elf_FogColor, final_color.rgb, clamp((elf_FogEnd-gl_FragCoord.z/gl_FragCoord.w)/(elf_FogEnd-elf_FogStart), 0.0, 1.0));");
+	}
+	if(config->vertex_color) gfx_add_line_to_document(document, "\tfinal_color *= elf_VertexColor;");
+	gfx_add_line_to_document(document, "\tgl_FragColor = final_color;");
+	gfx_add_line_to_document(document, "}");
+}
+
 gfx_shader_program* gfx_get_shader_program(gfx_shader_config *config)
 {
 	gfx_document *document;
@@ -429,6 +449,7 @@ gfx_shader_program* gfx_get_shader_program(gfx_shader_config *config)
 	// --------------------- FRAGMENT SHADER --------------------- //
 
 	gfx_add_fragment_texture_uniforms(document, config);
+	gfx_add_fragment_fog_uniforms(document, config);
 	gfx_add_fragment_material_uniforms(document, config);
 	gfx_add_fragment_lighting_uniforms(document, config);
 	gfx_add_fragment_varyings(document, config);
@@ -636,7 +657,7 @@ gfx_shader_program* gfx_get_gbuf_shader_program(gfx_shader_config *config)
 
 	// --------------------- VERTEX SHADER --------------------- //
 
-	if(config->gbuffer_mode == GFX_GBUFFER_DEPTH)
+	if(config->gbuffer == GFX_GBUFFER_DEPTH)
 	{
 		gfx_add_line_to_document(document, "attribute vec3 elf_VertexAttr;");
 		if(config->textures & GFX_COLOR_MAP) gfx_add_line_to_document(document, "attribute vec2 elf_TexCoordAttr;");
@@ -649,7 +670,7 @@ gfx_shader_program* gfx_get_gbuf_shader_program(gfx_shader_config *config)
 		gfx_add_line_to_document(document, "\tgl_Position = elf_ProjectionMatrix*(elf_ModelviewMatrix*vec4(elf_VertexAttr, 1.0));");
 		gfx_add_line_to_document(document, "}");
 	}
-	else if(config->gbuffer_mode == GFX_GBUFFER_FILL)
+	else if(config->gbuffer == GFX_GBUFFER_FILL)
 	{
 		gfx_add_gbuf_vertex_attributes(document, config);
 		gfx_add_gbuf_vertex_uniforms(document, config);
@@ -659,7 +680,7 @@ gfx_shader_program* gfx_get_gbuf_shader_program(gfx_shader_config *config)
 		gfx_add_gbuf_vertex_lighting_calcs(document, config);
 		gfx_add_gbuf_vertex_end(document, config);
 	}
-	else if(config->gbuffer_mode == GFX_GBUFFER_LIGHTING)
+	else if(config->gbuffer == GFX_GBUFFER_LIGHTING)
 	{
 		gfx_add_line_to_document(document, "attribute vec3 elf_VertexAttr;");
 		gfx_add_line_to_document(document, "attribute vec2 elf_TexCoordAttr;");
@@ -683,7 +704,7 @@ gfx_shader_program* gfx_get_gbuf_shader_program(gfx_shader_config *config)
 
 	// --------------------- FRAGMENT SHADER --------------------- //
 
-	if(config->gbuffer_mode == GFX_GBUFFER_DEPTH)
+	if(config->gbuffer == GFX_GBUFFER_DEPTH)
 	{
 		if(config->textures & GFX_COLOR_MAP)
 		{
@@ -696,7 +717,7 @@ gfx_shader_program* gfx_get_gbuf_shader_program(gfx_shader_config *config)
 		if(config->textures & GFX_COLOR_MAP) gfx_add_line_to_document(document, "\tgl_FragData[0] = texture2D(elf_ColorMap, elf_TexCoord);");
 		gfx_add_line_to_document(document, "}");
 	}
-	else if(config->gbuffer_mode == GFX_GBUFFER_FILL)
+	else if(config->gbuffer == GFX_GBUFFER_FILL)
 	{
 		gfx_add_gbuf_fragment_texture_uniforms(document, config);
 		gfx_add_gbuf_fragment_material_uniforms(document, config);
@@ -705,7 +726,7 @@ gfx_shader_program* gfx_get_gbuf_shader_program(gfx_shader_config *config)
 		gfx_add_gbuf_fragment_parallax_mapping_calcs(document, config);
 		gfx_add_gbuf_fragment_end(document, config);
 	}
-	else if(config->gbuffer_mode == GFX_GBUFFER_LIGHTING)
+	else if(config->gbuffer == GFX_GBUFFER_LIGHTING)
 	{
 		gfx_add_line_to_document(document, "uniform sampler2D elf_Texture0;");
 		gfx_add_line_to_document(document, "uniform sampler2D elf_Texture1;");

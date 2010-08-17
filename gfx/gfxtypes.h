@@ -141,6 +141,9 @@ struct gfx_shader_program {
 	int viewport_height_loc;
 	int parallax_scale_loc;
 	int alpha_threshold_loc;
+	int fog_start_loc;
+	int fog_end_loc;
+	int fog_color_loc;
 	gfx_shader_config config;
 };
 

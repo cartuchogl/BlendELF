@@ -1,27 +1,21 @@
 
-const char* compose_main_vert =
+const char* compose_fog_vert =
 "attribute vec3 elf_VertexAttr;\n"
 "attribute vec2 elf_TexCoordAttr;\n"
 "uniform mat4 elf_ModelviewMatrix;\n"
 "uniform mat4 elf_ProjectionMatrix;\n"
-"varying vec2 elf_TexCoord;\n"
 "void main()\n"
 "{\n"
-"\telf_TexCoord = elf_TexCoordAttr;\n"
 "\tgl_Position = elf_ProjectionMatrix*(elf_ModelviewMatrix*vec4(elf_VertexAttr, 1.0))\n;"
 "}\n";
 
-const char* compose_main_frag =
-"uniform sampler2D elf_Texture0;\n"
-"uniform sampler2D elf_Texture1;\n"
-"uniform sampler2D elf_Texture2;\n"
-"varying vec2 elf_TexCoord;\n"
+const char* compose_fog_frag =
+"uniform float elf_FogStart;\n"
+"uniform float elf_FogEnd;\n"
+"uniform vec3 elf_FogColor;\n"
 "void main()\n"
 "{\n"
-"\tvec3 diffuse = texture2D(elf_Texture1, elf_TexCoord).rgb;\n"
-"\tvec3 specular = texture2D(elf_Texture2, elf_TexCoord).rgb;\n"
-"\tvec3 color = texture2D(elf_Texture0, elf_TexCoord).rgb;\n"
-"\tgl_FragColor = vec4(color*diffuse+specular, 1.0);\n"
+"\tgl_FragColor = vec4(elf_FogColor, 1.0-clamp((elf_FogEnd-gl_FragCoord.z/gl_FragCoord.w)/(elf_FogEnd-elf_FogStart), 0.0, 1.0));\n"
 "}\n";
 
 elf_scene* elf_create_scene(const char *name)
@@ -69,7 +63,7 @@ elf_scene* elf_create_scene(const char *name)
 
 	if(name) scene->name = elf_create_string(name);
 
-	scene->compose_main_shdr = gfx_create_shader_program(compose_main_vert, compose_main_frag);
+	scene->compose_fog_shdr = gfx_create_shader_program(compose_fog_vert, compose_fog_frag);
 
 	scene->id = ++gen->scene_id_counter;
 
@@ -587,7 +581,7 @@ void elf_destroy_scene(void *data)
 
 	if(scene->pak) elf_dec_ref((elf_object*)scene->pak);
 
-	if(scene->compose_main_shdr) gfx_destroy_shader_program(scene->compose_main_shdr);
+	if(scene->compose_fog_shdr) gfx_destroy_shader_program(scene->compose_fog_shdr);
 
 	elf_dec_obj(ELF_SCENE);
 
@@ -2001,12 +1995,53 @@ void elf_draw_scene(elf_scene *scene)
 		}
 	}
 
+	if(eng->fog)
+	{
+		// render particles
+		gfx_set_shader_params_default(&scene->shader_params);
+		scene->shader_params.render_params.depth_write = GFX_FALSE;
+		scene->shader_params.render_params.depth_func = GFX_EQUAL;
+		scene->shader_params.render_params.color_write = GFX_TRUE;
+		scene->shader_params.render_params.alpha_write = GFX_TRUE;
+
+		scene->shader_params.fog_params.mode = GFX_LINEAR;
+		scene->shader_params.fog_params.start = eng->fog_start;
+		scene->shader_params.fog_params.end = eng->fog_end;
+		memcpy(&scene->shader_params.fog_params.color.r, &eng->fog_color.r, sizeof(float)*4);
+
+		scene->shader_params.shader_program = scene->compose_fog_shdr;
+		scene->shader_params.render_params.blend_mode = GFX_TRANSPARENT;
+
+		elf_set_camera(scene->cur_camera, &scene->shader_params);
+
+		for(i = 0, ent = (elf_entity*)elf_begin_list(scene->entity_queue);
+			i < scene->entity_queue_count && ent != NULL;
+			i++, ent = (elf_entity*)elf_next_in_list(scene->entity_queue))
+		{
+			elf_draw_entity(ent, ELF_DRAW_AMBIENT, &scene->shader_params);
+		}
+
+		for(i = 0, spr = (elf_sprite*)elf_begin_list(scene->sprite_queue);
+			i < scene->sprite_queue_count && spr != NULL;
+			i++, spr = (elf_sprite*)elf_next_in_list(scene->sprite_queue))
+		{
+			elf_draw_sprite(spr, ELF_DRAW_AMBIENT, &scene->shader_params);
+		}
+	}
+
 	// render particles
 	gfx_set_shader_params_default(&scene->shader_params);
 	scene->shader_params.render_params.depth_write = GFX_FALSE;
 	scene->shader_params.render_params.depth_func = GFX_LEQUAL;
 	scene->shader_params.render_params.color_write = GFX_TRUE;
 	scene->shader_params.render_params.alpha_write = GFX_TRUE;
+	if(eng->fog)
+	{
+		scene->shader_params.fog_params.mode = GFX_LINEAR;
+		scene->shader_params.fog_params.start = eng->fog_start;
+		scene->shader_params.fog_params.end = eng->fog_end;
+		memcpy(&scene->shader_params.fog_params.color.r, &eng->fog_color.r, sizeof(float)*4);
+	}
 	elf_set_camera(scene->cur_camera, &scene->shader_params);
 	
 	for(par = (elf_particles*)elf_begin_list(scene->particles); par;

@@ -59,7 +59,7 @@ int main()
 		config->start = elf_create_string("start.pak");
 	}
 
-	if(!elf_init(config->window_size[0], config->window_size[1], "BlendELF", !config->fullscreen == ELF_FALSE, config->log))
+	if(!elf_init(config->window_size[0], config->window_size[1], "BlendELF", config->multisamples, !config->fullscreen == ELF_FALSE, config->log))
 	{
 		elf_set_error(ELF_CANT_INITIALIZE, "error: can't initialize engine\n");
 		elf_destroy_config(config);

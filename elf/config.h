@@ -10,6 +10,7 @@ elf_config* elf_create_config()
 
 	config->window_size[0] = 1024;
 	config->window_size[1] = 768;
+	config->multisamples = 0;
 	config->fullscreen = ELF_FALSE;
 	config->texture_compress = ELF_FALSE;
 	config->texture_anisotropy = 1.0;
@@ -86,6 +87,10 @@ elf_config* elf_read_config(const char *file_path)
 			{
 				elf_read_sst_ints(text, &pos, 2, config->window_size);
 			}
+			if(!strcmp(str, "multisamples"))
+			{
+				config->multisamples = elf_read_sst_int(text, &pos);
+			}
 			else if(!strcmp(str, "fullscreen"))
 			{
 				config->fullscreen = elf_read_sst_bool(text, &pos);
@@ -147,6 +152,11 @@ int elf_get_config_window_width(elf_config *config)
 int elf_get_config_window_height(elf_config *config)
 {
 	return config->window_size[1];
+}
+
+int elf_get_config_multisamples(elf_config *config)
+{
+	return config->multisamples;
 }
 
 unsigned char elf_get_config_fullscreen(elf_config *config)

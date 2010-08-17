@@ -110,6 +110,7 @@ struct elf_general {
 struct elf_config {
 	ELF_OBJECT_HEADER;
 	int window_size[2];
+	int multisamples;
 	unsigned char fullscreen;
 	unsigned char texture_compress;
 	float texture_anisotropy;
@@ -566,7 +567,7 @@ struct elf_scene {
 
 	gfx_shader_params shader_params;
 
-	gfx_shader_program *compose_main_shdr;
+	gfx_shader_program *compose_fog_shdr;
 
 	elf_pak *pak;
 };

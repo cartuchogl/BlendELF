@@ -95,6 +95,9 @@ extern "C" {
 #define GFX_MULTIPLY					0x0003
 #define GFX_SUBTRACT					0x0004
 
+//#define GFX_NONE					0x0000
+//#define GFX_LINEAR					0x0001
+
 #define GFX_COLOR_MAP					0x0001
 #define GFX_NORMAL_MAP					0x0002
 #define GFX_HEIGHT_MAP					0x0004
@@ -168,6 +171,13 @@ typedef struct gfx_render_params {
 	unsigned char vertex_color;
 } gfx_render_params;
 
+typedef struct gfx_fog_params {
+	unsigned char mode;
+	float start;
+	float end;
+	gfx_color color;
+} gfx_fog_params;
+
 typedef struct gfx_material_params {
 	gfx_color color;
 	gfx_color specular_color;
@@ -196,6 +206,7 @@ typedef struct gfx_light_params {
 
 typedef struct gfx_shader_params {
 	gfx_render_params render_params;
+	gfx_fog_params fog_params;
 	gfx_material_params material_params;
 	gfx_texture_params texture_params[GFX_MAX_TEXTURES];
 	gfx_light_params light_params;
@@ -213,11 +224,13 @@ typedef struct gfx_shader_params {
 } gfx_shader_params;
 
 typedef struct gfx_shader_config {
-	unsigned int textures;
+	unsigned short int textures;
 	unsigned char light;
-	unsigned char gbuffer_mode;
+	unsigned char gbuffer;
 	unsigned char specular;
 	unsigned char vertex_color;
+	unsigned char fog;
+	unsigned char blend;
 } gfx_shader_config;
 
 //////////////////////////////// GENERAL ////////////////////////////////

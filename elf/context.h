@@ -109,7 +109,7 @@ void elf_destroy_context(void *data)
 }
 
 unsigned char elf_init_context(int width, int height,
-	const char *title, unsigned char fullscreen)
+	const char *title, int multisamples, unsigned char fullscreen)
 {
 	int i;
 	int video_mode_count;
@@ -133,11 +133,14 @@ unsigned char elf_init_context(int width, int height,
 
 	ctx->width = width;
 	ctx->height = height;
+	ctx->multisamples = multisamples;
 	ctx->fullscreen = (fullscreen == ELF_FALSE) ? ELF_FALSE : ELF_TRUE;
 	ctx->title = elf_create_string(title);
 
 	glfwInit();
+
 	glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE, GL_TRUE);
+	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, multisamples);
 
 	if(!glfwOpenWindow(width, height, 8, 8, 8, 0, 24, 0,
 		(fullscreen == ELF_FALSE) ? GLFW_WINDOW : GLFW_FULLSCREEN))
@@ -315,6 +318,11 @@ elf_vec2i elf_get_video_mode(int idx)
 	return reso;
 }
 
+int elf_get_multisamples()
+{
+	return ctx->multisamples;
+}
+
 unsigned char elf_is_fullscreen()
 {
 	return ctx->fullscreen;
@@ -323,11 +331,6 @@ unsigned char elf_is_fullscreen()
 const char* elf_get_title()
 {
 	return ctx->title;
-}
-
-int elf_get_multisamples()
-{
-	return ctx->multisamples;
 }
 
 double elf_get_time()

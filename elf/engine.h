@@ -220,14 +220,14 @@ void elf_deinit_engine()
 }
 
 unsigned char elf_init(int width, int height,
-	const char *title, unsigned char fullscreen, const char *log)
+	const char *title, int multisamples, unsigned char fullscreen, const char *log)
 {
 	elf_init_general();
 	elf_set_log_file_path(log);
 
 	elf_start_log("BlendELF 0.9 Beta\n");
 
-	if(!elf_init_context(width, height, title, fullscreen)) return ELF_FALSE;
+	if(!elf_init_context(width, height, title, multisamples, fullscreen)) return ELF_FALSE;
 	if(!gfx_init())
 	{
 		elf_deinit_context();
@@ -250,7 +250,7 @@ unsigned char elf_init_with_config(const char *file_path)
 	if(!(config = elf_read_config("config.txt")))
 		config = elf_create_config();
 
-	if(!elf_init(config->window_size[0], config->window_size[1], "BlendELF", !config->fullscreen == ELF_FALSE, config->log))
+	if(!elf_init(config->window_size[0], config->window_size[1], "BlendELF", config->multisamples, !config->fullscreen == ELF_FALSE, config->log))
 	{
 		elf_set_error(ELF_CANT_INITIALIZE, "error: could not initialize engine\n");
 		elf_destroy_config(config);
@@ -629,6 +629,7 @@ int elf_get_polygons_rendered()
 
 void elf_set_fog(float start, float end, float r, float g, float b)
 {
+	eng->fog = ELF_TRUE;
 	eng->fog_start = start;
 	eng->fog_end = end;
 	eng->fog_color.r = r;

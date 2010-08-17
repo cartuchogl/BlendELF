@@ -431,6 +431,22 @@ ELF_API int ELF_APIENTRY elfGetConfigWindowHeight(elf_handle config)
 	}
 	return elf_get_config_window_height((elf_config*)config.get());
 }
+ELF_API int ELF_APIENTRY elfGetConfigMultisamples(elf_handle config)
+{
+	if(!config.get() || elf_get_object_type(config.get()) != ELF_CONFIG)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetConfigMultisamples() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetConfigMultisamples() -> invalid handle\n");
+		}
+		return 0;
+	}
+	return elf_get_config_multisamples((elf_config*)config.get());
+}
 ELF_API bool ELF_APIENTRY elfGetConfigFullscreen(elf_handle config)
 {
 	if(!config.get() || elf_get_object_type(config.get()) != ELF_CONFIG)
@@ -550,6 +566,10 @@ ELF_API elf_vec2i ELF_APIENTRY elfGetVideoMode(int idx)
 	_e_type = elf_get_video_mode(idx);
 	return _e_type;
 }
+ELF_API int ELF_APIENTRY elfGetMultisamples()
+{
+	return elf_get_multisamples();
+}
 ELF_API bool ELF_APIENTRY elfIsFullscreen()
 {
 	return (bool)elf_is_fullscreen();
@@ -557,10 +577,6 @@ ELF_API bool ELF_APIENTRY elfIsFullscreen()
 ELF_API const char* ELF_APIENTRY elfGetTitle()
 {
 	return elf_get_title();
-}
-ELF_API int ELF_APIENTRY elfGetMultisamples()
-{
-	return elf_get_multisamples();
 }
 ELF_API double ELF_APIENTRY elfGetTime()
 {
@@ -631,9 +647,9 @@ ELF_API elf_handle ELF_APIENTRY elfGetEvent(int idx)
 	handle = (elf_object*)elf_get_event(idx);
 	return handle;
 }
-ELF_API bool ELF_APIENTRY elfInit(int width, int height, const char* title, bool fullscreen, const char* log)
+ELF_API bool ELF_APIENTRY elfInit(int width, int height, const char* title, int multisamples, bool fullscreen, const char* log)
 {
-	return (bool)elf_init(width, height, title, fullscreen, log);
+	return (bool)elf_init(width, height, title, multisamples, fullscreen, log);
 }
 ELF_API bool ELF_APIENTRY elfInitWithConfig(const char* file_path)
 {

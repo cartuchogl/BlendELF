@@ -384,6 +384,7 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apiobjtype">object</span> elf.ReadConfig( <span class="apikeytype">string</span> file_path )</div>
 <div class="apifunc"><span class="apikeytype">int</span> elf.GetConfigWindowWidth( <span class="apiobjtype">object</span> config )</div>
 <div class="apifunc"><span class="apikeytype">int</span> elf.GetConfigWindowHeight( <span class="apiobjtype">object</span> config )</div>
+<div class="apifunc"><span class="apikeytype">int</span> elf.GetConfigMultisamples( <span class="apiobjtype">object</span> config )</div>
 <div class="apifunc"><span class="apikeytype">bool</span> elf.GetConfigFullscreen( <span class="apiobjtype">object</span> config )</div>
 <div class="apifunc"><span class="apikeytype">bool</span> elf.GetConfigTextureCompress( <span class="apiobjtype">object</span> config )</div>
 <div class="apifunc"><span class="apikeytype">float</span> elf.GetConfigTextureAnisotropy( <span class="apiobjtype">object</span> config )</div>
@@ -396,9 +397,9 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">int</span> elf.GetWindowHeight(  )</div>
 <div class="apifunc"><span class="apikeytype">int</span> elf.GetVideoModeCount(  )</div>
 <div class="apifunc"><span class="apikeytype">elf_vec2i</span> elf.GetVideoMode( <span class="apikeytype">int</span> idx )</div>
+<div class="apifunc"><span class="apikeytype">int</span> elf.GetMultisamples(  )</div>
 <div class="apifunc"><span class="apikeytype">bool</span> elf.IsFullscreen(  )</div>
 <div class="apifunc"><span class="apikeytype">string</span> elf.GetTitle(  )</div>
-<div class="apifunc"><span class="apikeytype">int</span> elf.GetMultisamples(  )</div>
 <div class="apifunc"><span class="apikeytype">double</span> elf.GetTime(  )</div>
 <div class="apifunc">elf.Sleep( <span class="apikeytype">float</span> time )</div>
 <div class="apifunc"><span class="apikeytype">bool</span> elf.IsWindowOpened(  )</div>
@@ -416,7 +417,7 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">int</span> elf.GetEventCount(  )</div>
 <div class="apifunc"><span class="apiobjtype">object</span> elf.GetEvent( <span class="apikeytype">int</span> idx )</div>
 <div class="apitopic">ENGINE FUNCTIONS</div>
-<div class="apifunc"><span class="apikeytype">bool</span> elf.Init( <span class="apikeytype">int</span> width, <span class="apikeytype">int</span> height, <span class="apikeytype">string</span> title, <span class="apikeytype">bool</span> fullscreen, <span class="apikeytype">string</span> log )</div>
+<div class="apifunc"><span class="apikeytype">bool</span> elf.Init( <span class="apikeytype">int</span> width, <span class="apikeytype">int</span> height, <span class="apikeytype">string</span> title, <span class="apikeytype">int</span> multisamples, <span class="apikeytype">bool</span> fullscreen, <span class="apikeytype">string</span> log )</div>
 <div class="apifunc"><span class="apikeytype">bool</span> elf.InitWithConfig( <span class="apikeytype">string</span> file_path )</div>
 <div class="apifunc">elf.Deinit(  )</div>
 <div class="apifunc">elf.ResizeWindow( <span class="apikeytype">int</span> width, <span class="apikeytype">int</span> height )</div>

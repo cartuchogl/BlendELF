@@ -18,22 +18,14 @@ void gfx_set_shader_params_default(gfx_shader_params *shader_params)
 	shader_params->render_params.depth_func = GFX_LESS;
 	shader_params->render_params.color_write = GFX_TRUE;
 	shader_params->render_params.alpha_write = GFX_TRUE;
-	shader_params->render_params.alpha_test = GFX_FALSE;
 	shader_params->render_params.alpha_threshold = 0.99;
 	shader_params->render_params.cull_face = GFX_TRUE;
-	shader_params->render_params.blend_mode = GFX_NONE;
-	shader_params->render_params.offset_bias = 0.0;
-	shader_params->render_params.offset_scale = 0.0;
 	shader_params->render_params.line_width = 1.0;
-	shader_params->render_params.line_smooth = GFX_FALSE;
 	shader_params->render_params.cull_face_mode = GFX_BACK;
 	shader_params->render_params.front_face = GFX_COUNTER_CLOCK_WISE;
-	shader_params->render_params.wireframe = GFX_FALSE;
-	shader_params->render_params.vertex_color = GFX_FALSE;
 
 	gfx_set_color(&shader_params->material_params.color, 1.0, 1.0, 1.0, 1.0);
 	gfx_set_color(&shader_params->material_params.specular_color, 1.0, 1.0, 1.0, 1.0);
-	shader_params->material_params.spec_power = 0.0;
 
 	for(i = 0; i < GFX_MAX_TEXTURES; i++)
 	{
@@ -232,6 +224,13 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 	if(shader_program->modelview_matrix_loc != -1)
 		glUniformMatrix4fv(shader_program->modelview_matrix_loc,
 			1, GL_FALSE, shader_params->modelview_matrix);
+
+	if(shader_program->fog_start_loc != -1)
+		glUniform1f(shader_program->fog_start_loc, shader_params->fog_params.start);
+	if(shader_program->fog_end_loc != -1)
+		glUniform1f(shader_program->fog_end_loc, shader_params->fog_params.end);
+	if(shader_program->fog_color_loc != -1)
+		glUniform3fv(shader_program->fog_color_loc, 1, &shader_params->fog_params.color.r);
 
 	if(shader_program->color_loc != -1)
 		glUniform4fv(shader_program->color_loc, 1, &shader_params->material_params.color.r);

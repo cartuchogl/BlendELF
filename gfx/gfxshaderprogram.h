@@ -139,6 +139,9 @@ gfx_shader_program* gfx_create_shader_program(const char* vertex, const char* fr
 	shader_program->viewport_height_loc = glGetUniformLocation(shader_program->id, "elf_ViewportHeight");
 	shader_program->parallax_scale_loc = glGetUniformLocation(shader_program->id, "elf_ParallaxScale");
 	shader_program->alpha_threshold_loc = glGetUniformLocation(shader_program->id, "elf_AlphaThreshold");
+	shader_program->fog_start_loc = glGetUniformLocation(shader_program->id, "elf_FogStart");
+	shader_program->fog_end_loc = glGetUniformLocation(shader_program->id, "elf_FogEnd");
+	shader_program->fog_color_loc = glGetUniformLocation(shader_program->id, "elf_FogColor");
 
 	glUseProgram(shader_program->id);
 

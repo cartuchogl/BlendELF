@@ -3242,6 +3242,32 @@ fail:
 }
 
 
+static int _wrap_elfGetConfigMultisamples(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  int result;
+  
+  SWIG_check_num_args("GetConfigMultisamples",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetConfigMultisamples",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetConfigMultisamples",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = (int)elfGetConfigMultisamples(arg1);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfGetConfigFullscreen(lua_State* L) {
   int SWIG_arg = 0;
   elf_handle arg1 ;
@@ -3491,6 +3517,23 @@ fail:
 }
 
 
+static int _wrap_elfGetMultisamples(lua_State* L) {
+  int SWIG_arg = 0;
+  int result;
+  
+  SWIG_check_num_args("GetMultisamples",0,0)
+  result = (int)elfGetMultisamples();
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfIsFullscreen(lua_State* L) {
   int SWIG_arg = 0;
   bool result;
@@ -3515,23 +3558,6 @@ static int _wrap_elfGetTitle(lua_State* L) {
   SWIG_check_num_args("GetTitle",0,0)
   result = (char *)elfGetTitle();
   lua_pushstring(L,(const char*)result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_elfGetMultisamples(lua_State* L) {
-  int SWIG_arg = 0;
-  int result;
-  
-  SWIG_check_num_args("GetMultisamples",0,0)
-  result = (int)elfGetMultisamples();
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -3861,22 +3887,25 @@ static int _wrap_elfInit(lua_State* L) {
   int arg1 ;
   int arg2 ;
   char *arg3 = (char *) 0 ;
-  bool arg4 ;
-  char *arg5 = (char *) 0 ;
+  int arg4 ;
+  bool arg5 ;
+  char *arg6 = (char *) 0 ;
   bool result;
   
-  SWIG_check_num_args("Init",5,5)
+  SWIG_check_num_args("Init",6,6)
   if(!lua_isnumber(L,1)) SWIG_fail_arg("Init",1,"int");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("Init",2,"int");
   if(!lua_isstring(L,3)) SWIG_fail_arg("Init",3,"char const *");
-  if(!lua_isboolean(L,4)) SWIG_fail_arg("Init",4,"bool");
-  if(!lua_isstring(L,5)) SWIG_fail_arg("Init",5,"char const *");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("Init",4,"int");
+  if(!lua_isboolean(L,5)) SWIG_fail_arg("Init",5,"bool");
+  if(!lua_isstring(L,6)) SWIG_fail_arg("Init",6,"char const *");
   arg1 = (int)lua_tonumber(L, 1);
   arg2 = (int)lua_tonumber(L, 2);
   arg3 = (char *)lua_tostring(L, 3);
-  arg4 = (lua_toboolean(L, 4)!=0);
-  arg5 = (char *)lua_tostring(L, 5);
-  result = (bool)elfInit(arg1,arg2,(char const *)arg3,arg4,(char const *)arg5);
+  arg4 = (int)lua_tonumber(L, 4);
+  arg5 = (lua_toboolean(L, 5)!=0);
+  arg6 = (char *)lua_tostring(L, 6);
+  result = (bool)elfInit(arg1,arg2,(char const *)arg3,arg4,arg5,(char const *)arg6);
   lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
   return SWIG_arg;
   
@@ -22164,6 +22193,7 @@ static const struct luaL_reg swig_commands[] = {
     { "ReadConfig", _wrap_elfReadConfig},
     { "GetConfigWindowWidth", _wrap_elfGetConfigWindowWidth},
     { "GetConfigWindowHeight", _wrap_elfGetConfigWindowHeight},
+    { "GetConfigMultisamples", _wrap_elfGetConfigMultisamples},
     { "GetConfigFullscreen", _wrap_elfGetConfigFullscreen},
     { "GetConfigTextureCompress", _wrap_elfGetConfigTextureCompress},
     { "GetConfigTextureAnisotropy", _wrap_elfGetConfigTextureAnisotropy},
@@ -22175,9 +22205,9 @@ static const struct luaL_reg swig_commands[] = {
     { "GetWindowHeight", _wrap_elfGetWindowHeight},
     { "GetVideoModeCount", _wrap_elfGetVideoModeCount},
     { "GetVideoMode", _wrap_elfGetVideoMode},
+    { "GetMultisamples", _wrap_elfGetMultisamples},
     { "IsFullscreen", _wrap_elfIsFullscreen},
     { "GetTitle", _wrap_elfGetTitle},
-    { "GetMultisamples", _wrap_elfGetMultisamples},
     { "GetTime", _wrap_elfGetTime},
     { "Sleep", _wrap_elfSleep},
     { "IsWindowOpened", _wrap_elfIsWindowOpened},

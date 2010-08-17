@@ -507,6 +507,7 @@ void elf_destroy_config(void *data);
 elf_config* elf_read_config(const char *file_path);	// <mdoc> CONFIGURATION FUNCTIONS
 int elf_get_config_window_width(elf_config *config);
 int elf_get_config_window_height(elf_config *config);
+int elf_get_config_multisamples(elf_config *config);
 unsigned char elf_get_config_fullscreen(elf_config *config);
 unsigned char elf_get_config_texture_compress(elf_config *config);
 float elf_get_config_texture_anisotropy(elf_config *config);
@@ -539,7 +540,7 @@ elf_context* elf_create_context();
 void elf_destroy_context(void *data);
 
 unsigned char elf_init_context(int width, int height,
-		const char *title, unsigned char fullscreen);
+		const char *title, int multisamples, unsigned char fullscreen);
 void elf_close_window();
 
 unsigned char elf_resize_context(int width, int height);
@@ -551,13 +552,13 @@ int elf_get_window_width();
 int elf_get_window_height();
 int elf_get_video_mode_count();
 elf_vec2i elf_get_video_mode(int idx);
+int elf_get_multisamples();
 unsigned char elf_is_fullscreen();
 const char* elf_get_title();
-int elf_get_multisamples();
 double elf_get_time();
 void elf_sleep(float time);
 unsigned char elf_is_window_opened();
-/* <!> */void elf_swap_buffers();
+/* <!> */ void elf_swap_buffers();
 elf_vec2i elf_get_mouse_position();
 elf_vec2i elf_get_mouse_force();
 void elf_set_mouse_position(int x, int y);
@@ -588,7 +589,7 @@ unsigned char elf_init_engine();
 void elf_deinit_engine();
 // !!>
 
-unsigned char elf_init(int width, int height, const char *title, unsigned char fullscreen, const char *log);	// <mdoc> ENGINE FUNCTIONS
+unsigned char elf_init(int width, int height, const char *title, int multisamples, unsigned char fullscreen, const char *log);	// <mdoc> ENGINE FUNCTIONS
 unsigned char elf_init_with_config(const char *file_path);
 void elf_deinit();
 
