@@ -349,8 +349,11 @@ unsigned char elf_run()
 
 	if(eng->post_process)
 	{
-		gfx_set_render_target(eng->post_process->main_rt);
-		gfx_set_render_target_color_texture(eng->post_process->main_rt, 0, eng->post_process->main_rt_color[0]);
+		if(elf_get_multisamples() < 1)
+		{
+			gfx_set_render_target(eng->post_process->main_rt);
+			gfx_set_render_target_color_texture(eng->post_process->main_rt, 0, eng->post_process->main_rt_color[0]);
+		}
 		gfx_clear_buffers(0.0, 0.0, 0.0, 1.0, 1.0);
 	}
 	else
@@ -365,7 +368,16 @@ unsigned char elf_run()
 		elf_scene_post_draw(eng->scene);
 	}
 
-	if(eng->scene && eng->post_process) elf_run_post_process(eng->post_process, eng->scene);
+	if(eng->scene && eng->post_process)
+	{
+		if(elf_get_multisamples() > 0)
+		{
+			gfx_copy_frame_buffer(eng->post_process->main_rt_color[0], 0, 0, 0, 0, elf_get_window_width(), elf_get_window_height());
+			if(eng->post_process->dof || eng->post_process->ssao)
+				gfx_copy_frame_buffer(eng->post_process->main_rt_depth, 0, 0, 0, 0, elf_get_window_width(), elf_get_window_height());
+		}
+		elf_run_post_process(eng->post_process, eng->scene);
+	}
 	if(eng->scene && eng->debug_draw) elf_draw_scene_debug(eng->scene);
 	if(eng->gui) elf_draw_gui(eng->gui);
 

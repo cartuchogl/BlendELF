@@ -87,7 +87,7 @@ elf_config* elf_read_config(const char *file_path)
 			{
 				elf_read_sst_ints(text, &pos, 2, config->window_size);
 			}
-			if(!strcmp(str, "multisamples"))
+			else if(!strcmp(str, "multisamples"))
 			{
 				config->multisamples = elf_read_sst_int(text, &pos);
 			}

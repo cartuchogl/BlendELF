@@ -322,7 +322,8 @@ void gfx_clear_buffers(float r, float g, float b, float a, float d);
 void gfx_clear_color_buffer(float r, float g, float b, float a);
 void gfx_clear_depth_buffer(float d);
 
-void gfx_read_pixels(int x, int y, unsigned int width, unsigned int height, unsigned int format, unsigned int data_format, void *data);
+void gfx_read_pixels(int x, int y, int width, int height, int format, int data_format, void *data);
+void gfx_copy_frame_buffer(gfx_texture *texture, int ox, int oy, int x, int y, int width, int height);
 
 void gfx_reset_vertices_drawn();
 int gfx_get_vertices_drawn(unsigned int draw_mode);

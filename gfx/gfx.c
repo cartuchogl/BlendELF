@@ -325,9 +325,17 @@ void gfx_clear_depth_buffer(float d)
 	glClear(GL_DEPTH_BUFFER_BIT);
 }
 
-void gfx_read_pixels(int x, int y, unsigned int width, unsigned int height, unsigned int format, unsigned int data_format, void *data)
+void gfx_read_pixels(int x, int y, int width, int height, int format, int data_format, void *data)
 {
 	glReadPixels(x, y, width, height, driver->texture_data_formats[format], driver->formats[data_format], data);
+}
+
+void gfx_copy_frame_buffer(gfx_texture *texture, int ox, int oy, int x, int y, int width, int height)
+{
+	glBindTexture(GL_TEXTURE_2D, texture->id);
+	glCopyTexSubImage2D(GL_TEXTURE_2D, 0, ox, oy, x, y, width, height);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	driver->shader_params.texture_params[0].texture = NULL;
 }
 
 void gfx_reset_vertices_drawn()
