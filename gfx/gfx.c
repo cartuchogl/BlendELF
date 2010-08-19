@@ -139,7 +139,9 @@ unsigned char gfx_init()
 		return GFX_FALSE;
 	}
 
-	if(!glewIsSupported("GL_ARB_texture_float"))
+	// checks for deferred rendering
+
+	/*if(!glewIsSupported("GL_ARB_texture_float"))
 	{
 		elf_write_to_log("GL_ARB_texture_float not supported!\n");
 		return GFX_FALSE;
@@ -150,7 +152,8 @@ unsigned char gfx_init()
 	{
 		elf_write_to_log("GL_ARB_texture_rg not supported!\n");
 		return GFX_FALSE;
-	}
+	}*/
+
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &driver->max_texture_size);
 	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &driver->max_texture_image_units);
 	glGetIntegerv(GL_MAX_DRAW_BUFFERS, &driver->max_draw_buffers);
