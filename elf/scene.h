@@ -1556,6 +1556,7 @@ void elf_draw_scene(elf_scene *scene)
 	elf_vec3f spos;
 	elf_vec3f dvec;
 	float dist, att;
+	float lrad;
 	unsigned char found;
 
 	if(!scene->cur_camera) return;
@@ -1935,12 +1936,6 @@ void elf_draw_scene(elf_scene *scene)
 			i < scene->entity_queue_count && ent != NULL;
 			i++, ent = (elf_entity*)elf_next_in_list(scene->entity_queue))
 		{
-			// get the entity position for culling point light entities and testing against bounding sphere
-			epos = elf_get_actor_position((elf_actor*)ent);
-			eori = elf_get_actor_orientation((elf_actor*)ent);
-			eofs = elf_mul_qua_vec3f(eori, ent->bb_offset);
-			epos = elf_add_vec3f_vec3f(epos, eofs);
-
 			if(light->light_type == ELF_SPOT_LIGHT)
 			{
 				if(!elf_cull_entity(ent, light->shadow_camera))
@@ -1950,11 +1945,9 @@ void elf_draw_scene(elf_scene *scene)
 			}
 			else if(light->light_type == ELF_POINT_LIGHT)
 			{
-				dvec = elf_sub_vec3f_vec3f(epos, lpos);
-				dist = elf_get_vec3f_length(dvec);
-				dist -= ent->cull_radius;
-				att = 1.0-elf_float_max(dist-light->distance, 0.0)*light->fade_speed;
-				if(att > 0.0)
+				lrad = light->distance+1.0/light->fade_speed;
+				//printf("%s, %f\n", light->name, lrad);
+				if(gfx_box_sphere_intersect(&ent->cull_aabb_min.x, &ent->cull_aabb_max.x, &lpos.x, lrad))
 				{
 					elf_draw_entity(ent, ELF_DRAW_WITH_LIGHTING, &scene->shader_params);
 				}

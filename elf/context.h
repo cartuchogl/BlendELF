@@ -205,63 +205,6 @@ void elf_deinit_context()
 	ctx = NULL;
 }
 
-#if defined(__WIN32__) || defined(WIN32) || defined(__CYGWIN__)
-	#ifndef ELF_PLAYER
-unsigned char elf_init_context_with_hwnd(int width, int height,
-	const char *title, unsigned char fullscreen, HWND hwnd)
-{
-	if(ctx)
-	{
-		elf_write_to_log("warning: can not open window twice");
-		return ELF_FALSE;
-	}
-
-	if(width < 1 || height < 1)
-	{
-		elf_set_error(ELF_INVALID_SIZE, "error: invalid window size (%d, %d)\n", width, height);
-		return ELF_FALSE;
-	}
-
-	ctx = elf_create_context();
-	elf_inc_ref((elf_object*)ctx);
-
-	ctx->width = width;
-	ctx->height = height;
-	ctx->fullscreen = (fullscreen == ELF_FALSE) ? ELF_FALSE : ELF_TRUE;
-	ctx->title = elf_create_string(title);
-
-	glfwInit();
-	glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE, GL_TRUE);
-
-	if(!glfwOpenWindowWithHWND(width, height, 8, 8, 8, 0, 24, 0,
-		(fullscreen == ELF_FALSE) ? GLFW_WINDOW : GLFW_FULLSCREEN, hwnd))
-	{
-		elf_dec_ref((elf_object*)ctx);
-		return ELF_FALSE;
-	}
-
-	glfwEnable(GLFW_MOUSE_CURSOR);
-
-	glfwSetWindowTitle(title);
-	glfwPollEvents();
-	glfwSwapInterval(0);
-
-	glfwSetMouseButtonCallback(mouse_button_callback);
-	glfwSetMousePosCallback(mouse_position_callback);
-	glfwSetMouseWheelCallback(mouse_wheel_callback);
-	glfwSetKeyCallback(key_callback);
-	glfwSetCharCallback(char_callback);
-
-	return ELF_TRUE;
-}
-
-HWND elf_get_window_hwnd()
-{
-	return glfwGetWindowHWND();
-}
-	#endif
-#endif
-
 unsigned char elf_resize_context(int width, int height)
 {
 	if(width <= 0 || height <= 0 || (width == ctx->width &&

@@ -2,7 +2,7 @@
 #define GFX_OBJECT_HEADER \
 	int obj_type; \
 	int obj_ref_count; \
-	void (*obj_destr)(void*);
+	void (*obj_destr)(void*)
 
 struct gfx_object {
 	GFX_OBJECT_HEADER;

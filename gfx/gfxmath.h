@@ -607,3 +607,23 @@ void gfx_mul_matrix4_matrix4(float *m1, float *m2, float *m3)
 	m3[15] = m1[12]*m2[3]+m1[13]*m2[7]+m1[14]*m2[11]+m1[15]*m2[15];
 }
 
+unsigned char gfx_box_sphere_intersect(float *bmin, float *bmax, float *spos, float srad)
+{
+	float dmin;
+	float r2;
+	int i;
+
+	dmin = 0;
+	r2 = srad*srad;
+
+	for(i = 0; i < 3; i++ )
+	{
+		if(spos[i] < bmin[i]) dmin += (spos[i]-bmin[i])*(spos[i]-bmin[i]);
+		else if(spos[i] > bmax[i]) dmin += (spos[i]-bmax[i])*(spos[i]-bmax[i]);
+	}
+
+	if(dmin <= r2) return GFX_TRUE;
+
+	return GFX_FALSE;
+}
+

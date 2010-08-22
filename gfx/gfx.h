@@ -281,6 +281,8 @@ void gfx_mul_matrix4_vec3(float *m1, float *vec1, float *vec2);
 void gfx_mul_matrix4_vec4(float *m1, float *vec1, float *vec2);
 void gfx_mul_matrix4_matrix4(float *m1, float *m2, float *m3);
 
+unsigned char gfx_box_sphere_intersect(float *bmin, float *bmax, float *spos, float srad);
+
 //////////////////////////////// TRANSFORM ////////////////////////////////
 
 void gfx_set_viewport(int x, int y, int width, int height);
