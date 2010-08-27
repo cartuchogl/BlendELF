@@ -228,41 +228,12 @@ void elf_set_camera(elf_camera *camera, gfx_shader_params *shader_params)
 
 unsigned char elf_aabb_inside_frustum(elf_camera *camera, float *min, float *max)
 {
-	int i;
-
-	for(i = 0; i < 6; i++)
-	{
-		if(camera->frustum[i][0]*min[0]+camera->frustum[i][1]*min[1]+camera->frustum[i][2]*max[2]+camera->frustum[i][3] > 0.0)
-			continue;
-		if(camera->frustum[i][0]*max[0]+camera->frustum[i][1]*min[1]+camera->frustum[i][2]*max[2]+camera->frustum[i][3] > 0.0)
-			continue;
-		if(camera->frustum[i][0]*max[0]+camera->frustum[i][1]*max[1]+camera->frustum[i][2]*max[2]+camera->frustum[i][3] > 0.0)
-			continue;
-		if(camera->frustum[i][0]*min[0]+camera->frustum[i][1]*max[1]+camera->frustum[i][2]*max[2]+camera->frustum[i][3] > 0.0)
-			continue;
-		if(camera->frustum[i][0]*min[0]+camera->frustum[i][1]*min[1]+camera->frustum[i][2]*min[2]+camera->frustum[i][3] > 0.0)
-			continue;
-		if(camera->frustum[i][0]*max[0]+camera->frustum[i][1]*min[1]+camera->frustum[i][2]*min[2]+camera->frustum[i][3] > 0.0)
-			continue;
-		if(camera->frustum[i][0]*max[0]+camera->frustum[i][1]*max[1]+camera->frustum[i][2]*min[2]+camera->frustum[i][3] > 0.0)
-			continue;
-		if(camera->frustum[i][0]*min[0]+camera->frustum[i][1]*max[1]+camera->frustum[i][2]*min[2]+camera->frustum[i][3] > 0.0)
-			continue;
-		return ELF_FALSE;
-	}
-	return ELF_TRUE;
+	return gfx_aabb_inside_frustum(camera->frustum, min, max);
 }
 
 unsigned char elf_sphere_inside_frustum(elf_camera *camera, float *pos, float radius)
 {
-	int i;
-	for(i = 0; i < 6; i++)
-	{
-		if(camera->frustum[i][0]*pos[0]+camera->frustum[i][1]*pos[1]+
-			camera->frustum[i][2]*pos[2]+camera->frustum[i][3] <= -radius)
-			return ELF_FALSE;
-	}
-	return ELF_TRUE;
+	return gfx_sphere_inside_frustum(camera->frustum, pos, radius);
 }
 
 unsigned char elf_camera_inside_aabb(elf_camera *camera, float *min, float *max)

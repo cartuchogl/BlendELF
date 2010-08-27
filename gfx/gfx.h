@@ -283,6 +283,9 @@ void gfx_mul_matrix4_matrix4(float *m1, float *m2, float *m3);
 
 unsigned char gfx_box_sphere_intersect(float *bmin, float *bmax, float *spos, float srad);
 
+unsigned char gfx_aabb_inside_frustum(float frustum[6][4], float *min, float *max);
+unsigned char gfx_sphere_inside_frustum(float frustum[6][4], float *pos, float radius);
+
 //////////////////////////////// TRANSFORM ////////////////////////////////
 
 void gfx_set_viewport(int x, int y, int width, int height);

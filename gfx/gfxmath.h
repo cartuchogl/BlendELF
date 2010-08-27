@@ -627,3 +627,45 @@ unsigned char gfx_box_sphere_intersect(float *bmin, float *bmax, float *spos, fl
 	return GFX_FALSE;
 }
 
+unsigned char gfx_aabb_inside_frustum(float frustum[6][4], float *min, float *max)
+{
+	int i;
+
+	for(i = 0; i < 6; i++)
+	{
+		if(frustum[i][0]*min[0]+frustum[i][1]*min[1]+frustum[i][2]*max[2]+frustum[i][3] > 0.0)
+			continue;
+		if(frustum[i][0]*max[0]+frustum[i][1]*min[1]+frustum[i][2]*max[2]+frustum[i][3] > 0.0)
+			continue;
+		if(frustum[i][0]*max[0]+frustum[i][1]*max[1]+frustum[i][2]*max[2]+frustum[i][3] > 0.0)
+			continue;
+		if(frustum[i][0]*min[0]+frustum[i][1]*max[1]+frustum[i][2]*max[2]+frustum[i][3] > 0.0)
+			continue;
+		if(frustum[i][0]*min[0]+frustum[i][1]*min[1]+frustum[i][2]*min[2]+frustum[i][3] > 0.0)
+			continue;
+		if(frustum[i][0]*max[0]+frustum[i][1]*min[1]+frustum[i][2]*min[2]+frustum[i][3] > 0.0)
+			continue;
+		if(frustum[i][0]*max[0]+frustum[i][1]*max[1]+frustum[i][2]*min[2]+frustum[i][3] > 0.0)
+			continue;
+		if(frustum[i][0]*min[0]+frustum[i][1]*max[1]+frustum[i][2]*min[2]+frustum[i][3] > 0.0)
+			continue;
+		return GFX_FALSE;
+	}
+
+	return GFX_TRUE;
+}
+
+unsigned char gfx_sphere_inside_frustum(float frustum[6][4], float *pos, float radius)
+{
+	int i;
+
+	for(i = 0; i < 6; i++)
+	{
+		if(frustum[i][0]*pos[0]+frustum[i][1]*pos[1]+
+			frustum[i][2]*pos[2]+frustum[i][3] <= -radius)
+			return GFX_FALSE;
+	}
+
+	return GFX_TRUE;
+}
+
