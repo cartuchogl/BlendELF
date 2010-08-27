@@ -1550,9 +1550,6 @@ void elf_draw_scene(elf_scene *scene)
 	gfx_render_target *render_target;
 	int i;
 	elf_vec3f lpos;
-	elf_vec3f epos;
-	elf_vec3f eofs;
-	elf_vec4f eori;
 	elf_vec3f spos;
 	elf_vec3f dvec;
 	float dist, att;

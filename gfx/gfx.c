@@ -119,6 +119,9 @@ unsigned char gfx_init()
 
 	glewInit();
 
+	if(glewIsSupported("GL_VERSION_1_1")) driver->version = 110;
+	if(glewIsSupported("GL_VERSION_1_4")) driver->version = 140;
+	if(glewIsSupported("GL_VERSION_1_5")) driver->version = 150;
 	if(glewIsSupported("GL_VERSION_2_0")) driver->version = 200;
 	if(glewIsSupported("GL_VERSION_2_1")) driver->version = 210;
 	if(glewIsSupported("GL_VERSION_3_0")) driver->version = 300;
@@ -126,6 +129,11 @@ unsigned char gfx_init()
 	if(glewIsSupported("GL_VERSION_3_2")) driver->version = 320;
 	if(glewIsSupported("GL_VERSION_3_3")) driver->version = 330;
 	if(glewIsSupported("GL_VERSION_4_0")) driver->version = 400;
+
+	if(driver->version >= 200)
+	{
+		driver->gpu_data = GFX_TRUE;
+	}
 
 	if(driver->version < 200)
 	{

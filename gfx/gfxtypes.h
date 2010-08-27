@@ -33,6 +33,7 @@ struct gfx_driver {
 	int max_draw_buffers;
 	int max_color_attachments;
 	float max_anisotropy;
+	unsigned char gpu_data;
 	unsigned char dirty_vertex_arrays;
 	unsigned int vertices_drawn[GFX_MAX_DRAW_MODES];
 

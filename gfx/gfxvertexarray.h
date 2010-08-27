@@ -176,14 +176,14 @@ void gfx_set_vertex_array_data(gfx_vertex_array *vertex_array, int target, gfx_v
 	varr->data = data;
 	gfx_inc_ref((gfx_object*)varr->data);
 
-	if(vertex_array->gpu_data) gfx_init_vertex_data_vbo(varr->data);
+	if(vertex_array->gpu_data && driver->gpu_data) gfx_init_vertex_data_vbo(varr->data);
 }
 
 void gfx_set_vertex_array(gfx_vertex_array *vertex_array)
 {
 	int i;
 
-	if(vertex_array->gpu_data)
+	if(vertex_array->gpu_data && driver->gpu_data)
 	{
 		for(i = 0; i < GFX_MAX_VERTEX_ARRAYS; i++)
 		{
@@ -250,7 +250,7 @@ gfx_vertex_index* gfx_create_vertex_index(unsigned char gpu_data, gfx_vertex_dat
 
 	vertex_index->gpu_data = !gpu_data == GFX_FALSE;
 
-	if(vertex_index->gpu_data) gfx_init_vertex_data_vbo(data);
+	if(vertex_index->gpu_data && driver->gpu_data) gfx_init_vertex_data_vbo(data);
 
 	gfx_inc_obj(GFX_VERTEX_INDEX);
 
@@ -275,7 +275,7 @@ int gfx_get_vertex_index_indice_count(gfx_vertex_index *vertex_index)
 
 void gfx_draw_vertex_index(gfx_vertex_index *vertex_index, unsigned int draw_mode)
 {
-	if(vertex_index->gpu_data)
+	if(vertex_index->gpu_data && driver->gpu_data)
 	{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertex_index->data->vbo);
 		glDrawElements(driver->draw_modes[draw_mode], vertex_index->indice_count,
