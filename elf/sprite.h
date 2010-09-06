@@ -273,8 +273,8 @@ void elf_draw_sprite_debug(elf_sprite *sprite, gfx_shader_params *shader_params)
 	vertex_buffer[22] = 0.5;
 	vertex_buffer[23] = 0.0;
 
-	if(!sprite->selected) gfx_set_color(&shader_params->material_params.color, 0.6, 0.2, 0.6, 1.0);
-	else gfx_set_color(&shader_params->material_params.color, 1.0, 0.0, 0.0, 1.0);
+	if(!sprite->selected) gfx_set_color(&shader_params->material_params.diffuse_color, 0.6, 0.2, 0.6, 1.0);
+	else gfx_set_color(&shader_params->material_params.diffuse_color, 1.0, 0.0, 0.0, 1.0);
 	gfx_set_shader_params(shader_params);
 	gfx_draw_lines(8, eng->lines);
 }

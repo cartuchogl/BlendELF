@@ -129,20 +129,6 @@ void gfx_get_frustum(float proj[16], float modl[16], float frustum[6][4])
 	}
 }
 
-void gfx_set_perspective(float fov, float aspect, float near, float far)
-{
-	float matrix[16];
-
-	gfx_get_perspective_projection_matrix(fov, aspect, near, far, matrix);
-}
-
-void gfx_set_orthographic(float left, float right, float bottom, float top, float near, float far)
-{
-	float matrix[16];
-
-	gfx_get_orthographic_projection_matrix(left, right, bottom, top, near, far, matrix);
-}
-
 void gfx_recalc_transform_matrix(gfx_transform *transform)
 {
 	float temp_matrix1[16];

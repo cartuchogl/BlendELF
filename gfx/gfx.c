@@ -119,6 +119,7 @@ unsigned char gfx_init()
 
 	glewInit();
 
+	if(glewIsSupported("GL_VERSION_1_0")) driver->version = 100;
 	if(glewIsSupported("GL_VERSION_1_1")) driver->version = 110;
 	if(glewIsSupported("GL_VERSION_1_4")) driver->version = 140;
 	if(glewIsSupported("GL_VERSION_1_5")) driver->version = 150;
@@ -129,15 +130,11 @@ unsigned char gfx_init()
 	if(glewIsSupported("GL_VERSION_3_2")) driver->version = 320;
 	if(glewIsSupported("GL_VERSION_3_3")) driver->version = 330;
 	if(glewIsSupported("GL_VERSION_4_0")) driver->version = 400;
-
-	if(driver->version >= 200)
-	{
-		driver->gpu_data = GFX_TRUE;
-	}
+	if(glewIsSupported("GL_VERSION_4_1")) driver->version = 410;
 
 	if(driver->version < 200)
 	{
-		elf_write_to_log("OpenGL version 2.0 not supported!\n");
+		elf_write_to_log("OpenGL version 2.0 not supported\n");
 		return GFX_FALSE;
 	}
 
@@ -154,7 +151,6 @@ unsigned char gfx_init()
 		elf_write_to_log("GL_ARB_texture_float not supported!\n");
 		return GFX_FALSE;
 	}
-
 
 	if(!glewIsSupported("GL_ARB_texture_rg"))
 	{
@@ -317,6 +313,11 @@ void gfx_deinit()
 	gfx_destroy_general(gfx_gen);
 }
 
+int gfx_get_version()
+{
+	return driver->version;
+}
+
 void gfx_clear_buffers(float r, float g, float b, float a, float d)
 {
 	glClearColor(r, g, b, a);
@@ -343,6 +344,9 @@ void gfx_read_pixels(int x, int y, int width, int height, int format, int data_f
 
 void gfx_copy_frame_buffer(gfx_texture *texture, int ox, int oy, int x, int y, int width, int height)
 {
+	glActiveTexture(GL_TEXTURE0);
+	glClientActiveTexture(GL_TEXTURE0);
+
 	glBindTexture(GL_TEXTURE_2D, texture->id);
 	glCopyTexSubImage2D(GL_TEXTURE_2D, 0, ox, oy, x, y, width, height);
 	glBindTexture(GL_TEXTURE_2D, 0);

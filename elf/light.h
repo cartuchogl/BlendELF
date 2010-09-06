@@ -248,8 +248,8 @@ void elf_draw_light_debug(elf_light *light, gfx_shader_params *shader_params)
 
 	vertex_buffer = (float*)gfx_get_vertex_data_buffer(eng->lines);
 
-	if(!light->selected) gfx_set_color(&shader_params->material_params.color, 0.5, 0.5, 0.2, 1.0);
-	else gfx_set_color(&shader_params->material_params.color, 1.0, 0.0, 0.0, 1.0);
+	if(!light->selected) gfx_set_color(&shader_params->material_params.diffuse_color, 0.5, 0.5, 0.2, 1.0);
+	else gfx_set_color(&shader_params->material_params.diffuse_color, 1.0, 0.0, 0.0, 1.0);
 	gfx_set_shader_params(shader_params);
 
 	step = (360.0/((float)32))*GFX_PI_DIV_180;
@@ -281,8 +281,8 @@ void elf_draw_light_debug(elf_light *light, gfx_shader_params *shader_params)
 
 	gfx_draw_line_loop(32, eng->lines);
 
-	if(!light->selected) gfx_set_color(&shader_params->material_params.color, 0.3, 0.3, 0.1, 1.0);
-	else gfx_set_color(&shader_params->material_params.color, 1.0, 0.0, 0.0, 1.0);
+	if(!light->selected) gfx_set_color(&shader_params->material_params.diffuse_color, 0.3, 0.3, 0.1, 1.0);
+	else gfx_set_color(&shader_params->material_params.diffuse_color, 1.0, 0.0, 0.0, 1.0);
 	gfx_set_shader_params(shader_params);
 
 	if(light->light_type == ELF_POINT_LIGHT)

@@ -365,7 +365,7 @@ void elf_draw_bone_hierarchy(elf_bone *bone, gfx_shader_params *shader_params)
 	vertex_buffer[5] = pos.z+axis.z;
 
 	shader_params->render_params.blend_mode = GFX_NONE;
-	gfx_set_color(&shader_params->material_params.color, 0.0, 0.0, 1.0, 1.0);
+	gfx_set_color(&shader_params->material_params.diffuse_color, 0.0, 0.0, 1.0, 1.0);
 	gfx_set_shader_params(shader_params);
 
 	gfx_draw_lines(2, eng->lines);
@@ -376,7 +376,7 @@ void elf_draw_bone_hierarchy(elf_bone *bone, gfx_shader_params *shader_params)
 	vertex_buffer[4] = pos.y+axis.y;
 	vertex_buffer[5] = pos.z+axis.z;
 
-	gfx_set_color(&shader_params->material_params.color, 0.0, 1.0, 0.0, 1.0);
+	gfx_set_color(&shader_params->material_params.diffuse_color, 0.0, 1.0, 0.0, 1.0);
 	gfx_set_shader_params(shader_params);
 
 	gfx_draw_lines(2, eng->lines);
@@ -387,7 +387,7 @@ void elf_draw_bone_hierarchy(elf_bone *bone, gfx_shader_params *shader_params)
 	vertex_buffer[4] = pos.y+axis.y;
 	vertex_buffer[5] = pos.z+axis.z;
 
-	gfx_set_color(&shader_params->material_params.color, 1.0, 0.0, 0.0, 1.0);
+	gfx_set_color(&shader_params->material_params.diffuse_color, 1.0, 0.0, 0.0, 1.0);
 	gfx_set_shader_params(shader_params);
 
 	gfx_draw_lines(2, eng->lines);
@@ -401,7 +401,7 @@ void elf_draw_bone_hierarchy(elf_bone *bone, gfx_shader_params *shader_params)
 	max[2] = pos.z+0.05;
 
 	shader_params->render_params.blend_mode = GFX_ADD;
-	gfx_set_color(&shader_params->material_params.color, 1.0, 0.4, 0.2, 1.0);
+	gfx_set_color(&shader_params->material_params.diffuse_color, 1.0, 0.4, 0.2, 1.0);
 	gfx_set_shader_params(shader_params);
 
 	gfx_draw_bounding_box(min, max);

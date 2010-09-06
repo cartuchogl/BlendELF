@@ -587,8 +587,8 @@ void elf_draw_particles_debug(elf_particles *particles, gfx_shader_params *shade
 	vertex_buffer[40] = min[1];
 	vertex_buffer[41] = max[2];
 
-	if(!particles->selected) gfx_set_color(&shader_params->material_params.color, 0.35, 0.75, 0.75, 1.0);
-	else gfx_set_color(&shader_params->material_params.color, 1.0, 0.0, 0.0, 1.0);
+	if(!particles->selected) gfx_set_color(&shader_params->material_params.diffuse_color, 0.35, 0.75, 0.75, 1.0);
+	else gfx_set_color(&shader_params->material_params.diffuse_color, 1.0, 0.0, 0.0, 1.0);
 	gfx_set_shader_params(shader_params);
 	gfx_draw_lines(14, eng->lines);
 }

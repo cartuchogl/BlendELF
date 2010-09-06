@@ -1105,8 +1105,8 @@ void elf_draw_actor_debug(elf_actor *actor, gfx_shader_params *shader_params)
 
 	if(!actor->selected) return;
 
-	if(elf_is_actor_physics(actor)) gfx_set_color(&shader_params->material_params.color, 0.5, 1.0, 0.5, 1.0);
-	else gfx_set_color(&shader_params->material_params.color, 0.5, 0.5, 1.0, 1.0);
+	if(elf_is_actor_physics(actor)) gfx_set_color(&shader_params->material_params.diffuse_color, 0.5, 1.0, 0.5, 1.0);
+	else gfx_set_color(&shader_params->material_params.diffuse_color, 0.5, 0.5, 1.0, 1.0);
 	gfx_set_shader_params(shader_params);
 
 	vertex_buffer = (float*)gfx_get_vertex_data_buffer(eng->lines);

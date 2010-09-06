@@ -179,9 +179,10 @@ typedef struct gfx_fog_params {
 } gfx_fog_params;
 
 typedef struct gfx_material_params {
-	gfx_color color;
+	gfx_color ambient_color;
+	gfx_color diffuse_color;
 	gfx_color specular_color;
-	float spec_power;
+	float shininess;
 } gfx_material_params;
 
 typedef struct gfx_texture_params {
@@ -322,6 +323,8 @@ void gfx_get_transform_orientation(gfx_transform *transform, float *params);
 
 unsigned char gfx_init();
 void gfx_deinit();
+
+int gfx_get_version();
 
 void gfx_clear_buffers(float r, float g, float b, float a, float d);
 void gfx_clear_color_buffer(float r, float g, float b, float a);

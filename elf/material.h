@@ -288,10 +288,10 @@ void elf_set_material(elf_material *material, int mode, gfx_shader_params *shade
 		elf_set_texture_params_default(&shader_params->texture_params[2]);
 		elf_set_texture_params_default(&shader_params->texture_params[4]);
 
-		shader_params->material_params.color.r = material->ambient_color.r*eng->ambient_color.r;
-		shader_params->material_params.color.g = material->ambient_color.g*eng->ambient_color.g;
-		shader_params->material_params.color.b = material->ambient_color.b*eng->ambient_color.b;
-		shader_params->material_params.color.a = 1.0;
+		shader_params->material_params.diffuse_color.r = material->ambient_color.r*eng->ambient_color.r;
+		shader_params->material_params.diffuse_color.g = material->ambient_color.g*eng->ambient_color.g;
+		shader_params->material_params.diffuse_color.b = material->ambient_color.b*eng->ambient_color.b;
+		shader_params->material_params.diffuse_color.a = 1.0;
 
 		if(material->diffuse_map)
 		{
@@ -321,7 +321,7 @@ void elf_set_material(elf_material *material, int mode, gfx_shader_params *shade
 		elf_set_texture_params_default(&shader_params->texture_params[2]);
 		elf_set_texture_params_default(&shader_params->texture_params[4]);
 
-		memcpy(&shader_params->material_params.color.r, &material->diffuse_color.r, sizeof(float)*4);
+		memcpy(&shader_params->material_params.diffuse_color.r, &material->diffuse_color.r, sizeof(float)*4);
 
 		if(material->diffuse_map)
 		{
@@ -349,9 +349,9 @@ void elf_set_material(elf_material *material, int mode, gfx_shader_params *shade
 	{
 		for(i = 0; i < 5; i++) elf_set_texture_params_default(&shader_params->texture_params[i]);
 
-		memcpy(&shader_params->material_params.color.r, &material->diffuse_color.r, sizeof(float)*4);
+		memcpy(&shader_params->material_params.diffuse_color.r, &material->diffuse_color.r, sizeof(float)*4);
 		memcpy(&shader_params->material_params.specular_color.r, &material->specular_color.r, sizeof(float)*4);
-		shader_params->material_params.spec_power = material->spec_power;
+		shader_params->material_params.shininess = material->spec_power;
 
 		if(material->diffuse_map)
 		{

@@ -176,51 +176,98 @@ void gfx_set_vertex_array_data(gfx_vertex_array *vertex_array, int target, gfx_v
 	varr->data = data;
 	gfx_inc_ref((gfx_object*)varr->data);
 
-	if(vertex_array->gpu_data && driver->gpu_data) gfx_init_vertex_data_vbo(varr->data);
+	if(vertex_array->gpu_data && driver->version >= 200) gfx_init_vertex_data_vbo(varr->data);
 }
 
 void gfx_set_vertex_array(gfx_vertex_array *vertex_array)
 {
 	int i;
 
-	if(vertex_array->gpu_data && driver->gpu_data)
+	if(driver->version < 200)
 	{
-		for(i = 0; i < GFX_MAX_VERTEX_ARRAYS; i++)
+		if(vertex_array->varrs[GFX_VERTEX].data)
 		{
-			if(vertex_array->varrs[i].data)
-			{
-				glEnableVertexAttribArray(i);
-				glBindBuffer(GL_ARRAY_BUFFER, vertex_array->varrs[i].data->vbo);
-				glVertexAttribPointer(i, vertex_array->varrs[i].element_count,
-					driver->formats[vertex_array->varrs[i].data->format], GL_FALSE, 0, 0);
-			}
-			else
-			{
-				glDisableVertexAttribArray(i);
-			}
+			glEnableClientState(GL_VERTEX_ARRAY);
+			glVertexPointer(3, driver->formats[vertex_array->varrs[GFX_VERTEX].data->format], 0, vertex_array->varrs[GFX_VERTEX].data->data);
+		}
+		else
+		{
+			glDisableClientState(GL_VERTEX_ARRAY);
 		}
 
-		driver->dirty_vertex_arrays = GFX_TRUE;
+		if(vertex_array->varrs[GFX_NORMAL].data)
+		{
+			glEnableClientState(GL_NORMAL_ARRAY);
+			glNormalPointer(driver->formats[vertex_array->varrs[GFX_NORMAL].data->format], 0, vertex_array->varrs[GFX_NORMAL].data->data);
+		}
+		else
+		{
+			glDisableClientState(GL_NORMAL_ARRAY);
+		}
+
+		if(vertex_array->varrs[GFX_TEX_COORD].data)
+		{
+			for(i = 0; i < GFX_MAX_TEXTURES-1; i++)
+			{
+				glActiveTexture(GL_TEXTURE0_ARB+i);
+				glClientActiveTexture(GL_TEXTURE0_ARB+i);
+
+				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+				glTexCoordPointer(2, driver->formats[vertex_array->varrs[GFX_TEX_COORD].data->format], 0, vertex_array->varrs[GFX_TEX_COORD].data->data);
+			}
+		}
+		else
+		{
+			for(i = 0; i < GFX_MAX_TEXTURES-1; i++)
+			{
+				glActiveTexture(GL_TEXTURE0_ARB+i);
+				glClientActiveTexture(GL_TEXTURE0_ARB+i);
+
+				glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+			}
+		}
 	}
 	else
 	{
-		for(i = 0; i < GFX_MAX_VERTEX_ARRAYS; i++)
+		if(vertex_array->gpu_data)
 		{
-			if(vertex_array->varrs[i].data)
+			for(i = 0; i < GFX_MAX_VERTEX_ARRAYS; i++)
 			{
-				glEnableVertexAttribArray(i);
-				if(driver->dirty_vertex_arrays) glBindBuffer(GL_ARRAY_BUFFER, 0);
-				glVertexAttribPointer(i, vertex_array->varrs[i].element_count,
-					driver->formats[vertex_array->varrs[i].data->format],
-					GL_FALSE, 0, vertex_array->varrs[i].data->data);
+				if(vertex_array->varrs[i].data)
+				{
+					glEnableVertexAttribArray(i);
+					glBindBuffer(GL_ARRAY_BUFFER, vertex_array->varrs[i].data->vbo);
+					glVertexAttribPointer(i, vertex_array->varrs[i].element_count,
+						driver->formats[vertex_array->varrs[i].data->format], GL_FALSE, 0, 0);
+				}
+				else
+				{
+					glDisableVertexAttribArray(i);
+				}
 			}
-			else
-			{
-				glDisableVertexAttribArray(i);
-			}
-		}
 
-		driver->dirty_vertex_arrays = GFX_FALSE;
+			driver->dirty_vertex_arrays = GFX_TRUE;
+		}
+		else
+		{
+			for(i = 0; i < GFX_MAX_VERTEX_ARRAYS; i++)
+			{
+				if(vertex_array->varrs[i].data)
+				{
+					glEnableVertexAttribArray(i);
+					if(driver->dirty_vertex_arrays) glBindBuffer(GL_ARRAY_BUFFER, 0);
+					glVertexAttribPointer(i, vertex_array->varrs[i].element_count,
+						driver->formats[vertex_array->varrs[i].data->format],
+						GL_FALSE, 0, vertex_array->varrs[i].data->data);
+				}
+				else
+				{
+					glDisableVertexAttribArray(i);
+				}
+			}
+
+			driver->dirty_vertex_arrays = GFX_FALSE;
+		}
 	}
 }
 
@@ -250,7 +297,7 @@ gfx_vertex_index* gfx_create_vertex_index(unsigned char gpu_data, gfx_vertex_dat
 
 	vertex_index->gpu_data = !gpu_data == GFX_FALSE;
 
-	if(vertex_index->gpu_data && driver->gpu_data) gfx_init_vertex_data_vbo(data);
+	if(vertex_index->gpu_data && driver->version >= 200) gfx_init_vertex_data_vbo(data);
 
 	gfx_inc_obj(GFX_VERTEX_INDEX);
 
@@ -275,7 +322,7 @@ int gfx_get_vertex_index_indice_count(gfx_vertex_index *vertex_index)
 
 void gfx_draw_vertex_index(gfx_vertex_index *vertex_index, unsigned int draw_mode)
 {
-	if(vertex_index->gpu_data && driver->gpu_data)
+	if(vertex_index->gpu_data && driver->version >= 200)
 	{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertex_index->data->vbo);
 		glDrawElements(driver->draw_modes[draw_mode], vertex_index->indice_count,

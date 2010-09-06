@@ -660,7 +660,7 @@ void elf_run_post_process(elf_post_process *post_process, elf_scene *scene)
 
 				gfx_set_transform_position(post_process->light_shaft_transform, light_pos.x, light_pos.y, light_pos.z);
 				memcpy(scene->shader_params.modelview_matrix, gfx_get_transform_matrix(post_process->light_shaft_transform), sizeof(float)*16);
-				gfx_set_color(&scene->shader_params.material_params.color, light->color.r, light->color.g, light->color.b, 1.0);
+				gfx_set_color(&scene->shader_params.material_params.diffuse_color, light->color.r, light->color.g, light->color.b, 1.0);
 
 				gfx_set_shader_params(&scene->shader_params);
 

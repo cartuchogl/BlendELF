@@ -123,9 +123,10 @@ gfx_shader_program* gfx_create_shader_program(const char* vertex, const char* fr
 	shader_program->light_map_loc = glGetUniformLocation(shader_program->id, "elf_LightMap");
 	shader_program->shadow_projection_matrix_loc = glGetUniformLocation(shader_program->id, "elf_ShadowProjectionMatrix");
 	shader_program->shadow_map_loc = glGetUniformLocation(shader_program->id, "elf_ShadowMap");
-	shader_program->color_loc = glGetUniformLocation(shader_program->id, "elf_Color");
+	shader_program->ambient_color_loc = glGetUniformLocation(shader_program->id, "elf_AmbientColor");
+	shader_program->diffuse_color_loc = glGetUniformLocation(shader_program->id, "elf_DiffuseColor");
 	shader_program->specular_color_loc = glGetUniformLocation(shader_program->id, "elf_SpecularColor");
-	shader_program->spec_power_loc = glGetUniformLocation(shader_program->id, "elf_SpecPower");
+	shader_program->shininess_loc = glGetUniformLocation(shader_program->id, "elf_Shininess");
 	shader_program->light_position_loc = glGetUniformLocation(shader_program->id, "elf_LightPosition");
 	shader_program->light_color_loc = glGetUniformLocation(shader_program->id, "elf_LightColor");
 	shader_program->light_spot_direction_loc = glGetUniformLocation(shader_program->id, "elf_LightSpotDirection");

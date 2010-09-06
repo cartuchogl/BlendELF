@@ -671,6 +671,8 @@ elf_color elf_get_fog_color()
 
 void elf_set_bloom(float threshold)
 {
+	if(gfx_get_version() < 200) return;
+
 	if(!eng->post_process) eng->post_process = elf_create_post_process();
 	elf_set_post_process_bloom(eng->post_process, threshold);
 }
@@ -699,6 +701,8 @@ float elf_get_bloom_threshold()
 
 void elf_set_dof(float focal_range, float focal_distance)
 {
+	if(gfx_get_version() < 200) return;
+
 	if(!eng->post_process) eng->post_process = elf_create_post_process();
 	elf_set_post_process_dof(eng->post_process, focal_range, focal_distance);
 }
@@ -733,6 +737,8 @@ float elf_get_dof_focal_distance()
 
 void elf_set_ssao(float amount)
 {
+	if(gfx_get_version() < 200) return;
+
 	if(!eng->post_process) eng->post_process = elf_create_post_process();
 	elf_set_post_process_ssao(eng->post_process, amount);
 }
@@ -761,6 +767,8 @@ float elf_get_ssao_amount()
 
 void elf_set_light_shafts(float intensity)
 {
+	if(gfx_get_version() < 200) return;
+
 	if(!eng->post_process) eng->post_process = elf_create_post_process();
 	elf_set_post_process_light_shafts(eng->post_process, intensity);
 }

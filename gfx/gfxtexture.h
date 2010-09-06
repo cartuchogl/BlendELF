@@ -56,7 +56,7 @@ gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, floa
 
 	if(data && filter != GFX_NEAREST)
 	{
-		glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+		if(driver->version >= 200) glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
@@ -82,7 +82,7 @@ gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, floa
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	}
 
-	if(anisotropy > 1.0)
+	if(anisotropy > 1.0 && driver->version >= 200)
 	{
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy);
 	}

@@ -103,7 +103,7 @@ void elf_draw_label(elf_label *label, gfx_shader_params *shader_params)
 {
 	if(!label->visible || !label->font || !label->text) return;
 
-	gfx_set_color(&shader_params->material_params.color, label->color.r, label->color.g, label->color.b, label->color.a);
+	gfx_set_color(&shader_params->material_params.diffuse_color, label->color.r, label->color.g, label->color.b, label->color.a);
 	elf_draw_string(label->font, label->text, label->pos.x, label->pos.y, shader_params);
 	shader_params->texture_params[0].texture = NULL;
 }
@@ -190,7 +190,7 @@ void elf_draw_button(elf_button *button, gfx_shader_params *shader_params)
 {
 	if(!button->visible) return;
 
-	gfx_set_color(&shader_params->material_params.color, button->color.r, button->color.g, button->color.b, button->color.a);
+	gfx_set_color(&shader_params->material_params.diffuse_color, button->color.r, button->color.g, button->color.b, button->color.a);
 
 	if(button->state == ELF_OFF)
 	{
@@ -312,7 +312,7 @@ void elf_draw_picture(elf_picture *picture, gfx_shader_params *shader_params)
 {
 	if(!picture->visible || !picture->texture) return;
 
-	gfx_set_color(&shader_params->material_params.color, picture->color.r,
+	gfx_set_color(&shader_params->material_params.diffuse_color, picture->color.r,
 		picture->color.g, picture->color.b, picture->color.a);
 
 	shader_params->texture_params[0].texture = picture->texture->texture;
@@ -426,7 +426,7 @@ void elf_draw_text_field(elf_text_field *text_field, elf_area *area, gfx_shader_
 			height -= (y+height)-(area->pos.y+area->size.y);
 	}
 
-	gfx_set_color(&shader_params->material_params.color, text_field->color.r,
+	gfx_set_color(&shader_params->material_params.diffuse_color, text_field->color.r,
 		text_field->color.g, text_field->color.b, text_field->color.a);
 
 	if(text_field->texture) shader_params->texture_params[0].texture = text_field->texture->texture;
@@ -446,7 +446,7 @@ void elf_draw_text_field(elf_text_field *text_field, elf_area *area, gfx_shader_
 			(float)y+text_field->offset_y, (float)y+height-text_field->offset_y,
 			-1.0, 1.0, shader_params->projection_matrix);
 
-		gfx_set_color(&shader_params->material_params.color, text_field->text_color.r, text_field->text_color.g,
+		gfx_set_color(&shader_params->material_params.diffuse_color, text_field->text_color.r, text_field->text_color.g,
 			text_field->text_color.b, text_field->text_color.a*text_field->color.a);
 
 		str = elf_sub_string(text_field->text, text_field->draw_pos,
@@ -642,7 +642,7 @@ void elf_draw_slider(elf_slider *slider, gfx_shader_params *shader_params)
 
 	if(slider->background)
 	{
-		gfx_set_color(&shader_params->material_params.color, slider->color.r, slider->color.g, slider->color.b, slider->color.a);
+		gfx_set_color(&shader_params->material_params.diffuse_color, slider->color.r, slider->color.g, slider->color.b, slider->color.a);
 		shader_params->texture_params[0].texture = slider->background->texture;
 		gfx_set_shader_params(shader_params);
 		gfx_draw_textured_2d_quad((float)slider->pos.x, (float)slider->pos.y, (float)slider->width, (float)slider->height);
@@ -651,7 +651,7 @@ void elf_draw_slider(elf_slider *slider, gfx_shader_params *shader_params)
 
 	if(slider->slider)
 	{
-		gfx_set_color(&shader_params->material_params.color, slider->color.r, slider->color.g, slider->color.b, slider->color.a);
+		gfx_set_color(&shader_params->material_params.diffuse_color, slider->color.r, slider->color.g, slider->color.b, slider->color.a);
 		shader_params->texture_params[0].texture = slider->slider->texture;
 		gfx_set_shader_params(shader_params);
 		if(slider->width > slider->height)
@@ -786,7 +786,7 @@ void elf_draw_screen(elf_screen *screen, elf_area *area, gfx_shader_params *shad
 			height -= (y+height)-(area->pos.y+area->size.y);
 	}
 
-	gfx_set_color(&shader_params->material_params.color, screen->color.r, screen->color.g, screen->color.b, screen->color.a);
+	gfx_set_color(&shader_params->material_params.diffuse_color, screen->color.r, screen->color.g, screen->color.b, screen->color.a);
 
 	shader_params->texture_params[0].texture = screen->texture->texture;
 	gfx_set_shader_params(shader_params);
@@ -972,7 +972,7 @@ void elf_draw_text_list(elf_text_list *text_list, elf_area *area, gfx_shader_par
 	gfx_set_viewport(x, y, width, height);
 	gfx_get_orthographic_projection_matrix((float)x, (float)x+width, (float)y, (float)y+height,
 		-1.0, 1.0, shader_params->projection_matrix);
-	gfx_set_color(&shader_params->material_params.color, text_list->color.r,
+	gfx_set_color(&shader_params->material_params.diffuse_color, text_list->color.r,
 		text_list->color.g, text_list->color.b, text_list->color.a);
 
 	light = ELF_TRUE;
@@ -986,7 +986,7 @@ void elf_draw_text_list(elf_text_list *text_list, elf_area *area, gfx_shader_par
 		if(i == text_list->selection)
 		{
 			shader_params->texture_params[0].texture = NULL;
-			gfx_set_color(&shader_params->material_params.color, text_list->selection_color.r,
+			gfx_set_color(&shader_params->material_params.diffuse_color, text_list->selection_color.r,
 				text_list->selection_color.g, text_list->selection_color.b, text_list->selection_color.a);
 			gfx_set_shader_params(shader_params);	
 			gfx_draw_2d_quad((float)text_list->pos.x, (float)text_list->pos.y+text_list->height-offset,
@@ -995,9 +995,9 @@ void elf_draw_text_list(elf_text_list *text_list, elf_area *area, gfx_shader_par
 		else
 		{
 			shader_params->texture_params[0].texture = NULL;
-			if(light) gfx_set_color(&shader_params->material_params.color, text_list->light_color.r,
+			if(light) gfx_set_color(&shader_params->material_params.diffuse_color, text_list->light_color.r,
 				text_list->light_color.g, text_list->light_color.b, text_list->light_color.a);
-			else gfx_set_color(&shader_params->material_params.color, text_list->dark_color.r,
+			else gfx_set_color(&shader_params->material_params.diffuse_color, text_list->dark_color.r,
 				text_list->dark_color.g, text_list->dark_color.b, text_list->dark_color.a);
 			gfx_set_shader_params(shader_params);	
 			gfx_draw_2d_quad((float)text_list->pos.x, (float)text_list->pos.y+text_list->height-offset,
@@ -1006,7 +1006,7 @@ void elf_draw_text_list(elf_text_list *text_list, elf_area *area, gfx_shader_par
 
 		light = !light;
 
-		gfx_set_color(&shader_params->material_params.color, text_list->color.r,
+		gfx_set_color(&shader_params->material_params.diffuse_color, text_list->color.r,
 			text_list->color.g, text_list->color.b, text_list->color.a);
 		elf_draw_string(text_list->font, str_obj->str, text_list->pos.x, text_list->pos.y+text_list->height-offset, shader_params);
 
@@ -1251,7 +1251,7 @@ void elf_draw_check_box(elf_check_box *check_box, gfx_shader_params *shader_para
 {
 	if(!check_box->visible) return;
 
-	gfx_set_color(&shader_params->material_params.color, check_box->color.r,
+	gfx_set_color(&shader_params->material_params.diffuse_color, check_box->color.r,
 		check_box->color.g, check_box->color.b, check_box->color.a);
 
 	if(check_box->state == ELF_OFF)

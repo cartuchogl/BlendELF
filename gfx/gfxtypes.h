@@ -33,7 +33,6 @@ struct gfx_driver {
 	int max_draw_buffers;
 	int max_color_attachments;
 	float max_anisotropy;
-	unsigned char gpu_data;
 	unsigned char dirty_vertex_arrays;
 	unsigned int vertices_drawn[GFX_MAX_DRAW_MODES];
 
@@ -126,9 +125,10 @@ struct gfx_shader_program {
 	int light_map_loc;
 	int shadow_projection_matrix_loc;
 	int shadow_map_loc;
-	int color_loc;
+	int ambient_color_loc;
+	int diffuse_color_loc;
 	int specular_color_loc;
-	int spec_power_loc;
+	int shininess_loc;
 	int light_position_loc;
 	int light_color_loc;
 	int light_spot_direction_loc;

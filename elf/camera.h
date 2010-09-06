@@ -272,7 +272,7 @@ void elf_draw_camera_debug(elf_camera *camera, gfx_shader_params *shader_params)
 	min[0] = min[1] = min[2] = -0.35;
 	max[0] = max[1] = max[2] = 0.35;
 
-	gfx_set_color(&shader_params->material_params.color, 0.2, 0.6, 0.2, 1.0);
+	gfx_set_color(&shader_params->material_params.diffuse_color, 0.2, 0.6, 0.2, 1.0);
 	shader_params->render_params.blend_mode = ELF_ADD;
 	gfx_set_shader_params(shader_params);
 	gfx_draw_bounding_box(min, max);
@@ -298,8 +298,8 @@ void elf_draw_camera_debug(elf_camera *camera, gfx_shader_params *shader_params)
 	vertex_buffer[16] = 0.0;
 	vertex_buffer[17] = -3.0;
 
-	if(!camera->selected) gfx_set_color(&shader_params->material_params.color, 0.2, 0.6, 0.2, 1.0);
-	else gfx_set_color(&shader_params->material_params.color, 1.0, 0.0, 0.0, 1.0);
+	if(!camera->selected) gfx_set_color(&shader_params->material_params.diffuse_color, 0.2, 0.6, 0.2, 1.0);
+	else gfx_set_color(&shader_params->material_params.diffuse_color, 1.0, 0.0, 0.0, 1.0);
 	gfx_set_shader_params(shader_params);
 	gfx_draw_lines(6, eng->lines);
 }

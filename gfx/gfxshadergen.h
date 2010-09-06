@@ -148,7 +148,7 @@ void gfx_get_shader_program_config(gfx_shader_params *shader_params, gfx_shader_
 	if((shader_params->material_params.specular_color.r > 0.0001 ||
 		shader_params->material_params.specular_color.g > 0.0001 ||
 		shader_params->material_params.specular_color.b > 0.0001) &&
-		shader_params->material_params.spec_power > 0.0001)
+		shader_params->material_params.shininess > 0.0001)
 	{
 		shader_config->specular = GFX_TRUE;
 	}
@@ -263,11 +263,11 @@ void gfx_add_fragment_fog_uniforms(gfx_document *document, gfx_shader_config *co
 
 void gfx_add_fragment_material_uniforms(gfx_document *document, gfx_shader_config *config)
 {
-	gfx_add_line_to_document(document, "uniform vec4 elf_Color;");
+	gfx_add_line_to_document(document, "uniform vec4 elf_DiffuseColor;");
 	if(config->light)
 	{
 		gfx_add_line_to_document(document, "uniform vec3 elf_SpecularColor;");
-		gfx_add_line_to_document(document, "uniform float elf_SpecPower;");
+		gfx_add_line_to_document(document, "uniform float elf_Shininess;");
 	}
 }
 
@@ -357,16 +357,16 @@ void gfx_add_fragment_lighting_calcs(gfx_document *document, gfx_shader_config *
 		gfx_add_line_to_document(document, "\tfloat lambertTerm = max(dot(N, L), 0.0);");
 		gfx_add_line_to_document(document, "\tif(lambertTerm > 0.0)");
 		gfx_add_line_to_document(document, "\t{");
-		gfx_add_line_to_document(document, "\t\tdiffuse = elf_Color*vec4(elf_LightColor*lambertTerm, 1.0);");
+		gfx_add_line_to_document(document, "\t\tdiffuse = elf_DiffuseColor*vec4(elf_LightColor*lambertTerm, 1.0);");
 		if(config->specular)
 		{
 			gfx_add_line_to_document(document, "\t\tvec3 R = reflect(-L, N);");
-			gfx_add_line_to_document(document, "\t\tfloat specStrength = clamp(pow(max(dot(R, E), 0.0), elf_SpecPower), 0.0, 1.0);");
+			gfx_add_line_to_document(document, "\t\tfloat specStrength = clamp(pow(max(dot(R, E), 0.0), elf_Shininess), 0.0, 1.0);");
 			gfx_add_line_to_document(document, "\t\tspecular = elf_SpecularColor*elf_LightColor*specStrength;");
 		}
 		gfx_add_line_to_document(document, "\t}");
 	}
-	if(!config->light) gfx_add_line_to_document(document, "\tfinal_color *= elf_Color;");
+	if(!config->light) gfx_add_line_to_document(document, "\tfinal_color *= elf_DiffuseColor;");
 }
 
 void gfx_add_fragment_texture_calcs(gfx_document *document, gfx_shader_config *config)
@@ -374,13 +374,13 @@ void gfx_add_fragment_texture_calcs(gfx_document *document, gfx_shader_config *c
 	if(config->textures & GFX_HEIGHT_MAP)
 	{
 		if(config->textures & GFX_COLOR_MAP) gfx_add_line_to_document(document, "\tfinal_color *= texture2D(elf_ColorMap, elf_HeightTexCoord);");
-		if(config->light && config->textures & GFX_COLOR_RAMP_MAP) gfx_add_line_to_document(document, "\tfinal_color.rgb *= texture2D(elf_ColorRampMap, vec2(clamp(lambertTerm, 0.0, 1.0))).rgb*elf_Color*elf_LightColor;");
+		if(config->light && config->textures & GFX_COLOR_RAMP_MAP) gfx_add_line_to_document(document, "\tfinal_color.rgb *= texture2D(elf_ColorRampMap, vec2(clamp(lambertTerm, 0.0, 1.0))).rgb*elf_DiffuseColor*elf_LightColor;");
 		if(config->textures & GFX_LIGHT_MAP) gfx_add_line_to_document(document, "\tfinal_color.rgb *= texture2D(elf_LightMap, elf_HeightTexCoord).rgb;");
 	}
 	else
 	{
 		if(config->textures & GFX_COLOR_MAP) gfx_add_line_to_document(document, "\tfinal_color *= texture2D(elf_ColorMap, elf_TexCoord);");
-		if(config->light && config->textures & GFX_COLOR_RAMP_MAP) gfx_add_line_to_document(document, "\tfinal_color.rgb *= texture2D(elf_ColorRampMap, vec2(clamp(lambertTerm, 0.0, 1.0))).rgb*elf_Color*elf_LightColor;");
+		if(config->light && config->textures & GFX_COLOR_RAMP_MAP) gfx_add_line_to_document(document, "\tfinal_color.rgb *= texture2D(elf_ColorRampMap, vec2(clamp(lambertTerm, 0.0, 1.0))).rgb*elf_DiffuseColor*elf_LightColor;");
 		if(config->textures & GFX_LIGHT_MAP) gfx_add_line_to_document(document, "\tfinal_color.rgb *= texture2D(elf_LightMap, elf_TexCoord).rgb;");
 	}
 }
@@ -572,9 +572,9 @@ void gfx_add_gbuf_fragment_texture_uniforms(gfx_document *document, gfx_shader_c
 
 void gfx_add_gbuf_fragment_material_uniforms(gfx_document *document, gfx_shader_config *config)
 {
-	gfx_add_line_to_document(document, "uniform vec4 elf_Color;");
+	gfx_add_line_to_document(document, "uniform vec4 elf_DiffuseColor;");
 	gfx_add_line_to_document(document, "uniform vec3 elf_SpecularColor;");
-	gfx_add_line_to_document(document, "uniform float elf_SpecPower;");
+	gfx_add_line_to_document(document, "uniform float elf_Shininess;");
 	if(config->textures & GFX_HEIGHT_MAP) gfx_add_line_to_document(document, "uniform float elf_ParallaxScale;");
 }
 
@@ -629,11 +629,11 @@ void gfx_add_gbuf_fragment_end(gfx_document *document, gfx_shader_config *config
 	{
 		gfx_add_line_to_document(document, "\tgl_FragData[0].rg = normalize(elf_Normal).rg;");
 	}
-	gfx_add_line_to_document(document, "\tvec4 color = elf_Color;");
+	gfx_add_line_to_document(document, "\tvec4 color = elf_DiffuseColor;");
 	if(config->textures & GFX_COLOR_MAP) gfx_add_line_to_document(document, "\tcolor *= texture2D(elf_ColorMap, texcoord);");
 	if(config->textures & GFX_LIGHT_MAP) gfx_add_line_to_document(document, "\tcolor *= texture2D(elf_LightMap, texcoord);");
 	gfx_add_line_to_document(document, "\tgl_FragData[1] = vec4(color.rgb, 1.0);");
-	gfx_add_line_to_document(document, "\tgl_FragData[2] = vec4(elf_SpecularColor, elf_SpecPower/255.0);");
+	gfx_add_line_to_document(document, "\tgl_FragData[2] = vec4(elf_SpecularColor, elf_Shininess/255.0);");
 	gfx_add_line_to_document(document, "}");
 }
 

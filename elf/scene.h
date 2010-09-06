@@ -1826,10 +1826,10 @@ void elf_draw_scene(elf_scene *scene)
 	{
 		if(!light->visible) continue;
 
-		// need to call this for frustum culling...
 		if(light->light_type == ELF_SPOT_LIGHT)
 		{
 			elf_set_camera_viewport(light->shadow_camera, 0, 0, elf_get_shadow_map_size(), elf_get_shadow_map_size());
+			// need to call this for frustum culling...
 			elf_set_camera(light->shadow_camera, &scene->shader_params);
 
 			// check are there any entities visible for the spot, if there aren't don't bother continuing, just skip to the next light
@@ -1943,7 +1943,6 @@ void elf_draw_scene(elf_scene *scene)
 			else if(light->light_type == ELF_POINT_LIGHT)
 			{
 				lrad = light->distance+1.0/light->fade_speed;
-				//printf("%s, %f\n", light->name, lrad);
 				if(gfx_box_sphere_intersect(&ent->cull_aabb_min.x, &ent->cull_aabb_max.x, &lpos.x, lrad))
 				{
 					elf_draw_entity(ent, ELF_DRAW_WITH_LIGHTING, &scene->shader_params);
@@ -1985,9 +1984,8 @@ void elf_draw_scene(elf_scene *scene)
 		}
 	}
 
-	if(eng->fog)
+	if(eng->fog && gfx_get_version() >= 200)
 	{
-		// render particles
 		gfx_set_shader_params_default(&scene->shader_params);
 		scene->shader_params.render_params.depth_write = GFX_FALSE;
 		scene->shader_params.render_params.depth_func = GFX_EQUAL;
