@@ -101,10 +101,11 @@ struct gfx_vertex_index {
 struct gfx_texture {
 	GFX_OBJECT_HEADER;
 	unsigned int id;
-	unsigned int width;
-	unsigned int height;
-	unsigned int format;
-	unsigned int data_format;
+	int type;
+	int width;
+	int height;
+	int format;
+	int data_format;
 };
 
 struct gfx_shader_program {

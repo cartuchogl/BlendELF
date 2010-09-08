@@ -778,6 +778,7 @@ void elf_destroy_texture(void *data);
 
 elf_texture* elf_create_texture_from_file(const char *file_path);	// <mdoc> TEXTURE FUNCTIONS
 elf_texture *elf_create_texture_from_image(elf_image *image);
+elf_texture* elf_create_cube_map_from_files(const char *xpos, const char *xneg, const char *ypos, const char *yneg, const char *zpos, const char *zneg);
 
 void elf_set_texture_name(elf_texture *texture, const char *name);
 
@@ -818,18 +819,21 @@ void elf_set_material_normal_map(elf_material *material, elf_texture *texture);
 void elf_set_material_height_map(elf_material *material, elf_texture *texture);
 void elf_set_material_specular_map(elf_material *material, elf_texture *texture);
 void elf_set_material_light_map(elf_material *material, elf_texture *texture);
+void elf_set_material_cube_map(elf_material *material, elf_texture *texture);
 
 void elf_clear_material_diffuse_map(elf_material *material);
 void elf_clear_material_normal_map(elf_material *material);
 void elf_clear_material_height_map(elf_material *material);
 void elf_clear_material_specular_map(elf_material *material);
 void elf_clear_material_light_map(elf_material *material);
+void elf_clear_material_cube_map(elf_material *material);
 
 elf_texture* elf_get_material_diffuse_map(elf_material *material);
 elf_texture* elf_get_material_normal_map(elf_material *material);
 elf_texture* elf_get_material_height_map(elf_material *material);
 elf_texture* elf_get_material_specular_map(elf_material *material);
 elf_texture* elf_get_material_light_map(elf_material *material);
+elf_texture* elf_get_material_cube_map(elf_material *material);
 
 void elf_set_material_parallax_scale(elf_material *material, float scale);
 

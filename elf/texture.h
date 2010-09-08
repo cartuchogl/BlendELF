@@ -90,6 +90,136 @@ elf_texture* elf_create_texture_from_image(elf_image *image)
 	return texture;
 }
 
+elf_texture* elf_create_cube_map_from_files(const char *xpos, const char *xneg, const char *ypos, const char *yneg, const char *zpos, const char *zneg)
+{
+	elf_image *xposi;
+	elf_image *xnegi;
+	elf_image *yposi;
+	elf_image *ynegi;
+	elf_image *zposi;
+	elf_image *znegi;
+
+	elf_texture *texture;
+	int format;
+	int internal_format;
+
+	xposi = elf_create_image_from_file(xpos);
+	xnegi = elf_create_image_from_file(xneg);
+	yposi = elf_create_image_from_file(ypos);
+	ynegi = elf_create_image_from_file(yneg);
+	zposi = elf_create_image_from_file(zpos);
+	znegi = elf_create_image_from_file(zneg);
+
+	if(!xposi || !xnegi || !yposi || !ynegi || !zposi || !znegi)
+	{
+		elf_set_error(ELF_CANT_OPEN_FILE, "error: can't open all of the cube map images");
+		if(xposi) elf_destroy_image(xposi);
+		if(xnegi) elf_destroy_image(xnegi);
+		if(yposi) elf_destroy_image(yposi);
+		if(ynegi) elf_destroy_image(ynegi);
+		if(zposi) elf_destroy_image(zposi);
+		if(znegi) elf_destroy_image(znegi);
+		return NULL;
+	}
+
+	if(elf_get_image_bits_per_pixel(xposi) != elf_get_image_bits_per_pixel(xnegi) ||
+		elf_get_image_bits_per_pixel(xposi) != elf_get_image_bits_per_pixel(yposi) ||
+		elf_get_image_bits_per_pixel(xposi) != elf_get_image_bits_per_pixel(ynegi) ||
+		elf_get_image_bits_per_pixel(xposi) != elf_get_image_bits_per_pixel(zposi) ||
+		elf_get_image_bits_per_pixel(xposi) != elf_get_image_bits_per_pixel(znegi))
+	{
+		elf_set_error(ELF_INVALID_FILE, "error: cube map images have different bits per pixel count");
+		elf_destroy_image(xposi);
+		elf_destroy_image(xnegi);
+		elf_destroy_image(yposi);
+		elf_destroy_image(ynegi);
+		elf_destroy_image(zposi);
+		elf_destroy_image(znegi);
+		return NULL;
+	}
+
+	if(elf_get_image_width(xposi) != elf_get_image_width(xnegi) ||
+		elf_get_image_width(xposi) != elf_get_image_width(yposi) ||
+		elf_get_image_width(xposi) != elf_get_image_width(ynegi) ||
+		elf_get_image_width(xposi) != elf_get_image_width(zposi) ||
+		elf_get_image_width(xposi) != elf_get_image_width(znegi))
+	{
+		elf_set_error(ELF_INVALID_FILE, "error: cube map images have different dimensions, \"%s\"", xpos);
+		elf_destroy_image(xposi);
+		elf_destroy_image(xnegi);
+		elf_destroy_image(yposi);
+		elf_destroy_image(ynegi);
+		elf_destroy_image(zposi);
+		elf_destroy_image(znegi);
+		return NULL;
+	}
+
+	if(elf_get_image_height(xposi) != elf_get_image_height(xnegi) ||
+		elf_get_image_height(xposi) != elf_get_image_height(yposi) ||
+		elf_get_image_height(xposi) != elf_get_image_height(ynegi) ||
+		elf_get_image_height(xposi) != elf_get_image_height(zposi) ||
+		elf_get_image_height(xposi) != elf_get_image_height(znegi))
+	{
+		elf_set_error(ELF_INVALID_FILE, "error: cube map images have different dimensions, \"%s\"", xpos);
+		elf_destroy_image(xposi);
+		elf_destroy_image(xnegi);
+		elf_destroy_image(yposi);
+		elf_destroy_image(ynegi);
+		elf_destroy_image(zposi);
+		elf_destroy_image(znegi);
+		return NULL;
+	}
+
+	switch(elf_get_image_bits_per_pixel(xposi))
+	{
+		case 8: format = GFX_LUMINANCE; internal_format = GFX_LUMINANCE; break;
+		case 16: format = GFX_LUMINANCE_ALPHA; internal_format = GFX_LUMINANCE_ALPHA; break;
+		case 24: format = GFX_BGR; internal_format = eng->texture_compress ? GFX_COMPRESSED_RGB : GFX_RGB; break;
+		case 32: format = GFX_BGRA; internal_format = eng->texture_compress ? GFX_COMPRESSED_RGBA : GFX_RGBA; break;
+		default:
+			elf_set_error(ELF_INVALID_FILE, "error: unsupported bits per pixel value [%d] in cube map image \"%s\"\n", elf_get_image_bits_per_pixel(xposi), xpos);
+			elf_destroy_image(xposi);
+			elf_destroy_image(xnegi);
+			elf_destroy_image(yposi);
+			elf_destroy_image(ynegi);
+			elf_destroy_image(zposi);
+			elf_destroy_image(znegi);
+			return NULL;
+	}
+
+	texture = elf_create_texture();
+
+	texture->name = elf_create_string(xpos);
+	texture->file_path = elf_create_string(xpos);
+
+	texture->texture = gfx_create_cube_map(elf_get_image_width(xposi), elf_get_image_height(xposi),
+		eng->texture_anisotropy, GFX_REPEAT, GFX_LINEAR, format, internal_format, GFX_UBYTE,
+		elf_get_image_data(xposi), elf_get_image_data(xnegi), elf_get_image_data(yposi),
+		elf_get_image_data(ynegi), elf_get_image_data(zposi), elf_get_image_data(znegi));
+
+	if(!texture->texture)
+	{
+		elf_set_error(ELF_CANT_CREATE, "error: failed to create cube map \"%s\"\n", xposi);
+		elf_destroy_texture(texture);
+		elf_destroy_image(xposi);
+		elf_destroy_image(xnegi);
+		elf_destroy_image(yposi);
+		elf_destroy_image(ynegi);
+		elf_destroy_image(zposi);
+		elf_destroy_image(znegi);
+		return NULL;
+	}
+
+	elf_destroy_image(xposi);
+	elf_destroy_image(xnegi);
+	elf_destroy_image(yposi);
+	elf_destroy_image(ynegi);
+	elf_destroy_image(zposi);
+	elf_destroy_image(znegi);
+
+	return texture;
+}
+
 void elf_destroy_texture(void *data)
 {
 	elf_texture *texture = (elf_texture*)data;

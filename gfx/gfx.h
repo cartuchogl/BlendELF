@@ -98,6 +98,9 @@ extern "C" {
 //#define GFX_NONE					0x0000
 //#define GFX_LINEAR					0x0001
 
+#define GFX_2D_MAP_TEXTURE				0x0000
+#define GFX_CUBE_MAP_TEXTURE				0x0001
+
 #define GFX_COLOR_MAP					0x0001
 #define GFX_NORMAL_MAP					0x0002
 #define GFX_HEIGHT_MAP					0x0004
@@ -106,6 +109,7 @@ extern "C" {
 #define GFX_SHADOW_MAP					0x0020
 #define GFX_COLOR_RAMP_MAP				0x0040
 #define GFX_LIGHT_MAP					0x0080
+#define GFX_CUBE_MAP					0x0100
 
 #define GFX_NONE					0x0000
 #define GFX_POINT_LIGHT					0x0001
@@ -374,8 +378,10 @@ int gfx_get_max_texture_size();
 
 gfx_texture* gfx_create_texture();
 gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internal_format, int data_format, void *data);
+gfx_texture* gfx_create_cube_map(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internal_format, int data_format, void *xpos, void *xneg, void *ypos, void *yneg, void *zpos, void *zneg);
 void gfx_destroy_texture(void *data);
 
+int gfx_get_texture_type(gfx_texture *texture);
 int gfx_get_texture_width(gfx_texture *texture);
 int gfx_get_texture_height(gfx_texture *texture);
 int gfx_get_texture_format(gfx_texture *texture);

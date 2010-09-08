@@ -272,6 +272,7 @@ struct elf_material {
 	elf_texture *height_map;
 	elf_texture *specular_map;
 	elf_texture *light_map;
+	elf_texture *cube_map;
 
 	float parallax_scale;
 

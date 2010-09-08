@@ -165,6 +165,14 @@ void elf_set_material_light_map(elf_material *material, elf_texture *texture)
 	if(material->light_map) elf_inc_ref((elf_object*)material->light_map);
 }
 
+void elf_set_material_cube_map(elf_material *material, elf_texture *texture)
+{
+	if(gfx_get_texture_type(texture->texture) != GFX_CUBE_MAP_TEXTURE) return;
+	if(material->cube_map) elf_dec_ref((elf_object*)material->cube_map);
+	material->cube_map = texture;
+	if(material->cube_map) elf_inc_ref((elf_object*)material->cube_map);
+}
+
 void elf_clear_material_diffuse_map(elf_material *material)
 {
 	if(material->diffuse_map) elf_dec_ref((elf_object*)material->diffuse_map);
@@ -195,6 +203,12 @@ void elf_clear_material_light_map(elf_material *material)
 	material->light_map = NULL;
 }
 
+void elf_clear_material_cube_map(elf_material *material)
+{
+	if(material->cube_map) elf_dec_ref((elf_object*)material->cube_map);
+	material->cube_map = NULL;
+}
+
 elf_texture* elf_get_material_diffuse_map(elf_material *material)
 {
 	return material->diffuse_map;
@@ -218,6 +232,11 @@ elf_texture* elf_get_material_specular_map(elf_material *material)
 elf_texture* elf_get_material_light_map(elf_material *material)
 {
 	return material->light_map;
+}
+
+elf_texture* elf_get_material_cube_map(elf_material *material)
+{
+	return material->cube_map;
 }
 
 void elf_set_material_parallax_scale(elf_material *material, float scale)

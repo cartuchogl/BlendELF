@@ -6489,6 +6489,44 @@ fail:
 }
 
 
+static int _wrap_elfCreateCubeMapFromFiles(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  char *arg2 = (char *) 0 ;
+  char *arg3 = (char *) 0 ;
+  char *arg4 = (char *) 0 ;
+  char *arg5 = (char *) 0 ;
+  char *arg6 = (char *) 0 ;
+  elf_handle result;
+  
+  SWIG_check_num_args("CreateCubeMapFromFiles",6,6)
+  if(!lua_isstring(L,1)) SWIG_fail_arg("CreateCubeMapFromFiles",1,"char const *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("CreateCubeMapFromFiles",2,"char const *");
+  if(!lua_isstring(L,3)) SWIG_fail_arg("CreateCubeMapFromFiles",3,"char const *");
+  if(!lua_isstring(L,4)) SWIG_fail_arg("CreateCubeMapFromFiles",4,"char const *");
+  if(!lua_isstring(L,5)) SWIG_fail_arg("CreateCubeMapFromFiles",5,"char const *");
+  if(!lua_isstring(L,6)) SWIG_fail_arg("CreateCubeMapFromFiles",6,"char const *");
+  arg1 = (char *)lua_tostring(L, 1);
+  arg2 = (char *)lua_tostring(L, 2);
+  arg3 = (char *)lua_tostring(L, 3);
+  arg4 = (char *)lua_tostring(L, 4);
+  arg5 = (char *)lua_tostring(L, 5);
+  arg6 = (char *)lua_tostring(L, 6);
+  result = elfCreateCubeMapFromFiles((char const *)arg1,(char const *)arg2,(char const *)arg3,(char const *)arg4,(char const *)arg5,(char const *)arg6);
+  {
+    elf_handle * resultptr = new elf_handle((const elf_handle &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_handle,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfSetTextureName(lua_State* L) {
   int SWIG_arg = 0;
   elf_handle arg1 ;
@@ -7252,6 +7290,40 @@ fail:
 }
 
 
+static int _wrap_elfSetMaterialCubeMap(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle arg2 ;
+  elf_handle *argp1 ;
+  elf_handle *argp2 ;
+  
+  SWIG_check_num_args("SetMaterialCubeMap",2,2)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SetMaterialCubeMap",1,"handle");
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg("SetMaterialCubeMap",2,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetMaterialCubeMap",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("SetMaterialCubeMap",2,SWIGTYPE_p_elf_handle);
+  }
+  arg2 = *argp2;
+  
+  elfSetMaterialCubeMap(arg1,arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_elfClearMaterialDiffuseMap(lua_State* L) {
   int SWIG_arg = 0;
   elf_handle arg1 ;
@@ -7366,6 +7438,31 @@ static int _wrap_elfClearMaterialLightMap(lua_State* L) {
   arg1 = *argp1;
   
   elfClearMaterialLightMap(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfClearMaterialCubeMap(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  
+  SWIG_check_num_args("ClearMaterialCubeMap",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("ClearMaterialCubeMap",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("ClearMaterialCubeMap",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  elfClearMaterialCubeMap(arg1);
   
   return SWIG_arg;
   
@@ -7508,6 +7605,35 @@ static int _wrap_elfGetMaterialLightMap(lua_State* L) {
   arg1 = *argp1;
   
   result = elfGetMaterialLightMap(arg1);
+  {
+    elf_handle * resultptr = new elf_handle((const elf_handle &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_handle,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_elfGetMaterialCubeMap(lua_State* L) {
+  int SWIG_arg = 0;
+  elf_handle arg1 ;
+  elf_handle *argp1 ;
+  elf_handle result;
+  
+  SWIG_check_num_args("GetMaterialCubeMap",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("GetMaterialCubeMap",1,"handle");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_elf_handle,0))){
+    SWIG_fail_ptr("GetMaterialCubeMap",1,SWIGTYPE_p_elf_handle);
+  }
+  arg1 = *argp1;
+  
+  result = elfGetMaterialCubeMap(arg1);
   {
     elf_handle * resultptr = new elf_handle((const elf_handle &) result);
     SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_elf_handle,1); SWIG_arg++;
@@ -22341,6 +22467,7 @@ static const struct luaL_reg swig_commands[] = {
     { "GetImagePixel", _wrap_elfGetImagePixel},
     { "CreateTextureFromFile", _wrap_elfCreateTextureFromFile},
     { "CreateTextureFromImage", _wrap_elfCreateTextureFromImage},
+    { "CreateCubeMapFromFiles", _wrap_elfCreateCubeMapFromFiles},
     { "SetTextureName", _wrap_elfSetTextureName},
     { "GetTextureName", _wrap_elfGetTextureName},
     { "GetTextureFilePath", _wrap_elfGetTextureFilePath},
@@ -22367,16 +22494,19 @@ static const struct luaL_reg swig_commands[] = {
     { "SetMaterialHeightMap", _wrap_elfSetMaterialHeightMap},
     { "SetMaterialSpecularMap", _wrap_elfSetMaterialSpecularMap},
     { "SetMaterialLightMap", _wrap_elfSetMaterialLightMap},
+    { "SetMaterialCubeMap", _wrap_elfSetMaterialCubeMap},
     { "ClearMaterialDiffuseMap", _wrap_elfClearMaterialDiffuseMap},
     { "ClearMaterialNormalMap", _wrap_elfClearMaterialNormalMap},
     { "ClearMaterialHeightMap", _wrap_elfClearMaterialHeightMap},
     { "ClearMaterialSpecularMap", _wrap_elfClearMaterialSpecularMap},
     { "ClearMaterialLightMap", _wrap_elfClearMaterialLightMap},
+    { "ClearMaterialCubeMap", _wrap_elfClearMaterialCubeMap},
     { "GetMaterialDiffuseMap", _wrap_elfGetMaterialDiffuseMap},
     { "GetMaterialNormalMap", _wrap_elfGetMaterialNormalMap},
     { "GetMaterialHeightMap", _wrap_elfGetMaterialHeightMap},
     { "GetMaterialSpecularMap", _wrap_elfGetMaterialSpecularMap},
     { "GetMaterialLightMap", _wrap_elfGetMaterialLightMap},
+    { "GetMaterialCubeMap", _wrap_elfGetMaterialCubeMap},
     { "SetMaterialParallaxScale", _wrap_elfSetMaterialParallaxScale},
     { "SetMaterialAlphaTest", _wrap_elfSetMaterialAlphaTest},
     { "SetMaterialAlphaThreshold", _wrap_elfSetMaterialAlphaThreshold},

@@ -1505,6 +1505,12 @@ ELF_API elf_handle ELF_APIENTRY elfCreateTextureFromImage(elf_handle image)
 	handle = (elf_object*)elf_create_texture_from_image((elf_image*)image.get());
 	return handle;
 }
+ELF_API elf_handle ELF_APIENTRY elfCreateCubeMapFromFiles(const char* xpos, const char* xneg, const char* ypos, const char* yneg, const char* zpos, const char* zneg)
+{
+	elf_handle handle;
+	handle = (elf_object*)elf_create_cube_map_from_files(xpos, xneg, ypos, yneg, zpos, zneg);
+	return handle;
+}
 ELF_API void ELF_APIENTRY elfSetTextureName(elf_handle texture, const char* name)
 {
 	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
@@ -1980,6 +1986,34 @@ ELF_API void ELF_APIENTRY elfSetMaterialLightMap(elf_handle material, elf_handle
 	}
 	elf_set_material_light_map((elf_material*)material.get(), (elf_texture*)texture.get());
 }
+ELF_API void ELF_APIENTRY elfSetMaterialCubeMap(elf_handle material, elf_handle texture)
+{
+	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialCubeMap() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetMaterialCubeMap() -> invalid handle\n");
+		}
+		return;
+	}
+	if(!texture.get() || elf_get_object_type(texture.get()) != ELF_TEXTURE)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "SetMaterialCubeMap() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "SetMaterialCubeMap() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_set_material_cube_map((elf_material*)material.get(), (elf_texture*)texture.get());
+}
 ELF_API void ELF_APIENTRY elfClearMaterialDiffuseMap(elf_handle material)
 {
 	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
@@ -2059,6 +2093,22 @@ ELF_API void ELF_APIENTRY elfClearMaterialLightMap(elf_handle material)
 		return;
 	}
 	elf_clear_material_light_map((elf_material*)material.get());
+}
+ELF_API void ELF_APIENTRY elfClearMaterialCubeMap(elf_handle material)
+{
+	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "ClearMaterialCubeMap() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "ClearMaterialCubeMap() -> invalid handle\n");
+		}
+		return;
+	}
+	elf_clear_material_cube_map((elf_material*)material.get());
 }
 ELF_API elf_handle ELF_APIENTRY elfGetMaterialDiffuseMap(elf_handle material)
 {
@@ -2148,6 +2198,24 @@ ELF_API elf_handle ELF_APIENTRY elfGetMaterialLightMap(elf_handle material)
 		return handle;
 	}
 	handle = (elf_object*)elf_get_material_light_map((elf_material*)material.get());
+	return handle;
+}
+ELF_API elf_handle ELF_APIENTRY elfGetMaterialCubeMap(elf_handle material)
+{
+	elf_handle handle;
+	if(!material.get() || elf_get_object_type(material.get()) != ELF_MATERIAL)
+	{
+		if(elf_get_current_script())
+		{
+			elf_set_script_error(ELF_INVALID_HANDLE, "GetMaterialCubeMap() -> invalid handle");
+		}
+		else
+		{
+			elf_set_error_no_save(ELF_INVALID_HANDLE, "GetMaterialCubeMap() -> invalid handle\n");
+		}
+		return handle;
+	}
+	handle = (elf_object*)elf_get_material_cube_map((elf_material*)material.get());
 	return handle;
 }
 ELF_API void ELF_APIENTRY elfSetMaterialParallaxScale(elf_handle material, float scale)
