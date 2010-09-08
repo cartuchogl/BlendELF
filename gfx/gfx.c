@@ -138,6 +138,8 @@ unsigned char gfx_init()
 		return GFX_FALSE;
 	}
 
+	driver->version = 110;
+
 	if(!glewIsSupported("GL_EXT_framebuffer_object"))
 	{
 		elf_write_to_log("GL_EXT_framebuffer_object not supported!\n");

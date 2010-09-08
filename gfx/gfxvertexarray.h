@@ -209,8 +209,8 @@ void gfx_set_vertex_array(gfx_vertex_array *vertex_array)
 		{
 			for(i = 0; i < GFX_MAX_TEXTURES-1; i++)
 			{
-				glActiveTexture(GL_TEXTURE0_ARB+i);
-				glClientActiveTexture(GL_TEXTURE0_ARB+i);
+				glActiveTexture(GL_TEXTURE0+i);
+				glClientActiveTexture(GL_TEXTURE0+i);
 
 				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 				glTexCoordPointer(2, driver->formats[vertex_array->varrs[GFX_TEX_COORD].data->format], 0, vertex_array->varrs[GFX_TEX_COORD].data->data);

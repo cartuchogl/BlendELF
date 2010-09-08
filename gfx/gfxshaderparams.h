@@ -67,7 +67,7 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 {
 	int i;
 	gfx_shader_config shader_config;
-	gfx_shader_program *shader_program;
+	gfx_shader_program *shader_program = NULL;
 
 	if(memcmp(&driver->shader_params.render_params, &shader_params->render_params, sizeof(gfx_render_params)))
 	{
@@ -165,8 +165,8 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 		{
 			for(i = 0; i < GFX_MAX_TEXTURES; i++)
 			{
-				glActiveTexture(GL_TEXTURE0_ARB+i);
-				glClientActiveTexture(GL_TEXTURE0_ARB+i);
+				glActiveTexture(GL_TEXTURE0+i);
+				glClientActiveTexture(GL_TEXTURE0+i);
 
 				if(shader_params->texture_params[i].texture &&
 					(shader_params->texture_params[i].type == GFX_COLOR_MAP ||
@@ -244,6 +244,9 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 				glEnable(GL_LIGHTING);
 				glEnable(GL_LIGHT0);
 
+				glMatrixMode(GL_MODELVIEW);
+				glLoadIdentity();
+
 				glLightfv(GL_LIGHT0, GL_DIFFUSE, &shader_params->light_params.color.r);
 				glLightfv(GL_LIGHT0, GL_SPECULAR, &shader_params->light_params.color.r);
 				glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 1.0/(shader_params->light_params.distance+1.0/shader_params->light_params.fade_speed));
@@ -259,9 +262,6 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 					glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, shader_params->light_params.inner_cone);
 					glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, &shader_params->light_params.direction.x);
 				}
-
-				glMatrixMode(GL_MODELVIEW);
-				glLoadIdentity();
 
 				if(shader_params->light_params.type == GFX_SUN_LIGHT)
 				{

@@ -1911,11 +1911,22 @@ void elf_draw_scene(elf_scene *scene)
 
 		if(light->light_type == ELF_SPOT_LIGHT && light->shadows)
 		{
-			scene->shader_params.texture_params[GFX_MAX_TEXTURES-1].type = GFX_SHADOW_MAP;
-			scene->shader_params.texture_params[GFX_MAX_TEXTURES-1].texture = eng->shadow_map;
-			scene->shader_params.texture_params[GFX_MAX_TEXTURES-1].projection_mode = GFX_SHADOW_PROJECTION;
-			memcpy(scene->shader_params.texture_params[GFX_MAX_TEXTURES-1].matrix,
-				light->projection_matrix, sizeof(float)*16);
+			if(gfx_get_version() >= 200)
+			{
+				scene->shader_params.texture_params[GFX_MAX_TEXTURES-1].type = GFX_SHADOW_MAP;
+				scene->shader_params.texture_params[GFX_MAX_TEXTURES-1].texture = eng->shadow_map;
+				scene->shader_params.texture_params[GFX_MAX_TEXTURES-1].projection_mode = GFX_SHADOW_PROJECTION;
+				memcpy(scene->shader_params.texture_params[GFX_MAX_TEXTURES-1].matrix,
+					light->projection_matrix, sizeof(float)*16);
+			}
+			else
+			{
+				scene->shader_params.texture_params[3].type = GFX_SHADOW_MAP;
+				scene->shader_params.texture_params[3].texture = eng->shadow_map;
+				scene->shader_params.texture_params[3].projection_mode = GFX_SHADOW_PROJECTION;
+				memcpy(scene->shader_params.texture_params[3].matrix,
+					light->projection_matrix, sizeof(float)*16);
+			}
 		}
 		else
 		{

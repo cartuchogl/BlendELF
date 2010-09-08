@@ -10,6 +10,8 @@ gfx_shader_program* gfx_create_shader_program(const char* vertex, const char* fr
 	GLuint my_fragment_shader;
 	gfx_shader_program *shader_program;
 
+	if(driver->version < 200) return NULL;
+
 	my_vertex_shader = glCreateShader(GL_VERTEX_SHADER);
 
 	if(vertex)
@@ -143,8 +145,6 @@ gfx_shader_program* gfx_create_shader_program(const char* vertex, const char* fr
 	shader_program->fog_start_loc = glGetUniformLocation(shader_program->id, "elf_FogStart");
 	shader_program->fog_end_loc = glGetUniformLocation(shader_program->id, "elf_FogEnd");
 	shader_program->fog_color_loc = glGetUniformLocation(shader_program->id, "elf_FogColor");
-
-	glUseProgram(shader_program->id);
 
 	return shader_program;
 }
