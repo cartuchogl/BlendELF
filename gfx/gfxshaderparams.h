@@ -249,7 +249,7 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 
 				glLightfv(GL_LIGHT0, GL_DIFFUSE, &shader_params->light_params.color.r);
 				glLightfv(GL_LIGHT0, GL_SPECULAR, &shader_params->light_params.color.r);
-				glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 1.0/(shader_params->light_params.distance+1.0/shader_params->light_params.fade_speed));
+				glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 1.0/shader_params->light_params.distance);
 
 				if(shader_params->light_params.type != GFX_SPOT_LIGHT)
 				{
