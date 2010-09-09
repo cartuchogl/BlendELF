@@ -290,7 +290,7 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 				shader_params->material_params.diffuse_color.a);
 			glMaterialfv(GL_FRONT, GL_DIFFUSE, &shader_params->material_params.diffuse_color.r);
 			glMaterialfv(GL_FRONT, GL_SPECULAR, &shader_params->material_params.specular_color.r);
-			glMaterialf(GL_FRONT, GL_DIFFUSE, shader_params->material_params.shininess);
+			glMaterialf(GL_FRONT, GL_SHININESS, shader_params->material_params.shininess);
 		}
 
 		glMatrixMode(GL_PROJECTION);
