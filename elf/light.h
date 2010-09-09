@@ -211,19 +211,33 @@ void elf_set_light(elf_light *light, elf_camera *camera, gfx_shader_params *shad
 	float orient[4];
 	float final_pos[4];
 
-	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(light->transform), elf_get_camera_modelview_matrix(camera), matrix);
-	final_pos[0] = matrix[12];
-	final_pos[1] = matrix[13];
-	final_pos[2] = matrix[14];
-
-	gfx_get_transform_orientation(light->transform, orient);
-	gfx_mul_qua_vec(orient, final_axis, axis);
-	gfx_matrix4_get_inverse(elf_get_camera_modelview_matrix(camera), matrix2);
-	gfx_mul_matrix4_vec3(matrix2, axis, final_axis);
-
 	shader_params->light_params.type = light->light_type;
-	memcpy(&shader_params->light_params.position.x, final_pos, sizeof(float)*3);
-	memcpy(&shader_params->light_params.direction.x, final_axis, sizeof(float)*3);
+
+	if(gfx_get_version() < 200)
+	{
+		gfx_get_transform_position(light->transform, final_pos);
+		gfx_get_transform_orientation(light->transform, orient);
+		gfx_mul_qua_vec(orient, final_axis, axis);
+
+		memcpy(&shader_params->light_params.position.x, final_pos, sizeof(float)*3);
+		memcpy(&shader_params->light_params.direction.x, axis, sizeof(float)*3);
+	}
+	else
+	{
+		gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(light->transform), elf_get_camera_modelview_matrix(camera), matrix);
+		final_pos[0] = matrix[12];
+		final_pos[1] = matrix[13];
+		final_pos[2] = matrix[14];
+
+		gfx_get_transform_orientation(light->transform, orient);
+		gfx_mul_qua_vec(orient, final_axis, axis);
+		gfx_matrix4_get_inverse(elf_get_camera_modelview_matrix(camera), matrix2);
+		gfx_mul_matrix4_vec3(matrix2, axis, final_axis);
+
+		memcpy(&shader_params->light_params.position.x, final_pos, sizeof(float)*3);
+		memcpy(&shader_params->light_params.direction.x, final_axis, sizeof(float)*3);
+	}
+
 	memcpy(&shader_params->light_params.color.r, &light->color.r, sizeof(float)*4);
 	shader_params->light_params.distance = light->distance;
 	shader_params->light_params.fade_speed = light->fade_speed;

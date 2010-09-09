@@ -57,7 +57,7 @@ gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, floa
 
 	if(data && filter != GFX_NEAREST)
 	{
-		if(driver->version >= 200)
+		if(driver->version >= 140)
 		{
 			glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);

@@ -245,7 +245,7 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 				glEnable(GL_LIGHT0);
 
 				glMatrixMode(GL_MODELVIEW);
-				glLoadIdentity();
+				glLoadMatrixf(shader_params->camera_matrix);
 
 				glLightfv(GL_LIGHT0, GL_DIFFUSE, &shader_params->light_params.color.r);
 				glLightfv(GL_LIGHT0, GL_SPECULAR, &shader_params->light_params.color.r);
@@ -258,20 +258,23 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 				}
 				else
 				{
-					glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, shader_params->light_params.outer_cone);
-					glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, shader_params->light_params.inner_cone);
+					// some really wild guesses for spot exponent here, doesn't work that well with the current system.
+					glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, shader_params->light_params.outer_cone/(shader_params->light_params.inner_cone+shader_params->light_params.outer_cone)*7.5);
+					glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, shader_params->light_params.inner_cone+shader_params->light_params.outer_cone);
 					glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, &shader_params->light_params.direction.x);
 				}
 
 				if(shader_params->light_params.type == GFX_SUN_LIGHT)
 				{
-					memcpy(position, &shader_params->light_params.direction.x, sizeof(float)*3);
-					position[3] = 1.0;
+					position[0] = -shader_params->light_params.direction.x;
+					position[1] = -shader_params->light_params.direction.y;
+					position[2] = -shader_params->light_params.direction.z;
+					position[3] = 0.0;
 				}
 				else
 				{
-					memcpy(position, &shader_params->light_params.position.x, sizeof(float)*3);
-					position[3] = 0.0;
+					memcpy(position, &shader_params->light_params.position.x, sizeof(float)*3); 
+					position[3] = 1.0;
 				}
 
 				glLightfv(GL_LIGHT0, GL_POSITION, position);
@@ -288,6 +291,7 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 				shader_params->material_params.diffuse_color.g,
 				shader_params->material_params.diffuse_color.b,
 				shader_params->material_params.diffuse_color.a);
+			glMaterialfv(GL_FRONT, GL_AMBIENT, &shader_params->material_params.ambient_color.r);
 			glMaterialfv(GL_FRONT, GL_DIFFUSE, &shader_params->material_params.diffuse_color.r);
 			glMaterialfv(GL_FRONT, GL_SPECULAR, &shader_params->material_params.specular_color.r);
 			glMaterialf(GL_FRONT, GL_SHININESS, shader_params->material_params.shininess);
