@@ -205,6 +205,18 @@ void gfx_set_vertex_array(gfx_vertex_array *vertex_array)
 			glDisableClientState(GL_NORMAL_ARRAY);
 		}
 
+		if(vertex_array->varrs[GFX_COLOR].data)
+		{
+			// input something that doesn't make sense so that the driver will know something has changed in the color
+			gfx_set_color(&driver->shader_params.material_params.diffuse_color, 10.3, 10.056, 10.230, 1.0);
+			glEnableClientState(GL_COLOR_ARRAY);
+			glColorPointer(4, driver->formats[vertex_array->varrs[GFX_COLOR].data->format], 0, vertex_array->varrs[GFX_COLOR].data->data);
+		}
+		else
+		{
+			glDisableClientState(GL_COLOR_ARRAY);
+		}
+
 		if(vertex_array->varrs[GFX_TEX_COORD].data)
 		{
 			for(i = 0; i < GFX_MAX_TEXTURES-1; i++)
