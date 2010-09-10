@@ -132,7 +132,7 @@ elf_texture* elf_create_cube_map_from_files(const char *xpos, const char *xneg, 
 
 	if(!xposi || !xnegi || !yposi || !ynegi || !zposi || !znegi)
 	{
-		elf_set_error(ELF_CANT_OPEN_FILE, "error: can't open all of the cube map images");
+		elf_set_error(ELF_CANT_OPEN_FILE, "error: can't open all of the cube map images\n");
 		if(xposi) elf_destroy_image(xposi);
 		if(xnegi) elf_destroy_image(xnegi);
 		if(yposi) elf_destroy_image(yposi);
@@ -148,7 +148,7 @@ elf_texture* elf_create_cube_map_from_files(const char *xpos, const char *xneg, 
 		elf_get_image_bits_per_pixel(xposi) != elf_get_image_bits_per_pixel(zposi) ||
 		elf_get_image_bits_per_pixel(xposi) != elf_get_image_bits_per_pixel(znegi))
 	{
-		elf_set_error(ELF_INVALID_FILE, "error: cube map images have different bits per pixel count");
+		elf_set_error(ELF_INVALID_FILE, "error: cube map images have different bits per pixel count\n");
 		elf_destroy_image(xposi);
 		elf_destroy_image(xnegi);
 		elf_destroy_image(yposi);
@@ -164,7 +164,7 @@ elf_texture* elf_create_cube_map_from_files(const char *xpos, const char *xneg, 
 		elf_get_image_width(xposi) != elf_get_image_width(zposi) ||
 		elf_get_image_width(xposi) != elf_get_image_width(znegi))
 	{
-		elf_set_error(ELF_INVALID_FILE, "error: cube map images have different dimensions, \"%s\"", xpos);
+		elf_set_error(ELF_INVALID_FILE, "error: cube map images have different dimensions, \"%s\"\n", xpos);
 		elf_destroy_image(xposi);
 		elf_destroy_image(xnegi);
 		elf_destroy_image(yposi);
@@ -180,7 +180,7 @@ elf_texture* elf_create_cube_map_from_files(const char *xpos, const char *xneg, 
 		elf_get_image_height(xposi) != elf_get_image_height(zposi) ||
 		elf_get_image_height(xposi) != elf_get_image_height(znegi))
 	{
-		elf_set_error(ELF_INVALID_FILE, "error: cube map images have different dimensions, \"%s\"", xpos);
+		elf_set_error(ELF_INVALID_FILE, "error: cube map images have different dimensions, \"%s\"\n", xpos);
 		elf_destroy_image(xposi);
 		elf_destroy_image(xnegi);
 		elf_destroy_image(yposi);

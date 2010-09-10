@@ -207,6 +207,7 @@ float* elf_get_camera_modelview_matrix(elf_camera *camera)
 void elf_set_camera(elf_camera *camera, gfx_shader_params *shader_params)
 {
 	int viewp_width, viewp_height;
+	float position[3];
 
 	viewp_width = camera->viewp_width;
 	viewp_height = camera->viewp_height;
@@ -219,6 +220,9 @@ void elf_set_camera(elf_camera *camera, gfx_shader_params *shader_params)
 	memcpy(camera->modelview_matrix, gfx_get_transform_matrix(camera->transform), sizeof(float)*16);
 	memcpy(shader_params->modelview_matrix, camera->modelview_matrix, sizeof(float)*16);
 	memcpy(shader_params->camera_matrix, camera->modelview_matrix, sizeof(float)*16);
+
+	gfx_get_transform_position(camera->transform, position);
+	memcpy(&shader_params->camera_position.x, position, sizeof(float)*3);
 
 	shader_params->clip_start = camera->clip_near;
 	shader_params->clip_end = camera->clip_far;

@@ -215,6 +215,7 @@ typedef struct gfx_shader_params {
 	gfx_material_params material_params;
 	gfx_texture_params texture_params[GFX_MAX_TEXTURES];
 	gfx_light_params light_params;
+	gfx_position camera_position;
 	float camera_matrix[16];
 	float clip_start;
 	float clip_end;

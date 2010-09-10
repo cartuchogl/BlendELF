@@ -39,6 +39,7 @@ void elf_destroy_material(void *data)
 	if(material->height_map) elf_dec_ref((elf_object*)material->height_map);
 	if(material->specular_map) elf_dec_ref((elf_object*)material->specular_map);
 	if(material->light_map) elf_dec_ref((elf_object*)material->light_map);
+	if(material->cube_map) elf_dec_ref((elf_object*)material->cube_map);
 
 	free(material);
 
@@ -284,6 +285,8 @@ void elf_set_material(elf_material *material, int mode, gfx_shader_params *shade
 {
 	int i;
 
+	for(i = 0; i < 6; i++) elf_set_texture_params_default(&shader_params->texture_params[i]);
+
 	if(mode == ELF_DRAW_DEPTH)
 	{
 		if(material->diffuse_map && material->alpha_test)
@@ -294,19 +297,9 @@ void elf_set_material(elf_material *material, int mode, gfx_shader_params *shade
 			shader_params->texture_params[0].texture = material->diffuse_map->texture;
 			shader_params->texture_params[0].projection_mode = GFX_NONE;
 		}
-		else
-		{
-			shader_params->render_params.alpha_test = ELF_FALSE;
-			shader_params->render_params.alpha_threshold = 0.99;
-			elf_set_texture_params_default(&shader_params->texture_params[0]);
-		}
 	}
 	else if(mode == ELF_DRAW_AMBIENT)
 	{
-		elf_set_texture_params_default(&shader_params->texture_params[0]);
-		elf_set_texture_params_default(&shader_params->texture_params[2]);
-		elf_set_texture_params_default(&shader_params->texture_params[4]);
-
 		shader_params->material_params.diffuse_color.r = material->ambient_color.r*eng->ambient_color.r;
 		shader_params->material_params.diffuse_color.g = material->ambient_color.g*eng->ambient_color.g;
 		shader_params->material_params.diffuse_color.b = material->ambient_color.b*eng->ambient_color.b;
@@ -333,13 +326,16 @@ void elf_set_material(elf_material *material, int mode, gfx_shader_params *shade
 			shader_params->texture_params[4].texture = material->light_map->texture;
 			shader_params->texture_params[4].projection_mode = GFX_NONE;
 		}
+
+		if(material->cube_map)
+		{
+			shader_params->texture_params[5].type = ELF_CUBE_MAP;
+			shader_params->texture_params[5].texture = material->cube_map->texture;
+			shader_params->texture_params[5].projection_mode = GFX_NONE;
+		}
 	}
 	else if(mode == ELF_DRAW_WITHOUT_LIGHTING)
 	{
-		elf_set_texture_params_default(&shader_params->texture_params[0]);
-		elf_set_texture_params_default(&shader_params->texture_params[2]);
-		elf_set_texture_params_default(&shader_params->texture_params[4]);
-
 		memcpy(&shader_params->material_params.diffuse_color.r, &material->diffuse_color.r, sizeof(float)*4);
 
 		if(material->diffuse_map)
@@ -363,11 +359,16 @@ void elf_set_material(elf_material *material, int mode, gfx_shader_params *shade
 			shader_params->texture_params[4].texture = material->light_map->texture;
 			shader_params->texture_params[4].projection_mode = GFX_NONE;
 		}
+
+		if(material->cube_map)
+		{
+			shader_params->texture_params[5].type = ELF_CUBE_MAP;
+			shader_params->texture_params[5].texture = material->cube_map->texture;
+			shader_params->texture_params[5].projection_mode = GFX_NONE;
+		}
 	}
 	else if(mode == ELF_DRAW_WITH_LIGHTING)
 	{
-		for(i = 0; i < 5; i++) elf_set_texture_params_default(&shader_params->texture_params[i]);
-
 		memcpy(&shader_params->material_params.diffuse_color.r, &material->diffuse_color.r, sizeof(float)*4);
 		memcpy(&shader_params->material_params.specular_color.r, &material->specular_color.r, sizeof(float)*4);
 		shader_params->material_params.shininess = material->spec_power;
@@ -406,6 +407,13 @@ void elf_set_material(elf_material *material, int mode, gfx_shader_params *shade
 			shader_params->texture_params[4].type = ELF_LIGHT_MAP;
 			shader_params->texture_params[4].texture = material->light_map->texture;
 			shader_params->texture_params[4].projection_mode = GFX_NONE;
+		}
+
+		if(material->cube_map)
+		{
+			shader_params->texture_params[5].type = ELF_CUBE_MAP;
+			shader_params->texture_params[5].texture = material->cube_map->texture;
+			shader_params->texture_params[5].projection_mode = GFX_NONE;
 		}
 	}
 }

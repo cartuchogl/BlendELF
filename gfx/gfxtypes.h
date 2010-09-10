@@ -124,6 +124,7 @@ struct gfx_shader_program {
 	int specular_map_loc;
 	int color_ramp_map_loc;
 	int light_map_loc;
+	int cube_map_loc;
 	int shadow_projection_matrix_loc;
 	int shadow_map_loc;
 	int ambient_color_loc;
@@ -137,6 +138,7 @@ struct gfx_shader_program {
 	int light_fade_speed_loc;
 	int light_inner_cone_cos_loc;
 	int light_outer_cone_cos_loc;
+	int camera_position_loc;
 	int clip_start_loc;
 	int clip_end_loc;
 	int viewport_width_loc;

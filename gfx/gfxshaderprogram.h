@@ -125,6 +125,7 @@ gfx_shader_program* gfx_create_shader_program(const char* vertex, const char* fr
 	shader_program->light_map_loc = glGetUniformLocation(shader_program->id, "elf_LightMap");
 	shader_program->shadow_projection_matrix_loc = glGetUniformLocation(shader_program->id, "elf_ShadowProjectionMatrix");
 	shader_program->shadow_map_loc = glGetUniformLocation(shader_program->id, "elf_ShadowMap");
+	shader_program->cube_map_loc = glGetUniformLocation(shader_program->id, "elf_CubeMap");
 	shader_program->ambient_color_loc = glGetUniformLocation(shader_program->id, "elf_AmbientColor");
 	shader_program->diffuse_color_loc = glGetUniformLocation(shader_program->id, "elf_DiffuseColor");
 	shader_program->specular_color_loc = glGetUniformLocation(shader_program->id, "elf_SpecularColor");
@@ -136,6 +137,7 @@ gfx_shader_program* gfx_create_shader_program(const char* vertex, const char* fr
 	shader_program->light_fade_speed_loc = glGetUniformLocation(shader_program->id, "elf_LightFadeSpeed");
 	shader_program->light_inner_cone_cos_loc = glGetUniformLocation(shader_program->id, "elf_LightInnerConeCos");
 	shader_program->light_outer_cone_cos_loc = glGetUniformLocation(shader_program->id, "elf_LightOuterConeCos");
+	shader_program->camera_position_loc = glGetUniformLocation(shader_program->id, "elf_CameraPosition");
 	shader_program->clip_start_loc = glGetUniformLocation(shader_program->id, "elf_ClipStart");
 	shader_program->clip_end_loc = glGetUniformLocation(shader_program->id, "elf_ClipEnd");
 	shader_program->viewport_width_loc = glGetUniformLocation(shader_program->id, "elf_ViewportWidth");

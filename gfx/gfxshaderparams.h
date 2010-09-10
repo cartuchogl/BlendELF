@@ -313,7 +313,14 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 
 				if(shader_params->texture_params[i].texture)
 				{
-					glBindTexture(GL_TEXTURE_2D, shader_params->texture_params[i].texture->id);
+					if(shader_params->texture_params[i].type != GFX_CUBE_MAP)
+					{
+						glBindTexture(GL_TEXTURE_2D, shader_params->texture_params[i].texture->id);
+					}
+					else
+					{
+						glBindTexture(GL_TEXTURE_CUBE_MAP, shader_params->texture_params[i].texture->id);
+					}
 
 					switch(shader_params->texture_params[i].projection_mode)
 					{
@@ -436,6 +443,10 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 							glUniformMatrix4fv(shader_program->shadow_projection_matrix_loc,
 								1, GL_FALSE, shader_params->texture_params[i].matrix);
 						break;
+					case GFX_CUBE_MAP:
+						if(shader_program->cube_map_loc != -1)
+							glUniform1i(shader_program->cube_map_loc, i);
+						break;
 				}
 			}
 		}
@@ -457,7 +468,9 @@ void gfx_set_shader_params(gfx_shader_params *shader_params)
 			if(shader_program->light_outer_cone_cos_loc != -1)
 				glUniform1f(shader_program->light_outer_cone_cos_loc, (float)cos((shader_params->light_params.inner_cone+shader_params->light_params.outer_cone)*GFX_PI_DIV_180));
 		}
-	
+
+		if(shader_program->camera_position_loc != -1)
+			glUniform3fv(shader_program->camera_position_loc, 1, &shader_params->camera_position.x);
 		if(shader_program->clip_start_loc != -1)
 			glUniform1f(shader_program->clip_start_loc, shader_params->clip_start);
 		if(shader_program->clip_end_loc != -1)

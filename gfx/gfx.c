@@ -132,13 +132,11 @@ unsigned char gfx_init()
 	if(glewIsSupported("GL_VERSION_4_0")) driver->version = 400;
 	if(glewIsSupported("GL_VERSION_4_1")) driver->version = 410;
 
-	if(driver->version < 200)
+	if(driver->version < 110)
 	{
-		elf_write_to_log("OpenGL version 2.0 not supported\n");
+		elf_write_to_log("OpenGL version 1.1 not supported\n");
 		return GFX_FALSE;
 	}
-
-	driver->version = 110;
 
 	if(!glewIsSupported("GL_EXT_framebuffer_object"))
 	{

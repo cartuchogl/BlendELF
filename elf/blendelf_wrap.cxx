@@ -23226,6 +23226,7 @@ static swig_lua_const_info swig_constants[] = {
 { SWIG_LUA_INT,     (char *)"SHADOW_MAP", (long) 0x0020, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"COLOR_RAMP_MAP", (long) 0x0040, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"LIGHT_MAP", (long) 0x0080, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"CUBE_MAP", (long) 0x0100, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"TRANSPARENT", (long) 0x0001, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ADD", (long) 0x0002, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"DIR", (long) 0x0001, 0, 0, 0},

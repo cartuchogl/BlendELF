@@ -22,6 +22,8 @@ gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, floa
 {
 	gfx_texture *texture;
 
+	if(driver->version < 130) return NULL;
+
 	if(width == 0 || height == 0 || (int)width > gfx_get_max_texture_size() || (int)height > gfx_get_max_texture_size())
 	{
 		printf("error: invalid dimensions when creating texture\n");
@@ -139,7 +141,13 @@ gfx_texture* gfx_create_cube_map(unsigned int width, unsigned int height, float 
 
 	glGenTextures(1, &texture->id);
 
-	glBindTexture(GL_TEXTURE_2D, texture->id);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, texture->id);
+
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, driver->texture_internal_formats[internal_format], width, height, 0,
 		driver->texture_data_formats[format], driver->formats[data_format], xpos);
@@ -154,7 +162,7 @@ gfx_texture* gfx_create_cube_map(unsigned int width, unsigned int height, float 
 	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, driver->texture_internal_formats[internal_format], width, height, 0,
 		driver->texture_data_formats[format], driver->formats[data_format], zneg);
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	driver->shader_params.texture_params[0].texture = NULL;
 
 	return texture;
