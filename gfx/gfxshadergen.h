@@ -161,7 +161,7 @@ void gfx_get_shader_program_config(gfx_shader_params *shader_params, gfx_shader_
 void gfx_add_vertex_attributes(gfx_document *document, gfx_shader_config *config)
 {
 	gfx_add_line_to_document(document, "attribute vec3 elf_VertexAttr;");
-	if(config->light || config->textures & GFX_HEIGHT_MAP) gfx_add_line_to_document(document, "attribute vec3 elf_NormalAttr;");
+	if(config->light || config->textures & GFX_HEIGHT_MAP || config->textures & GFX_CUBE_MAP) gfx_add_line_to_document(document, "attribute vec3 elf_NormalAttr;");
 	if(config->textures) gfx_add_line_to_document(document, "attribute vec2 elf_TexCoordAttr;");
 	if((config->light && config->textures & GFX_NORMAL_MAP) || config->textures & GFX_HEIGHT_MAP) gfx_add_line_to_document(document, "attribute vec3 elf_TangentAttr;");
 	if(config->vertex_color) gfx_add_line_to_document(document, "attribute vec4 elf_ColorAttr;");
@@ -174,7 +174,6 @@ void gfx_add_vertex_uniforms(gfx_document *document, gfx_shader_config *config)
 	if(config->light) gfx_add_line_to_document(document, "uniform vec3 elf_LightPosition;");
 	if(config->light == GFX_SPOT_LIGHT || config->light == GFX_SUN_LIGHT) gfx_add_line_to_document(document, "uniform vec3 elf_LightSpotDirection;");
 	if(config->light && config->textures & GFX_SHADOW_MAP) gfx_add_line_to_document(document, "uniform mat4 elf_ShadowProjectionMatrix;");
-	if(config->textures & GFX_CUBE_MAP) gfx_add_line_to_document(document, "uniform vec3 elf_CameraPosition;");
 }
 
 void gfx_add_vertex_varyings(gfx_document *document, gfx_shader_config *config)
@@ -240,7 +239,7 @@ void gfx_add_vertex_lighting_calcs(gfx_document *document, gfx_shader_config *co
 		{
 			gfx_add_line_to_document(document, "\tvec3 elf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
 		}
-		gfx_add_line_to_document(document, "\telf_CubeMapCoord = reflect(normalize(vertex.xyz-elf_CameraPosition), elf_Normal);");
+		gfx_add_line_to_document(document, "\telf_CubeMapCoord = reflect(normalize(-vertex.xyz), elf_Normal);");
 	}
 	if(config->light && config->light != GFX_SUN_LIGHT) gfx_add_line_to_document(document, "\telf_Distance = length(elf_LightDirection);");
 }
