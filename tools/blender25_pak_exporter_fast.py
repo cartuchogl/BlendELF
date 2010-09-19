@@ -1,16 +1,33 @@
-#!/usr/bin/python
+#  Copyright (C) 2009-2010 Samuel Anjam
+#
+#  This software is provided 'as-is', without any express or implied
+#  warranty.  In no event will the authors be held liable for any damages
+#  arising from the use of this software.
+#
+#  Permission is granted to anyone to use this software for any purpose,
+#  including commercial applications, and to alter it and redistribute it
+#  freely, subject to the following restrictions:
+#
+#  1. The origin of this software must not be misrepresented; you must not
+#     claim that you wrote the original software. If you use this software
+#     in a product, an acknowledgment in the product documentation would be
+#     appreciated but is not required.
+#  2. Altered source versions must be plainly marked as such, and must not be
+#     misrepresented as being the original software.
+#  3. This notice may not be removed or altered from any source distribution.
 
-"""
-Name: 'elf pak exporter'
-Blender: 249
-Group: 'Export'
-Tooltip: 'Exports a resource library (.pak) for elf.'
-"""
-
-__author__ = 'None'
-__version__ = '1.0'
-
-__bpydoc__ = 'This python script exports a resource library for elf.'
+bl_addon_info = {
+    "name": "Export BlendELF Format (.pak)",
+    "author": "Samuel Anjam (centralnoise)",
+    "version": (1,0),
+    "blender": (2, 5, 4),
+    "api": 31847,
+    "location": "File > Export",
+    "description": "Export to the BlendELF Format (.pak)",
+    "warning": "",
+    "wiki_url": "",
+    "tracker_url": "",
+    "category": "Import/Export"}
 
 import bpy
 import struct
@@ -1054,44 +1071,33 @@ def export(path, sce):
 	print()
 	print()
 
-"""
 from bpy.props import *
 
 class ExportPAK(bpy.types.Operator):
-	'''Scene to BlendELF .pak'''
+	"""Export to the BlendELF (.pak) format"""
 	bl_idname = "export.pak"
 	bl_label = "Export PAK"
 	
-	# List of operator properties, the attributes will be assigned
-	# to the class instance from the operator settings before calling.
-	
-	
-	path = StringProperty(name="File Path", description="File path used for exporting the FBX file", maxlen= 1024, default= "")
-	
-	def poll(self, context):
-		print("Poll")
-		return context.scene != None
-	
 	def execute(self, context):
-		export(self.path, context.scene)
-		return ('FINISHED',)
+		export(self.filepath, context.scene)
+		return {'FINISHED'}
 	
 	def invoke(self, context, event):	
 		wm = context.manager
 		wm.add_fileselect(self)
-		return ('RUNNING_MODAL',)
-
-
-bpy.ops.add(ExportPAK)
-
-import dynamic_menu
+		return {'RUNNING_MODAL'}
 
 def menu_func(self, context):
-    default_path = bpy.data.filename.replace(".blend", ".pak")
-    self.layout.item_stringO(ExportPAK.bl_idname, "path", default_path, text="BlendELF PAK...")
+    default_path = os.path.splitext(bpy.data.filepath)[0] + ".pak"
+    self.layout.operator(DirectXExporter.bl_idname, text="BlendELF (.pak)").filepath = default_path
 
-menu_item = dynamic_menu.add(bpy.types.INFO_MT_file_export, menu_func)
-"""
+def register():
+    bpy.types.INFO_MT_file_export.append(menu_func)
 
-export("/home/centralnoise/blendelf/levels/level1_25.pak", bpy.context.scene)
+
+def unregister():
+    bpy.types.INFO_MT_file_export.remove(menu_func)
+
+if __name__ == "__main__":
+    register()
 
