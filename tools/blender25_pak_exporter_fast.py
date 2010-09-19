@@ -25,13 +25,14 @@ bl_addon_info = {
     "location": "File > Export",
     "description": "Export to the BlendELF Format (.pak)",
     "warning": "",
-    "wiki_url": "",
-    "tracker_url": "",
+    "wiki_url": "http://blendelf.com",
+    "tracker_url": "http://github.com/centralnoise/BlendELF/blob/master/tools/blender25_pak_exporter_fast.py",
     "category": "Import/Export"}
 
 import bpy
 import struct
 import math
+import os
 
 ELF_NAME_LENGTH = 128
 
@@ -1077,22 +1078,26 @@ class ExportPAK(bpy.types.Operator):
 	"""Export to the BlendELF (.pak) format"""
 	bl_idname = "export.pak"
 	bl_label = "Export PAK"
+
+	filepath = StringProperty()
+	filename_ext = ".pak"
 	
 	def execute(self, context):
 		export(self.filepath, context.scene)
 		return {'FINISHED'}
 	
 	def invoke(self, context, event):	
-		wm = context.manager
+		wm = context.window_manager
 		wm.add_fileselect(self)
 		return {'RUNNING_MODAL'}
 
 def menu_func(self, context):
     default_path = os.path.splitext(bpy.data.filepath)[0] + ".pak"
-    self.layout.operator(DirectXExporter.bl_idname, text="BlendELF (.pak)").filepath = default_path
+    self.layout.operator(ExportPAK.bl_idname, text="BlendELF (.pak)").filepath = default_path
 
 def register():
     bpy.types.INFO_MT_file_export.append(menu_func)
+
 
 
 def unregister():
