@@ -174,6 +174,7 @@ void gfx_add_vertex_uniforms(gfx_document *document, gfx_shader_config *config)
 	if(config->light) gfx_add_line_to_document(document, "uniform vec3 elf_LightPosition;");
 	if(config->light == GFX_SPOT_LIGHT || config->light == GFX_SUN_LIGHT) gfx_add_line_to_document(document, "uniform vec3 elf_LightSpotDirection;");
 	if(config->light && config->textures & GFX_SHADOW_MAP) gfx_add_line_to_document(document, "uniform mat4 elf_ShadowProjectionMatrix;");
+	if(config->textures & GFX_CUBE_MAP) gfx_add_line_to_document(document, "uniform vec3 elf_CameraPosition;");
 }
 
 void gfx_add_vertex_varyings(gfx_document *document, gfx_shader_config *config)
@@ -239,7 +240,7 @@ void gfx_add_vertex_lighting_calcs(gfx_document *document, gfx_shader_config *co
 		{
 			gfx_add_line_to_document(document, "\tvec3 elf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
 		}
-		gfx_add_line_to_document(document, "\telf_CubeMapCoord = reflect(normalize(-vertex.xyz), elf_Normal);");
+		gfx_add_line_to_document(document, "\telf_CubeMapCoord = reflect(normalize(elf_CameraPosition-vertex.xyz), elf_Normal);");
 	}
 	if(config->light && config->light != GFX_SUN_LIGHT) gfx_add_line_to_document(document, "\telf_Distance = length(elf_LightDirection);");
 }
@@ -456,8 +457,8 @@ gfx_shader_program* gfx_get_shader_program(gfx_shader_config *config)
 	vert_shdr = (char*)malloc(sizeof(char)*gfx_get_document_chars(document)+1);
 	gfx_document_to_buffer(document, vert_shdr);
 	vert_shdr[gfx_get_document_chars(document)] = '\0';
-	elf_write_to_log("------------ VERTEX SHADER ------------\n");
-	elf_write_to_log(vert_shdr);
+	//elf_write_to_log("------------ VERTEX SHADER ------------\n");
+	//elf_write_to_log(vert_shdr);
 
 	gfx_clear_document(document);
 
@@ -480,8 +481,8 @@ gfx_shader_program* gfx_get_shader_program(gfx_shader_config *config)
 	frag_shdr = (char*)malloc(sizeof(char)*(gfx_get_document_chars(document)+1));
 	gfx_document_to_buffer(document, frag_shdr);
 	frag_shdr[gfx_get_document_chars(document)] = '\0';
-	elf_write_to_log("----------- FRAGMENT SHADER -----------\n");
-	elf_write_to_log(frag_shdr);
+	//elf_write_to_log("----------- FRAGMENT SHADER -----------\n");
+	//elf_write_to_log(frag_shdr);
 
 	// ----------------------------------------------------------- //
 
@@ -724,7 +725,6 @@ gfx_shader_program* gfx_get_gbuf_shader_program(gfx_shader_config *config)
 		if(config->textures & GFX_COLOR_MAP)
 		{
 			gfx_add_line_to_document(document, "uniform sampler2D elf_ColorMap;");
-			//gfx_add_line_to_document(document, "uniform float elf_AlphaThreshold;");
 			gfx_add_line_to_document(document, "varying vec2 elf_TexCoord;");
 		}
 		gfx_add_line_to_document(document, "void main()");

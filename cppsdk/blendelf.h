@@ -208,6 +208,7 @@
 #define ELF_SHADOW_MAP 0x0020
 #define ELF_COLOR_RAMP_MAP 0x0040
 #define ELF_LIGHT_MAP 0x0080
+#define ELF_CUBE_MAP 0x0100
 #define ELF_TRANSPARENT 0x0001
 #define ELF_ADD 0x0002
 #define ELF_DIR 0x0001
@@ -499,6 +500,7 @@ ELF_API int ELF_APIENTRY elfGetImageBitsPerPixel(elf_handle image);
 ELF_API elf_color ELF_APIENTRY elfGetImagePixel(elf_handle image, int x, int y);
 ELF_API elf_handle ELF_APIENTRY elfCreateTextureFromFile(const char* file_path);
 ELF_API elf_handle ELF_APIENTRY elfCreateTextureFromImage(elf_handle image);
+ELF_API elf_handle ELF_APIENTRY elfCreateCubeMapFromFiles(const char* xpos, const char* xneg, const char* ypos, const char* yneg, const char* zpos, const char* zneg);
 ELF_API void ELF_APIENTRY elfSetTextureName(elf_handle texture, const char* name);
 ELF_API const char* ELF_APIENTRY elfGetTextureName(elf_handle texture);
 ELF_API const char* ELF_APIENTRY elfGetTextureFilePath(elf_handle texture);
@@ -525,16 +527,19 @@ ELF_API void ELF_APIENTRY elfSetMaterialNormalMap(elf_handle material, elf_handl
 ELF_API void ELF_APIENTRY elfSetMaterialHeightMap(elf_handle material, elf_handle texture);
 ELF_API void ELF_APIENTRY elfSetMaterialSpecularMap(elf_handle material, elf_handle texture);
 ELF_API void ELF_APIENTRY elfSetMaterialLightMap(elf_handle material, elf_handle texture);
+ELF_API void ELF_APIENTRY elfSetMaterialCubeMap(elf_handle material, elf_handle texture);
 ELF_API void ELF_APIENTRY elfClearMaterialDiffuseMap(elf_handle material);
 ELF_API void ELF_APIENTRY elfClearMaterialNormalMap(elf_handle material);
 ELF_API void ELF_APIENTRY elfClearMaterialHeightMap(elf_handle material);
 ELF_API void ELF_APIENTRY elfClearMaterialSpecularMap(elf_handle material);
 ELF_API void ELF_APIENTRY elfClearMaterialLightMap(elf_handle material);
+ELF_API void ELF_APIENTRY elfClearMaterialCubeMap(elf_handle material);
 ELF_API elf_handle ELF_APIENTRY elfGetMaterialDiffuseMap(elf_handle material);
 ELF_API elf_handle ELF_APIENTRY elfGetMaterialNormalMap(elf_handle material);
 ELF_API elf_handle ELF_APIENTRY elfGetMaterialHeightMap(elf_handle material);
 ELF_API elf_handle ELF_APIENTRY elfGetMaterialSpecularMap(elf_handle material);
 ELF_API elf_handle ELF_APIENTRY elfGetMaterialLightMap(elf_handle material);
+ELF_API elf_handle ELF_APIENTRY elfGetMaterialCubeMap(elf_handle material);
 ELF_API void ELF_APIENTRY elfSetMaterialParallaxScale(elf_handle material, float scale);
 ELF_API void ELF_APIENTRY elfSetMaterialAlphaTest(elf_handle material, bool alpha_test);
 ELF_API void ELF_APIENTRY elfSetMaterialAlphaThreshold(elf_handle material, float threshold);

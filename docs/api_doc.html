@@ -275,7 +275,7 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apidefine">elf.PROPERTY_STRING</div>
 <div class="apidefine">elf.PROPERTY_BOOL</div>
 <div class="apitopic">TEXTURE TYPES</div>
-<div class="apiinfo">The textures types used by elf.SetMaterialTextureType</div>
+<div class="apiinfo">The textures types</div>
 <div class="apidefine">elf.COLOR_MAP</div>
 <div class="apidefine">elf.NORMAL_MAP</div>
 <div class="apidefine">elf.HEIGHT_MAP</div>
@@ -284,6 +284,7 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apidefine">elf.SHADOW_MAP</div>
 <div class="apidefine">elf.COLOR_RAMP_MAP</div>
 <div class="apidefine">elf.LIGHT_MAP</div>
+<div class="apidefine">elf.CUBE_MAP</div>
 <div class="apitopic">PARTICLE DRAW MODES</div>
 <div class="apiinfo">The draw modes used by elf.SetParticlesDrawMode</div>
 <div class="apidefine">elf.TRANSPARENT</div>
@@ -538,6 +539,7 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apitopic">TEXTURE FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">object</span> elf.CreateTextureFromFile( <span class="apikeytype">string</span> file_path )</div>
 <div class="apifunc"><span class="apiobjtype">object</span> elf.CreateTextureFromImage( <span class="apiobjtype">object</span> image )</div>
+<div class="apifunc"><span class="apiobjtype">object</span> elf.CreateCubeMapFromFiles( <span class="apikeytype">string</span> xpos, <span class="apikeytype">string</span> xneg, <span class="apikeytype">string</span> ypos, <span class="apikeytype">string</span> yneg, <span class="apikeytype">string</span> zpos, <span class="apikeytype">string</span> zneg )</div>
 <div class="apifunc">elf.SetTextureName( <span class="apiobjtype">object</span> texture, <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apikeytype">string</span> elf.GetTextureName( <span class="apiobjtype">object</span> texture )</div>
 <div class="apifunc"><span class="apikeytype">string</span> elf.GetTextureFilePath( <span class="apiobjtype">object</span> texture )</div>
@@ -565,16 +567,19 @@ This document contains all of the avaialable functions for the BlendELF Lua API.
 <div class="apifunc">elf.SetMaterialHeightMap( <span class="apiobjtype">object</span> material, <span class="apiobjtype">object</span> texture )</div>
 <div class="apifunc">elf.SetMaterialSpecularMap( <span class="apiobjtype">object</span> material, <span class="apiobjtype">object</span> texture )</div>
 <div class="apifunc">elf.SetMaterialLightMap( <span class="apiobjtype">object</span> material, <span class="apiobjtype">object</span> texture )</div>
+<div class="apifunc">elf.SetMaterialCubeMap( <span class="apiobjtype">object</span> material, <span class="apiobjtype">object</span> texture )</div>
 <div class="apifunc">elf.ClearMaterialDiffuseMap( <span class="apiobjtype">object</span> material )</div>
 <div class="apifunc">elf.ClearMaterialNormalMap( <span class="apiobjtype">object</span> material )</div>
 <div class="apifunc">elf.ClearMaterialHeightMap( <span class="apiobjtype">object</span> material )</div>
 <div class="apifunc">elf.ClearMaterialSpecularMap( <span class="apiobjtype">object</span> material )</div>
 <div class="apifunc">elf.ClearMaterialLightMap( <span class="apiobjtype">object</span> material )</div>
+<div class="apifunc">elf.ClearMaterialCubeMap( <span class="apiobjtype">object</span> material )</div>
 <div class="apifunc"><span class="apiobjtype">object</span> elf.GetMaterialDiffuseMap( <span class="apiobjtype">object</span> material )</div>
 <div class="apifunc"><span class="apiobjtype">object</span> elf.GetMaterialNormalMap( <span class="apiobjtype">object</span> material )</div>
 <div class="apifunc"><span class="apiobjtype">object</span> elf.GetMaterialHeightMap( <span class="apiobjtype">object</span> material )</div>
 <div class="apifunc"><span class="apiobjtype">object</span> elf.GetMaterialSpecularMap( <span class="apiobjtype">object</span> material )</div>
 <div class="apifunc"><span class="apiobjtype">object</span> elf.GetMaterialLightMap( <span class="apiobjtype">object</span> material )</div>
+<div class="apifunc"><span class="apiobjtype">object</span> elf.GetMaterialCubeMap( <span class="apiobjtype">object</span> material )</div>
 <div class="apifunc">elf.SetMaterialParallaxScale( <span class="apiobjtype">object</span> material, <span class="apikeytype">float</span> scale )</div>
 <div class="apifunc">elf.SetMaterialAlphaTest( <span class="apiobjtype">object</span> material, <span class="apikeytype">bool</span> alpha_test )</div>
 <div class="apifunc">elf.SetMaterialAlphaThreshold( <span class="apiobjtype">object</span> material, <span class="apikeytype">float</span> threshold )</div>
