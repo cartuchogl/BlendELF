@@ -77,7 +77,6 @@ public:
 	{
 		elf_collision *collision;
 
-		m_closestHitFraction = rayResult.m_hitFraction;
 		m_collisionObject = rayResult.m_collisionObject;
 		if (normalInWorldSpace)
 		{
