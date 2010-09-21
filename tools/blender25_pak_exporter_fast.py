@@ -273,9 +273,9 @@ class Model:
 					#	self.areas[face.materialIndex].index.append(face_indexes[2])
 					#	self.areas[face.materialIndex].index.append(n)
 					#except:
-					self.areas[face.materialIndex].index.append(face_indexes[0])
-					self.areas[face.materialIndex].index.append(face_indexes[2])
-					self.areas[face.materialIndex].index.append(len(self.verts))
+					self.areas[face.material_index].index.append(face_indexes[0])
+					self.areas[face.material_index].index.append(face_indexes[2])
+					self.areas[face.material_index].index.append(len(self.verts))
 					self.verts.append(vert)
 				else:
 					#try:
