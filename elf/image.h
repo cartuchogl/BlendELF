@@ -28,7 +28,7 @@ elf_image* elf_create_empty_image(int width, int height, int bpp)
 	image->data = (unsigned char*)malloc(sizeof(unsigned char)*width*height*(bpp/8));
 	memset(image->data, 0x0, sizeof(unsigned char)*width*height*(bpp/8));
 
-	return 0;
+	return image;
 }
 
 elf_image* elf_create_image_from_file(const char *file_path)
