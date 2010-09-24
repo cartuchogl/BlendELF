@@ -22,8 +22,6 @@ gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, floa
 {
 	gfx_texture *texture;
 
-	if(driver->version < 130) return NULL;
-
 	if(width == 0 || height == 0 || (int)width > gfx_get_max_texture_size() || (int)height > gfx_get_max_texture_size())
 	{
 		printf("error: invalid dimensions when creating texture\n");
@@ -109,6 +107,8 @@ gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, floa
 gfx_texture* gfx_create_cube_map(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internal_format, int data_format, void *xpos, void *xneg, void *ypos, void *yneg, void *zpos, void *zneg)
 {
 	gfx_texture *texture;
+
+	if(driver->version < 130) return NULL;
 
 	if(width == 0 || height == 0 || (int)width > gfx_get_max_texture_size() || (int)height > gfx_get_max_texture_size())
 	{
