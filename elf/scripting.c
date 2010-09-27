@@ -13,15 +13,15 @@ int luaopen_elf(lua_State* L);
 
 struct elf_scripting {
 	ELF_OBJECT_HEADER;
-	struct lua_State *L;
-	elf_list *cur_scripts;
+	struct lua_State* L;
+	elf_list* cur_scripts;
 };
 
-elf_scripting *scr = NULL;
+elf_scripting* scr = NULL;
 
 elf_scripting* elf_create_scripting()
 {
-	elf_scripting *scripting;
+	elf_scripting* scripting;
 
 	scripting = (elf_scripting*)malloc(sizeof(elf_scripting));
 	memset(scripting, 0x0, sizeof(elf_scripting));
@@ -46,9 +46,9 @@ elf_scripting* elf_create_scripting()
 	return scripting;
 }
 
-void elf_destroy_scripting(void *data)
+void elf_destroy_scripting(void* data)
 {
-	elf_scripting *scripting = (elf_scripting*)data;
+	elf_scripting* scripting = (elf_scripting*)data;
 
 	if(scripting->L) lua_close(scripting->L);
 
@@ -94,10 +94,10 @@ elf_script* elf_get_current_script()
 	return (elf_script*)elf_rbegin_list(scr->cur_scripts);
 }
 
-void elf_set_script_error(int err, const char *msg)
+void elf_set_script_error(int err, const char* msg)
 {
 	lua_Debug ar;
-	elf_script *script;
+	elf_script* script;
 
 	if(!scr) return;
 
@@ -116,7 +116,7 @@ void elf_set_script_error(int err, const char *msg)
 	}
 }
 
-unsigned char elf_run_string(const char *str)
+unsigned char elf_run_string(const char* str)
 {
 	int err;
 
@@ -133,7 +133,7 @@ unsigned char elf_run_string(const char *str)
 	return ELF_TRUE;
 }
 
-unsigned char elf_run_script(elf_script *script)
+unsigned char elf_run_script(elf_script* script)
 {
 	int err;
 	

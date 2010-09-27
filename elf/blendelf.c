@@ -5,9 +5,9 @@
 #include "blendelf.h"
 #include "types.h"
 
-elf_general *gen = NULL;
-elf_context *ctx = NULL;
-elf_engine *eng = NULL;
+elf_general* gen = NULL;
+elf_context* ctx = NULL;
+elf_engine* eng = NULL;
 
 #include "general.h"
 #include "config.h"
@@ -45,8 +45,8 @@ elf_engine *eng = NULL;
 
 int main()
 {
-	elf_config *config;
-	elf_script *script;
+	elf_config* config;
+	elf_script* script;
 
 	elf_init_general();
 

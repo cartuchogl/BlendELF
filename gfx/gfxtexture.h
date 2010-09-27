@@ -6,7 +6,7 @@ int gfx_get_max_texture_size()
 
 gfx_texture* gfx_create_texture()
 {
-	gfx_texture *texture;
+	gfx_texture* texture;
 
 	texture = (gfx_texture*)malloc(sizeof(gfx_texture));
 	memset(texture, 0x0, sizeof(gfx_texture));
@@ -18,9 +18,9 @@ gfx_texture* gfx_create_texture()
 	return texture;
 }
 
-gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internal_format, int data_format, void *data)
+gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internal_format, int data_format, void* data)
 {
-	gfx_texture *texture;
+	gfx_texture* texture;
 
 	if(width == 0 || height == 0 || (int)width > gfx_get_max_texture_size() || (int)height > gfx_get_max_texture_size())
 	{
@@ -104,9 +104,9 @@ gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, floa
 	return texture;
 }
 
-gfx_texture* gfx_create_cube_map(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internal_format, int data_format, void *xpos, void *xneg, void *ypos, void *yneg, void *zpos, void *zneg)
+gfx_texture* gfx_create_cube_map(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internal_format, int data_format, void* xpos, void* xneg, void* ypos, void* yneg, void* zpos, void* zneg)
 {
-	gfx_texture *texture;
+	gfx_texture* texture;
 
 	if(driver->version < 130) return NULL;
 
@@ -168,9 +168,9 @@ gfx_texture* gfx_create_cube_map(unsigned int width, unsigned int height, float 
 	return texture;
 }
 
-void gfx_destroy_texture(void *data)
+void gfx_destroy_texture(void* data)
 {
-	gfx_texture *texture = (gfx_texture*)data;
+	gfx_texture* texture = (gfx_texture*)data;
 
 	if(texture->id) glDeleteTextures(1, &texture->id);
 
@@ -180,32 +180,32 @@ void gfx_destroy_texture(void *data)
 
 }
 
-int gfx_get_texture_type(gfx_texture *texture)
+int gfx_get_texture_type(gfx_texture* texture)
 {
 	return texture->type;
 }
 
-int gfx_get_texture_width(gfx_texture *texture)
+int gfx_get_texture_width(gfx_texture* texture)
 {
 	return texture->width;
 }
 
-int gfx_get_texture_height(gfx_texture *texture)
+int gfx_get_texture_height(gfx_texture* texture)
 {
 	return texture->height;
 }
 
-int gfx_get_texture_format(gfx_texture *texture)
+int gfx_get_texture_format(gfx_texture* texture)
 {
 	return texture->format;
 }
 
-int gfx_get_texture_data_format(gfx_texture *texture)
+int gfx_get_texture_data_format(gfx_texture* texture)
 {
 	return texture->data_format;
 }
 
-void gfx_copy_framebuffer_to_texture(gfx_texture *texture)
+void gfx_copy_framebuffer_to_texture(gfx_texture* texture)
 {
 	glActiveTexture(GL_TEXTURE0);
 	glClientActiveTexture(GL_TEXTURE0);

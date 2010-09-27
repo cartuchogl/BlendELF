@@ -16,10 +16,10 @@
 
 #include "gfx.h"
 
-gfx_general *gfx_gen = NULL;
-gfx_driver *driver = NULL;
+gfx_general* gfx_gen = NULL;
+gfx_driver* driver = NULL;
 
-extern void elf_write_to_log(const char *fmt, ...);
+extern void elf_write_to_log(const char* fmt, ...);
 
 #include "gfxtypes.h"
 #include "gfxgeneral.h"
@@ -37,7 +37,7 @@ extern void elf_write_to_log(const char *fmt, ...);
 
 unsigned char gfx_init()
 {
-	unsigned int *index_buffer;
+	unsigned int* index_buffer;
 
 	if(driver) return GFX_TRUE;
 
@@ -337,12 +337,12 @@ void gfx_clear_depth_buffer(float d)
 	glClear(GL_DEPTH_BUFFER_BIT);
 }
 
-void gfx_read_pixels(int x, int y, int width, int height, int format, int data_format, void *data)
+void gfx_read_pixels(int x, int y, int width, int height, int format, int data_format, void* data)
 {
 	glReadPixels(x, y, width, height, driver->texture_data_formats[format], driver->formats[data_format], data);
 }
 
-void gfx_copy_frame_buffer(gfx_texture *texture, int ox, int oy, int x, int y, int width, int height)
+void gfx_copy_frame_buffer(gfx_texture* texture, int ox, int oy, int x, int y, int width, int height)
 {
 	glActiveTexture(GL_TEXTURE0);
 	glClientActiveTexture(GL_TEXTURE0);

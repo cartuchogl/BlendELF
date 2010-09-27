@@ -1,7 +1,7 @@
 
-elf_bone* elf_create_bone(const char *name)
+elf_bone* elf_create_bone(const char* name)
 {
-	elf_bone *bone;
+	elf_bone* bone;
 
 	bone = (elf_bone*)malloc(sizeof(elf_bone));
 	memset(bone, 0x0, sizeof(elf_bone));
@@ -18,9 +18,9 @@ elf_bone* elf_create_bone(const char *name)
 	return bone;
 }
 
-void elf_destroy_bone(void *data)
+void elf_destroy_bone(void* data)
 {
-	elf_bone *bone = (elf_bone*)data;
+	elf_bone* bone = (elf_bone*)data;
 
 	if(bone->name) elf_destroy_string(bone->name);
 	if(bone->frames) free(bone->frames);
@@ -32,19 +32,19 @@ void elf_destroy_bone(void *data)
 	elf_dec_obj(ELF_BONE);
 }
 
-elf_armature* elf_get_bone_armature(elf_bone *bone)
+elf_armature* elf_get_bone_armature(elf_bone* bone)
 {
 	return bone->armature;
 }
 
-elf_bone* elf_get_bone_parent(elf_bone *bone)
+elf_bone* elf_get_bone_parent(elf_bone* bone)
 {
 	return bone->parent;
 }
 
-elf_bone* elf_get_bone_child_by_name(elf_bone *bone, const char *name)
+elf_bone* elf_get_bone_child_by_name(elf_bone* bone, const char* name)
 {
-	elf_bone *cbone;
+	elf_bone* cbone;
 
 	for(cbone = (elf_bone*)elf_begin_list(bone->children); cbone;
 		cbone = (elf_bone*)elf_next_in_list(bone->children))
@@ -58,9 +58,9 @@ elf_bone* elf_get_bone_child_by_name(elf_bone *bone, const char *name)
 	return NULL;
 }
 
-elf_bone* elf_get_bone_child_by_id(elf_bone *bone, int id)
+elf_bone* elf_get_bone_child_by_id(elf_bone* bone, int id)
 {
-	elf_bone *cbone;
+	elf_bone* cbone;
 
 	for(cbone = (elf_bone*)elf_begin_list(bone->children); cbone;
 		cbone = (elf_bone*)elf_next_in_list(bone->children))
@@ -74,17 +74,17 @@ elf_bone* elf_get_bone_child_by_id(elf_bone *bone, int id)
 	return NULL;
 }
 
-elf_bone* elf_get_bone_child_by_index(elf_bone *bone, int idx)
+elf_bone* elf_get_bone_child_by_index(elf_bone* bone, int idx)
 {
 	return (elf_bone*)elf_get_item_from_list(bone->children, idx);
 }
 
-elf_vec3f elf_get_bone_position(elf_bone *bone)
+elf_vec3f elf_get_bone_position(elf_bone* bone)
 {
 	return bone->cur_pos;
 }
 
-elf_vec3f elf_get_bone_rotation(elf_bone *bone)
+elf_vec3f elf_get_bone_rotation(elf_bone* bone)
 {
 	elf_vec3f result;
 
@@ -93,14 +93,14 @@ elf_vec3f elf_get_bone_rotation(elf_bone *bone)
 	return result;
 }
 
-elf_vec4f elf_get_bone_orientation(elf_bone *bone)
+elf_vec4f elf_get_bone_orientation(elf_bone* bone)
 {
 	return bone->qua;
 }
 
-void elf_set_bone_armature(elf_bone *bone, elf_armature *armature)
+void elf_set_bone_armature(elf_bone* bone, elf_armature* armature)
 {
-	elf_bone *cbone;
+	elf_bone* cbone;
 
 	bone->armature = armature;
 
@@ -111,11 +111,11 @@ void elf_set_bone_armature(elf_bone *bone, elf_armature *armature)
 	}
 }
 
-int elf_get_bone_max_id(elf_bone *bone)
+int elf_get_bone_max_id(elf_bone* bone)
 {
 	int max_id;
 	int cur_max_id;
-	elf_bone *cbone;
+	elf_bone* cbone;
 
 	max_id = bone->id;
 
@@ -129,9 +129,9 @@ int elf_get_bone_max_id(elf_bone *bone)
 	return max_id;
 }
 
-void elf_populate_bone_array(elf_bone *bone, elf_bone **bones)
+void elf_populate_bone_array(elf_bone* bone, elf_bone* *bones)
 {
-	elf_bone *cbone;
+	elf_bone* cbone;
 
 	bones[bone->id] = bone;
 
@@ -142,11 +142,11 @@ void elf_populate_bone_array(elf_bone *bone, elf_bone **bones)
 	}
 }
 
-void elf_update_armature_bones(elf_armature *armature)
+void elf_update_armature_bones(elf_armature* armature)
 {
 	int max_id;
 	int cur_max_id;
-	elf_bone *cbone;
+	elf_bone* cbone;
 
 	max_id = 0;
 	for(cbone = (elf_bone*)elf_begin_list(armature->root_bones); cbone;
@@ -169,9 +169,9 @@ void elf_update_armature_bones(elf_armature *armature)
 	}
 }
 
-elf_armature* elf_create_armature(const char *name)
+elf_armature* elf_create_armature(const char* name)
 {
-	elf_armature *armature;
+	elf_armature* armature;
 
 	armature = (elf_armature*)malloc(sizeof(elf_armature));
 	memset(armature, 0x0, sizeof(elf_armature));
@@ -190,7 +190,7 @@ elf_armature* elf_create_armature(const char *name)
 	return armature;
 }
 
-void elf_deform_entity_with_armature(elf_armature *armature, elf_entity *entity, float frame)
+void elf_deform_entity_with_armature(elf_armature* armature, elf_entity* entity, float frame)
 {
 	int i, j;
 	int id;
@@ -200,12 +200,12 @@ void elf_deform_entity_with_armature(elf_armature *armature, elf_entity *entity,
 	int nid;
 	float t;
 	float temp_qua[4];
-	float *vertex_buffer;
-	float *normal_buffer;
-	float *orig_vertex_buffer;
-	float *orig_normal_buffer;
-	elf_bone *bone;
-	elf_model *model;
+	float* vertex_buffer;
+	float* normal_buffer;
+	float* orig_vertex_buffer;
+	float* orig_normal_buffer;
+	elf_bone* bone;
+	elf_model* model;
 
 	model = elf_get_entity_model(entity);
 
@@ -293,9 +293,9 @@ void elf_deform_entity_with_armature(elf_armature *armature, elf_entity *entity,
 	gfx_update_vertex_data(entity->normals);
 }
 
-void elf_destroy_armature(void *data)
+void elf_destroy_armature(void* data)
 {
-	elf_armature *armature = (elf_armature*)data;
+	elf_armature* armature = (elf_armature*)data;
 
 	if(armature->name) elf_destroy_string(armature->name);
 	if(armature->file_path) elf_destroy_string(armature->file_path);
@@ -309,7 +309,7 @@ void elf_destroy_armature(void *data)
 	elf_dec_obj(ELF_ARMATURE);
 }
 
-elf_bone* elf_get_bone_from_armature_by_name(const char *name, elf_armature *armature)
+elf_bone* elf_get_bone_from_armature_by_name(const char* name, elf_armature* armature)
 {
 	int i;
 
@@ -324,14 +324,14 @@ elf_bone* elf_get_bone_from_armature_by_name(const char *name, elf_armature *arm
 	return NULL;
 }
 
-elf_bone* elf_get_bone_from_armature_by_id(int id, elf_armature *armature)
+elf_bone* elf_get_bone_from_armature_by_id(int id, elf_armature* armature)
 {
 	if(id < 0 || id > armature->bone_count-1) return NULL;
 
 	return armature->bones[id];
 }
 
-void elf_add_root_bone_to_armature(elf_armature *armature, elf_bone *bone)
+void elf_add_root_bone_to_armature(elf_armature* armature, elf_bone* bone)
 {
 	if(bone->parent) return;
 	elf_append_to_list(armature->root_bones, (elf_object*)bone);
@@ -339,15 +339,15 @@ void elf_add_root_bone_to_armature(elf_armature *armature, elf_bone *bone)
 	elf_update_armature_bones(armature);
 }
 
-void elf_draw_bone_hierarchy(elf_bone *bone, gfx_shader_params *shader_params)
+void elf_draw_bone_hierarchy(elf_bone* bone, gfx_shader_params* shader_params)
 {
-	elf_bone *cbone;
+	elf_bone* cbone;
 	float min[3];
 	float max[3];
 	elf_vec3f pos;
 	elf_vec3f axis;
 	elf_vec4f orient;
-	float *vertex_buffer;
+	float* vertex_buffer;
 
 	pos = bone->cur_pos;
 	orient = bone->cur_qua;
@@ -419,9 +419,9 @@ void elf_draw_bone_hierarchy(elf_bone *bone, gfx_shader_params *shader_params)
 	}
 }
 
-void elf_draw_armature_debug(elf_armature *armature, gfx_shader_params *shader_params)
+void elf_draw_armature_debug(elf_armature* armature, gfx_shader_params* shader_params)
 {
-	elf_bone *bone;
+	elf_bone* bone;
 
 	for(bone = (elf_bone*)elf_begin_list(armature->root_bones); bone;
 		bone = (elf_bone*)elf_next_in_list(armature->root_bones))

@@ -1,10 +1,10 @@
 
-char* elf_read_next(const char *text, int *pos)
+char* elf_read_next(const char* text, int* pos)
 {
 	int start, end;
-	char *str;
+	char* str;
 
-	start = *pos;
+	start =* pos;
 
 	while(text[start] == ' ' || text[start] == '\t' || text[start] == '\n' || text[start] == '\r')
 	{
@@ -31,14 +31,14 @@ char* elf_read_next(const char *text, int *pos)
 	return str;
 }
 
-char* elf_read_sst_string(const char* text, int *pos)
+char* elf_read_sst_string(const char* text, int* pos)
 {
 	return elf_read_next(text, pos);
 }
 
-float elf_read_sst_float(const char* text, int *pos)
+float elf_read_sst_float(const char* text, int* pos)
 {
-	char *str;
+	char* str;
 	float val;
 
 	str = elf_read_next(text, pos);
@@ -48,10 +48,10 @@ float elf_read_sst_float(const char* text, int *pos)
 	return val;
 }
 
-void elf_read_sst_floats(const char* text, int *pos, int n, float *params)
+void elf_read_sst_floats(const char* text, int* pos, int n, float* params)
 {
 	int i;
-	char *str;
+	char* str;
 
 	for(i = 0; i < n && (str = elf_read_next(text, pos)); i++)
 	{
@@ -60,9 +60,9 @@ void elf_read_sst_floats(const char* text, int *pos, int n, float *params)
 	}
 }
 
-int elf_read_sst_int(const char* text, int *pos)
+int elf_read_sst_int(const char* text, int* pos)
 {
-	char *str;
+	char* str;
 	int val;
 
 	str = elf_read_next(text, pos);
@@ -72,10 +72,10 @@ int elf_read_sst_int(const char* text, int *pos)
 	return val;
 }
 
-void elf_read_sst_ints(const char* text, int *pos, int n, int *params)
+void elf_read_sst_ints(const char* text, int* pos, int n, int* params)
 {
 	int i;
-	char *str;
+	char* str;
 
 	for(i = 0; i < n && (str = elf_read_next(text, pos)); i++)
 	{
@@ -84,9 +84,9 @@ void elf_read_sst_ints(const char* text, int *pos, int n, int *params)
 	}
 }
 
-unsigned char elf_read_sst_bool(const char* text, int *pos)
+unsigned char elf_read_sst_bool(const char* text, int* pos)
 {
-	char *str;
+	char* str;
 	unsigned char result;
 
 	str = elf_read_next(text, pos);

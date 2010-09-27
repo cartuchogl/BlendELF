@@ -1,7 +1,7 @@
 
 elf_image* elf_create_image()
 {
-	elf_image *image;
+	elf_image* image;
 
 	image = (elf_image*)malloc(sizeof(elf_image));
 	memset(image, 0x0, sizeof(elf_image));
@@ -15,7 +15,7 @@ elf_image* elf_create_image()
 
 elf_image* elf_create_empty_image(int width, int height, int bpp)
 {
-	elf_image *image;
+	elf_image* image;
 
 	if(width < 0 || height < 0 || (bpp != 8 && bpp != 16 && bpp != 24 && bpp != 32)) return NULL;
 
@@ -31,12 +31,12 @@ elf_image* elf_create_empty_image(int width, int height, int bpp)
 	return image;
 }
 
-elf_image* elf_create_image_from_file(const char *file_path)
+elf_image* elf_create_image_from_file(const char* file_path)
 {
-	elf_image *image;
-	FIBITMAP *in;
+	elf_image* image;
+	FIBITMAP* in;
 	int size_bytes;
-	const char *type;
+	const char* type;
 
 	type = strrchr(file_path, '.');
 	if(!type)
@@ -95,9 +95,9 @@ elf_image* elf_create_image_from_file(const char *file_path)
 	return image;
 }
 
-void elf_destroy_image(void *data)
+void elf_destroy_image(void* data)
 {
-	elf_image *image = (elf_image*)data;
+	elf_image* image = (elf_image*)data;
 
 	if(image->data) free(image->data);
 
@@ -106,7 +106,7 @@ void elf_destroy_image(void *data)
 	elf_dec_obj(ELF_IMAGE);
 }
 
-void elf_set_image_pixel(elf_image *image, int x, int y, float r, float g, float b, float a)
+void elf_set_image_pixel(elf_image* image, int x, int y, float r, float g, float b, float a)
 {
 	int offset;
 
@@ -120,22 +120,22 @@ void elf_set_image_pixel(elf_image *image, int x, int y, float r, float g, float
 	if(image->bpp == 32) image->data[offset+3] = (unsigned char)(a*255);
 }
 
-int elf_get_image_width(elf_image *image)
+int elf_get_image_width(elf_image* image)
 {
 	return image->width;
 }
 
-int elf_get_image_height(elf_image *image)
+int elf_get_image_height(elf_image* image)
 {
 	return image->height;
 }
 
-int elf_get_image_bits_per_pixel(elf_image *image)
+int elf_get_image_bits_per_pixel(elf_image* image)
 {
 	return image->bpp;
 }
 
-elf_color elf_get_image_pixel(elf_image *image, int x, int y)
+elf_color elf_get_image_pixel(elf_image* image, int x, int y)
 {
 	int offset;
 	elf_color color;
@@ -155,16 +155,16 @@ elf_color elf_get_image_pixel(elf_image *image, int x, int y)
 }
 
 
-void* elf_get_image_data(elf_image *image)
+void* elf_get_image_data(elf_image* image)
 {
 	return image->data;
 }
 
-unsigned char elf_save_image_data(const char *file_path, int width, int height, unsigned char bpp, void *data)
+unsigned char elf_save_image_data(const char* file_path, int width, int height, unsigned char bpp, void* data)
 {
-	FIBITMAP *out;
-	FIBITMAP *temp;
-	const char *type;
+	FIBITMAP* out;
+	FIBITMAP* temp;
+	const char* type;
 
 	if(width < 1 || height < 1 || bpp%8 != 0 || bpp > 32 || !data) return ELF_FALSE;
 

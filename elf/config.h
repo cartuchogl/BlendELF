@@ -1,7 +1,7 @@
 
 elf_config* elf_create_config()
 {
-	elf_config *config;
+	elf_config* config;
 
 	config = (elf_config*)malloc(sizeof(elf_config));
 	memset(config, 0x0, sizeof(elf_config));
@@ -23,9 +23,9 @@ elf_config* elf_create_config()
 	return config;
 }
 
-void elf_destroy_config(void *data)
+void elf_destroy_config(void* data)
 {
-	elf_config *config = (elf_config*)data;
+	elf_config* config = (elf_config*)data;
 
 	if(config->start) elf_destroy_string(config->start);
 	if(config->log) elf_destroy_string(config->log);
@@ -35,14 +35,14 @@ void elf_destroy_config(void *data)
 	elf_dec_obj(ELF_CONFIG);
 }
 
-elf_config* elf_read_config(const char *file_path)
+elf_config* elf_read_config(const char* file_path)
 {
-	elf_config *config;
-	FILE *file;
+	elf_config* config;
+	FILE* file;
 	int length;
-	char *text;
+	char* text;
 	int pos;
-	char *str;
+	char* str;
 	int scope;
 
 	file = fopen(file_path, "r");
@@ -144,47 +144,47 @@ elf_config* elf_read_config(const char *file_path)
 	return config;
 }
 
-int elf_get_config_window_width(elf_config *config)
+int elf_get_config_window_width(elf_config* config)
 {
 	return config->window_size[0];
 }
 
-int elf_get_config_window_height(elf_config *config)
+int elf_get_config_window_height(elf_config* config)
 {
 	return config->window_size[1];
 }
 
-int elf_get_config_multisamples(elf_config *config)
+int elf_get_config_multisamples(elf_config* config)
 {
 	return config->multisamples;
 }
 
-unsigned char elf_get_config_fullscreen(elf_config *config)
+unsigned char elf_get_config_fullscreen(elf_config* config)
 {
 	return !config->fullscreen == ELF_FALSE;
 }
 
-unsigned char elf_get_config_texture_compress(elf_config *config)
+unsigned char elf_get_config_texture_compress(elf_config* config)
 {
 	return config->texture_compress;
 }
 
-float elf_get_config_texture_anisotropy(elf_config *config)
+float elf_get_config_texture_anisotropy(elf_config* config)
 {
 	return config->texture_anisotropy;
 }
 
-int elf_get_config_shadow_map_size(elf_config *config)
+int elf_get_config_shadow_map_size(elf_config* config)
 {
 	return config->shadow_map_size;
 }
 
-const char* elf_get_config_start(elf_config *config)
+const char* elf_get_config_start(elf_config* config)
 {
 	return config->start;
 }
 
-const char* elf_get_config_log(elf_config *config)
+const char* elf_get_config_log(elf_config* config)
 {
 	return config->start;
 }

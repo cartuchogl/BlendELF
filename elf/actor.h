@@ -1,7 +1,7 @@
 
-void elf_actor_ipo_callback(elf_frame_player *player)
+void elf_actor_ipo_callback(elf_frame_player* player)
 {
-	elf_actor *actor;
+	elf_actor* actor;
 	float frame;
 	elf_vec3f pos;
 	elf_vec3f rot;
@@ -33,7 +33,7 @@ void elf_actor_ipo_callback(elf_frame_player *player)
 	}
 }
 
-void elf_init_actor(elf_actor *actor, unsigned char camera)
+void elf_init_actor(elf_actor* actor, unsigned char camera)
 {
 	if(!camera) actor->transform = gfx_create_object_transform();
 	else actor->transform = gfx_create_camera_transform();
@@ -69,13 +69,13 @@ void elf_init_actor(elf_actor *actor, unsigned char camera)
 	actor->moved = ELF_TRUE;
 }
 
-void elf_update_actor(elf_actor *actor)
+void elf_update_actor(elf_actor* actor)
 {
 	static float oposition[3];
 	static float oorient[4];
 	static float position[3];
 	static float orient[4];
-	static elf_audio_source *source;
+	static elf_audio_source* source;
 
 	if(actor->object && !elf_is_physics_object_static(actor->object))
 	{
@@ -135,18 +135,18 @@ void elf_update_actor(elf_actor *actor)
 	elf_update_frame_player(actor->ipo_player);
 }
 
-void elf_actor_pre_draw(elf_actor *actor)
+void elf_actor_pre_draw(elf_actor* actor)
 {
 }
 
-void elf_actor_post_draw(elf_actor *actor)
+void elf_actor_post_draw(elf_actor* actor)
 {
 	actor->moved = ELF_FALSE;
 }
 
-void elf_clean_actor(elf_actor *actor)
+void elf_clean_actor(elf_actor* actor)
 {
-	elf_joint *joint;
+	elf_joint* joint;
 
 	if(actor->name) elf_destroy_string(actor->name);
 	if(actor->file_path) elf_destroy_string(actor->file_path);
@@ -182,41 +182,41 @@ void elf_clean_actor(elf_actor *actor)
 	elf_dec_ref((elf_object*)actor->ipo_player);
 }
 
-const char* elf_get_actor_name(elf_actor *actor)
+const char* elf_get_actor_name(elf_actor* actor)
 {
 	return actor->name;
 }
 
-const char* elf_get_actor_file_path(elf_actor *actor)
+const char* elf_get_actor_file_path(elf_actor* actor)
 {
 	return actor->file_path;
 }
 
-elf_script* elf_get_actor_script(elf_actor *actor)
+elf_script* elf_get_actor_script(elf_actor* actor)
 {
 	return actor->script;
 }
 
-void elf_set_actor_name(elf_actor *actor, const char *name)
+void elf_set_actor_name(elf_actor* actor, const char* name)
 {
 	if(actor->name) elf_destroy_string(actor->name);
 	actor->name = elf_create_string(name);
 }
 
-void elf_set_actor_script(elf_actor *actor, elf_script *script)
+void elf_set_actor_script(elf_actor* actor, elf_script* script)
 {
 	if(actor->script) elf_dec_ref((elf_object*)actor->script);
 	actor->script = script;
 	if(actor->script) elf_inc_ref((elf_object*)actor->script);
 }
 
-void elf_clear_actor_script(elf_actor *actor)
+void elf_clear_actor_script(elf_actor* actor)
 {
 	if(actor->script) elf_dec_ref((elf_object*)actor->script);
 	actor->script = NULL;
 }
 
-void elf_set_actor_position(elf_actor *actor, float x, float y, float z)
+void elf_set_actor_position(elf_actor* actor, float x, float y, float z)
 {
 	actor->moved = ELF_TRUE;
 
@@ -228,7 +228,7 @@ void elf_set_actor_position(elf_actor *actor, float x, float y, float z)
 	if(actor->obj_type == ELF_LIGHT) elf_set_actor_position((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
 }
 
-void elf_set_actor_rotation(elf_actor *actor, float x, float y, float z)
+void elf_set_actor_rotation(elf_actor* actor, float x, float y, float z)
 {
 	float orient[4];
 
@@ -243,7 +243,7 @@ void elf_set_actor_rotation(elf_actor *actor, float x, float y, float z)
 	if(actor->obj_type == ELF_LIGHT) elf_set_actor_rotation((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
 }
 
-void elf_set_actor_orientation(elf_actor *actor, float x, float y, float z, float w)
+void elf_set_actor_orientation(elf_actor* actor, float x, float y, float z, float w)
 {
 	actor->moved = ELF_TRUE;
 
@@ -255,7 +255,7 @@ void elf_set_actor_orientation(elf_actor *actor, float x, float y, float z, floa
 	if(actor->obj_type == ELF_LIGHT) elf_set_actor_orientation((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z, w);
 }
 
-void elf_rotate_actor(elf_actor *actor, float x, float y, float z)
+void elf_rotate_actor(elf_actor* actor, float x, float y, float z)
 {
 	float orient[4];
 
@@ -270,7 +270,7 @@ void elf_rotate_actor(elf_actor *actor, float x, float y, float z)
 	if(actor->obj_type == ELF_LIGHT) elf_rotate_actor((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
 }
 
-void elf_rotate_actor_local(elf_actor *actor, float x, float y, float z)
+void elf_rotate_actor_local(elf_actor* actor, float x, float y, float z)
 {
 	float orient[4];
 
@@ -285,7 +285,7 @@ void elf_rotate_actor_local(elf_actor *actor, float x, float y, float z)
 	if(actor->obj_type == ELF_LIGHT) elf_rotate_actor_local((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
 }
 
-void elf_move_actor(elf_actor *actor, float x, float y, float z)
+void elf_move_actor(elf_actor* actor, float x, float y, float z)
 {
 	float position[3];
 
@@ -300,7 +300,7 @@ void elf_move_actor(elf_actor *actor, float x, float y, float z)
 	if(actor->obj_type == ELF_LIGHT) elf_move_actor((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
 }
 
-void elf_move_actor_local(elf_actor *actor, float x, float y, float z)
+void elf_move_actor_local(elf_actor* actor, float x, float y, float z)
 {
 	float position[3];
 
@@ -315,7 +315,7 @@ void elf_move_actor_local(elf_actor *actor, float x, float y, float z)
 	if(actor->obj_type == ELF_LIGHT) elf_move_actor_local((elf_actor*)((elf_light*)actor)->shadow_camera, x, y, z);
 }
 
-void elf_set_actor_position_relative_to(elf_actor *actor, elf_actor *to, float x, float y, float z)
+void elf_set_actor_position_relative_to(elf_actor* actor, elf_actor* to, float x, float y, float z)
 {
 	elf_vec3f vec;
 	elf_vec3f pos;
@@ -340,7 +340,7 @@ void elf_set_actor_position_relative_to(elf_actor *actor, elf_actor *to, float x
 	if(actor->obj_type == ELF_LIGHT) elf_set_actor_position_relative_to((elf_actor*)((elf_light*)actor)->shadow_camera, to, x, y, z);
 }
 
-void elf_set_actor_rotation_relative_to(elf_actor *actor, elf_actor *to, float x, float y, float z)
+void elf_set_actor_rotation_relative_to(elf_actor* actor, elf_actor* to, float x, float y, float z)
 {
 	elf_vec4f lorient;
 	elf_vec4f orient;
@@ -357,7 +357,7 @@ void elf_set_actor_rotation_relative_to(elf_actor *actor, elf_actor *to, float x
 	if(actor->obj_type == ELF_LIGHT) elf_set_actor_rotation_relative_to((elf_actor*)((elf_light*)actor)->shadow_camera, to, x, y, z);
 }
 
-void elf_direct_actor_at(elf_actor *actor, elf_actor *at)
+void elf_direct_actor_at(elf_actor* actor, elf_actor* at)
 {
 	elf_vec3f dir;
 	elf_vec3f pos1;
@@ -373,7 +373,7 @@ void elf_direct_actor_at(elf_actor *actor, elf_actor *at)
 	elf_set_actor_direction(actor, dir.x, dir.y, dir.z);
 }
 
-void elf_set_actor_direction(elf_actor *actor, float x, float y, float z)
+void elf_set_actor_direction(elf_actor* actor, float x, float y, float z)
 {
 	elf_vec4f orient;
 	elf_vec3f dir;
@@ -389,7 +389,7 @@ void elf_set_actor_direction(elf_actor *actor, float x, float y, float z)
 	elf_set_actor_orientation(actor, orient.x, orient.y, orient.z, orient.w);
 }
 
-void elf_set_actor_orientation_relative_to(elf_actor *actor, elf_actor *to, float x, float y, float z, float w)
+void elf_set_actor_orientation_relative_to(elf_actor* actor, elf_actor* to, float x, float y, float z, float w)
 {
 	elf_vec4f lorient;
 	elf_vec4f orient;
@@ -407,43 +407,43 @@ void elf_set_actor_orientation_relative_to(elf_actor *actor, elf_actor *to, floa
 	elf_set_actor_orientation(actor, result.x, result.y, result.z, result.w);
 }
 
-elf_vec3f elf_get_actor_position(elf_actor *actor)
+elf_vec3f elf_get_actor_position(elf_actor* actor)
 {
 	elf_vec3f pos;
 	gfx_get_transform_position(actor->transform, &pos.x);
 	return pos;
 }
 
-elf_vec3f elf_get_actor_rotation(elf_actor *actor)
+elf_vec3f elf_get_actor_rotation(elf_actor* actor)
 {
 	elf_vec3f rot;
 	gfx_get_transform_rotation(actor->transform, &rot.x);
 	return rot;
 }
 
-elf_vec4f elf_get_actor_orientation(elf_actor *actor)
+elf_vec4f elf_get_actor_orientation(elf_actor* actor)
 {
 	elf_vec4f orient;
 	gfx_get_transform_orientation(actor->transform, &orient.x);
 	return orient;
 }
 
-void elf_get_actor_position_(elf_actor *actor, float *params)
+void elf_get_actor_position_(elf_actor* actor, float* params)
 {
 	gfx_get_transform_position(actor->transform, params);
 }
 
-void elf_get_actor_rotation_(elf_actor *actor, float *params)
+void elf_get_actor_rotation_(elf_actor* actor, float* params)
 {
 	gfx_get_transform_rotation(actor->transform, params);
 }
 
-void elf_get_actor_orientation_(elf_actor *actor, float *params)
+void elf_get_actor_orientation_(elf_actor* actor, float* params)
 {
 	gfx_get_transform_orientation(actor->transform, params);
 }
 
-void elf_set_actor_bounding_lengths(elf_actor *actor, float x, float y, float z)
+void elf_set_actor_bounding_lengths(elf_actor* actor, float x, float y, float z)
 {
 	actor->pbb_lengths.x = x;
 	actor->pbb_lengths.y = y;
@@ -456,7 +456,7 @@ void elf_set_actor_bounding_lengths(elf_actor *actor, float x, float y, float z)
 	}
 }
 
-void elf_set_actor_bounding_offset(elf_actor *actor, float x, float y, float z)
+void elf_set_actor_bounding_offset(elf_actor* actor, float x, float y, float z)
 {
 	actor->pbb_offset_set = ELF_TRUE;
 
@@ -471,19 +471,19 @@ void elf_set_actor_bounding_offset(elf_actor *actor, float x, float y, float z)
 	}
 }
 
-void elf_reset_actor_bounding_offset_set_flag(elf_actor *actor)
+void elf_reset_actor_bounding_offset_set_flag(elf_actor* actor)
 {
 	actor->pbb_offset_set = ELF_FALSE;
 }
 
-void elf_set_actor_physics(elf_actor *actor, int shape, float mass)
+void elf_set_actor_physics(elf_actor* actor, int shape, float mass)
 {
 	float position[3];
 	float orient[4];
 	float scale[3];
 	float radius;
-	elf_joint *joint;
-	elf_entity *entity;
+	elf_joint* joint;
+	elf_entity* entity;
 
 	elf_disable_actor_physics(actor);
 
@@ -615,12 +615,12 @@ void elf_set_actor_physics(elf_actor *actor, int shape, float mass)
 	}
 }
 
-unsigned char elf_is_actor_physics(elf_actor *actor)
+unsigned char elf_is_actor_physics(elf_actor* actor)
 {
 	return actor->physics;
 }
 
-void elf_disable_actor_physics(elf_actor *actor)
+void elf_disable_actor_physics(elf_actor* actor)
 {
 	if(actor->object)
 	{
@@ -633,50 +633,50 @@ void elf_disable_actor_physics(elf_actor *actor)
 	actor->physics = ELF_FALSE;
 }
 
-void elf_set_actor_damping(elf_actor *actor, float lin_damp, float ang_damp)
+void elf_set_actor_damping(elf_actor* actor, float lin_damp, float ang_damp)
 {
 	actor->lin_damp = lin_damp;
 	actor->ang_damp = ang_damp;
 	if(actor->object) elf_set_physics_object_damping(actor->object, lin_damp, ang_damp);
 }
 
-void elf_set_actor_sleep_thresholds(elf_actor *actor, float lin_thrs, float ang_thrs)
+void elf_set_actor_sleep_thresholds(elf_actor* actor, float lin_thrs, float ang_thrs)
 {
 	actor->lin_sleep = lin_thrs;
 	actor->ang_sleep = ang_thrs;
 	if(actor->object) elf_set_physics_object_sleep_thresholds(actor->object, lin_thrs, ang_thrs);
 }
 
-void elf_set_actor_restitution(elf_actor *actor, float restitution)
+void elf_set_actor_restitution(elf_actor* actor, float restitution)
 {
 	actor->restitution = restitution;
 	if(actor->object) elf_set_physics_object_restitution(actor->object, restitution);
 }
 
-void elf_set_actor_anisotropic_friction(elf_actor *actor, float x, float y, float z)
+void elf_set_actor_anisotropic_friction(elf_actor* actor, float x, float y, float z)
 {
 	actor->anis_fric.x = x; actor->anis_fric.y = y; actor->anis_fric.z = z;
 	if(actor->object) elf_set_physics_object_anisotropic_friction(actor->object, x, y, z);
 }
 
-void elf_set_actor_linear_factor(elf_actor *actor, float x, float y, float z)
+void elf_set_actor_linear_factor(elf_actor* actor, float x, float y, float z)
 {
 	actor->lin_factor.x = x; actor->lin_factor.y = y; actor->lin_factor.z = z;
 	if(actor->object) elf_set_physics_object_linear_factor(actor->object, x, y, z);
 }
 
-void elf_set_actor_angular_factor(elf_actor *actor, float x, float y, float z)
+void elf_set_actor_angular_factor(elf_actor* actor, float x, float y, float z)
 {
 	actor->ang_factor.x = x; actor->ang_factor.y = y; actor->ang_factor.z = z;
 	if(actor->object) elf_set_physics_object_angular_factor(actor->object, x, y, z);
 }
 
-void elf_add_force_to_actor(elf_actor *actor, float x, float y, float z)
+void elf_add_force_to_actor(elf_actor* actor, float x, float y, float z)
 {
 	if(actor->object) elf_add_force_to_physics_object(actor->object, x, y, z);
 }
 
-void elf_add_force_to_actor_local(elf_actor *actor, float x, float y, float z)
+void elf_add_force_to_actor_local(elf_actor* actor, float x, float y, float z)
 {
 	elf_vec3f vec;
 	elf_vec3f result;
@@ -693,17 +693,17 @@ void elf_add_force_to_actor_local(elf_actor *actor, float x, float y, float z)
 	}
 }
 
-void elf_add_torque_to_actor(elf_actor *actor, float x, float y, float z)
+void elf_add_torque_to_actor(elf_actor* actor, float x, float y, float z)
 {
 	if(actor->object) elf_add_torque_to_physics_object(actor->object, x, y, z);
 }
 
-void elf_set_actor_linear_velocity(elf_actor *actor, float x, float y, float z)
+void elf_set_actor_linear_velocity(elf_actor* actor, float x, float y, float z)
 {
 	if(actor->object) elf_set_physics_object_linear_velocity(actor->object, x, y, z);
 }
 
-void elf_set_actor_linear_velocity_local(elf_actor *actor, float x, float y, float z)
+void elf_set_actor_linear_velocity_local(elf_actor* actor, float x, float y, float z)
 {
 	elf_vec3f vec;
 	elf_vec3f result;
@@ -720,72 +720,72 @@ void elf_set_actor_linear_velocity_local(elf_actor *actor, float x, float y, flo
 	}
 }
 
-void elf_set_actor_angular_velocity(elf_actor *actor, float x, float y, float z)
+void elf_set_actor_angular_velocity(elf_actor* actor, float x, float y, float z)
 {
 	if(actor->object) elf_set_physics_object_angular_velocity(actor->object, x, y, z);
 }
 
-elf_vec3f elf_get_actor_bounding_lengths(elf_actor *actor)
+elf_vec3f elf_get_actor_bounding_lengths(elf_actor* actor)
 {
 	return actor->pbb_lengths;
 }
 
-elf_vec3f elf_get_actor_bounding_offset(elf_actor *actor)
+elf_vec3f elf_get_actor_bounding_offset(elf_actor* actor)
 {
 	return actor->pbb_offset;
 }
 
-int elf_get_actor_shape(elf_actor *actor)
+int elf_get_actor_shape(elf_actor* actor)
 {
 	return actor->shape;
 }
 
-float elf_get_actor_mass(elf_actor *actor)
+float elf_get_actor_mass(elf_actor* actor)
 {
 	return actor->mass;
 }
 
-float elf_get_actor_linear_damping(elf_actor *actor)
+float elf_get_actor_linear_damping(elf_actor* actor)
 {
 	return actor->lin_damp;
 }
 
-float elf_get_actor_angular_damping(elf_actor *actor)
+float elf_get_actor_angular_damping(elf_actor* actor)
 {
 	return actor->ang_damp;
 }
 
-float elf_get_actor_linear_sleep_threshold(elf_actor *actor)
+float elf_get_actor_linear_sleep_threshold(elf_actor* actor)
 {
 	return actor->lin_sleep;
 }
 
-float elf_get_actor_angular_sleep_threshold(elf_actor *actor)
+float elf_get_actor_angular_sleep_threshold(elf_actor* actor)
 {
 	return actor->ang_sleep;
 }
 
-float elf_get_actor_restitution(elf_actor *actor)
+float elf_get_actor_restitution(elf_actor* actor)
 {
 	return actor->restitution;
 }
 
-elf_vec3f elf_get_actor_anisotropic_friction(elf_actor *actor)
+elf_vec3f elf_get_actor_anisotropic_friction(elf_actor* actor)
 {
 	return actor->anis_fric;
 }
 
-elf_vec3f elf_get_actor_linear_factor(elf_actor *actor)
+elf_vec3f elf_get_actor_linear_factor(elf_actor* actor)
 {
 	return actor->lin_factor;
 }
 
-elf_vec3f elf_get_actor_angular_factor(elf_actor *actor)
+elf_vec3f elf_get_actor_angular_factor(elf_actor* actor)
 {
 	return actor->ang_factor;
 }
 
-elf_vec3f elf_get_actor_linear_velocity(elf_actor *actor)
+elf_vec3f elf_get_actor_linear_velocity(elf_actor* actor)
 {
 	elf_vec3f result;
 	memset(&result, 0x0, sizeof(elf_vec3f));
@@ -795,7 +795,7 @@ elf_vec3f elf_get_actor_linear_velocity(elf_actor *actor)
 	return result;
 }
 
-elf_vec3f elf_get_actor_angular_velocity(elf_actor *actor)
+elf_vec3f elf_get_actor_angular_velocity(elf_actor* actor)
 {
 	elf_vec3f result;
 	memset(&result, 0x0, sizeof(elf_vec3f));
@@ -805,9 +805,9 @@ elf_vec3f elf_get_actor_angular_velocity(elf_actor *actor)
 	return result;
 }
 
-elf_joint* elf_add_hinge_joint_to_actor(elf_actor *actor, elf_actor *actor2, const char *name, float px, float py, float pz, float ax, float ay, float az)
+elf_joint* elf_add_hinge_joint_to_actor(elf_actor* actor, elf_actor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az)
 {
-	elf_joint *joint;
+	elf_joint* joint;
 
 	if(!actor->object || !actor2->object) return NULL;
 
@@ -819,9 +819,9 @@ elf_joint* elf_add_hinge_joint_to_actor(elf_actor *actor, elf_actor *actor2, con
 	return joint;
 }
 
-elf_joint* elf_add_ball_joint_to_actor(elf_actor *actor, elf_actor *actor2, const char *name, float px, float py, float pz)
+elf_joint* elf_add_ball_joint_to_actor(elf_actor* actor, elf_actor* actor2, const char* name, float px, float py, float pz)
 {
-	elf_joint *joint;
+	elf_joint* joint;
 
 	if(!actor->object || !actor2->object) return NULL;
 
@@ -833,9 +833,9 @@ elf_joint* elf_add_ball_joint_to_actor(elf_actor *actor, elf_actor *actor2, cons
 	return joint;
 }
 
-elf_joint* elf_add_cone_twist_joint_to_actor(elf_actor *actor, elf_actor *actor2, const char *name, float px, float py, float pz, float ax, float ay, float az)
+elf_joint* elf_add_cone_twist_joint_to_actor(elf_actor* actor, elf_actor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az)
 {
-	elf_joint *joint;
+	elf_joint* joint;
 
 	if(!actor->object || !actor2->object) return NULL;
 
@@ -847,9 +847,9 @@ elf_joint* elf_add_cone_twist_joint_to_actor(elf_actor *actor, elf_actor *actor2
 	return joint;
 }
 
-elf_joint* elf_get_actor_joint_by_name(elf_actor *actor, const char *name)
+elf_joint* elf_get_actor_joint_by_name(elf_actor* actor, const char* name)
 {
-	elf_joint *joint;
+	elf_joint* joint;
 
 	for(joint = (elf_joint*)elf_begin_list(actor->joints); joint;
 		joint = (elf_joint*)elf_next_in_list(actor->joints))
@@ -860,14 +860,14 @@ elf_joint* elf_get_actor_joint_by_name(elf_actor *actor, const char *name)
 	return NULL;
 }
 
-elf_joint* elf_get_actor_joint_by_index(elf_actor *actor, int idx)
+elf_joint* elf_get_actor_joint_by_index(elf_actor* actor, int idx)
 {
 	return (elf_joint*)elf_get_item_from_list(actor->joints, idx);
 }
 
-unsigned char elf_remove_actor_joint_by_name(elf_actor *actor, const char *name)
+unsigned char elf_remove_actor_joint_by_name(elf_actor* actor, const char* name)
 {
-	elf_joint *joint;
+	elf_joint* joint;
 
 	for(joint = (elf_joint*)elf_begin_list(actor->joints); joint;
 		joint = (elf_joint*)elf_next_in_list(actor->joints))
@@ -885,9 +885,9 @@ unsigned char elf_remove_actor_joint_by_name(elf_actor *actor, const char *name)
 	return ELF_FALSE;
 }
 
-unsigned char elf_remove_actor_joint_by_index(elf_actor *actor, int idx)
+unsigned char elf_remove_actor_joint_by_index(elf_actor* actor, int idx)
 {
-	elf_joint *joint;
+	elf_joint* joint;
 	int i;
 
 	for(i = 0, joint = (elf_joint*)elf_begin_list(actor->joints); joint;
@@ -906,7 +906,7 @@ unsigned char elf_remove_actor_joint_by_index(elf_actor *actor, int idx)
 	return ELF_FALSE;
 }
 
-unsigned char elf_remove_actor_joint_by_object(elf_actor *actor, elf_joint *joint)
+unsigned char elf_remove_actor_joint_by_object(elf_actor* actor, elf_joint* joint)
 {
 	if(elf_get_joint_actor_a(joint) == actor)
 		elf_remove_from_list(elf_get_joint_actor_b(joint)->joints, (elf_object*)joint);
@@ -915,7 +915,7 @@ unsigned char elf_remove_actor_joint_by_object(elf_actor *actor, elf_joint *join
 	return elf_remove_from_list(actor->joints, (elf_object*)joint);
 }
 
-void elf_set_actor_ipo(elf_actor *actor, elf_ipo *ipo)
+void elf_set_actor_ipo(elf_actor* actor, elf_ipo* ipo)
 {
 	if(!ipo) return;
 	if(actor->ipo) elf_dec_ref((elf_object*)actor->ipo);
@@ -923,95 +923,95 @@ void elf_set_actor_ipo(elf_actor *actor, elf_ipo *ipo)
 	if(actor->ipo) elf_inc_ref((elf_object*)actor->ipo);
 }
 
-elf_ipo* elf_get_actor_ipo(elf_actor *actor)
+elf_ipo* elf_get_actor_ipo(elf_actor* actor)
 {
 	return actor->ipo;
 }
 
-void elf_set_actor_ipo_frame(elf_actor *actor, float frame)
+void elf_set_actor_ipo_frame(elf_actor* actor, float frame)
 {
 	elf_set_frame_player_frame(actor->ipo_player, frame);
 }
 
-void elf_play_actor_ipo(elf_actor *actor, float start, float end, float speed)
+void elf_play_actor_ipo(elf_actor* actor, float start, float end, float speed)
 {
 	elf_play_frame_player(actor->ipo_player, start, end, speed);
 }
 
-void elf_loop_actor_ipo(elf_actor *actor, float start, float end, float speed)
+void elf_loop_actor_ipo(elf_actor* actor, float start, float end, float speed)
 {
 	elf_loop_frame_player(actor->ipo_player, start, end, speed);
 }
 
-void elf_stop_actor_ipo(elf_actor *actor)
+void elf_stop_actor_ipo(elf_actor* actor)
 {
 	elf_stop_frame_player(actor->ipo_player);
 }
 
-void elf_pause_actor_ipo(elf_actor *actor)
+void elf_pause_actor_ipo(elf_actor* actor)
 {
 	elf_stop_frame_player(actor->ipo_player);
 }
 
-void elf_resume_actor_ipo(elf_actor *actor)
+void elf_resume_actor_ipo(elf_actor* actor)
 {
 	elf_stop_frame_player(actor->ipo_player);
 }
 
-float elf_get_actor_ipo_start(elf_actor *actor)
+float elf_get_actor_ipo_start(elf_actor* actor)
 {
 	return elf_get_frame_player_start(actor->ipo_player);
 }
 
-float elf_get_actor_ipo_end(elf_actor *actor)
+float elf_get_actor_ipo_end(elf_actor* actor)
 {
 	return elf_get_frame_player_end(actor->ipo_player);
 }
 
-float elf_get_actor_ipo_speed(elf_actor *actor)
+float elf_get_actor_ipo_speed(elf_actor* actor)
 {
 	return elf_get_frame_player_speed(actor->ipo_player);
 }
 
-float elf_get_actor_ipo_frame(elf_actor *actor)
+float elf_get_actor_ipo_frame(elf_actor* actor)
 {
 	return elf_get_frame_player_frame(actor->ipo_player);
 }
 
-unsigned char elf_is_actor_ipo_playing(elf_actor *actor)
+unsigned char elf_is_actor_ipo_playing(elf_actor* actor)
 {
 	return elf_is_frame_player_playing(actor->ipo_player);
 }
 
-unsigned char elf_is_actor_ipo_paused(elf_actor *actor)
+unsigned char elf_is_actor_ipo_paused(elf_actor* actor)
 {
 	return elf_is_frame_player_paused(actor->ipo_player);
 }
 
-int elf_get_actor_collision_count(elf_actor *actor)
+int elf_get_actor_collision_count(elf_actor* actor)
 {
 	if(actor->object) return elf_get_physics_object_collision_count(actor->object);
 	return 0;
 }
 
-elf_collision* elf_get_actor_collision(elf_actor *actor, int idx)
+elf_collision* elf_get_actor_collision(elf_actor* actor, int idx)
 {
 	return elf_get_physics_object_collision(actor->object, idx);
 }
 
-int elf_get_actor_property_count(elf_actor *actor)
+int elf_get_actor_property_count(elf_actor* actor)
 {
 	return elf_get_list_length(actor->properties);
 }
 
-void elf_add_property_to_actor(elf_actor *actor, elf_property *property)
+void elf_add_property_to_actor(elf_actor* actor, elf_property* property)
 {
 	elf_append_to_list(actor->properties, (elf_object*)property);
 }
 
-elf_property* elf_get_actor_property_by_name(elf_actor *actor, const char *name)
+elf_property* elf_get_actor_property_by_name(elf_actor* actor, const char* name)
 {
-	elf_property *prop;
+	elf_property* prop;
 
 	if(!name || strlen(name) < 1) return ELF_FALSE;
 
@@ -1027,14 +1027,14 @@ elf_property* elf_get_actor_property_by_name(elf_actor *actor, const char *name)
 	return NULL;
 }
 
-elf_property* elf_get_actor_property_by_index(elf_actor *actor, int idx)
+elf_property* elf_get_actor_property_by_index(elf_actor* actor, int idx)
 {
 	return (elf_property*)elf_get_item_from_list(actor->properties, idx);
 }
 
-unsigned char elf_remove_actor_property_by_name(elf_actor *actor, const char *name)
+unsigned char elf_remove_actor_property_by_name(elf_actor* actor, const char* name)
 {
-	elf_property *prop;
+	elf_property* prop;
 
 	if(!name || strlen(name) < 1) return ELF_FALSE;
 
@@ -1051,9 +1051,9 @@ unsigned char elf_remove_actor_property_by_name(elf_actor *actor, const char *na
 	return ELF_FALSE;
 }
 
-unsigned char elf_remove_actor_property_by_index(elf_actor *actor, int idx)
+unsigned char elf_remove_actor_property_by_index(elf_actor* actor, int idx)
 {
-	elf_property *prop;
+	elf_property* prop;
 	int i;
 
 	if(idx < 0 && idx >= elf_get_list_length(actor->properties)) return ELF_FALSE;
@@ -1071,33 +1071,33 @@ unsigned char elf_remove_actor_property_by_index(elf_actor *actor, int idx)
 	return ELF_FALSE;
 }
 
-unsigned char elf_remove_actor_property_by_object(elf_actor *actor, elf_property *property)
+unsigned char elf_remove_actor_property_by_object(elf_actor* actor, elf_property* property)
 {
 	return elf_remove_from_list(actor->properties, (elf_object*)property);
 }
 
-void elf_remove_actor_properties(elf_actor *actor)
+void elf_remove_actor_properties(elf_actor* actor)
 {
 	elf_dec_ref((elf_object*)actor->properties);
 	actor->properties = elf_create_list();
 	elf_inc_ref((elf_object*)actor->properties);
 }
 
-void elf_set_actor_selected(elf_actor *actor, unsigned char selected)
+void elf_set_actor_selected(elf_actor* actor, unsigned char selected)
 {
 	actor->selected = !selected == ELF_FALSE;
 }
 
-unsigned char elf_get_actor_selected(elf_actor *actor)
+unsigned char elf_get_actor_selected(elf_actor* actor)
 {
 	return actor->selected;
 }
 
-void elf_draw_actor_debug(elf_actor *actor, gfx_shader_params *shader_params)
+void elf_draw_actor_debug(elf_actor* actor, gfx_shader_params* shader_params)
 {
 	float min[3];
 	float max[3];
-	float *vertex_buffer;
+	float* vertex_buffer;
 	float step;
 	float size;
 	int i;

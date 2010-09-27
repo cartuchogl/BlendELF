@@ -1,5 +1,5 @@
 
-const char *vert_shader =
+const char* vert_shader =
 "uniform mat4 elf_ProjectionMatrix;\n"
 "uniform mat4 elf_ModelviewMatrix;\n"
 "varying vec2 elf_TexCoord;\n"
@@ -11,7 +11,7 @@ const char *vert_shader =
 "\tgl_Position = elf_ProjectionMatrix*elf_ModelviewMatrix*gl_Vertex;\n"
 "}\n";
 
-const char *hipass_shader =
+const char* hipass_shader =
 "uniform sampler2D elf_Texture0;\n"
 "varying vec2 elf_TexCoord;\n"
 "uniform float threshold;\n"
@@ -22,7 +22,7 @@ const char *hipass_shader =
 "\tgl_FragColor = max((tex-threshold)/(1.0-threshold), 0.0);\n"
 "}\n";
 
-const char *blur_shader = 
+const char* blur_shader = 
 "uniform sampler2D elf_Texture0;\n"
 "varying vec2 elf_TexCoord;\n"
 "uniform vec2 offset;\n"
@@ -42,7 +42,7 @@ const char *blur_shader =
 "\tgl_FragColor = tex;\n"
 "}\n";
 
-const char *fog_combine_shader = 
+const char* fog_combine_shader = 
 "uniform sampler2D elf_Texture0;\n"
 "uniform sampler2D elf_Texture1;\n"
 "uniform sampler2D elf_Texture2;\n"
@@ -64,7 +64,7 @@ const char *fog_combine_shader =
 "\tgl_FragColor = vec4(col*fog_factor+elf_FogColor*(1.0-fog_factor), 1.0);\n"
 "}\n";
 
-const char *bloom_combine_shader = 
+const char* bloom_combine_shader = 
 "uniform sampler2D elf_Texture0;\n"
 "uniform sampler2D elf_Texture1;\n"
 "uniform sampler2D elf_Texture2;\n"
@@ -80,7 +80,7 @@ const char *bloom_combine_shader =
 "\tgl_FragColor = col;\n"
 "}\n";
 
-const char *dof_combine_shader = 
+const char* dof_combine_shader = 
 "uniform sampler2D elf_Texture0;\n"
 "uniform sampler2D elf_Texture1;\n"
 "uniform sampler2D elf_Texture2;\n"
@@ -100,7 +100,7 @@ const char *dof_combine_shader =
 "\tgl_FragColor = vec4(col.rgb, 0.0)+ratio*vec4(blur.rgb-col.rgb, 1.0);\n"
 "}\n";
 
-const char *ssao_shader =
+const char* ssao_shader =
 "uniform sampler2D elf_Texture0;\n"
 "uniform sampler2D elf_Texture1;\n"
 "uniform int elf_ViewportWidth;\n"
@@ -172,7 +172,7 @@ const char *ssao_shader =
 "\tgl_FragColor = vec4(color.rgb*mix(vec3(ao,ao,ao).rgb,vec3(1.0,1.0,1.0),luminance),1.0);\n"
 "}\n";
 
-const char *ssao_combine_shader = 
+const char* ssao_combine_shader = 
 "uniform sampler2D elf_Texture0;\n"
 "uniform sampler2D elf_Texture1;\n"
 "varying vec2 elf_TexCoord;\n"
@@ -184,7 +184,7 @@ const char *ssao_combine_shader =
 "\tgl_FragColor = vec4(col.rgb*ssao.rgb, col.a);\n"
 "}\n";
 
-const char *light_shaft_shader = 
+const char* light_shaft_shader = 
 "uniform sampler2D elf_Texture0;\n"
 "uniform float exposure;\n"
 "uniform float decay;\n"
@@ -213,7 +213,7 @@ const char *light_shaft_shader =
 
 elf_post_process* elf_create_post_process()
 {
-	elf_post_process *post_process;
+	elf_post_process* post_process;
 
 	post_process = (elf_post_process*)malloc(sizeof(elf_post_process));
 	memset(post_process, 0x0, sizeof(elf_post_process));
@@ -239,9 +239,9 @@ elf_post_process* elf_create_post_process()
 	return post_process;
 }
 
-void elf_destroy_post_process(void *data)
+void elf_destroy_post_process(void* data)
 {
-	elf_post_process *post_process = (elf_post_process*)data;
+	elf_post_process* post_process = (elf_post_process*)data;
 
 	gfx_dec_ref((gfx_object*)post_process->main_rt);
 	gfx_dec_ref((gfx_object*)post_process->main_rt_color[0]);
@@ -279,7 +279,7 @@ void elf_destroy_post_process(void *data)
 	elf_dec_obj(ELF_POST_PROCESS);
 }
 
-void elf_init_post_process_buffers(elf_post_process *post_process)
+void elf_init_post_process_buffers(elf_post_process* post_process)
 {
 	if(post_process->main_rt) gfx_dec_ref((gfx_object*)post_process->main_rt);
 	if(post_process->main_rt_color[0]) gfx_dec_ref((gfx_object*)post_process->main_rt_color[0]);
@@ -361,13 +361,13 @@ void elf_init_post_process_buffers(elf_post_process *post_process)
 	}
 }
 
-void elf_run_post_process(elf_post_process *post_process, elf_scene *scene)
+void elf_run_post_process(elf_post_process* post_process, elf_scene* scene)
 {
 	unsigned int source_rt = 0;
-	elf_camera *cam;
-	elf_entity *ent;
-	elf_sprite *spr;
-	elf_light *light;
+	elf_camera* cam;
+	elf_entity* ent;
+	elf_sprite* spr;
+	elf_light* light;
 	int i;
 	elf_vec3f light_pos;
 	elf_vec3f light_screen_pos;
@@ -732,7 +732,7 @@ void elf_run_post_process(elf_post_process *post_process, elf_scene *scene)
 	gfx_draw_textured_2d_quad(0.0, 0.0, (float)elf_get_window_width(), (float)elf_get_window_height());*/
 }
 
-void elf_set_post_process_bloom(elf_post_process *post_process, float threshold)
+void elf_set_post_process_bloom(elf_post_process* post_process, float threshold)
 {
 	post_process->bloom = ELF_TRUE;
 	post_process->bloom_threshold = threshold;
@@ -747,17 +747,17 @@ void elf_set_post_process_bloom(elf_post_process *post_process, float threshold)
 	}
 }
 
-void elf_disable_post_process_bloom(elf_post_process *post_process)
+void elf_disable_post_process_bloom(elf_post_process* post_process)
 {
 	post_process->bloom = ELF_FALSE;
 }
 
-float elf_get_post_process_bloom_threshold(elf_post_process *post_process)
+float elf_get_post_process_bloom_threshold(elf_post_process* post_process)
 {
 	return post_process->bloom_threshold;
 }
 
-void elf_set_post_process_dof(elf_post_process *post_process, float focal_range, float focal_distance)
+void elf_set_post_process_dof(elf_post_process* post_process, float focal_range, float focal_distance)
 {
 	post_process->dof = ELF_TRUE;
 	post_process->dof_focal_range = focal_range;
@@ -771,22 +771,22 @@ void elf_set_post_process_dof(elf_post_process *post_process, float focal_range,
 	}
 }
 
-void elf_disable_post_process_dof(elf_post_process *post_process)
+void elf_disable_post_process_dof(elf_post_process* post_process)
 {
 	post_process->dof = ELF_FALSE;
 }
 
-float elf_get_post_process_dof_focal_range(elf_post_process *post_process)
+float elf_get_post_process_dof_focal_range(elf_post_process* post_process)
 {
 	return post_process->dof_focal_range;
 }
 
-float elf_get_post_process_dof_focal_distance(elf_post_process *post_process)
+float elf_get_post_process_dof_focal_distance(elf_post_process* post_process)
 {
 	return post_process->dof_focal_distance;
 }
 
-void elf_set_post_process_ssao(elf_post_process *post_process, float amount)
+void elf_set_post_process_ssao(elf_post_process* post_process, float amount)
 {
 	post_process->ssao = ELF_TRUE;
 	post_process->ssao_amount = amount;
@@ -798,17 +798,17 @@ void elf_set_post_process_ssao(elf_post_process *post_process, float amount)
 	}
 }
 
-void elf_disable_post_process_ssao(elf_post_process *post_process)
+void elf_disable_post_process_ssao(elf_post_process* post_process)
 {
 	post_process->ssao = ELF_FALSE;
 }
 
-float elf_get_post_process_ssao_amount(elf_post_process *post_process)
+float elf_get_post_process_ssao_amount(elf_post_process* post_process)
 {
 	return post_process->ssao_amount;
 }
 
-void elf_set_post_process_light_shafts(elf_post_process *post_process, float intensity)
+void elf_set_post_process_light_shafts(elf_post_process* post_process, float intensity)
 {
 	post_process->light_shafts = ELF_TRUE;
 	post_process->light_shafts_intensity = intensity;
@@ -821,32 +821,32 @@ void elf_set_post_process_light_shafts(elf_post_process *post_process, float int
 	}
 }
 
-void elf_disable_post_process_light_shafts(elf_post_process *post_process)
+void elf_disable_post_process_light_shafts(elf_post_process* post_process)
 {
 	post_process->light_shafts = ELF_FALSE;
 }
 
-float elf_get_post_process_light_shafts_intensity(elf_post_process *post_process)
+float elf_get_post_process_light_shafts_intensity(elf_post_process* post_process)
 {
 	return post_process->light_shafts_intensity;
 }
 
-unsigned char elf_is_post_process_bloom(elf_post_process *post_process)
+unsigned char elf_is_post_process_bloom(elf_post_process* post_process)
 {
 	return post_process->bloom;
 }
 
-unsigned char elf_is_post_process_ssao(elf_post_process *post_process)
+unsigned char elf_is_post_process_ssao(elf_post_process* post_process)
 {
 	return post_process->ssao;
 }
 
-unsigned char elf_is_post_process_dof(elf_post_process *post_process)
+unsigned char elf_is_post_process_dof(elf_post_process* post_process)
 {
 	return post_process->dof;
 }
 
-unsigned char elf_is_post_process_light_shafts(elf_post_process *post_process)
+unsigned char elf_is_post_process_light_shafts(elf_post_process* post_process)
 {
 	return post_process->light_shafts;
 }

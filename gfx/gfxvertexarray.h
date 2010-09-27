@@ -1,7 +1,7 @@
 
 gfx_vertex_data* gfx_create_vertex_data(int count, int format, int data_type)
 {
-	gfx_vertex_data *data;
+	gfx_vertex_data* data;
 
 	if(count <= 0) return NULL;
 	if(!(format >= GFX_FLOAT && format < GFX_MAX_FORMATS)) return NULL;
@@ -24,9 +24,9 @@ gfx_vertex_data* gfx_create_vertex_data(int count, int format, int data_type)
 	return data;
 }
 
-void gfx_destroy_vertex_data(void *data)
+void gfx_destroy_vertex_data(void* data)
 {
-	gfx_vertex_data *vertex_data = (gfx_vertex_data*)data;
+	gfx_vertex_data* vertex_data = (gfx_vertex_data*)data;
 
 	if(vertex_data->vbo) glDeleteBuffers(1, &vertex_data->vbo);
 
@@ -36,27 +36,27 @@ void gfx_destroy_vertex_data(void *data)
 	gfx_dec_obj(GFX_VERTEX_DATA);
 }
 
-int gfx_get_vertex_data_count(gfx_vertex_data *data)
+int gfx_get_vertex_data_count(gfx_vertex_data* data)
 {
 	return data->count;
 }
 
-int gfx_get_vertex_data_format(gfx_vertex_data *data)
+int gfx_get_vertex_data_format(gfx_vertex_data* data)
 {
 	return data->format;
 }
 
-void* gfx_get_vertex_data_buffer(gfx_vertex_data *data)
+void* gfx_get_vertex_data_buffer(gfx_vertex_data* data)
 {
 	return data->data;
 }
 
-int gfx_get_vertex_data_size_bytes(gfx_vertex_data *data)
+int gfx_get_vertex_data_size_bytes(gfx_vertex_data* data)
 {
 	return data->size_bytes;
 }
 
-void gfx_update_vertex_data(gfx_vertex_data *data)
+void gfx_update_vertex_data(gfx_vertex_data* data)
 {
 	if(data->vbo)
 	{
@@ -67,7 +67,7 @@ void gfx_update_vertex_data(gfx_vertex_data *data)
 	data->changed = GFX_FALSE;
 }
 
-void gfx_update_vertex_data_sub_data(gfx_vertex_data *data, int start, int length)
+void gfx_update_vertex_data_sub_data(gfx_vertex_data* data, int start, int length)
 {
 	if(start > data->size_bytes) return;
 	if(start+length > data->size_bytes) length -= (start+length)-data->size_bytes;
@@ -81,7 +81,7 @@ void gfx_update_vertex_data_sub_data(gfx_vertex_data *data, int start, int lengt
 	data->changed = GFX_FALSE;
 }
 
-void gfx_init_vertex_data_vbo(gfx_vertex_data *data)
+void gfx_init_vertex_data_vbo(gfx_vertex_data* data)
 {
 	if(!data->vbo)
 	{
@@ -96,7 +96,7 @@ void gfx_init_vertex_data_vbo(gfx_vertex_data *data)
 
 gfx_vertex_array* gfx_create_vertex_array(unsigned char gpu_data)
 {
-	gfx_vertex_array *vertex_array = NULL;
+	gfx_vertex_array* vertex_array = NULL;
 
 	vertex_array = (gfx_vertex_array*)malloc(sizeof(gfx_vertex_array));
 	memset(vertex_array, 0x0, sizeof(gfx_vertex_array));
@@ -110,10 +110,10 @@ gfx_vertex_array* gfx_create_vertex_array(unsigned char gpu_data)
 	return vertex_array;
 }
 
-void gfx_destroy_vertex_array(void *data)
+void gfx_destroy_vertex_array(void* data)
 {
 	int i;
-	gfx_vertex_array *vertex_array = (gfx_vertex_array*)data;
+	gfx_vertex_array* vertex_array = (gfx_vertex_array*)data;
 
 	for(i = 0; i < GFX_MAX_VERTEX_ARRAYS; i++)
 	{
@@ -128,14 +128,14 @@ void gfx_destroy_vertex_array(void *data)
 	free(vertex_array);
 }
 
-int gfx_get_vertex_array_vertex_count(gfx_vertex_array *vertex_array)
+int gfx_get_vertex_array_vertex_count(gfx_vertex_array* vertex_array)
 {
 	return vertex_array->vertex_count;
 }
 
-void gfx_set_vertex_array_data(gfx_vertex_array *vertex_array, int target, gfx_vertex_data *data)
+void gfx_set_vertex_array_data(gfx_vertex_array* vertex_array, int target, gfx_vertex_data* data)
 {
-	gfx_varr *varr;
+	gfx_varr* varr;
 	int i;
 	int varr_count;
 
@@ -179,7 +179,7 @@ void gfx_set_vertex_array_data(gfx_vertex_array *vertex_array, int target, gfx_v
 	if(vertex_array->gpu_data && driver->version >= 200) gfx_init_vertex_data_vbo(varr->data);
 }
 
-void gfx_set_vertex_array(gfx_vertex_array *vertex_array)
+void gfx_set_vertex_array(gfx_vertex_array* vertex_array)
 {
 	int i;
 
@@ -283,7 +283,7 @@ void gfx_set_vertex_array(gfx_vertex_array *vertex_array)
 	}
 }
 
-void gfx_draw_vertex_array(gfx_vertex_array *vertex_array, int count, int draw_mode)
+void gfx_draw_vertex_array(gfx_vertex_array* vertex_array, int count, int draw_mode)
 {
 	if(count > vertex_array->vertex_count) count -= count-vertex_array->vertex_count;
 
@@ -294,9 +294,9 @@ void gfx_draw_vertex_array(gfx_vertex_array *vertex_array, int count, int draw_m
 	driver->vertices_drawn[draw_mode] += count;
 }
 
-gfx_vertex_index* gfx_create_vertex_index(unsigned char gpu_data, gfx_vertex_data *data)
+gfx_vertex_index* gfx_create_vertex_index(unsigned char gpu_data, gfx_vertex_data* data)
 {
-	gfx_vertex_index *vertex_index = NULL;
+	gfx_vertex_index* vertex_index = NULL;
 
 	vertex_index = (gfx_vertex_index*)malloc(sizeof(gfx_vertex_index));
 	memset(vertex_index, 0x0, sizeof(gfx_vertex_index));
@@ -316,9 +316,9 @@ gfx_vertex_index* gfx_create_vertex_index(unsigned char gpu_data, gfx_vertex_dat
 	return vertex_index;
 }
 
-void gfx_destroy_vertex_index(void *data)
+void gfx_destroy_vertex_index(void* data)
 {
-	gfx_vertex_index *vertex_index = (gfx_vertex_index*)data;
+	gfx_vertex_index* vertex_index = (gfx_vertex_index*)data;
 
 	if(vertex_index->data) gfx_dec_ref((gfx_object*)vertex_index->data);
 
@@ -327,12 +327,12 @@ void gfx_destroy_vertex_index(void *data)
 	gfx_dec_obj(GFX_VERTEX_INDEX);
 }
 
-int gfx_get_vertex_index_indice_count(gfx_vertex_index *vertex_index)
+int gfx_get_vertex_index_indice_count(gfx_vertex_index* vertex_index)
 {
 	return vertex_index->indice_count;
 }
 
-void gfx_draw_vertex_index(gfx_vertex_index *vertex_index, unsigned int draw_mode)
+void gfx_draw_vertex_index(gfx_vertex_index* vertex_index, unsigned int draw_mode)
 {
 	if(vertex_index->gpu_data && driver->version >= 200)
 	{

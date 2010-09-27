@@ -1,7 +1,7 @@
 
-elf_resource* elf_get_resource_by_id(elf_list *resources, int id)
+elf_resource* elf_get_resource_by_id(elf_list* resources, int id)
 {
-	elf_resource *obj;
+	elf_resource* obj;
 
 	for(obj = (elf_resource*)elf_begin_list(resources); obj;
 		obj = (elf_resource*)elf_next_in_list(resources))
@@ -12,9 +12,9 @@ elf_resource* elf_get_resource_by_id(elf_list *resources, int id)
 	return NULL;
 }
 
-elf_resource* elf_get_resource_by_name(elf_list *resources, const char *name)
+elf_resource* elf_get_resource_by_name(elf_list* resources, const char* name)
 {
-	elf_resource *obj;
+	elf_resource* obj;
 
 	for(obj = (elf_resource*)elf_begin_list(resources); obj;
 		obj = (elf_resource*)elf_next_in_list(resources))
@@ -25,10 +25,10 @@ elf_resource* elf_get_resource_by_name(elf_list *resources, const char *name)
 	return NULL;
 }
 
-void elf_set_unique_name_for_resource(elf_list *named_objects, elf_resource *object)
+void elf_set_unique_name_for_resource(elf_list* named_objects, elf_resource* object)
 {
-	char *tname;
-	char *nname;
+	char* tname;
+	char* nname;
 	int dot_pos;
 	int num;
 

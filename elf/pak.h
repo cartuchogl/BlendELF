@@ -1,7 +1,7 @@
 
 elf_pak_index* elf_create_pak_index()
 {
-	elf_pak_index *index;
+	elf_pak_index* index;
 
 	index = (elf_pak_index*)malloc(sizeof(elf_pak_index));
 	memset(index, 0x0, sizeof(elf_pak_index));
@@ -13,9 +13,9 @@ elf_pak_index* elf_create_pak_index()
 	return index;
 }
 
-void elf_destroy_pak_index(void *data)
+void elf_destroy_pak_index(void* data)
 {
-	elf_pak_index *index = (elf_pak_index*)data;
+	elf_pak_index* index = (elf_pak_index*)data;
 
 	if(index->name) elf_destroy_string(index->name);
 
@@ -24,11 +24,11 @@ void elf_destroy_pak_index(void *data)
 	elf_dec_obj(ELF_PAK_INDEX);
 }
 
-elf_pak* elf_create_pak_from_file(const char *file_path)
+elf_pak* elf_create_pak_from_file(const char* file_path)
 {
-	elf_pak *pak;
-	elf_pak_index *index;
-	FILE *file;
+	elf_pak* pak;
+	elf_pak_index* index;
+	FILE* file;
 	int magic;
 	int index_count;
 	int i;
@@ -104,9 +104,9 @@ elf_pak* elf_create_pak_from_file(const char *file_path)
 	return pak;
 }
 
-void elf_destroy_pak(void *data)
+void elf_destroy_pak(void* data)
 {
-	elf_pak *pak = (elf_pak*)data;
+	elf_pak* pak = (elf_pak*)data;
 
 	if(pak->file_path) elf_destroy_string(pak->file_path);
 
@@ -117,19 +117,19 @@ void elf_destroy_pak(void *data)
 	elf_dec_obj(ELF_PAK);
 }
 
-const char* elf_get_pak_file_path(elf_pak *pak)
+const char* elf_get_pak_file_path(elf_pak* pak)
 {
 	return pak->file_path;
 }
 
-int elf_get_pak_index_count(elf_pak *pak)
+int elf_get_pak_index_count(elf_pak* pak)
 {
 	return elf_get_list_length(pak->indexes);
 }
 
-elf_pak_index* elf_get_pak_index_by_name(elf_pak *pak, const char *name, unsigned char type)
+elf_pak_index* elf_get_pak_index_by_name(elf_pak* pak, const char* name, unsigned char type)
 {
-	elf_pak_index *index;
+	elf_pak_index* index;
 
 	for(index = (elf_pak_index*)elf_begin_list(pak->indexes); index;
 		index = (elf_pak_index*)elf_next_in_list(pak->indexes))
@@ -140,32 +140,32 @@ elf_pak_index* elf_get_pak_index_by_name(elf_pak *pak, const char *name, unsigne
 	return NULL;
 }
 
-elf_pak_index* elf_get_pak_index_by_index(elf_pak *pak, int idx)
+elf_pak_index* elf_get_pak_index_by_index(elf_pak* pak, int idx)
 {
 	if(idx < 0 || idx > elf_get_list_length(pak->indexes)-1) return NULL;
 	return (elf_pak_index*)elf_get_item_from_list(pak->indexes, idx);
 }
 
-unsigned char elf_get_pak_index_type(elf_pak_index *index)
+unsigned char elf_get_pak_index_type(elf_pak_index* index)
 {
 	return index->obj_type;
 }
 
-const char* elf_get_pak_index_name(elf_pak_index *index)
+const char* elf_get_pak_index_name(elf_pak_index* index)
 {
 	return index->name;
 }
 
-int elf_get_pak_index_offset(elf_pak_index *index)
+int elf_get_pak_index_offset(elf_pak_index* index)
 {
 	return index->offset;
 }
 
-int elf_get_actor_header_size_bytes(elf_actor *actor)
+int elf_get_actor_header_size_bytes(elf_actor* actor)
 {
 	int size_bytes;
-	elf_property *property;
-	elf_bezier_curve *curve;
+	elf_property* property;
+	elf_bezier_curve* curve;
 
 	size_bytes = 0;
 
@@ -217,7 +217,7 @@ int elf_get_actor_header_size_bytes(elf_actor *actor)
 	return size_bytes;
 }
 
-int elf_get_armature_size_bytes(elf_armature *armature)
+int elf_get_armature_size_bytes(elf_armature* armature)
 {
 	int size_bytes;
 	int i;
@@ -243,7 +243,7 @@ int elf_get_armature_size_bytes(elf_armature *armature)
 	return size_bytes;
 }
 
-int elf_get_camera_size_bytes(elf_camera *camera)
+int elf_get_camera_size_bytes(elf_camera* camera)
 {
 	int size_bytes;
 
@@ -258,7 +258,7 @@ int elf_get_camera_size_bytes(elf_camera *camera)
 	return size_bytes;
 }
 
-int elf_get_entity_size_bytes(elf_entity *entity)
+int elf_get_entity_size_bytes(elf_entity* entity)
 {
 	int size_bytes;
 
@@ -275,7 +275,7 @@ int elf_get_entity_size_bytes(elf_entity *entity)
 	return size_bytes;
 }
 
-int elf_get_light_size_bytes(elf_light *light)
+int elf_get_light_size_bytes(elf_light* light)
 {
 	int size_bytes;
 
@@ -299,7 +299,7 @@ int elf_get_light_size_bytes(elf_light *light)
 	return size_bytes;
 }
 
-int elf_get_material_size_bytes(elf_material *material)
+int elf_get_material_size_bytes(elf_material* material)
 {
 	int size_bytes;
 
@@ -320,7 +320,7 @@ int elf_get_material_size_bytes(elf_material *material)
 	return size_bytes;
 }
 
-int elf_get_model_size_bytes(elf_model *model)
+int elf_get_model_size_bytes(elf_model* model)
 {
 	int size_bytes;
 
@@ -354,7 +354,7 @@ int elf_get_model_size_bytes(elf_model *model)
 	return size_bytes;
 }
 
-int elf_get_scene_size_bytes(elf_scene *scene)
+int elf_get_scene_size_bytes(elf_scene* scene)
 {
 	int size_bytes;
 
@@ -367,7 +367,7 @@ int elf_get_scene_size_bytes(elf_scene *scene)
 	return size_bytes;
 }
 
-int elf_get_particles_size_bytes(elf_particles *particles)
+int elf_get_particles_size_bytes(elf_particles* particles)
 {
 	int size_bytes;
 
@@ -405,7 +405,7 @@ int elf_get_particles_size_bytes(elf_particles *particles)
 	return size_bytes;
 }
 
-int elf_get_script_size_bytes(elf_script *script)
+int elf_get_script_size_bytes(elf_script* script)
 {
 	int size_bytes;
 
@@ -419,7 +419,7 @@ int elf_get_script_size_bytes(elf_script *script)
 	return size_bytes;
 }
 
-int elf_get_sprite_size_bytes(elf_sprite *sprite)
+int elf_get_sprite_size_bytes(elf_sprite* sprite)
 {
 	int size_bytes;
 
@@ -434,7 +434,7 @@ int elf_get_sprite_size_bytes(elf_sprite *sprite)
 	return size_bytes;
 }
 
-int elf_get_texture_size_bytes(elf_texture *texture)
+int elf_get_texture_size_bytes(elf_texture* texture)
 {
 	int size_bytes;
 
@@ -449,17 +449,17 @@ int elf_get_texture_size_bytes(elf_texture *texture)
 	return size_bytes;
 }
 
-void elf_read_actor_header(elf_actor *actor, FILE *file, elf_scene *scene)
+void elf_read_actor_header(elf_actor* actor, FILE* file, elf_scene* scene)
 {
 	char name[ELF_NAME_LENGTH];
 	char parent_name[ELF_NAME_LENGTH];
 	char script_name[ELF_NAME_LENGTH];
 	float position[3];
 	float rotation[3];
-	elf_script *script;
+	elf_script* script;
 	int i, j;
-	elf_bezier_point *point;
-	elf_bezier_curve *curve;
+	elf_bezier_point* point;
+	elf_bezier_curve* curve;
 	unsigned char curve_count;
 	int point_count;
 	float bounding_lengths[3];
@@ -476,7 +476,7 @@ void elf_read_actor_header(elf_actor *actor, FILE *file, elf_scene *scene)
 	float angular_factor[3];
 	int property_count;
 	char prop_name[ELF_NAME_LENGTH];
-	elf_property *property;
+	elf_property* property;
 	int length;
 
 	fread(name, sizeof(char), ELF_NAME_LENGTH, file);
@@ -583,17 +583,17 @@ void elf_read_actor_header(elf_actor *actor, FILE *file, elf_scene *scene)
 	}
 }
 
-elf_armature* elf_create_armature_from_pak(FILE *file, const char *name, elf_scene *scene)
+elf_armature* elf_create_armature_from_pak(FILE* file, const char* name, elf_scene* scene)
 {
-	elf_armature *armature;
+	elf_armature* armature;
 	char rname[ELF_NAME_LENGTH];
 	char parent[ELF_NAME_LENGTH];
 	int magic;
-	elf_bone *bone;
-	elf_bone *parent_bone;
-	elf_list *bones;
-	elf_list *bone_parents;
-	elf_string *str_obj;
+	elf_bone* bone;
+	elf_bone* parent_bone;
+	elf_list* bones;
+	elf_list* bone_parents;
+	elf_string* str_obj;
 	int i, j;
 	float bone_inv_qua[4];
 
@@ -694,9 +694,9 @@ elf_armature* elf_create_armature_from_pak(FILE *file, const char *name, elf_sce
 	return armature;
 }
 
-elf_camera* elf_create_camera_from_pak(FILE *file, const char *name, elf_scene *scene)
+elf_camera* elf_create_camera_from_pak(FILE* file, const char* name, elf_scene* scene)
 {
-	elf_camera *camera;
+	elf_camera* camera;
 	int magic;
 	float fov = 0.0;
 	float clip_near = 0.0;
@@ -722,12 +722,12 @@ elf_camera* elf_create_camera_from_pak(FILE *file, const char *name, elf_scene *
 	return camera;
 }
 
-elf_entity* elf_create_entity_from_pak(FILE *file, const char *name, elf_scene *scene)
+elf_entity* elf_create_entity_from_pak(FILE* file, const char* name, elf_scene* scene)
 {
-	elf_entity *entity;
-	elf_model *rmodel;
-	elf_armature *rarmature;
-	elf_material *rmaterial;
+	elf_entity* entity;
+	elf_model* rmodel;
+	elf_armature* rarmature;
+	elf_material* rmaterial;
 	unsigned int material_count;
 	int i, j;
 	int magic = 0;
@@ -800,9 +800,9 @@ elf_entity* elf_create_entity_from_pak(FILE *file, const char *name, elf_scene *
 	return entity;
 }
 
-elf_light* elf_create_light_from_pak(FILE *file, const char *name, elf_scene *scene)
+elf_light* elf_create_light_from_pak(FILE* file, const char* name, elf_scene* scene)
 {
-	elf_light *light;
+	elf_light* light;
 	int magic = 0;
 	unsigned int junk;
 
@@ -841,10 +841,10 @@ elf_light* elf_create_light_from_pak(FILE *file, const char *name, elf_scene *sc
 	return light;
 }
 
-elf_material* elf_create_material_from_pak(FILE *file, const char *name, elf_scene *scene)
+elf_material* elf_create_material_from_pak(FILE* file, const char* name, elf_scene* scene)
 {
-	elf_material *material;
-	elf_texture *rtexture;
+	elf_material* material;
+	elf_texture* rtexture;
 	int magic;
 	char rname[ELF_NAME_LENGTH];
 	char texture[ELF_NAME_LENGTH];
@@ -911,9 +911,9 @@ elf_material* elf_create_material_from_pak(FILE *file, const char *name, elf_sce
 	return material;
 }
 
-elf_model* elf_create_model_from_pak(FILE *file, const char *name, elf_scene *scene)
+elf_model* elf_create_model_from_pak(FILE* file, const char* name, elf_scene* scene)
 {
-	elf_model *model = NULL;
+	elf_model* model = NULL;
 	int magic = 0;
 	int i = 0;
 	char rname[ELF_NAME_LENGTH];
@@ -925,7 +925,7 @@ elf_model* elf_create_model_from_pak(FILE *file, const char *name, elf_scene *sc
 	float weights[4];
 	float length;
 	short int boneids[4];
-	float *vertex_buffer;
+	float* vertex_buffer;
 
 	// read magic
 	fread((char*)&magic, sizeof(int), 1, file);
@@ -1091,12 +1091,12 @@ elf_model* elf_create_model_from_pak(FILE *file, const char *name, elf_scene *sc
 	return model;
 }
 
-elf_particles* elf_create_particles_from_pak(FILE *file, const char *name, elf_scene *scene)
+elf_particles* elf_create_particles_from_pak(FILE* file, const char* name, elf_scene* scene)
 {
-	elf_particles *particles;
-	elf_texture *rtexture;
-	elf_model *rmodel;
-	elf_entity *rentity;
+	elf_particles* particles;
+	elf_texture* rtexture;
+	elf_model* rmodel;
+	elf_entity* rentity;
 	int magic = 0;
 	char texture[ELF_NAME_LENGTH];
 	char model[ELF_NAME_LENGTH];
@@ -1181,13 +1181,13 @@ elf_particles* elf_create_particles_from_pak(FILE *file, const char *name, elf_s
 	return particles;
 }
 
-elf_script* elf_create_script_from_pak(FILE *file, const char *name, elf_scene *scene)
+elf_script* elf_create_script_from_pak(FILE* file, const char* name, elf_scene* scene)
 {
-	elf_script *script;
+	elf_script* script;
 	int magic = 0;
 	char rname[ELF_NAME_LENGTH];
 	unsigned int length;
-	char *text;
+	char* text;
 
 	fread((char*)&magic, sizeof(int), 1, file);
 
@@ -1219,10 +1219,10 @@ elf_script* elf_create_script_from_pak(FILE *file, const char *name, elf_scene *
 	return script;
 }
 
-elf_sprite* elf_create_sprite_from_pak(FILE *file, const char *name, elf_scene *scene)
+elf_sprite* elf_create_sprite_from_pak(FILE* file, const char* name, elf_scene* scene)
 {
-	elf_sprite *sprite;
-	elf_material *rmaterial;
+	elf_sprite* sprite;
+	elf_material* rmaterial;
 	int magic = 0;
 	float scale[2] = {0.0, 0.0};
 	char material[ELF_NAME_LENGTH];
@@ -1255,12 +1255,12 @@ elf_sprite* elf_create_sprite_from_pak(FILE *file, const char *name, elf_scene *
 	return sprite;
 }
 
-elf_texture *elf_create_texture_from_pak(FILE *file, const char *name, elf_scene *scene)
+elf_texture* elf_create_texture_from_pak(FILE* file, const char* name, elf_scene* scene)
 {
-	elf_texture *texture;
-	FIMEMORY *fi_mem;
-	FIBITMAP *fi_bitmap;
-	char *mem;
+	elf_texture* texture;
+	FIMEMORY* fi_mem;
+	FIBITMAP* fi_bitmap;
+	char* mem;
 	FREE_IMAGE_FORMAT fi_format;
 	int magic;
 	char rname[ELF_NAME_LENGTH];
@@ -1272,7 +1272,7 @@ elf_texture *elf_create_texture_from_pak(FILE *file, const char *name, elf_scene
 	int format;
 	int internal_format;
 	int data_format;
-	unsigned char *data;
+	unsigned char* data;
 
 	fread((char*)&magic, sizeof(int), 1, file);
 
@@ -1346,16 +1346,16 @@ elf_texture *elf_create_texture_from_pak(FILE *file, const char *name, elf_scene
 	return texture;
 }
 
-elf_scene* elf_create_scene_from_pak(elf_pak *pak)
+elf_scene* elf_create_scene_from_pak(elf_pak* pak)
 {
-	elf_scene *scene;
-	elf_camera *camera;
-	elf_entity *entity;
-	elf_light *light;
-	elf_sprite *sprite;
-	elf_particles *particles;
-	elf_pak_index *index;
-	FILE *file;
+	elf_scene* scene;
+	elf_camera* camera;
+	elf_entity* entity;
+	elf_light* light;
+	elf_sprite* sprite;
+	elf_particles* particles;
+	elf_pak_index* index;
+	FILE* file;
 	int magic;
 	char name[ELF_NAME_LENGTH];
 	float ambient_color[4];
@@ -1410,7 +1410,7 @@ elf_scene* elf_create_scene_from_pak(elf_pak *pak)
 	return scene;
 }
 
-void elf_write_name_to_file(const char *name, FILE *file)
+void elf_write_name_to_file(const char* name, FILE* file)
 {
 	int empty;
 	int length;
@@ -1427,12 +1427,12 @@ void elf_write_name_to_file(const char *name, FILE *file)
 	fwrite(estr, sizeof(char), empty, file);
 }
 
-void elf_write_actor_header(elf_actor *actor, FILE *file)
+void elf_write_actor_header(elf_actor* actor, FILE* file)
 {
 	float position[3];
 	float rotation[3];
-	elf_bezier_point *point;
-	elf_bezier_curve *curve;
+	elf_bezier_point* point;
+	elf_bezier_curve* curve;
 	unsigned char curve_count;
 	int point_count;
 	elf_vec3f bounding_lengths;
@@ -1448,7 +1448,7 @@ void elf_write_actor_header(elf_actor *actor, FILE *file)
 	elf_vec3f linear_factor;
 	elf_vec3f angular_factor;
 	int property_count;
-	elf_property *property;
+	elf_property* property;
 	int length;
 
 	elf_write_name_to_file(actor->name, file);
@@ -1531,10 +1531,10 @@ void elf_write_actor_header(elf_actor *actor, FILE *file)
 	}
 }
 
-void elf_write_armature_to_file(elf_armature *armature, FILE *file)
+void elf_write_armature_to_file(elf_armature* armature, FILE* file)
 {
 	int magic;
-	elf_bone *bone;
+	elf_bone* bone;
 	int i, j;
 
 	magic = ELF_ARMATURE_MAGIC;
@@ -1564,7 +1564,7 @@ void elf_write_armature_to_file(elf_armature *armature, FILE *file)
 	}
 }
 
-void elf_write_camera_to_file(elf_camera *camera, FILE *file)
+void elf_write_camera_to_file(elf_camera* camera, FILE* file)
 {
 	int magic;
 
@@ -1578,12 +1578,12 @@ void elf_write_camera_to_file(elf_camera *camera, FILE *file)
 	fwrite((char*)&camera->clip_far, sizeof(float), 1, file);
 }
 
-void elf_write_entity_to_file(elf_entity *entity, FILE *file)
+void elf_write_entity_to_file(elf_entity* entity, FILE* file)
 {
 	int magic = 0;
 	float scale[3];
 	unsigned int material_count;
-	elf_material *mat;
+	elf_material* mat;
 
 	magic = ELF_ENTITY_MAGIC;
 	fwrite((char*)&magic, sizeof(int), 1, file);
@@ -1609,7 +1609,7 @@ void elf_write_entity_to_file(elf_entity *entity, FILE *file)
 	}
 }
 
-void elf_write_light_to_file(elf_light *light, FILE *file)
+void elf_write_light_to_file(elf_light* light, FILE* file)
 {
 	int magic = 0;
 	int junk = 0;
@@ -1633,7 +1633,7 @@ void elf_write_light_to_file(elf_light *light, FILE *file)
 	fwrite((char*)&light->shaft_fade_off, sizeof(float), 1, file);
 }
 
-void elf_write_material_to_file(elf_material *material, FILE *file)
+void elf_write_material_to_file(elf_material* material, FILE* file)
 {
 	int magic;
 
@@ -1664,7 +1664,7 @@ void elf_write_material_to_file(elf_material *material, FILE *file)
 	fwrite((char*)&material->alpha_threshold, sizeof(float), 1, file);
 }
 
-void elf_write_model_to_file(elf_model *model, FILE *file)
+void elf_write_model_to_file(elf_model* model, FILE* file)
 {
 	int magic = 0;
 	unsigned char is_normals;
@@ -1730,7 +1730,7 @@ void elf_write_model_to_file(elf_model *model, FILE *file)
 	}
 }
 
-void elf_write_particles_to_file(elf_particles *particles, FILE *file)
+void elf_write_particles_to_file(elf_particles* particles, FILE* file)
 {
 	int magic = 0;
 
@@ -1774,7 +1774,7 @@ void elf_write_particles_to_file(elf_particles *particles, FILE *file)
 	fwrite((char*)&particles->color_max.r, sizeof(float), 4, file);
 }
 
-void elf_write_scene_to_file(elf_scene *scene, FILE *file)
+void elf_write_scene_to_file(elf_scene* scene, FILE* file)
 {
 	int magic;
 
@@ -1786,7 +1786,7 @@ void elf_write_scene_to_file(elf_scene *scene, FILE *file)
 	fwrite((char*)&scene->ambient_color.r, sizeof(float), 4, file);
 }
 
-void elf_write_script_to_file(elf_script *script, FILE *file)
+void elf_write_script_to_file(elf_script* script, FILE* file)
 {
 	int magic = 0;
 	unsigned int length;
@@ -1804,7 +1804,7 @@ void elf_write_script_to_file(elf_script *script, FILE *file)
 	}
 }
 
-void elf_write_sprite_to_file(elf_sprite *sprite, FILE *file)
+void elf_write_sprite_to_file(elf_sprite* sprite, FILE* file)
 {
 	int magic = 0;
 
@@ -1821,7 +1821,7 @@ void elf_write_sprite_to_file(elf_sprite *sprite, FILE *file)
 	fwrite((char*)&sprite->face_camera, sizeof(unsigned char), 1, file);
 }
 
-void elf_write_texture_to_file(elf_texture *texture, FILE *file)
+void elf_write_texture_to_file(elf_texture* texture, FILE* file)
 {
 	int magic;
 	unsigned char type;
@@ -1838,7 +1838,7 @@ void elf_write_texture_to_file(elf_texture *texture, FILE *file)
 	fwrite((char*)texture->data, 1, texture->data_size, file);
 }
 
-void elf_write_resource_index_to_file(elf_resource *resource, unsigned int *offset, FILE *file)
+void elf_write_resource_index_to_file(elf_resource* resource, unsigned int* offset, FILE* file)
 {
 	unsigned char ucval;
 	unsigned int ival;
@@ -1848,28 +1848,28 @@ void elf_write_resource_index_to_file(elf_resource *resource, unsigned int *offs
 
 	elf_write_name_to_file(resource->name, file);
 
-	ival = *offset;
+	ival =* offset;
 	fwrite((char*)&ival, sizeof(int), 1, file);
 
 	switch(resource->obj_type)
 	{
-		case ELF_SCENE: *offset += elf_get_scene_size_bytes((elf_scene*)resource); break;
-		case ELF_SCRIPT: *offset += elf_get_script_size_bytes((elf_script*)resource); break;
-		case ELF_TEXTURE: *offset += elf_get_texture_size_bytes((elf_texture*)resource); break;
-		case ELF_MODEL: *offset += elf_get_model_size_bytes((elf_model*)resource); break;
-		case ELF_MATERIAL: *offset += elf_get_material_size_bytes((elf_material*)resource); break;
-		case ELF_CAMERA: *offset += elf_get_camera_size_bytes((elf_camera*)resource); break;
-		case ELF_ENTITY: *offset += elf_get_entity_size_bytes((elf_entity*)resource); break;
-		case ELF_LIGHT: *offset += elf_get_light_size_bytes((elf_light*)resource); break;
-		case ELF_PARTICLES: *offset += elf_get_particles_size_bytes((elf_particles*)resource); break;
-		case ELF_SPRITE: *offset += elf_get_sprite_size_bytes((elf_sprite*)resource); break;
-		case ELF_ARMATURE: *offset += elf_get_armature_size_bytes((elf_armature*)resource); break;
+		case ELF_SCENE:* offset += elf_get_scene_size_bytes((elf_scene*)resource); break;
+		case ELF_SCRIPT:* offset += elf_get_script_size_bytes((elf_script*)resource); break;
+		case ELF_TEXTURE:* offset += elf_get_texture_size_bytes((elf_texture*)resource); break;
+		case ELF_MODEL:* offset += elf_get_model_size_bytes((elf_model*)resource); break;
+		case ELF_MATERIAL:* offset += elf_get_material_size_bytes((elf_material*)resource); break;
+		case ELF_CAMERA:* offset += elf_get_camera_size_bytes((elf_camera*)resource); break;
+		case ELF_ENTITY:* offset += elf_get_entity_size_bytes((elf_entity*)resource); break;
+		case ELF_LIGHT:* offset += elf_get_light_size_bytes((elf_light*)resource); break;
+		case ELF_PARTICLES:* offset += elf_get_particles_size_bytes((elf_particles*)resource); break;
+		case ELF_SPRITE:* offset += elf_get_sprite_size_bytes((elf_sprite*)resource); break;
+		case ELF_ARMATURE:* offset += elf_get_armature_size_bytes((elf_armature*)resource); break;
 	}
 }
 
-void elf_write_resource_indexes_to_file(elf_list *resources, unsigned int *offset, FILE *file)
+void elf_write_resource_indexes_to_file(elf_list* resources, unsigned int* offset, FILE* file)
 {
-	elf_resource *res;
+	elf_resource* res;
 
 	for(res = (elf_resource*)elf_begin_list(resources); res;
 		res = (elf_resource*)elf_next_in_list(resources))
@@ -1878,9 +1878,9 @@ void elf_write_resource_indexes_to_file(elf_list *resources, unsigned int *offse
 	}
 }
 
-void elf_write_resources_to_file(elf_list *resources, FILE *file)
+void elf_write_resources_to_file(elf_list* resources, FILE* file)
 {
-	elf_resource *res;
+	elf_resource* res;
 
 	for(res = (elf_resource*)elf_begin_list(resources); res;
 		res = (elf_resource*)elf_next_in_list(resources))
@@ -1902,7 +1902,7 @@ void elf_write_resources_to_file(elf_list *resources, FILE *file)
 	}
 }
 
-void elf_add_texture_for_saving(elf_list *textures, elf_texture *texture)
+void elf_add_texture_for_saving(elf_list* textures, elf_texture* texture)
 {
 	if(texture && !elf_get_resource_by_id(textures, texture->id))
 	{
@@ -1918,31 +1918,31 @@ void elf_add_texture_for_saving(elf_list *textures, elf_texture *texture)
 	}
 }
 
-unsigned char elf_save_scene_to_pak(elf_scene *scene, const char *file_path)
+unsigned char elf_save_scene_to_pak(elf_scene* scene, const char* file_path)
 {
 	unsigned int offset;
 	int ival;
 	
-	FILE *file;
+	FILE* file;
 
-	elf_list *scenes;
-	elf_list *scripts;
-	elf_list *textures;
-	elf_list *materials;
-	elf_list *models;
-	elf_list *cameras;
-	elf_list *entities;
-	elf_list *lights;
-	elf_list *armatures;
-	elf_list *particles;
-	elf_list *sprites;
+	elf_list* scenes;
+	elf_list* scripts;
+	elf_list* textures;
+	elf_list* materials;
+	elf_list* models;
+	elf_list* cameras;
+	elf_list* entities;
+	elf_list* lights;
+	elf_list* armatures;
+	elf_list* particles;
+	elf_list* sprites;
 
-	elf_material *mat;
-	elf_camera *cam;
-	elf_entity *ent;
-	elf_light *lig;
-	elf_particles *par;
-	elf_sprite *spr;
+	elf_material* mat;
+	elf_camera* cam;
+	elf_entity* ent;
+	elf_light* lig;
+	elf_particles* par;
+	elf_sprite* spr;
 
 	scenes = elf_create_list();
 	scripts = elf_create_list();

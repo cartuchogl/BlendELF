@@ -4,11 +4,11 @@ gfx_shader_program* gfx_create_shader_program(const char* vertex, const char* fr
 	const GLchar* my_string_ptrs[1];
 	int shader_length;
 	int success;
-	char *info_log;
+	char* info_log;
 	int info_log_length;
 	GLuint my_vertex_shader;
 	GLuint my_fragment_shader;
-	gfx_shader_program *shader_program;
+	gfx_shader_program* shader_program;
 
 	if(driver->version < 200) return NULL;
 
@@ -151,51 +151,51 @@ gfx_shader_program* gfx_create_shader_program(const char* vertex, const char* fr
 	return shader_program;
 }
 
-void gfx_destroy_shader_program(gfx_shader_program *shader_program)
+void gfx_destroy_shader_program(gfx_shader_program* shader_program)
 {
 	if(shader_program->id) glDeleteShader(shader_program->id);
 
 	free(shader_program);
 }
 
-void gfx_destroy_shader_programs(gfx_shader_program *shader_program)
+void gfx_destroy_shader_programs(gfx_shader_program* shader_program)
 {
 	if(shader_program->next) gfx_destroy_shader_programs(shader_program->next);
 
 	gfx_destroy_shader_program(shader_program);
 }
 
-void gfx_set_shader_program_uniform_1i(const char *name, int i)
+void gfx_set_shader_program_uniform_1i(const char* name, int i)
 {
 	if(!driver->shader_params.shader_program) return;
 	glUniform1i(glGetUniformLocation(driver->shader_params.shader_program->id, name), i);
 }
 
-void gfx_set_shader_program_uniform_1f(const char *name, float f)
+void gfx_set_shader_program_uniform_1f(const char* name, float f)
 {
 	if(!driver->shader_params.shader_program) return;
 	glUniform1f(glGetUniformLocation(driver->shader_params.shader_program->id, name), f);
 }
 
-void gfx_set_shader_program_uniform_vec2(const char *name, float x, float y)
+void gfx_set_shader_program_uniform_vec2(const char* name, float x, float y)
 {
 	if(!driver->shader_params.shader_program) return;
 	glUniform2f(glGetUniformLocation(driver->shader_params.shader_program->id, name), x, y);
 }
 
-void gfx_set_shader_program_uniform_vec3(const char *name, float x, float y, float z)
+void gfx_set_shader_program_uniform_vec3(const char* name, float x, float y, float z)
 {
 	if(!driver->shader_params.shader_program) return;
 	glUniform3f(glGetUniformLocation(driver->shader_params.shader_program->id, name), x, y, z);
 }
 
-void gfx_set_shader_program_uniform_vec4(const char *name, float x, float y, float z, float w)
+void gfx_set_shader_program_uniform_vec4(const char* name, float x, float y, float z, float w)
 {
 	if(!driver->shader_params.shader_program) return;
 	glUniform4f(glGetUniformLocation(driver->shader_params.shader_program->id, name), x, y, z, w);
 }
 
-void gfx_set_shader_program_uniform_mat4(const char *name, float *matrix)
+void gfx_set_shader_program_uniform_mat4(const char* name, float* matrix)
 {
 	if(!driver->shader_params.shader_program) return;
 	glUniformMatrix4fv(glGetUniformLocation(driver->shader_params.shader_program->id, name), 1, GL_FALSE, matrix);

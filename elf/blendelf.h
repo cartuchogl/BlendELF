@@ -430,15 +430,15 @@ struct elf_color {
 
 // <!!
 elf_general* elf_create_general();
-void elf_destroy_general(elf_general *general);
+void elf_destroy_general(elf_general* general);
 
 void elf_init_general();
 void elf_deinit_general();
 
-void elf_set_log_file_path(const char *file_path);
+void elf_set_log_file_path(const char* file_path);
 
-void elf_inc_ref(elf_object *obj);
-void elf_dec_ref(elf_object *obj);
+void elf_inc_ref(elf_object* obj);
+void elf_dec_ref(elf_object* obj);
 void elf_inc_obj(int type);
 void elf_dec_obj(int type);
 
@@ -446,108 +446,108 @@ void elf_dump_ref_table();
 void elf_dump_obj_table();
 // !!>
 
-int elf_get_object_type(elf_object *obj);	// <mdoc> OBJECT FUNCTIONS <mdocc> The object functions can be performed on any generic ELF objects.
-int elf_get_object_ref_count(elf_object *obj);
+int elf_get_object_type(elf_object* obj);	// <mdoc> OBJECT FUNCTIONS <mdocc> The object functions can be performed on any generic ELF objects.
+int elf_get_object_ref_count(elf_object* obj);
 int elf_get_global_ref_count();
 int elf_get_global_obj_count();
-unsigned char elf_is_actor(elf_object *obj);
-unsigned char elf_is_gui_object(elf_object *obj);
+unsigned char elf_is_actor(elf_object* obj);
+unsigned char elf_is_gui_object(elf_object* obj);
 
 //////////////////////////////// RESOURCE ////////////////////////////////
 
 // <!!
-elf_resource* elf_get_resource_by_id(elf_list *resources, int id);
-elf_resource* elf_get_resource_by_name(elf_list *resources, const char *name);
-void elf_set_unique_name_for_resource(elf_list *named_objects, elf_resource *object);
+elf_resource* elf_get_resource_by_id(elf_list* resources, int id);
+elf_resource* elf_get_resource_by_name(elf_list* resources, const char* name);
+void elf_set_unique_name_for_resource(elf_list* named_objects, elf_resource* object);
 // !!>
 
 //////////////////////////////// STRING ////////////////////////////////
 
 // <!!
 elf_string* elf_create_string_object();
-void elf_destroy_string_object(void *data);
-char* elf_create_string(const char *str);
-void elf_destroy_string(char *str);
-char* elf_remove_char_from_string(char *str, int idx);
-char* elf_append_char_to_string(char *str, char c);
-char* elf_insert_char_to_string(char *str, int idx, char c);
-char* elf_merge_strings(const char *str1, const char *str2);
-char* elf_merge_strings3(const char *str1, const char *str2, const char *str3);
-char* elf_sub_string(char *str, int start, int len);
+void elf_destroy_string_object(void* data);
+char* elf_create_string(const char* str);
+void elf_destroy_string(char* str);
+char* elf_remove_char_from_string(char* str, int idx);
+char* elf_append_char_to_string(char* str, char c);
+char* elf_insert_char_to_string(char* str, int idx, char c);
+char* elf_merge_strings(const char* str1, const char* str2);
+char* elf_merge_strings3(const char* str1, const char* str2, const char* str3);
+char* elf_sub_string(char* str, int start, int len);
 unsigned char elf_is_char_number(char c);
-unsigned char elf_is_string_number(const char *str);
-unsigned char elf_is_string_positive_int(const char *str);
-int elf_rfind_char_from_string(const char *str, char chr);
-int elf_rfind_chars_from_string(const char *str, const char *chrs);
+unsigned char elf_is_string_number(const char* str);
+unsigned char elf_is_string_positive_int(const char* str);
+int elf_rfind_char_from_string(const char* str, char chr);
+int elf_rfind_chars_from_string(const char* str, const char* chrs);
 // !!>
 
 //////////////////////////////// LIST ////////////////////////////////
 
 elf_list* elf_create_list();	// <mdoc> LIST FUNCTIONS
-/* <!> */ void elf_destroy_list(void *data);
-int elf_get_list_length(elf_list *list);
-void elf_insert_to_list(elf_list *list, int idx, elf_object *obj);
-void elf_append_to_list(elf_list *list, elf_object *obj);
-unsigned char elf_remove_from_list(elf_list *list, elf_object *obj);
-elf_object* elf_get_item_from_list(elf_list *list, int idx);
-elf_object* elf_begin_list(elf_list *list);
-elf_object* elf_next_in_list(elf_list *list);
-elf_object* elf_rbegin_list(elf_list *list);
-elf_object* elf_rnext_in_list(elf_list *list);
-/* <!> */void elf_set_list_cur_ptr(elf_list *list, elf_object *ptr);
-void elf_seek_list(elf_list *list, elf_object *ptr);
-void elf_rseek_list(elf_list *list, elf_object *ptr);
+/* <!> */ void elf_destroy_list(void* data);
+int elf_get_list_length(elf_list* list);
+void elf_insert_to_list(elf_list* list, int idx, elf_object* obj);
+void elf_append_to_list(elf_list* list, elf_object* obj);
+unsigned char elf_remove_from_list(elf_list* list, elf_object* obj);
+elf_object* elf_get_item_from_list(elf_list* list, int idx);
+elf_object* elf_begin_list(elf_list* list);
+elf_object* elf_next_in_list(elf_list* list);
+elf_object* elf_rbegin_list(elf_list* list);
+elf_object* elf_rnext_in_list(elf_list* list);
+/* <!> */void elf_set_list_cur_ptr(elf_list* list, elf_object* ptr);
+void elf_seek_list(elf_list* list, elf_object* ptr);
+void elf_rseek_list(elf_list* list, elf_object* ptr);
 
 //////////////////////////////// CONFIGURATION ////////////////////////////////
 
 // <!!
 elf_config* elf_create_config();
-void elf_destroy_config(void *data);
+void elf_destroy_config(void* data);
 // !!>
 
-elf_config* elf_read_config(const char *file_path);	// <mdoc> CONFIGURATION FUNCTIONS
-int elf_get_config_window_width(elf_config *config);
-int elf_get_config_window_height(elf_config *config);
-int elf_get_config_multisamples(elf_config *config);
-unsigned char elf_get_config_fullscreen(elf_config *config);
-unsigned char elf_get_config_texture_compress(elf_config *config);
-float elf_get_config_texture_anisotropy(elf_config *config);
-int elf_get_config_shadow_map_size(elf_config *config);
-const char* elf_get_config_start(elf_config *config);
-const char* elf_get_config_log(elf_config *config);
+elf_config* elf_read_config(const char* file_path);	// <mdoc> CONFIGURATION FUNCTIONS
+int elf_get_config_window_width(elf_config* config);
+int elf_get_config_window_height(elf_config* config);
+int elf_get_config_multisamples(elf_config* config);
+unsigned char elf_get_config_fullscreen(elf_config* config);
+unsigned char elf_get_config_texture_compress(elf_config* config);
+float elf_get_config_texture_anisotropy(elf_config* config);
+int elf_get_config_shadow_map_size(elf_config* config);
+const char* elf_get_config_start(elf_config* config);
+const char* elf_get_config_log(elf_config* config);
 
 ///////////////////////////////// LOG /////////////////////////////////
 
 // <!!
-void elf_start_log(const char *text);
-void elf_write_to_log(const char *fmt, ...);
-void elf_set_error(int code, const char *fmt, ...);
-void elf_set_error_no_save(int code, const char *fmt, ...);
+void elf_start_log(const char* text);
+void elf_write_to_log(const char* fmt, ...);
+void elf_set_error(int code, const char* fmt, ...);
+void elf_set_error_no_save(int code, const char* fmt, ...);
 // !!>
 
 /////////////////////////////// CONTEXT ///////////////////////////////
 
 // <!!
 elf_video_mode* elf_create_video_mode();
-void elf_destroy_video_mode(void *data);
+void elf_destroy_video_mode(void* data);
 
 elf_key_event* elf_create_key_event();
-void elf_destroy_key_event(void *data);
+void elf_destroy_key_event(void* data);
 
 elf_char_event* elf_create_char_event();
-void elf_destroy_char_event(void *data);
+void elf_destroy_char_event(void* data);
 
 elf_context* elf_create_context();
-void elf_destroy_context(void *data);
+void elf_destroy_context(void* data);
 
 unsigned char elf_init_context(int width, int height,
-		const char *title, int multisamples, unsigned char fullscreen);
+		const char* title, int multisamples, unsigned char fullscreen);
 void elf_close_window();
 
 unsigned char elf_resize_context(int width, int height);
 // !!>
 
-void elf_set_title(const char *title);	// <mdoc> CONTEXT FUNCTIONS
+void elf_set_title(const char* title);	// <mdoc> CONTEXT FUNCTIONS
 
 int elf_get_window_width();
 int elf_get_window_height();
@@ -573,25 +573,25 @@ elf_vec2f elf_get_joystick_axis(int joy);
 int elf_get_joystick_button_state(int joy, int but);
 int elf_get_event_count();
 elf_object* elf_get_event(int idx);
-int elf_get_key_event_key(elf_key_event *key_event);
-int elf_get_key_event_state(elf_key_event *key_event);
+int elf_get_key_event_key(elf_key_event* key_event);
+int elf_get_key_event_state(elf_key_event* key_event);
 
 //////////////////////////////// ENGINE ///////////////////////////////
 
 // <!!
-void elf_write_to_log(const char *fmt, ...);
-void elf_set_error(int code, const char *fmt, ...);
-void elf_set_error_no_save(int code, const char *fmt, ...);
+void elf_write_to_log(const char* fmt, ...);
+void elf_set_error(int code, const char* fmt, ...);
+void elf_set_error_no_save(int code, const char* fmt, ...);
 
 elf_engine* elf_create_engine();
-void elf_destroy_engine(void *data);
+void elf_destroy_engine(void* data);
 
 unsigned char elf_init_engine();
 void elf_deinit_engine();
 // !!>
 
-unsigned char elf_init(int width, int height, const char *title, int multisamples, unsigned char fullscreen, const char *log);	// <mdoc> ENGINE FUNCTIONS
-unsigned char elf_init_with_config(const char *file_path);
+unsigned char elf_init(int width, int height, const char* title, int multisamples, unsigned char fullscreen, const char* log);	// <mdoc> ENGINE FUNCTIONS
+unsigned char elf_init_with_config(const char* file_path);
 void elf_deinit();
 
 void elf_resize_window(int width, int height);
@@ -603,7 +603,7 @@ int elf_get_version_minor();
 const char* elf_get_version_release();
 const char* elf_get_version();
 
-/* <!> */ char* elf_get_directory_from_path(const char *file_path);
+/* <!> */ char* elf_get_directory_from_path(const char* file_path);
 const char* elf_get_current_directory();
 
 const char* elf_get_error_string();
@@ -615,17 +615,17 @@ void elf_quit();
 void elf_set_f10_exit(unsigned char exit);
 unsigned char elf_get_f10_exit();
 
-elf_scene* elf_load_scene(const char *file_path);
-void elf_set_scene(elf_scene *scene);
+elf_scene* elf_load_scene(const char* file_path);
+void elf_set_scene(elf_scene* scene);
 elf_scene* elf_get_scene();
 
-void elf_set_gui(elf_gui *gui);
+void elf_set_gui(elf_gui* gui);
 elf_gui* elf_get_gui();
 
 float elf_get_sync();
 int elf_get_fps();
 
-unsigned char elf_save_screen_shot(const char *file_path);
+unsigned char elf_save_screen_shot(const char* file_path);
 
 void elf_set_fps_limit(int fps_limit);
 int elf_get_fps_limit();
@@ -685,18 +685,18 @@ elf_object* elf_get_actor();
 
 // <!!
 elf_directory_item* elf_create_directory_item();
-void elf_destroy_directory_item(void *data);
+void elf_destroy_directory_item(void* data);
 elf_directory* elf_create_directory();
-void elf_destroy_directory(void *data);
+void elf_destroy_directory(void* data);
 // !!>
 
-elf_directory* elf_read_directory(const char *path);
+elf_directory* elf_read_directory(const char* path);
 
-const char* elf_get_directory_path(elf_directory *directory);
-int elf_get_directory_item_count(elf_directory *directory);
-elf_directory_item* elf_get_directory_item(elf_directory *directory, int idx);
-const char* elf_get_directory_item_name(elf_directory_item *dir_item);
-int elf_get_directory_item_type(elf_directory_item *dir_item);
+const char* elf_get_directory_path(elf_directory* directory);
+int elf_get_directory_item_count(elf_directory* directory);
+elf_directory_item* elf_get_directory_item(elf_directory* directory, int idx);
+const char* elf_get_directory_item_name(elf_directory_item* dir_item);
+int elf_get_directory_item_type(elf_directory_item* dir_item);
 
 elf_vec3f elf_create_vec3f();
 elf_vec3f elf_create_vec3f_from_values(float x, float y, float z);
@@ -722,887 +722,887 @@ int elf_random_int_range(int min, int max);
 
 ///////////////////////////// FRAME PLAYER ////////////////////////////
 
-/* <!> */ void elf_destroy_frame_player(void *data);
+/* <!> */ void elf_destroy_frame_player(void* data);
 
-elf_frame_player *elf_create_frame_player();	// <mdoc> FRAME PLAYER FUNCTIONS
-void elf_update_frame_player(elf_frame_player *player);
-void elf_set_frame_player_frame(elf_frame_player *player, float frame);
-void elf_play_frame_player(elf_frame_player *player, float start, float end, float speed);
-void elf_loop_frame_player(elf_frame_player *player, float start, float end, float speed);
-void elf_stop_frame_player(elf_frame_player *player);
-void elf_pause_frame_player(elf_frame_player *player);
-void elf_resume_frame_player(elf_frame_player *player);
-float elf_get_frame_player_start(elf_frame_player *player);
-float elf_get_frame_player_end(elf_frame_player *player);
-float elf_get_frame_player_speed(elf_frame_player *player);
-float elf_get_frame_player_frame(elf_frame_player *player);
-unsigned char elf_is_frame_player_playing(elf_frame_player *player);
-unsigned char elf_is_frame_player_paused(elf_frame_player *player);
+elf_frame_player* elf_create_frame_player();	// <mdoc> FRAME PLAYER FUNCTIONS
+void elf_update_frame_player(elf_frame_player* player);
+void elf_set_frame_player_frame(elf_frame_player* player, float frame);
+void elf_play_frame_player(elf_frame_player* player, float start, float end, float speed);
+void elf_loop_frame_player(elf_frame_player* player, float start, float end, float speed);
+void elf_stop_frame_player(elf_frame_player* player);
+void elf_pause_frame_player(elf_frame_player* player);
+void elf_resume_frame_player(elf_frame_player* player);
+float elf_get_frame_player_start(elf_frame_player* player);
+float elf_get_frame_player_end(elf_frame_player* player);
+float elf_get_frame_player_speed(elf_frame_player* player);
+float elf_get_frame_player_frame(elf_frame_player* player);
+unsigned char elf_is_frame_player_playing(elf_frame_player* player);
+unsigned char elf_is_frame_player_paused(elf_frame_player* player);
 // <!!
-void elf_set_frame_player_user_data(elf_frame_player *player, void *user_data);
-void* elf_get_frame_player_user_data(elf_frame_player *player);
-void elf_set_frame_player_callback(elf_frame_player *player, void (*callback)(elf_frame_player*));
+void elf_set_frame_player_user_data(elf_frame_player* player, void* user_data);
+void* elf_get_frame_player_user_data(elf_frame_player* player);
+void elf_set_frame_player_callback(elf_frame_player* player, void (*callback)(elf_frame_player*));
 // !!>
 
 //////////////////////////////// TIMER ////////////////////////////////
 
-elf_timer *elf_create_timer();	// <mdoc> TIMER FUNCTIONS
-/* <!> */ void elf_destroy_timer(void *data);
-void elf_start_timer(elf_timer *timer);
-double elf_get_elapsed_time(elf_timer *timer);
+elf_timer* elf_create_timer();	// <mdoc> TIMER FUNCTIONS
+/* <!> */ void elf_destroy_timer(void* data);
+void elf_start_timer(elf_timer* timer);
+double elf_get_elapsed_time(elf_timer* timer);
 
 //////////////////////////////// IMAGE ////////////////////////////////
 
 /* <!> */ elf_image* elf_create_image();
 elf_image* elf_create_empty_image(int width, int height, int bpp);	// <mdoc> IMAGE FUNCTIONS
-elf_image* elf_create_image_from_file(const char *file_path);
-/* <!> */ void elf_destroy_image(void *data);
+elf_image* elf_create_image_from_file(const char* file_path);
+/* <!> */ void elf_destroy_image(void* data);
 
-void elf_set_image_pixel(elf_image *image, int x, int y, float r, float g, float b, float a);
+void elf_set_image_pixel(elf_image* image, int x, int y, float r, float g, float b, float a);
 
-int elf_get_image_width(elf_image *image);
-int elf_get_image_height(elf_image *image);
-int elf_get_image_bits_per_pixel(elf_image *image);
-elf_color elf_get_image_pixel(elf_image *image, int x, int y);
+int elf_get_image_width(elf_image* image);
+int elf_get_image_height(elf_image* image);
+int elf_get_image_bits_per_pixel(elf_image* image);
+elf_color elf_get_image_pixel(elf_image* image, int x, int y);
 
 // <!!
-void* elf_get_image_data(elf_image *image);
-unsigned char elf_save_image_data(const char *file_path, int width, int height, unsigned char bpp, void *data);
+void* elf_get_image_data(elf_image* image);
+unsigned char elf_save_image_data(const char* file_path, int width, int height, unsigned char bpp, void* data);
 // !!>
 
 /////////////////////////////// TEXTURE ///////////////////////////////
 
 // <!!
-elf_texture *elf_create_texture();
-void elf_destroy_texture(void *data);
+elf_texture* elf_create_texture();
+void elf_destroy_texture(void* data);
 // !!>
 
-elf_texture* elf_create_texture_from_file(const char *file_path);	// <mdoc> TEXTURE FUNCTIONS
-elf_texture *elf_create_texture_from_image(elf_image *image);
-elf_texture* elf_create_cube_map_from_files(const char *xpos, const char *xneg, const char *ypos, const char *yneg, const char *zpos, const char *zneg);
+elf_texture* elf_create_texture_from_file(const char* file_path);	// <mdoc> TEXTURE FUNCTIONS
+elf_texture* elf_create_texture_from_image(elf_image* image);
+elf_texture* elf_create_cube_map_from_files(const char* xpos, const char* xneg, const char* ypos, const char* yneg, const char* zpos, const char* zneg);
 
-void elf_set_texture_name(elf_texture *texture, const char *name);
+void elf_set_texture_name(elf_texture* texture, const char* name);
 
-const char* elf_get_texture_name(elf_texture *texture);
-const char* elf_get_texture_file_path(elf_texture *texture);
-int elf_get_texture_width(elf_texture *texture);
-int elf_get_texture_height(elf_texture *texture);
-int elf_get_texture_format(elf_texture *texture);
-int elf_get_texture_data_format(elf_texture *texture);
+const char* elf_get_texture_name(elf_texture* texture);
+const char* elf_get_texture_file_path(elf_texture* texture);
+int elf_get_texture_width(elf_texture* texture);
+int elf_get_texture_height(elf_texture* texture);
+int elf_get_texture_format(elf_texture* texture);
+int elf_get_texture_data_format(elf_texture* texture);
 // <!!
 gfx_texture* elf_get_gfx_texture(elf_texture* texture);
-void elf_set_texture(int slot, elf_texture *texture, gfx_shader_params *shader_params);
+void elf_set_texture(int slot, elf_texture* texture, gfx_shader_params* shader_params);
 // !!>
 
 //////////////////////////////// MATERIAL ////////////////////////////////
 
-/* <!> */void elf_destroy_material(void *data);
+/* <!> */void elf_destroy_material(void* data);
 
-elf_material* elf_create_material(const char *name);	// <mdoc> MATERIAL FUNCTIONS
+elf_material* elf_create_material(const char* name);	// <mdoc> MATERIAL FUNCTIONS
 
-void elf_set_material_diffuse_color(elf_material *material, float r, float g, float b, float a);
-void elf_set_material_specular_color(elf_material *material, float r, float g, float b, float a);
-void elf_set_material_ambient_color(elf_material *material, float r, float g, float b, float a);
-void elf_set_material_specular_power(elf_material *material, float power);
-void elf_set_material_lighting(elf_material *material, unsigned char lighting);
+void elf_set_material_diffuse_color(elf_material* material, float r, float g, float b, float a);
+void elf_set_material_specular_color(elf_material* material, float r, float g, float b, float a);
+void elf_set_material_ambient_color(elf_material* material, float r, float g, float b, float a);
+void elf_set_material_specular_power(elf_material* material, float power);
+void elf_set_material_lighting(elf_material* material, unsigned char lighting);
 
-void elf_set_material_name(elf_material *material, const char *name);
-const char* elf_get_material_name(elf_material *material);
-const char* elf_get_material_file_path(elf_material *material);
-elf_color elf_get_material_diffuse_color(elf_material *material);
-elf_color elf_get_material_specular_color(elf_material *material);
-elf_color elf_get_material_ambient_color(elf_material *material);
-float elf_get_material_specular_power(elf_material *material);
-unsigned char elf_get_material_lighting(elf_material *material);
+void elf_set_material_name(elf_material* material, const char* name);
+const char* elf_get_material_name(elf_material* material);
+const char* elf_get_material_file_path(elf_material* material);
+elf_color elf_get_material_diffuse_color(elf_material* material);
+elf_color elf_get_material_specular_color(elf_material* material);
+elf_color elf_get_material_ambient_color(elf_material* material);
+float elf_get_material_specular_power(elf_material* material);
+unsigned char elf_get_material_lighting(elf_material* material);
 
-void elf_set_material_diffuse_map(elf_material *material, elf_texture *texture);
-void elf_set_material_normal_map(elf_material *material, elf_texture *texture);
-void elf_set_material_height_map(elf_material *material, elf_texture *texture);
-void elf_set_material_specular_map(elf_material *material, elf_texture *texture);
-void elf_set_material_light_map(elf_material *material, elf_texture *texture);
-void elf_set_material_cube_map(elf_material *material, elf_texture *texture);
+void elf_set_material_diffuse_map(elf_material* material, elf_texture* texture);
+void elf_set_material_normal_map(elf_material* material, elf_texture* texture);
+void elf_set_material_height_map(elf_material* material, elf_texture* texture);
+void elf_set_material_specular_map(elf_material* material, elf_texture* texture);
+void elf_set_material_light_map(elf_material* material, elf_texture* texture);
+void elf_set_material_cube_map(elf_material* material, elf_texture* texture);
 
-void elf_clear_material_diffuse_map(elf_material *material);
-void elf_clear_material_normal_map(elf_material *material);
-void elf_clear_material_height_map(elf_material *material);
-void elf_clear_material_specular_map(elf_material *material);
-void elf_clear_material_light_map(elf_material *material);
-void elf_clear_material_cube_map(elf_material *material);
+void elf_clear_material_diffuse_map(elf_material* material);
+void elf_clear_material_normal_map(elf_material* material);
+void elf_clear_material_height_map(elf_material* material);
+void elf_clear_material_specular_map(elf_material* material);
+void elf_clear_material_light_map(elf_material* material);
+void elf_clear_material_cube_map(elf_material* material);
 
-elf_texture* elf_get_material_diffuse_map(elf_material *material);
-elf_texture* elf_get_material_normal_map(elf_material *material);
-elf_texture* elf_get_material_height_map(elf_material *material);
-elf_texture* elf_get_material_specular_map(elf_material *material);
-elf_texture* elf_get_material_light_map(elf_material *material);
-elf_texture* elf_get_material_cube_map(elf_material *material);
+elf_texture* elf_get_material_diffuse_map(elf_material* material);
+elf_texture* elf_get_material_normal_map(elf_material* material);
+elf_texture* elf_get_material_height_map(elf_material* material);
+elf_texture* elf_get_material_specular_map(elf_material* material);
+elf_texture* elf_get_material_light_map(elf_material* material);
+elf_texture* elf_get_material_cube_map(elf_material* material);
 
-void elf_set_material_parallax_scale(elf_material *material, float scale);
+void elf_set_material_parallax_scale(elf_material* material, float scale);
 
-void elf_set_material_alpha_test(elf_material *material, unsigned char alpha_test);
-void elf_set_material_alpha_threshold(elf_material *material, float threshold);
+void elf_set_material_alpha_test(elf_material* material, unsigned char alpha_test);
+void elf_set_material_alpha_threshold(elf_material* material, float threshold);
 
-float elf_get_material_parallax_scale(elf_material *material);
+float elf_get_material_parallax_scale(elf_material* material);
 
-unsigned char elf_get_material_alpha_test(elf_material *material);
-float elf_get_material_alpha_threshold(elf_material *material);
+unsigned char elf_get_material_alpha_test(elf_material* material);
+float elf_get_material_alpha_threshold(elf_material* material);
 
 // <!!
-void elf_set_material(elf_material *material, int mode, gfx_shader_params *shader_params);
+void elf_set_material(elf_material* material, int mode, gfx_shader_params* shader_params);
 // !!>
 
 //////////////////////////////// IPOS ////////////////////////////////
 
 // <!!
-void elf_destroy_bezier_point(void *data);
-void elf_destroy_bezier_curve(void *data);
-void elf_destroy_ipo(void *data);
+void elf_destroy_bezier_point(void* data);
+void elf_destroy_bezier_curve(void* data);
+void elf_destroy_ipo(void* data);
 // !!>
 
 elf_bezier_point* elf_create_bezier_point();	// <mdoc> IPO FUNCTIONS
-void elf_set_bezier_point_position(elf_bezier_point *point, float x, float y);
-void elf_set_bezier_point_control1(elf_bezier_point *point, float x, float y);
-void elf_set_bezier_point_control2(elf_bezier_point *point, float x, float y);
-elf_vec2f elf_get_bezier_point_position(elf_bezier_point *point);
-elf_vec2f elf_get_bezier_point_control1(elf_bezier_point *point);
-elf_vec2f elf_get_bezier_point_control2(elf_bezier_point *point);
+void elf_set_bezier_point_position(elf_bezier_point* point, float x, float y);
+void elf_set_bezier_point_control1(elf_bezier_point* point, float x, float y);
+void elf_set_bezier_point_control2(elf_bezier_point* point, float x, float y);
+elf_vec2f elf_get_bezier_point_position(elf_bezier_point* point);
+elf_vec2f elf_get_bezier_point_control1(elf_bezier_point* point);
+elf_vec2f elf_get_bezier_point_control2(elf_bezier_point* point);
 
 elf_bezier_curve* elf_create_bezier_curve();
-void elf_set_bezier_curve_type(elf_bezier_curve *curve, int type);
-int elf_get_bezier_curve_type(elf_bezier_curve *curve);
-void elf_add_point_to_bezier_curve(elf_bezier_curve *curve, elf_bezier_point *point);
-elf_bezier_point* elf_get_point_from_bezier_curve(elf_bezier_curve *curve, int idx);
-float elf_get_bezier_curve_value(elf_bezier_curve *curve, float x);
+void elf_set_bezier_curve_type(elf_bezier_curve* curve, int type);
+int elf_get_bezier_curve_type(elf_bezier_curve* curve);
+void elf_add_point_to_bezier_curve(elf_bezier_curve* curve, elf_bezier_point* point);
+elf_bezier_point* elf_get_point_from_bezier_curve(elf_bezier_curve* curve, int idx);
+float elf_get_bezier_curve_value(elf_bezier_curve* curve, float x);
 
 elf_ipo* elf_create_ipo();
-unsigned char elf_add_curve_to_ipo(elf_ipo *ipo, elf_bezier_curve *curve);
-int elf_get_ipo_curve_count(elf_ipo *ipo);
-elf_bezier_curve* elf_get_curve_from_ipo(elf_ipo *ipo, int idx);
-elf_vec3f elf_get_ipo_loc(elf_ipo *ipo, float x);
-elf_vec3f elf_get_ipo_rot(elf_ipo *ipo, float x);
-elf_vec3f elf_get_ipo_scale(elf_ipo *ipo, float x);
-elf_vec4f elf_get_ipo_qua(elf_ipo *ipo, float x);
+unsigned char elf_add_curve_to_ipo(elf_ipo* ipo, elf_bezier_curve* curve);
+int elf_get_ipo_curve_count(elf_ipo* ipo);
+elf_bezier_curve* elf_get_curve_from_ipo(elf_ipo* ipo, int idx);
+elf_vec3f elf_get_ipo_loc(elf_ipo* ipo, float x);
+elf_vec3f elf_get_ipo_rot(elf_ipo* ipo, float x);
+elf_vec3f elf_get_ipo_scale(elf_ipo* ipo, float x);
+elf_vec4f elf_get_ipo_qua(elf_ipo* ipo, float x);
 
 //////////////////////////////// PROPERTY ////////////////////////////////
 
 
-elf_property* elf_create_property(const char *name);	// <mdoc> PROPERTY FUNCTIONS
-/* <!> */ void elf_destroy_property(void *data);
+elf_property* elf_create_property(const char* name);	// <mdoc> PROPERTY FUNCTIONS
+/* <!> */ void elf_destroy_property(void* data);
 
-int elf_get_property_type(elf_property *property);
+int elf_get_property_type(elf_property* property);
 
-int elf_get_property_int(elf_property *property);
-float elf_get_property_float(elf_property *property);
-const char* elf_get_property_string(elf_property *property);
-unsigned char elf_get_property_bool(elf_property *property);
+int elf_get_property_int(elf_property* property);
+float elf_get_property_float(elf_property* property);
+const char* elf_get_property_string(elf_property* property);
+unsigned char elf_get_property_bool(elf_property* property);
 
-void elf_set_property_int(elf_property *property, int ival);
-void elf_set_property_float(elf_property *property, float fval);
-void elf_set_property_string(elf_property *property, const char *sval);
-void elf_set_property_bool(elf_property *property, unsigned char bval);
+void elf_set_property_int(elf_property* property, int ival);
+void elf_set_property_float(elf_property* property, float fval);
+void elf_set_property_string(elf_property* property, const char* sval);
+void elf_set_property_bool(elf_property* property, unsigned char bval);
 
 //////////////////////////////// ACTOR ////////////////////////////////
 
 // <!!
-void elf_init_actor(elf_actor *actor, unsigned char camera);
-void elf_update_actor(elf_actor *actor);
-void elf_actor_pre_draw(elf_actor *actor);
-void elf_actor_post_draw(elf_actor *actor);
-void elf_clean_actor(elf_actor *actor);
+void elf_init_actor(elf_actor* actor, unsigned char camera);
+void elf_update_actor(elf_actor* actor);
+void elf_actor_pre_draw(elf_actor* actor);
+void elf_actor_post_draw(elf_actor* actor);
+void elf_clean_actor(elf_actor* actor);
 // !!>
 
-const char* elf_get_actor_name(elf_actor *actor);	// <mdoc> ACTOR FUNCTIONS <mdocc> Actor functions can be performed on all actor types. [Camera|Entity|Light|Armature]
-const char* elf_get_actor_file_path(elf_actor *actor);
-elf_script* elf_get_actor_script(elf_actor *actor);
+const char* elf_get_actor_name(elf_actor* actor);	// <mdoc> ACTOR FUNCTIONS <mdocc> Actor functions can be performed on all actor types. [Camera|Entity|Light|Armature]
+const char* elf_get_actor_file_path(elf_actor* actor);
+elf_script* elf_get_actor_script(elf_actor* actor);
 
-void elf_set_actor_name(elf_actor *actor, const char *name);
-void elf_set_actor_script(elf_actor *actor, elf_script *script);
-void elf_clear_actor_script(elf_actor *actor);
+void elf_set_actor_name(elf_actor* actor, const char* name);
+void elf_set_actor_script(elf_actor* actor, elf_script* script);
+void elf_clear_actor_script(elf_actor* actor);
 
-void elf_set_actor_position(elf_actor *actor, float x, float y, float z);
-void elf_set_actor_rotation(elf_actor *actor, float x, float y, float z);
-void elf_set_actor_orientation(elf_actor *actor, float x, float y, float z, float w);
-void elf_rotate_actor(elf_actor *actor, float x, float y, float z);
-void elf_rotate_actor_local(elf_actor *actor, float x, float y, float z);
-void elf_move_actor(elf_actor *actor, float x, float y, float z);
-void elf_move_actor_local(elf_actor *actor, float x, float y, float z);
-void elf_set_actor_position_relative_to(elf_actor *actor, elf_actor *to, float x, float y, float z);
-void elf_set_actor_rotation_relative_to(elf_actor *actor, elf_actor *to, float x, float y, float z);
-void elf_set_actor_orientation_relative_to(elf_actor *actor, elf_actor *to, float x, float y, float z, float w);
-/* <!> */ void elf_direct_actor_at(elf_actor *actor, elf_actor *at);
-/* <!> */ void elf_set_actor_direction(elf_actor *actor, float x, float y, float z);
-elf_vec3f elf_get_actor_position(elf_actor *actor);
-elf_vec3f elf_get_actor_rotation(elf_actor *actor);
-elf_vec4f elf_get_actor_orientation(elf_actor *actor);
+void elf_set_actor_position(elf_actor* actor, float x, float y, float z);
+void elf_set_actor_rotation(elf_actor* actor, float x, float y, float z);
+void elf_set_actor_orientation(elf_actor* actor, float x, float y, float z, float w);
+void elf_rotate_actor(elf_actor* actor, float x, float y, float z);
+void elf_rotate_actor_local(elf_actor* actor, float x, float y, float z);
+void elf_move_actor(elf_actor* actor, float x, float y, float z);
+void elf_move_actor_local(elf_actor* actor, float x, float y, float z);
+void elf_set_actor_position_relative_to(elf_actor* actor, elf_actor* to, float x, float y, float z);
+void elf_set_actor_rotation_relative_to(elf_actor* actor, elf_actor* to, float x, float y, float z);
+void elf_set_actor_orientation_relative_to(elf_actor* actor, elf_actor* to, float x, float y, float z, float w);
+/* <!> */ void elf_direct_actor_at(elf_actor* actor, elf_actor* at);
+/* <!> */ void elf_set_actor_direction(elf_actor* actor, float x, float y, float z);
+elf_vec3f elf_get_actor_position(elf_actor* actor);
+elf_vec3f elf_get_actor_rotation(elf_actor* actor);
+elf_vec4f elf_get_actor_orientation(elf_actor* actor);
 
 // <!!
-void elf_get_actor_position_(elf_actor *actor, float *params);
-void elf_get_actor_rotation_(elf_actor *actor, float *params);
-void elf_get_actor_orientation_(elf_actor *actor, float *params);
+void elf_get_actor_position_(elf_actor* actor, float* params);
+void elf_get_actor_rotation_(elf_actor* actor, float* params);
+void elf_get_actor_orientation_(elf_actor* actor, float* params);
 // !!>
 
-void elf_set_actor_bounding_lengths(elf_actor *actor, float x, float y, float z);
-void elf_set_actor_bounding_offset(elf_actor *actor, float x, float y, float z);
-/* <!> */ void elf_reset_actor_bounding_offset_set_flag(elf_actor *actor);
-void elf_set_actor_physics(elf_actor *actor, int shape, float mass);
-unsigned char elf_is_actor_physics(elf_actor *actor);
-void elf_disable_actor_physics(elf_actor *actor);
+void elf_set_actor_bounding_lengths(elf_actor* actor, float x, float y, float z);
+void elf_set_actor_bounding_offset(elf_actor* actor, float x, float y, float z);
+/* <!> */ void elf_reset_actor_bounding_offset_set_flag(elf_actor* actor);
+void elf_set_actor_physics(elf_actor* actor, int shape, float mass);
+unsigned char elf_is_actor_physics(elf_actor* actor);
+void elf_disable_actor_physics(elf_actor* actor);
 
-void elf_set_actor_damping(elf_actor *actor, float lin_damp, float ang_damp);
-void elf_set_actor_sleep_thresholds(elf_actor *actor, float lin_thrs, float ang_thrs);
-void elf_set_actor_restitution(elf_actor *actor, float restitution);
-void elf_set_actor_anisotropic_friction(elf_actor *actor, float x, float y, float z);
-void elf_set_actor_linear_factor(elf_actor *actor, float x, float y, float z);
-void elf_set_actor_angular_factor(elf_actor *actor, float x, float y, float z);
+void elf_set_actor_damping(elf_actor* actor, float lin_damp, float ang_damp);
+void elf_set_actor_sleep_thresholds(elf_actor* actor, float lin_thrs, float ang_thrs);
+void elf_set_actor_restitution(elf_actor* actor, float restitution);
+void elf_set_actor_anisotropic_friction(elf_actor* actor, float x, float y, float z);
+void elf_set_actor_linear_factor(elf_actor* actor, float x, float y, float z);
+void elf_set_actor_angular_factor(elf_actor* actor, float x, float y, float z);
 
-void elf_add_force_to_actor(elf_actor *actor, float x, float y, float z);
-void elf_add_force_to_actor_local(elf_actor *actor, float x, float y, float z);
-void elf_add_torque_to_actor(elf_actor *actor, float x, float y, float z);
-void elf_set_actor_linear_velocity(elf_actor *actor, float x, float y, float z);
-void elf_set_actor_linear_velocity_local(elf_actor *actor, float x, float y, float z);
-void elf_set_actor_angular_velocity(elf_actor *actor, float x, float y, float z);
+void elf_add_force_to_actor(elf_actor* actor, float x, float y, float z);
+void elf_add_force_to_actor_local(elf_actor* actor, float x, float y, float z);
+void elf_add_torque_to_actor(elf_actor* actor, float x, float y, float z);
+void elf_set_actor_linear_velocity(elf_actor* actor, float x, float y, float z);
+void elf_set_actor_linear_velocity_local(elf_actor* actor, float x, float y, float z);
+void elf_set_actor_angular_velocity(elf_actor* actor, float x, float y, float z);
 
-elf_vec3f elf_get_actor_bounding_lengths(elf_actor *actor);
-elf_vec3f elf_get_actor_bounding_offset(elf_actor *actor);
-int elf_get_actor_shape(elf_actor *actor);
-float elf_get_actor_mass(elf_actor *actor);
+elf_vec3f elf_get_actor_bounding_lengths(elf_actor* actor);
+elf_vec3f elf_get_actor_bounding_offset(elf_actor* actor);
+int elf_get_actor_shape(elf_actor* actor);
+float elf_get_actor_mass(elf_actor* actor);
 
-float elf_get_actor_linear_damping(elf_actor *actor);
-float elf_get_actor_angular_damping(elf_actor *actor);
-float elf_get_actor_linear_sleep_threshold(elf_actor *actor);
-float elf_get_actor_angular_sleep_threshold(elf_actor *actor);
-float elf_get_actor_restitution(elf_actor *actor);
-elf_vec3f elf_get_actor_anisotropic_friction(elf_actor *actor);
-elf_vec3f elf_get_actor_linear_factor(elf_actor *actor);
-elf_vec3f elf_get_actor_angular_factor(elf_actor *actor);
-elf_vec3f elf_get_actor_linear_velocity(elf_actor *actor);
-elf_vec3f elf_get_actor_angular_velocity(elf_actor *actor);
+float elf_get_actor_linear_damping(elf_actor* actor);
+float elf_get_actor_angular_damping(elf_actor* actor);
+float elf_get_actor_linear_sleep_threshold(elf_actor* actor);
+float elf_get_actor_angular_sleep_threshold(elf_actor* actor);
+float elf_get_actor_restitution(elf_actor* actor);
+elf_vec3f elf_get_actor_anisotropic_friction(elf_actor* actor);
+elf_vec3f elf_get_actor_linear_factor(elf_actor* actor);
+elf_vec3f elf_get_actor_angular_factor(elf_actor* actor);
+elf_vec3f elf_get_actor_linear_velocity(elf_actor* actor);
+elf_vec3f elf_get_actor_angular_velocity(elf_actor* actor);
 
-elf_joint* elf_add_hinge_joint_to_actor(elf_actor *actor, elf_actor *actor2, const char *name, float px, float py, float pz, float ax, float ay, float az);
-elf_joint* elf_add_ball_joint_to_actor(elf_actor *actor, elf_actor *actor2, const char *name, float px, float py, float pz);
-elf_joint* elf_add_cone_twist_joint_to_actor(elf_actor *actor, elf_actor *actor2, const char *name, float px, float py, float pz, float ax, float ay, float az);
-elf_joint* elf_get_actor_joint_by_name(elf_actor *actor, const char *name);
-elf_joint* elf_get_actor_joint_by_index(elf_actor *actor, int idx);
-unsigned char elf_remove_actor_joint_by_name(elf_actor *actor, const char *name);
-unsigned char elf_remove_actor_joint_by_index(elf_actor *actor, int idx);
-unsigned char elf_remove_actor_joint_by_object(elf_actor *actor, elf_joint *joint);
+elf_joint* elf_add_hinge_joint_to_actor(elf_actor* actor, elf_actor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az);
+elf_joint* elf_add_ball_joint_to_actor(elf_actor* actor, elf_actor* actor2, const char* name, float px, float py, float pz);
+elf_joint* elf_add_cone_twist_joint_to_actor(elf_actor* actor, elf_actor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az);
+elf_joint* elf_get_actor_joint_by_name(elf_actor* actor, const char* name);
+elf_joint* elf_get_actor_joint_by_index(elf_actor* actor, int idx);
+unsigned char elf_remove_actor_joint_by_name(elf_actor* actor, const char* name);
+unsigned char elf_remove_actor_joint_by_index(elf_actor* actor, int idx);
+unsigned char elf_remove_actor_joint_by_object(elf_actor* actor, elf_joint* joint);
 
-void elf_set_actor_ipo(elf_actor *actor, elf_ipo *ipo);
-elf_ipo* elf_get_actor_ipo(elf_actor *actor);
+void elf_set_actor_ipo(elf_actor* actor, elf_ipo* ipo);
+elf_ipo* elf_get_actor_ipo(elf_actor* actor);
 
-void elf_set_actor_ipo_frame(elf_actor *actor, float frame);
-void elf_play_actor_ipo(elf_actor *actor, float start, float end, float speed);
-void elf_loop_actor_ipo(elf_actor *actor, float start, float end, float speed);
-void elf_stop_actor_ipo(elf_actor *actor);
-void elf_pause_actor_ipo(elf_actor *actor);
-void elf_resume_actor_ipo(elf_actor *actor);
-float elf_get_actor_ipo_start(elf_actor *actor);
-float elf_get_actor_ipo_end(elf_actor *actor);
-float elf_get_actor_ipo_speed(elf_actor *actor);
-float elf_get_actor_ipo_frame(elf_actor *actor);
-unsigned char elf_is_actor_ipo_playing(elf_actor *actor);
-unsigned char elf_is_actor_ipo_paused(elf_actor *actor);
+void elf_set_actor_ipo_frame(elf_actor* actor, float frame);
+void elf_play_actor_ipo(elf_actor* actor, float start, float end, float speed);
+void elf_loop_actor_ipo(elf_actor* actor, float start, float end, float speed);
+void elf_stop_actor_ipo(elf_actor* actor);
+void elf_pause_actor_ipo(elf_actor* actor);
+void elf_resume_actor_ipo(elf_actor* actor);
+float elf_get_actor_ipo_start(elf_actor* actor);
+float elf_get_actor_ipo_end(elf_actor* actor);
+float elf_get_actor_ipo_speed(elf_actor* actor);
+float elf_get_actor_ipo_frame(elf_actor* actor);
+unsigned char elf_is_actor_ipo_playing(elf_actor* actor);
+unsigned char elf_is_actor_ipo_paused(elf_actor* actor);
 
-int elf_get_actor_collision_count(elf_actor *actor);
-elf_collision* elf_get_actor_collision(elf_actor *actor, int idx);
+int elf_get_actor_collision_count(elf_actor* actor);
+elf_collision* elf_get_actor_collision(elf_actor* actor, int idx);
 
-int elf_get_actor_property_count(elf_actor *actor);
-void elf_add_property_to_actor(elf_actor *actor, elf_property *property);
-elf_property* elf_get_actor_property_by_name(elf_actor *actor, const char *name);
-elf_property* elf_get_actor_property_by_index(elf_actor *actor, int idx);
-unsigned char elf_remove_actor_property_by_name(elf_actor *actor, const char *name);
-unsigned char elf_remove_actor_property_by_index(elf_actor *actor, int idx);
-unsigned char elf_remove_actor_property_by_object(elf_actor *actor, elf_property *property);
-void elf_remove_actor_properties(elf_actor *actor);
+int elf_get_actor_property_count(elf_actor* actor);
+void elf_add_property_to_actor(elf_actor* actor, elf_property* property);
+elf_property* elf_get_actor_property_by_name(elf_actor* actor, const char* name);
+elf_property* elf_get_actor_property_by_index(elf_actor* actor, int idx);
+unsigned char elf_remove_actor_property_by_name(elf_actor* actor, const char* name);
+unsigned char elf_remove_actor_property_by_index(elf_actor* actor, int idx);
+unsigned char elf_remove_actor_property_by_object(elf_actor* actor, elf_property* property);
+void elf_remove_actor_properties(elf_actor* actor);
 
-void elf_set_actor_selected(elf_actor *actor, unsigned char selected);
-unsigned char elf_get_actor_selected(elf_actor *actor);
+void elf_set_actor_selected(elf_actor* actor, unsigned char selected);
+unsigned char elf_get_actor_selected(elf_actor* actor);
 
-/* <!> */ void elf_draw_actor_debug(elf_actor *actor, gfx_shader_params *shader_params);
+/* <!> */ void elf_draw_actor_debug(elf_actor* actor, gfx_shader_params* shader_params);
 
 //////////////////////////////// CAMERA ////////////////////////////////
 
 // <!!
-void elf_update_camera(elf_camera *camera);
-void elf_camera_pre_draw(elf_camera *camera);
-void elf_camear_post_draw(elf_camera *camera);
-void elf_destroy_camera(void *data);
+void elf_update_camera(elf_camera* camera);
+void elf_camera_pre_draw(elf_camera* camera);
+void elf_camear_post_draw(elf_camera* camera);
+void elf_destroy_camera(void* data);
 // !!>
 
-elf_camera* elf_create_camera(const char *name);	// <mdoc> CAMERA FUNCTIONS
+elf_camera* elf_create_camera(const char* name);	// <mdoc> CAMERA FUNCTIONS
 
-void elf_set_camera_viewport(elf_camera *camera, int x, int y, int width, int height);
-void elf_set_camera_perspective(elf_camera *camera, float fov, float aspect, float clip_near, float clip_far);
-void elf_set_camera_orthographic(elf_camera *camera, int x, int y, int width, int height, float clip_near, float clip_far);
+void elf_set_camera_viewport(elf_camera* camera, int x, int y, int width, int height);
+void elf_set_camera_perspective(elf_camera* camera, float fov, float aspect, float clip_near, float clip_far);
+void elf_set_camera_orthographic(elf_camera* camera, int x, int y, int width, int height, float clip_near, float clip_far);
 
-elf_vec2i elf_get_camera_viewport_size(elf_camera *camera);
-elf_vec2i elf_get_camera_viewport_offset(elf_camera *camera);
-float elf_get_camera_fov(elf_camera *camera);
-float elf_get_camera_aspect(elf_camera *camera);
-elf_vec2f elf_get_camera_clip(elf_camera *camera);
-elf_vec2f elf_get_camera_far_plane_size(elf_camera *camera);
+elf_vec2i elf_get_camera_viewport_size(elf_camera* camera);
+elf_vec2i elf_get_camera_viewport_offset(elf_camera* camera);
+float elf_get_camera_fov(elf_camera* camera);
+float elf_get_camera_aspect(elf_camera* camera);
+elf_vec2f elf_get_camera_clip(elf_camera* camera);
+elf_vec2f elf_get_camera_far_plane_size(elf_camera* camera);
 
 // <!!
-float* elf_get_camera_projection_matrix(elf_camera *camera);
-float* elf_get_camera_modelview_matrix(elf_camera *camera);
-void elf_set_camera(elf_camera *camera, gfx_shader_params *shader_params);
-unsigned char elf_aabb_inside_frustum(elf_camera *camera, float *min, float *max);
-unsigned char elf_sphere_inside_frustum(elf_camera *camera, float *pos, float radius);
-unsigned char elf_camera_inside_aabb(elf_camera *camera, float *min, float *max);
-unsigned char elf_camera_inside_sphere(elf_camera *camera, float *pos, float radius);
-void elf_draw_camera_debug(elf_camera *camera, gfx_shader_params *shader_params);
+float* elf_get_camera_projection_matrix(elf_camera* camera);
+float* elf_get_camera_modelview_matrix(elf_camera* camera);
+void elf_set_camera(elf_camera* camera, gfx_shader_params* shader_params);
+unsigned char elf_aabb_inside_frustum(elf_camera* camera, float* min, float* max);
+unsigned char elf_sphere_inside_frustum(elf_camera* camera, float* pos, float radius);
+unsigned char elf_camera_inside_aabb(elf_camera* camera, float* min, float* max);
+unsigned char elf_camera_inside_sphere(elf_camera* camera, float* pos, float radius);
+void elf_draw_camera_debug(elf_camera* camera, gfx_shader_params* shader_params);
 // !!>
 
-elf_vec3f elf_project_camera_point(elf_camera *camera, float x, float y, float z);
-elf_vec3f elf_un_project_camera_point(elf_camera *camera, float x, float y, float z);
+elf_vec3f elf_project_camera_point(elf_camera* camera, float x, float y, float z);
+elf_vec3f elf_un_project_camera_point(elf_camera* camera, float x, float y, float z);
 
 //////////////////////////////// MESH ////////////////////////////////
 
 elf_vertice* elf_create_vertice();	// <mdoc> MESH DATA FUNCTIONS
-/* <!> */ void elf_destroy_vertice(void *data);
+/* <!> */ void elf_destroy_vertice(void* data);
 
-void elf_set_vertice_position(elf_vertice *vertice, float x, float y, float z);
-void elf_set_vertice_normal(elf_vertice *vertice, float x, float y, float z);
-void elf_set_vertice_tex_coord(elf_vertice *vertice, float u, float v);
+void elf_set_vertice_position(elf_vertice* vertice, float x, float y, float z);
+void elf_set_vertice_normal(elf_vertice* vertice, float x, float y, float z);
+void elf_set_vertice_tex_coord(elf_vertice* vertice, float u, float v);
 
-elf_vec3f elf_get_vertice_position(elf_vertice *vertice);
-elf_vec3f elf_get_vertice_normal(elf_vertice *vertice);
-elf_vec2f elf_get_vertice_tex_coord(elf_vertice *vertice);
+elf_vec3f elf_get_vertice_position(elf_vertice* vertice);
+elf_vec3f elf_get_vertice_normal(elf_vertice* vertice);
+elf_vec2f elf_get_vertice_tex_coord(elf_vertice* vertice);
 
 // <!!
 elf_face* elf_create_face();
-void elf_destroy_face(void *data);
+void elf_destroy_face(void* data);
 // !!>
 
-int elf_get_face_v1(elf_face *face);
-int elf_get_face_v2(elf_face *face);
-int elf_get_face_v3(elf_face *face);
+int elf_get_face_v1(elf_face* face);
+int elf_get_face_v2(elf_face* face);
+int elf_get_face_v3(elf_face* face);
 
 elf_mesh_data* elf_create_mesh_data();
-/* <!> */ void elf_destroy_mesh_data(void *data);
+/* <!> */ void elf_destroy_mesh_data(void* data);
 
-int elf_get_mesh_data_vertice_count(elf_mesh_data *mesh_data);
-int elf_get_mesh_data_face_count(elf_mesh_data *mesh_data);
+int elf_get_mesh_data_vertice_count(elf_mesh_data* mesh_data);
+int elf_get_mesh_data_face_count(elf_mesh_data* mesh_data);
 
-void elf_add_vertice_to_mesh_data(elf_mesh_data *mesh_data, elf_vertice *vertice);
-void elf_add_face_to_mesh_data(elf_mesh_data *mesh_data, int v1, int v2, int v3);
+void elf_add_vertice_to_mesh_data(elf_mesh_data* mesh_data, elf_vertice* vertice);
+void elf_add_face_to_mesh_data(elf_mesh_data* mesh_data, int v1, int v2, int v3);
 
-elf_vertice* elf_get_vertice_from_mesh_data(elf_mesh_data *mesh_data, int idx);
-elf_face* elf_get_face_from_mesh_data(elf_mesh_data *mesh_data, int idx);
+elf_vertice* elf_get_vertice_from_mesh_data(elf_mesh_data* mesh_data, int idx);
+elf_face* elf_get_face_from_mesh_data(elf_mesh_data* mesh_data, int idx);
 
 //////////////////////////////// MODEL ////////////////////////////////
 
 // <!!
-elf_model* elf_create_model(const char *name);
-void elf_destroy_model(void *data);
-void elf_generate_model_tangents(elf_model *model);
+elf_model* elf_create_model(const char* name);
+void elf_destroy_model(void* data);
+void elf_generate_model_tangents(elf_model* model);
 // !!>
 
-elf_model* elf_create_model_from_mesh_data(elf_mesh_data *data);	// <mdoc> MODEL FUNCTIONS
+elf_model* elf_create_model_from_mesh_data(elf_mesh_data* data);	// <mdoc> MODEL FUNCTIONS
 
-void elf_set_model_name(elf_model *model, const char *name);
-const char* elf_get_model_name(elf_model *model);
-const char* elf_get_model_file_path(elf_model *model);
-int elf_get_model_vertice_count(elf_model *model);
-int elf_get_model_indice_count(elf_model *model);
-elf_vec3f elf_get_model_bounding_box_min(elf_model *model);
-elf_vec3f elf_get_model_bounding_box_max(elf_model *model);
+void elf_set_model_name(elf_model* model, const char* name);
+const char* elf_get_model_name(elf_model* model);
+const char* elf_get_model_file_path(elf_model* model);
+int elf_get_model_vertice_count(elf_model* model);
+int elf_get_model_indice_count(elf_model* model);
+elf_vec3f elf_get_model_bounding_box_min(elf_model* model);
+elf_vec3f elf_get_model_bounding_box_max(elf_model* model);
 
 // <!!
-float* elf_get_model_vertices(elf_model *model);
-float* elf_get_model_normals(elf_model *model);
-float* elf_get_model_tex_coords(elf_model *model);
-float* elf_get_model_tangents(elf_model *model);
-unsigned int* elf_get_model_indices(elf_model *model);
+float* elf_get_model_vertices(elf_model* model);
+float* elf_get_model_normals(elf_model* model);
+float* elf_get_model_tex_coords(elf_model* model);
+float* elf_get_model_tangents(elf_model* model);
+unsigned int* elf_get_model_indices(elf_model* model);
 
-void elf_draw_model(elf_list *material, elf_model *model, int mode, gfx_shader_params *shader_params);
-void elf_draw_model_bouding_box(elf_model *model, gfx_shader_params *shader_params);
+void elf_draw_model(elf_list* material, elf_model* model, int mode, gfx_shader_params* shader_params);
+void elf_draw_model_bouding_box(elf_model* model, gfx_shader_params* shader_params);
 // !!>
 
 //////////////////////////////// ENTITY ////////////////////////////////
 
 // <!!
-void elf_update_entity(elf_entity *entity);
-void elf_entity_pre_draw(elf_entity *entity);
-void elf_entity_post_draw(elf_entity *entity);
-void elf_destroy_entity(void *data);
-void elf_calc_entity_aabb(elf_entity *entity);
-void elf_calc_entity_bounding_volumes(elf_entity *entity, unsigned char new_model);
+void elf_update_entity(elf_entity* entity);
+void elf_entity_pre_draw(elf_entity* entity);
+void elf_entity_post_draw(elf_entity* entity);
+void elf_destroy_entity(void* data);
+void elf_calc_entity_aabb(elf_entity* entity);
+void elf_calc_entity_bounding_volumes(elf_entity* entity, unsigned char new_model);
 // !!>
 
-elf_entity* elf_create_entity(const char *name);	// <mdoc> ENTITY FUNCTIONS
-void elf_generate_entity_tangents(elf_entity *entity);
+elf_entity* elf_create_entity(const char* name);	// <mdoc> ENTITY FUNCTIONS
+void elf_generate_entity_tangents(elf_entity* entity);
 
-void elf_set_entity_scale(elf_entity *entity, float x, float y, float z);
-elf_vec3f elf_get_entity_scale(elf_entity *entity);
-/* <!> */ void elf_get_entity_scale_(elf_entity *entity, float *scale);
+void elf_set_entity_scale(elf_entity* entity, float x, float y, float z);
+elf_vec3f elf_get_entity_scale(elf_entity* entity);
+/* <!> */ void elf_get_entity_scale_(elf_entity* entity, float* scale);
 
-void elf_set_entity_model(elf_entity *entity, elf_model *model);
-void elf_clear_entity_model(elf_entity *entity);
-elf_model* elf_get_entity_model(elf_entity *entity);
-int elf_get_entity_material_count(elf_entity *entity);
-void elf_add_entity_material(elf_entity *entity, elf_material *material);
-void elf_set_entity_material(elf_entity *entity, int idx, elf_material *material);
-void elf_remove_entity_material(elf_entity *entity, int idx);
-elf_material* elf_get_entity_material(elf_entity *entity, int idx);
+void elf_set_entity_model(elf_entity* entity, elf_model* model);
+void elf_clear_entity_model(elf_entity* entity);
+elf_model* elf_get_entity_model(elf_entity* entity);
+int elf_get_entity_material_count(elf_entity* entity);
+void elf_add_entity_material(elf_entity* entity, elf_material* material);
+void elf_set_entity_material(elf_entity* entity, int idx, elf_material* material);
+void elf_remove_entity_material(elf_entity* entity, int idx);
+elf_material* elf_get_entity_material(elf_entity* entity, int idx);
 
-void elf_set_entity_visible(elf_entity *entity, unsigned char visible);
-unsigned char elf_get_entity_visible(elf_entity *entity);
+void elf_set_entity_visible(elf_entity* entity, unsigned char visible);
+unsigned char elf_get_entity_visible(elf_entity* entity);
 
-void elf_set_entity_occluder(elf_entity *entity, unsigned char occluder);
-unsigned char elf_get_entity_occluder(elf_entity *entity);
+void elf_set_entity_occluder(elf_entity* entity, unsigned char occluder);
+unsigned char elf_get_entity_occluder(elf_entity* entity);
 
-void elf_set_entity_physics(elf_entity *entity, int type, float mass);
-void elf_disable_entity_physics(elf_entity *entity);
+void elf_set_entity_physics(elf_entity* entity, int type, float mass);
+void elf_disable_entity_physics(elf_entity* entity);
 
-void elf_set_entity_armature(elf_entity *entity, elf_armature *armature);
-void elf_set_entity_armature_frame(elf_entity *entity, float frame);
-void elf_play_entity_armature(elf_entity *entity, float start, float end, float speed);
-void elf_loop_entity_armature(elf_entity *entity, float start, float end, float speed);
-void elf_stop_entity_armature(elf_entity *entity);
-void elf_pause_entity_armature(elf_entity *entity);
-void elf_resume_entity_armature(elf_entity *entity);
-float elf_get_entity_armature_start(elf_entity *entity);
-float elf_get_entity_armature_end(elf_entity *entity);
-float elf_get_entity_armature_speed(elf_entity *entity);
-float elf_get_entity_armature_frame(elf_entity *entity);
-unsigned char elf_is_entity_armature_playing(elf_entity *entity);
-unsigned char elf_is_entity_armature_paused(elf_entity *entity);
+void elf_set_entity_armature(elf_entity* entity, elf_armature* armature);
+void elf_set_entity_armature_frame(elf_entity* entity, float frame);
+void elf_play_entity_armature(elf_entity* entity, float start, float end, float speed);
+void elf_loop_entity_armature(elf_entity* entity, float start, float end, float speed);
+void elf_stop_entity_armature(elf_entity* entity);
+void elf_pause_entity_armature(elf_entity* entity);
+void elf_resume_entity_armature(elf_entity* entity);
+float elf_get_entity_armature_start(elf_entity* entity);
+float elf_get_entity_armature_end(elf_entity* entity);
+float elf_get_entity_armature_speed(elf_entity* entity);
+float elf_get_entity_armature_frame(elf_entity* entity);
+unsigned char elf_is_entity_armature_playing(elf_entity* entity);
+unsigned char elf_is_entity_armature_paused(elf_entity* entity);
 
-elf_armature* elf_get_entity_armature(elf_entity *entity);
+elf_armature* elf_get_entity_armature(elf_entity* entity);
 
 // <!!
-void elf_reset_entity_debug_physics_object(elf_entity *entity);
-void elf_draw_entity(elf_entity *entity, int mode, gfx_shader_params *shader_params);
-void elf_draw_entity_bounding_box(elf_entity *entity, gfx_shader_params *shader_params);
-void elf_draw_entity_debug(elf_entity *entity, gfx_shader_params *shader_params);
-unsigned char elf_cull_entity(elf_entity *entity, elf_camera *camera);
+void elf_reset_entity_debug_physics_object(elf_entity* entity);
+void elf_draw_entity(elf_entity* entity, int mode, gfx_shader_params* shader_params);
+void elf_draw_entity_bounding_box(elf_entity* entity, gfx_shader_params* shader_params);
+void elf_draw_entity_debug(elf_entity* entity, gfx_shader_params* shader_params);
+unsigned char elf_cull_entity(elf_entity* entity, elf_camera* camera);
 // !!>
 
-unsigned char elf_get_entity_changed(elf_entity *entity);
+unsigned char elf_get_entity_changed(elf_entity* entity);
 
 //////////////////////////////// LIGHT ////////////////////////////////
 
 // <!!
-void elf_update_light(elf_light *light);
-void elf_light_pre_draw(elf_light *light);
-void elf_light_post_draw(elf_light *light);
-void elf_destroy_light(void *data);
+void elf_update_light(elf_light* light);
+void elf_light_pre_draw(elf_light* light);
+void elf_light_post_draw(elf_light* light);
+void elf_destroy_light(void* data);
 // !!>
 
-elf_light* elf_create_light(const char *name);	// <mdoc> LIGHT FUNCTIONS
+elf_light* elf_create_light(const char* name);	// <mdoc> LIGHT FUNCTIONS
 
-int elf_get_light_type(elf_light *light);
-elf_color elf_get_light_color(elf_light *light);
-float elf_get_light_distance(elf_light *light);
-float elf_get_light_fade_speed(elf_light *light);
-unsigned char elf_get_light_shadows(elf_light *light);
-unsigned char elf_get_light_visible(elf_light *light);
-elf_vec2f elf_get_light_cone(elf_light *light);
-unsigned char elf_is_light_shaft(elf_light *light);
-float elf_get_light_shaft_size(elf_light *light);
-float elf_get_light_shaft_intensity(elf_light *light);
-float elf_get_light_shaft_fade_off(elf_light *light);
+int elf_get_light_type(elf_light* light);
+elf_color elf_get_light_color(elf_light* light);
+float elf_get_light_distance(elf_light* light);
+float elf_get_light_fade_speed(elf_light* light);
+unsigned char elf_get_light_shadows(elf_light* light);
+unsigned char elf_get_light_visible(elf_light* light);
+elf_vec2f elf_get_light_cone(elf_light* light);
+unsigned char elf_is_light_shaft(elf_light* light);
+float elf_get_light_shaft_size(elf_light* light);
+float elf_get_light_shaft_intensity(elf_light* light);
+float elf_get_light_shaft_fade_off(elf_light* light);
 
-void elf_set_light_type(elf_light *light, int type);
-void elf_set_light_color(elf_light *light, float r, float g, float b, float a);
-void elf_set_light_distance(elf_light *light, float distance);
-void elf_set_light_fade_speed(elf_light *light, float fade_speed);
-void elf_set_light_shadows(elf_light *light, unsigned char shadows);
-void elf_set_light_visible(elf_light *light, unsigned char visible);
-void elf_set_light_cone(elf_light *light, float inner_cone, float outer_cone);
-void elf_set_light_shaft(elf_light *light, float size, float intensity, float fade_off);
-void elf_disable_light_shaft(elf_light *light);
+void elf_set_light_type(elf_light* light, int type);
+void elf_set_light_color(elf_light* light, float r, float g, float b, float a);
+void elf_set_light_distance(elf_light* light, float distance);
+void elf_set_light_fade_speed(elf_light* light, float fade_speed);
+void elf_set_light_shadows(elf_light* light, unsigned char shadows);
+void elf_set_light_visible(elf_light* light, unsigned char visible);
+void elf_set_light_cone(elf_light* light, float inner_cone, float outer_cone);
+void elf_set_light_shaft(elf_light* light, float size, float intensity, float fade_off);
+void elf_disable_light_shaft(elf_light* light);
 
 // <!!
-void elf_set_light(elf_light *light, elf_camera *camera, gfx_shader_params *shader_params);
-void elf_draw_light_debug(elf_light *light, gfx_shader_params *shader_params);
-unsigned char elf_get_light_changed(elf_light *light);
+void elf_set_light(elf_light* light, elf_camera* camera, gfx_shader_params* shader_params);
+void elf_draw_light_debug(elf_light* light, gfx_shader_params* shader_params);
+unsigned char elf_get_light_changed(elf_light* light);
 // !!>
 
 //////////////////////////////// ARMATURE ////////////////////////////////
 
 // <!!
-elf_bone* elf_create_bone(const char *name);
-void elf_destroy_bone(void *data);
+elf_bone* elf_create_bone(const char* name);
+void elf_destroy_bone(void* data);
 // !!>
 
-elf_armature* elf_get_bone_armature(elf_bone *bone);	// <mdoc> BONE FUNCTIONS
-elf_bone* elf_get_bone_parent(elf_bone *bone);
-elf_bone* elf_get_bone_child_by_name(elf_bone *bone, const char *name);
-elf_bone* elf_get_bone_child_by_id(elf_bone *bone, int id);
-elf_bone* elf_get_bone_child_by_index(elf_bone *bone, int idx);
-elf_vec3f elf_get_bone_position(elf_bone *bone);
-elf_vec3f elf_get_bone_rotation(elf_bone *bone);
-elf_vec4f elf_get_bone_orientation(elf_bone *bone);
+elf_armature* elf_get_bone_armature(elf_bone* bone);	// <mdoc> BONE FUNCTIONS
+elf_bone* elf_get_bone_parent(elf_bone* bone);
+elf_bone* elf_get_bone_child_by_name(elf_bone* bone, const char* name);
+elf_bone* elf_get_bone_child_by_id(elf_bone* bone, int id);
+elf_bone* elf_get_bone_child_by_index(elf_bone* bone, int idx);
+elf_vec3f elf_get_bone_position(elf_bone* bone);
+elf_vec3f elf_get_bone_rotation(elf_bone* bone);
+elf_vec4f elf_get_bone_orientation(elf_bone* bone);
 
 // <!!
-void elf_update_armature(elf_armature *armature);
-void elf_destroy_armature(void *data);
+void elf_update_armature(elf_armature* armature);
+void elf_destroy_armature(void* data);
 // !!>
 
-elf_armature* elf_create_armature(const char *name);	// <mdoc> ARMATURE FUNCTIONS
+elf_armature* elf_create_armature(const char* name);	// <mdoc> ARMATURE FUNCTIONS
 
-elf_bone* elf_get_bone_from_armature_by_name(const char *name, elf_armature *armature);
-elf_bone* elf_get_bone_from_armature_by_id(int id, elf_armature *armature);
+elf_bone* elf_get_bone_from_armature_by_name(const char* name, elf_armature* armature);
+elf_bone* elf_get_bone_from_armature_by_id(int id, elf_armature* armature);
 
 // <!!
-void elf_add_root_bone_to_armature(elf_armature *armature, elf_bone *bone);
+void elf_add_root_bone_to_armature(elf_armature* armature, elf_bone* bone);
 
-void elf_deform_entity_with_armature(elf_armature *armature, elf_entity *entity, float frame);
-void elf_draw_armature_debug(elf_armature *armature, gfx_shader_params *shader_params);
+void elf_deform_entity_with_armature(elf_armature* armature, elf_entity* entity, float frame);
+void elf_draw_armature_debug(elf_armature* armature, gfx_shader_params* shader_params);
 // !!>
 
 //////////////////////////////// PARTICLES ////////////////////////////////
 
 // <!!
 elf_particle* elf_create_particle();
-void elf_destroy_particle(void *data);
-void elf_particles_pre_draw(elf_particles *particles);
-void elf_particles_post_draw(elf_particles *particles);
-void elf_update_particles(elf_particles *particles, float sync);
-void elf_destroy_particles(void *data);
+void elf_destroy_particle(void* data);
+void elf_particles_pre_draw(elf_particles* particles);
+void elf_particles_post_draw(elf_particles* particles);
+void elf_update_particles(elf_particles* particles, float sync);
+void elf_destroy_particles(void* data);
 // !!>
 
-elf_particles* elf_create_particles(const char *name, int max_count);	// <mdoc> PARTICLES FUNCTIONS
+elf_particles* elf_create_particles(const char* name, int max_count);	// <mdoc> PARTICLES FUNCTIONS
 
-const char* elf_get_particles_name(elf_particles *particles);
-const char* elf_get_particles_file_path(elf_particles *particles);
+const char* elf_get_particles_name(elf_particles* particles);
+const char* elf_get_particles_file_path(elf_particles* particles);
 
-void elf_set_particles_max_count(elf_particles *particles, int max_count);
-void elf_set_particles_draw_mode(elf_particles *particles, int mode);
-void elf_set_particles_texture(elf_particles *particles, elf_texture *texture);
-void elf_clear_particles_texture(elf_particles *particles);
-void elf_set_particles_model(elf_particles *particles, elf_model *model);
-void elf_clear_particles_model(elf_particles *particles);
-void elf_set_particles_entity(elf_particles *particles, elf_entity *entity);
-void elf_clear_particles_entity(elf_particles *particles);
-void elf_set_particles_gravity(elf_particles *particles, float x, float y, float z);
-void elf_set_particles_spawn_delay(elf_particles *particles, float delay);
-void elf_set_particles_spawn(elf_particles *particles, unsigned char spawn);
+void elf_set_particles_max_count(elf_particles* particles, int max_count);
+void elf_set_particles_draw_mode(elf_particles* particles, int mode);
+void elf_set_particles_texture(elf_particles* particles, elf_texture* texture);
+void elf_clear_particles_texture(elf_particles* particles);
+void elf_set_particles_model(elf_particles* particles, elf_model* model);
+void elf_clear_particles_model(elf_particles* particles);
+void elf_set_particles_entity(elf_particles* particles, elf_entity* entity);
+void elf_clear_particles_entity(elf_particles* particles);
+void elf_set_particles_gravity(elf_particles* particles, float x, float y, float z);
+void elf_set_particles_spawn_delay(elf_particles* particles, float delay);
+void elf_set_particles_spawn(elf_particles* particles, unsigned char spawn);
 
-void elf_set_particles_size(elf_particles *particles, float min, float max);
-void elf_set_particles_size_growth(elf_particles *particles, float min, float max);
-void elf_set_particles_rotation(elf_particles *particles, float min, float max);
-void elf_set_particles_rotation_growth(elf_particles *particles, float min, float max);
-void elf_set_particles_life_span(elf_particles *particles, float min, float max);
-void elf_set_particles_fade_speed(elf_particles *particles, float min, float max);
-void elf_set_particles_position_min(elf_particles *particles, float x, float y, float z);
-void elf_set_particles_position_max(elf_particles *particles, float x, float y, float z);
-void elf_set_particles_velocity_min(elf_particles *particles, float x, float y, float z);
-void elf_set_particles_velocity_max(elf_particles *particles, float x, float y, float z);
-void elf_set_particles_color_min(elf_particles *particles, float r, float g, float b, float a);
-void elf_set_particles_color_max(elf_particles *particles, float r, float g, float b, float a);
+void elf_set_particles_size(elf_particles* particles, float min, float max);
+void elf_set_particles_size_growth(elf_particles* particles, float min, float max);
+void elf_set_particles_rotation(elf_particles* particles, float min, float max);
+void elf_set_particles_rotation_growth(elf_particles* particles, float min, float max);
+void elf_set_particles_life_span(elf_particles* particles, float min, float max);
+void elf_set_particles_fade_speed(elf_particles* particles, float min, float max);
+void elf_set_particles_position_min(elf_particles* particles, float x, float y, float z);
+void elf_set_particles_position_max(elf_particles* particles, float x, float y, float z);
+void elf_set_particles_velocity_min(elf_particles* particles, float x, float y, float z);
+void elf_set_particles_velocity_max(elf_particles* particles, float x, float y, float z);
+void elf_set_particles_color_min(elf_particles* particles, float r, float g, float b, float a);
+void elf_set_particles_color_max(elf_particles* particles, float r, float g, float b, float a);
 
-int elf_get_particles_max_count(elf_particles *particles);
-int elf_get_particles_count(elf_particles *particles);
-int elf_get_particles_draw_mode(elf_particles *particles);
-elf_texture* elf_get_particles_texture(elf_particles *particles);
-elf_model* elf_get_particles_model(elf_particles *particles);
-elf_entity* elf_get_particles_entity(elf_particles *particles);
-elf_vec3f elf_get_particles_gravity(elf_particles *particles);
-float elf_get_particles_spawn_delay(elf_particles *particles);
-unsigned char elf_get_particles_spawn(elf_particles *particles);
+int elf_get_particles_max_count(elf_particles* particles);
+int elf_get_particles_count(elf_particles* particles);
+int elf_get_particles_draw_mode(elf_particles* particles);
+elf_texture* elf_get_particles_texture(elf_particles* particles);
+elf_model* elf_get_particles_model(elf_particles* particles);
+elf_entity* elf_get_particles_entity(elf_particles* particles);
+elf_vec3f elf_get_particles_gravity(elf_particles* particles);
+float elf_get_particles_spawn_delay(elf_particles* particles);
+unsigned char elf_get_particles_spawn(elf_particles* particles);
 
-float elf_get_particles_size_min(elf_particles *particles);
-float elf_get_particles_size_max(elf_particles *particles);
-float elf_get_particles_size_growth_min(elf_particles *particles);
-float elf_get_particles_size_growth_max(elf_particles *particles);
-float elf_get_particles_rotation_min(elf_particles *particles);
-float elf_get_particles_rotation_max(elf_particles *particles);
-float elf_get_particles_rotation_growth_min(elf_particles *particles);
-float elf_get_particles_rotation_growth_max(elf_particles *particles);
-float elf_get_particles_life_span_min(elf_particles *particles);
-float elf_get_particles_life_span_max(elf_particles *particles);
-float elf_get_particles_fade_speed_min(elf_particles *particles);
-float elf_get_particles_fade_speed_max(elf_particles *particles);
-elf_vec3f elf_get_particles_position_min(elf_particles *particles);
-elf_vec3f elf_get_particles_position_max(elf_particles *particles);
-elf_vec3f elf_get_particles_velocity_min(elf_particles *particles);
-elf_vec3f elf_get_particles_velocity_max(elf_particles *particles);
-elf_color elf_get_particles_color_min(elf_particles *particles);
-elf_color elf_get_particles_color_max(elf_particles *particles);
+float elf_get_particles_size_min(elf_particles* particles);
+float elf_get_particles_size_max(elf_particles* particles);
+float elf_get_particles_size_growth_min(elf_particles* particles);
+float elf_get_particles_size_growth_max(elf_particles* particles);
+float elf_get_particles_rotation_min(elf_particles* particles);
+float elf_get_particles_rotation_max(elf_particles* particles);
+float elf_get_particles_rotation_growth_min(elf_particles* particles);
+float elf_get_particles_rotation_growth_max(elf_particles* particles);
+float elf_get_particles_life_span_min(elf_particles* particles);
+float elf_get_particles_life_span_max(elf_particles* particles);
+float elf_get_particles_fade_speed_min(elf_particles* particles);
+float elf_get_particles_fade_speed_max(elf_particles* particles);
+elf_vec3f elf_get_particles_position_min(elf_particles* particles);
+elf_vec3f elf_get_particles_position_max(elf_particles* particles);
+elf_vec3f elf_get_particles_velocity_min(elf_particles* particles);
+elf_vec3f elf_get_particles_velocity_max(elf_particles* particles);
+elf_color elf_get_particles_color_min(elf_particles* particles);
+elf_color elf_get_particles_color_max(elf_particles* particles);
 
 // <!!
-void elf_draw_particles_debug(elf_particles *particles, gfx_shader_params *shader_params);
-void elf_draw_particles(elf_particles *particles, elf_camera *camera, gfx_shader_params *shader_params);
-unsigned char elf_cull_particles(elf_particles *particles, elf_camera *camera);
+void elf_draw_particles_debug(elf_particles* particles, gfx_shader_params* shader_params);
+void elf_draw_particles(elf_particles* particles, elf_camera* camera, gfx_shader_params* shader_params);
+unsigned char elf_cull_particles(elf_particles* particles, elf_camera* camera);
 // !!>
 
 //////////////////////////////// SPRITE ////////////////////////////////
 
 // <!!
-void elf_update_sprite(elf_sprite *sprite);
-void elf_sprite_pre_draw(elf_sprite *sprite, elf_camera *camera);
-void elf_sprite_post_draw(elf_sprite *sprite);
-void elf_destroy_sprite(void *data);
+void elf_update_sprite(elf_sprite* sprite);
+void elf_sprite_pre_draw(elf_sprite* sprite, elf_camera* camera);
+void elf_sprite_post_draw(elf_sprite* sprite);
+void elf_destroy_sprite(void* data);
 // !!>
 
-elf_sprite* elf_create_sprite(const char *name);
+elf_sprite* elf_create_sprite(const char* name);
 
-void elf_set_sprite_material(elf_sprite *sprite, elf_material *material);
-void elf_set_sprite_scale(elf_sprite *sprite, float x, float y);
-void elf_set_sprite_face_camera(elf_sprite *sprite, unsigned char face_camera);
+void elf_set_sprite_material(elf_sprite* sprite, elf_material* material);
+void elf_set_sprite_scale(elf_sprite* sprite, float x, float y);
+void elf_set_sprite_face_camera(elf_sprite* sprite, unsigned char face_camera);
 
-elf_material* elf_get_sprite_material(elf_sprite *sprite);
-elf_vec2f elf_get_sprite_scale(elf_sprite *sprite);
-unsigned char elf_get_sprite_face_camera(elf_sprite *sprite);
+elf_material* elf_get_sprite_material(elf_sprite* sprite);
+elf_vec2f elf_get_sprite_scale(elf_sprite* sprite);
+unsigned char elf_get_sprite_face_camera(elf_sprite* sprite);
 
-void elf_set_sprite_visible(elf_sprite *sprite, unsigned char visible);
-unsigned char elf_get_sprite_visible(elf_sprite *sprite);
+void elf_set_sprite_visible(elf_sprite* sprite, unsigned char visible);
+unsigned char elf_get_sprite_visible(elf_sprite* sprite);
 
-void elf_set_sprite_occluder(elf_sprite *sprite, unsigned char occluder);
-unsigned char elf_get_sprite_occluder(elf_sprite *sprite);
+void elf_set_sprite_occluder(elf_sprite* sprite, unsigned char occluder);
+unsigned char elf_get_sprite_occluder(elf_sprite* sprite);
 
 // <!!
-unsigned char elf_cull_sprite(elf_sprite *sprite, elf_camera *camera);
-void elf_draw_sprite(elf_sprite *sprite, int mode, gfx_shader_params *shader_params);
-void elf_draw_sprite_debug(elf_sprite *sprite, gfx_shader_params *shader_params);
+unsigned char elf_cull_sprite(elf_sprite* sprite, elf_camera* camera);
+void elf_draw_sprite(elf_sprite* sprite, int mode, gfx_shader_params* shader_params);
+void elf_draw_sprite_debug(elf_sprite* sprite, gfx_shader_params* shader_params);
 // !!>
 
 //////////////////////////////// SCENE ////////////////////////////////
 
 // <!!
-void elf_update_scene(elf_scene *scene, float sync);
-void elf_scene_pre_draw(elf_scene *scene);
-void elf_scene_post_draw(elf_scene *scene);
-void elf_destroy_scene(void *data);
+void elf_update_scene(elf_scene* scene, float sync);
+void elf_scene_pre_draw(elf_scene* scene);
+void elf_scene_post_draw(elf_scene* scene);
+void elf_destroy_scene(void* data);
 // !!>
 
-elf_scene* elf_create_scene(const char *name);
-elf_scene* elf_create_scene_from_file(const char *file_path);	// <mdoc> SCENE FUNCTIONS
-unsigned char elf_save_scene(elf_scene *scene, const char *file_path);
+elf_scene* elf_create_scene(const char* name);
+elf_scene* elf_create_scene_from_file(const char* file_path);	// <mdoc> SCENE FUNCTIONS
+unsigned char elf_save_scene(elf_scene* scene, const char* file_path);
 
-void elf_set_scene_ambient_color(elf_scene *scene, float r, float g, float b, float a);
-elf_color elf_get_scene_ambient_color(elf_scene *scene);
+void elf_set_scene_ambient_color(elf_scene* scene, float r, float g, float b, float a);
+elf_color elf_get_scene_ambient_color(elf_scene* scene);
 
-void elf_set_scene_gravity(elf_scene *scene, float x, float y, float z);
-elf_vec3f elf_get_scene_gravity(elf_scene *scene);
+void elf_set_scene_gravity(elf_scene* scene, float x, float y, float z);
+elf_vec3f elf_get_scene_gravity(elf_scene* scene);
 
-void elf_set_scene_physics(elf_scene *scene, unsigned char physics);
-unsigned char elf_get_scene_physics(elf_scene *scene);
+void elf_set_scene_physics(elf_scene* scene, unsigned char physics);
+unsigned char elf_get_scene_physics(elf_scene* scene);
 
-void elf_set_scene_run_scripts(elf_scene *scene, unsigned char run_scripts);
-unsigned char elf_get_scene_run_scripts(elf_scene *scene, unsigned char run_scripts);
+void elf_set_scene_run_scripts(elf_scene* scene, unsigned char run_scripts);
+unsigned char elf_get_scene_run_scripts(elf_scene* scene, unsigned char run_scripts);
 
-const char* elf_get_scene_name(elf_scene *scene);
-const char* elf_get_scene_file_path(elf_scene *scene);
+const char* elf_get_scene_name(elf_scene* scene);
+const char* elf_get_scene_file_path(elf_scene* scene);
 
-int elf_get_scene_camera_count(elf_scene *scene);
-int elf_get_scene_entity_count(elf_scene *scene);
-int elf_get_scene_light_count(elf_scene *scene);
-int elf_get_scene_armature_count(elf_scene *scene);
-int elf_get_scene_particles_count(elf_scene *scene);
-int elf_get_scene_sprite_count(elf_scene *scene);
+int elf_get_scene_camera_count(elf_scene* scene);
+int elf_get_scene_entity_count(elf_scene* scene);
+int elf_get_scene_light_count(elf_scene* scene);
+int elf_get_scene_armature_count(elf_scene* scene);
+int elf_get_scene_particles_count(elf_scene* scene);
+int elf_get_scene_sprite_count(elf_scene* scene);
 
-void elf_add_camera_to_scene(elf_scene *scene, elf_camera *camera);
-void elf_add_entity_to_scene(elf_scene *scene, elf_entity *entity);
-void elf_add_light_to_scene(elf_scene *scene, elf_light *light);
-void elf_add_particles_to_scene(elf_scene *scene, elf_particles *particles);
-void elf_add_sprite_to_scene(elf_scene *scene, elf_sprite *sprite);
+void elf_add_camera_to_scene(elf_scene* scene, elf_camera* camera);
+void elf_add_entity_to_scene(elf_scene* scene, elf_entity* entity);
+void elf_add_light_to_scene(elf_scene* scene, elf_light* light);
+void elf_add_particles_to_scene(elf_scene* scene, elf_particles* particles);
+void elf_add_sprite_to_scene(elf_scene* scene, elf_sprite* sprite);
 
-void elf_set_scene_active_camera(elf_scene *scene, elf_camera *camera);
-elf_camera* elf_get_scene_active_camera(elf_scene *scene);
-elf_collision* elf_get_scene_ray_cast_result(elf_scene *scene, float x, float y, float z, float dx, float dy, float dz);
-elf_list* elf_get_scene_ray_cast_results(elf_scene *scene, float x, float y, float z, float dx, float dy, float dz);
-elf_collision* elf_get_debug_scene_ray_cast_result(elf_scene *scene, float x, float y, float z, float dx, float dy, float dz);
-elf_list* elf_get_debug_scene_ray_cast_results(elf_scene *scene, float x, float y, float z, float dx, float dy, float dz);
+void elf_set_scene_active_camera(elf_scene* scene, elf_camera* camera);
+elf_camera* elf_get_scene_active_camera(elf_scene* scene);
+elf_collision* elf_get_scene_ray_cast_result(elf_scene* scene, float x, float y, float z, float dx, float dy, float dz);
+elf_list* elf_get_scene_ray_cast_results(elf_scene* scene, float x, float y, float z, float dx, float dy, float dz);
+elf_collision* elf_get_debug_scene_ray_cast_result(elf_scene* scene, float x, float y, float z, float dx, float dy, float dz);
+elf_list* elf_get_debug_scene_ray_cast_results(elf_scene* scene, float x, float y, float z, float dx, float dy, float dz);
 
-elf_camera* elf_get_camera_by_index(elf_scene *scene, int idx);
-elf_entity* elf_get_entity_by_index(elf_scene *scene, int idx);
-elf_light* elf_get_light_by_index(elf_scene *scene, int idx);
-elf_armature* elf_get_armature_by_index(elf_scene *scene, int idx);
-elf_particles* elf_get_particles_by_index(elf_scene *scene, int idx);
-elf_sprite* elf_get_sprite_by_index(elf_scene *scene, int idx);
+elf_camera* elf_get_camera_by_index(elf_scene* scene, int idx);
+elf_entity* elf_get_entity_by_index(elf_scene* scene, int idx);
+elf_light* elf_get_light_by_index(elf_scene* scene, int idx);
+elf_armature* elf_get_armature_by_index(elf_scene* scene, int idx);
+elf_particles* elf_get_particles_by_index(elf_scene* scene, int idx);
+elf_sprite* elf_get_sprite_by_index(elf_scene* scene, int idx);
 
-elf_texture *elf_get_texture_by_name(elf_scene *scene, const char *name);
-elf_material *elf_get_material_by_name(elf_scene *scene, const char *name);
-elf_model* elf_get_model_by_name(elf_scene *scene, const char *name);
-elf_script *elf_get_script_by_name(elf_scene *scene, const char *name);
-elf_camera* elf_get_camera_by_name(elf_scene *scene, const char *name);
-elf_entity* elf_get_entity_by_name(elf_scene *scene, const char *name);
-elf_light* elf_get_light_by_name(elf_scene *scene, const char *name);
-elf_armature* elf_get_armature_by_name(elf_scene *scene, const char *name);
-elf_particles* elf_get_particles_by_name(elf_scene *scene, const char *name);
-elf_sprite* elf_get_sprite_by_name(elf_scene *scene, const char *name);
-elf_actor *elf_get_actor_by_name(elf_scene *scene, const char *name);
+elf_texture* elf_get_texture_by_name(elf_scene* scene, const char* name);
+elf_material* elf_get_material_by_name(elf_scene* scene, const char* name);
+elf_model* elf_get_model_by_name(elf_scene* scene, const char* name);
+elf_script* elf_get_script_by_name(elf_scene* scene, const char* name);
+elf_camera* elf_get_camera_by_name(elf_scene* scene, const char* name);
+elf_entity* elf_get_entity_by_name(elf_scene* scene, const char* name);
+elf_light* elf_get_light_by_name(elf_scene* scene, const char* name);
+elf_armature* elf_get_armature_by_name(elf_scene* scene, const char* name);
+elf_particles* elf_get_particles_by_name(elf_scene* scene, const char* name);
+elf_sprite* elf_get_sprite_by_name(elf_scene* scene, const char* name);
+elf_actor* elf_get_actor_by_name(elf_scene* scene, const char* name);
 
 // <!!
-elf_texture* elf_get_or_load_texture_by_name(elf_scene *scene, const char *name);
-elf_model* elf_get_or_load_model_by_name(elf_scene *scene, const char *name);
-elf_script* elf_get_or_load_script_by_name(elf_scene *scene, const char *name);
-elf_camera* elf_get_or_load_camera_by_name(elf_scene *scene, const char *name);
-elf_entity* elf_get_or_load_entity_by_name(elf_scene *scene, const char *name);
-elf_particles *elf_get_or_load_particles_by_name(elf_scene *scene, const char *name);
-elf_sprite *elf_get_or_load_sprite_by_name(elf_scene *scene, const char *name);
-elf_light* elf_get_or_load_light_by_name(elf_scene *scene, const char *name);
-elf_armature* elf_get_or_load_armature_by_name(elf_scene *scene, const char *name);
-elf_material *elf_get_or_load_material_by_name(elf_scene *scene, const char *name);
-elf_actor *elf_get_or_load_actor_by_name(elf_scene *scene, const char *name);
+elf_texture* elf_get_or_load_texture_by_name(elf_scene* scene, const char* name);
+elf_model* elf_get_or_load_model_by_name(elf_scene* scene, const char* name);
+elf_script* elf_get_or_load_script_by_name(elf_scene* scene, const char* name);
+elf_camera* elf_get_or_load_camera_by_name(elf_scene* scene, const char* name);
+elf_entity* elf_get_or_load_entity_by_name(elf_scene* scene, const char* name);
+elf_particles* elf_get_or_load_particles_by_name(elf_scene* scene, const char* name);
+elf_sprite* elf_get_or_load_sprite_by_name(elf_scene* scene, const char* name);
+elf_light* elf_get_or_load_light_by_name(elf_scene* scene, const char* name);
+elf_armature* elf_get_or_load_armature_by_name(elf_scene* scene, const char* name);
+elf_material* elf_get_or_load_material_by_name(elf_scene* scene, const char* name);
+elf_actor* elf_get_or_load_actor_by_name(elf_scene* scene, const char* name);
 
-void elf_remove_actor(elf_actor *actor);
+void elf_remove_actor(elf_actor* actor);
 // !!>
-unsigned char elf_remove_camera_by_name(elf_scene *scene, const char *name);
-unsigned char elf_remove_entity_by_name(elf_scene *scene, const char *name);
-unsigned char elf_remove_light_by_name(elf_scene *scene, const char *name);
-unsigned char elf_remove_particles_by_name(elf_scene *scene, const char *name);
-unsigned char elf_remove_sprite_by_name(elf_scene *scene, const char *name);
+unsigned char elf_remove_camera_by_name(elf_scene* scene, const char* name);
+unsigned char elf_remove_entity_by_name(elf_scene* scene, const char* name);
+unsigned char elf_remove_light_by_name(elf_scene* scene, const char* name);
+unsigned char elf_remove_particles_by_name(elf_scene* scene, const char* name);
+unsigned char elf_remove_sprite_by_name(elf_scene* scene, const char* name);
 
-unsigned char elf_remove_camera_by_index(elf_scene *scene, int idx);
-unsigned char elf_remove_entity_by_index(elf_scene *scene, int idx);
-unsigned char elf_remove_light_by_index(elf_scene *scene, int idx);
-unsigned char elf_remove_particles_by_index(elf_scene *scene, int idx);
-unsigned char elf_remove_sprite_by_index(elf_scene *scene, int idx);
+unsigned char elf_remove_camera_by_index(elf_scene* scene, int idx);
+unsigned char elf_remove_entity_by_index(elf_scene* scene, int idx);
+unsigned char elf_remove_light_by_index(elf_scene* scene, int idx);
+unsigned char elf_remove_particles_by_index(elf_scene* scene, int idx);
+unsigned char elf_remove_sprite_by_index(elf_scene* scene, int idx);
 
-unsigned char elf_remove_camera_by_object(elf_scene *scene, elf_camera *camera);
-unsigned char elf_remove_entity_by_object(elf_scene *scene, elf_entity *entity);
-unsigned char elf_remove_light_by_object(elf_scene *scene, elf_light *light);
-unsigned char elf_remove_particles_by_object(elf_scene *scene, elf_particles *particles);
-unsigned char elf_remove_sprite_by_object(elf_scene *scene, elf_sprite *sprite);
+unsigned char elf_remove_camera_by_object(elf_scene* scene, elf_camera* camera);
+unsigned char elf_remove_entity_by_object(elf_scene* scene, elf_entity* entity);
+unsigned char elf_remove_light_by_object(elf_scene* scene, elf_light* light);
+unsigned char elf_remove_particles_by_object(elf_scene* scene, elf_particles* particles);
+unsigned char elf_remove_sprite_by_object(elf_scene* scene, elf_sprite* sprite);
 
-unsigned char elf_remove_actor_by_object(elf_scene *scene, elf_actor *actor);
+unsigned char elf_remove_actor_by_object(elf_scene* scene, elf_actor* actor);
 
 // <!!
-void elf_draw_scene(elf_scene *scene);
-void elf_draw_scene_debug(elf_scene *scene);
+void elf_draw_scene(elf_scene* scene);
+void elf_draw_scene_debug(elf_scene* scene);
 // !!>
 
-elf_list* elf_get_scene_scripts(elf_scene *scene);
-elf_list* elf_get_scene_textures(elf_scene *scene);
-elf_list* elf_get_scene_materials(elf_scene *scene);
-elf_list* elf_get_scene_models(elf_scene *scene);
+elf_list* elf_get_scene_scripts(elf_scene* scene);
+elf_list* elf_get_scene_textures(elf_scene* scene);
+elf_list* elf_get_scene_materials(elf_scene* scene);
+elf_list* elf_get_scene_models(elf_scene* scene);
 
 //////////////////////////////// PAK ////////////////////////////////
 
 // <!!
 elf_pak_index* elf_create_pak_index();
-void elf_destroy_pak_index(void *data);
-elf_pak* elf_create_pak_from_file(const char *file_path);
-void elf_destroy_pak(void *data);
+void elf_destroy_pak_index(void* data);
+elf_pak* elf_create_pak_from_file(const char* file_path);
+void elf_destroy_pak(void* data);
 
-const char* elf_get_pak_file_path(elf_pak *pak);
-int elf_get_pak_index_count(elf_pak *pak);
+const char* elf_get_pak_file_path(elf_pak* pak);
+int elf_get_pak_index_count(elf_pak* pak);
 
-elf_pak_index* elf_get_pak_index_by_name(elf_pak *pak, const char *name, unsigned char type);
-elf_pak_index* elf_get_pak_index_by_index(elf_pak *pak, int idx);
-unsigned char elf_get_pak_index_type(elf_pak_index *index);
-const char* elf_get_pak_index_name(elf_pak_index *index);
-int elf_get_pak_index_offset(elf_pak_index *index);
+elf_pak_index* elf_get_pak_index_by_name(elf_pak* pak, const char* name, unsigned char type);
+elf_pak_index* elf_get_pak_index_by_index(elf_pak* pak, int idx);
+unsigned char elf_get_pak_index_type(elf_pak_index* index);
+const char* elf_get_pak_index_name(elf_pak_index* index);
+int elf_get_pak_index_offset(elf_pak_index* index);
 
-int elf_get_actor_header_size_bytes(elf_actor *actor);
-int elf_get_armature_size_bytes(elf_armature *armature);
-int elf_get_camera_size_bytes(elf_camera *camera);
-int elf_get_entity_size_bytes(elf_entity *entity);
-int elf_get_light_size_bytes(elf_light *light);
-int elf_get_material_size_bytes(elf_material *material);
-int elf_get_model_size_bytes(elf_model *model);
-int elf_get_particles_size_bytes(elf_particles *particles);
-int elf_get_scene_size_bytes(elf_scene *scene);
-int elf_get_script_size_bytes(elf_script *script);
-int elf_get_sprite_size_bytes(elf_sprite *sprite);
-int elf_get_texture_size_bytes(elf_texture *texture);
+int elf_get_actor_header_size_bytes(elf_actor* actor);
+int elf_get_armature_size_bytes(elf_armature* armature);
+int elf_get_camera_size_bytes(elf_camera* camera);
+int elf_get_entity_size_bytes(elf_entity* entity);
+int elf_get_light_size_bytes(elf_light* light);
+int elf_get_material_size_bytes(elf_material* material);
+int elf_get_model_size_bytes(elf_model* model);
+int elf_get_particles_size_bytes(elf_particles* particles);
+int elf_get_scene_size_bytes(elf_scene* scene);
+int elf_get_script_size_bytes(elf_script* script);
+int elf_get_sprite_size_bytes(elf_sprite* sprite);
+int elf_get_texture_size_bytes(elf_texture* texture);
 
-void elf_read_actor_header(elf_actor *actor, FILE *file, elf_scene *scene);
-elf_armature* elf_create_armature_from_pak(FILE *file, const char *name, elf_scene *scene);
-elf_camera* elf_create_camera_from_pak(FILE *file, const char *name, elf_scene *scene);
-elf_entity* elf_create_entity_from_pak(FILE *file, const char *name, elf_scene *scene);
-elf_light* elf_create_light_from_pak(FILE *file, const char *name, elf_scene *scene);
-elf_material* elf_create_material_from_pak(FILE *file, const char *name, elf_scene *scene);
-elf_model* elf_create_model_from_pak(FILE *file, const char *name, elf_scene *scene);
-elf_particles* elf_create_particles_from_pak(FILE *file, const char *name, elf_scene *scene);
-elf_script* elf_create_script_from_pak(FILE *file, const char *name, elf_scene *scene);
-elf_sprite* elf_create_sprite_from_pak(FILE *file, const char *name, elf_scene *scene);
-elf_texture *elf_create_texture_from_pak(FILE *file, const char *name, elf_scene *scene);
-unsigned char elf_load_texture_data_from_pak(elf_texture *texture);
+void elf_read_actor_header(elf_actor* actor, FILE* file, elf_scene* scene);
+elf_armature* elf_create_armature_from_pak(FILE* file, const char* name, elf_scene* scene);
+elf_camera* elf_create_camera_from_pak(FILE* file, const char* name, elf_scene* scene);
+elf_entity* elf_create_entity_from_pak(FILE* file, const char* name, elf_scene* scene);
+elf_light* elf_create_light_from_pak(FILE* file, const char* name, elf_scene* scene);
+elf_material* elf_create_material_from_pak(FILE* file, const char* name, elf_scene* scene);
+elf_model* elf_create_model_from_pak(FILE* file, const char* name, elf_scene* scene);
+elf_particles* elf_create_particles_from_pak(FILE* file, const char* name, elf_scene* scene);
+elf_script* elf_create_script_from_pak(FILE* file, const char* name, elf_scene* scene);
+elf_sprite* elf_create_sprite_from_pak(FILE* file, const char* name, elf_scene* scene);
+elf_texture* elf_create_texture_from_pak(FILE* file, const char* name, elf_scene* scene);
+unsigned char elf_load_texture_data_from_pak(elf_texture* texture);
 
-elf_scene *elf_create_scene_from_pak(elf_pak *pak);
+elf_scene* elf_create_scene_from_pak(elf_pak* pak);
 
-void elf_write_actor_header(elf_actor *actor, FILE *file);
-void elf_write_armature_to_file(elf_armature *armature, FILE *file);
-void elf_write_camera_to_file(elf_camera *camera, FILE *file);
-void elf_write_entity_to_file(elf_entity *entity, FILE *file);
-void elf_write_light_to_file(elf_light *light, FILE *file);
-void elf_write_material_to_file(elf_material *material, FILE *file);
-void elf_write_model_to_file(elf_model *model, FILE *file);
-void elf_write_particles_to_file(elf_particles *particles, FILE *file);
-void elf_write_script_to_file(elf_script *script, FILE *file);
-void elf_write_sprite_to_file(elf_sprite *sprite, FILE *file);
-void elf_write_texture_to_file(elf_texture *texture, FILE *file);
+void elf_write_actor_header(elf_actor* actor, FILE* file);
+void elf_write_armature_to_file(elf_armature* armature, FILE* file);
+void elf_write_camera_to_file(elf_camera* camera, FILE* file);
+void elf_write_entity_to_file(elf_entity* entity, FILE* file);
+void elf_write_light_to_file(elf_light* light, FILE* file);
+void elf_write_material_to_file(elf_material* material, FILE* file);
+void elf_write_model_to_file(elf_model* model, FILE* file);
+void elf_write_particles_to_file(elf_particles* particles, FILE* file);
+void elf_write_script_to_file(elf_script* script, FILE* file);
+void elf_write_sprite_to_file(elf_sprite* sprite, FILE* file);
+void elf_write_texture_to_file(elf_texture* texture, FILE* file);
 
-unsigned char elf_save_scene_to_pak(elf_scene *scene, const char *file_path);
+unsigned char elf_save_scene_to_pak(elf_scene* scene, const char* file_path);
 // !!>
 
 //////////////////////////////// POST PROCESS ////////////////////////////////
 
 // <!!
 elf_post_process* elf_create_post_process();
-void elf_destroy_post_process(void *data);
+void elf_destroy_post_process(void* data);
 
-void elf_init_post_process_buffers(elf_post_process *post_process);
+void elf_init_post_process_buffers(elf_post_process* post_process);
 
-void elf_run_post_process(elf_post_process *post_process, elf_scene *scene);
+void elf_run_post_process(elf_post_process* post_process, elf_scene* scene);
 
-void elf_set_post_process_bloom(elf_post_process *post_process, float threshold);
-void elf_disable_post_process_bloom(elf_post_process *post_process);
-float elf_get_post_process_bloom_threshold(elf_post_process *post_process);
+void elf_set_post_process_bloom(elf_post_process* post_process, float threshold);
+void elf_disable_post_process_bloom(elf_post_process* post_process);
+float elf_get_post_process_bloom_threshold(elf_post_process* post_process);
 
-void elf_set_post_process_dof(elf_post_process *post_process, float focal_range, float focal_distance);
-void elf_disable_post_process_dof(elf_post_process *post_process);
-float elf_get_post_process_dof_focal_range(elf_post_process *post_process);
-float elf_get_post_process_dof_focal_distance(elf_post_process *post_process);
+void elf_set_post_process_dof(elf_post_process* post_process, float focal_range, float focal_distance);
+void elf_disable_post_process_dof(elf_post_process* post_process);
+float elf_get_post_process_dof_focal_range(elf_post_process* post_process);
+float elf_get_post_process_dof_focal_distance(elf_post_process* post_process);
 
-void elf_set_post_process_ssao(elf_post_process *post_process, float amount);
-void elf_disable_post_process_ssao(elf_post_process *post_process);
-float elf_get_post_process_ssao_amount(elf_post_process *post_process);
+void elf_set_post_process_ssao(elf_post_process* post_process, float amount);
+void elf_disable_post_process_ssao(elf_post_process* post_process);
+float elf_get_post_process_ssao_amount(elf_post_process* post_process);
 
-void elf_set_post_process_light_shafts(elf_post_process *post_process, float intensity);
-void elf_disable_post_process_light_shafts(elf_post_process *post_process);
-float elf_get_post_process_light_shafts_intensity(elf_post_process *post_process);
+void elf_set_post_process_light_shafts(elf_post_process* post_process, float intensity);
+void elf_disable_post_process_light_shafts(elf_post_process* post_process);
+float elf_get_post_process_light_shafts_intensity(elf_post_process* post_process);
 
-unsigned char elf_is_post_process_bloom(elf_post_process *post_process);
-unsigned char elf_is_post_process_ssao(elf_post_process *post_process);
-unsigned char elf_is_post_process_dof(elf_post_process *post_process);
-unsigned char elf_is_post_process_light_shafts(elf_post_process *post_process);
+unsigned char elf_is_post_process_bloom(elf_post_process* post_process);
+unsigned char elf_is_post_process_ssao(elf_post_process* post_process);
+unsigned char elf_is_post_process_dof(elf_post_process* post_process);
+unsigned char elf_is_post_process_light_shafts(elf_post_process* post_process);
 // !!>
 
 //////////////////////////////// SCRIPT ////////////////////////////////
 
 // <!!
-void elf_destroy_script(void *data);
+void elf_destroy_script(void* data);
 // !!>
 
-elf_script* elf_create_script(const char *name);	// <mdoc> SCRIPT FUNCTIONS
-elf_script* elf_create_script_from_file(const char *file_path);
+elf_script* elf_create_script(const char* name);	// <mdoc> SCRIPT FUNCTIONS
+elf_script* elf_create_script_from_file(const char* file_path);
 
-void elf_set_script_name(elf_script *script, const char *name);
+void elf_set_script_name(elf_script* script, const char* name);
 
-const char* elf_get_script_name(elf_script *script);
-const char* elf_get_script_file_path(elf_script *script);
+const char* elf_get_script_name(elf_script* script);
+const char* elf_get_script_file_path(elf_script* script);
 
-void elf_set_script_text(elf_script *script, const char *text);
-unsigned char elf_is_script_error(elf_script *script);
+void elf_set_script_text(elf_script* script, const char* text);
+unsigned char elf_is_script_error(elf_script* script);
 
 //////////////////////////////// SCRIPTING ////////////////////////////////
 
 // <!!
 elf_scripting* elf_create_scripting();
-void elf_destroy_scripting(void *data);
+void elf_destroy_scripting(void* data);
 
 unsigned char elf_init_scripting();
 void elf_update_scripting();
 void elf_deinit_scripting();
 
 elf_script* elf_get_current_script();
-void elf_set_script_error(int err, const char *msg);
+void elf_set_script_error(int err, const char* msg);
 // !!>
 
-unsigned char elf_run_string(const char *str);
-unsigned char elf_run_script(elf_script *script);
+unsigned char elf_run_string(const char* str);
+unsigned char elf_run_script(elf_script* script);
 
 //////////////////////////////// AUDIO ////////////////////////////////
 
 // <!!
 elf_audio_device* elf_create_audio_device();
-void elf_destroy_audio_device(void *data);
+void elf_destroy_audio_device(void* data);
 unsigned char elf_init_audio();
 void elf_update_audio();
 void elf_deinit_audio();
@@ -1613,329 +1613,329 @@ void elf_set_audio_rolloff(float rolloff);
 float elf_get_audio_rolloff();
 // <!!
 void elf_set_audio_listener_position(float x, float y, float z);
-void elf_set_audio_listener_orientation(float *params);
+void elf_set_audio_listener_orientation(float* params);
 // !!>
 
 // <!!
 elf_sound* elf_create_sound();
-void elf_destroy_sound(void *data);
+void elf_destroy_sound(void* data);
 // !!>
 
-elf_sound* elf_load_sound(const char *file_path);
-elf_sound* elf_load_streamed_sound(const char *file_path);
-int elf_get_sound_file_type(elf_sound *sound);
+elf_sound* elf_load_sound(const char* file_path);
+elf_sound* elf_load_streamed_sound(const char* file_path);
+int elf_get_sound_file_type(elf_sound* sound);
 
-elf_audio_source* elf_play_sound(elf_sound *sound, float volume);
-elf_audio_source* elf_play_entity_sound(elf_entity *entity, elf_sound *sound, float volume);
-elf_audio_source* elf_loop_sound(elf_sound *sound, float volume);
-elf_audio_source* elf_loop_entity_sound(elf_entity *entity, elf_sound *sound, float volume);
+elf_audio_source* elf_play_sound(elf_sound* sound, float volume);
+elf_audio_source* elf_play_entity_sound(elf_entity* entity, elf_sound* sound, float volume);
+elf_audio_source* elf_loop_sound(elf_sound* sound, float volume);
+elf_audio_source* elf_loop_entity_sound(elf_entity* entity, elf_sound* sound, float volume);
 // <!!
 elf_audio_source* elf_create_audio_source();
-void elf_stream_audio_source(elf_audio_source *source);
-void elf_destroy_audio_source(void *data);
+void elf_stream_audio_source(elf_audio_source* source);
+void elf_destroy_audio_source(void* data);
 // !!>
-void elf_set_sound_volume(elf_audio_source *source, float volume);
-float elf_get_sound_volume(elf_audio_source *source);
-void elf_pause_sound(elf_audio_source *source);
-void elf_resume_sound(elf_audio_source *source);
-void elf_stop_sound(elf_audio_source *source);
+void elf_set_sound_volume(elf_audio_source* source, float volume);
+float elf_get_sound_volume(elf_audio_source* source);
+void elf_pause_sound(elf_audio_source* source);
+void elf_resume_sound(elf_audio_source* source);
+void elf_stop_sound(elf_audio_source* source);
 
-unsigned char elf_is_sound_playing(elf_audio_source *source);
-unsigned char elf_is_sound_paused(elf_audio_source *source);
+unsigned char elf_is_sound_playing(elf_audio_source* source);
+unsigned char elf_is_sound_paused(elf_audio_source* source);
 // <!!
-void elf_set_sound_position(elf_audio_source *source, float x, float y, float z);
+void elf_set_sound_position(elf_audio_source* source, float x, float y, float z);
 // !!>
 
 //////////////////////////////// PHYSICS ////////////////////////////////
 
 // <!!
 elf_collision* elf_create_collision();
-void elf_destroy_collision(void *data);
+void elf_destroy_collision(void* data);
 
 elf_physics_world* elf_create_physics_world();
-void elf_destroy_physics_world(void *data);
-void elf_update_physics_world(elf_physics_world *world, float time);
+void elf_destroy_physics_world(void* data);
+void elf_update_physics_world(elf_physics_world* world, float time);
 
-void elf_set_physics_world_gravity(elf_physics_world *world, float x, float y, float z);
-elf_vec3f elf_get_physics_world_gravity(elf_physics_world *world);
+void elf_set_physics_world_gravity(elf_physics_world* world, float x, float y, float z);
+elf_vec3f elf_get_physics_world_gravity(elf_physics_world* world);
 
-elf_collision* elf_get_ray_cast_result(elf_physics_world *world, float x, float y, float z, float dx, float dy, float dz);
-elf_list* elf_get_ray_cast_results(elf_physics_world *world, float x, float y, float z, float dx, float dy, float dz);
+elf_collision* elf_get_ray_cast_result(elf_physics_world* world, float x, float y, float z, float dx, float dy, float dz);
+elf_list* elf_get_ray_cast_results(elf_physics_world* world, float x, float y, float z, float dx, float dy, float dz);
 // !!>
 
-elf_actor* elf_get_collision_actor(elf_collision *collision);	// <mdoc> COLLISION FUNCTIONS
-elf_vec3f elf_get_collision_position(elf_collision *collision);
-elf_vec3f elf_get_collision_normal(elf_collision *collision);
-float elf_get_collision_depth(elf_collision *collision);
+elf_actor* elf_get_collision_actor(elf_collision* collision);	// <mdoc> COLLISION FUNCTIONS
+elf_vec3f elf_get_collision_position(elf_collision* collision);
+elf_vec3f elf_get_collision_normal(elf_collision* collision);
+float elf_get_collision_depth(elf_collision* collision);
 
 // <!!
 elf_joint* elf_create_joint();
-void elf_set_joint_world(elf_joint *joint, elf_physics_world *world);
-elf_joint* elf_create_hinge_joint(elf_actor *actor1, elf_actor *actor2, const char *name, float px, float py, float pz, float ax, float ay, float az);
-elf_joint* elf_create_ball_joint(elf_actor *actor1, elf_actor *actor2, const char *name, float px, float py, float pz);
-elf_joint* elf_create_cone_twist_joint(elf_actor *actor1, elf_actor *actor2, const char *name, float px, float py, float pz, float ax, float ay, float az);
-void elf_clear_joint(elf_joint *joint);
-void elf_destroy_joint(void *data);
+void elf_set_joint_world(elf_joint* joint, elf_physics_world* world);
+elf_joint* elf_create_hinge_joint(elf_actor* actor1, elf_actor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az);
+elf_joint* elf_create_ball_joint(elf_actor* actor1, elf_actor* actor2, const char* name, float px, float py, float pz);
+elf_joint* elf_create_cone_twist_joint(elf_actor* actor1, elf_actor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az);
+void elf_clear_joint(elf_joint* joint);
+void elf_destroy_joint(void* data);
 // !!>
 
-const char* elf_get_joint_name(elf_joint *joint);	// <mdoc> JOINT FUNCTIONS
-int elf_get_joint_type(elf_joint *joint);
-elf_actor* elf_get_joint_actor_a(elf_joint *joint);
-elf_actor* elf_get_joint_actor_b(elf_joint *joint);
-elf_vec3f elf_get_joint_pivot(elf_joint *joint);
-elf_vec3f elf_get_joint_axis(elf_joint *joint);
+const char* elf_get_joint_name(elf_joint* joint);	// <mdoc> JOINT FUNCTIONS
+int elf_get_joint_type(elf_joint* joint);
+elf_actor* elf_get_joint_actor_a(elf_joint* joint);
+elf_actor* elf_get_joint_actor_b(elf_joint* joint);
+elf_vec3f elf_get_joint_pivot(elf_joint* joint);
+elf_vec3f elf_get_joint_axis(elf_joint* joint);
 
 // <!!
-elf_physics_tri_mesh* elf_create_physics_tri_mesh(float *verts, unsigned int *idx, int indice_count);
-void elf_destroy_physics_tri_mesh(void *data);
+elf_physics_tri_mesh* elf_create_physics_tri_mesh(float* verts, unsigned int* idx, int indice_count);
+void elf_destroy_physics_tri_mesh(void* data);
 
 elf_physics_object* elf_create_physics_object();
-elf_physics_object* elf_create_physics_object_mesh(elf_physics_tri_mesh *tri_mesh, float mass);
+elf_physics_object* elf_create_physics_object_mesh(elf_physics_tri_mesh* tri_mesh, float mass);
 elf_physics_object* elf_create_physics_object_sphere(float radius, float mass, float ox, float oy, float oz);
 elf_physics_object* elf_create_physics_object_box(float hx, float hy, float hz, float mass, float ox, float oy, float oz);
 elf_physics_object* elf_create_physics_object_capsule(unsigned char type, float length, float radius, float mass, float ox, float oy, float oz);
 elf_physics_object* elf_create_physics_object_cone(unsigned char type, float length, float radius, float mass, float ox, float oy, float oz);
-void elf_set_physics_object_world(elf_physics_object *object, elf_physics_world *world);
-void elf_destroy_physics_object(void *data);
+void elf_set_physics_object_world(elf_physics_object* object, elf_physics_world* world);
+void elf_destroy_physics_object(void* data);
 
-void elf_set_physics_object_actor(elf_physics_object *object, elf_actor *actor);
-void elf_remove_physics_object_collisions(elf_physics_object *objects);
-void elf_clear_physics_object_collisions(elf_physics_object *objects);
+void elf_set_physics_object_actor(elf_physics_object* object, elf_actor* actor);
+void elf_remove_physics_object_collisions(elf_physics_object* objects);
+void elf_clear_physics_object_collisions(elf_physics_object* objects);
 
-int elf_get_physics_object_collision_count(elf_physics_object *object);
-elf_collision* elf_get_physics_object_collision(elf_physics_object *object, int idx);
+int elf_get_physics_object_collision_count(elf_physics_object* object);
+elf_collision* elf_get_physics_object_collision(elf_physics_object* object, int idx);
 
-void elf_set_physics_object_position(elf_physics_object *object, float x, float y, float z);
-void elf_set_physics_object_orientation(elf_physics_object *object, float x, float y, float z, float w);
-void elf_set_physics_object_scale(elf_physics_object *object, float x, float y, float z);
+void elf_set_physics_object_position(elf_physics_object* object, float x, float y, float z);
+void elf_set_physics_object_orientation(elf_physics_object* object, float x, float y, float z, float w);
+void elf_set_physics_object_scale(elf_physics_object* object, float x, float y, float z);
 
-int elf_get_physics_object_shape(elf_physics_object *object);
-float elf_get_physics_object_mass(elf_physics_object *object);
-void elf_get_physics_object_position(elf_physics_object *object, float *params);
-void elf_get_physics_object_orientation(elf_physics_object *object, float *params);
-void elf_get_physics_object_scale(elf_physics_object *object, float *params);
-unsigned char elf_is_physics_object_static(elf_physics_object *object);
+int elf_get_physics_object_shape(elf_physics_object* object);
+float elf_get_physics_object_mass(elf_physics_object* object);
+void elf_get_physics_object_position(elf_physics_object* object, float* params);
+void elf_get_physics_object_orientation(elf_physics_object* object, float* params);
+void elf_get_physics_object_scale(elf_physics_object* object, float* params);
+unsigned char elf_is_physics_object_static(elf_physics_object* object);
 
-void elf_set_physics_object_damping(elf_physics_object *object, float lin_damp, float ang_damp);
-void elf_set_physics_object_anisotropic_friction(elf_physics_object *object, float x, float y, float z);
-void elf_set_physics_object_sleep_thresholds(elf_physics_object *object, float lin_thrs, float ang_thrs);
-void elf_set_physics_object_restitution(elf_physics_object *object, float restitution);
-void elf_add_force_to_physics_object(elf_physics_object *object, float x, float y, float z);
-void elf_add_torque_to_physics_object(elf_physics_object *object, float x, float y, float z);
-void elf_set_physics_object_linear_velocity(elf_physics_object *object, float x, float y, float z);
-void elf_set_physics_object_angular_velocity(elf_physics_object *object, float x, float y, float z);
-void elf_set_physics_object_linear_factor(elf_physics_object *object, float x, float y, float z);
-void elf_set_physics_object_angular_factor(elf_physics_object *object, float x, float y, float z);
+void elf_set_physics_object_damping(elf_physics_object* object, float lin_damp, float ang_damp);
+void elf_set_physics_object_anisotropic_friction(elf_physics_object* object, float x, float y, float z);
+void elf_set_physics_object_sleep_thresholds(elf_physics_object* object, float lin_thrs, float ang_thrs);
+void elf_set_physics_object_restitution(elf_physics_object* object, float restitution);
+void elf_add_force_to_physics_object(elf_physics_object* object, float x, float y, float z);
+void elf_add_torque_to_physics_object(elf_physics_object* object, float x, float y, float z);
+void elf_set_physics_object_linear_velocity(elf_physics_object* object, float x, float y, float z);
+void elf_set_physics_object_angular_velocity(elf_physics_object* object, float x, float y, float z);
+void elf_set_physics_object_linear_factor(elf_physics_object* object, float x, float y, float z);
+void elf_set_physics_object_angular_factor(elf_physics_object* object, float x, float y, float z);
 
-void elf_get_physics_object_linear_velocity(elf_physics_object *object, float *params);
-void elf_get_physics_object_angular_velocity(elf_physics_object *object, float *params);
-void elf_get_physics_object_linear_factor(elf_physics_object *object, float *params);
-void elf_get_physics_object_angular_factor(elf_physics_object *object, float *params);
-float elf_get_physics_object_linear_damping(elf_physics_object *object);
-float elf_get_physics_object_angular_damping(elf_physics_object *object);
-void elf_get_physics_object_anisotropic_friction(elf_physics_object *object, float *params);
-float elf_get_physics_object_linear_sleep_threshold(elf_physics_object *object);
-float elf_get_physics_object_angular_sleep_threshold(elf_physics_object *object);
-float elf_get_physics_object_restitution(elf_physics_object *object);
+void elf_get_physics_object_linear_velocity(elf_physics_object* object, float* params);
+void elf_get_physics_object_angular_velocity(elf_physics_object* object, float* params);
+void elf_get_physics_object_linear_factor(elf_physics_object* object, float* params);
+void elf_get_physics_object_angular_factor(elf_physics_object* object, float* params);
+float elf_get_physics_object_linear_damping(elf_physics_object* object);
+float elf_get_physics_object_angular_damping(elf_physics_object* object);
+void elf_get_physics_object_anisotropic_friction(elf_physics_object* object, float* params);
+float elf_get_physics_object_linear_sleep_threshold(elf_physics_object* object);
+float elf_get_physics_object_angular_sleep_threshold(elf_physics_object* object);
+float elf_get_physics_object_restitution(elf_physics_object* object);
 // !!>
 
 //////////////////////////////// FONT ////////////////////////////////
 
 // <!!
 elf_font* elf_create_font();
-void elf_destroy_font(void *data);
+void elf_destroy_font(void* data);
 // !!>
 
-elf_font* elf_create_font_from_file(const char *file_path, int size);	// <mdoc> FONT FUNCTIONS
+elf_font* elf_create_font_from_file(const char* file_path, int size);	// <mdoc> FONT FUNCTIONS
 
-const char* elf_get_font_name(elf_font *font);
-const char* elf_get_font_file_path(elf_font *font);
-int elf_get_font_size(elf_font *font);
-int elf_get_string_width(elf_font *font, const char *str);
-int elf_get_string_height(elf_font *font, const char *str);
+const char* elf_get_font_name(elf_font* font);
+const char* elf_get_font_file_path(elf_font* font);
+int elf_get_font_size(elf_font* font);
+int elf_get_string_width(elf_font* font, const char* str);
+int elf_get_string_height(elf_font* font, const char* str);
 
-/* <!> */ void elf_draw_string(elf_font *font, const char *str, int x, int y, gfx_shader_params *shader_params);
+/* <!> */ void elf_draw_string(elf_font* font, const char* str, int x, int y, gfx_shader_params* shader_params);
 
 //////////////////////////////// GUI ////////////////////////////////
 
-const char* elf_get_gui_object_name(elf_gui_object *object);	// <mdoc> GUI OBJECT FUNCTIONS <mdocc> Gui object functions can be performed on all gui object types [Labels|Buttons|Pictures|etc...]
-elf_vec2i elf_get_gui_object_position(elf_gui_object *object);
-elf_vec2i elf_get_gui_object_size(elf_gui_object *object);
-elf_color elf_get_gui_object_color(elf_gui_object *object);
-unsigned char elf_get_gui_object_visible(elf_gui_object *object);
-elf_script *elf_get_gui_object_script(elf_gui_object *object);
-int elf_get_gui_object_event(elf_gui_object *object);
+const char* elf_get_gui_object_name(elf_gui_object* object);	// <mdoc> GUI OBJECT FUNCTIONS <mdocc> Gui object functions can be performed on all gui object types [Labels|Buttons|Pictures|etc...]
+elf_vec2i elf_get_gui_object_position(elf_gui_object* object);
+elf_vec2i elf_get_gui_object_size(elf_gui_object* object);
+elf_color elf_get_gui_object_color(elf_gui_object* object);
+unsigned char elf_get_gui_object_visible(elf_gui_object* object);
+elf_script* elf_get_gui_object_script(elf_gui_object* object);
+int elf_get_gui_object_event(elf_gui_object* object);
 
-void elf_set_gui_object_position(elf_gui_object *object, float x, float y);
-void elf_set_gui_object_color(elf_gui_object *object, float r, float g, float b, float a);
-void elf_set_gui_object_visible(elf_gui_object *object, unsigned char visible);
-void elf_set_gui_object_script(elf_gui_object *object, elf_script *script);
+void elf_set_gui_object_position(elf_gui_object* object, float x, float y);
+void elf_set_gui_object_color(elf_gui_object* object, float r, float g, float b, float a);
+void elf_set_gui_object_visible(elf_gui_object* object, unsigned char visible);
+void elf_set_gui_object_script(elf_gui_object* object, elf_script* script);
 
 // <!!
-void elf_destroy_label(void *data);
-void elf_draw_label(elf_label *label, gfx_shader_params *shader_params);
-void elf_recalc_label(elf_label *label);
+void elf_destroy_label(void* data);
+void elf_draw_label(elf_label* label, gfx_shader_params* shader_params);
+void elf_recalc_label(elf_label* label);
 // !!>
 
-elf_label* elf_create_label(const char *name);	// <mdoc> LABEL FUNCTIONS
+elf_label* elf_create_label(const char* name);	// <mdoc> LABEL FUNCTIONS
 
-elf_font* elf_get_label_font(elf_label *label);
-const char* elf_get_label_text(elf_label *label);
+elf_font* elf_get_label_font(elf_label* label);
+const char* elf_get_label_text(elf_label* label);
 
-void elf_set_label_font(elf_label *label, elf_font *font);
-void elf_set_label_text(elf_label *label, const char *text);
+void elf_set_label_font(elf_label* label, elf_font* font);
+void elf_set_label_text(elf_label* label, const char* text);
 
 // <!!
-void elf_destroy_button(void *data);
-void elf_draw_button(elf_button *button, gfx_shader_params *shader_params);
-void elf_recalc_button(elf_button *button);
+void elf_destroy_button(void* data);
+void elf_draw_button(elf_button* button, gfx_shader_params* shader_params);
+void elf_recalc_button(elf_button* button);
 // !!>
 
-elf_button* elf_create_button(const char *name);	// <mdoc> BUTTON FUNCTIONS
+elf_button* elf_create_button(const char* name);	// <mdoc> BUTTON FUNCTIONS
 
-unsigned char elf_get_button_state(elf_button *button);
-elf_texture* elf_get_button_off_texture(elf_button *button);
-elf_texture* elf_get_button_over_texture(elf_button *button);
-elf_texture* elf_get_button_on_texture(elf_button *button);
+unsigned char elf_get_button_state(elf_button* button);
+elf_texture* elf_get_button_off_texture(elf_button* button);
+elf_texture* elf_get_button_over_texture(elf_button* button);
+elf_texture* elf_get_button_on_texture(elf_button* button);
 
-void elf_set_button_off_texture(elf_button *button, elf_texture *off);
-void elf_set_button_over_texture(elf_button *button, elf_texture *over);
-void elf_set_button_on_texture(elf_button *button, elf_texture *on);
+void elf_set_button_off_texture(elf_button* button, elf_texture* off);
+void elf_set_button_over_texture(elf_button* button, elf_texture* over);
+void elf_set_button_on_texture(elf_button* button, elf_texture* on);
 
 // <!!
-void elf_destroy_picture(void *data);
-void elf_draw_picture(elf_picture *picture, gfx_shader_params *shader_params);
-void elf_recalc_picture(elf_picture *picture);
+void elf_destroy_picture(void* data);
+void elf_draw_picture(elf_picture* picture, gfx_shader_params* shader_params);
+void elf_recalc_picture(elf_picture* picture);
 // !!>
 
-elf_picture* elf_create_picture(const char *name);	// <mdoc> PICTURE FUNCTIONS
+elf_picture* elf_create_picture(const char* name);	// <mdoc> PICTURE FUNCTIONS
 
-elf_texture* elf_get_picture_texture(elf_picture *picture);
-elf_vec2f elf_get_picture_scale(elf_picture *picture);
+elf_texture* elf_get_picture_texture(elf_picture* picture);
+elf_vec2f elf_get_picture_scale(elf_picture* picture);
 
-void elf_set_picture_texture(elf_picture *picture, elf_texture *texture);
-void elf_set_picture_scale(elf_picture *picture, float x, float y);
+void elf_set_picture_texture(elf_picture* picture, elf_texture* texture);
+void elf_set_picture_scale(elf_picture* picture, float x, float y);
 
 // <!!
-void elf_destroy_text_field(void *data);
-void elf_draw_text_field(elf_text_field *text_field, elf_area *area, gfx_shader_params *shader_params);
-void elf_recalc_text_field(elf_text_field *text_field);
+void elf_destroy_text_field(void* data);
+void elf_draw_text_field(elf_text_field* text_field, elf_area* area, gfx_shader_params* shader_params);
+void elf_recalc_text_field(elf_text_field* text_field);
 // !!>
 
-elf_text_field* elf_create_text_field(const char *name);	// <mdoc> TEXT FIELD FUNCTIONS
+elf_text_field* elf_create_text_field(const char* name);	// <mdoc> TEXT FIELD FUNCTIONS
 
-elf_texture* elf_get_text_field_texture(elf_text_field *text_field);
-elf_font* elf_get_text_field_font(elf_text_field *text_field);
-elf_color elf_get_text_field_text_color(elf_text_field *text_field);
-elf_vec2i elf_get_text_field_offset(elf_text_field *text_field);
-const char* elf_get_text_field_text(elf_text_field *text_field);
+elf_texture* elf_get_text_field_texture(elf_text_field* text_field);
+elf_font* elf_get_text_field_font(elf_text_field* text_field);
+elf_color elf_get_text_field_text_color(elf_text_field* text_field);
+elf_vec2i elf_get_text_field_offset(elf_text_field* text_field);
+const char* elf_get_text_field_text(elf_text_field* text_field);
 
-void elf_set_text_field_texture(elf_text_field *text_field, elf_texture *texture);
-void elf_set_text_field_font(elf_text_field *text_field, elf_font *font);
-void elf_set_text_field_text_color(elf_text_field *text_field, float r, float g, float b, float a);
-void elf_set_text_field_offset(elf_text_field *text_field, int offset_x, int offset_y);
-void elf_set_text_field_cursor_position(elf_text_field *text_field, int idx);
-void elf_set_text_field_text(elf_text_field *text_field, const char *text);
+void elf_set_text_field_texture(elf_text_field* text_field, elf_texture* texture);
+void elf_set_text_field_font(elf_text_field* text_field, elf_font* font);
+void elf_set_text_field_text_color(elf_text_field* text_field, float r, float g, float b, float a);
+void elf_set_text_field_offset(elf_text_field* text_field, int offset_x, int offset_y);
+void elf_set_text_field_cursor_position(elf_text_field* text_field, int idx);
+void elf_set_text_field_text(elf_text_field* text_field, const char* text);
 
 // <!!
-void elf_destroy_slider(void *data);
-void elf_draw_slider(elf_slider *slider, gfx_shader_params *shader_params);
-void elf_recalc_slider(elf_slider *slider);
+void elf_destroy_slider(void* data);
+void elf_draw_slider(elf_slider* slider, gfx_shader_params* shader_params);
+void elf_recalc_slider(elf_slider* slider);
 // !!>
 
-elf_slider* elf_create_slider(const char *name);	// <mdoc> SLIDER FUNCTIONS
+elf_slider* elf_create_slider(const char* name);	// <mdoc> SLIDER FUNCTIONS
 
-elf_texture* elf_get_slider_background_texture(elf_slider *slider);
-elf_texture* elf_get_slider_slider_texture(elf_slider *slider);
-float elf_get_slider_value(elf_slider *slider);
+elf_texture* elf_get_slider_background_texture(elf_slider* slider);
+elf_texture* elf_get_slider_slider_texture(elf_slider* slider);
+float elf_get_slider_value(elf_slider* slider);
 
-void elf_set_slider_background_texture(elf_slider *slider, elf_texture *background);
-void elf_set_slider_slider_texture(elf_slider *slider, elf_texture *slider_texture);
-void elf_set_slider_value(elf_slider *slider, float value);
+void elf_set_slider_background_texture(elf_slider* slider, elf_texture* background);
+void elf_set_slider_slider_texture(elf_slider* slider, elf_texture* slider_texture);
+void elf_set_slider_value(elf_slider* slider, float value);
 
 // <!!
-void elf_destroy_screen(void *data);
-void elf_draw_screen(elf_screen *screen, elf_area *area, gfx_shader_params *shader_params);
-void elf_recalc_screen(elf_screen *screen);
+void elf_destroy_screen(void* data);
+void elf_draw_screen(elf_screen* screen, elf_area* area, gfx_shader_params* shader_params);
+void elf_recalc_screen(elf_screen* screen);
 // !!>
 
-elf_screen* elf_create_screen(const char *name);	// <mdoc> SCREEN FUNCTIONS
+elf_screen* elf_create_screen(const char* name);	// <mdoc> SCREEN FUNCTIONS
 
-elf_texture* elf_get_screen_texture(elf_screen *screen);
-void elf_set_screen_texture(elf_screen *screen, elf_texture *texture);
-void elf_set_screen_to_top(elf_screen *screen);
-void elf_force_focus_to_screen(elf_screen *screen);
-void elf_release_focus_from_screen(elf_screen *screen);
+elf_texture* elf_get_screen_texture(elf_screen* screen);
+void elf_set_screen_texture(elf_screen* screen, elf_texture* texture);
+void elf_set_screen_to_top(elf_screen* screen);
+void elf_force_focus_to_screen(elf_screen* screen);
+void elf_release_focus_from_screen(elf_screen* screen);
 
 // <!!
-void elf_destroy_text_list(void *data);
-void elf_draw_text_list(elf_text_list *text_list, elf_area *area, gfx_shader_params *shader_params);
-void elf_recalc_text_list(elf_text_list *text_list);
+void elf_destroy_text_list(void* data);
+void elf_draw_text_list(elf_text_list* text_list, elf_area* area, gfx_shader_params* shader_params);
+void elf_recalc_text_list(elf_text_list* text_list);
 // !!>
 
-elf_text_list* elf_create_text_list(const char *name);	// <mdoc> TEXT LIST FUNCTIONS
+elf_text_list* elf_create_text_list(const char* name);	// <mdoc> TEXT LIST FUNCTIONS
 
-elf_font* elf_get_text_list_font(elf_text_list *text_list);
-elf_color elf_get_text_list_selection_color(elf_text_list *text_list);
-elf_color elf_get_text_list_light_color(elf_text_list *text_list);
-elf_color elf_get_text_list_dark_color(elf_text_list *text_list);
-int elf_get_text_list_row_count(elf_text_list *text_list);
-int elf_get_text_list_item_count(elf_text_list *text_list);
-int elf_get_text_list_selection_index(elf_text_list *text_list);
-int elf_get_text_list_offset(elf_text_list *text_list);
-const char* elf_get_text_list_item(elf_text_list *text_list, int idx);
-const char* elf_get_text_list_selected_item(elf_text_list *text_list);
+elf_font* elf_get_text_list_font(elf_text_list* text_list);
+elf_color elf_get_text_list_selection_color(elf_text_list* text_list);
+elf_color elf_get_text_list_light_color(elf_text_list* text_list);
+elf_color elf_get_text_list_dark_color(elf_text_list* text_list);
+int elf_get_text_list_row_count(elf_text_list* text_list);
+int elf_get_text_list_item_count(elf_text_list* text_list);
+int elf_get_text_list_selection_index(elf_text_list* text_list);
+int elf_get_text_list_offset(elf_text_list* text_list);
+const char* elf_get_text_list_item(elf_text_list* text_list, int idx);
+const char* elf_get_text_list_selected_item(elf_text_list* text_list);
 
-void elf_set_text_list_font(elf_text_list *text_list, elf_font *font);
-void elf_set_text_list_selection_color(elf_text_list *text_list, float r, float g, float b, float a);
-void elf_set_text_list_light_color(elf_text_list *text_list, float r, float g, float b, float a);
-void elf_set_text_list_dark_color(elf_text_list *text_list, float r, float g, float b, float a);
-void elf_set_text_list_size(elf_text_list *text_list, int rows, int width);
-void elf_add_text_list_item(elf_text_list *text_list, const char *text);
-void elf_set_text_list_item(elf_text_list *text_list, int idx, const char *text);
-unsigned char elf_remove_text_list_item(elf_text_list *text_list, int idx);
-void elf_remove_text_list_items(elf_text_list *text_list);
-void elf_set_text_list_offset(elf_text_list *text_list, int offset);
-void elf_set_text_list_selection(elf_text_list *text_list, int selection);
+void elf_set_text_list_font(elf_text_list* text_list, elf_font* font);
+void elf_set_text_list_selection_color(elf_text_list* text_list, float r, float g, float b, float a);
+void elf_set_text_list_light_color(elf_text_list* text_list, float r, float g, float b, float a);
+void elf_set_text_list_dark_color(elf_text_list* text_list, float r, float g, float b, float a);
+void elf_set_text_list_size(elf_text_list* text_list, int rows, int width);
+void elf_add_text_list_item(elf_text_list* text_list, const char* text);
+void elf_set_text_list_item(elf_text_list* text_list, int idx, const char* text);
+unsigned char elf_remove_text_list_item(elf_text_list* text_list, int idx);
+void elf_remove_text_list_items(elf_text_list* text_list);
+void elf_set_text_list_offset(elf_text_list* text_list, int offset);
+void elf_set_text_list_selection(elf_text_list* text_list, int selection);
 
 // <!!
-void elf_destroy_check_box(void *data);
-void elf_draw_check_box(elf_check_box *check_box, gfx_shader_params *shader_params);
-void elf_recalc_check_box(elf_check_box *check_box);
+void elf_destroy_check_box(void* data);
+void elf_draw_check_box(elf_check_box* check_box, gfx_shader_params* shader_params);
+void elf_recalc_check_box(elf_check_box* check_box);
 // !!>
 
-elf_check_box* elf_create_check_box(const char *name);	// <mdoc> CHECK BOX FUNCTIONS
+elf_check_box* elf_create_check_box(const char* name);	// <mdoc> CHECK BOX FUNCTIONS
 
-unsigned char elf_get_check_box_state(elf_check_box *check_box);
-elf_texture* elf_get_check_box_off_texture(elf_check_box *check_box);
-elf_texture* elf_get_check_box_on_texture(elf_check_box *check_box);
+unsigned char elf_get_check_box_state(elf_check_box* check_box);
+elf_texture* elf_get_check_box_off_texture(elf_check_box* check_box);
+elf_texture* elf_get_check_box_on_texture(elf_check_box* check_box);
 
-void elf_set_check_box_off_texture(elf_check_box *check_box, elf_texture *off);
-void elf_set_check_box_on_texture(elf_check_box *check_box, elf_texture *on);
-void elf_set_check_box_state(elf_check_box *check_box, unsigned char state);
+void elf_set_check_box_off_texture(elf_check_box* check_box, elf_texture* off);
+void elf_set_check_box_on_texture(elf_check_box* check_box, elf_texture* on);
+void elf_set_check_box_state(elf_check_box* check_box, unsigned char state);
 
-/* <!> */ void elf_recalc_gui_object(elf_gui_object *object);
+/* <!> */ void elf_recalc_gui_object(elf_gui_object* object);
 
 // <!!
-void elf_destroy_gui(void *data);
-void elf_update_gui(elf_gui *gui, float step);
-void elf_draw_gui(elf_gui *gui);
+void elf_destroy_gui(void* data);
+void elf_update_gui(elf_gui* gui, float step);
+void elf_draw_gui(elf_gui* gui);
 // !!>
 
 elf_gui* elf_create_gui();	// <mdoc> GUI FUNCTIONS
 
-unsigned char elf_add_gui_object(elf_gui_object *parent, elf_gui_object *object);
-elf_gui_object* elf_get_gui_object_by_name(elf_gui_object *parent, const char *name);
-elf_gui_object* elf_get_gui_object_by_index(elf_gui_object *parent, int idx);
-unsigned char elf_remove_gui_object_by_name(elf_gui_object *parent, const char *name);
-unsigned char elf_remove_gui_object_by_index(elf_gui_object *parent, int idx);
-unsigned char elf_remove_gui_object_by_object(elf_gui_object *parent, elf_gui_object *object);
+unsigned char elf_add_gui_object(elf_gui_object* parent, elf_gui_object* object);
+elf_gui_object* elf_get_gui_object_by_name(elf_gui_object* parent, const char* name);
+elf_gui_object* elf_get_gui_object_by_index(elf_gui_object* parent, int idx);
+unsigned char elf_remove_gui_object_by_name(elf_gui_object* parent, const char* name);
+unsigned char elf_remove_gui_object_by_index(elf_gui_object* parent, int idx);
+unsigned char elf_remove_gui_object_by_object(elf_gui_object* parent, elf_gui_object* object);
 
-elf_gui_object* elf_get_gui_trace(elf_gui *gui);
-elf_gui_object* elf_get_gui_focus(elf_gui *gui);
-elf_gui_object* elf_get_gui_active_text_field(elf_gui *gui);
+elf_gui_object* elf_get_gui_trace(elf_gui* gui);
+elf_gui_object* elf_get_gui_focus(elf_gui* gui);
+elf_gui_object* elf_get_gui_active_text_field(elf_gui* gui);
 
-void elf_empty_gui(elf_gui *gui);
+void elf_empty_gui(elf_gui* gui);
 
 //////////////////////////////// NET ////////////////////////////////
 
@@ -1958,13 +1958,13 @@ unsigned char elf_is_client();
 //////////////////////////////// SST ////////////////////////////////
 
 // <!!
-char* elf_read_next(const char *text, int *pos);
-char* elf_read_sst_string(const char* text, int *pos);
-float elf_read_sst_float(const char* text, int *pos);
-void elf_read_sst_floats(const char* text, int *pos, int n, float *params);
-int elf_read_sst_int(const char* text, int *pos);
-void elf_read_sst_ints(const char* text, int *pos, int n, int *params);
-unsigned char elf_read_sst_bool(const char* text, int *pos);
+char* elf_read_next(const char* text, int* pos);
+char* elf_read_sst_string(const char* text, int* pos);
+float elf_read_sst_float(const char* text, int* pos);
+void elf_read_sst_floats(const char* text, int* pos, int n, float* params);
+int elf_read_sst_int(const char* text, int* pos);
+void elf_read_sst_ints(const char* text, int* pos, int n, int* params);
+unsigned char elf_read_sst_bool(const char* text, int* pos);
 // !!>
 
 // <!!

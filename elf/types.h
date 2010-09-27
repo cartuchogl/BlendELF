@@ -7,21 +7,21 @@
 #define ELF_RESOURCE_HEADER \
 	ELF_OBJECT_HEADER; \
 	int id; \
-	char *name
+	char* name
 
 #define ELF_ACTOR_HEADER \
 	ELF_RESOURCE_HEADER; \
-	char *file_path; \
-	elf_scene *scene; \
-	gfx_transform *transform; \
-	elf_list *joints; \
-	elf_script *script; \
-	elf_list *sources; \
-	elf_ipo *ipo; \
-	elf_frame_player *ipo_player; \
-	elf_list *properties; \
-	elf_physics_object *object; \
-	elf_physics_object *dobject; \
+	char* file_path; \
+	elf_scene* scene; \
+	gfx_transform* transform; \
+	elf_list* joints; \
+	elf_script* script; \
+	elf_list* sources; \
+	elf_ipo* ipo; \
+	elf_frame_player* ipo_player; \
+	elf_list* properties; \
+	elf_physics_object* object; \
+	elf_physics_object* dobject; \
 	unsigned char physics; \
 	elf_vec3f pbb_lengths; \
 	elf_vec3f pbb_offset; \
@@ -41,17 +41,17 @@
 
 #define ELF_GUI_OBJECT_HEADER \
 	ELF_OBJECT_HEADER; \
-	char *name; \
+	char* name; \
 	elf_vec2i pos; \
 	elf_vec2i rel_pos; \
 	int width, height; \
 	elf_color color; \
 	unsigned char visible; \
-	elf_gui *root; \
-	elf_gui_object *parent; \
-	elf_list *children; \
-	elf_list *screens; \
-	elf_script *script; \
+	elf_gui* root; \
+	elf_gui_object* parent; \
+	elf_list* children; \
+	elf_list* screens; \
+	elf_script* script; \
 	int event
 
 struct elf_object {
@@ -64,27 +64,27 @@ struct elf_resource {
 
 struct elf_string {
 	ELF_OBJECT_HEADER;
-	char *str;
+	char* str;
 };
 
 typedef struct elf_list_ptr {
-	struct elf_list_ptr *prev;
-	struct elf_list_ptr *next;
-	elf_object *obj;
+	struct elf_list_ptr* prev;
+	struct elf_list_ptr* next;
+	elf_object* obj;
 } elf_list_ptr;
 
 struct elf_list {
 	ELF_OBJECT_HEADER;
-	elf_list_ptr *first;
-	elf_list_ptr *last;
-	elf_list_ptr *cur;
-	elf_list_ptr *next;
+	elf_list_ptr* first;
+	elf_list_ptr* last;
+	elf_list_ptr* cur;
+	elf_list_ptr* next;
 	int length;
 };
 
 struct elf_general {
 	ELF_OBJECT_HEADER;
-	char *log;
+	char* log;
 
 	char* err_str;
 	int err_code;
@@ -115,8 +115,8 @@ struct elf_config {
 	unsigned char texture_compress;
 	float texture_anisotropy;
 	int shadow_map_size;
-	char *start;
-	char *log;
+	char* start;
+	char* log;
 };
 
 struct elf_key_event {
@@ -148,9 +148,9 @@ struct elf_context {
 	int width;
 	int height;
 	unsigned char fullscreen;
-	char *title;
+	char* title;
 	int multisamples;
-	elf_list *video_modes;
+	elf_list* video_modes;
 	unsigned char cur_keys[256];
 	unsigned char prv_keys[256];
 	int mouse_position[2];
@@ -160,7 +160,7 @@ struct elf_context {
 	unsigned char cur_mbuts[3];
 	unsigned char prv_mbuts[3];
 	elf_joystick joysticks[16];
-	elf_list *events;
+	elf_list* events;
 };
 
 struct elf_engine {
@@ -171,9 +171,9 @@ struct elf_engine {
 	unsigned char free_run;
 
 	int fps;
-	elf_timer *fps_timer;
-	elf_timer *fps_limit_timer;
-	elf_timer *time_sync_timer;
+	elf_timer* fps_timer;
+	elf_timer* fps_limit_timer;
+	elf_timer* time_sync_timer;
 	unsigned int frames;
 	int fps_limit;
 	float tick_rate;
@@ -182,12 +182,12 @@ struct elf_engine {
 	unsigned char f10_exit;
 	unsigned char quit;
 
-	gfx_gbuffer *gbuffer;
+	gfx_gbuffer* gbuffer;
 
-	elf_post_process *post_process;
+	elf_post_process* post_process;
 
-	gfx_texture *shadow_map;
-	gfx_render_target *shadow_target;
+	gfx_texture* shadow_map;
+	gfx_render_target* shadow_target;
 
 	int shadow_map_size;
 	unsigned char texture_compress;
@@ -203,24 +203,24 @@ struct elf_engine {
 	float fog_end;
 	elf_color fog_color;
 
-	gfx_vertex_data *lines;
-	gfx_vertex_array *sprite_vertex_array;
+	gfx_vertex_data* lines;
+	gfx_vertex_array* sprite_vertex_array;
 
-	elf_scene *scene;
-	elf_gui *gui;
+	elf_scene* scene;
+	elf_gui* gui;
 
-	elf_object *actor;
+	elf_object* actor;
 };
 
 struct elf_directory {
 	ELF_OBJECT_HEADER;
-	char *path;
-	elf_list *items;
+	char* path;
+	elf_list* items;
 };
 
 struct elf_directory_item {
 	ELF_OBJECT_HEADER;
-	char *name;
+	char* name;
 	unsigned char item_type;
 };
 
@@ -232,8 +232,8 @@ struct elf_frame_player {
 	float speed;
 	unsigned char pause;
 	unsigned char loop;
-	void *user_data;
-	void (*callback)(elf_frame_player *);
+	void* user_data;
+	void (*callback)(elf_frame_player* );
 };
 
 struct elf_timer {
@@ -246,33 +246,33 @@ struct elf_image {
 	int width;
 	int height;
 	unsigned char bpp;
-	unsigned char *data;
+	unsigned char* data;
 };
 
 struct elf_texture {
 	ELF_RESOURCE_HEADER;
-	char *file_path;
-	gfx_texture *texture;
+	char* file_path;
+	gfx_texture* texture;
 
-	void *data;
+	void* data;
 	int data_size;
 };
 
 struct elf_material {
 	ELF_RESOURCE_HEADER;
-	char *file_path;
+	char* file_path;
 	elf_color diffuse_color;
 	elf_color ambient_color;
 	elf_color specular_color;
 	float spec_power;
 	unsigned char lighting;
 
-	elf_texture *diffuse_map;
-	elf_texture *normal_map;
-	elf_texture *height_map;
-	elf_texture *specular_map;
-	elf_texture *light_map;
-	elf_texture *cube_map;
+	elf_texture* diffuse_map;
+	elf_texture* normal_map;
+	elf_texture* height_map;
+	elf_texture* specular_map;
+	elf_texture* light_map;
+	elf_texture* cube_map;
 
 	float parallax_scale;
 
@@ -291,12 +291,12 @@ struct elf_bezier_curve {
 	ELF_OBJECT_HEADER;
 	unsigned char curve_type;
 	unsigned char interpolation;
-	elf_list *points;
+	elf_list* points;
 };
 
 struct elf_ipo {
 	ELF_OBJECT_HEADER;
-	elf_list *curves;
+	elf_list* curves;
 	unsigned char loc;
 	unsigned char rot;
 	unsigned char scale;
@@ -305,11 +305,11 @@ struct elf_ipo {
 
 struct elf_property {
 	ELF_OBJECT_HEADER;
-	char *name;
+	char* name;
 	unsigned char property_type;
 	int ival;
 	float fval;
-	char *sval;
+	char* sval;
 	unsigned char bval;
 };
 
@@ -348,34 +348,34 @@ struct elf_face {
 
 struct elf_mesh_data {
 	ELF_OBJECT_HEADER;
-	elf_list *vertices;
-	elf_list *faces;
+	elf_list* vertices;
+	elf_list* faces;
 };
 
 typedef struct elf_model_area {
 	int indice_count;
-	gfx_vertex_data *index;
-	gfx_vertex_index *vertex_index;
+	gfx_vertex_data* index;
+	gfx_vertex_index* vertex_index;
 	unsigned int material_number;
 } elf_model_area;
 
 struct elf_model {
 	ELF_RESOURCE_HEADER;
-	char *file_path;
+	char* file_path;
 	int vertice_count;
 	int frame_count;
 	int area_count;
 	int indice_count;
-	gfx_vertex_array *vertex_array;
-	gfx_vertex_data *vertices;
-	gfx_vertex_data *normals;
-	gfx_vertex_data *tex_coords;
-	gfx_vertex_data *tangents;
-	unsigned int *index;
-	float *weights;
-	int *boneids;
-	elf_physics_tri_mesh *tri_mesh;
-	elf_model_area *areas;
+	gfx_vertex_array* vertex_array;
+	gfx_vertex_data* vertices;
+	gfx_vertex_data* normals;
+	gfx_vertex_data* tex_coords;
+	gfx_vertex_data* tangents;
+	unsigned int* index;
+	float* weights;
+	int* boneids;
+	elf_physics_tri_mesh* tri_mesh;
+	elf_model_area* areas;
 	elf_vec3f bb_min;
 	elf_vec3f bb_max;
 };
@@ -383,14 +383,14 @@ struct elf_model {
 struct elf_entity {
 	ELF_ACTOR_HEADER;
 
-	elf_model *model;
+	elf_model* model;
 
-	elf_armature *armature;
-	gfx_vertex_data *vertices;
-	gfx_vertex_data *normals;
+	elf_armature* armature;
+	gfx_vertex_data* vertices;
+	gfx_vertex_data* normals;
 
-	elf_list *materials;
-	elf_frame_player *armature_player;
+	elf_list* materials;
+	elf_frame_player* armature_player;
 	float prev_armature_frame;
 
 	elf_vec3f position;
@@ -404,7 +404,7 @@ struct elf_entity {
 	elf_vec3f cull_aabb_max;
 	float cull_radius;
 
-	gfx_query *query;
+	gfx_query* query;
 	unsigned char visible;
 	unsigned char occluder;
 	unsigned char culled;
@@ -425,7 +425,7 @@ struct elf_light {
 	float shaft_fade_off;
 
 	unsigned char shadows;
-	elf_camera *shadow_camera;
+	elf_camera* shadow_camera;
 
 	float projection_matrix[16];
 };
@@ -439,25 +439,25 @@ typedef struct elf_bone_frame {
 
 struct elf_bone {
 	ELF_RESOURCE_HEADER;
-	elf_bone *parent;
+	elf_bone* parent;
 	elf_vec3f pos;
 	elf_vec4f qua;
 	elf_vec3f cur_pos;
 	elf_vec4f cur_qua;
 	elf_vec3f cur_offset_pos;
 	elf_vec4f cur_offset_qua;
-	elf_bone_frame *frames;
-	elf_list *children;
-	elf_armature *armature;
+	elf_bone_frame* frames;
+	elf_list* children;
+	elf_armature* armature;
 };
 
 struct elf_armature {
 	ELF_RESOURCE_HEADER;
-	char *file_path;
+	char* file_path;
 	int frame_count;
 	int bone_count;
-	elf_list *root_bones;
-	elf_bone **bones;
+	elf_list* root_bones;
+	elf_bone* *bones;
 	float cur_frame;
 	elf_vec3f bb_min;
 	elf_vec3f bb_max;
@@ -481,14 +481,14 @@ struct elf_particles {
 
 	int max_count;
 	unsigned char draw_mode;
-	elf_list *particles;
-	elf_texture *texture;
-	elf_model *model;
-	elf_entity *entity;
-	gfx_vertex_array *vertex_array;
-	gfx_vertex_data *vertices;
-	gfx_vertex_data *tex_coords;
-	gfx_vertex_data *colors;
+	elf_list* particles;
+	elf_texture* texture;
+	elf_model* model;
+	elf_entity* entity;
+	gfx_vertex_array* vertex_array;
+	gfx_vertex_data* vertices;
+	gfx_vertex_data* tex_coords;
+	gfx_vertex_data* colors;
 
 	float spawn_delay;
 	unsigned char spawn;
@@ -520,8 +520,8 @@ struct elf_particles {
 struct elf_sprite {
 	ELF_ACTOR_HEADER;
 
-	elf_material *material;
-	elf_frame_player *frame_player;
+	elf_material* material;
+	elf_frame_player* frame_player;
 
 	unsigned char face_camera;
 
@@ -531,7 +531,7 @@ struct elf_sprite {
 	elf_vec3f real_scale;
 	float cull_radius;
 
-	gfx_query *query;
+	gfx_query* query;
 	unsigned char visible;
 	unsigned char occluder;
 	unsigned char culled;
@@ -539,51 +539,51 @@ struct elf_sprite {
 
 struct elf_scene {
 	ELF_RESOURCE_HEADER;
-	char *file_path;
+	char* file_path;
 	elf_color ambient_color;
 	unsigned char physics;
 	unsigned char run_scripts;
 
-	elf_list *scripts;
-	elf_list *textures;
-	elf_list *materials;
-	elf_list *models;
-	elf_list *cameras;
-	elf_list *entities;
-	elf_list *lights;
-	elf_list *armatures;
-	elf_list *particles;
-	elf_list *sprites;
+	elf_list* scripts;
+	elf_list* textures;
+	elf_list* materials;
+	elf_list* models;
+	elf_list* cameras;
+	elf_list* entities;
+	elf_list* lights;
+	elf_list* armatures;
+	elf_list* particles;
+	elf_list* sprites;
 
-	elf_list *entity_queue;
+	elf_list* entity_queue;
 	int entity_queue_count;
 
-	elf_list *sprite_queue;
+	elf_list* sprite_queue;
 	int sprite_queue_count;
 
-	elf_physics_world *world;
-	elf_physics_world *dworld;
+	elf_physics_world* world;
+	elf_physics_world* dworld;
 
-	elf_camera *cur_camera;
+	elf_camera* cur_camera;
 
 	gfx_shader_params shader_params;
 
-	gfx_shader_program *compose_fog_shdr;
+	gfx_shader_program* compose_fog_shdr;
 
-	elf_pak *pak;
+	elf_pak* pak;
 };
 
 struct elf_pak_index {
 	ELF_OBJECT_HEADER;
 	unsigned char index_type;
-	char *name;
+	char* name;
 	unsigned int offset;
 };
 
 struct elf_pak {
 	ELF_OBJECT_HEADER;
-	char *file_path;
-	elf_list *indexes;
+	char* file_path;
+	elf_list* indexes;
 
 	int texture_count;
 	int material_count;
@@ -599,33 +599,33 @@ struct elf_pak {
 struct elf_post_process {
 	ELF_OBJECT_HEADER;
 
-	gfx_texture *main_rt_color[2];
-	gfx_texture *main_rt_depth;
-	gfx_render_target *main_rt;
+	gfx_texture* main_rt_color[2];
+	gfx_texture* main_rt_depth;
+	gfx_render_target* main_rt;
 
-	gfx_texture *rt_tex_high_1;
-	gfx_texture *rt_tex_high_2;
-	gfx_texture *rt_tex_high_depth;
-	gfx_texture *rt_tex_med_1;
-	gfx_texture *rt_tex_med_2;
-	gfx_texture *rt_tex_med_3;
-	gfx_texture *rt_tex_low_1;
-	gfx_texture *rt_tex_low_2;
-	gfx_texture *rt_tex_tiny_1;
-	gfx_texture *rt_tex_tiny_2;
+	gfx_texture* rt_tex_high_1;
+	gfx_texture* rt_tex_high_2;
+	gfx_texture* rt_tex_high_depth;
+	gfx_texture* rt_tex_med_1;
+	gfx_texture* rt_tex_med_2;
+	gfx_texture* rt_tex_med_3;
+	gfx_texture* rt_tex_low_1;
+	gfx_texture* rt_tex_low_2;
+	gfx_texture* rt_tex_tiny_1;
+	gfx_texture* rt_tex_tiny_2;
 
-	gfx_render_target *rt_high;
-	gfx_render_target *rt_med;
-	gfx_render_target *rt_low;
-	gfx_render_target *rt_tiny;
+	gfx_render_target* rt_high;
+	gfx_render_target* rt_med;
+	gfx_render_target* rt_low;
+	gfx_render_target* rt_tiny;
 	
-	gfx_shader_program *hipass_shdr;
-	gfx_shader_program *blur_shdr;
-	gfx_shader_program *bloom_combine_shdr;
-	gfx_shader_program *dof_combine_shdr;
-	gfx_shader_program *ssao_shdr;
-	gfx_shader_program *ssao_combine_shdr;
-	gfx_shader_program *light_shaft_shdr;
+	gfx_shader_program* hipass_shdr;
+	gfx_shader_program* blur_shdr;
+	gfx_shader_program* bloom_combine_shdr;
+	gfx_shader_program* dof_combine_shdr;
+	gfx_shader_program* ssao_shdr;
+	gfx_shader_program* ssao_combine_shdr;
+	gfx_shader_program* light_shaft_shdr;
 
 	unsigned char bloom;
 	float bloom_threshold;
@@ -640,7 +640,7 @@ struct elf_post_process {
 
 	unsigned char light_shafts;
 	float light_shafts_intensity;
-	gfx_transform *light_shaft_transform;
+	gfx_transform* light_shaft_transform;
 
 	int buffer_width;
 	int buffer_height;
@@ -650,21 +650,21 @@ struct elf_post_process {
 
 struct elf_script {
 	ELF_RESOURCE_HEADER;
-	char *file_path;
-	char *text;
+	char* file_path;
+	char* text;
 	unsigned char error;
 };
 
 typedef struct elf_character {
 	char code;
-	gfx_texture *texture;
+	gfx_texture* texture;
 	int offset_x, offset_y;
 } elf_character;
 
 struct elf_font {
 	ELF_OBJECT_HEADER;
-	char *name;
-	char *file_path;
+	char* name;
+	char* file_path;
 	int size;
 	elf_character chars[128];
 	int offset_y;
@@ -681,46 +681,46 @@ struct elf_gui_object {
 
 struct elf_label {
 	ELF_GUI_OBJECT_HEADER;
-	elf_font *font;
-	char *text;
+	elf_font* font;
+	char* text;
 };
 
 struct elf_button {
 	ELF_GUI_OBJECT_HEADER;
 	unsigned char state;
-	elf_texture *off;
-	elf_texture *over;
-	elf_texture *on;
+	elf_texture* off;
+	elf_texture* over;
+	elf_texture* on;
 };
 
 struct elf_picture {
 	ELF_GUI_OBJECT_HEADER;
-	elf_texture *texture;
+	elf_texture* texture;
 	elf_vec2f scale;
 };
 
 struct elf_text_field {
 	ELF_GUI_OBJECT_HEADER;
-	elf_texture *texture;
-	elf_font *font;
+	elf_texture* texture;
+	elf_font* font;
 	int offset_x, offset_y;
 	elf_color text_color;
 	int cursor_pos;
 	int draw_pos;
 	int draw_offset;
-	char *text;
+	char* text;
 };
 
 struct elf_slider {
 	ELF_GUI_OBJECT_HEADER;
-	elf_texture *background;
-	elf_texture *slider;
+	elf_texture* background;
+	elf_texture* slider;
 	float value;
 };
 
 struct elf_screen {
 	ELF_GUI_OBJECT_HEADER;
-	elf_texture *texture;
+	elf_texture* texture;
 };
 
 struct elf_text_list {
@@ -728,8 +728,8 @@ struct elf_text_list {
 	elf_color selection_color;
 	elf_color light_color;
 	elf_color dark_color;
-	elf_font *font;
-	elf_list *items;
+	elf_font* font;
+	elf_list* items;
 	int rows;
 	int list_width;
 	int selection;
@@ -739,18 +739,18 @@ struct elf_text_list {
 struct elf_check_box {
 	ELF_GUI_OBJECT_HEADER;
 	unsigned char state;
-	elf_texture *off;
-	elf_texture *on;
+	elf_texture* off;
+	elf_texture* on;
 };
 
 struct elf_gui {
 	ELF_GUI_OBJECT_HEADER;
-	elf_font *def_font;
+	elf_font* def_font;
 	gfx_shader_params shader_params;
-	elf_gui_object *trace;
-	elf_gui_object *target;
-	elf_text_field *active_text_field;
-	elf_screen *focus_screen;
+	elf_gui_object* trace;
+	elf_gui_object* target;
+	elf_text_field* active_text_field;
+	elf_screen* focus_screen;
 
 	unsigned char update_size;
 

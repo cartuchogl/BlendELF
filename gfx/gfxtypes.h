@@ -23,8 +23,8 @@ struct gfx_driver {
 	int texture_data_formats[GFX_MAX_TEXTURE_FORMATS];
 	int vertex_data_draw_modes[GFX_MAX_VERTEX_DATA_TYPES];
 
-	gfx_render_target *render_target;
-	gfx_shader_program *shader_programs;
+	gfx_render_target* render_target;
+	gfx_shader_program* shader_programs;
 	gfx_shader_params shader_params;
 
 	int version;
@@ -39,17 +39,17 @@ struct gfx_driver {
 	gfx_vertex_data* quad_vertex_data;
 	gfx_vertex_data* quad_tex_coord_data;
 	gfx_vertex_data* quad_normal_data;
-	gfx_vertex_array *quad_vertex_array;
+	gfx_vertex_array* quad_vertex_array;
 
-	gfx_vertex_data *bb_vertex_data;
-	gfx_vertex_data *bb_index_data;
-	gfx_vertex_array *bb_vertex_array;
-	gfx_vertex_index *bb_vertex_index;
+	gfx_vertex_data* bb_vertex_data;
+	gfx_vertex_data* bb_index_data;
+	gfx_vertex_array* bb_vertex_array;
+	gfx_vertex_index* bb_vertex_index;
 
-	gfx_vertex_array *line_vertex_array;
+	gfx_vertex_array* line_vertex_array;
 
-	gfx_vertex_data *circle_vertex_data;
-	gfx_vertex_array *circle_vertex_array;
+	gfx_vertex_data* circle_vertex_data;
+	gfx_vertex_array* circle_vertex_array;
 	int prev_circle_vertice_count;
 	float prev_circle_size;
 
@@ -73,12 +73,12 @@ struct gfx_vertex_data {
 	int format;
 	int size_bytes;
 	int data_type;
-	void *data;
+	void* data;
 	unsigned char changed;
 };
 
 typedef struct gfx_varr {
-	gfx_vertex_data *data;
+	gfx_vertex_data* data;
 	int vertex_count;
 	int element_count;
 	int vertex_size_bytes;
@@ -94,7 +94,7 @@ struct gfx_vertex_array {
 struct gfx_vertex_index {
 	GFX_OBJECT_HEADER;
 	int indice_count;
-	gfx_vertex_data *data;
+	gfx_vertex_data* data;
 	unsigned char gpu_data;
 };
 
@@ -109,7 +109,7 @@ struct gfx_texture {
 };
 
 struct gfx_shader_program {
-	gfx_shader_program *next;
+	gfx_shader_program* next;
 	unsigned int id;
 	int projection_matrix_loc;
 	int inv_projection_matrix_loc;
@@ -169,18 +169,18 @@ struct gfx_gbuffer {
 	int width;
 	int height;
 
-	gfx_render_target *buf_rt;
-	gfx_render_target *light_rt;
-	gfx_render_target *main_rt;
+	gfx_render_target* buf_rt;
+	gfx_render_target* light_rt;
+	gfx_render_target* main_rt;
 
-	gfx_texture *depth_tex;
-	gfx_texture *buf1_tex;
-	gfx_texture *buf2_tex;
-	gfx_texture *buf3_tex;
-	gfx_texture *buf4_tex;
-	gfx_texture *diffuse_tex;
-	gfx_texture *specular_tex;
+	gfx_texture* depth_tex;
+	gfx_texture* buf1_tex;
+	gfx_texture* buf2_tex;
+	gfx_texture* buf3_tex;
+	gfx_texture* buf4_tex;
+	gfx_texture* diffuse_tex;
+	gfx_texture* specular_tex;
 
-	gfx_texture *main_tex;
+	gfx_texture* main_tex;
 };
 

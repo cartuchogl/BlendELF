@@ -35,7 +35,7 @@ unsigned char gfx_check_render_target()
 
 gfx_render_target* gfx_create_render_target(unsigned int width, unsigned int height)
 {
-	gfx_render_target *render_target;
+	gfx_render_target* render_target;
 
 	if(!width || !height) return NULL;
 
@@ -51,9 +51,9 @@ gfx_render_target* gfx_create_render_target(unsigned int width, unsigned int hei
 	return render_target;
 }
 
-void gfx_destroy_render_target(void *data)
+void gfx_destroy_render_target(void* data)
 {
-	gfx_render_target *render_target = (gfx_render_target*)data;
+	gfx_render_target* render_target = (gfx_render_target*)data;
 
 	if(render_target->fb) glDeleteFramebuffersEXT(1, &render_target->fb);
 
@@ -67,9 +67,9 @@ gfx_render_target* gfx_get_cur_render_target()
 	return driver->render_target;
 }
 
-void gfx_set_render_target_color_texture(gfx_render_target *render_target, unsigned int n, gfx_texture *color)
+void gfx_set_render_target_color_texture(gfx_render_target* render_target, unsigned int n, gfx_texture* color)
 {
-	gfx_render_target *rt;
+	gfx_render_target* rt;
 
 	if((int)n > driver->max_draw_buffers-1) return;
 
@@ -93,9 +93,9 @@ void gfx_set_render_target_color_texture(gfx_render_target *render_target, unsig
 	}
 }
 
-void gfx_set_render_target_depth_texture(gfx_render_target *render_target, gfx_texture *depth)
+void gfx_set_render_target_depth_texture(gfx_render_target* render_target, gfx_texture* depth)
 {
-	gfx_render_target *rt;
+	gfx_render_target* rt;
 
 	if(driver->render_target != render_target)
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, render_target->fb);
@@ -127,7 +127,7 @@ void gfx_set_render_target_depth_texture(gfx_render_target *render_target, gfx_t
 	}
 }
 
-unsigned char gfx_set_render_target(gfx_render_target *render_target)
+unsigned char gfx_set_render_target(gfx_render_target* render_target)
 {
 	int i, j;
 	GLenum draw_buffers[16];

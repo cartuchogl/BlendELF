@@ -1,7 +1,7 @@
 
-char* elf_create_string(const char *str)
+char* elf_create_string(const char* str)
 {
-	char *nstr;
+	char* nstr;
 
 	if(!str) return NULL;
 
@@ -15,7 +15,7 @@ char* elf_create_string(const char *str)
 	return nstr;
 }
 
-void elf_destroy_string(char *str)
+void elf_destroy_string(char* str)
 {
 	free(str);
 
@@ -24,7 +24,7 @@ void elf_destroy_string(char *str)
 
 elf_string* elf_create_string_object()
 {
-	elf_string *string;
+	elf_string* string;
 
 	string = (elf_string*)malloc(sizeof(elf_string));
 	memset(string, 0x0, sizeof(elf_string));
@@ -36,9 +36,9 @@ elf_string* elf_create_string_object()
 	return string;
 }
 
-void elf_destroy_string_object(void *data)
+void elf_destroy_string_object(void* data)
 {
-	elf_string *string = (elf_string*)data;
+	elf_string* string = (elf_string*)data;
 
 	if(string->str) elf_destroy_string(string->str);
 
@@ -47,9 +47,9 @@ void elf_destroy_string_object(void *data)
 	elf_dec_obj(ELF_STRING);
 }
 
-char* elf_remove_char_from_string(char *str, int idx)
+char* elf_remove_char_from_string(char* str, int idx)
 {
-	char *nstr;
+	char* nstr;
 
 	if(!strlen(str) || idx > (int)strlen(str)-1) return NULL;
 
@@ -65,9 +65,9 @@ char* elf_remove_char_from_string(char *str, int idx)
 	return nstr;
 }
 
-char* elf_append_char_to_string(char *str, char c)
+char* elf_append_char_to_string(char* str, char c)
 {
-	char *nstr;
+	char* nstr;
 
 	nstr = (char*)malloc(sizeof(char)*(strlen(str)+2));
 	memcpy(nstr, str, sizeof(char)*strlen(str));
@@ -79,9 +79,9 @@ char* elf_append_char_to_string(char *str, char c)
 	return nstr;
 }
 
-char* elf_insert_char_to_string(char *str, int idx, char c)
+char* elf_insert_char_to_string(char* str, int idx, char c)
 {
-	char *nstr;
+	char* nstr;
 
 	if(idx < 0 || idx > (int)strlen(str)) return NULL;
 
@@ -99,9 +99,9 @@ char* elf_insert_char_to_string(char *str, int idx, char c)
 	return nstr;
 }
 
-char* elf_merge_strings(const char *str1, const char *str2)
+char* elf_merge_strings(const char* str1, const char* str2)
 {
-	char *nstr;
+	char* nstr;
 
 	if(!str1 || !str2) return NULL;
 
@@ -116,9 +116,9 @@ char* elf_merge_strings(const char *str1, const char *str2)
 	return nstr;
 }
 
-char* elf_merge_strings3(const char *str1, const char *str2, const char *str3)
+char* elf_merge_strings3(const char* str1, const char* str2, const char* str3)
 {
-	char *nstr;
+	char* nstr;
 	int bytes;
 
 	if(!str1 || !str2 || !str3 || (!strlen(str1) && !strlen(str2) && !strlen(str3))) return NULL;
@@ -137,9 +137,9 @@ char* elf_merge_strings3(const char *str1, const char *str2, const char *str3)
 	return nstr;
 }
 
-char* elf_sub_string(char *str, int start, int len)
+char* elf_sub_string(char* str, int start, int len)
 {
-	char *nstr;
+	char* nstr;
 
 	if(start+len < 1)
 	{
@@ -180,7 +180,7 @@ unsigned char elf_is_char_number(char c)
 	return ELF_FALSE;
 }
 
-unsigned char elf_is_string_number(const char *str)
+unsigned char elf_is_string_number(const char* str)
 {
 	char num_chars[12] = "0123456789.";
 	int dots;
@@ -208,7 +208,7 @@ unsigned char elf_is_string_number(const char *str)
 	return ELF_TRUE;
 }
 
-unsigned char elf_is_string_positive_int(const char *str)
+unsigned char elf_is_string_positive_int(const char* str)
 {
 	char num_chars[11] = "0123456789";
 	int i;
@@ -223,7 +223,7 @@ unsigned char elf_is_string_positive_int(const char *str)
 	return ELF_TRUE;
 }
 
-int elf_rfind_char_from_string(const char *str, char chr)
+int elf_rfind_char_from_string(const char* str, char chr)
 {
 	int result = -1;
 
@@ -235,7 +235,7 @@ int elf_rfind_char_from_string(const char *str, char chr)
 	return result;
 }
 
-int elf_rfind_chars_from_string(const char *str, const char *chrs)
+int elf_rfind_chars_from_string(const char* str, const char* chrs)
 {
 	int i;
 	int result = -1;
@@ -251,10 +251,10 @@ int elf_rfind_chars_from_string(const char *str, const char *chrs)
 	return result;
 }
 
-char* elf_get_file_folder(const char *file_path)
+char* elf_get_file_folder(const char* file_path)
 {
-	char *str;
-	char *nstr;
+	char* str;
+	char* nstr;
 
 	str = elf_create_string(file_path);
 

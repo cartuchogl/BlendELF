@@ -1,7 +1,7 @@
 
-elf_texture *elf_create_texture()
+elf_texture* elf_create_texture()
 {
-	elf_texture *texture;
+	elf_texture* texture;
 
 	texture = (elf_texture*)malloc(sizeof(elf_texture));
 	memset(texture, 0x0, sizeof(elf_texture));
@@ -15,10 +15,10 @@ elf_texture *elf_create_texture()
 	return texture;
 }
 
-elf_texture* elf_create_texture_from_file(const char *file_path)
+elf_texture* elf_create_texture_from_file(const char* file_path)
 {
-	elf_image *image;
-	elf_texture *texture;
+	elf_image* image;
+	elf_texture* texture;
 	int format;
 	int internal_format;
 
@@ -68,9 +68,9 @@ elf_texture* elf_create_texture_from_file(const char *file_path)
 	return texture;
 }
 
-elf_texture* elf_create_texture_from_image(elf_image *image)
+elf_texture* elf_create_texture_from_image(elf_image* image)
 {
-	elf_texture *texture;
+	elf_texture* texture;
 	int format;
 	int internal_format;
 
@@ -110,16 +110,16 @@ elf_texture* elf_create_texture_from_image(elf_image *image)
 	return texture;
 }
 
-elf_texture* elf_create_cube_map_from_files(const char *xpos, const char *xneg, const char *ypos, const char *yneg, const char *zpos, const char *zneg)
+elf_texture* elf_create_cube_map_from_files(const char* xpos, const char* xneg, const char* ypos, const char* yneg, const char* zpos, const char* zneg)
 {
-	elf_image *xposi;
-	elf_image *xnegi;
-	elf_image *yposi;
-	elf_image *ynegi;
-	elf_image *zposi;
-	elf_image *znegi;
+	elf_image* xposi;
+	elf_image* xnegi;
+	elf_image* yposi;
+	elf_image* ynegi;
+	elf_image* zposi;
+	elf_image* znegi;
 
-	elf_texture *texture;
+	elf_texture* texture;
 	int format;
 	int internal_format;
 
@@ -240,9 +240,9 @@ elf_texture* elf_create_cube_map_from_files(const char *xpos, const char *xneg, 
 	return texture;
 }
 
-void elf_destroy_texture(void *data)
+void elf_destroy_texture(void* data)
 {
-	elf_texture *texture = (elf_texture*)data;
+	elf_texture* texture = (elf_texture*)data;
 
 	if(texture->name) elf_destroy_string(texture->name);
 	if(texture->file_path) elf_destroy_string(texture->file_path);
@@ -255,38 +255,38 @@ void elf_destroy_texture(void *data)
 	free(texture);
 }
 
-void elf_set_texture_name(elf_texture *texture, const char *name)
+void elf_set_texture_name(elf_texture* texture, const char* name)
 {
 	if(texture->name) elf_destroy_string(texture->name);
 	texture->name = elf_create_string(name);
 }
 
-const char* elf_get_texture_name(elf_texture *texture)
+const char* elf_get_texture_name(elf_texture* texture)
 {
 	return texture->name;
 }
 
-const char* elf_get_texture_file_path(elf_texture *texture)
+const char* elf_get_texture_file_path(elf_texture* texture)
 {
 	return texture->file_path;
 }
 
-int elf_get_texture_width(elf_texture *texture)
+int elf_get_texture_width(elf_texture* texture)
 {
 	return gfx_get_texture_width(texture->texture);
 }
 
-int elf_get_texture_height(elf_texture *texture)
+int elf_get_texture_height(elf_texture* texture)
 {
 	return gfx_get_texture_height(texture->texture);
 }
 
-int elf_get_texture_format(elf_texture *texture)
+int elf_get_texture_format(elf_texture* texture)
 {
 	return gfx_get_texture_format(texture->texture);
 }
 
-int elf_get_texture_data_format(elf_texture *texture)
+int elf_get_texture_data_format(elf_texture* texture)
 {
 	return gfx_get_texture_data_format(texture->texture);
 }
@@ -296,19 +296,19 @@ gfx_texture* elf_get_gfx_texture(elf_texture* texture)
 	return texture->texture;
 }
 
-void elf_set_texture(int slot, elf_texture *texture, gfx_shader_params *shader_params)
+void elf_set_texture(int slot, elf_texture* texture, gfx_shader_params* shader_params)
 {
 	if(!texture->texture || slot < 0 || slot > GFX_MAX_TEXTURES-1) return;
 
 	shader_params->texture_params[slot].texture = texture->texture;
 }
 
-unsigned char elf_load_texture_data(elf_texture *texture)
+unsigned char elf_load_texture_data(elf_texture* texture)
 {
-	const char *file_type;
-	FILE *file;
-	elf_pak *pak;
-	elf_pak_index *index;
+	const char* file_type;
+	FILE* file;
+	elf_pak* pak;
+	elf_pak_index* index;
 	int magic;
 	char name[ELF_NAME_LENGTH];
 	unsigned char type;
@@ -387,7 +387,7 @@ unsigned char elf_load_texture_data(elf_texture *texture)
 	return ELF_TRUE;
 }
 
-void elf_unload_texture_data(elf_texture *texture)
+void elf_unload_texture_data(elf_texture* texture)
 {
 	if(texture->data) free(texture->data);
 	texture->data = NULL;

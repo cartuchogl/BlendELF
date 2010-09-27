@@ -1,7 +1,7 @@
 
 elf_font* elf_create_font()
 {
-	elf_font *font;
+	elf_font* font;
 
 	font = (elf_font*)malloc(sizeof(elf_font));
 	memset(font, 0x0, sizeof(elf_font));
@@ -13,15 +13,15 @@ elf_font* elf_create_font()
 	return font;
 }
 
-elf_font* elf_create_font_from_file(const char *file_path, int size)
+elf_font* elf_create_font_from_file(const char* file_path, int size)
 {
 	FT_Library library;
 	FT_Face face;
 	FT_GlyphSlot slot;
-	elf_font *font;
+	elf_font* font;
 	int width;
 	int height;
-	unsigned char *data;
+	unsigned char* data;
 	int error;
 	int i, j, k;
 
@@ -109,10 +109,10 @@ elf_font* elf_create_font_from_file(const char *file_path, int size)
 	return font;
 }
 
-void elf_destroy_font(void *data)
+void elf_destroy_font(void* data)
 {
 	int i;
-	elf_font *font = (elf_font*)data;
+	elf_font* font = (elf_font*)data;
 
 	if(font->name) elf_destroy_string(font->name);
 	if(font->file_path) elf_destroy_string(font->file_path);
@@ -125,27 +125,27 @@ void elf_destroy_font(void *data)
 	elf_dec_obj(ELF_FONT);
 }
 
-const char* elf_get_font_name(elf_font *font)
+const char* elf_get_font_name(elf_font* font)
 {
 	return font->name;
 }
 
-const char* elf_get_font_file_path(elf_font *font)
+const char* elf_get_font_file_path(elf_font* font)
 {
 	return font->file_path;
 }
 
-int elf_get_font_size(elf_font *font)
+int elf_get_font_size(elf_font* font)
 {
 	return font->size;
 }
 
-int elf_get_string_width(elf_font *font, const char *str)
+int elf_get_string_width(elf_font* font, const char* str)
 {
 	int x = 0;
 	int ox = 0;
 	int y = font->size;
-	elf_character *chr = 0;
+	elf_character* chr = 0;
 	unsigned int i;
 
 	for(i = 0; i < strlen(str); i++)
@@ -170,11 +170,11 @@ int elf_get_string_width(elf_font *font, const char *str)
 	return x;
 }
 
-int elf_get_string_height(elf_font *font, const char *str)
+int elf_get_string_height(elf_font* font, const char* str)
 {
 	int ox = 0;
 	int y = font->size;
-	elf_character *chr = 0;
+	elf_character* chr = 0;
 	unsigned int i;
 
 	for(i = 0; i < strlen(str); i++)
@@ -198,11 +198,11 @@ int elf_get_string_height(elf_font *font, const char *str)
 	return y;
 }
 
-void elf_draw_string(elf_font *font, const char *str, int x, int y, gfx_shader_params *shader_params)
+void elf_draw_string(elf_font* font, const char* str, int x, int y, gfx_shader_params* shader_params)
 {
 	int ox;
 	int oy;
-	elf_character *chr;
+	elf_character* chr;
 	unsigned int i;
 
 	ox = x;

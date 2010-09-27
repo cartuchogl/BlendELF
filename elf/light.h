@@ -1,7 +1,7 @@
 
-elf_light* elf_create_light(const char *name)
+elf_light* elf_create_light(const char* name)
 {
-	elf_light *light;
+	elf_light* light;
 
 	light = (elf_light*)malloc(sizeof(elf_light));
 	memset(light, 0x0, sizeof(elf_light));
@@ -42,26 +42,26 @@ elf_light* elf_create_light(const char *name)
 	return light;
 }
 
-void elf_update_light(elf_light *light)
+void elf_update_light(elf_light* light)
 {
 	elf_update_actor((elf_actor*)light);
 }
 
-void elf_light_pre_draw(elf_light *light)
+void elf_light_pre_draw(elf_light* light)
 {
 	elf_actor_pre_draw((elf_actor*)light);
 
 	elf_camera_pre_draw(light->shadow_camera);
 }
 
-void elf_light_post_draw(elf_light *light)
+void elf_light_post_draw(elf_light* light)
 {
 	elf_actor_post_draw((elf_actor*)light);
 }
 
-void elf_destroy_light(void *data)
+void elf_destroy_light(void* data)
 {
-	elf_light *light = (elf_light*)data;
+	elf_light* light = (elf_light*)data;
 
 	elf_clean_actor((elf_actor*)light);
 
@@ -72,7 +72,7 @@ void elf_destroy_light(void *data)
 	elf_dec_obj(ELF_LIGHT);
 }
 
-void elf_set_light_type(elf_light *light, int type)
+void elf_set_light_type(elf_light* light, int type)
 {
 	if(type != ELF_POINT_LIGHT &&
 		type != ELF_SPOT_LIGHT &&
@@ -80,7 +80,7 @@ void elf_set_light_type(elf_light *light, int type)
 	light->light_type = type;
 }
 
-void elf_set_light_color(elf_light *light, float r, float g, float b, float a)
+void elf_set_light_color(elf_light* light, float r, float g, float b, float a)
 {
 	light->color.r = r;
 	light->color.g = g;
@@ -88,14 +88,14 @@ void elf_set_light_color(elf_light *light, float r, float g, float b, float a)
 	light->color.a = a;
 }
 
-void elf_set_light_distance(elf_light *light, float distance)
+void elf_set_light_distance(elf_light* light, float distance)
 {
 	light->distance = distance;
 	if(light->distance < 0.0) light->distance = 0.0;
 	elf_set_camera_perspective(light->shadow_camera, (light->inner_cone+light->outer_cone)*2, 1.0, 1.0, light->distance+(1.0/(light->fade_speed)));
 }
 
-void elf_set_light_fade_speed(elf_light *light, float fade_speed)
+void elf_set_light_fade_speed(elf_light* light, float fade_speed)
 {
 	light->fade_speed = fade_speed;
 	if(light->fade_speed < 0.0001) light->fade_speed = 0.0001;
@@ -103,7 +103,7 @@ void elf_set_light_fade_speed(elf_light *light, float fade_speed)
 	elf_set_camera_perspective(light->shadow_camera, (light->inner_cone+light->outer_cone)*2, 1.0, 1.0, light->distance+(1.0/(light->fade_speed)));
 }
 
-void elf_set_light_shadows(elf_light *light, unsigned char shadows)
+void elf_set_light_shadows(elf_light* light, unsigned char shadows)
 {
 	if(light->shadows == shadows) return;
 
@@ -112,57 +112,57 @@ void elf_set_light_shadows(elf_light *light, unsigned char shadows)
 	light->moved = ELF_TRUE;
 }
 
-int elf_get_light_type(elf_light *light)
+int elf_get_light_type(elf_light* light)
 {
 	return light->light_type;
 }
 
-elf_color elf_get_light_color(elf_light *light)
+elf_color elf_get_light_color(elf_light* light)
 {
 	return light->color;
 }
 
-float elf_get_light_distance(elf_light *light)
+float elf_get_light_distance(elf_light* light)
 {
 	return light->distance;
 }
 
-float elf_get_light_fade_speed(elf_light *light)
+float elf_get_light_fade_speed(elf_light* light)
 {
 	return light->fade_speed;
 }
 
-unsigned char elf_get_light_shadows(elf_light *light)
+unsigned char elf_get_light_shadows(elf_light* light)
 {
 	return light->shadows;
 }
 
-unsigned char elf_get_light_visible(elf_light *light)
+unsigned char elf_get_light_visible(elf_light* light)
 {
 	return light->visible;
 }
 
-unsigned char elf_is_light_shaft(elf_light *light)
+unsigned char elf_is_light_shaft(elf_light* light)
 {
 	return light->shaft;
 }
 
-float elf_get_light_shaft_size(elf_light *light)
+float elf_get_light_shaft_size(elf_light* light)
 {
 	return light->shaft_size;
 }
 
-float elf_get_light_shaft_intensity(elf_light *light)
+float elf_get_light_shaft_intensity(elf_light* light)
 {
 	return light->shaft_intensity;
 }
 
-float elf_get_light_shaft_fade_off(elf_light *light)
+float elf_get_light_shaft_fade_off(elf_light* light)
 {
 	return light->shaft_fade_off;
 }
 
-elf_vec2f elf_get_light_cone(elf_light *light)
+elf_vec2f elf_get_light_cone(elf_light* light)
 {
 	elf_vec2f cone;
 
@@ -172,12 +172,12 @@ elf_vec2f elf_get_light_cone(elf_light *light)
 	return cone;
 }
 
-void elf_set_light_visible(elf_light *light, unsigned char visible)
+void elf_set_light_visible(elf_light* light, unsigned char visible)
 {
 	light->visible = !(visible == ELF_FALSE);
 }
 
-void elf_set_light_cone(elf_light *light, float inner_cone, float outer_cone)
+void elf_set_light_cone(elf_light* light, float inner_cone, float outer_cone)
 {
 	light->inner_cone = inner_cone;
 	light->outer_cone = outer_cone;
@@ -186,7 +186,7 @@ void elf_set_light_cone(elf_light *light, float inner_cone, float outer_cone)
 	elf_set_camera_perspective(light->shadow_camera, (light->inner_cone+light->outer_cone)*2, 1.0, 1.0, light->distance+(1.0/(light->fade_speed)));
 }
 
-void elf_set_light_shaft(elf_light *light, float size, float intensity, float fade_off)
+void elf_set_light_shaft(elf_light* light, float size, float intensity, float fade_off)
 {
 	light->shaft = ELF_TRUE;
 	light->shaft_size = size;
@@ -197,12 +197,12 @@ void elf_set_light_shaft(elf_light *light, float size, float intensity, float fa
 	if(light->shaft_fade_off > 1.0) light->shaft_fade_off = 1.0;
 }
 
-void elf_disable_light_shaft(elf_light *light)
+void elf_disable_light_shaft(elf_light* light)
 {
 	light->shaft = ELF_FALSE;
 }
 
-void elf_set_light(elf_light *light, elf_camera *camera, gfx_shader_params *shader_params)
+void elf_set_light(elf_light* light, elf_camera* camera, gfx_shader_params* shader_params)
 {
 	float axis[3];
 	float final_axis[3] = {0.0, 0.0, -1.0};
@@ -245,14 +245,14 @@ void elf_set_light(elf_light *light, elf_camera *camera, gfx_shader_params *shad
 	shader_params->light_params.outer_cone = light->outer_cone;
 }
 
-unsigned char elf_get_light_changed(elf_light *light)
+unsigned char elf_get_light_changed(elf_light* light)
 {
 	return light->moved;
 }
 
-void elf_draw_light_debug(elf_light *light, gfx_shader_params *shader_params)
+void elf_draw_light_debug(elf_light* light, gfx_shader_params* shader_params)
 {
-	float *vertex_buffer;
+	float* vertex_buffer;
 	float step;
 	float size;
 	int i;

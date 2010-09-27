@@ -1,7 +1,7 @@
 
 void gfx_draw_2d_quad(float x, float y, float width, float height)
 {
-	float *vertex_buffer;
+	float* vertex_buffer;
 
 	vertex_buffer = (float*)gfx_get_vertex_data_buffer(driver->quad_vertex_data);
 
@@ -24,8 +24,8 @@ void gfx_draw_2d_quad(float x, float y, float width, float height)
 
 void gfx_draw_textured_2d_quad(float x, float y, float width, float height)
 {
-	float *vertex_buffer;
-	float *tex_coord_buffer;
+	float* vertex_buffer;
+	float* tex_coord_buffer;
 
 	vertex_buffer = (float*)gfx_get_vertex_data_buffer(driver->quad_vertex_data);
 	tex_coord_buffer = (float*)gfx_get_vertex_data_buffer(driver->quad_tex_coord_data);
@@ -58,8 +58,8 @@ void gfx_draw_textured_2d_quad(float x, float y, float width, float height)
 
 void gfx_draw_textured_2d_quad_region(float x, float y, float width, float height, float tx, float ty, float twidth, float theight)
 {
-	float *vertex_buffer;
-	float *tex_coord_buffer;
+	float* vertex_buffer;
+	float* tex_coord_buffer;
 
 	vertex_buffer = (float*)gfx_get_vertex_data_buffer(driver->quad_vertex_data);
 	tex_coord_buffer = (float*)gfx_get_vertex_data_buffer(driver->quad_tex_coord_data);
@@ -92,7 +92,7 @@ void gfx_draw_textured_2d_quad_region(float x, float y, float width, float heigh
 
 void gfx_draw_bounding_box(float min[3], float max[3])
 {
-	float *vertex_buffer;
+	float* vertex_buffer;
 
 	vertex_buffer = (float*)gfx_get_vertex_data_buffer(driver->bb_vertex_data);
 
@@ -126,7 +126,7 @@ void gfx_draw_bounding_box(float min[3], float max[3])
 	gfx_draw_vertex_index(driver->bb_vertex_index, GFX_TRIANGLES);
 }
 
-void gfx_draw_lines(int count, gfx_vertex_data *vertices)
+void gfx_draw_lines(int count, gfx_vertex_data* vertices)
 {
 	if(count < 2) return;
 	if(count > gfx_get_vertex_data_count(vertices)/3) count -= count-(gfx_get_vertex_data_count(vertices)/3);
@@ -135,7 +135,7 @@ void gfx_draw_lines(int count, gfx_vertex_data *vertices)
 	gfx_draw_vertex_array(driver->line_vertex_array, count, GFX_LINES);
 }
 
-void gfx_draw_line_loop(int count, gfx_vertex_data *vertices)
+void gfx_draw_line_loop(int count, gfx_vertex_data* vertices)
 {
 	if(count < 2) return;
 	if(count > gfx_get_vertex_data_count(vertices)/3) count -= count-(gfx_get_vertex_data_count(vertices)/3);
@@ -160,7 +160,7 @@ void gfx_draw_circle(int vertices, float size)
 {
 	float step;
 	int i;
-	float *vertex_buffer;
+	float* vertex_buffer;
 
 	if(vertices < 3) return;
 	if(vertices > GFX_MAX_CIRCLE_VERTICES) vertices = GFX_MAX_CIRCLE_VERTICES;

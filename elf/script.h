@@ -1,7 +1,7 @@
 
-elf_script* elf_create_script(const char *name)
+elf_script* elf_create_script(const char* name)
 {
-	elf_script *script;
+	elf_script* script;
 
 	script = (elf_script*)malloc(sizeof(elf_script));
 	memset(script, 0x0, sizeof(elf_script));
@@ -17,12 +17,12 @@ elf_script* elf_create_script(const char *name)
 	return script;
 }
 
-elf_script* elf_create_script_from_file(const char *file_path)
+elf_script* elf_create_script_from_file(const char* file_path)
 {
-	elf_script *script = NULL;
-	FILE *file;
+	elf_script* script = NULL;
+	FILE* file;
 	int length;
-	char *text;
+	char* text;
 
 	file = fopen(file_path, "r");
 	if(!file)
@@ -55,9 +55,9 @@ elf_script* elf_create_script_from_file(const char *file_path)
 	return script;
 }
 
-void elf_destroy_script(void *data)
+void elf_destroy_script(void* data)
 {
-	elf_script *script = (elf_script*)data;
+	elf_script* script = (elf_script*)data;
 
 	if(script->name) elf_destroy_string(script->name);
 	if(script->file_path) elf_destroy_string(script->file_path);
@@ -68,23 +68,23 @@ void elf_destroy_script(void *data)
 	free(script);
 }
 
-void elf_set_script_name(elf_script *script, const char *name)
+void elf_set_script_name(elf_script* script, const char* name)
 {
 	if(script->name) elf_destroy_string(script->name);
 	script->name = elf_create_string(name);
 }
 
-const char* elf_get_script_name(elf_script *script)
+const char* elf_get_script_name(elf_script* script)
 {
 	return script->name;
 }
 
-const char* elf_get_script_file_path(elf_script *script)
+const char* elf_get_script_file_path(elf_script* script)
 {
 	return script->file_path;
 }
 
-void elf_set_script_text(elf_script *script, const char *text)
+void elf_set_script_text(elf_script* script, const char* text)
 {
 	if(script->text) elf_destroy_string(script->text);
 	script->text = NULL;
@@ -92,7 +92,7 @@ void elf_set_script_text(elf_script *script, const char *text)
 	script->error = ELF_FALSE;
 }
 
-unsigned char elf_is_script_error(elf_script *script)
+unsigned char elf_is_script_error(elf_script* script)
 {
 	return script->error;
 }

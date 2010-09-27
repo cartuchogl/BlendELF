@@ -1,7 +1,7 @@
 
-elf_sprite* elf_create_sprite(const char *name)
+elf_sprite* elf_create_sprite(const char* name)
 {
-	elf_sprite *sprite;
+	elf_sprite* sprite;
 
 	sprite = (elf_sprite*)malloc(sizeof(elf_sprite));
 	memset(sprite, 0x0, sizeof(elf_sprite));
@@ -35,12 +35,12 @@ elf_sprite* elf_create_sprite(const char *name)
 	return sprite;
 }
 
-void elf_update_sprite(elf_sprite *sprite)
+void elf_update_sprite(elf_sprite* sprite)
 {
 	elf_update_actor((elf_actor*)sprite);
 }
 
-void elf_sprite_pre_draw(elf_sprite *sprite, elf_camera *camera)
+void elf_sprite_pre_draw(elf_sprite* sprite, elf_camera* camera)
 {
 	elf_vec4f orient;
 
@@ -55,14 +55,14 @@ void elf_sprite_pre_draw(elf_sprite *sprite, elf_camera *camera)
 	}
 }
 
-void elf_sprite_post_draw(elf_sprite *sprite)
+void elf_sprite_post_draw(elf_sprite* sprite)
 {
 	elf_actor_post_draw((elf_actor*)sprite);
 }
 
-void elf_destroy_sprite(void *data)
+void elf_destroy_sprite(void* data)
 {
-	elf_sprite *sprite = (elf_sprite*)data;
+	elf_sprite* sprite = (elf_sprite*)data;
 
 	elf_clean_actor((elf_actor*)sprite);
 
@@ -76,7 +76,7 @@ void elf_destroy_sprite(void *data)
 	elf_dec_obj(ELF_SPRITE);
 }
 
-void elf_calc_sprite_bounds(elf_sprite *sprite)
+void elf_calc_sprite_bounds(elf_sprite* sprite)
 {
 	if(sprite->material)
 	{
@@ -106,7 +106,7 @@ void elf_calc_sprite_bounds(elf_sprite *sprite)
 	sprite->real_scale.z = 1.0;
 }
 
-void elf_reset_sprite_debug_physics_object(elf_sprite *sprite)
+void elf_reset_sprite_debug_physics_object(elf_sprite* sprite)
 {
 	float position[3];
 	float orient[4];
@@ -136,7 +136,7 @@ void elf_reset_sprite_debug_physics_object(elf_sprite *sprite)
 	if(sprite->scene) elf_set_physics_object_world(sprite->dobject, sprite->scene->dworld);
 }
 
-void elf_set_sprite_material(elf_sprite *sprite, elf_material *material)
+void elf_set_sprite_material(elf_sprite* sprite, elf_material* material)
 {
 	if(sprite->material) elf_dec_ref((elf_object*)sprite->material);
 	sprite->material = material;
@@ -155,7 +155,7 @@ void elf_set_sprite_material(elf_sprite *sprite, elf_material *material)
 	elf_reset_sprite_debug_physics_object(sprite);
 }
 
-void elf_set_sprite_scale(elf_sprite *sprite, float x, float y)
+void elf_set_sprite_scale(elf_sprite* sprite, float x, float y)
 {
 	sprite->scale.x = x; sprite->scale.y = y;
 
@@ -167,27 +167,27 @@ void elf_set_sprite_scale(elf_sprite *sprite, float x, float y)
 	if(sprite->dobject) elf_set_physics_object_scale(sprite->dobject, sprite->scale.x, sprite->scale.y, 1.0);
 }
 
-void elf_set_sprite_face_camera(elf_sprite *sprite, unsigned char face_camera)
+void elf_set_sprite_face_camera(elf_sprite* sprite, unsigned char face_camera)
 {
 	sprite->face_camera = !face_camera == ELF_FALSE;
 }
 
-elf_material* elf_get_sprite_material(elf_sprite *sprite)
+elf_material* elf_get_sprite_material(elf_sprite* sprite)
 {
 	return sprite->material;
 }
 
-elf_vec2f elf_get_sprite_scale(elf_sprite *sprite)
+elf_vec2f elf_get_sprite_scale(elf_sprite* sprite)
 {
 	return sprite->scale;
 }
 
-unsigned char elf_get_sprite_face_camera(elf_sprite *sprite)
+unsigned char elf_get_sprite_face_camera(elf_sprite* sprite)
 {
 	return sprite->face_camera;
 }
 
-void elf_set_sprite_visible(elf_sprite *sprite, unsigned char visible)
+void elf_set_sprite_visible(elf_sprite* sprite, unsigned char visible)
 {
 	if(sprite->visible == visible) return;
 
@@ -196,29 +196,29 @@ void elf_set_sprite_visible(elf_sprite *sprite, unsigned char visible)
 	sprite->moved = ELF_TRUE;
 }
 
-unsigned char elf_get_sprite_visible(elf_sprite *sprite)
+unsigned char elf_get_sprite_visible(elf_sprite* sprite)
 {
 	return sprite->visible;
 }
 
-void elf_set_sprite_occluder(elf_sprite *sprite, unsigned char occluder)
+void elf_set_sprite_occluder(elf_sprite* sprite, unsigned char occluder)
 {
 	sprite->occluder = !occluder == ELF_FALSE;
 }
 
-unsigned char elf_get_sprite_occluder(elf_sprite *sprite)
+unsigned char elf_get_sprite_occluder(elf_sprite* sprite)
 {
 	return sprite->occluder;
 }
 
-unsigned char elf_cull_sprite(elf_sprite *sprite, elf_camera *camera)
+unsigned char elf_cull_sprite(elf_sprite* sprite, elf_camera* camera)
 {
 	if(!sprite->material || !sprite->visible) return ELF_TRUE;
 
 	return !elf_sphere_inside_frustum(camera, &sprite->position.x, sprite->cull_radius);
 }
 
-void elf_draw_sprite(elf_sprite *sprite, int mode, gfx_shader_params *shader_params)
+void elf_draw_sprite(elf_sprite* sprite, int mode, gfx_shader_params* shader_params)
 {
 	if(!sprite->material || !sprite->visible ||
 		(mode == ELF_DRAW_WITHOUT_LIGHTING && sprite->material->lighting)) return;
@@ -232,9 +232,9 @@ void elf_draw_sprite(elf_sprite *sprite, int mode, gfx_shader_params *shader_par
 	gfx_draw_vertex_array(eng->sprite_vertex_array, 12, GFX_TRIANGLES);
 }
 
-void elf_draw_sprite_debug(elf_sprite *sprite, gfx_shader_params *shader_params)
+void elf_draw_sprite_debug(elf_sprite* sprite, gfx_shader_params* shader_params)
 {
-	float *vertex_buffer;
+	float* vertex_buffer;
 
 	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(sprite->transform),
 		shader_params->camera_matrix, shader_params->modelview_matrix);

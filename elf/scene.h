@@ -18,9 +18,9 @@ const char* compose_fog_frag =
 "\tgl_FragColor = vec4(elf_FogColor, 1.0-clamp((elf_FogEnd-gl_FragCoord.z/gl_FragCoord.w)/(elf_FogEnd-elf_FogStart), 0.0, 1.0));\n"
 "}\n";
 
-elf_scene* elf_create_scene(const char *name)
+elf_scene* elf_create_scene(const char* name)
 {
-	elf_scene *scene;
+	elf_scene* scene;
 
 	scene = (elf_scene*)malloc(sizeof(elf_scene));
 	memset(scene, 0x0, sizeof(elf_scene));
@@ -72,29 +72,29 @@ elf_scene* elf_create_scene(const char *name)
 	return scene;
 }
 
-void elf_recursively_import_assets(elf_scene *scene, const struct aiScene *aiscn, struct aiNode *aind)
+void elf_recursively_import_assets(elf_scene* scene, const struct aiScene* aiscn, struct aiNode* aind)
 {
 	int i, j, k;
-	elf_entity *entity;
-	elf_model *model;
-	elf_material *material;
-	elf_texture *texture;
+	elf_entity* entity;
+	elf_model* model;
+	elf_material* material;
+	elf_texture* texture;
 	int area_index;
 	int vertex_offset;
 	int index_offset;
-	float *vertex_buffer;
-	float *normal_buffer;
-	float *texcoord_buffer;
-	unsigned int *index_buffer;
+	float* vertex_buffer;
+	float* normal_buffer;
+	float* texcoord_buffer;
+	unsigned int* index_buffer;
 	struct aiColor4D col;
-	const struct aiMaterial *aimat;
+	const struct aiMaterial* aimat;
 	float shininess;
 	float strength;
 	unsigned int max;
 	struct aiString path;
 	struct aiString name;
-	char *parent_folder;
-	char *real_path;
+	char* parent_folder;
+	char* real_path;
 	unsigned char is_tex_coords;
 
 	entity = elf_create_entity(aind->mName.data);
@@ -105,7 +105,7 @@ void elf_recursively_import_assets(elf_scene *scene, const struct aiScene *aiscn
 
 	for(i = 0; i < (int)aind->mNumMeshes; i++)
 	{
-		const struct aiMesh *mesh = aiscn->mMeshes[aind->mMeshes[i]];
+		const struct aiMesh* mesh = aiscn->mMeshes[aind->mMeshes[i]];
 
 		if(mesh->mNumVertices < 3 || mesh->mNumFaces < 1) continue;
 
@@ -141,7 +141,7 @@ void elf_recursively_import_assets(elf_scene *scene, const struct aiScene *aiscn
 
 		for(i = 0; i < (int)aind->mNumMeshes; i++)
 		{
-			const struct aiMesh *mesh = aiscn->mMeshes[aind->mMeshes[i]];
+			const struct aiMesh* mesh = aiscn->mMeshes[aind->mMeshes[i]];
 
 			if(mesh->mNumVertices < 3 || mesh->mNumFaces < 1) continue;
 
@@ -161,7 +161,7 @@ void elf_recursively_import_assets(elf_scene *scene, const struct aiScene *aiscn
 
 			for(j = 0; j < (int)mesh->mNumFaces; j++)
 			{
-				const struct aiFace *face = &mesh->mFaces[j];
+				const struct aiFace* face = &mesh->mFaces[j];
 
 				if(face->mNumIndices != 3)
 				{
@@ -309,14 +309,14 @@ void elf_recursively_import_assets(elf_scene *scene, const struct aiScene *aiscn
 	}
 }
 
-elf_scene* elf_create_scene_from_file(const char *file_path)
+elf_scene* elf_create_scene_from_file(const char* file_path)
 {
-	elf_pak *pak;
-	elf_scene *scene;
-	const char *type;
+	elf_pak* pak;
+	elf_scene* scene;
+	const char* type;
 	int i;
-	elf_camera *camera;
-	elf_light *light;
+	elf_camera* camera;
+	elf_light* light;
 
 	type = strrchr(file_path, '.');
 	if(!type)
@@ -336,7 +336,7 @@ elf_scene* elf_create_scene_from_file(const char *file_path)
 	}
 	else if(aiIsExtensionSupported(type))
 	{
-		const struct aiScene *aiscn;
+		const struct aiScene* aiscn;
 		struct aiLogStream stream;
 
 		stream = aiGetPredefinedLogStream(aiDefaultLogStream_STDOUT,NULL);
@@ -356,7 +356,7 @@ elf_scene* elf_create_scene_from_file(const char *file_path)
 
 		for(i = 0; i < aiscn->mNumCameras; i++)
 		{
-			const struct aiCamera *aicam = aiscn->mCameras[i];
+			const struct aiCamera* aicam = aiscn->mCameras[i];
 
 			camera = elf_create_camera(aicam->mName.data);
 
@@ -368,7 +368,7 @@ elf_scene* elf_create_scene_from_file(const char *file_path)
 
 		for(i = 0; i < aiscn->mNumLights; i++)
 		{
-			const struct aiLight *ailig = aiscn->mLights[i];
+			const struct aiLight* ailig = aiscn->mLights[i];
 
 			light = elf_create_light(ailig->mName.data);
 
@@ -398,18 +398,18 @@ elf_scene* elf_create_scene_from_file(const char *file_path)
 	}
 }
 
-unsigned char elf_save_scene(elf_scene *scene, const char *file_path)
+unsigned char elf_save_scene(elf_scene* scene, const char* file_path)
 {
 	return elf_save_scene_to_pak(scene, file_path);
 }
 
-void elf_update_scene(elf_scene *scene, float sync)
+void elf_update_scene(elf_scene* scene, float sync)
 {
-	elf_camera *cam;
-	elf_entity *ent;
-	elf_light *light;
-	elf_particles *par;
-	elf_sprite *spr;
+	elf_camera* cam;
+	elf_entity* ent;
+	elf_light* light;
+	elf_particles* par;
+	elf_sprite* spr;
 	float position[3];
 	float orient[4];
 	float vec_z[3] = {0.0, 0.0, -1.0};
@@ -464,13 +464,13 @@ void elf_update_scene(elf_scene *scene, float sync)
 	}
 }
 
-void elf_scene_pre_draw(elf_scene *scene)
+void elf_scene_pre_draw(elf_scene* scene)
 {
-	elf_camera *cam;
-	elf_entity *ent;
-	elf_light *light;
-	elf_sprite *spr;
-	elf_particles *par;
+	elf_camera* cam;
+	elf_entity* ent;
+	elf_light* light;
+	elf_sprite* spr;
+	elf_particles* par;
 
 	for(cam = (elf_camera*)elf_begin_list(scene->cameras); cam != NULL;
 		cam = (elf_camera*)elf_next_in_list(scene->cameras))
@@ -503,13 +503,13 @@ void elf_scene_pre_draw(elf_scene *scene)
 	}
 }
 
-void elf_scene_post_draw(elf_scene *scene)
+void elf_scene_post_draw(elf_scene* scene)
 {
-	elf_camera *cam;
-	elf_entity *ent;
-	elf_light *light;
-	elf_sprite *spr;
-	elf_particles *par;
+	elf_camera* cam;
+	elf_entity* ent;
+	elf_light* light;
+	elf_sprite* spr;
+	elf_particles* par;
 
 	for(cam = (elf_camera*)elf_begin_list(scene->cameras); cam != NULL;
 		cam = (elf_camera*)elf_next_in_list(scene->cameras))
@@ -542,11 +542,11 @@ void elf_scene_post_draw(elf_scene *scene)
 	}
 }
 
-void elf_destroy_scene(void *data)
+void elf_destroy_scene(void* data)
 {
-	elf_scene *scene = (elf_scene*)data;
+	elf_scene* scene = (elf_scene*)data;
 
-	elf_actor *actor;
+	elf_actor* actor;
 
 	if(scene->name) elf_destroy_string(scene->name);
 	if(scene->file_path) elf_destroy_string(scene->file_path);
@@ -588,7 +588,7 @@ void elf_destroy_scene(void *data)
 	free(scene);
 }
 
-void elf_set_scene_ambient_color(elf_scene *scene, float r, float g, float b, float a)
+void elf_set_scene_ambient_color(elf_scene* scene, float r, float g, float b, float a)
 {
 	scene->ambient_color.r = r;
 	scene->ambient_color.g = g;
@@ -596,84 +596,84 @@ void elf_set_scene_ambient_color(elf_scene *scene, float r, float g, float b, fl
 	scene->ambient_color.a = a;
 }
 
-elf_color elf_get_scene_ambient_color(elf_scene *scene)
+elf_color elf_get_scene_ambient_color(elf_scene* scene)
 {
 	return scene->ambient_color;
 }
 
-void elf_set_scene_gravity(elf_scene *scene, float x, float y, float z)
+void elf_set_scene_gravity(elf_scene* scene, float x, float y, float z)
 {
 	elf_set_physics_world_gravity(scene->world, x, y, z);
 }
 
-elf_vec3f elf_get_scene_gravity(elf_scene *scene)
+elf_vec3f elf_get_scene_gravity(elf_scene* scene)
 {
 	return elf_get_physics_world_gravity(scene->world);
 }
 
-void elf_set_scene_physics(elf_scene *scene, unsigned char physics)
+void elf_set_scene_physics(elf_scene* scene, unsigned char physics)
 {
 	scene->physics = !physics == ELF_FALSE;
 }
 
-unsigned char elf_get_scene_physics(elf_scene *scene)
+unsigned char elf_get_scene_physics(elf_scene* scene)
 {
 	return scene->physics;
 }
 
-void elf_set_scene_run_scripts(elf_scene *scene, unsigned char run_scripts)
+void elf_set_scene_run_scripts(elf_scene* scene, unsigned char run_scripts)
 {
 	scene->run_scripts = !run_scripts == ELF_FALSE;
 }
 
-unsigned char elf_get_scene_run_scripts(elf_scene *scene, unsigned char run_scripts)
+unsigned char elf_get_scene_run_scripts(elf_scene* scene, unsigned char run_scripts)
 {
 	return scene->run_scripts;
 }
 
-const char* elf_get_scene_name(elf_scene *scene)
+const char* elf_get_scene_name(elf_scene* scene)
 {
 	return scene->name;
 }
 
-const char* elf_get_scene_file_path(elf_scene *scene)
+const char* elf_get_scene_file_path(elf_scene* scene)
 {
 	return scene->file_path;
 }
 
-int elf_get_scene_camera_count(elf_scene *scene)
+int elf_get_scene_camera_count(elf_scene* scene)
 {
 	return elf_get_list_length(scene->cameras);
 }
 
-int elf_get_scene_entity_count(elf_scene *scene)
+int elf_get_scene_entity_count(elf_scene* scene)
 {
 	return elf_get_list_length(scene->entities);
 }
 
-int elf_get_scene_light_count(elf_scene *scene)
+int elf_get_scene_light_count(elf_scene* scene)
 {
 	return elf_get_list_length(scene->lights);
 }
 
-int elf_get_scene_armature_count(elf_scene *scene)
+int elf_get_scene_armature_count(elf_scene* scene)
 {
 	return elf_get_list_length(scene->armatures);
 }
 
-int elf_get_scene_particles_count(elf_scene *scene)
+int elf_get_scene_particles_count(elf_scene* scene)
 {
 	return elf_get_list_length(scene->particles);
 }
 
-int elf_get_scene_sprite_count(elf_scene *scene)
+int elf_get_scene_sprite_count(elf_scene* scene)
 {
 	return elf_get_list_length(scene->sprites);
 }
 
-void elf_set_actor_scene(elf_scene *scene, elf_actor *actor)
+void elf_set_actor_scene(elf_scene* scene, elf_actor* actor)
 {
-	elf_joint *joint;
+	elf_joint* joint;
 
 	if(actor->scene) elf_remove_actor_by_object(actor->scene, actor);
 
@@ -689,7 +689,7 @@ void elf_set_actor_scene(elf_scene *scene, elf_actor *actor)
 	}
 }
 
-void elf_add_camera_to_scene(elf_scene *scene, elf_camera *camera)
+void elf_add_camera_to_scene(elf_scene* scene, elf_camera* camera)
 {
 	if(!camera) return;
 	elf_set_actor_scene(scene, (elf_actor*)camera);
@@ -697,97 +697,97 @@ void elf_add_camera_to_scene(elf_scene *scene, elf_camera *camera)
 	if(elf_get_list_length(scene->cameras) == 1) scene->cur_camera = camera;
 }
 
-void elf_add_entity_to_scene(elf_scene *scene, elf_entity *entity)
+void elf_add_entity_to_scene(elf_scene* scene, elf_entity* entity)
 {
 	if(!entity) return;
 	elf_set_actor_scene(scene, (elf_actor*)entity);
 	elf_append_to_list(scene->entities, (elf_object*)entity);
 }
 
-void elf_add_light_to_scene(elf_scene *scene, elf_light *light)
+void elf_add_light_to_scene(elf_scene* scene, elf_light* light)
 {
 	if(!light) return;
 	elf_set_actor_scene(scene, (elf_actor*)light);
 	elf_append_to_list(scene->lights, (elf_object*)light);
 }
 
-void elf_add_particles_to_scene(elf_scene *scene, elf_particles *particles)
+void elf_add_particles_to_scene(elf_scene* scene, elf_particles* particles)
 {
 	if(!particles) return;
 	elf_set_actor_scene(scene, (elf_actor*)particles);
 	elf_append_to_list(scene->particles, (elf_object*)particles);
 }
 
-void elf_add_sprite_to_scene(elf_scene *scene, elf_sprite *sprite)
+void elf_add_sprite_to_scene(elf_scene* scene, elf_sprite* sprite)
 {
 	if(!sprite) return;
 	elf_set_actor_scene(scene, (elf_actor*)sprite);
 	elf_append_to_list(scene->sprites, (elf_object*)sprite);
 }
 
-void elf_set_scene_active_camera(elf_scene *scene, elf_camera *camera)
+void elf_set_scene_active_camera(elf_scene* scene, elf_camera* camera)
 {
 	scene->cur_camera = camera;
 }
 
-elf_camera* elf_get_scene_active_camera(elf_scene *scene)
+elf_camera* elf_get_scene_active_camera(elf_scene* scene)
 {
 	return scene->cur_camera;
 }
 
-elf_collision* elf_get_scene_ray_cast_result(elf_scene *scene, float x, float y, float z, float dx, float dy, float dz)
+elf_collision* elf_get_scene_ray_cast_result(elf_scene* scene, float x, float y, float z, float dx, float dy, float dz)
 {
 	return elf_get_ray_cast_result(scene->world, x, y, z, dx, dy, dz);
 }
 
-elf_list* elf_get_scene_ray_cast_results(elf_scene *scene, float x, float y, float z, float dx, float dy, float dz)
+elf_list* elf_get_scene_ray_cast_results(elf_scene* scene, float x, float y, float z, float dx, float dy, float dz)
 {
 	return elf_get_ray_cast_results(scene->world, x, y, z, dx, dy, dz);
 }
 
-elf_collision* elf_get_debug_scene_ray_cast_result(elf_scene *scene, float x, float y, float z, float dx, float dy, float dz)
+elf_collision* elf_get_debug_scene_ray_cast_result(elf_scene* scene, float x, float y, float z, float dx, float dy, float dz)
 {
 	return elf_get_ray_cast_result(scene->dworld, x, y, z, dx, dy, dz);
 }
 
-elf_list* elf_get_debug_scene_ray_cast_results(elf_scene *scene, float x, float y, float z, float dx, float dy, float dz)
+elf_list* elf_get_debug_scene_ray_cast_results(elf_scene* scene, float x, float y, float z, float dx, float dy, float dz)
 {
 	return elf_get_ray_cast_results(scene->dworld, x, y, z, dx, dy, dz);
 }
 
-elf_camera* elf_get_camera_by_index(elf_scene *scene, int idx)
+elf_camera* elf_get_camera_by_index(elf_scene* scene, int idx)
 {
 	return (elf_camera*)elf_get_item_from_list(scene->cameras, idx);
 }
 
-elf_entity* elf_get_entity_by_index(elf_scene *scene, int idx)
+elf_entity* elf_get_entity_by_index(elf_scene* scene, int idx)
 {
 	return (elf_entity*)elf_get_item_from_list(scene->entities, idx);
 }
 
-elf_light* elf_get_light_by_index(elf_scene *scene, int idx)
+elf_light* elf_get_light_by_index(elf_scene* scene, int idx)
 {
 	return (elf_light*)elf_get_item_from_list(scene->lights, idx);
 }
 
-elf_armature* elf_get_armature_by_index(elf_scene *scene, int idx)
+elf_armature* elf_get_armature_by_index(elf_scene* scene, int idx)
 {
 	return (elf_armature*)elf_get_item_from_list(scene->armatures, idx);
 }
 
-elf_particles* elf_get_particles_by_index(elf_scene *scene, int idx)
+elf_particles* elf_get_particles_by_index(elf_scene* scene, int idx)
 {
 	return (elf_particles*)elf_get_item_from_list(scene->particles, idx);
 }
 
-elf_sprite* elf_get_sprite_by_index(elf_scene *scene, int idx)
+elf_sprite* elf_get_sprite_by_index(elf_scene* scene, int idx)
 {
 	return (elf_sprite*)elf_get_item_from_list(scene->sprites, idx);
 }
 
-elf_texture *elf_get_texture_by_name(elf_scene *scene, const char *name)
+elf_texture* elf_get_texture_by_name(elf_scene* scene, const char* name)
 {
-	elf_texture *texture;
+	elf_texture* texture;
 
 	for(texture = (elf_texture*)elf_begin_list(scene->textures); texture;
 		texture = (elf_texture*)elf_next_in_list(scene->textures))
@@ -798,9 +798,9 @@ elf_texture *elf_get_texture_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-elf_model *elf_get_model_by_name(elf_scene *scene, const char *name)
+elf_model* elf_get_model_by_name(elf_scene* scene, const char* name)
 {
-	elf_model *model;
+	elf_model* model;
 
 	for(model = (elf_model*)elf_begin_list(scene->models); model;
 		model = (elf_model*)elf_next_in_list(scene->models))
@@ -811,9 +811,9 @@ elf_model *elf_get_model_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-elf_script *elf_get_script_by_name(elf_scene *scene, const char *name)
+elf_script* elf_get_script_by_name(elf_scene* scene, const char* name)
 {
-	elf_script *script;
+	elf_script* script;
 
 	for(script = (elf_script*)elf_begin_list(scene->scripts); script;
 		script = (elf_script*)elf_next_in_list(scene->scripts))
@@ -824,9 +824,9 @@ elf_script *elf_get_script_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-elf_material *elf_get_material_by_name(elf_scene *scene, const char *name)
+elf_material* elf_get_material_by_name(elf_scene* scene, const char* name)
 {
-	elf_material *material;
+	elf_material* material;
 
 	for(material = (elf_material*)elf_begin_list(scene->materials); material;
 		material = (elf_material*)elf_next_in_list(scene->materials))
@@ -837,9 +837,9 @@ elf_material *elf_get_material_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-elf_actor *elf_get_actor_by_name(elf_scene *scene, const char *name)
+elf_actor* elf_get_actor_by_name(elf_scene* scene, const char* name)
 {
-	elf_actor *actor;
+	elf_actor* actor;
 
 	actor = (elf_actor*)elf_get_camera_by_name(scene, name);
 	if(actor) return actor;
@@ -855,9 +855,9 @@ elf_actor *elf_get_actor_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-elf_camera *elf_get_camera_by_name(elf_scene *scene, const char *name)
+elf_camera* elf_get_camera_by_name(elf_scene* scene, const char* name)
 {
-	elf_camera *camera;
+	elf_camera* camera;
 
 	for(camera = (elf_camera*)elf_begin_list(scene->cameras); camera;
 		camera = (elf_camera*)elf_next_in_list(scene->cameras))
@@ -868,9 +868,9 @@ elf_camera *elf_get_camera_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-elf_entity *elf_get_entity_by_name(elf_scene *scene, const char *name)
+elf_entity* elf_get_entity_by_name(elf_scene* scene, const char* name)
 {
-	elf_entity *entity;
+	elf_entity* entity;
 
 	for(entity = (elf_entity*)elf_begin_list(scene->entities); entity;
 		entity = (elf_entity*)elf_next_in_list(scene->entities))
@@ -881,9 +881,9 @@ elf_entity *elf_get_entity_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-elf_light *elf_get_light_by_name(elf_scene *scene, const char *name)
+elf_light* elf_get_light_by_name(elf_scene* scene, const char* name)
 {
-	elf_light *light;
+	elf_light* light;
 
 	for(light = (elf_light*)elf_begin_list(scene->lights); light;
 		light = (elf_light*)elf_next_in_list(scene->lights))
@@ -894,9 +894,9 @@ elf_light *elf_get_light_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-elf_armature *elf_get_armature_by_name(elf_scene *scene, const char *name)
+elf_armature* elf_get_armature_by_name(elf_scene* scene, const char* name)
 {
-	elf_armature *armature;
+	elf_armature* armature;
 
 	for(armature = (elf_armature*)elf_begin_list(scene->armatures); armature;
 		armature = (elf_armature*)elf_next_in_list(scene->armatures))
@@ -907,9 +907,9 @@ elf_armature *elf_get_armature_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-elf_particles *elf_get_particles_by_name(elf_scene *scene, const char *name)
+elf_particles* elf_get_particles_by_name(elf_scene* scene, const char* name)
 {
-	elf_particles *particles;
+	elf_particles* particles;
 
 	for(particles = (elf_particles*)elf_begin_list(scene->particles); particles;
 		particles = (elf_particles*)elf_next_in_list(scene->particles))
@@ -920,9 +920,9 @@ elf_particles *elf_get_particles_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-elf_sprite *elf_get_sprite_by_name(elf_scene *scene, const char *name)
+elf_sprite* elf_get_sprite_by_name(elf_scene* scene, const char* name)
 {
-	elf_sprite *sprite;
+	elf_sprite* sprite;
 
 	for(sprite = (elf_sprite*)elf_begin_list(scene->sprites); sprite;
 		sprite = (elf_sprite*)elf_next_in_list(scene->sprites))
@@ -933,11 +933,11 @@ elf_sprite *elf_get_sprite_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-elf_texture* elf_get_or_load_texture_by_name(elf_scene *scene, const char *name)
+elf_texture* elf_get_or_load_texture_by_name(elf_scene* scene, const char* name)
 {
-	elf_texture *texture;
-	elf_pak_index *index;
-	FILE *file;
+	elf_texture* texture;
+	elf_pak_index* index;
+	FILE* file;
 
 	for(texture = (elf_texture*)elf_begin_list(scene->textures); texture;
 		texture = (elf_texture*)elf_next_in_list(scene->textures))
@@ -964,11 +964,11 @@ elf_texture* elf_get_or_load_texture_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-elf_model* elf_get_or_load_model_by_name(elf_scene *scene, const char *name)
+elf_model* elf_get_or_load_model_by_name(elf_scene* scene, const char* name)
 {
-	elf_model *model;
-	elf_pak_index *index;
-	FILE *file;
+	elf_model* model;
+	elf_pak_index* index;
+	FILE* file;
 
 	for(model = (elf_model*)elf_begin_list(scene->models); model;
 		model = (elf_model*)elf_next_in_list(scene->models))
@@ -995,11 +995,11 @@ elf_model* elf_get_or_load_model_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-elf_script* elf_get_or_load_script_by_name(elf_scene *scene, const char *name)
+elf_script* elf_get_or_load_script_by_name(elf_scene* scene, const char* name)
 {
-	elf_script *script;
-	elf_pak_index *index;
-	FILE *file;
+	elf_script* script;
+	elf_pak_index* index;
+	FILE* file;
 
 	for(script = (elf_script*)elf_begin_list(scene->scripts); script;
 		script = (elf_script*)elf_next_in_list(scene->scripts))
@@ -1026,11 +1026,11 @@ elf_script* elf_get_or_load_script_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-elf_material *elf_get_or_load_material_by_name(elf_scene *scene, const char *name)
+elf_material* elf_get_or_load_material_by_name(elf_scene* scene, const char* name)
 {
-	elf_material *material;
-	elf_pak_index *index;
-	FILE *file;
+	elf_material* material;
+	elf_pak_index* index;
+	FILE* file;
 
 	for(material = (elf_material*)elf_begin_list(scene->materials); material;
 		material = (elf_material*)elf_next_in_list(scene->materials))
@@ -1057,11 +1057,11 @@ elf_material *elf_get_or_load_material_by_name(elf_scene *scene, const char *nam
 	return NULL;
 }
 
-elf_camera *elf_get_or_load_camera_by_name(elf_scene *scene, const char *name)
+elf_camera* elf_get_or_load_camera_by_name(elf_scene* scene, const char* name)
 {
-	elf_camera *camera;
-	elf_pak_index *index;
-	FILE *file;
+	elf_camera* camera;
+	elf_pak_index* index;
+	FILE* file;
 
 	for(camera = (elf_camera*)elf_begin_list(scene->cameras); camera;
 		camera = (elf_camera*)elf_next_in_list(scene->cameras))
@@ -1087,11 +1087,11 @@ elf_camera *elf_get_or_load_camera_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-elf_entity *elf_get_or_load_entity_by_name(elf_scene *scene, const char *name)
+elf_entity* elf_get_or_load_entity_by_name(elf_scene* scene, const char* name)
 {
-	elf_entity *entity;
-	elf_pak_index *index;
-	FILE *file;
+	elf_entity* entity;
+	elf_pak_index* index;
+	FILE* file;
 
 	for(entity = (elf_entity*)elf_begin_list(scene->entities); entity;
 		entity = (elf_entity*)elf_next_in_list(scene->entities))
@@ -1118,11 +1118,11 @@ elf_entity *elf_get_or_load_entity_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-elf_light *elf_get_or_load_light_by_name(elf_scene *scene, const char *name)
+elf_light* elf_get_or_load_light_by_name(elf_scene* scene, const char* name)
 {
-	elf_light *light;
-	elf_pak_index *index;
-	FILE *file;
+	elf_light* light;
+	elf_pak_index* index;
+	FILE* file;
 
 	for(light = (elf_light*)elf_begin_list(scene->lights); light;
 		light = (elf_light*)elf_next_in_list(scene->lights))
@@ -1149,11 +1149,11 @@ elf_light *elf_get_or_load_light_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-elf_armature *elf_get_or_load_armature_by_name(elf_scene *scene, const char *name)
+elf_armature* elf_get_or_load_armature_by_name(elf_scene* scene, const char* name)
 {
-	elf_armature *armature;
-	elf_pak_index *index;
-	FILE *file;
+	elf_armature* armature;
+	elf_pak_index* index;
+	FILE* file;
 
 	for(armature = (elf_armature*)elf_begin_list(scene->armatures); armature;
 		armature = (elf_armature*)elf_next_in_list(scene->armatures))
@@ -1180,11 +1180,11 @@ elf_armature *elf_get_or_load_armature_by_name(elf_scene *scene, const char *nam
 	return NULL;
 }
 
-elf_particles *elf_get_or_load_particles_by_name(elf_scene *scene, const char *name)
+elf_particles* elf_get_or_load_particles_by_name(elf_scene* scene, const char* name)
 {
-	elf_particles *particles;
-	elf_pak_index *index;
-	FILE *file;
+	elf_particles* particles;
+	elf_pak_index* index;
+	FILE* file;
 
 	for(particles = (elf_particles*)elf_begin_list(scene->particles); particles;
 		particles = (elf_particles*)elf_next_in_list(scene->particles))
@@ -1211,11 +1211,11 @@ elf_particles *elf_get_or_load_particles_by_name(elf_scene *scene, const char *n
 	return NULL;
 }
 
-elf_sprite *elf_get_or_load_sprite_by_name(elf_scene *scene, const char *name)
+elf_sprite* elf_get_or_load_sprite_by_name(elf_scene* scene, const char* name)
 {
-	elf_sprite *sprite;
-	elf_pak_index *index;
-	FILE *file;
+	elf_sprite* sprite;
+	elf_pak_index* index;
+	FILE* file;
 
 	for(sprite = (elf_sprite*)elf_begin_list(scene->sprites); sprite;
 		sprite = (elf_sprite*)elf_next_in_list(scene->sprites))
@@ -1242,9 +1242,9 @@ elf_sprite *elf_get_or_load_sprite_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-elf_actor *elf_get_or_load_actor_by_name(elf_scene *scene, const char *name)
+elf_actor* elf_get_or_load_actor_by_name(elf_scene* scene, const char* name)
 {
-	elf_actor *actor;
+	elf_actor* actor;
 
 	actor = (elf_actor*)elf_get_or_load_camera_by_name(scene, name);
 	if(actor) return actor;
@@ -1258,9 +1258,9 @@ elf_actor *elf_get_or_load_actor_by_name(elf_scene *scene, const char *name)
 	return NULL;
 }
 
-void elf_remove_actor(elf_actor *actor)
+void elf_remove_actor(elf_actor* actor)
 {
-	elf_joint *joint;
+	elf_joint* joint;
 
 	actor->scene = NULL;
 
@@ -1286,9 +1286,9 @@ void elf_remove_actor(elf_actor *actor)
 	elf_inc_ref((elf_object*)actor->joints);
 }
 
-unsigned char elf_remove_camera_by_name(elf_scene *scene, const char *name)
+unsigned char elf_remove_camera_by_name(elf_scene* scene, const char* name)
 {
-	elf_camera *cam;
+	elf_camera* cam;
 
 	for(cam = (elf_camera*)elf_begin_list(scene->cameras); cam != NULL;
 		cam = (elf_camera*)elf_next_in_list(scene->cameras))
@@ -1305,9 +1305,9 @@ unsigned char elf_remove_camera_by_name(elf_scene *scene, const char *name)
 	return ELF_FALSE;
 }
 
-unsigned char elf_remove_entity_by_name(elf_scene *scene, const char *name)
+unsigned char elf_remove_entity_by_name(elf_scene* scene, const char* name)
 {
-	elf_entity *ent;
+	elf_entity* ent;
 
 	for(ent = (elf_entity*)elf_begin_list(scene->entities); ent != NULL;
 		ent = (elf_entity*)elf_next_in_list(scene->entities))
@@ -1323,9 +1323,9 @@ unsigned char elf_remove_entity_by_name(elf_scene *scene, const char *name)
 	return ELF_FALSE;
 }
 
-unsigned char elf_remove_light_by_name(elf_scene *scene, const char *name)
+unsigned char elf_remove_light_by_name(elf_scene* scene, const char* name)
 {
-	elf_light *lig;
+	elf_light* lig;
 
 	for(lig = (elf_light*)elf_begin_list(scene->lights); lig != NULL;
 		lig = (elf_light*)elf_next_in_list(scene->lights))
@@ -1341,9 +1341,9 @@ unsigned char elf_remove_light_by_name(elf_scene *scene, const char *name)
 	return ELF_FALSE;
 }
 
-unsigned char elf_remove_particles_by_name(elf_scene *scene, const char *name)
+unsigned char elf_remove_particles_by_name(elf_scene* scene, const char* name)
 {
-	elf_particles *par;
+	elf_particles* par;
 
 	for(par = (elf_particles*)elf_begin_list(scene->particles); par != NULL;
 		par = (elf_particles*)elf_next_in_list(scene->particles))
@@ -1359,9 +1359,9 @@ unsigned char elf_remove_particles_by_name(elf_scene *scene, const char *name)
 	return ELF_FALSE;
 }
 
-unsigned char elf_remove_sprite_by_name(elf_scene *scene, const char *name)
+unsigned char elf_remove_sprite_by_name(elf_scene* scene, const char* name)
 {
-	elf_sprite *spr;
+	elf_sprite* spr;
 
 	for(spr = (elf_sprite*)elf_begin_list(scene->sprites); spr != NULL;
 		spr = (elf_sprite*)elf_next_in_list(scene->sprites))
@@ -1377,9 +1377,9 @@ unsigned char elf_remove_sprite_by_name(elf_scene *scene, const char *name)
 	return ELF_FALSE;
 }
 
-unsigned char elf_remove_camera_by_index(elf_scene *scene, int idx)
+unsigned char elf_remove_camera_by_index(elf_scene* scene, int idx)
 {
-	elf_camera *cam;
+	elf_camera* cam;
 	int i;
 
 	if(idx < 0 || idx > elf_get_list_length(scene->cameras)-1) return ELF_FALSE;
@@ -1402,9 +1402,9 @@ unsigned char elf_remove_camera_by_index(elf_scene *scene, int idx)
 	return ELF_FALSE;
 }
 
-unsigned char elf_remove_entity_by_index(elf_scene *scene, int idx)
+unsigned char elf_remove_entity_by_index(elf_scene* scene, int idx)
 {
-	elf_entity *ent;
+	elf_entity* ent;
 	int i;
 
 	if(idx < 0 || idx > elf_get_list_length(scene->entities)-1) return ELF_FALSE;
@@ -1423,9 +1423,9 @@ unsigned char elf_remove_entity_by_index(elf_scene *scene, int idx)
 	return ELF_FALSE;
 }
 
-unsigned char elf_remove_light_by_index(elf_scene *scene, int idx)
+unsigned char elf_remove_light_by_index(elf_scene* scene, int idx)
 {
-	elf_light *lig;
+	elf_light* lig;
 	int i;
 
 	if(idx < 0 || idx > elf_get_list_length(scene->lights)-1) return ELF_FALSE;
@@ -1444,9 +1444,9 @@ unsigned char elf_remove_light_by_index(elf_scene *scene, int idx)
 	return ELF_FALSE;
 }
 
-unsigned char elf_remove_particles_by_index(elf_scene *scene, int idx)
+unsigned char elf_remove_particles_by_index(elf_scene* scene, int idx)
 {
-	elf_particles *par;
+	elf_particles* par;
 	int i;
 
 	if(idx < 0 || idx > elf_get_list_length(scene->particles)-1) return ELF_FALSE;
@@ -1465,9 +1465,9 @@ unsigned char elf_remove_particles_by_index(elf_scene *scene, int idx)
 	return ELF_FALSE;
 }
 
-unsigned char elf_remove_sprite_by_index(elf_scene *scene, int idx)
+unsigned char elf_remove_sprite_by_index(elf_scene* scene, int idx)
 {
-	elf_sprite *spr;
+	elf_sprite* spr;
 	int i;
 
 	if(idx < 0 || idx > elf_get_list_length(scene->sprites)-1) return ELF_FALSE;
@@ -1486,38 +1486,38 @@ unsigned char elf_remove_sprite_by_index(elf_scene *scene, int idx)
 	return ELF_FALSE;
 }
 
-unsigned char elf_remove_camera_by_object(elf_scene *scene, elf_camera *camera)
+unsigned char elf_remove_camera_by_object(elf_scene* scene, elf_camera* camera)
 {
 	elf_remove_actor((elf_actor*)camera);
 	if(scene->cur_camera == camera) scene->cur_camera = elf_get_camera_by_index(scene, 0);
 	return elf_remove_from_list(scene->cameras, (elf_object*)camera);
 }
 
-unsigned char elf_remove_entity_by_object(elf_scene *scene, elf_entity *entity)
+unsigned char elf_remove_entity_by_object(elf_scene* scene, elf_entity* entity)
 {
 	elf_remove_actor((elf_actor*)entity);
 	return elf_remove_from_list(scene->entities, (elf_object*)entity);
 }
 
-unsigned char elf_remove_light_by_object(elf_scene *scene, elf_light *light)
+unsigned char elf_remove_light_by_object(elf_scene* scene, elf_light* light)
 {
 	elf_remove_actor((elf_actor*)light);
 	return elf_remove_from_list(scene->lights, (elf_object*)light);
 }
 
-unsigned char elf_remove_particles_by_object(elf_scene *scene, elf_particles *particles)
+unsigned char elf_remove_particles_by_object(elf_scene* scene, elf_particles* particles)
 {
 	elf_remove_actor((elf_actor*)particles);
 	return elf_remove_from_list(scene->particles, (elf_object*)particles);
 }
 
-unsigned char elf_remove_sprite_by_object(elf_scene *scene, elf_sprite *sprite)
+unsigned char elf_remove_sprite_by_object(elf_scene* scene, elf_sprite* sprite)
 {
 	elf_remove_actor((elf_actor*)sprite);
 	return elf_remove_from_list(scene->sprites, (elf_object*)sprite);
 }
 
-unsigned char elf_remove_actor_by_object(elf_scene *scene, elf_actor *actor)
+unsigned char elf_remove_actor_by_object(elf_scene* scene, elf_actor* actor)
 {
 	unsigned char result;
 
@@ -1535,19 +1535,19 @@ unsigned char elf_remove_actor_by_object(elf_scene *scene, elf_actor *actor)
 	return ELF_FALSE;
 }
 
-void elf_draw_scene(elf_scene *scene)
+void elf_draw_scene(elf_scene* scene)
 {
-	elf_light *light;
-	elf_entity *ent;
-	elf_sprite *spr;
-	elf_particles *par;
+	elf_light* light;
+	elf_entity* ent;
+	elf_sprite* spr;
+	elf_particles* par;
 	float bias[16] = {0.5, 0.0, 0.0, 0.0,
 			0.0, 0.5, 0.0, 0.0,
 			0.0, 0.0, 0.5, 0.0,
 			0.5, 0.5, 0.5, 1.0};
 	float temp_mat1[16];
 	float temp_mat2[16];
-	gfx_render_target *render_target;
+	gfx_render_target* render_target;
 	int i;
 	elf_vec3f lpos;
 	elf_vec3f spos;
@@ -2071,12 +2071,12 @@ void elf_draw_scene(elf_scene *scene)
 	}
 }
 
-/*void elf_draw_scene(elf_scene *scene)
+/*void elf_draw_scene(elf_scene* scene)
 {
-	elf_entity *ent;
-	elf_sprite *spr;
-	elf_light *lig;
-	elf_particles *par;
+	elf_entity* ent;
+	elf_sprite* spr;
+	elf_light* lig;
+	elf_particles* par;
 	float bias[16] = {0.5, 0.0, 0.0, 0.0,
 			0.0, 0.5, 0.0, 0.0,
 			0.0, 0.0, 0.5, 0.0,
@@ -2611,13 +2611,13 @@ void elf_draw_scene(elf_scene *scene)
 	}
 }*/
 
-void elf_draw_scene_debug(elf_scene *scene)
+void elf_draw_scene_debug(elf_scene* scene)
 {
-	elf_entity *ent;
-	elf_light *lig;
-	elf_camera *cam;
-	elf_particles *par;
-	elf_sprite *spr;
+	elf_entity* ent;
+	elf_light* lig;
+	elf_camera* cam;
+	elf_particles* par;
+	elf_sprite* spr;
 
 	if(!scene->cur_camera) return;
 
@@ -2687,15 +2687,15 @@ void elf_draw_scene_debug(elf_scene *scene)
 	gfx_set_shader_params(&scene->shader_params);
 }
 
-elf_list* elf_get_scene_scripts(elf_scene *scene)
+elf_list* elf_get_scene_scripts(elf_scene* scene)
 {
-	elf_list *scripts;
+	elf_list* scripts;
 
-	elf_camera *cam;
-	elf_entity *ent;
-	elf_light *lig;
-	elf_particles *par;
-	elf_sprite *spr;
+	elf_camera* cam;
+	elf_entity* ent;
+	elf_light* lig;
+	elf_particles* par;
+	elf_sprite* spr;
 
 	scripts = elf_create_list();
 
@@ -2747,14 +2747,14 @@ elf_list* elf_get_scene_scripts(elf_scene *scene)
 	return scripts;
 }
 
-elf_list* elf_get_scene_textures(elf_scene *scene)
+elf_list* elf_get_scene_textures(elf_scene* scene)
 {
-	elf_list *textures;
+	elf_list* textures;
 
-	elf_material *mat;
-	elf_entity *ent;
-	elf_particles *par;
-	elf_sprite *spr;
+	elf_material* mat;
+	elf_entity* ent;
+	elf_particles* par;
+	elf_sprite* spr;
 
 	textures = elf_create_list();
 
@@ -2805,13 +2805,13 @@ elf_list* elf_get_scene_textures(elf_scene *scene)
 	return textures;
 }
 
-elf_list* elf_get_scene_materials(elf_scene *scene)
+elf_list* elf_get_scene_materials(elf_scene* scene)
 {
-	elf_list *materials;
+	elf_list* materials;
 
-	elf_material *mat;
-	elf_entity *ent;
-	elf_sprite *spr;
+	elf_material* mat;
+	elf_entity* ent;
+	elf_sprite* spr;
 
 	materials = elf_create_list();
 
@@ -2842,12 +2842,12 @@ elf_list* elf_get_scene_materials(elf_scene *scene)
 
 
 
-elf_list* elf_get_scene_models(elf_scene *scene)
+elf_list* elf_get_scene_models(elf_scene* scene)
 {
-	elf_list *models;
+	elf_list* models;
 
-	elf_entity *ent;
-	elf_particles *par;
+	elf_entity* ent;
+	elf_particles* par;
 
 	models = elf_create_list();
 

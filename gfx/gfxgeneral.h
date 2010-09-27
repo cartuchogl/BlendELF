@@ -1,7 +1,7 @@
 
 gfx_general* gfx_create_general()
 {
-	gfx_general *general;
+	gfx_general* general;
 
 	general = (gfx_general*)malloc(sizeof(gfx_general));
 	memset(general, 0x0, sizeof(gfx_general));
@@ -9,7 +9,7 @@ gfx_general* gfx_create_general()
 	return general;
 }
 
-void gfx_destroy_general(gfx_general *general)
+void gfx_destroy_general(gfx_general* general)
 {
 	free(general);	
 }
@@ -42,14 +42,14 @@ void gfx_dump_obj_table()
 	elf_write_to_log("-------------------------------------\n");
 }
 
-void gfx_inc_ref(gfx_object *obj)
+void gfx_inc_ref(gfx_object* obj)
 {
 	gfx_gen->ref_count++;
 	gfx_gen->ref_table[obj->obj_type]++;
 	obj->obj_ref_count++;
 }
 
-void gfx_dec_ref(gfx_object *obj)
+void gfx_dec_ref(gfx_object* obj)
 {
 	gfx_gen->ref_count--;
 	gfx_gen->ref_table[obj->obj_type]--;
@@ -80,12 +80,12 @@ void gfx_dec_obj(int type)
 	gfx_gen->obj_table[type]--;
 }
 
-int gfx_get_object_type(gfx_object *obj)
+int gfx_get_object_type(gfx_object* obj)
 {
 	return obj->obj_type;
 }
 
-int gfx_get_object_ref_count(gfx_object *obj)
+int gfx_get_object_ref_count(gfx_object* obj)
 {
 	return obj->obj_ref_count;
 }

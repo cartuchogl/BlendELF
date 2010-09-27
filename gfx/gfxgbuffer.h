@@ -45,9 +45,9 @@ gfx_gbuffer* gfx_create_gbuffer(int width, int height)
 	return gbuffer;
 }
 
-void gfx_destroy_gbuffer(void *data)
+void gfx_destroy_gbuffer(void* data)
 {
-	gfx_gbuffer *gbuffer = (gfx_gbuffer*)data;
+	gfx_gbuffer* gbuffer = (gfx_gbuffer*)data;
 
 	gfx_destroy_render_target(gbuffer->buf_rt);
 	gfx_destroy_render_target(gbuffer->light_rt);
@@ -62,52 +62,52 @@ void gfx_destroy_gbuffer(void *data)
 	gfx_dec_ref((gfx_object*)gbuffer->main_tex);
 }
 
-void gfx_bind_gbuffer(gfx_gbuffer *gbuffer, gfx_shader_params *shader_params)
+void gfx_bind_gbuffer(gfx_gbuffer* gbuffer, gfx_shader_params* shader_params)
 {
 	gfx_set_render_target(gbuffer->buf_rt);
 }
 
-void gfx_bind_gbuffer_light(gfx_gbuffer *gbuffer, gfx_shader_params *shader_params)
+void gfx_bind_gbuffer_light(gfx_gbuffer* gbuffer, gfx_shader_params* shader_params)
 {
 	gfx_set_render_target(gbuffer->light_rt);
 }
 
-void gfx_bind_gbuffer_main(gfx_gbuffer *gbuffer, gfx_shader_params *shader_params)
+void gfx_bind_gbuffer_main(gfx_gbuffer* gbuffer, gfx_shader_params* shader_params)
 {
 	gfx_set_render_target(gbuffer->main_rt);
 }
 
-gfx_texture* gfx_get_gbuffer_depth(gfx_gbuffer *gbuffer)
+gfx_texture* gfx_get_gbuffer_depth(gfx_gbuffer* gbuffer)
 {
 	return gbuffer->depth_tex;
 }
 
-gfx_texture* gfx_get_gbuffer_diffuse(gfx_gbuffer *gbuffer)
+gfx_texture* gfx_get_gbuffer_diffuse(gfx_gbuffer* gbuffer)
 {
 	return gbuffer->diffuse_tex;
 }
 
-gfx_texture* gfx_get_gbuffer_specular(gfx_gbuffer *gbuffer)
+gfx_texture* gfx_get_gbuffer_specular(gfx_gbuffer* gbuffer)
 {
 	return gbuffer->specular_tex;
 }
 
-gfx_texture* gfx_get_gbuffer_main(gfx_gbuffer *gbuffer)
+gfx_texture* gfx_get_gbuffer_main(gfx_gbuffer* gbuffer)
 {
 	return gbuffer->main_tex;
 }
 
-gfx_texture* gfx_get_gbuffer_buf1(gfx_gbuffer *gbuffer)
+gfx_texture* gfx_get_gbuffer_buf1(gfx_gbuffer* gbuffer)
 {
 	return gbuffer->buf1_tex;
 }
 
-gfx_texture* gfx_get_gbuffer_buf2(gfx_gbuffer *gbuffer)
+gfx_texture* gfx_get_gbuffer_buf2(gfx_gbuffer* gbuffer)
 {
 	return gbuffer->buf2_tex;
 }
 
-gfx_texture* gfx_get_gbuffer_buf3(gfx_gbuffer *gbuffer)
+gfx_texture* gfx_get_gbuffer_buf3(gfx_gbuffer* gbuffer)
 {
 	return gbuffer->buf3_tex;
 }

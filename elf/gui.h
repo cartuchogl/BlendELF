@@ -1,15 +1,15 @@
 
-const char* elf_get_gui_object_name(elf_gui_object *object)
+const char* elf_get_gui_object_name(elf_gui_object* object)
 {
 	return object->name;
 }
 
-elf_vec2i elf_get_gui_object_position(elf_gui_object *object)
+elf_vec2i elf_get_gui_object_position(elf_gui_object* object)
 {
 	return object->rel_pos;
 }
 
-elf_vec2i elf_get_gui_object_size(elf_gui_object *object)
+elf_vec2i elf_get_gui_object_size(elf_gui_object* object)
 {
 	elf_vec2i size;
 
@@ -19,34 +19,34 @@ elf_vec2i elf_get_gui_object_size(elf_gui_object *object)
 	return size;
 }
 
-elf_color elf_get_gui_object_color(elf_gui_object *object)
+elf_color elf_get_gui_object_color(elf_gui_object* object)
 {
 	return object->color;
 }
 
-unsigned char elf_get_gui_object_visible(elf_gui_object *object)
+unsigned char elf_get_gui_object_visible(elf_gui_object* object)
 {
 	return object->visible;
 }
 
-elf_script *elf_get_gui_object_script(elf_gui_object *object)
+elf_script* elf_get_gui_object_script(elf_gui_object* object)
 {
 	return object->script;
 }
 
-int elf_get_gui_object_event(elf_gui_object *object)
+int elf_get_gui_object_event(elf_gui_object* object)
 {
 	return object->event;
 }
 
-void elf_set_gui_object_position(elf_gui_object *object, float x, float y)
+void elf_set_gui_object_position(elf_gui_object* object, float x, float y)
 {
 	object->rel_pos.x = x;
 	object->rel_pos.y = y;
 	elf_recalc_gui_object(object);
 }
 
-void elf_set_gui_object_color(elf_gui_object *object, float r, float g, float b, float a)
+void elf_set_gui_object_color(elf_gui_object* object, float r, float g, float b, float a)
 {
 	object->color.r = r;
 	object->color.g = g;
@@ -54,21 +54,21 @@ void elf_set_gui_object_color(elf_gui_object *object, float r, float g, float b,
 	object->color.a = a;
 }
 
-void elf_set_gui_object_visible(elf_gui_object *object, unsigned char visible)
+void elf_set_gui_object_visible(elf_gui_object* object, unsigned char visible)
 {
 	object->visible = !visible == ELF_FALSE;
 }
 
-void elf_set_gui_object_script(elf_gui_object *object, elf_script *script)
+void elf_set_gui_object_script(elf_gui_object* object, elf_script* script)
 {
 	if(object->script) elf_dec_ref((elf_object*)object->script);
 	object->script = script;
 	if(object->script) elf_inc_ref((elf_object*)object->script);
 }
 
-elf_label* elf_create_label(const char *name)
+elf_label* elf_create_label(const char* name)
 {
-	elf_label *label;
+	elf_label* label;
 
 	label = (elf_label*)malloc(sizeof(elf_label));
 	memset(label, 0x0, sizeof(elf_label));
@@ -85,9 +85,9 @@ elf_label* elf_create_label(const char *name)
 	return label;
 }
 
-void elf_destroy_label(void *data)
+void elf_destroy_label(void* data)
 {
-	elf_label *label = (elf_label*)data;
+	elf_label* label = (elf_label*)data;
 
 	if(label->name) elf_destroy_string(label->name);
 	if(label->text) elf_destroy_string(label->text);
@@ -99,7 +99,7 @@ void elf_destroy_label(void *data)
 	elf_dec_obj(ELF_LABEL);
 }
 
-void elf_draw_label(elf_label *label, gfx_shader_params *shader_params)
+void elf_draw_label(elf_label* label, gfx_shader_params* shader_params)
 {
 	if(!label->visible || !label->font || !label->text) return;
 
@@ -108,17 +108,17 @@ void elf_draw_label(elf_label *label, gfx_shader_params *shader_params)
 	shader_params->texture_params[0].texture = NULL;
 }
 
-elf_font* elf_get_label_font(elf_label *label)
+elf_font* elf_get_label_font(elf_label* label)
 {
 	return label->font;
 }
 
-const char* elf_get_label_text(elf_label *label)
+const char* elf_get_label_text(elf_label* label)
 {
 	return label->text;
 }
 
-void elf_recalc_label(elf_label *label)
+void elf_recalc_label(elf_label* label)
 {
 	if(label->font)
 	{
@@ -135,7 +135,7 @@ void elf_recalc_label(elf_label *label)
 	}
 }
 
-void elf_set_label_font(elf_label *label, elf_font *font)
+void elf_set_label_font(elf_label* label, elf_font* font)
 {
 	if(label->font) elf_dec_ref((elf_object*)label->font);
 	label->font = font;
@@ -143,16 +143,16 @@ void elf_set_label_font(elf_label *label, elf_font *font)
 	elf_recalc_gui_object((elf_gui_object*)label);
 }
 
-void elf_set_label_text(elf_label *label, const char *text)
+void elf_set_label_text(elf_label* label, const char* text)
 {
 	if(label->text) elf_destroy_string(label->text);
 	label->text = elf_create_string(text);
 	elf_recalc_gui_object((elf_gui_object*)label);
 }
 
-elf_button* elf_create_button(const char *name)
+elf_button* elf_create_button(const char* name)
 {
-	elf_button *button;
+	elf_button* button;
 
 	button = (elf_button*)malloc(sizeof(elf_button));
 	memset(button, 0x0, sizeof(elf_button));
@@ -169,9 +169,9 @@ elf_button* elf_create_button(const char *name)
 	return button;
 }
 
-void elf_destroy_button(void *data)
+void elf_destroy_button(void* data)
 {
-	elf_button *button = (elf_button*)data;
+	elf_button* button = (elf_button*)data;
 
 	if(button->name) elf_destroy_string(button->name);
 
@@ -186,7 +186,7 @@ void elf_destroy_button(void *data)
 	elf_dec_obj(ELF_BUTTON);
 }
 
-void elf_draw_button(elf_button *button, gfx_shader_params *shader_params)
+void elf_draw_button(elf_button* button, gfx_shader_params* shader_params)
 {
 	if(!button->visible) return;
 
@@ -213,27 +213,27 @@ void elf_draw_button(elf_button *button, gfx_shader_params *shader_params)
 	}
 }
 
-unsigned char elf_get_button_state(elf_button *button)
+unsigned char elf_get_button_state(elf_button* button)
 {
 	return button->state;
 }
 
-elf_texture* elf_get_button_off_texture(elf_button *button)
+elf_texture* elf_get_button_off_texture(elf_button* button)
 {
 	return button->off;
 }
 
-elf_texture* elf_get_button_over_texture(elf_button *button)
+elf_texture* elf_get_button_over_texture(elf_button* button)
 {
 	return button->over;
 }
 
-elf_texture* elf_get_button_on_texture(elf_button *button)
+elf_texture* elf_get_button_on_texture(elf_button* button)
 {
 	return button->on;
 }
 
-void elf_recalc_button(elf_button *button)
+void elf_recalc_button(elf_button* button)
 {
 	if(button->off)
 	{
@@ -247,14 +247,14 @@ void elf_recalc_button(elf_button *button)
 	}
 }
 
-void elf_set_button_position(elf_button *button, int x, int y)
+void elf_set_button_position(elf_button* button, int x, int y)
 {
 	button->rel_pos.x = x;
 	button->rel_pos.y = y;
 	elf_recalc_gui_object((elf_gui_object*)button);
 }
 
-void elf_set_button_off_texture(elf_button *button, elf_texture *off)
+void elf_set_button_off_texture(elf_button* button, elf_texture* off)
 {
 	if(button->off) elf_dec_ref((elf_object*)button->off);
 	button->off = off;
@@ -262,23 +262,23 @@ void elf_set_button_off_texture(elf_button *button, elf_texture *off)
 	elf_recalc_gui_object((elf_gui_object*)button);
 }
 
-void elf_set_button_over_texture(elf_button *button, elf_texture *over)
+void elf_set_button_over_texture(elf_button* button, elf_texture* over)
 {
 	if(button->over) elf_dec_ref((elf_object*)button->over);
 	button->over = over;
 	if(button->over) elf_inc_ref((elf_object*)button->over);
 }
 
-void elf_set_button_on_texture(elf_button *button, elf_texture *on)
+void elf_set_button_on_texture(elf_button* button, elf_texture* on)
 {
 	if(button->on) elf_dec_ref((elf_object*)button->on);
 	button->on = on;
 	if(button->on) elf_inc_ref((elf_object*)button->on);
 }
 
-elf_picture* elf_create_picture(const char *name)
+elf_picture* elf_create_picture(const char* name)
 {
-	elf_picture *picture;
+	elf_picture* picture;
 
 	picture = (elf_picture*)malloc(sizeof(elf_picture));
 	memset(picture, 0x0, sizeof(elf_picture));
@@ -296,9 +296,9 @@ elf_picture* elf_create_picture(const char *name)
 	return picture;
 }
 
-void elf_destroy_picture(void *data)
+void elf_destroy_picture(void* data)
 {
-	elf_picture *picture = (elf_picture*)data;
+	elf_picture* picture = (elf_picture*)data;
 
 	if(picture->name) elf_destroy_string(picture->name);
 	if(picture->texture) elf_dec_ref((elf_object*)picture->texture);
@@ -308,7 +308,7 @@ void elf_destroy_picture(void *data)
 	elf_dec_obj(ELF_PICTURE);
 }
 
-void elf_draw_picture(elf_picture *picture, gfx_shader_params *shader_params)
+void elf_draw_picture(elf_picture* picture, gfx_shader_params* shader_params)
 {
 	if(!picture->visible || !picture->texture) return;
 
@@ -321,7 +321,7 @@ void elf_draw_picture(elf_picture *picture, gfx_shader_params *shader_params)
 	shader_params->texture_params[0].texture = NULL;
 }
 
-void elf_recalc_picture(elf_picture *picture)
+void elf_recalc_picture(elf_picture* picture)
 {
 	if(picture->texture)
 	{
@@ -335,17 +335,17 @@ void elf_recalc_picture(elf_picture *picture)
 	}
 }
 
-elf_texture* elf_get_picture_texture(elf_picture *picture)
+elf_texture* elf_get_picture_texture(elf_picture* picture)
 {
 	return picture->texture;
 }
 
-elf_vec2f elf_get_picture_scale(elf_picture *picture)
+elf_vec2f elf_get_picture_scale(elf_picture* picture)
 {
 	return picture->scale;
 }
 
-void elf_set_picture_texture(elf_picture *picture, elf_texture *texture)
+void elf_set_picture_texture(elf_picture* picture, elf_texture* texture)
 {
 	if(picture->texture) elf_dec_ref((elf_object*)picture->texture);
 	picture->texture = texture;
@@ -353,16 +353,16 @@ void elf_set_picture_texture(elf_picture *picture, elf_texture *texture)
 	elf_recalc_gui_object((elf_gui_object*)picture);
 }
 
-void elf_set_picture_scale(elf_picture *picture, float x, float y)
+void elf_set_picture_scale(elf_picture* picture, float x, float y)
 {
 	picture->scale.x = x;
 	picture->scale.y = y;
 	elf_recalc_gui_object((elf_gui_object*)picture);
 }
 
-elf_text_field* elf_create_text_field(const char *name)
+elf_text_field* elf_create_text_field(const char* name)
 {
-	elf_text_field *text_field;
+	elf_text_field* text_field;
 
 	text_field = (elf_text_field*)malloc(sizeof(elf_text_field));
 	memset(text_field, 0x0, sizeof(elf_text_field));
@@ -381,9 +381,9 @@ elf_text_field* elf_create_text_field(const char *name)
 	return text_field;
 }
 
-void elf_destroy_text_field(void *data)
+void elf_destroy_text_field(void* data)
 {
-	elf_text_field *text_field = (elf_text_field*)data;
+	elf_text_field* text_field = (elf_text_field*)data;
 
 	if(text_field->name) elf_destroy_string(text_field->name);
 
@@ -397,9 +397,9 @@ void elf_destroy_text_field(void *data)
 	elf_dec_obj(ELF_TEXT_FIELD);
 }
 
-void elf_draw_text_field(elf_text_field *text_field, elf_area *area, gfx_shader_params *shader_params)
+void elf_draw_text_field(elf_text_field* text_field, elf_area* area, gfx_shader_params* shader_params)
 {
-	char *str;
+	char* str;
 	int x, y, width, height;
 
 	if(!text_field->visible) return;
@@ -469,22 +469,22 @@ void elf_draw_text_field(elf_text_field *text_field, elf_area *area, gfx_shader_
 	}
 }
 
-elf_texture* elf_get_text_field_texture(elf_text_field *text_field)
+elf_texture* elf_get_text_field_texture(elf_text_field* text_field)
 {
 	return text_field->texture;
 }
 
-elf_font* elf_get_text_field_font(elf_text_field *text_field)
+elf_font* elf_get_text_field_font(elf_text_field* text_field)
 {
 	return text_field->font;
 }
 
-elf_color elf_get_text_field_text_color(elf_text_field *text_field)
+elf_color elf_get_text_field_text_color(elf_text_field* text_field)
 {
 	return text_field->text_color;
 }
 
-elf_vec2i elf_get_text_field_offset(elf_text_field *text_field)
+elf_vec2i elf_get_text_field_offset(elf_text_field* text_field)
 {
 	elf_vec2i offset;
 
@@ -494,12 +494,12 @@ elf_vec2i elf_get_text_field_offset(elf_text_field *text_field)
 	return offset;
 }
 
-const char* elf_get_text_field_text(elf_text_field *text_field)
+const char* elf_get_text_field_text(elf_text_field* text_field)
 {
 	return text_field->text;
 }
 
-void elf_recalc_text_field(elf_text_field *text_field)
+void elf_recalc_text_field(elf_text_field* text_field)
 {
 	if(text_field->texture)
 	{
@@ -513,7 +513,7 @@ void elf_recalc_text_field(elf_text_field *text_field)
 	}
 }
 
-void elf_set_text_field_texture(elf_text_field *text_field, elf_texture *texture)
+void elf_set_text_field_texture(elf_text_field* text_field, elf_texture* texture)
 {
 	if(text_field->texture) elf_dec_ref((elf_object*)text_field->texture);
 	text_field->texture = texture;
@@ -521,14 +521,14 @@ void elf_set_text_field_texture(elf_text_field *text_field, elf_texture *texture
 	elf_recalc_gui_object((elf_gui_object*)text_field);
 }
 
-void elf_set_text_field_font(elf_text_field *text_field, elf_font *font)
+void elf_set_text_field_font(elf_text_field* text_field, elf_font* font)
 {
 	if(text_field->font) elf_dec_ref((elf_object*)text_field->font);
 	text_field->font = font;
 	if(text_field->font) elf_inc_ref((elf_object*)text_field->font);
 }
 
-void elf_set_text_field_text_color(elf_text_field *text_field, float r, float g, float b, float a)
+void elf_set_text_field_text_color(elf_text_field* text_field, float r, float g, float b, float a)
 {
 	text_field->text_color.r = r;
 	text_field->text_color.g = g;
@@ -536,13 +536,13 @@ void elf_set_text_field_text_color(elf_text_field *text_field, float r, float g,
 	text_field->text_color.a = a;
 }
 
-void elf_set_text_field_offset(elf_text_field *text_field, int offset_x, int offset_y)
+void elf_set_text_field_offset(elf_text_field* text_field, int offset_x, int offset_y)
 {
 	text_field->offset_x = offset_x;
 	text_field->offset_y = offset_y;
 }
 
-void elf_move_text_field_cursor_left(elf_text_field *text_field)
+void elf_move_text_field_cursor_left(elf_text_field* text_field)
 {
 	if(text_field->cursor_pos == 0) return;
 
@@ -555,9 +555,9 @@ void elf_move_text_field_cursor_left(elf_text_field *text_field)
 	}
 }
 
-void elf_move_text_field_cursor_right(elf_text_field *text_field)
+void elf_move_text_field_cursor_right(elf_text_field* text_field)
 {
-	char *str;
+	char* str;
 
 	if(text_field->cursor_pos >= (int)strlen(text_field->text)) return;
 
@@ -577,7 +577,7 @@ void elf_move_text_field_cursor_right(elf_text_field *text_field)
 	elf_destroy_string(str);
 }
 
-void elf_set_text_field_cursor_position(elf_text_field *text_field, int idx)
+void elf_set_text_field_cursor_position(elf_text_field* text_field, int idx)
 {
 	if(idx < 0) return;
 	if(idx > (int)strlen(text_field->text)) idx = strlen(text_field->text);
@@ -589,7 +589,7 @@ void elf_set_text_field_cursor_position(elf_text_field *text_field, int idx)
 		elf_move_text_field_cursor_right(text_field);
 }
 
-void elf_set_text_field_text(elf_text_field *text_field, const char *text)
+void elf_set_text_field_text(elf_text_field* text_field, const char* text)
 {
 	if(text_field->text) elf_destroy_string(text_field->text);
 	text_field->text = elf_create_string(text);
@@ -600,9 +600,9 @@ void elf_set_text_field_text(elf_text_field *text_field, const char *text)
 		elf_move_text_field_cursor_right(text_field);
 }
 
-elf_slider* elf_create_slider(const char *name)
+elf_slider* elf_create_slider(const char* name)
 {
-	elf_slider *slider;
+	elf_slider* slider;
 
 	slider = (elf_slider*)malloc(sizeof(elf_slider));
 	memset(slider, 0x0, sizeof(elf_slider));
@@ -620,9 +620,9 @@ elf_slider* elf_create_slider(const char *name)
 	return slider;
 }
 
-void elf_destroy_slider(void *data)
+void elf_destroy_slider(void* data)
 {
-	elf_slider *slider = (elf_slider*)data;
+	elf_slider* slider = (elf_slider*)data;
 
 	if(slider->name) elf_destroy_string(slider->name);
 
@@ -636,7 +636,7 @@ void elf_destroy_slider(void *data)
 	elf_dec_obj(ELF_SLIDER);
 }
 
-void elf_draw_slider(elf_slider *slider, gfx_shader_params *shader_params)
+void elf_draw_slider(elf_slider* slider, gfx_shader_params* shader_params)
 {
 	if(!slider->visible) return;
 
@@ -666,22 +666,22 @@ void elf_draw_slider(elf_slider *slider, gfx_shader_params *shader_params)
 	}
 }
 
-elf_texture* elf_get_slider_background_texture(elf_slider *slider)
+elf_texture* elf_get_slider_background_texture(elf_slider* slider)
 {
 	return slider->background;
 }
 
-elf_texture* elf_get_slider_slider_texture(elf_slider *slider)
+elf_texture* elf_get_slider_slider_texture(elf_slider* slider)
 {
 	return slider->slider;
 }
 
-float elf_get_slider_value(elf_slider *slider)
+float elf_get_slider_value(elf_slider* slider)
 {
 	return slider->value;
 }
 
-void elf_recalc_slider(elf_slider *slider)
+void elf_recalc_slider(elf_slider* slider)
 {
 	if(slider->background)
 	{
@@ -695,7 +695,7 @@ void elf_recalc_slider(elf_slider *slider)
 	}
 }
 
-void elf_set_slider_background_texture(elf_slider *slider, elf_texture *background)
+void elf_set_slider_background_texture(elf_slider* slider, elf_texture* background)
 {
 	if(slider->background) elf_dec_ref((elf_object*)slider->background);
 	slider->background = background;
@@ -703,23 +703,23 @@ void elf_set_slider_background_texture(elf_slider *slider, elf_texture *backgrou
 	elf_recalc_gui_object((elf_gui_object*)slider);
 }
 
-void elf_set_slider_slider_texture(elf_slider *slider, elf_texture *slider_texture)
+void elf_set_slider_slider_texture(elf_slider* slider, elf_texture* slider_texture)
 {
 	if(slider->slider) elf_dec_ref((elf_object*)slider->slider);
 	slider->slider = slider_texture;
 	if(slider->slider) elf_inc_ref((elf_object*)slider->slider);
 }
 
-void elf_set_slider_value(elf_slider *slider, float value)
+void elf_set_slider_value(elf_slider* slider, float value)
 {
 	slider->value = value;
 	if(slider->value < 0.0) slider->value = 0.0;
 	if(slider->value > 1.0) slider->value = 1.0;
 }
 
-elf_screen* elf_create_screen(const char *name)
+elf_screen* elf_create_screen(const char* name)
 {
-	elf_screen *screen;
+	elf_screen* screen;
 
 	screen = (elf_screen*)malloc(sizeof(elf_screen));
 	memset(screen, 0x0, sizeof(elf_screen));
@@ -742,9 +742,9 @@ elf_screen* elf_create_screen(const char *name)
 	return screen;
 }
 
-void elf_destroy_screen(void *data)
+void elf_destroy_screen(void* data)
 {
-	elf_screen *screen = (elf_screen*)data;
+	elf_screen* screen = (elf_screen*)data;
 
 	if(screen->name) elf_destroy_string(screen->name);
 	if(screen->texture) elf_dec_ref((elf_object*)screen->texture);
@@ -757,9 +757,9 @@ void elf_destroy_screen(void *data)
 	elf_dec_obj(ELF_SCREEN);
 }
 
-void elf_draw_screen(elf_screen *screen, elf_area *area, gfx_shader_params *shader_params)
+void elf_draw_screen(elf_screen* screen, elf_area* area, gfx_shader_params* shader_params)
 {
-	elf_gui_object *object;
+	elf_gui_object* object;
 	int x, y, width, height;
 
 	if(!screen->visible || !screen->texture) return;
@@ -832,12 +832,12 @@ void elf_draw_screen(elf_screen *screen, elf_area *area, gfx_shader_params *shad
 	}
 }
 
-elf_texture* elf_get_screen_texture(elf_screen *screen)
+elf_texture* elf_get_screen_texture(elf_screen* screen)
 {
 	return screen->texture;
 }
 
-void elf_recalc_screen(elf_screen *screen)
+void elf_recalc_screen(elf_screen* screen)
 {
 	if(screen->texture)
 	{
@@ -851,7 +851,7 @@ void elf_recalc_screen(elf_screen *screen)
 	}
 }
 
-void elf_set_screen_texture(elf_screen *screen, elf_texture *texture)
+void elf_set_screen_texture(elf_screen* screen, elf_texture* texture)
 {
 	if(screen->texture) elf_dec_ref((elf_object*)screen->texture);
 	screen->texture = texture;
@@ -859,7 +859,7 @@ void elf_set_screen_texture(elf_screen *screen, elf_texture *texture)
 	elf_recalc_gui_object((elf_gui_object*)screen);
 }
 
-void elf_set_screen_to_top(elf_screen *screen)
+void elf_set_screen_to_top(elf_screen* screen)
 {
 	if(!screen->parent) return;
 
@@ -869,9 +869,9 @@ void elf_set_screen_to_top(elf_screen *screen)
 	elf_dec_ref((elf_object*)screen);
 }
 
-void elf_force_focus_to_screen(elf_screen *screen)
+void elf_force_focus_to_screen(elf_screen* screen)
 {
-	elf_button *button;
+	elf_button* button;
 
 	if(!screen->root) return;
 
@@ -888,16 +888,16 @@ void elf_force_focus_to_screen(elf_screen *screen)
 	screen->root->focus_screen = screen;
 }
 
-void elf_release_focus_from_screen(elf_screen *screen)
+void elf_release_focus_from_screen(elf_screen* screen)
 {
 	if(!screen->root) return;
 
 	screen->root->focus_screen = NULL;
 }
 
-elf_text_list* elf_create_text_list(const char *name)
+elf_text_list* elf_create_text_list(const char* name)
 {
-	elf_text_list *text_list;
+	elf_text_list* text_list;
 
 	text_list = (elf_text_list*)malloc(sizeof(elf_text_list));
 	memset(text_list, 0x0, sizeof(elf_text_list));
@@ -923,9 +923,9 @@ elf_text_list* elf_create_text_list(const char *name)
 	return text_list;
 }
 
-void elf_destroy_text_list(void *data)
+void elf_destroy_text_list(void* data)
 {
-	elf_text_list *text_list = (elf_text_list*)data;
+	elf_text_list* text_list = (elf_text_list*)data;
 
 	if(text_list->name) elf_destroy_string(text_list->name);
 	if(text_list->font) elf_dec_ref((elf_object*)text_list->font);
@@ -937,13 +937,13 @@ void elf_destroy_text_list(void *data)
 	elf_dec_obj(ELF_TEXT_LIST);
 }
 
-void elf_draw_text_list(elf_text_list *text_list, elf_area *area, gfx_shader_params *shader_params)
+void elf_draw_text_list(elf_text_list* text_list, elf_area* area, gfx_shader_params* shader_params)
 {
 	int x, y, width, height;
 	int offset;
 	int i;
 	unsigned char light;
-	elf_string *str_obj;
+	elf_string* str_obj;
 
 	if(!text_list->visible || !text_list->font || elf_get_list_length(text_list->items) < 1) return;
 
@@ -1016,50 +1016,50 @@ void elf_draw_text_list(elf_text_list *text_list, elf_area *area, gfx_shader_par
 	shader_params->texture_params[0].texture = NULL;
 }
 
-elf_font* elf_get_text_list_font(elf_text_list *text_list)
+elf_font* elf_get_text_list_font(elf_text_list* text_list)
 {
 	return text_list->font;
 }
 
-elf_color elf_get_text_list_selection_color(elf_text_list *text_list)
+elf_color elf_get_text_list_selection_color(elf_text_list* text_list)
 {
 	return text_list->selection_color;
 }
 
-elf_color elf_get_text_list_light_color(elf_text_list *text_list)
+elf_color elf_get_text_list_light_color(elf_text_list* text_list)
 {
 	return text_list->light_color;
 }
 
-elf_color elf_get_text_list_dark_color(elf_text_list *text_list)
+elf_color elf_get_text_list_dark_color(elf_text_list* text_list)
 {
 	return text_list->dark_color;
 }
 
-int elf_get_text_list_row_count(elf_text_list *text_list)
+int elf_get_text_list_row_count(elf_text_list* text_list)
 {
 	return text_list->rows;
 }
 
-int elf_get_text_list_item_count(elf_text_list *text_list)
+int elf_get_text_list_item_count(elf_text_list* text_list)
 {
 	return elf_get_list_length(text_list->items);
 }
 
-int elf_get_text_list_selection_index(elf_text_list *text_list)
+int elf_get_text_list_selection_index(elf_text_list* text_list)
 {
 	return text_list->selection;
 }
 
-int elf_get_text_list_offset(elf_text_list *text_list)
+int elf_get_text_list_offset(elf_text_list* text_list)
 {
 	return text_list->offset;
 }
 
-const char* elf_get_text_list_item(elf_text_list *text_list, int idx)
+const char* elf_get_text_list_item(elf_text_list* text_list, int idx)
 {
 	int i;
-	elf_string *str_obj;
+	elf_string* str_obj;
 
 	if(idx < 0 || idx > elf_get_list_length(text_list->items)-1) return "";
 
@@ -1072,10 +1072,10 @@ const char* elf_get_text_list_item(elf_text_list *text_list, int idx)
 	return "";
 }
 
-const char* elf_get_text_list_selected_item(elf_text_list *text_list)
+const char* elf_get_text_list_selected_item(elf_text_list* text_list)
 {
 	int i;
-	elf_string *str_obj;
+	elf_string* str_obj;
 
 	if(text_list->selection < 0 || text_list->selection > elf_get_list_length(text_list->items)-1) return "";
 
@@ -1088,7 +1088,7 @@ const char* elf_get_text_list_selected_item(elf_text_list *text_list)
 	return "";
 }
 
-void elf_recalc_text_list(elf_text_list *text_list)
+void elf_recalc_text_list(elf_text_list* text_list)
 {
 	if(text_list->font)
 	{
@@ -1102,7 +1102,7 @@ void elf_recalc_text_list(elf_text_list *text_list)
 	}
 }
 
-void elf_set_text_list_font(elf_text_list *text_list, elf_font *font)
+void elf_set_text_list_font(elf_text_list* text_list, elf_font* font)
 {
 	if(text_list->font) elf_dec_ref((elf_object*)text_list->font);
 	text_list->font = font;
@@ -1110,7 +1110,7 @@ void elf_set_text_list_font(elf_text_list *text_list, elf_font *font)
 	elf_recalc_gui_object((elf_gui_object*)text_list);
 }
 
-void elf_set_text_list_selection_color(elf_text_list *text_list, float r, float g, float b, float a)
+void elf_set_text_list_selection_color(elf_text_list* text_list, float r, float g, float b, float a)
 {
 	text_list->selection_color.r = r;
 	text_list->selection_color.g = g;
@@ -1118,7 +1118,7 @@ void elf_set_text_list_selection_color(elf_text_list *text_list, float r, float 
 	text_list->selection_color.a = a;
 }
 
-void elf_set_text_list_light_color(elf_text_list *text_list, float r, float g, float b, float a)
+void elf_set_text_list_light_color(elf_text_list* text_list, float r, float g, float b, float a)
 {
 	text_list->light_color.r = r;
 	text_list->light_color.g = g;
@@ -1126,7 +1126,7 @@ void elf_set_text_list_light_color(elf_text_list *text_list, float r, float g, f
 	text_list->light_color.a = a;
 }
 
-void elf_set_text_list_dark_color(elf_text_list *text_list, float r, float g, float b, float a)
+void elf_set_text_list_dark_color(elf_text_list* text_list, float r, float g, float b, float a)
 {
 	text_list->dark_color.r = r;
 	text_list->dark_color.g = g;
@@ -1134,7 +1134,7 @@ void elf_set_text_list_dark_color(elf_text_list *text_list, float r, float g, fl
 	text_list->dark_color.a = a;
 }
 
-void elf_set_text_list_size(elf_text_list *text_list, int rows, int width)
+void elf_set_text_list_size(elf_text_list* text_list, int rows, int width)
 {
 	text_list->rows = rows;
 	text_list->list_width = width;
@@ -1143,9 +1143,9 @@ void elf_set_text_list_size(elf_text_list *text_list, int rows, int width)
 	elf_recalc_gui_object((elf_gui_object*)text_list);
 }
 
-void elf_add_text_list_item(elf_text_list *text_list, const char *text)
+void elf_add_text_list_item(elf_text_list* text_list, const char* text)
 {
-	elf_string *str_obj;
+	elf_string* str_obj;
 
 	if(!text) return;
 
@@ -1155,9 +1155,9 @@ void elf_add_text_list_item(elf_text_list *text_list, const char *text)
 	elf_append_to_list(text_list->items, (elf_object*)str_obj);
 }
 
-void elf_set_text_list_item(elf_text_list *text_list, int idx, const char *text)
+void elf_set_text_list_item(elf_text_list* text_list, int idx, const char* text)
 {
-	elf_string *str_obj;
+	elf_string* str_obj;
 
 	str_obj = (elf_string*)elf_get_item_from_list(text_list->items, idx);
 	if(str_obj)
@@ -1167,10 +1167,10 @@ void elf_set_text_list_item(elf_text_list *text_list, int idx, const char *text)
 	}
 }
 
-unsigned char elf_remove_text_list_item(elf_text_list *text_list, int idx)
+unsigned char elf_remove_text_list_item(elf_text_list* text_list, int idx)
 {
 	int i;
-	elf_string *str_obj;
+	elf_string* str_obj;
 
 	if(idx < 0 || idx > elf_get_list_length(text_list->items)-1) return ELF_FALSE;
 
@@ -1188,7 +1188,7 @@ unsigned char elf_remove_text_list_item(elf_text_list *text_list, int idx)
 	return ELF_FALSE;
 }
 
-void elf_remove_text_list_items(elf_text_list *text_list)
+void elf_remove_text_list_items(elf_text_list* text_list)
 {
 	elf_dec_ref((elf_object*)text_list->items);
 	text_list->items = elf_create_list();
@@ -1197,13 +1197,13 @@ void elf_remove_text_list_items(elf_text_list *text_list)
 	text_list->selection = 0;
 }
 
-void elf_set_text_list_offset(elf_text_list *text_list, int offset)
+void elf_set_text_list_offset(elf_text_list* text_list, int offset)
 {
 	text_list->offset = offset;
 	if(text_list->offset < 0) text_list->offset = 0;
 }
 
-void elf_set_text_list_selection(elf_text_list *text_list, int selection)
+void elf_set_text_list_selection(elf_text_list* text_list, int selection)
 {
 	text_list->selection = selection;
 	if(text_list->selection < 0) text_list->selection = -1;
@@ -1212,9 +1212,9 @@ void elf_set_text_list_selection(elf_text_list *text_list, int selection)
 	if(elf_get_list_length(text_list->items) == 0) text_list->selection = -1;
 }
 
-elf_check_box* elf_create_check_box(const char *name)
+elf_check_box* elf_create_check_box(const char* name)
 {
-	elf_check_box *check_box;
+	elf_check_box* check_box;
 
 	check_box = (elf_check_box*)malloc(sizeof(elf_check_box));
 	memset(check_box, 0x0, sizeof(elf_check_box));
@@ -1231,9 +1231,9 @@ elf_check_box* elf_create_check_box(const char *name)
 	return check_box;
 }
 
-void elf_destroy_check_box(void *data)
+void elf_destroy_check_box(void* data)
 {
-	elf_check_box *check_box = (elf_check_box*)data;
+	elf_check_box* check_box = (elf_check_box*)data;
 
 	if(check_box->name) elf_destroy_string(check_box->name);
 
@@ -1247,7 +1247,7 @@ void elf_destroy_check_box(void *data)
 	elf_dec_obj(ELF_CHECK_BOX);
 }
 
-void elf_draw_check_box(elf_check_box *check_box, gfx_shader_params *shader_params)
+void elf_draw_check_box(elf_check_box* check_box, gfx_shader_params* shader_params)
 {
 	if(!check_box->visible) return;
 
@@ -1271,22 +1271,22 @@ void elf_draw_check_box(elf_check_box *check_box, gfx_shader_params *shader_para
 	}
 }
 
-unsigned char elf_get_check_box_state(elf_check_box *check_box)
+unsigned char elf_get_check_box_state(elf_check_box* check_box)
 {
 	return check_box->state;
 }
 
-elf_texture* elf_get_check_box_off_texture(elf_check_box *check_box)
+elf_texture* elf_get_check_box_off_texture(elf_check_box* check_box)
 {
 	return check_box->off;
 }
 
-elf_texture* elf_get_check_box_on_texture(elf_check_box *check_box)
+elf_texture* elf_get_check_box_on_texture(elf_check_box* check_box)
 {
 	return check_box->on;
 }
 
-void elf_recalc_check_box(elf_check_box *check_box)
+void elf_recalc_check_box(elf_check_box* check_box)
 {
 	if(check_box->off)
 	{
@@ -1300,7 +1300,7 @@ void elf_recalc_check_box(elf_check_box *check_box)
 	}
 }
 
-void elf_set_check_box_off_texture(elf_check_box *check_box, elf_texture *off)
+void elf_set_check_box_off_texture(elf_check_box* check_box, elf_texture* off)
 {
 	if(check_box->off) elf_dec_ref((elf_object*)check_box->off);
 	check_box->off = off;
@@ -1308,21 +1308,21 @@ void elf_set_check_box_off_texture(elf_check_box *check_box, elf_texture *off)
 	elf_recalc_gui_object((elf_gui_object*)check_box);
 }
 
-void elf_set_check_box_on_texture(elf_check_box *check_box, elf_texture *on)
+void elf_set_check_box_on_texture(elf_check_box* check_box, elf_texture* on)
 {
 	if(check_box->on) elf_dec_ref((elf_object*)check_box->on);
 	check_box->on = on;
 	if(check_box->on) elf_inc_ref((elf_object*)check_box->on);
 }
 
-void elf_set_check_box_state(elf_check_box *check_box, unsigned char state)
+void elf_set_check_box_state(elf_check_box* check_box, unsigned char state)
 {
 	check_box->state = !state == ELF_OFF;
 }
 
-void elf_recalc_gui_object(elf_gui_object *object)
+void elf_recalc_gui_object(elf_gui_object* object)
 {
-	elf_gui_object *obj;
+	elf_gui_object* obj;
 
 	if(object->obj_type == ELF_LABEL) elf_recalc_label((elf_label*)object);
 	else if(object->obj_type == ELF_BUTTON) elf_recalc_button((elf_button*)object);
@@ -1363,9 +1363,9 @@ void elf_recalc_gui_object(elf_gui_object *object)
 	}
 }
 
-void elf_clear_gui_object_root(elf_gui_object *object)
+void elf_clear_gui_object_root(elf_gui_object* object)
 {
-	elf_gui_object *cobject;
+	elf_gui_object* cobject;
 
 	if(object->children)
 	{
@@ -1379,9 +1379,9 @@ void elf_clear_gui_object_root(elf_gui_object *object)
 	object->root = NULL;
 }
 
-void elf_set_gui_object_root(elf_gui_object *object, elf_gui *root)
+void elf_set_gui_object_root(elf_gui_object* object, elf_gui* root)
 {
-	elf_gui_object *cobject;
+	elf_gui_object* cobject;
 
 	if(object->children)
 	{
@@ -1397,7 +1397,7 @@ void elf_set_gui_object_root(elf_gui_object *object, elf_gui *root)
 
 elf_gui* elf_create_gui()
 {
-	elf_gui *gui;
+	elf_gui* gui;
 
 	gui = (elf_gui*)malloc(sizeof(elf_gui));
 	memset(gui, 0x0, sizeof(elf_gui));
@@ -1424,10 +1424,10 @@ elf_gui* elf_create_gui()
 	return gui;
 }
 
-void elf_destroy_gui(void *data)
+void elf_destroy_gui(void* data)
 {
-	elf_gui_object *object;
-	elf_gui *gui = (elf_gui*)data;
+	elf_gui_object* object;
+	elf_gui* gui = (elf_gui*)data;
 
 	if(gui->name) elf_destroy_string(gui->name);
 
@@ -1446,10 +1446,10 @@ void elf_destroy_gui(void *data)
 	elf_dec_obj(ELF_GUI);
 }
 
-elf_gui_object* elf_trace_top_object(elf_gui_object *object, unsigned char click)
+elf_gui_object* elf_trace_top_object(elf_gui_object* object, unsigned char click)
 {
-	elf_gui_object *cobject;
-	elf_gui_object *result;
+	elf_gui_object* cobject;
+	elf_gui_object* result;
 	elf_vec2i mouse_pos;
 
 	if(!object->visible) return ELF_FALSE;
@@ -1512,9 +1512,9 @@ elf_gui_object* elf_trace_top_object(elf_gui_object *object, unsigned char click
 	return NULL;
 }
 
-void elf_send_gui_char_event(elf_gui *gui, char chr)
+void elf_send_gui_char_event(elf_gui* gui, char chr)
 {
-	char *str;
+	char* str;
 
 	if(chr < 32 || chr > 126) return;
 
@@ -1542,9 +1542,9 @@ void elf_send_gui_char_event(elf_gui *gui, char chr)
 	}
 }
 
-void elf_send_gui_key_event(elf_gui *gui, int key)
+void elf_send_gui_key_event(elf_gui* gui, int key)
 {
-	char *str;
+	char* str;
 
 	if(gui->active_text_field)
 	{
@@ -1599,9 +1599,9 @@ void elf_send_gui_key_event(elf_gui *gui, int key)
 	}
 }
 
-void elf_reset_gui_object_events(elf_gui_object *object)
+void elf_reset_gui_object_events(elf_gui_object* object)
 {
-	elf_gui_object *obj;
+	elf_gui_object* obj;
 
 	object->event = 0;
 
@@ -1624,15 +1624,15 @@ void elf_reset_gui_object_events(elf_gui_object *object)
 	}
 }
 
-void elf_update_gui(elf_gui *gui, float step)
+void elf_update_gui(elf_gui* gui, float step)
 {
 	elf_vec2i mouse_force;
 	elf_vec2i mouse_position;
 	unsigned moved;
-	elf_gui_object *prev_trace;
-	elf_object *event;
-	elf_slider *slider;
-	elf_text_list *text_list;
+	elf_gui_object* prev_trace;
+	elf_object* event;
+	elf_slider* slider;
+	elf_text_list* text_list;
 	int i;
 
 	if(gui->update_size)
@@ -1952,9 +1952,9 @@ void elf_update_gui(elf_gui *gui, float step)
 	}
 }
 
-void elf_draw_gui(elf_gui *gui)
+void elf_draw_gui(elf_gui* gui)
 {
-	elf_gui_object *object;
+	elf_gui_object* object;
 	elf_area area;
 
 	if(!gui->visible) return;
@@ -2011,7 +2011,7 @@ void elf_draw_gui(elf_gui *gui)
 	gfx_set_shader_params(&gui->shader_params);
 }
 
-unsigned char elf_add_gui_object(elf_gui_object *parent, elf_gui_object *object)
+unsigned char elf_add_gui_object(elf_gui_object* parent, elf_gui_object* object)
 {
 	if(parent->obj_type != ELF_GUI && parent->obj_type != ELF_SCREEN) return ELF_FALSE;
 	if(object->parent) elf_remove_gui_object_by_object(object->parent, object);
@@ -2023,9 +2023,9 @@ unsigned char elf_add_gui_object(elf_gui_object *parent, elf_gui_object *object)
 	return ELF_TRUE;
 }
 
-elf_gui_object* elf_get_gui_object_by_name(elf_gui_object *parent, const char *name)
+elf_gui_object* elf_get_gui_object_by_name(elf_gui_object* parent, const char* name)
 {
-	elf_gui_object *object;
+	elf_gui_object* object;
 
 	if(!strcmp(parent->name, name)) return parent;
 
@@ -2050,9 +2050,9 @@ elf_gui_object* elf_get_gui_object_by_name(elf_gui_object *parent, const char *n
 	return NULL;
 }
 
-elf_gui_object* elf_get_gui_object_by_index(elf_gui_object *parent, int idx)
+elf_gui_object* elf_get_gui_object_by_index(elf_gui_object* parent, int idx)
 {
-	elf_gui_object *object;
+	elf_gui_object* object;
 	int i;
 
 	if(parent->obj_type != ELF_GUI && parent->obj_type == ELF_SCREEN) return ELF_FALSE;
@@ -2080,9 +2080,9 @@ elf_gui_object* elf_get_gui_object_by_index(elf_gui_object *parent, int idx)
 	return ELF_FALSE;
 }
 
-unsigned char elf_remove_gui_object_by_name(elf_gui_object *parent, const char *name)
+unsigned char elf_remove_gui_object_by_name(elf_gui_object* parent, const char* name)
 {
-	elf_gui_object *object;
+	elf_gui_object* object;
 
 	if(parent->obj_type != ELF_GUI && parent->obj_type != ELF_SCREEN) return ELF_FALSE;
 
@@ -2127,9 +2127,9 @@ unsigned char elf_remove_gui_object_by_name(elf_gui_object *parent, const char *
 	return ELF_FALSE;
 }
 
-unsigned char elf_remove_gui_object_by_index(elf_gui_object *parent, int idx)
+unsigned char elf_remove_gui_object_by_index(elf_gui_object* parent, int idx)
 {
-	elf_gui_object *object;
+	elf_gui_object* object;
 	int i;
 
 	if(parent->obj_type != ELF_GUI && parent->obj_type == ELF_SCREEN) return ELF_FALSE;
@@ -2183,7 +2183,7 @@ unsigned char elf_remove_gui_object_by_index(elf_gui_object *parent, int idx)
 	return ELF_FALSE;
 }
 
-unsigned char elf_remove_gui_object_by_object(elf_gui_object *parent, elf_gui_object *object)
+unsigned char elf_remove_gui_object_by_object(elf_gui_object* parent, elf_gui_object* object)
 {
 	if(parent->obj_type != ELF_GUI && parent->obj_type != ELF_SCREEN) return ELF_FALSE;
 	
@@ -2202,23 +2202,23 @@ unsigned char elf_remove_gui_object_by_object(elf_gui_object *parent, elf_gui_ob
 	else return elf_remove_from_list(parent->screens, (elf_object*)object);
 }
 
-elf_gui_object* elf_get_gui_trace(elf_gui *gui)
+elf_gui_object* elf_get_gui_trace(elf_gui* gui)
 {
 	if(!gui->trace || gui->trace->obj_type == ELF_GUI) return NULL;
 	return gui->trace;
 }
 
-elf_gui_object* elf_get_gui_focus(elf_gui *gui)
+elf_gui_object* elf_get_gui_focus(elf_gui* gui)
 {
 	return (elf_gui_object*)gui->focus_screen;
 }
 
-elf_gui_object* elf_get_gui_active_text_field(elf_gui *gui)
+elf_gui_object* elf_get_gui_active_text_field(elf_gui* gui)
 {
 	return (elf_gui_object*)gui->active_text_field;
 }
 
-void elf_empty_gui(elf_gui *gui)
+void elf_empty_gui(elf_gui* gui)
 {
 	elf_dec_ref((elf_object*)gui->children);
 	elf_dec_ref((elf_object*)gui->screens);

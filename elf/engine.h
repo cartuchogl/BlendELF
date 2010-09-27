@@ -1,9 +1,9 @@
 
 elf_engine* elf_create_engine()
 {
-	elf_engine *engine;
-	gfx_vertex_data *vertex_data;
-	float *vertex_buffer;
+	elf_engine* engine;
+	gfx_vertex_data* vertex_data;
+	float* vertex_buffer;
 
 	engine = (elf_engine*)malloc(sizeof(elf_engine));
 	memset(engine, 0x0, sizeof(elf_engine));
@@ -167,9 +167,9 @@ elf_engine* elf_create_engine()
 	return engine;
 }
 
-void elf_destroy_engine(void *data)
+void elf_destroy_engine(void* data)
 {
-	elf_engine *engine = (elf_engine*)data;
+	elf_engine* engine = (elf_engine*)data;
 
 	gfx_dec_ref((gfx_object*)engine->lines);
 	gfx_dec_ref((gfx_object*)engine->sprite_vertex_array);
@@ -220,7 +220,7 @@ void elf_deinit_engine()
 }
 
 unsigned char elf_init(int width, int height,
-	const char *title, int multisamples, unsigned char fullscreen, const char *log)
+	const char* title, int multisamples, unsigned char fullscreen, const char* log)
 {
 	elf_init_general();
 	elf_set_log_file_path(log);
@@ -241,9 +241,9 @@ unsigned char elf_init(int width, int height,
 	return ELF_TRUE;
 }
 
-unsigned char elf_init_with_config(const char *file_path)
+unsigned char elf_init_with_config(const char* file_path)
 {
-	elf_config *config;
+	elf_config* config;
 
 	elf_init_general();
 
@@ -447,7 +447,7 @@ const char* elf_get_version()
 	return "BlendELF 0.9 Beta 2";
 }
 
-char* elf_get_directory_from_path(const char *file_path)
+char* elf_get_directory_from_path(const char* file_path)
 {
 	int idx;
 
@@ -494,9 +494,9 @@ unsigned char elf_get_f10_exit()
 	return eng->f10_exit;
 }
 
-elf_scene* elf_load_scene(const char *file_path)
+elf_scene* elf_load_scene(const char* file_path)
 {
-	elf_scene *scene;
+	elf_scene* scene;
 
 	scene = elf_create_scene_from_file(file_path);
 	if(scene)
@@ -509,7 +509,7 @@ elf_scene* elf_load_scene(const char *file_path)
 	return scene;
 }
 
-void elf_set_scene(elf_scene *scene)
+void elf_set_scene(elf_scene* scene)
 {
 	if(eng->scene) elf_dec_ref((elf_object*)eng->scene);
 	eng->scene = scene;
@@ -521,7 +521,7 @@ elf_scene* elf_get_scene()
 	return eng->scene;
 }
 
-void elf_set_gui(elf_gui *gui)
+void elf_set_gui(elf_gui* gui)
 {
 	if(eng->gui) elf_dec_ref((elf_object*)eng->gui);
 	eng->gui = gui;
@@ -576,9 +576,9 @@ float elf_get_speed()
 	return eng->speed;
 }
 
-unsigned char elf_save_screen_shot(const char *file_path)
+unsigned char elf_save_screen_shot(const char* file_path)
 {
-	unsigned char *data;
+	unsigned char* data;
 
 	data = (unsigned char*)malloc(sizeof(unsigned char)*elf_get_window_width()*elf_get_window_height()*4);
 
@@ -851,7 +851,7 @@ elf_object* elf_get_actor()
 
 elf_directory_item* elf_create_directory_item()
 {
-	elf_directory_item *dir_item;
+	elf_directory_item* dir_item;
 
 	dir_item = (elf_directory_item*)malloc(sizeof(elf_directory_item));
 	memset(dir_item, 0x0, sizeof(elf_directory_item));
@@ -863,9 +863,9 @@ elf_directory_item* elf_create_directory_item()
 	return dir_item;
 }
 
-void elf_destroy_directory_item(void *data)
+void elf_destroy_directory_item(void* data)
 {
-	elf_directory_item *directory_item = (elf_directory_item*)data;
+	elf_directory_item* directory_item = (elf_directory_item*)data;
 
 	if(directory_item->name) elf_destroy_string(directory_item->name);
 
@@ -876,7 +876,7 @@ void elf_destroy_directory_item(void *data)
 
 elf_directory* elf_create_directory()
 {
-	elf_directory *directory;
+	elf_directory* directory;
 
 	directory = (elf_directory*)malloc(sizeof(elf_directory));
 	memset(directory, 0x0, sizeof(elf_directory));
@@ -890,9 +890,9 @@ elf_directory* elf_create_directory()
 	return directory;
 }
 
-void elf_destroy_directory(void *data)
+void elf_destroy_directory(void* data)
 {
-	elf_directory *directory = (elf_directory*)data;
+	elf_directory* directory = (elf_directory*)data;
 
 	if(directory->path) elf_destroy_string(directory->path);
 	elf_destroy_list(directory->items);
@@ -902,9 +902,9 @@ void elf_destroy_directory(void *data)
 	elf_dec_obj(ELF_DIRECTORY);
 }
 
-void elf_append_folder_to_directory_item_list(elf_list *items, elf_directory_item *nitem)
+void elf_append_folder_to_directory_item_list(elf_list* items, elf_directory_item* nitem)
 {
-	elf_directory_item *dir_item;
+	elf_directory_item* dir_item;
 	int i;
 
 	for(i = 0, dir_item = (elf_directory_item*)elf_begin_list(items); dir_item;
@@ -922,22 +922,22 @@ void elf_append_folder_to_directory_item_list(elf_list *items, elf_directory_ite
 }
 
 typedef struct elf_dir_item_emul {
-	char *str;
+	char* str;
 	int type;
 } elf_dir_item_emul;
 
-static int alphacmp(const void *a, const void *b)
+static int alphacmp(const void* a, const void* b)
 {
 	return strcmp((*((elf_dir_item_emul*)a)).str, (*((elf_dir_item_emul*)b)).str);
 }
 
-elf_directory* elf_read_directory(const char *path)
+elf_directory* elf_read_directory(const char* path)
 {
-	elf_directory *directory;
-	elf_directory_item *dir_item;
-	DIR *dir;
-	struct dirent *dp;
-	elf_dir_item_emul *names;
+	elf_directory* directory;
+	elf_directory_item* dir_item;
+	DIR* dir;
+	struct dirent* dp;
+	elf_dir_item_emul* names;
 	int item_count;
 	int i;
 
@@ -1006,20 +1006,20 @@ elf_directory* elf_read_directory(const char *path)
 	}
 }
 
-const char* elf_get_directory_path(elf_directory *directory)
+const char* elf_get_directory_path(elf_directory* directory)
 {
 	return directory->path;
 }
 
-int elf_get_directory_item_count(elf_directory *directory)
+int elf_get_directory_item_count(elf_directory* directory)
 {
 	return elf_get_list_length(directory->items);
 }
 
-elf_directory_item* elf_get_directory_item(elf_directory *directory, int idx)
+elf_directory_item* elf_get_directory_item(elf_directory* directory, int idx)
 {
 	int i;
-	elf_directory_item *dir_item;
+	elf_directory_item* dir_item;
 
 	if(idx < 0 || idx > elf_get_list_length(directory->items)-1) return NULL;
 
@@ -1032,12 +1032,12 @@ elf_directory_item* elf_get_directory_item(elf_directory *directory, int idx)
 	return NULL;
 }
 
-const char* elf_get_directory_item_name(elf_directory_item *dir_item)
+const char* elf_get_directory_item_name(elf_directory_item* dir_item)
 {
 	return dir_item->name;
 }
 
-int elf_get_directory_item_type(elf_directory_item *dir_item)
+int elf_get_directory_item_type(elf_directory_item* dir_item)
 {
 	return dir_item->item_type;
 }

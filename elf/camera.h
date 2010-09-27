@@ -1,7 +1,7 @@
 
-elf_camera* elf_create_camera(const char *name)
+elf_camera* elf_create_camera(const char* name)
 {
-	elf_camera *camera;
+	elf_camera* camera;
 
 	camera = (elf_camera*)malloc(sizeof(elf_camera));
 	memset(camera, 0x0, sizeof(elf_camera));
@@ -44,7 +44,7 @@ elf_camera* elf_create_camera(const char *name)
 	return camera;
 }
 
-void elf_update_camera(elf_camera *camera)
+void elf_update_camera(elf_camera* camera)
 {
 	elf_update_actor((elf_actor*)camera);
 
@@ -52,7 +52,7 @@ void elf_update_camera(elf_camera *camera)
 		elf_set_camera_perspective(camera, camera->fov, camera->aspect, camera->clip_near, camera->clip_far);
 }
 
-void elf_camera_pre_draw(elf_camera *camera)
+void elf_camera_pre_draw(elf_camera* camera)
 {
 	elf_actor_pre_draw((elf_actor*)camera);
 
@@ -60,14 +60,14 @@ void elf_camera_pre_draw(elf_camera *camera)
 	elf_get_actor_position_((elf_actor*)camera, &camera->position.x);
 }
 
-void elf_camera_post_draw(elf_camera *camera)
+void elf_camera_post_draw(elf_camera* camera)
 {
 	elf_actor_post_draw((elf_actor*)camera);
 }
 
-void elf_destroy_camera(void *data)
+void elf_destroy_camera(void* data)
 {
-	elf_camera *camera = (elf_camera*)data;
+	elf_camera* camera = (elf_camera*)data;
 
 	elf_clean_actor((elf_actor*)camera);
 
@@ -76,7 +76,7 @@ void elf_destroy_camera(void *data)
 	elf_dec_obj(ELF_CAMERA);
 }
 
-void elf_set_camera_viewport(elf_camera *camera, int x, int y, int width, int height)
+void elf_set_camera_viewport(elf_camera* camera, int x, int y, int width, int height)
 {
 	camera->viewp_x = x;
 	camera->viewp_y = y;
@@ -84,7 +84,7 @@ void elf_set_camera_viewport(elf_camera *camera, int x, int y, int width, int he
 	camera->viewp_height = height;
 }
 
-void elf_set_camera_perspective(elf_camera *camera, float fov, float aspect, float clip_near, float clip_far)
+void elf_set_camera_perspective(elf_camera* camera, float fov, float aspect, float clip_near, float clip_far)
 {
 	camera->mode = ELF_PERSPECTIVE;
 
@@ -107,7 +107,7 @@ void elf_set_camera_perspective(elf_camera *camera, float fov, float aspect, flo
 		camera->clip_near, camera->clip_far, camera->projection_matrix);
 }
 
-void elf_set_camera_orthographic(elf_camera *camera, int x, int y, int width, int height, float clip_near, float clip_far)
+void elf_set_camera_orthographic(elf_camera* camera, int x, int y, int width, int height, float clip_near, float clip_far)
 {
 	camera->mode = ELF_ORTHOGRAPHIC;
 
@@ -130,12 +130,12 @@ void elf_set_camera_orthographic(elf_camera *camera, int x, int y, int width, in
 		(float)camera->clip_near, camera->clip_far, camera->projection_matrix);
 }
 
-float elf_get_camera_fov(elf_camera *camera)
+float elf_get_camera_fov(elf_camera* camera)
 {
 	return camera->fov;
 }
 
-float elf_get_camera_aspect(elf_camera *camera)
+float elf_get_camera_aspect(elf_camera* camera)
 {
 	float aspect = camera->aspect;
 
@@ -149,7 +149,7 @@ float elf_get_camera_aspect(elf_camera *camera)
 	return aspect;
 }
 
-elf_vec2i elf_get_camera_viewport_size(elf_camera *camera)
+elf_vec2i elf_get_camera_viewport_size(elf_camera* camera)
 {
 	elf_vec2i size;
 
@@ -161,7 +161,7 @@ elf_vec2i elf_get_camera_viewport_size(elf_camera *camera)
 	return size;
 }
 
-elf_vec2i elf_get_camera_viewport_offset(elf_camera *camera)
+elf_vec2i elf_get_camera_viewport_offset(elf_camera* camera)
 {
 	elf_vec2i offset;
 
@@ -171,7 +171,7 @@ elf_vec2i elf_get_camera_viewport_offset(elf_camera *camera)
 	return offset;
 }
 
-elf_vec2f elf_get_camera_clip(elf_camera *camera)
+elf_vec2f elf_get_camera_clip(elf_camera* camera)
 {
 	elf_vec2f clip;
 
@@ -181,7 +181,7 @@ elf_vec2f elf_get_camera_clip(elf_camera *camera)
 	return clip;
 }
 
-elf_vec2f elf_get_camera_far_plane_size(elf_camera *camera)
+elf_vec2f elf_get_camera_far_plane_size(elf_camera* camera)
 {
 	elf_vec2f size;
 
@@ -193,18 +193,18 @@ elf_vec2f elf_get_camera_far_plane_size(elf_camera *camera)
 	return size;
 }
 
-float* elf_get_camera_projection_matrix(elf_camera *camera)
+float* elf_get_camera_projection_matrix(elf_camera* camera)
 {
 	return camera->projection_matrix;
 }
 
-float* elf_get_camera_modelview_matrix(elf_camera *camera)
+float* elf_get_camera_modelview_matrix(elf_camera* camera)
 {
 	memcpy(camera->modelview_matrix, gfx_get_transform_matrix(camera->transform), sizeof(float)*16);
 	return camera->modelview_matrix;
 }
 
-void elf_set_camera(elf_camera *camera, gfx_shader_params *shader_params)
+void elf_set_camera(elf_camera* camera, gfx_shader_params* shader_params)
 {
 	int viewp_width, viewp_height;
 	float position[3];
@@ -230,36 +230,36 @@ void elf_set_camera(elf_camera *camera, gfx_shader_params *shader_params)
 	shader_params->viewport_height = viewp_height;
 }
 
-unsigned char elf_aabb_inside_frustum(elf_camera *camera, float *min, float *max)
+unsigned char elf_aabb_inside_frustum(elf_camera* camera, float* min, float* max)
 {
 	return gfx_aabb_inside_frustum(camera->frustum, min, max);
 }
 
-unsigned char elf_sphere_inside_frustum(elf_camera *camera, float *pos, float radius)
+unsigned char elf_sphere_inside_frustum(elf_camera* camera, float* pos, float radius)
 {
 	return gfx_sphere_inside_frustum(camera->frustum, pos, radius);
 }
 
-unsigned char elf_camera_inside_aabb(elf_camera *camera, float *min, float *max)
+unsigned char elf_camera_inside_aabb(elf_camera* camera, float* min, float* max)
 {
 	return camera->position.x > min[0]-camera->clip_near && camera->position.y > min[1]-camera->clip_near && camera->position.z > min[2]-camera->clip_near &&
 		camera->position.x < max[0]+camera->clip_near && camera->position.y < max[1]+camera->clip_near && camera->position.z < max[2]+camera->clip_near;
 }
 
-unsigned char elf_camera_inside_sphere(elf_camera *camera, float *pos, float radius)
+unsigned char elf_camera_inside_sphere(elf_camera* camera, float* pos, float radius)
 {
 	return camera->position.x > pos[0]-radius && camera->position.y > pos[1]-radius && camera->position.z > pos[2]-radius &&
 		camera->position.x < pos[0]+radius && camera->position.y < pos[1]+radius && camera->position.z < pos[2]+radius;
 }
 
-void elf_draw_camera_debug(elf_camera *camera, gfx_shader_params *shader_params)
+void elf_draw_camera_debug(elf_camera* camera, gfx_shader_params* shader_params)
 {
 	float min[3];
 	float max[3];
 	float position[3];
 	float rotation[3];
-	gfx_transform *transform;
-	float *vertex_buffer;
+	gfx_transform* transform;
+	float* vertex_buffer;
 
 	transform = gfx_create_object_transform();
 
@@ -308,7 +308,7 @@ void elf_draw_camera_debug(elf_camera *camera, gfx_shader_params *shader_params)
 	gfx_draw_lines(6, eng->lines);
 }
 
-elf_vec3f elf_project_camera_point(elf_camera *camera, float x, float y, float z)
+elf_vec3f elf_project_camera_point(elf_camera* camera, float x, float y, float z)
 {
 	elf_vec3f result;
 	int viewp[4];
@@ -327,7 +327,7 @@ elf_vec3f elf_project_camera_point(elf_camera *camera, float x, float y, float z
 	return result;
 }
 
-elf_vec3f elf_un_project_camera_point(elf_camera *camera, float x, float y, float z)
+elf_vec3f elf_un_project_camera_point(elf_camera* camera, float x, float y, float z)
 {
 	elf_vec3f result;
 	int viewp[4];

@@ -1,7 +1,7 @@
 
 elf_particle* elf_create_particle()
 {
-	elf_particle *particle;
+	elf_particle* particle;
 
 	particle = (elf_particle*)malloc(sizeof(elf_particle));
 	memset(particle, 0x0, sizeof(elf_particle));
@@ -13,20 +13,20 @@ elf_particle* elf_create_particle()
 	return particle;
 }
 
-void elf_destroy_particle(void *data)
+void elf_destroy_particle(void* data)
 {
-	elf_particle *particle = (elf_particle*)data;
+	elf_particle* particle = (elf_particle*)data;
 
 	free(particle);
 
 	elf_dec_obj(ELF_PARTICLE);
 }
 
-elf_particles* elf_create_particles(const char *name, int max_count)
+elf_particles* elf_create_particles(const char* name, int max_count)
 {
-	elf_particles *particles;
-	float *tex_coord_buffer;
-	float *color_buffer;
+	elf_particles* particles;
+	float* tex_coord_buffer;
+	float* color_buffer;
 	int i, j, k;
 
 	if(max_count < 1) return NULL;
@@ -138,10 +138,10 @@ elf_particles* elf_create_particles(const char *name, int max_count)
 	return particles;
 }
 
-void elf_init_new_particle(elf_particles *particles, elf_particle *particle)
+void elf_init_new_particle(elf_particles* particles, elf_particle* particle)
 {
 	static int num;
-	static float *vertices;
+	static float* vertices;
 	static elf_vec4f orient;
 	static elf_vec3f local_pos;
 	static elf_vec3f result;
@@ -193,7 +193,7 @@ void elf_init_new_particle(elf_particles *particles, elf_particle *particle)
 	particle->color.a = elf_random_float_range(particles->color_min.a, particles->color_max.a);
 }
 
-void elf_calc_particles_aabb(elf_particles *particles)
+void elf_calc_particles_aabb(elf_particles* particles)
 {
 	elf_vec3f position;
 
@@ -254,21 +254,21 @@ void elf_calc_particles_aabb(elf_particles *particles)
 	particles->cull_aabb_max.z += position.z;
 }
 
-void elf_particles_pre_draw(elf_particles *particles)
+void elf_particles_pre_draw(elf_particles* particles)
 {
 	elf_actor_pre_draw((elf_actor*)particles);
 
 	if(particles->moved) elf_calc_particles_aabb(particles);
 }
 
-void elf_particles_post_draw(elf_particles *particles)
+void elf_particles_post_draw(elf_particles* particles)
 {
 	elf_actor_post_draw((elf_actor*)particles);
 }
 
-void elf_update_particles(elf_particles *particles, float sync)
+void elf_update_particles(elf_particles* particles, float sync)
 {
-	elf_particle *particle;
+	elf_particle* particle;
 	int spawn_count;
 	int i;
 
@@ -323,9 +323,9 @@ void elf_update_particles(elf_particles *particles, float sync)
 	}
 }
 
-void elf_draw_particles(elf_particles *particles, elf_camera *camera, gfx_shader_params *shader_params)
+void elf_draw_particles(elf_particles* particles, elf_camera* camera, gfx_shader_params* shader_params)
 {
-	elf_particle *particle;
+	elf_particle* particle;
 	int i, j;
 	float offset;
 	float pos[3];
@@ -344,8 +344,8 @@ void elf_draw_particles(elf_particles *particles, elf_camera *camera, gfx_shader
 	float sin_x4;
 	float cos_y4;
 	float radius;
-	float *vertex_buffer;
-	float *color_buffer;
+	float* vertex_buffer;
+	float* color_buffer;
 
 	vertex_buffer = (float*)gfx_get_vertex_data_buffer(particles->vertices);
 	color_buffer = (float*)gfx_get_vertex_data_buffer(particles->colors);
@@ -524,11 +524,11 @@ void elf_draw_particles(elf_particles *particles, elf_camera *camera, gfx_shader
 	}
 }
 
-void elf_draw_particles_debug(elf_particles *particles, gfx_shader_params *shader_params)
+void elf_draw_particles_debug(elf_particles* particles, gfx_shader_params* shader_params)
 {
 	float min[3];
 	float max[3];
-	float *vertex_buffer;
+	float* vertex_buffer;
 
 	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(particles->transform),
 		shader_params->camera_matrix, shader_params->modelview_matrix);
@@ -593,9 +593,9 @@ void elf_draw_particles_debug(elf_particles *particles, gfx_shader_params *shade
 	gfx_draw_lines(14, eng->lines);
 }
 
-void elf_destroy_particles(void *data)
+void elf_destroy_particles(void* data)
 {
-	elf_particles *particles = (elf_particles*)data;
+	elf_particles* particles = (elf_particles*)data;
 
 	elf_clean_actor((elf_actor*)particles);
 
@@ -614,21 +614,21 @@ void elf_destroy_particles(void *data)
 	elf_dec_obj(ELF_PARTICLES);
 }
 
-const char* elf_get_particles_name(elf_particles *particles)
+const char* elf_get_particles_name(elf_particles* particles)
 {
 	return particles->name;
 }
 
-const char* elf_get_particles_file_path(elf_particles *particles)
+const char* elf_get_particles_file_path(elf_particles* particles)
 {
 	return particles->file_path;
 }
 
-void elf_set_particles_max_count(elf_particles *particles, int max_count)
+void elf_set_particles_max_count(elf_particles* particles, int max_count)
 {
 	int i, j, k;
-	float *tex_coord_buffer;
-	float *color_buffer;
+	float* tex_coord_buffer;
+	float* color_buffer;
 
 	if(max_count < 1) return;
 
@@ -705,26 +705,26 @@ void elf_set_particles_max_count(elf_particles *particles, int max_count)
 	}
 }
 
-void elf_set_particles_draw_mode(elf_particles *particles, int mode)
+void elf_set_particles_draw_mode(elf_particles* particles, int mode)
 {
 	if(particles->draw_mode < 1 || particles->draw_mode > 4) return;
 	particles->draw_mode = mode;
 }
 
-void elf_set_particles_texture(elf_particles *particles, elf_texture *texture)
+void elf_set_particles_texture(elf_particles* particles, elf_texture* texture)
 {
 	if(particles->texture) elf_dec_ref((elf_object*)particles->texture);
 	particles->texture = texture;
 	if(particles->texture) elf_inc_ref((elf_object*)particles->texture);
 }
 
-void elf_clear_particles_texture(elf_particles *particles)
+void elf_clear_particles_texture(elf_particles* particles)
 {
 	if(particles->texture) elf_dec_ref((elf_object*)particles->texture);
 	particles->texture = NULL;
 }
 
-void elf_set_particles_model(elf_particles *particles, elf_model *model)
+void elf_set_particles_model(elf_particles* particles, elf_model* model)
 {
 	if(particles->entity) elf_dec_ref((elf_object*)particles->entity);
 	particles->entity = NULL;
@@ -736,7 +736,7 @@ void elf_set_particles_model(elf_particles *particles, elf_model *model)
 	elf_calc_particles_aabb(particles);
 }
 
-void elf_clear_particles_model(elf_particles *particles)
+void elf_clear_particles_model(elf_particles* particles)
 {
 	if(particles->model) elf_dec_ref((elf_object*)particles->model);
 	particles->model = NULL;
@@ -744,7 +744,7 @@ void elf_clear_particles_model(elf_particles *particles)
 	elf_calc_particles_aabb(particles);
 }
 
-void elf_set_particles_entity(elf_particles *particles, elf_entity *entity)
+void elf_set_particles_entity(elf_particles* particles, elf_entity* entity)
 {
 	if(particles->model) elf_dec_ref((elf_object*)particles->model);
 	particles->model = NULL;
@@ -756,7 +756,7 @@ void elf_set_particles_entity(elf_particles *particles, elf_entity *entity)
 	elf_calc_particles_aabb(particles);
 }
 
-void elf_clear_particles_entity(elf_particles *particles)
+void elf_clear_particles_entity(elf_particles* particles)
 {
 	if(particles->entity) elf_dec_ref((elf_object*)particles->entity);
 	particles->entity = NULL;
@@ -764,7 +764,7 @@ void elf_clear_particles_entity(elf_particles *particles)
 	elf_calc_particles_aabb(particles);
 }
 
-void elf_set_particles_gravity(elf_particles *particles, float x, float y, float z)
+void elf_set_particles_gravity(elf_particles* particles, float x, float y, float z)
 {
 	particles->gravity.x = x;
 	particles->gravity.y = y;
@@ -773,54 +773,54 @@ void elf_set_particles_gravity(elf_particles *particles, float x, float y, float
 	elf_calc_particles_aabb(particles);
 }
 
-void elf_set_particles_spawn_delay(elf_particles *particles, float delay)
+void elf_set_particles_spawn_delay(elf_particles* particles, float delay)
 {
 	particles->spawn_delay = delay;
 	if(particles->spawn_delay < 0.00001) particles->spawn_delay = 0.00001;
 }
 
-void elf_set_particles_spawn(elf_particles *particles, unsigned char spawn)
+void elf_set_particles_spawn(elf_particles* particles, unsigned char spawn)
 {
 	particles->spawn = !spawn == ELF_FALSE;
 }
 
-void elf_set_particles_size(elf_particles *particles, float min, float max)
+void elf_set_particles_size(elf_particles* particles, float min, float max)
 {
 	particles->size_min = min;
 	particles->size_max = max;
 }
 
-void elf_set_particles_size_growth(elf_particles *particles, float min, float max)
+void elf_set_particles_size_growth(elf_particles* particles, float min, float max)
 {
 	particles->size_growth_min = min;
 	particles->size_growth_max = max;
 }
 
-void elf_set_particles_rotation(elf_particles *particles, float min, float max)
+void elf_set_particles_rotation(elf_particles* particles, float min, float max)
 {
 	particles->rotation_min = min;
 	particles->rotation_max = max;
 }
 
-void elf_set_particles_rotation_growth(elf_particles *particles, float min, float max)
+void elf_set_particles_rotation_growth(elf_particles* particles, float min, float max)
 {
 	particles->rotation_growth_min = min;
 	particles->rotation_growth_max = max;
 }
 
-void elf_set_particles_life_span(elf_particles *particles, float min, float max)
+void elf_set_particles_life_span(elf_particles* particles, float min, float max)
 {
 	particles->life_span_min = min;
 	particles->life_span_max = max;
 }
 
-void elf_set_particles_fade_speed(elf_particles *particles, float min, float max)
+void elf_set_particles_fade_speed(elf_particles* particles, float min, float max)
 {
 	particles->fade_speed_min = min;
 	particles->fade_speed_max = max;
 }
 
-void elf_set_particles_velocity_min(elf_particles *particles, float x, float y, float z)
+void elf_set_particles_velocity_min(elf_particles* particles, float x, float y, float z)
 {
 	particles->velocity_min.x = x;
 	particles->velocity_min.y = y;
@@ -829,7 +829,7 @@ void elf_set_particles_velocity_min(elf_particles *particles, float x, float y, 
 	elf_calc_particles_aabb(particles);
 }
 
-void elf_set_particles_position_min(elf_particles *particles, float x, float y, float z)
+void elf_set_particles_position_min(elf_particles* particles, float x, float y, float z)
 {
 	particles->position_min.x = x;
 	particles->position_min.y = y;
@@ -838,7 +838,7 @@ void elf_set_particles_position_min(elf_particles *particles, float x, float y, 
 	elf_calc_particles_aabb(particles);
 }
 
-void elf_set_particles_position_max(elf_particles *particles, float x, float y, float z)
+void elf_set_particles_position_max(elf_particles* particles, float x, float y, float z)
 {
 	particles->position_max.x = x;
 	particles->position_max.y = y;
@@ -847,7 +847,7 @@ void elf_set_particles_position_max(elf_particles *particles, float x, float y, 
 	elf_calc_particles_aabb(particles);
 }
 
-void elf_set_particles_velocity_max(elf_particles *particles, float x, float y, float z)
+void elf_set_particles_velocity_max(elf_particles* particles, float x, float y, float z)
 {
 	particles->velocity_max.x = x;
 	particles->velocity_max.y = y;
@@ -856,7 +856,7 @@ void elf_set_particles_velocity_max(elf_particles *particles, float x, float y, 
 	elf_calc_particles_aabb(particles);
 }
 
-void elf_set_particles_color_min(elf_particles *particles, float r, float g, float b, float a)
+void elf_set_particles_color_min(elf_particles* particles, float r, float g, float b, float a)
 {
 	particles->color_min.r = r;
 	particles->color_min.g = g;
@@ -864,7 +864,7 @@ void elf_set_particles_color_min(elf_particles *particles, float r, float g, flo
 	particles->color_min.a = a;
 }
 
-void elf_set_particles_color_max(elf_particles *particles, float r, float g, float b, float a)
+void elf_set_particles_color_max(elf_particles* particles, float r, float g, float b, float a)
 {
 	particles->color_max.r = r;
 	particles->color_max.g = g;
@@ -872,142 +872,142 @@ void elf_set_particles_color_max(elf_particles *particles, float r, float g, flo
 	particles->color_max.a = a;
 }
 
-int elf_get_particles_max_count(elf_particles *particles)
+int elf_get_particles_max_count(elf_particles* particles)
 {
 	return particles->max_count;
 }
 
-int elf_get_particles_count(elf_particles *particles)
+int elf_get_particles_count(elf_particles* particles)
 {
 	return elf_get_list_length(particles->particles);
 }
 
-int elf_get_particles_draw_mode(elf_particles *particles)
+int elf_get_particles_draw_mode(elf_particles* particles)
 {
 	return particles->draw_mode;
 }
 
-elf_texture* elf_get_particles_texture(elf_particles *particles)
+elf_texture* elf_get_particles_texture(elf_particles* particles)
 {
 	return particles->texture;
 }
 
-elf_model* elf_get_particles_model(elf_particles *particles)
+elf_model* elf_get_particles_model(elf_particles* particles)
 {
 	return particles->model;
 }
 
-elf_entity* elf_get_particles_entity(elf_particles *particles)
+elf_entity* elf_get_particles_entity(elf_particles* particles)
 {
 	return particles->entity;
 }
 
-elf_vec3f elf_get_particles_gravity(elf_particles *particles)
+elf_vec3f elf_get_particles_gravity(elf_particles* particles)
 {
 	return particles->gravity;
 }
 
-float elf_get_particles_spawn_delay(elf_particles *particles)
+float elf_get_particles_spawn_delay(elf_particles* particles)
 {
 	return particles->spawn_delay;
 }
 
-unsigned char elf_get_particles_spawn(elf_particles *particles)
+unsigned char elf_get_particles_spawn(elf_particles* particles)
 {
 	return particles->spawn;
 }
 
-float elf_get_particles_size_min(elf_particles *particles)
+float elf_get_particles_size_min(elf_particles* particles)
 {
 	return particles->size_min;
 }
 
-float elf_get_particles_size_max(elf_particles *particles)
+float elf_get_particles_size_max(elf_particles* particles)
 {
 	return particles->size_max;
 }
 
-float elf_get_particles_rotation_min(elf_particles *particles)
+float elf_get_particles_rotation_min(elf_particles* particles)
 {
 	return particles->rotation_min;
 }
 
-float elf_get_particles_rotation_max(elf_particles *particles)
+float elf_get_particles_rotation_max(elf_particles* particles)
 {
 	return particles->rotation_max;
 }
 
-float elf_get_particles_rotation_growth_min(elf_particles *particles)
+float elf_get_particles_rotation_growth_min(elf_particles* particles)
 {
 	return particles->rotation_growth_min;
 }
 
-float elf_get_particles_rotation_growth_max(elf_particles *particles)
+float elf_get_particles_rotation_growth_max(elf_particles* particles)
 {
 	return particles->rotation_growth_max;
 }
 
-float elf_get_particles_size_growth_min(elf_particles *particles)
+float elf_get_particles_size_growth_min(elf_particles* particles)
 {
 	return particles->size_growth_min;
 }
 
-float elf_get_particles_size_growth_max(elf_particles *particles)
+float elf_get_particles_size_growth_max(elf_particles* particles)
 {
 	return particles->size_growth_max;
 }
 
-float elf_get_particles_life_span_min(elf_particles *particles)
+float elf_get_particles_life_span_min(elf_particles* particles)
 {
 	return particles->life_span_min;
 }
 
-float elf_get_particles_life_span_max(elf_particles *particles)
+float elf_get_particles_life_span_max(elf_particles* particles)
 {
 	return particles->life_span_max;
 }
 
-float elf_get_particles_fade_speed_min(elf_particles *particles)
+float elf_get_particles_fade_speed_min(elf_particles* particles)
 {
 	return particles->fade_speed_min;
 }
 
-float elf_get_particles_fade_speed_max(elf_particles *particles)
+float elf_get_particles_fade_speed_max(elf_particles* particles)
 {
 	return particles->fade_speed_max;
 }
 
-elf_vec3f elf_get_particles_position_min(elf_particles *particles)
+elf_vec3f elf_get_particles_position_min(elf_particles* particles)
 {
 	return particles->position_min;
 }
 
-elf_vec3f elf_get_particles_position_max(elf_particles *particles)
+elf_vec3f elf_get_particles_position_max(elf_particles* particles)
 {
 	return particles->position_max;
 }
 
-elf_vec3f elf_get_particles_velocity_min(elf_particles *particles)
+elf_vec3f elf_get_particles_velocity_min(elf_particles* particles)
 {
 	return particles->velocity_min;
 }
 
-elf_vec3f elf_get_particles_velocity_max(elf_particles *particles)
+elf_vec3f elf_get_particles_velocity_max(elf_particles* particles)
 {
 	return particles->velocity_max;
 }
 
-elf_color elf_get_particles_color_min(elf_particles *particles)
+elf_color elf_get_particles_color_min(elf_particles* particles)
 {
 	return particles->color_min;
 }
 
-elf_color elf_get_particles_color_max(elf_particles *particles)
+elf_color elf_get_particles_color_max(elf_particles* particles)
 {
 	return particles->color_max;
 }
 
-unsigned char elf_cull_particles(elf_particles *particles, elf_camera *camera)
+unsigned char elf_cull_particles(elf_particles* particles, elf_camera* camera)
 {
 	return !elf_aabb_inside_frustum(camera, &particles->cull_aabb_min.x, &particles->cull_aabb_max.x);
 }

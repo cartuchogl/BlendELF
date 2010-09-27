@@ -13,7 +13,7 @@ extern "C" {
 
 struct elf_collision {
 	ELF_OBJECT_HEADER;
-	elf_actor *actor;
+	elf_actor* actor;
 	elf_vec3f position;
 	elf_vec3f normal;
 	float depth;
@@ -21,19 +21,19 @@ struct elf_collision {
 
 struct elf_joint {
 	ELF_OBJECT_HEADER;
-	char *name;
+	char* name;
 	unsigned char joint_type;
-	elf_actor *actor1;
-	elf_actor *actor2;
-	btTypedConstraint *constraint;
-	elf_physics_world *world;
+	elf_actor* actor1;
+	elf_actor* actor2;
+	btTypedConstraint* constraint;
+	elf_physics_world* world;
 	float pivot[3];
 	float axis[3];
 };
 
 struct elf_physics_tri_mesh {
 	ELF_OBJECT_HEADER;
-	btTriangleMesh *triMesh;
+	btTriangleMesh* triMesh;
 };
 
 struct elf_physics_object {
@@ -41,41 +41,41 @@ struct elf_physics_object {
 	int shape_type;
 	float mass;
 	elf_vec3f offset;
-	btCollisionShape *shape;
-	btRigidBody *body;
-	btDefaultMotionState *motionState;
-	elf_physics_tri_mesh *tri_mesh;
-	elf_physics_world *world;
-	elf_list *collisions;
+	btCollisionShape* shape;
+	btRigidBody* body;
+	btDefaultMotionState* motionState;
+	elf_physics_tri_mesh* tri_mesh;
+	elf_physics_world* world;
+	elf_list* collisions;
 	int collision_count;
-	elf_actor *actor;
+	elf_actor* actor;
 };
 
 struct elf_physics_world {
 	ELF_OBJECT_HEADER;
-	btCollisionConfiguration *collisionConfiguration;
-	btCollisionDispatcher *dispatcher;
-	btBroadphaseInterface *broadphase;
-	btConstraintSolver *solver;
-	btDiscreteDynamicsWorld *world;
+	btCollisionConfiguration* collisionConfiguration;
+	btCollisionDispatcher* dispatcher;
+	btBroadphaseInterface* broadphase;
+	btConstraintSolver* solver;
+	btDiscreteDynamicsWorld* world;
 	float sync;
 };
 
 class MultipleRayResultCallback : public btCollisionWorld::RayResultCallback
 {
 public:
-	MultipleRayResultCallback(const btVector3 &rayFromWorld, const btVector3 &rayToWorld, elf_list *list)
+	MultipleRayResultCallback(const btVector3 &rayFromWorld, const btVector3 &rayToWorld, elf_list* list)
 	: m_rayFromWorld(rayFromWorld), m_rayToWorld(rayToWorld), m_List(list) {}
 
 	btVector3 m_rayFromWorld;
 	btVector3 m_rayToWorld;
 	btVector3 m_hitNormalWorld;
 	btVector3 m_hitPointWorld;
-	elf_list *m_List;
+	elf_list* m_List;
 
 	virtual btScalar addSingleResult(btCollisionWorld::LocalRayResult& rayResult,bool normalInWorldSpace)
 	{
-		elf_collision *collision;
+		elf_collision* collision;
 
 		m_collisionObject = rayResult.m_collisionObject;
 		if (normalInWorldSpace)
@@ -107,7 +107,7 @@ public:
 
 elf_physics_world* elf_create_physics_world()
 {
-	elf_physics_world *world;
+	elf_physics_world* world;
 
 	world = (elf_physics_world*)malloc(sizeof(elf_physics_world));
 	memset(world, 0x0, sizeof(elf_physics_world));
@@ -127,9 +127,9 @@ elf_physics_world* elf_create_physics_world()
 	return world;
 }
 
-void elf_destroy_physics_world(void *data)
+void elf_destroy_physics_world(void* data)
 {
-	elf_physics_world *world = (elf_physics_world*)data;
+	elf_physics_world* world = (elf_physics_world*)data;
 
 	delete world->world;
 	delete world->solver;
@@ -142,16 +142,16 @@ void elf_destroy_physics_world(void *data)
 	elf_dec_obj(ELF_PHYSICS_WORLD);
 }
 
-void elf_update_physics_world(elf_physics_world *world, float time)
+void elf_update_physics_world(elf_physics_world* world, float time)
 {
 	int manifold_count;
 	int contact_count;
-	btPersistentManifold *manifold = 0;
-	btManifoldPoint *point = 0;
-	elf_physics_object *obj0;
-	elf_physics_object *obj1;
-	elf_collision *col0;
-	elf_collision *col1;
+	btPersistentManifold* manifold = 0;
+	btManifoldPoint* point = 0;
+	elf_physics_object* obj0;
+	elf_physics_object* obj1;
+	elf_collision* col0;
+	elf_collision* col1;
 	int i, j;
 
 	world->world->stepSimulation(time, 4);
@@ -217,12 +217,12 @@ void elf_update_physics_world(elf_physics_world *world, float time)
 	}
 }
 
-void elf_set_physics_world_gravity(elf_physics_world *world, float x, float y, float z)
+void elf_set_physics_world_gravity(elf_physics_world* world, float x, float y, float z)
 {
 	world->world->setGravity(btVector3(x, y, z));
 }
 
-elf_vec3f elf_get_physics_world_gravity(elf_physics_world *world)
+elf_vec3f elf_get_physics_world_gravity(elf_physics_world* world)
 {
 	btVector3 grav;
 	elf_vec3f result;
@@ -236,9 +236,9 @@ elf_vec3f elf_get_physics_world_gravity(elf_physics_world *world)
 	return result;
 }
 
-elf_collision* elf_get_ray_cast_result(elf_physics_world *world, float x, float y, float z, float dx, float dy, float dz)
+elf_collision* elf_get_ray_cast_result(elf_physics_world* world, float x, float y, float z, float dx, float dy, float dz)
 {
-	elf_collision *collision;
+	elf_collision* collision;
 
 	btCollisionWorld::ClosestRayResultCallback rayResult(btVector3(x, y, z), btVector3(dx, dy, dz));
 
@@ -260,9 +260,9 @@ elf_collision* elf_get_ray_cast_result(elf_physics_world *world, float x, float 
 	return collision;
 }
 
-elf_list* elf_get_ray_cast_results(elf_physics_world *world, float x, float y, float z, float dx, float dy, float dz)
+elf_list* elf_get_ray_cast_results(elf_physics_world* world, float x, float y, float z, float dx, float dy, float dz)
 {
-	elf_list *list;
+	elf_list* list;
 
 	list = elf_create_list();
 
@@ -281,7 +281,7 @@ elf_list* elf_get_ray_cast_results(elf_physics_world *world, float x, float y, f
 
 elf_collision* elf_create_collision()
 {
-	elf_collision *collision;
+	elf_collision* collision;
 
 	collision = (elf_collision*)malloc(sizeof(elf_collision));
 	memset(collision, 0x0, sizeof(elf_collision));
@@ -293,9 +293,9 @@ elf_collision* elf_create_collision()
 	return collision;
 }
 
-void elf_destroy_collision(void *data)
+void elf_destroy_collision(void* data)
 {
-	elf_collision *collision = (elf_collision*)data;
+	elf_collision* collision = (elf_collision*)data;
 
 	if(collision->actor) elf_dec_ref((elf_object*)collision->actor);
 
@@ -304,29 +304,29 @@ void elf_destroy_collision(void *data)
 	elf_dec_obj(ELF_COLLISION);
 }
 
-elf_actor* elf_get_collision_actor(elf_collision *collision)
+elf_actor* elf_get_collision_actor(elf_collision* collision)
 {
 	return collision->actor;
 }
 
-elf_vec3f elf_get_collision_position(elf_collision *collision)
+elf_vec3f elf_get_collision_position(elf_collision* collision)
 {
 	return collision->position;
 }
 
-elf_vec3f elf_get_collision_normal(elf_collision *collision)
+elf_vec3f elf_get_collision_normal(elf_collision* collision)
 {
 	return collision->normal;
 }
 
-float elf_get_collision_depth(elf_collision *collision)
+float elf_get_collision_depth(elf_collision* collision)
 {
 	return collision->depth;
 }
 
 elf_joint* elf_create_joint()
 {
-	elf_joint *joint;
+	elf_joint* joint;
 
 	joint = (elf_joint*)malloc(sizeof(elf_joint));
 	memset(joint, 0x0, sizeof(elf_joint));
@@ -338,7 +338,7 @@ elf_joint* elf_create_joint()
 	return joint;
 }
 
-void elf_recalc_joint(elf_joint *joint)
+void elf_recalc_joint(elf_joint* joint)
 {
 	elf_vec3f pos1;
 	elf_vec3f pos2;
@@ -380,13 +380,13 @@ void elf_recalc_joint(elf_joint *joint)
 
 	if(joint->joint_type == ELF_HINGE)
 	{
-		joint->constraint = new btHingeConstraint(*joint->actor1->object->body, *joint->actor2->object->body,
+		joint->constraint = new btHingeConstraint(*joint->actor1->object->body,* joint->actor2->object->body,
 			pivotInA, pivotInB, axisInA, axisInB);
 		joint->actor1->scene->world->world->addConstraint(joint->constraint);
 	}
 	else if(joint->joint_type == ELF_BALL)
 	{
-		joint->constraint = new btPoint2PointConstraint(*joint->actor1->object->body, *joint->actor2->object->body, pivotInA, pivotInB);
+		joint->constraint = new btPoint2PointConstraint(*joint->actor1->object->body,* joint->actor2->object->body, pivotInA, pivotInB);
 		joint->actor1->scene->world->world->addConstraint(joint->constraint);
 	}
 	else if(joint->joint_type == ELF_CONE_TWIST)
@@ -415,7 +415,7 @@ void elf_recalc_joint(elf_joint *joint)
 	}
 }
 
-void elf_set_joint_world(elf_joint *joint, elf_physics_world *world)
+void elf_set_joint_world(elf_joint* joint, elf_physics_world* world)
 {
 	if(joint->world && joint->constraint)
 	{
@@ -435,9 +435,9 @@ void elf_set_joint_world(elf_joint *joint, elf_physics_world *world)
 	}
 }
 
-elf_joint* elf_create_hinge_joint(elf_actor *actor1, elf_actor *actor2, const char *name, float px, float py, float pz, float ax, float ay, float az)
+elf_joint* elf_create_hinge_joint(elf_actor* actor1, elf_actor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az)
 {
-	elf_joint *joint;
+	elf_joint* joint;
 
 	joint = elf_create_joint();
 	joint->joint_type = ELF_HINGE;
@@ -459,9 +459,9 @@ elf_joint* elf_create_hinge_joint(elf_actor *actor1, elf_actor *actor2, const ch
 	return joint;
 }
 
-elf_joint* elf_create_ball_joint(elf_actor *actor1, elf_actor *actor2, const char *name, float px, float py, float pz)
+elf_joint* elf_create_ball_joint(elf_actor* actor1, elf_actor* actor2, const char* name, float px, float py, float pz)
 {
-	elf_joint *joint;
+	elf_joint* joint;
 
 	joint = elf_create_joint();
 	joint->joint_type = ELF_BALL;
@@ -479,9 +479,9 @@ elf_joint* elf_create_ball_joint(elf_actor *actor1, elf_actor *actor2, const cha
 	return joint;
 }
 
-elf_joint* elf_create_cone_twist_joint(elf_actor *actor1, elf_actor *actor2, const char *name, float px, float py, float pz, float ax, float ay, float az)
+elf_joint* elf_create_cone_twist_joint(elf_actor* actor1, elf_actor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az)
 {
-	elf_joint *joint;
+	elf_joint* joint;
 
 	joint = elf_create_joint();
 	joint->joint_type = ELF_BALL;
@@ -499,7 +499,7 @@ elf_joint* elf_create_cone_twist_joint(elf_actor *actor1, elf_actor *actor2, con
 	return joint;
 }
 
-void elf_clear_joint(elf_joint *joint)
+void elf_clear_joint(elf_joint* joint)
 {
 	if(joint->constraint)
 	{
@@ -512,9 +512,9 @@ void elf_clear_joint(elf_joint *joint)
 	joint->world = NULL;
 }
 
-void elf_destroy_joint(void *data)
+void elf_destroy_joint(void* data)
 {
-	elf_joint *joint = (elf_joint*)data;
+	elf_joint* joint = (elf_joint*)data;
 
 	if(joint->name) elf_destroy_string(joint->name);
 	if(joint->constraint)
@@ -527,27 +527,27 @@ void elf_destroy_joint(void *data)
 	elf_dec_obj(ELF_JOINT);
 }
 
-const char* elf_get_joint_name(elf_joint *joint)
+const char* elf_get_joint_name(elf_joint* joint)
 {
 	return joint->name;
 }
 
-int elf_get_joint_type(elf_joint *joint)
+int elf_get_joint_type(elf_joint* joint)
 {
 	return joint->joint_type;
 }
 
-elf_actor* elf_get_joint_actor_a(elf_joint *joint)
+elf_actor* elf_get_joint_actor_a(elf_joint* joint)
 {
 	return joint->actor1;
 }
 
-elf_actor* elf_get_joint_actor_b(elf_joint *joint)
+elf_actor* elf_get_joint_actor_b(elf_joint* joint)
 {
 	return joint->actor2;
 }
 
-elf_vec3f elf_get_joint_pivot(elf_joint *joint)
+elf_vec3f elf_get_joint_pivot(elf_joint* joint)
 {
 	elf_vec3f result;
 
@@ -558,7 +558,7 @@ elf_vec3f elf_get_joint_pivot(elf_joint *joint)
 	return result;
 }
 
-elf_vec3f elf_get_joint_axis(elf_joint *joint)
+elf_vec3f elf_get_joint_axis(elf_joint* joint)
 {
 	elf_vec3f result;
 
@@ -569,9 +569,9 @@ elf_vec3f elf_get_joint_axis(elf_joint *joint)
 	return result;
 }
 
-elf_physics_tri_mesh* elf_create_physics_tri_mesh(float *verts, unsigned int *idx, int indice_count)
+elf_physics_tri_mesh* elf_create_physics_tri_mesh(float* verts, unsigned int* idx, int indice_count)
 {
-	elf_physics_tri_mesh *tri_mesh;
+	elf_physics_tri_mesh* tri_mesh;
 	int i;
 
 	if(indice_count < 3) return NULL;
@@ -597,9 +597,9 @@ elf_physics_tri_mesh* elf_create_physics_tri_mesh(float *verts, unsigned int *id
 	return tri_mesh;
 }
 
-void elf_destroy_physics_tri_mesh(void *data)
+void elf_destroy_physics_tri_mesh(void* data)
 {
-	elf_physics_tri_mesh *tri_mesh = (elf_physics_tri_mesh*)data;
+	elf_physics_tri_mesh* tri_mesh = (elf_physics_tri_mesh*)data;
 
 	delete tri_mesh->triMesh;
 
@@ -610,7 +610,7 @@ void elf_destroy_physics_tri_mesh(void *data)
 
 elf_physics_object* elf_create_physics_object()
 {
-	elf_physics_object *object;
+	elf_physics_object* object;
 
 	object = (elf_physics_object*)malloc(sizeof(elf_physics_object));
 	memset(object, 0x0, sizeof(elf_physics_object));
@@ -625,9 +625,9 @@ elf_physics_object* elf_create_physics_object()
 	return object;
 }
 
-elf_physics_object* elf_create_physics_object_mesh(elf_physics_tri_mesh *tri_mesh, float mass)
+elf_physics_object* elf_create_physics_object_mesh(elf_physics_tri_mesh* tri_mesh, float mass)
 {
-	elf_physics_object *object;
+	elf_physics_object* object;
 
 	object = elf_create_physics_object();
 
@@ -658,7 +658,7 @@ elf_physics_object* elf_create_physics_object_mesh(elf_physics_tri_mesh *tri_mes
 
 elf_physics_object* elf_create_physics_object_sphere(float radius, float mass, float ox, float oy, float oz)
 {
-	elf_physics_object *object;
+	elf_physics_object* object;
 
 	object = elf_create_physics_object();
 
@@ -688,7 +688,7 @@ elf_physics_object* elf_create_physics_object_sphere(float radius, float mass, f
 
 elf_physics_object* elf_create_physics_object_box(float hx, float hy, float hz, float mass, float ox, float oy, float oz)
 {
-	elf_physics_object *object;
+	elf_physics_object* object;
 
 	object = elf_create_physics_object();
 
@@ -718,7 +718,7 @@ elf_physics_object* elf_create_physics_object_box(float hx, float hy, float hz, 
 
 elf_physics_object* elf_create_physics_object_capsule(unsigned char type, float length, float radius, float mass, float ox, float oy, float oz)
 {
-	elf_physics_object *object;
+	elf_physics_object* object;
 
 	object = elf_create_physics_object();
 
@@ -751,7 +751,7 @@ elf_physics_object* elf_create_physics_object_capsule(unsigned char type, float 
 
 elf_physics_object* elf_create_physics_object_cone(unsigned char type, float length, float radius, float mass, float ox, float oy, float oz)
 {
-	elf_physics_object *object;
+	elf_physics_object* object;
 
 	object = elf_create_physics_object();
 
@@ -782,7 +782,7 @@ elf_physics_object* elf_create_physics_object_cone(unsigned char type, float len
 	return object;
 }
 
-void elf_set_physics_object_world(elf_physics_object *object, elf_physics_world *world)
+void elf_set_physics_object_world(elf_physics_object* object, elf_physics_world* world)
 {
 	if(object->world)
 	{
@@ -797,9 +797,9 @@ void elf_set_physics_object_world(elf_physics_object *object, elf_physics_world 
 	}
 }
 
-void elf_destroy_physics_object(void *data)
+void elf_destroy_physics_object(void* data)
 {
-	elf_physics_object *object = (elf_physics_object*)data;
+	elf_physics_object* object = (elf_physics_object*)data;
 
 	if(object->body)
 	{
@@ -816,12 +816,12 @@ void elf_destroy_physics_object(void *data)
 	elf_dec_obj(ELF_PHYSICS_OBJECT);
 }
 
-void elf_set_physics_object_actor(elf_physics_object *object, elf_actor *actor)
+void elf_set_physics_object_actor(elf_physics_object* object, elf_actor* actor)
 {
 	object->actor = actor;
 }
 
-void elf_remove_physics_object_collisions(elf_physics_object *object)
+void elf_remove_physics_object_collisions(elf_physics_object* object)
 {
 	if(elf_get_list_length(object->collisions) > 0)
 	{
@@ -832,25 +832,25 @@ void elf_remove_physics_object_collisions(elf_physics_object *object)
 	object->collision_count = 0;
 }
 
-void elf_clear_physics_object_collisions(elf_physics_object *object)
+void elf_clear_physics_object_collisions(elf_physics_object* object)
 {
 	if(elf_get_list_length(object->collisions) > 0) elf_remove_from_list(object->collisions, elf_begin_list(object->collisions));
 	object->collision_count = 0;
 }
 
-int elf_get_physics_object_collision_count(elf_physics_object *object)
+int elf_get_physics_object_collision_count(elf_physics_object* object)
 {
 	return elf_get_list_length(object->collisions);
 }
 
-elf_collision* elf_get_physics_object_collision(elf_physics_object *object, int idx)
+elf_collision* elf_get_physics_object_collision(elf_physics_object* object, int idx)
 {
 	if(idx < 0 || idx > elf_get_list_length(object->collisions)-1) return NULL;
 
 	return (elf_collision*)elf_get_item_from_list(object->collisions, idx);
 }
 
-void elf_set_physics_object_position(elf_physics_object *object, float x, float y, float z)
+void elf_set_physics_object_position(elf_physics_object* object, float x, float y, float z)
 {
 	float orient[4];
 	float offset[3];
@@ -871,7 +871,7 @@ void elf_set_physics_object_position(elf_physics_object *object, float x, float 
 	object->motionState->setWorldTransform(xform);
 }
 
-void elf_set_physics_object_orientation(elf_physics_object *object, float x, float y, float z, float w)
+void elf_set_physics_object_orientation(elf_physics_object* object, float x, float y, float z, float w)
 {
 	float orient[4];
 	float offset[3];
@@ -912,23 +912,23 @@ void elf_set_physics_object_orientation(elf_physics_object *object, float x, flo
 	object->motionState->setWorldTransform(xform);
 }
 
-void elf_set_physics_object_scale(elf_physics_object *object, float x, float y, float z)
+void elf_set_physics_object_scale(elf_physics_object* object, float x, float y, float z)
 {
 	object->body->activate(true);
 	object->shape->setLocalScaling(btVector3(x, y, z));
 }
 
-int elf_get_physics_object_shape(elf_physics_object *object)
+int elf_get_physics_object_shape(elf_physics_object* object)
 {
 	return object->shape_type;
 }
 
-float elf_get_physics_object_mass(elf_physics_object *object)
+float elf_get_physics_object_mass(elf_physics_object* object)
 {
 	return object->mass;
 }
 
-void elf_get_physics_object_position(elf_physics_object *object, float *params)
+void elf_get_physics_object_position(elf_physics_object* object, float* params)
 {
 	float orient[4];
 	float offset[3];
@@ -944,7 +944,7 @@ void elf_get_physics_object_position(elf_physics_object *object, float *params)
 	params[2] = origin.z()-offset[2];
 }
 
-void elf_get_physics_object_orientation(elf_physics_object *object, float *params)
+void elf_get_physics_object_orientation(elf_physics_object* object, float* params)
 {
 	btQuaternion orient = object->motionState->m_graphicsWorldTrans.getRotation();
 	params[0] = orient.x();
@@ -953,7 +953,7 @@ void elf_get_physics_object_orientation(elf_physics_object *object, float *param
 	params[3] = orient.w();
 }
 
-void elf_get_physics_object_scale(elf_physics_object *object, float *params)
+void elf_get_physics_object_scale(elf_physics_object* object, float* params)
 {
 	btVector3 origin = object->shape->getLocalScaling();
 	params[0] = origin.x();
@@ -961,66 +961,66 @@ void elf_get_physics_object_scale(elf_physics_object *object, float *params)
 	params[2] = origin.z();
 }
 
-unsigned char elf_is_physics_object_static(elf_physics_object *object)
+unsigned char elf_is_physics_object_static(elf_physics_object* object)
 {
 	return object->body->isStaticObject();
 }
 
-void elf_set_physics_object_anisotropic_friction(elf_physics_object *object, float x, float y, float z)
+void elf_set_physics_object_anisotropic_friction(elf_physics_object* object, float x, float y, float z)
 {
 	object->body->setAnisotropicFriction(btVector3(x, y, z));
 }
 
-void elf_set_physics_object_damping(elf_physics_object *object, float lin_damp, float ang_damp)
+void elf_set_physics_object_damping(elf_physics_object* object, float lin_damp, float ang_damp)
 {
 	object->body->setDamping(lin_damp, ang_damp);
 }
 
-void elf_set_physics_object_sleep_thresholds(elf_physics_object *object, float lin_thrs, float ang_thrs)
+void elf_set_physics_object_sleep_thresholds(elf_physics_object* object, float lin_thrs, float ang_thrs)
 {
 	object->body->setSleepingThresholds(lin_thrs, ang_thrs);
 }
 
-void elf_set_physics_object_restitution(elf_physics_object *object, float restitution)
+void elf_set_physics_object_restitution(elf_physics_object* object, float restitution)
 {
 	object->body->setRestitution(restitution);
 }
 
-void elf_add_force_to_physics_object(elf_physics_object *object, float x, float y, float z)
+void elf_add_force_to_physics_object(elf_physics_object* object, float x, float y, float z)
 {
 	object->body->activate(true);
 	object->body->applyCentralForce(btVector3(x, y, z));
 }
 
-void elf_add_torque_to_physics_object(elf_physics_object *object, float x, float y, float z)
+void elf_add_torque_to_physics_object(elf_physics_object* object, float x, float y, float z)
 {
 	object->body->activate(true);
 	object->body->applyTorque(btVector3(x, y, z));
 }
 
-void elf_set_physics_object_linear_velocity(elf_physics_object *object, float x, float y, float z)
+void elf_set_physics_object_linear_velocity(elf_physics_object* object, float x, float y, float z)
 {
 	object->body->activate(true);
 	object->body->setLinearVelocity(btVector3(x, y, z));
 }
 
-void elf_set_physics_object_angular_velocity(elf_physics_object *object, float x, float y, float z)
+void elf_set_physics_object_angular_velocity(elf_physics_object* object, float x, float y, float z)
 {
 	object->body->activate(true);
 	object->body->setAngularVelocity(btVector3(x, y, z));
 }
 
-void elf_set_physics_object_linear_factor(elf_physics_object *object, float x, float y, float z)
+void elf_set_physics_object_linear_factor(elf_physics_object* object, float x, float y, float z)
 {
 	object->body->setLinearFactor(btVector3(x, y, z));
 }
 
-void elf_set_physics_object_angular_factor(elf_physics_object *object, float x, float y, float z)
+void elf_set_physics_object_angular_factor(elf_physics_object* object, float x, float y, float z)
 {
 	object->body->setAngularFactor(btVector3(x, y, z));
 }
 
-void elf_get_physics_object_linear_velocity(elf_physics_object *object, float *params)
+void elf_get_physics_object_linear_velocity(elf_physics_object* object, float* params)
 {
 	btVector3 vec;
 	vec = object->body->getLinearVelocity();
@@ -1029,7 +1029,7 @@ void elf_get_physics_object_linear_velocity(elf_physics_object *object, float *p
 	params[2] = vec.z();
 }
 
-void elf_get_physics_object_angular_velocity(elf_physics_object *object, float *params)
+void elf_get_physics_object_angular_velocity(elf_physics_object* object, float* params)
 {
 	btVector3 vec;
 	vec = object->body->getAngularVelocity();
@@ -1038,7 +1038,7 @@ void elf_get_physics_object_angular_velocity(elf_physics_object *object, float *
 	params[2] = vec.z();
 }
 
-void elf_get_physics_object_linear_factor(elf_physics_object *object, float *params)
+void elf_get_physics_object_linear_factor(elf_physics_object* object, float* params)
 {
 	btVector3 vec;
 	vec = object->body->getLinearFactor();
@@ -1047,7 +1047,7 @@ void elf_get_physics_object_linear_factor(elf_physics_object *object, float *par
 	params[2] = vec.z();
 }
 
-void elf_get_physics_object_angular_factor(elf_physics_object *object, float *params)
+void elf_get_physics_object_angular_factor(elf_physics_object* object, float* params)
 {
 	btVector3 vec;
 	vec = object->body->getAngularFactor();
@@ -1056,7 +1056,7 @@ void elf_get_physics_object_angular_factor(elf_physics_object *object, float *pa
 	params[2] = vec.z();
 }
 
-void elf_get_physics_object_anisotropic_friction(elf_physics_object *object, float *params)
+void elf_get_physics_object_anisotropic_friction(elf_physics_object* object, float* params)
 {
 	btVector3 vec;
 	vec = object->body->getAnisotropicFriction();
@@ -1065,27 +1065,27 @@ void elf_get_physics_object_anisotropic_friction(elf_physics_object *object, flo
 	params[2] = vec.z();
 }
 
-float elf_get_physics_object_linear_damping(elf_physics_object *object)
+float elf_get_physics_object_linear_damping(elf_physics_object* object)
 {
 	return object->body->getLinearDamping();
 }
 
-float elf_get_physics_object_angular_damping(elf_physics_object *object)
+float elf_get_physics_object_angular_damping(elf_physics_object* object)
 {
 	return object->body->getAngularDamping();
 }
 
-float elf_get_physics_object_linear_sleep_threshold(elf_physics_object *object)
+float elf_get_physics_object_linear_sleep_threshold(elf_physics_object* object)
 {
 	return object->body->getLinearSleepingThreshold();
 }
 
-float elf_get_physics_object_angular_sleep_threshold(elf_physics_object *object)
+float elf_get_physics_object_angular_sleep_threshold(elf_physics_object* object)
 {
 	return object->body->getAngularSleepingThreshold();
 }
 
-float elf_get_physics_object_restitution(elf_physics_object *object)
+float elf_get_physics_object_restitution(elf_physics_object* object)
 {
 	return object->body->getRestitution();
 }

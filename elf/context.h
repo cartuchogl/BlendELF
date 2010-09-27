@@ -7,7 +7,7 @@ void char_callback(int code, int state);
 
 elf_video_mode* elf_create_video_mode()
 {
-	elf_video_mode *video_mode;
+	elf_video_mode* video_mode;
 
 	video_mode = (elf_video_mode*)malloc(sizeof(elf_video_mode));
 	memset(video_mode, 0x0, sizeof(elf_video_mode));
@@ -19,9 +19,9 @@ elf_video_mode* elf_create_video_mode()
 	return video_mode;
 }
 
-void elf_destroy_video_mode(void *data)
+void elf_destroy_video_mode(void* data)
 {
-	elf_video_mode *video_mode = (elf_video_mode*)data;
+	elf_video_mode* video_mode = (elf_video_mode*)data;
 
 	free(video_mode);
 
@@ -30,7 +30,7 @@ void elf_destroy_video_mode(void *data)
 
 elf_key_event* elf_create_key_event()
 {
-	elf_key_event *key_event;
+	elf_key_event* key_event;
 
 	key_event = (elf_key_event*)malloc(sizeof(elf_key_event));
 	memset(key_event, 0x0, sizeof(elf_key_event));
@@ -42,9 +42,9 @@ elf_key_event* elf_create_key_event()
 	return key_event;
 }
 
-void elf_destroy_key_event(void *data)
+void elf_destroy_key_event(void* data)
 {
-	elf_key_event *key_event = (elf_key_event*)data;
+	elf_key_event* key_event = (elf_key_event*)data;
 
 	free(key_event);
 
@@ -53,7 +53,7 @@ void elf_destroy_key_event(void *data)
 
 elf_char_event* elf_create_char_event()
 {
-	elf_char_event *char_event;
+	elf_char_event* char_event;
 
 	char_event = (elf_char_event*)malloc(sizeof(elf_char_event));
 	memset(char_event, 0x0, sizeof(elf_char_event));
@@ -65,9 +65,9 @@ elf_char_event* elf_create_char_event()
 	return char_event;
 }
 
-void elf_destroy_char_event(void *data)
+void elf_destroy_char_event(void* data)
 {
-	elf_char_event *char_event = (elf_char_event*)data;
+	elf_char_event* char_event = (elf_char_event*)data;
 
 	free(char_event);
 
@@ -76,7 +76,7 @@ void elf_destroy_char_event(void *data)
 
 elf_context* elf_create_context()
 {
-	elf_context *context;
+	elf_context* context;
 
 	context = (elf_context*)malloc(sizeof(elf_context));
 	memset(context, 0x0, sizeof(elf_context));
@@ -94,9 +94,9 @@ elf_context* elf_create_context()
 	return context;
 }
 
-void elf_destroy_context(void *data)
+void elf_destroy_context(void* data)
 {
-	elf_context *context = (elf_context*)data;
+	elf_context* context = (elf_context*)data;
 
 	if(context->title) elf_destroy_string(context->title);
 	
@@ -109,12 +109,12 @@ void elf_destroy_context(void *data)
 }
 
 unsigned char elf_init_context(int width, int height,
-	const char *title, int multisamples, unsigned char fullscreen)
+	const char* title, int multisamples, unsigned char fullscreen)
 {
 	int i;
 	int video_mode_count;
-	GLFWvidmode *vidmodes;
-	elf_video_mode *video_mode;
+	GLFWvidmode* vidmodes;
+	elf_video_mode* video_mode;
 
 	if(ctx)
 	{
@@ -217,7 +217,7 @@ unsigned char elf_resize_context(int width, int height)
 	return ELF_FALSE;
 }
 
-void elf_set_title(const char *title)
+void elf_set_title(const char* title)
 {
 	if(!title || !strlen(title)) return;
 
@@ -246,7 +246,7 @@ int elf_get_video_mode_count()
 
 elf_vec2i elf_get_video_mode(int idx)
 {
-	elf_video_mode *mode;
+	elf_video_mode* mode;
 	elf_vec2i reso;
 
 	memset(&reso.x, 0x0, sizeof(elf_vec2i));
@@ -352,7 +352,7 @@ void mouse_wheel_callback(int wheel)
 void key_callback(int key, int state)
 {
 	unsigned int elf_key;
-	elf_key_event *key_event;
+	elf_key_event* key_event;
 
 	if(key >= 32 && key < 127)
 	{
@@ -427,7 +427,7 @@ void key_callback(int key, int state)
 
 void char_callback(int code, int state)
 {
-	elf_char_event *char_event;
+	elf_char_event* char_event;
 
 	char_event = elf_create_char_event();
 	char_event->code = code;
@@ -562,7 +562,7 @@ int elf_get_event_count()
 
 elf_object* elf_get_event(int idx)
 {
-	elf_object *obj;
+	elf_object* obj;
 	int i;
 
 	if(idx < 0 || idx > elf_get_list_length(ctx->events)-1) return NULL;
@@ -575,12 +575,12 @@ elf_object* elf_get_event(int idx)
 	return NULL;
 }
 
-int elf_get_key_event_key(elf_key_event *key_event)
+int elf_get_key_event_key(elf_key_event* key_event)
 {
 	return key_event->key;
 }
 
-int elf_get_key_event_state(elf_key_event *key_event)
+int elf_get_key_event_state(elf_key_event* key_event)
 {
 	return key_event->state;
 }

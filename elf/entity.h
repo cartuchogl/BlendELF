@@ -1,7 +1,7 @@
 
-elf_entity* elf_create_entity(const char *name)
+elf_entity* elf_create_entity(const char* name)
 {
-	elf_entity *entity;
+	elf_entity* entity;
 
 	entity = (elf_entity*)malloc(sizeof(elf_entity));
 	memset(entity, 0x0, sizeof(elf_entity));
@@ -37,9 +37,9 @@ elf_entity* elf_create_entity(const char *name)
 	return entity;
 }
 
-void elf_generate_entity_tangents(elf_entity *entity)
+void elf_generate_entity_tangents(elf_entity* entity)
 {
-	elf_material *material;
+	elf_material* material;
 
 	if(!entity->model || elf_get_model_tangents(entity->model)) return;
 
@@ -54,13 +54,13 @@ void elf_generate_entity_tangents(elf_entity *entity)
 	}
 }
 
-void elf_update_entity(elf_entity *entity)
+void elf_update_entity(elf_entity* entity)
 {
 	elf_update_actor((elf_actor*)entity);
 	elf_update_frame_player(entity->armature_player);
 }
 
-void elf_entity_pre_draw(elf_entity *entity)
+void elf_entity_pre_draw(elf_entity* entity)
 {
 	elf_actor_pre_draw((elf_actor*)entity);
 
@@ -79,14 +79,14 @@ void elf_entity_pre_draw(elf_entity *entity)
 	}
 }
 
-void elf_entity_post_draw(elf_entity *entity)
+void elf_entity_post_draw(elf_entity* entity)
 {
 	elf_actor_post_draw((elf_actor*)entity);
 }
 
-void elf_destroy_entity(void *data)
+void elf_destroy_entity(void* data)
 {
-	elf_entity *entity = (elf_entity*)data;
+	elf_entity* entity = (elf_entity*)data;
 
 	elf_clean_actor((elf_actor*)entity);
 
@@ -104,7 +104,7 @@ void elf_destroy_entity(void *data)
 	elf_dec_obj(ELF_ENTITY);
 }
 
-void elf_eval_entity_aabb_corner(elf_entity *entity, elf_vec4f *orient, elf_vec3f *corner, elf_vec3f *result)
+void elf_eval_entity_aabb_corner(elf_entity* entity, elf_vec4f* orient, elf_vec3f* corner, elf_vec3f* result)
 {
 	corner->x -= entity->bb_offset.x;
 	corner->y -= entity->bb_offset.y;
@@ -119,7 +119,7 @@ void elf_eval_entity_aabb_corner(elf_entity *entity, elf_vec4f *orient, elf_vec3
 	if(result->z > entity->cull_aabb_max.z) entity->cull_aabb_max.z = result->z;
 }
 
-void elf_eval_entity_aabb_armature_corner(elf_entity *entity, elf_vec4f *orient, elf_vec3f *corner, elf_vec3f *result)
+void elf_eval_entity_aabb_armature_corner(elf_entity* entity, elf_vec4f* orient, elf_vec3f* corner, elf_vec3f* result)
 {
 	gfx_mul_qua_vec(&orient->x, &corner->x, &result->x);
 
@@ -131,7 +131,7 @@ void elf_eval_entity_aabb_armature_corner(elf_entity *entity, elf_vec4f *orient,
 	if(result->z > entity->cull_aabb_max.z) entity->cull_aabb_max.z = result->z;
 }
 
-void elf_calc_entity_aabb(elf_entity *entity)
+void elf_calc_entity_aabb(elf_entity* entity)
 {
 	elf_vec3f tmp_vec;
 
@@ -213,7 +213,7 @@ void elf_calc_entity_aabb(elf_entity *entity)
 	entity->cull_radius = gfx_vec_length(&tmp_vec.x)/2;
 }
 
-void elf_calc_entity_bounding_volumes(elf_entity *entity, unsigned char new_model)
+void elf_calc_entity_bounding_volumes(elf_entity* entity, unsigned char new_model)
 {
 	if(!entity->model)
 	{
@@ -271,7 +271,7 @@ void elf_calc_entity_bounding_volumes(elf_entity *entity, unsigned char new_mode
 	elf_calc_entity_aabb(entity);
 }
 
-void elf_set_entity_scale(elf_entity *entity, float x, float y, float z)
+void elf_set_entity_scale(elf_entity* entity, float x, float y, float z)
 {
 	gfx_set_transform_scale(entity->transform, x, y, z);
 	gfx_get_transform_scale(entity->transform, &entity->scale.x);
@@ -282,7 +282,7 @@ void elf_set_entity_scale(elf_entity *entity, float x, float y, float z)
 	elf_reset_entity_debug_physics_object(entity);
 }
 
-elf_vec3f elf_get_entity_scale(elf_entity *entity)
+elf_vec3f elf_get_entity_scale(elf_entity* entity)
 {
 	elf_vec3f result;
 
@@ -291,14 +291,14 @@ elf_vec3f elf_get_entity_scale(elf_entity *entity)
 	return result;
 }
 
-void elf_get_entity_scale_(elf_entity *entity, float *scale)
+void elf_get_entity_scale_(elf_entity* entity, float* scale)
 {
 	gfx_get_transform_scale(entity->transform, scale);
 }
 
-void elf_set_entity_model(elf_entity *entity, elf_model *model)
+void elf_set_entity_model(elf_entity* entity, elf_model* model)
 {
-	elf_material *material;
+	elf_material* material;
 
 	if(entity->model) elf_dec_ref((elf_object*)entity->model);
 	if(entity->vertices) gfx_dec_ref((gfx_object*)entity->vertices);
@@ -340,7 +340,7 @@ void elf_set_entity_model(elf_entity *entity, elf_model *model)
 	entity->moved = ELF_TRUE;
 }
 
-void elf_clear_entity_model(elf_entity *entity)
+void elf_clear_entity_model(elf_entity* entity)
 {
 	if(entity->model) elf_dec_ref((elf_object*)entity->model);
 	entity->model = NULL;
@@ -355,25 +355,25 @@ void elf_clear_entity_model(elf_entity *entity)
 	elf_calc_entity_bounding_volumes(entity, ELF_FALSE);
 }
 
-elf_model* elf_get_entity_model(elf_entity *entity)
+elf_model* elf_get_entity_model(elf_entity* entity)
 {
 	return entity->model;
 }
 
-int elf_get_entity_material_count(elf_entity *entity)
+int elf_get_entity_material_count(elf_entity* entity)
 {
 	return elf_get_list_length(entity->materials);
 }
 
-void elf_add_entity_material(elf_entity *entity, elf_material *material)
+void elf_add_entity_material(elf_entity* entity, elf_material* material)
 {
 	elf_append_to_list(entity->materials, (elf_object*)material);
 	elf_generate_entity_tangents(entity);
 }
 
-void elf_set_entity_material(elf_entity *entity, int idx, elf_material *material)
+void elf_set_entity_material(elf_entity* entity, int idx, elf_material* material)
 {
-	elf_object *mat;
+	elf_object* mat;
 	int i;
 
 	if(idx < 0 || idx > elf_get_list_length(entity->materials)-1) return;
@@ -391,9 +391,9 @@ void elf_set_entity_material(elf_entity *entity, int idx, elf_material *material
 	elf_generate_entity_tangents(entity);
 }
 
-void elf_remove_entity_material(elf_entity *entity, int idx)
+void elf_remove_entity_material(elf_entity* entity, int idx)
 {
-	elf_object *mat;
+	elf_object* mat;
 	int i;
 
 	if(idx < 0 || idx > elf_get_list_length(entity->materials)-1) return;
@@ -409,13 +409,13 @@ void elf_remove_entity_material(elf_entity *entity, int idx)
 	}
 }
 
-elf_material* elf_get_entity_material(elf_entity *entity, int idx)
+elf_material* elf_get_entity_material(elf_entity* entity, int idx)
 {
 	if(idx < 0 || idx > elf_get_list_length(entity->materials)-1) return NULL;
 	return (elf_material*)elf_get_item_from_list(entity->materials, idx);
 }
 
-void elf_set_entity_visible(elf_entity *entity, unsigned char visible)
+void elf_set_entity_visible(elf_entity* entity, unsigned char visible)
 {
 	if(entity->visible == visible) return;
 
@@ -424,32 +424,32 @@ void elf_set_entity_visible(elf_entity *entity, unsigned char visible)
 	if(!entity->visible) entity->moved = ELF_TRUE;
 }
 
-unsigned char elf_get_entity_visible(elf_entity *entity)
+unsigned char elf_get_entity_visible(elf_entity* entity)
 {
 	return entity->visible;
 }
 
-void elf_set_entity_occluder(elf_entity *entity, unsigned char occluder)
+void elf_set_entity_occluder(elf_entity* entity, unsigned char occluder)
 {
 	entity->occluder = !occluder == ELF_FALSE;
 }
 
-unsigned char elf_get_entity_occluder(elf_entity *entity)
+unsigned char elf_get_entity_occluder(elf_entity* entity)
 {
 	return entity->occluder;
 }
 
-void elf_set_entity_physics(elf_entity *entity, int type, float mass)
+void elf_set_entity_physics(elf_entity* entity, int type, float mass)
 {
 	elf_set_actor_physics((elf_actor*)entity, type, mass);
 }
 
-void elf_disable_entity_physics(elf_entity *entity)
+void elf_disable_entity_physics(elf_entity* entity)
 {
 	elf_disable_actor_physics((elf_actor*)entity);
 }
 
-void elf_reset_entity_debug_physics_object(elf_entity *entity)
+void elf_reset_entity_debug_physics_object(elf_entity* entity)
 {
 	float position[3];
 	float orient[4];
@@ -489,7 +489,7 @@ void elf_reset_entity_debug_physics_object(elf_entity *entity)
 	if(entity->scene) elf_set_physics_object_world(entity->dobject, entity->scene->dworld);
 }
 
-void elf_set_entity_armature(elf_entity *entity, elf_armature *armature)
+void elf_set_entity_armature(elf_entity* entity, elf_armature* armature)
 {
 	if(entity->armature) elf_dec_ref((elf_object*)entity->armature);
 	entity->armature = armature;
@@ -497,74 +497,74 @@ void elf_set_entity_armature(elf_entity *entity, elf_armature *armature)
 	elf_calc_entity_bounding_volumes(entity, ELF_FALSE);
 }
 
-void elf_set_entity_armature_frame(elf_entity *entity, float frame)
+void elf_set_entity_armature_frame(elf_entity* entity, float frame)
 {
 	elf_set_frame_player_frame(entity->armature_player, frame);
 }
 
-void elf_play_entity_armature(elf_entity *entity, float start, float end, float speed)
+void elf_play_entity_armature(elf_entity* entity, float start, float end, float speed)
 {
 	elf_play_frame_player(entity->armature_player, start, end, speed);
 	if(entity->armature) elf_deform_entity_with_armature(entity->armature, entity, start);
 }
 
-void elf_loop_entity_armature(elf_entity *entity, float start, float end, float speed)
+void elf_loop_entity_armature(elf_entity* entity, float start, float end, float speed)
 {
 	elf_loop_frame_player(entity->armature_player, start, end, speed);
 	if(entity->armature) elf_deform_entity_with_armature(entity->armature, entity, start);
 }
 
-void elf_stop_entity_armature(elf_entity *entity)
+void elf_stop_entity_armature(elf_entity* entity)
 {
 	elf_stop_frame_player(entity->armature_player);
 }
 
-void elf_pause_entity_armature(elf_entity *entity)
+void elf_pause_entity_armature(elf_entity* entity)
 {
 	elf_stop_frame_player(entity->armature_player);
 }
 
-void elf_resume_entity_armature(elf_entity *entity)
+void elf_resume_entity_armature(elf_entity* entity)
 {
 	elf_stop_frame_player(entity->armature_player);
 }
 
-float elf_get_entity_armature_start(elf_entity *entity)
+float elf_get_entity_armature_start(elf_entity* entity)
 {
 	return elf_get_frame_player_start(entity->armature_player);
 }
 
-float elf_get_entity_armature_end(elf_entity *entity)
+float elf_get_entity_armature_end(elf_entity* entity)
 {
 	return elf_get_frame_player_end(entity->armature_player);
 }
 
-float elf_get_entity_armature_speed(elf_entity *entity)
+float elf_get_entity_armature_speed(elf_entity* entity)
 {
 	return elf_get_frame_player_speed(entity->armature_player);
 }
 
-float elf_get_entity_armature_frame(elf_entity *entity)
+float elf_get_entity_armature_frame(elf_entity* entity)
 {
 	return elf_get_frame_player_frame(entity->armature_player);
 }
 
-unsigned char elf_is_entity_armature_playing(elf_entity *entity)
+unsigned char elf_is_entity_armature_playing(elf_entity* entity)
 {
 	return elf_is_frame_player_playing(entity->armature_player);
 }
 
-unsigned char elf_is_entity_armature_paused(elf_entity *entity)
+unsigned char elf_is_entity_armature_paused(elf_entity* entity)
 {
 	return elf_is_frame_player_paused(entity->armature_player);
 }
 
-elf_armature* elf_get_entity_armature(elf_entity *entity)
+elf_armature* elf_get_entity_armature(elf_entity* entity)
 {
 	return entity->armature;
 }
 
-void elf_pre_draw_entity(elf_entity *entity)
+void elf_pre_draw_entity(elf_entity* entity)
 {
 	if(entity->armature)
 	{
@@ -573,7 +573,7 @@ void elf_pre_draw_entity(elf_entity *entity)
 	}
 }
 
-void elf_post_draw_entity(elf_entity *entity)
+void elf_post_draw_entity(elf_entity* entity)
 {
 	if(entity->armature)
 	{
@@ -582,7 +582,7 @@ void elf_post_draw_entity(elf_entity *entity)
 	}
 }
 
-void elf_draw_entity(elf_entity *entity, int mode, gfx_shader_params *shader_params)
+void elf_draw_entity(elf_entity* entity, int mode, gfx_shader_params* shader_params)
 {
 	if(!entity->model || !entity->visible) return;
 
@@ -594,7 +594,7 @@ void elf_draw_entity(elf_entity *entity, int mode, gfx_shader_params *shader_par
 	elf_post_draw_entity(entity);
 }
 
-void elf_draw_entity_bounding_box(elf_entity *entity, gfx_shader_params *shader_params)
+void elf_draw_entity_bounding_box(elf_entity* entity, gfx_shader_params* shader_params)
 {
 	if(!entity->model || !entity->visible || !entity->model->vertex_array) return;
 
@@ -605,11 +605,11 @@ void elf_draw_entity_bounding_box(elf_entity *entity, gfx_shader_params *shader_
 	gfx_draw_bounding_box(&entity->model->bb_min.x, &entity->model->bb_max.x);
 }
 
-void elf_draw_entity_debug(elf_entity *entity, gfx_shader_params *shader_params)
+void elf_draw_entity_debug(elf_entity* entity, gfx_shader_params* shader_params)
 {
 	float min[3];
 	float max[3];
-	float *vertex_buffer;
+	float* vertex_buffer;
 
 	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(entity->transform),
 		shader_params->camera_matrix, shader_params->modelview_matrix);
@@ -724,14 +724,14 @@ void elf_draw_entity_debug(elf_entity *entity, gfx_shader_params *shader_params)
 	elf_draw_actor_debug((elf_actor*)entity, shader_params);
 }
 
-unsigned char elf_cull_entity(elf_entity *entity, elf_camera *camera)
+unsigned char elf_cull_entity(elf_entity* entity, elf_camera* camera)
 {
 	if(!entity->model || !entity->visible) return ELF_TRUE;
 
 	return !elf_aabb_inside_frustum(camera, &entity->cull_aabb_min.x, &entity->cull_aabb_max.x);
 }
 
-unsigned char elf_get_entity_changed(elf_entity *entity)
+unsigned char elf_get_entity_changed(elf_entity* entity)
 {
 	return entity->moved;
 }

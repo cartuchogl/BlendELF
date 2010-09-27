@@ -4,7 +4,7 @@ void gfx_set_viewport(int x, int y, int width, int height)
 	glViewport(x, y, width, height);
 }
 
-void gfx_get_perspective_projection_matrix(float fov, float aspect, float near, float far, float *mat)
+void gfx_get_perspective_projection_matrix(float fov, float aspect, float near, float far, float* mat)
 {
 	float top, bottom, left, right;
 
@@ -21,7 +21,7 @@ void gfx_get_perspective_projection_matrix(float fov, float aspect, float near, 
 	mat[14] = (-2*far*near)/(far-near);
 }
 
-void gfx_get_orthographic_projection_matrix(float left, float right, float bottom, float top, float near, float far, float *matrix)
+void gfx_get_orthographic_projection_matrix(float left, float right, float bottom, float top, float near, float far, float* matrix)
 {
 	memset(matrix, 0x0, sizeof(float)*16);
 	matrix[0] = 2/(right-left);
@@ -129,7 +129,7 @@ void gfx_get_frustum(float proj[16], float modl[16], float frustum[6][4])
 	}
 }
 
-void gfx_recalc_transform_matrix(gfx_transform *transform)
+void gfx_recalc_transform_matrix(gfx_transform* transform)
 {
 	float temp_matrix1[16];
 	float temp_matrix2[16];
@@ -167,7 +167,7 @@ void gfx_recalc_transform_matrix(gfx_transform *transform)
 	}
 }
 
-float* gfx_get_transform_matrix(gfx_transform *transform)
+float* gfx_get_transform_matrix(gfx_transform* transform)
 {
 	if(transform->recalc_matrix == GFX_TRUE)
 	{
@@ -180,7 +180,7 @@ float* gfx_get_transform_matrix(gfx_transform *transform)
 
 gfx_transform* gfx_create_camera_transform()
 {
-	gfx_transform *transform;
+	gfx_transform* transform;
 
 	transform = (gfx_transform*)malloc(sizeof(gfx_transform));
 	memset(transform, 0x0, sizeof(gfx_transform));
@@ -199,7 +199,7 @@ gfx_transform* gfx_create_camera_transform()
 
 gfx_transform* gfx_create_object_transform()
 {
-	gfx_transform *transform;
+	gfx_transform* transform;
 
 	transform = (gfx_transform*)malloc(sizeof(gfx_transform));
 	memset(transform, 0x0, sizeof(gfx_transform));
@@ -214,12 +214,12 @@ gfx_transform* gfx_create_object_transform()
 	return transform;
 }
 
-void gfx_destroy_transform(gfx_transform *transform)
+void gfx_destroy_transform(gfx_transform* transform)
 {
 	free(transform);
 }
 
-void gfx_set_transform_position(gfx_transform *transform, float x, float y, float z)
+void gfx_set_transform_position(gfx_transform* transform, float x, float y, float z)
 {
 	transform->position[0] = x;
 	transform->position[1] = y;
@@ -228,7 +228,7 @@ void gfx_set_transform_position(gfx_transform *transform, float x, float y, floa
 	transform->recalc_matrix = GFX_TRUE;
 }
 
-void gfx_set_transform_rotation(gfx_transform *transform, float x, float y, float z)
+void gfx_set_transform_rotation(gfx_transform* transform, float x, float y, float z)
 {
 	transform->rotation[0] = x;
 	transform->rotation[1] = y;
@@ -239,7 +239,7 @@ void gfx_set_transform_rotation(gfx_transform *transform, float x, float y, floa
 	transform->recalc_matrix = GFX_TRUE;
 }
 
-void gfx_set_transform_scale(gfx_transform *transform, float x, float y, float z)
+void gfx_set_transform_scale(gfx_transform* transform, float x, float y, float z)
 {
 	transform->scale[0] = x;
 	transform->scale[1] = y;
@@ -248,7 +248,7 @@ void gfx_set_transform_scale(gfx_transform *transform, float x, float y, float z
 	transform->recalc_matrix = GFX_TRUE;
 }
 
-void gfx_set_transform_orientation(gfx_transform *transform, float x, float y, float z, float w)
+void gfx_set_transform_orientation(gfx_transform* transform, float x, float y, float z, float w)
 {
 	transform->orient[0] = x;
 	transform->orient[1] = y;
@@ -260,7 +260,7 @@ void gfx_set_transform_orientation(gfx_transform *transform, float x, float y, f
 	transform->recalc_matrix = GFX_TRUE;
 }
 
-void gfx_rotate_transform(gfx_transform *transform, float x, float y, float z)
+void gfx_rotate_transform(gfx_transform* transform, float x, float y, float z)
 {
 	transform->rotation[0] += x;
 	transform->rotation[1] += y;
@@ -271,7 +271,7 @@ void gfx_rotate_transform(gfx_transform *transform, float x, float y, float z)
 	transform->recalc_matrix = GFX_TRUE;
 }
 
-void gfx_rotate_transform_local(gfx_transform *transform, float x, float y, float z)
+void gfx_rotate_transform_local(gfx_transform* transform, float x, float y, float z)
 {
 	transform->rotation[0] += x;
 	transform->rotation[1] += y;
@@ -282,7 +282,7 @@ void gfx_rotate_transform_local(gfx_transform *transform, float x, float y, floa
 	transform->recalc_matrix = GFX_TRUE;
 }
 
-void gfx_move_transform(gfx_transform *transform, float x, float y, float z)
+void gfx_move_transform(gfx_transform* transform, float x, float y, float z)
 {
 	transform->position[0] += x;
 	transform->position[1] += y;
@@ -291,7 +291,7 @@ void gfx_move_transform(gfx_transform *transform, float x, float y, float z)
 	transform->recalc_matrix = GFX_TRUE;
 }
 
-void gfx_move_transform_local(gfx_transform *transform, float x, float y, float z)
+void gfx_move_transform_local(gfx_transform* transform, float x, float y, float z)
 {
 	float temp_vec[3];
 	float vec[3];
@@ -309,27 +309,27 @@ void gfx_move_transform_local(gfx_transform *transform, float x, float y, float 
 	transform->recalc_matrix = GFX_TRUE;
 }
 
-unsigned char gfx_get_transform_camera_mode(gfx_transform *transform)
+unsigned char gfx_get_transform_camera_mode(gfx_transform* transform)
 {
 	return transform->camera_mode;
 }
 
-void gfx_get_transform_position(gfx_transform *transform, float *params)
+void gfx_get_transform_position(gfx_transform* transform, float* params)
 {
 	memcpy(params, transform->position, sizeof(float)*3);
 }
 
-void gfx_get_transform_rotation(gfx_transform *transform, float *params)
+void gfx_get_transform_rotation(gfx_transform* transform, float* params)
 {
 	memcpy(params, transform->rotation, sizeof(float)*3);
 }
 
-void gfx_get_transform_scale(gfx_transform *transform, float *params)
+void gfx_get_transform_scale(gfx_transform* transform, float* params)
 {
 	memcpy(params, transform->scale, sizeof(float)*3);
 }
 
-void gfx_get_transform_orientation(gfx_transform *transform, float *params)
+void gfx_get_transform_orientation(gfx_transform* transform, float* params)
 {
 	memcpy(params, transform->orient, sizeof(float)*4);
 }

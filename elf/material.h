@@ -1,7 +1,7 @@
 
-elf_material* elf_create_material(const char *name)
+elf_material* elf_create_material(const char* name)
 {
-	elf_material *material;
+	elf_material* material;
 
 	material = (elf_material*)malloc(sizeof(elf_material));
 	memset(material, 0x0, sizeof(elf_material));
@@ -27,9 +27,9 @@ elf_material* elf_create_material(const char *name)
 	return material;
 }
 
-void elf_destroy_material(void *data)
+void elf_destroy_material(void* data)
 {
-	elf_material *material = (elf_material*)data;
+	elf_material* material = (elf_material*)data;
 
 	if(material->name) elf_destroy_string(material->name);
 	if(material->file_path) elf_destroy_string(material->file_path);
@@ -46,7 +46,7 @@ void elf_destroy_material(void *data)
 	elf_dec_obj(ELF_MATERIAL);
 }
 
-void elf_set_material_diffuse_color(elf_material *material, float r, float g, float b, float a)
+void elf_set_material_diffuse_color(elf_material* material, float r, float g, float b, float a)
 {
 	material->diffuse_color.r = r;
 	material->diffuse_color.g = g;
@@ -54,7 +54,7 @@ void elf_set_material_diffuse_color(elf_material *material, float r, float g, fl
 	material->diffuse_color.a = a;
 }
 
-void elf_set_material_ambient_color(elf_material *material, float r, float g, float b, float a)
+void elf_set_material_ambient_color(elf_material* material, float r, float g, float b, float a)
 {
 	material->ambient_color.r = r;
 	material->ambient_color.g = g;
@@ -62,7 +62,7 @@ void elf_set_material_ambient_color(elf_material *material, float r, float g, fl
 	material->ambient_color.a = a;
 }
 
-void elf_set_material_specular_color(elf_material *material, float r, float g, float b, float a)
+void elf_set_material_specular_color(elf_material* material, float r, float g, float b, float a)
 {
 	material->specular_color.r = r;
 	material->specular_color.g = g;
@@ -70,58 +70,58 @@ void elf_set_material_specular_color(elf_material *material, float r, float g, f
 	material->specular_color.a = a;
 }
 
-void elf_set_material_specular_power(elf_material *material, float power)
+void elf_set_material_specular_power(elf_material* material, float power)
 {
 	material->spec_power = power;
 }
 
-void elf_set_material_lighting(elf_material *material, unsigned char lighting)
+void elf_set_material_lighting(elf_material* material, unsigned char lighting)
 {
 	material->lighting = !lighting == ELF_FALSE;
 }
 
-void elf_set_material_name(elf_material *material, const char *name)
+void elf_set_material_name(elf_material* material, const char* name)
 {
 	if(material->name) elf_destroy_string(material->name);
 	material->name = elf_create_string(name);
 }
 
-const char* elf_get_material_name(elf_material *material)
+const char* elf_get_material_name(elf_material* material)
 {
 	return material->name;
 }
 
-const char* elf_get_material_file_path(elf_material *material)
+const char* elf_get_material_file_path(elf_material* material)
 {
 	return material->file_path;
 }
 
-elf_color elf_get_material_diffuse_color(elf_material *material)
+elf_color elf_get_material_diffuse_color(elf_material* material)
 {
 	return material->diffuse_color;
 }
 
-elf_color elf_get_material_ambient_color(elf_material *material)
+elf_color elf_get_material_ambient_color(elf_material* material)
 {
 	return material->ambient_color;
 }
 
-elf_color elf_get_material_specular_color(elf_material *material)
+elf_color elf_get_material_specular_color(elf_material* material)
 {
 	return material->specular_color;
 }
 
-float elf_get_material_specular_power(elf_material *material)
+float elf_get_material_specular_power(elf_material* material)
 {
 	return material->spec_power;
 }
 
-unsigned char elf_get_material_lighting(elf_material *material)
+unsigned char elf_get_material_lighting(elf_material* material)
 {
 	return material->lighting;
 }
 
-void elf_set_material_diffuse_map(elf_material *material, elf_texture *texture)
+void elf_set_material_diffuse_map(elf_material* material, elf_texture* texture)
 {
 	int format;
 
@@ -138,35 +138,35 @@ void elf_set_material_diffuse_map(elf_material *material, elf_texture *texture)
 	}
 }
 
-void elf_set_material_normal_map(elf_material *material, elf_texture *texture)
+void elf_set_material_normal_map(elf_material* material, elf_texture* texture)
 {
 	if(material->normal_map) elf_dec_ref((elf_object*)material->normal_map);
 	material->normal_map = texture;
 	if(material->normal_map) elf_inc_ref((elf_object*)material->normal_map);
 }
 
-void elf_set_material_height_map(elf_material *material, elf_texture *texture)
+void elf_set_material_height_map(elf_material* material, elf_texture* texture)
 {
 	if(material->height_map) elf_dec_ref((elf_object*)material->height_map);
 	material->height_map = texture;
 	if(material->height_map) elf_inc_ref((elf_object*)material->height_map);
 }
 
-void elf_set_material_specular_map(elf_material *material, elf_texture *texture)
+void elf_set_material_specular_map(elf_material* material, elf_texture* texture)
 {
 	if(material->specular_map) elf_dec_ref((elf_object*)material->specular_map);
 	material->specular_map = texture;
 	if(material->specular_map) elf_inc_ref((elf_object*)material->specular_map);
 }
 
-void elf_set_material_light_map(elf_material *material, elf_texture *texture)
+void elf_set_material_light_map(elf_material* material, elf_texture* texture)
 {
 	if(material->light_map) elf_dec_ref((elf_object*)material->light_map);
 	material->light_map = texture;
 	if(material->light_map) elf_inc_ref((elf_object*)material->light_map);
 }
 
-void elf_set_material_cube_map(elf_material *material, elf_texture *texture)
+void elf_set_material_cube_map(elf_material* material, elf_texture* texture)
 {
 	if(gfx_get_texture_type(texture->texture) != GFX_CUBE_MAP_TEXTURE) return;
 	if(material->cube_map) elf_dec_ref((elf_object*)material->cube_map);
@@ -174,106 +174,106 @@ void elf_set_material_cube_map(elf_material *material, elf_texture *texture)
 	if(material->cube_map) elf_inc_ref((elf_object*)material->cube_map);
 }
 
-void elf_clear_material_diffuse_map(elf_material *material)
+void elf_clear_material_diffuse_map(elf_material* material)
 {
 	if(material->diffuse_map) elf_dec_ref((elf_object*)material->diffuse_map);
 	material->diffuse_map = NULL;
 }
 
-void elf_clear_material_normal_map(elf_material *material)
+void elf_clear_material_normal_map(elf_material* material)
 {
 	if(material->normal_map) elf_dec_ref((elf_object*)material->normal_map);
 	material->normal_map = NULL;
 }
 
-void elf_clear_material_height_map(elf_material *material)
+void elf_clear_material_height_map(elf_material* material)
 {
 	if(material->height_map) elf_dec_ref((elf_object*)material->height_map);
 	material->height_map = NULL;
 }
 
-void elf_clear_material_specular_map(elf_material *material)
+void elf_clear_material_specular_map(elf_material* material)
 {
 	if(material->specular_map) elf_dec_ref((elf_object*)material->specular_map);
 	material->specular_map = NULL;
 }
 
-void elf_clear_material_light_map(elf_material *material)
+void elf_clear_material_light_map(elf_material* material)
 {
 	if(material->light_map) elf_dec_ref((elf_object*)material->light_map);
 	material->light_map = NULL;
 }
 
-void elf_clear_material_cube_map(elf_material *material)
+void elf_clear_material_cube_map(elf_material* material)
 {
 	if(material->cube_map) elf_dec_ref((elf_object*)material->cube_map);
 	material->cube_map = NULL;
 }
 
-elf_texture* elf_get_material_diffuse_map(elf_material *material)
+elf_texture* elf_get_material_diffuse_map(elf_material* material)
 {
 	return material->diffuse_map;
 }
 
-elf_texture* elf_get_material_normal_map(elf_material *material)
+elf_texture* elf_get_material_normal_map(elf_material* material)
 {
 	return material->normal_map;
 }
 
-elf_texture* elf_get_material_height_map(elf_material *material)
+elf_texture* elf_get_material_height_map(elf_material* material)
 {
 	return material->height_map;
 }
 
-elf_texture* elf_get_material_specular_map(elf_material *material)
+elf_texture* elf_get_material_specular_map(elf_material* material)
 {
 	return material->specular_map;
 }
 
-elf_texture* elf_get_material_light_map(elf_material *material)
+elf_texture* elf_get_material_light_map(elf_material* material)
 {
 	return material->light_map;
 }
 
-elf_texture* elf_get_material_cube_map(elf_material *material)
+elf_texture* elf_get_material_cube_map(elf_material* material)
 {
 	return material->cube_map;
 }
 
-void elf_set_material_parallax_scale(elf_material *material, float scale)
+void elf_set_material_parallax_scale(elf_material* material, float scale)
 {
 	material->parallax_scale = scale;
 	if(material->parallax_scale < 0.0) material->parallax_scale = 0.0;
 }
 
-void elf_set_material_alpha_test(elf_material *material, unsigned char alpha_test)
+void elf_set_material_alpha_test(elf_material* material, unsigned char alpha_test)
 {
 	material->alpha_test = !alpha_test == ELF_FALSE;
 }
 
-void elf_set_material_alpha_threshold(elf_material *material, float threshold)
+void elf_set_material_alpha_threshold(elf_material* material, float threshold)
 {
 	material->alpha_threshold = threshold;
 	if(material->alpha_threshold < 0.0) material->alpha_threshold = 0.0;
 	if(material->alpha_threshold > 1.0) material->alpha_threshold = 1.0;
 }
 
-float elf_get_material_parallax_scale(elf_material *material)
+float elf_get_material_parallax_scale(elf_material* material)
 {
 	return material->parallax_scale;
 }
 
-unsigned char elf_get_material_alpha_test(elf_material *material)
+unsigned char elf_get_material_alpha_test(elf_material* material)
 {
 	return material->alpha_test;
 }
 
-float elf_get_material_alpha_threshold(elf_material *material)
+float elf_get_material_alpha_threshold(elf_material* material)
 {
 	return material->alpha_threshold;
 }
 
-void elf_set_texture_params_default(gfx_texture_params *params)
+void elf_set_texture_params_default(gfx_texture_params* params)
 {
 	params->type = ELF_COLOR_MAP;
 	params->texture = NULL;
@@ -281,7 +281,7 @@ void elf_set_texture_params_default(gfx_texture_params *params)
 	params->parallax_scale = 0.0;
 }
 
-void elf_set_material(elf_material *material, int mode, gfx_shader_params *shader_params)
+void elf_set_material(elf_material* material, int mode, gfx_shader_params* shader_params)
 {
 	int i;
 

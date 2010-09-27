@@ -1,7 +1,7 @@
 
-elf_model* elf_create_model(const char *name)
+elf_model* elf_create_model(const char* name)
 {
-	elf_model *model;
+	elf_model* model;
 
 	model = (elf_model*)malloc(sizeof(elf_model));
 	memset(model, 0x0, sizeof(elf_model));
@@ -17,16 +17,16 @@ elf_model* elf_create_model(const char *name)
 	return model;
 }
 
-elf_model* elf_create_model_from_mesh_data(elf_mesh_data *mesh_data)
+elf_model* elf_create_model_from_mesh_data(elf_mesh_data* mesh_data)
 {
-	elf_model *model;
-	float *vertex_buffer;
-	float *normal_buffer;
-	float *texcoord_buffer;
-	unsigned int *index_buffer;
+	elf_model* model;
+	float* vertex_buffer;
+	float* normal_buffer;
+	float* texcoord_buffer;
+	unsigned int* index_buffer;
 	int i, j;
-	elf_face *face;
-	elf_vertice *vertice;
+	elf_face* face;
+	elf_vertice* vertice;
 
 	if(elf_get_mesh_data_vertice_count(mesh_data) < 3) return NULL;
 	if(elf_get_mesh_data_face_count(mesh_data) < 1) return NULL;
@@ -116,15 +116,15 @@ elf_model* elf_create_model_from_mesh_data(elf_mesh_data *mesh_data)
 	return model;
 }
 
-void elf_generate_model_tangents(elf_model *model)
+void elf_generate_model_tangents(elf_model* model)
 {
-	float *vertex_buffer;
-	float *tex_coord_buffer;
-	float *normal_buffer;
-	float *tangent_buffer;
-	float *vertices;
-	float *tex_coords;
-	float *tangents;
+	float* vertex_buffer;
+	float* tex_coord_buffer;
+	float* normal_buffer;
+	float* tangent_buffer;
+	float* vertices;
+	float* tex_coords;
+	float* tangents;
 	float edge1[3];
 	float edge2[3];
 	float edge1uv[2];
@@ -242,10 +242,10 @@ void elf_generate_model_tangents(elf_model *model)
 	free(tangents);
 }
 
-void elf_destroy_model(void *data)
+void elf_destroy_model(void* data)
 {
 	int i;
-	elf_model *model = (elf_model*)data;
+	elf_model* model = (elf_model*)data;
 
 	if(model->name) elf_destroy_string(model->name);
 	if(model->file_path) elf_destroy_string(model->file_path);
@@ -279,74 +279,74 @@ void elf_destroy_model(void *data)
 	elf_dec_obj(ELF_MODEL);
 }
 
-void elf_set_model_name(elf_model *model, const char *name)
+void elf_set_model_name(elf_model* model, const char* name)
 {
 	if(model->name) elf_destroy_string(model->name);
 	model->name = elf_create_string(name);
 }
 
-const char* elf_get_model_name(elf_model *model)
+const char* elf_get_model_name(elf_model* model)
 {
 	return model->name;
 }
 
-const char* elf_get_model_file_path(elf_model *model)
+const char* elf_get_model_file_path(elf_model* model)
 {
 	return model->file_path;
 }
 
-int elf_get_model_vertice_count(elf_model *model)
+int elf_get_model_vertice_count(elf_model* model)
 {
 	return model->vertice_count;
 }
 
-int elf_get_model_indice_count(elf_model *model)
+int elf_get_model_indice_count(elf_model* model)
 {
 	return model->indice_count;
 }
 
-elf_vec3f elf_get_model_bounding_box_min(elf_model *model)
+elf_vec3f elf_get_model_bounding_box_min(elf_model* model)
 {
 	return model->bb_min;
 }
 
-elf_vec3f elf_get_model_bounding_box_max(elf_model *model)
+elf_vec3f elf_get_model_bounding_box_max(elf_model* model)
 {
 	return model->bb_max;
 }
 
-float* elf_get_model_vertices(elf_model *model)
+float* elf_get_model_vertices(elf_model* model)
 {
 	return (float*)gfx_get_vertex_data_buffer(model->vertices);
 }
 
-float* elf_get_model_normals(elf_model *model)
+float* elf_get_model_normals(elf_model* model)
 {
 	if(!model->normals) return NULL;
 	return (float*)gfx_get_vertex_data_buffer(model->normals);
 }
 
-float* elf_get_model_tex_coords(elf_model *model)
+float* elf_get_model_tex_coords(elf_model* model)
 {
 	if(!model->tex_coords) return NULL;
 	return (float*)model->tex_coords;
 }
 
-float* elf_get_model_tangents(elf_model *model)
+float* elf_get_model_tangents(elf_model* model)
 {
 	if(!model->tangents) return NULL;
 	return (float*)gfx_get_vertex_data_buffer(model->tangents);
 }
 
-unsigned int* elf_get_model_indices(elf_model *model)
+unsigned int* elf_get_model_indices(elf_model* model)
 {
 	return model->index;
 }
 
-void elf_draw_model(elf_list *materials, elf_model *model, int mode, gfx_shader_params *shader_params)
+void elf_draw_model(elf_list* materials, elf_model* model, int mode, gfx_shader_params* shader_params)
 {
 	int i;
-	elf_material *material;
+	elf_material* material;
 	unsigned char found;
 
 	if(!model->vertex_array) return;
@@ -396,7 +396,7 @@ void elf_draw_model(elf_list *materials, elf_model *model, int mode, gfx_shader_
 	}
 }
 
-void elf_draw_model_bounding_box(elf_model *model, gfx_shader_params *shader_params)
+void elf_draw_model_bounding_box(elf_model* model, gfx_shader_params* shader_params)
 {
 	if(!model->vertex_array) return;
 

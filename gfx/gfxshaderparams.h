@@ -1,5 +1,5 @@
 
-void gfx_set_color(gfx_color *color, float r, float g, float b, float a)
+void gfx_set_color(gfx_color* color, float r, float g, float b, float a)
 {
 	color->r = r;
 	color->g = g;
@@ -7,7 +7,7 @@ void gfx_set_color(gfx_color *color, float r, float g, float b, float a)
 	color->a = a;
 }
 
-void gfx_set_shader_params_default(gfx_shader_params *shader_params)
+void gfx_set_shader_params_default(gfx_shader_params* shader_params)
 {
 	int i;
 
@@ -42,14 +42,14 @@ void gfx_set_shader_params_default(gfx_shader_params *shader_params)
 	shader_params->shader_program = NULL;
 }
 
-void gfx_set_material_params_default(gfx_shader_params *shader_params)
+void gfx_set_material_params_default(gfx_shader_params* shader_params)
 {
 	gfx_set_color(&shader_params->material_params.diffuse_color, 1.0, 1.0, 1.0, 1.0);
 	gfx_set_color(&shader_params->material_params.specular_color, 1.0, 1.0, 1.0, 1.0);
 	shader_params->material_params.shininess = 0.0;
 }
 
-void gfx_set_texture_params_default(gfx_shader_params *shader_params)
+void gfx_set_texture_params_default(gfx_shader_params* shader_params)
 {
 	int i;
 
@@ -63,11 +63,11 @@ void gfx_set_texture_params_default(gfx_shader_params *shader_params)
 	}
 }
 
-void gfx_set_shader_params(gfx_shader_params *shader_params)
+void gfx_set_shader_params(gfx_shader_params* shader_params)
 {
 	int i;
 	gfx_shader_config shader_config;
-	gfx_shader_program *shader_program = NULL;
+	gfx_shader_program* shader_program = NULL;
 
 	if(memcmp(&driver->shader_params.render_params, &shader_params->render_params, sizeof(gfx_render_params)))
 	{

@@ -50,14 +50,14 @@ void elf_deinit_general()
 	free(gen);
 }
 
-void elf_inc_ref(elf_object *obj)
+void elf_inc_ref(elf_object* obj)
 {
 	gen->ref_count++;
 	gen->ref_table[obj->obj_type]++;
 	obj->obj_ref_count++;
 }
 
-void elf_dec_ref(elf_object *obj)
+void elf_dec_ref(elf_object* obj)
 {
 	gen->ref_count--;
 	gen->ref_table[obj->obj_type]--;
@@ -116,12 +116,12 @@ void elf_dump_obj_table()
 	elf_write_to_log("-------------------------------------\n");
 }
 
-int elf_get_object_type(elf_object *obj)
+int elf_get_object_type(elf_object* obj)
 {
 	return obj->obj_type;
 }
 
-int elf_get_object_ref_count(elf_object *obj)
+int elf_get_object_ref_count(elf_object* obj)
 {
 	return obj->obj_ref_count;
 }
@@ -136,7 +136,7 @@ int elf_get_global_obj_count()
 	return gen->obj_count;
 }
 
-unsigned char elf_is_actor(elf_object *obj)
+unsigned char elf_is_actor(elf_object* obj)
 {
 	if(obj->obj_type == ELF_CAMERA || obj->obj_type == ELF_ENTITY ||
 		obj->obj_type == ELF_LIGHT || obj->obj_type == ELF_PARTICLES ||
@@ -144,7 +144,7 @@ unsigned char elf_is_actor(elf_object *obj)
 	return ELF_FALSE;
 }
 
-unsigned char elf_is_gui_object(elf_object *obj)
+unsigned char elf_is_gui_object(elf_object* obj)
 {
 	if(obj->obj_type == ELF_GUI || obj->obj_type == ELF_LABEL || obj->obj_type == ELF_BUTTON ||
 		obj->obj_type == ELF_PICTURE || obj->obj_type == ELF_TEXT_FIELD ||
@@ -153,9 +153,9 @@ unsigned char elf_is_gui_object(elf_object *obj)
 	return ELF_FALSE;
 }
 
-void elf_set_log_file_path(const char *file_path)
+void elf_set_log_file_path(const char* file_path)
 {
-	FILE *file;
+	FILE* file;
 
 	file = fopen(file_path, "a");
 	if(!file)
