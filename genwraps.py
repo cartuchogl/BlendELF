@@ -443,7 +443,7 @@ int lua_fail_arg_count(lua_State* L, const char* func_name, int a, int b)
 }
 int lua_fail_arg(lua_State *L, const char* func_name, int idx, const char* etype)
 {
-	return luaL_error(L, "%s: Argument %d is not of type %s", func_name, idx, etype);
+	return luaL_error(L, "%s: Argument %d should be type %s", func_name, idx, etype);
 }
 """
 
