@@ -1,5 +1,5 @@
-#ifndef ELF_BINDS_H
-#define ELF_BINDS_H
+#ifndef ELF_BLENDELF_H
+#define ELF_BLENDELF_H
 #define ELF_NONE 0x0000
 #define ELF_FALSE 0x0000
 #define ELF_TRUE 0x0001

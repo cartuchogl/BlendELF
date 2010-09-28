@@ -741,7 +741,7 @@ for line in src:
 
 src.close()
 
-bindsh = open('gfx/blendelf.h', 'w')
+bindsh = open('cppsdk/blendelf.h', 'w')
 bindsh.write('#ifndef ELF_BINDS_H\n#define ELF_BINDS_H\n')
 
 for define in defines:
