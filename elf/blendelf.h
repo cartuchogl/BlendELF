@@ -1939,11 +1939,13 @@ void elf_empty_gui(elf_gui* gui);
 
 //////////////////////////////// NET ////////////////////////////////
 
-/* <!> */ unsigned char elf_init_networking();
-/* <!> */ void elf_deinit_networking();
-/* <!> */ void elf_run_networking();
-unsigned char elf_create_session(const char* address, unsigned short port); // <mdoc> NETWORKING FUNCTIONS
-unsigned char elf_connect_session(const char* address, unsigned short port);
+// <!!
+unsigned char elf_init_networking();
+void elf_deinit_networking();
+void elf_run_networking();
+// !!>
+unsigned char elf_create_session(const char* address, int port); // <mdoc> NETWORKING FUNCTIONS
+unsigned char elf_connect_session(const char* address, int port);
 unsigned char elf_disconnect_session();
 void elf_send_string_to_clients(const char* message);
 void elf_send_string_to_server(const char* message);

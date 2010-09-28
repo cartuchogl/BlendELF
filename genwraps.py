@@ -16,23 +16,75 @@ decls = """#if defined(__WIN32__) || defined(WIN32) || defined(__CYGWIN__)
 	#define ELF_API
 	#define ELF_APIENTRY
 #endif
-typedef struct elf_object		elf_object;
-class ELF_API elf_handle {
-	elf_object *obj;
-public:
-	elf_handle();
-	elf_handle(elf_object *object);
-	elf_handle(const elf_handle &handle);
-	~elf_handle();
-
-	elf_object* get() {return obj;}
-
-	elf_handle& operator=(elf_object *object);
-	elf_handle& operator=(elf_handle &handle);
-	elf_handle& operator=(const elf_handle &handle);
-};
-#ifndef BLENDELF_H
-extern "C" {
+typedef struct elf_vec2i				elf_vec2i;
+typedef struct elf_vec2f				elf_vec2f;
+typedef struct elf_vec3f				elf_vec3f;
+typedef struct elf_vec4f				elf_vec4f;
+typedef struct elf_color				elf_color;
+typedef struct elf_general				elf_general;
+typedef struct elf_config				elf_config;
+typedef struct elf_object				elf_object;
+typedef struct elf_resource				elf_resource;
+typedef struct elf_gui_object				elf_gui_object;
+typedef struct elf_list					elf_list;
+typedef struct elf_key_event				elf_key_event;
+typedef struct elf_char_event				elf_char_event;
+typedef struct elf_context				elf_context;
+typedef struct elf_engine				elf_engine;
+typedef struct elf_timer				elf_timer;
+typedef struct elf_image				elf_image;
+typedef struct elf_texture				elf_texture;
+typedef struct elf_material				elf_material;
+typedef struct elf_bezier_point				elf_bezier_point;
+typedef struct elf_bezier_curve				elf_bezier_curve;
+typedef struct elf_ipo					elf_ipo;
+typedef struct elf_actor				elf_actor;
+typedef struct elf_camera				elf_camera;
+typedef struct elf_model				elf_model;
+typedef struct elf_entity				elf_entity;
+typedef struct elf_light				elf_light;
+typedef struct elf_scene				elf_scene;
+typedef struct elf_pak_index				elf_pak_index;
+typedef struct elf_pak					elf_pak;
+typedef struct elf_post_process				elf_post_process;
+typedef struct elf_script				elf_script;
+typedef struct elf_audio_device				elf_audio_device;
+typedef struct elf_audio_source				elf_audio_source;
+typedef struct elf_sound				elf_sound;
+typedef struct elf_bone					elf_bone;
+typedef struct elf_armature				elf_armature;
+typedef struct elf_string				elf_string;
+typedef struct elf_font					elf_font;
+typedef struct elf_area					elf_area;
+typedef struct elf_label				elf_label;
+typedef struct elf_button				elf_button;
+typedef struct elf_picture				elf_picture;
+typedef struct elf_text_field				elf_text_field;
+typedef struct elf_slider				elf_slider;
+typedef struct elf_screen				elf_screen;
+typedef struct elf_text_list				elf_text_list;
+typedef struct elf_check_box				elf_check_box;
+typedef struct elf_gui					elf_gui;
+typedef struct elf_directory_item			elf_directory_item;
+typedef struct elf_directory				elf_directory;
+typedef struct elf_collision				elf_collision;
+typedef struct elf_physics_tri_mesh			elf_physics_tri_mesh;
+typedef struct elf_physics_object			elf_physics_object;
+typedef struct elf_physics_world			elf_physics_world;
+typedef struct elf_joint				elf_joint;
+typedef struct elf_resources				elf_resources;
+typedef struct elf_particle				elf_particle;
+typedef struct elf_particles				elf_particles;
+typedef struct elf_frame_player				elf_frame_player;
+typedef struct elf_property				elf_property;
+typedef struct elf_server				elf_server;
+typedef struct elf_client				elf_client;
+typedef struct elf_scripting				elf_scripting;
+typedef struct elf_sprite				elf_sprite;
+typedef struct elf_video_mode				elf_video_mode;
+typedef struct elf_vertice				elf_vertice;
+typedef struct elf_face					elf_face;
+typedef struct elf_mesh_data				elf_mesh_data;
 struct elf_vec2i {
 	int x;
 	int y;
@@ -58,82 +110,343 @@ struct elf_color {
 	float b;
 	float a;
 };
-}
-#endif
-ELF_API bool ELF_APIENTRY elfIsObject(elf_handle obj);
 """
 
 defs = """#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
+#include "lua.h"
+#include "lualib.h"
+#include "lauxlib.h"
 #include "gfx.h"
 #include "blendelf.h"
-#include "binds.h"
-
-ELF_API elf_handle::elf_handle()
+#define LUA_ELF_USERDATA_HEADER \\
+	unsigned char type
+#define LUA_ELF_OBJECT				0x0001
+#define LUA_ELF_VEC2I				0x0002
+#define LUA_ELF_VEC2F				0x0002
+#define LUA_ELF_VEC3F				0x0003
+#define LUA_ELF_VEC4F				0x0004
+#define LUA_ELF_COLOR				0x0005
+typedef struct lua_elf_userdata			lua_elf_userdata;
+typedef struct lua_elf_object			lua_elf_object;
+typedef struct lua_elf_vec2i			lua_elf_vec2i;
+typedef struct lua_elf_vec2f			lua_elf_vec2f;
+typedef struct lua_elf_vec3f			lua_elf_vec3f;
+typedef struct lua_elf_vec4f			lua_elf_vec4f;
+typedef struct lua_elf_color			lua_elf_color;
+struct lua_elf_userdata {
+	LUA_ELF_USERDATA_HEADER;
+};
+struct lua_elf_object {
+	LUA_ELF_USERDATA_HEADER;
+	elf_object* object;
+};
+struct lua_elf_vec2i {
+	LUA_ELF_USERDATA_HEADER;
+	elf_vec2i val;
+};
+struct lua_elf_vec2f {
+	LUA_ELF_USERDATA_HEADER;
+	elf_vec2f val;
+};
+struct lua_elf_vec3f {
+	LUA_ELF_USERDATA_HEADER;
+	elf_vec3f val;
+};
+struct lua_elf_vec4f {
+	LUA_ELF_USERDATA_HEADER;
+	elf_vec4f val;
+};
+struct lua_elf_color {
+	LUA_ELF_USERDATA_HEADER;
+	elf_color val;
+};
+static int lua_elf_object__gc(lua_State* L)
 {
-	obj = NULL;
+	lua_elf_object *obj = (lua_elf_object*)lua_touserdata(L, 1);
+	elf_dec_ref(obj->object);
+	return 0;
 }
-elf_handle::elf_handle(elf_object *object)
+static int lua_elf_vec2i__index(lua_State* L)
 {
-	if(object) elf_inc_ref(object);
-	obj = object;
-}
-ELF_API elf_handle::elf_handle(const elf_handle &handle)
-{
-	if(handle.obj) elf_inc_ref(handle.obj);
-	obj = handle.obj;
-}
-ELF_API elf_handle::~elf_handle()
-{
-	if(obj) elf_dec_ref(obj);
-}
-elf_handle& elf_handle::operator=(elf_object *object)
-{
-	if(obj)
+	lua_elf_vec2i *ud = (lua_elf_vec2i*)lua_touserdata(L, 1);
+	if(!strcmp(lua_tostring(L, 2), \"x\"))
 	{
-		elf_dec_ref(obj);
-		obj = NULL;
+		lua_pushnumber(L, (lua_Number)ud->val.x);
 	}
-
-	if(object) elf_inc_ref(object);
-	obj = object;
-
-	return *this;
-}
-ELF_API elf_handle& elf_handle::operator=(elf_handle &handle)
-{
-	if(obj)
+	else if(!strcmp(lua_tostring(L, 2), \"y\"))
 	{
-		elf_dec_ref(obj);
-		obj = NULL;
+		lua_pushnumber(L, (lua_Number)ud->val.y);
 	}
-
-	if(handle.obj) elf_inc_ref(handle.obj);
-	obj = handle.obj;
-
-	return *this;
+	return 1;
 }
-ELF_API elf_handle& elf_handle::operator=(const elf_handle &handle)
+static int lua_elf_vec2i__newindex(lua_State* L)
 {
-	if(obj)
+	lua_elf_vec2i *ud = (lua_elf_vec2i*)lua_touserdata(L, 1);
+	if(!strcmp(lua_tostring(L, 2),  \"x\"))
 	{
-		elf_dec_ref(obj);
-		obj = NULL;
+		if(lua_isnumber(L, 3)) ud->val.x = (int)lua_tonumber(L, 3);
+		else return luaL_error(L, \"Attemp to assign a non-number to elf_vec2i.x\");
 	}
-
-	if(handle.obj) elf_inc_ref(handle.obj);
-	obj = handle.obj;
-
-	return *this;
-}\n
-ELF_API bool ELF_APIENTRY elfIsObject(elf_handle obj)
+	else if(!strcmp(lua_tostring(L, 2), \"y\"))
+	{
+		if(lua_isnumber(L, 3)) ud->val.y = (int)lua_tonumber(L, 3);
+		else return luaL_error(L, \"Attemp to assign a non-number to elf_vec2i.y\");
+	}
+	return 0;
+}
+static int lua_elf_vec2f__index(lua_State* L)
 {
-	if(obj.get()) return true;
-	return false;
+	lua_elf_vec2f *ud = (lua_elf_vec2f*)lua_touserdata(L, 1);
+	if(!strcmp(lua_tostring(L, 2), \"x\"))
+	{
+		lua_pushnumber(L, (lua_Number)ud->val.x);
+	}
+	else if(!strcmp(lua_tostring(L, 2), \"y\"))
+	{
+		lua_pushnumber(L, (lua_Number)ud->val.y);
+	}
+	return 1;
+}
+static int lua_elf_vec2f__newindex(lua_State* L)
+{
+	lua_elf_vec2f *ud = (lua_elf_vec2f*)lua_touserdata(L, 1);
+	if(!strcmp(lua_tostring(L, 2),  \"x\"))
+	{
+		if(lua_isnumber(L, 3)) ud->val.x = (float)lua_tonumber(L, 3);
+		else return luaL_error(L, \"Attemp to assign a non-number to elf_vec2f.x\");
+	}
+	else if(!strcmp(lua_tostring(L, 2), \"y\"))
+	{
+		if(lua_isnumber(L, 3)) ud->val.y = (float)lua_tonumber(L, 3);
+		else return luaL_error(L, \"Attemp to assign a non-number to elf_vec2f.y\");
+	}
+	return 0;
+}
+static int lua_elf_vec3f__index(lua_State* L)
+{
+	lua_elf_vec3f *ud = (lua_elf_vec3f*)lua_touserdata(L, 1);
+	if(!strcmp(lua_tostring(L, 2), \"x\"))
+	{
+		lua_pushnumber(L, (lua_Number)ud->val.x);
+	}
+	else if(!strcmp(lua_tostring(L, 2), \"y\"))
+	{
+		lua_pushnumber(L, (lua_Number)ud->val.y);
+	}
+	else if(!strcmp(lua_tostring(L, 2), \"z\"))
+	{
+		lua_pushnumber(L, (lua_Number)ud->val.z);
+	}
+	return 1;
+}
+static int lua_elf_vec3f__newindex(lua_State* L)
+{
+	lua_elf_vec3f *ud = (lua_elf_vec3f*)lua_touserdata(L, 1);
+	if(!strcmp(lua_tostring(L, 2),  \"x\"))
+	{
+		if(lua_isnumber(L, 3)) ud->val.x = (float)lua_tonumber(L, 3);
+		else return luaL_error(L, \"Attemp to assign a non-number to elf_vec3f.x\");
+	}
+	else if(!strcmp(lua_tostring(L, 2), \"y\"))
+	{
+		if(lua_isnumber(L, 3)) ud->val.y = (float)lua_tonumber(L, 3);
+		else return luaL_error(L, \"Attemp to assign a non-number to elf_vec3f.y\");
+	}
+	else if(!strcmp(lua_tostring(L, 2), \"z\"))
+	{
+		if(lua_isnumber(L, 3)) ud->val.z = (float)lua_tonumber(L, 3);
+		else return luaL_error(L, \"Attemp to assign a non-number to elf_vec3f.z\");
+	}
+	return 0;
+}
+static int lua_elf_vec4f__index(lua_State* L)
+{
+	lua_elf_vec4f *ud = (lua_elf_vec4f*)lua_touserdata(L, 1);
+	if(!strcmp(lua_tostring(L, 2), \"x\"))
+	{
+		lua_pushnumber(L, (lua_Number)ud->val.x);
+	}
+	else if(!strcmp(lua_tostring(L, 2), \"y\"))
+	{
+		lua_pushnumber(L, (lua_Number)ud->val.y);
+	}
+	else if(!strcmp(lua_tostring(L, 2), \"z\"))
+	{
+		lua_pushnumber(L, (lua_Number)ud->val.z);
+	}
+	else if(!strcmp(lua_tostring(L, 2), \"w\"))
+	{
+		lua_pushnumber(L, (lua_Number)ud->val.w);
+	}
+	return 1;
+}
+static int lua_elf_vec4f__newindex(lua_State* L)
+{
+	lua_elf_vec4f *ud = (lua_elf_vec4f*)lua_touserdata(L, 1);
+	if(!strcmp(lua_tostring(L, 2),  \"x\"))
+	{
+		if(lua_isnumber(L, 3)) ud->val.x = (float)lua_tonumber(L, 3);
+		else return luaL_error(L, \"Attemp to assign a non-number to elf_color.x\");
+	}
+	else if(!strcmp(lua_tostring(L, 2), \"y\"))
+	{
+		if(lua_isnumber(L, 3)) ud->val.y = (float)lua_tonumber(L, 3);
+		else return luaL_error(L, \"Attemp to assign a non-number to elf_color.y\");
+	}
+	else if(!strcmp(lua_tostring(L, 2), \"z\"))
+	{
+		if(lua_isnumber(L, 3)) ud->val.z = (float)lua_tonumber(L, 3);
+		else return luaL_error(L, \"Attemp to assign a non-number to elf_color.z\");
+	}
+	else if(!strcmp(lua_tostring(L, 2), \"w\"))
+	{
+		if(lua_isnumber(L, 3)) ud->val.w = (float)lua_tonumber(L, 3);
+		else return luaL_error(L, \"Attemp to assign a non-number to elf_color.w\");
+	}
+	return 0;
+}
+static int lua_elf_color__index(lua_State* L)
+{
+	lua_elf_color *ud = (lua_elf_color*)lua_touserdata(L, 1);
+	if(!strcmp(lua_tostring(L, 2), \"r\"))
+	{
+		lua_pushnumber(L, (lua_Number)ud->val.r);
+	}
+	else if(!strcmp(lua_tostring(L, 2), \"g\"))
+	{
+		lua_pushnumber(L, (lua_Number)ud->val.g);
+	}
+	else if(!strcmp(lua_tostring(L, 2), \"b\"))
+	{
+		lua_pushnumber(L, (lua_Number)ud->val.b);
+	}
+	else if(!strcmp(lua_tostring(L, 2), \"a\"))
+	{
+		lua_pushnumber(L, (lua_Number)ud->val.a);
+	}
+	return 1;
+}
+static int lua_elf_color__newindex(lua_State* L)
+{
+	lua_elf_color *ud = (lua_elf_color*)lua_touserdata(L, 1);
+	if(!strcmp(lua_tostring(L, 2),  \"r\"))
+	{
+		if(lua_isnumber(L, 3)) ud->val.r = (float)lua_tonumber(L, 3);
+		else return luaL_error(L, \"Attemp to assign a non-number to elf_vec4f.r\");
+	}
+	else if(!strcmp(lua_tostring(L, 2), \"g\"))
+	{
+		if(lua_isnumber(L, 3)) ud->val.g = (float)lua_tonumber(L, 3);
+		else return luaL_error(L, \"Attemp to assign a non-number to elf_vec4f.g\");
+	}
+	else if(!strcmp(lua_tostring(L, 2), \"b\"))
+	{
+		if(lua_isnumber(L, 3)) ud->val.b = (float)lua_tonumber(L, 3);
+		else return luaL_error(L, \"Attemp to assign a non-number to elf_vec4f.b\");
+	}
+	else if(!strcmp(lua_tostring(L, 2), \"a\"))
+	{
+		if(lua_isnumber(L, 3)) ud->val.a = (float)lua_tonumber(L, 3);
+		else return luaL_error(L, \"Attemp to assign a non-number to elf_vec4f.a\");
+	}
+	return 0;
+}
+static const struct luaL_reg lua_elf_vec2i_mt[] = {
+	{\"__index\", lua_elf_vec2i__index},
+	{\"__newindex\", lua_elf_vec2i__newindex},
+	{NULL, NULL}
+};
+static const struct luaL_reg lua_elf_vec2f_mt[] = {
+	{\"__index\", lua_elf_vec2f__index},
+	{\"__newindex\", lua_elf_vec2f__newindex},
+	{NULL, NULL}
+};
+static const struct luaL_reg lua_elf_vec3f_mt[] = {
+	{\"__index\", lua_elf_vec3f__index},
+	{\"__newindex\", lua_elf_vec3f__newindex},
+	{NULL, NULL}
+};
+static const struct luaL_reg lua_elf_vec4f_mt[] = {
+	{\"__index\", lua_elf_vec4f__index},
+	{\"__newindex\", lua_elf_vec4f__newindex},
+	{NULL, NULL}
+};
+static const struct luaL_reg lua_elf_color_mt[] = {
+	{\"__index\", lua_elf_color__index},
+	{\"__newindex\", lua_elf_color__newindex},
+	{NULL, NULL}
+};
+static const struct luaL_reg lua_elf_object_mt[] = {
+	{"__gc", lua_elf_object__gc},
+	{NULL, NULL}
+};
+void lua_create_elf_vec2i(lua_State* L, elf_vec2i vec)
+{
+	lua_elf_vec2i *ud;
+	ud = (lua_elf_vec2i*)lua_newuserdata(L, sizeof(lua_elf_vec2i));
+	ud->type = LUA_ELF_VEC2I;
+	ud->val = vec;
+	luaL_getmetatable(L, \"lua_elf_vec2i_mt\");
+	lua_setmetatable(L, -2);
+}
+void lua_create_elf_vec2f(lua_State* L, elf_vec2f vec)
+{
+	lua_elf_vec2f *ud;
+	ud = (lua_elf_vec2f*)lua_newuserdata(L, sizeof(lua_elf_vec2f));
+	ud->type = LUA_ELF_VEC2F;
+	ud->val = vec;
+	luaL_getmetatable(L, \"lua_elf_vec2f_mt\");
+	lua_setmetatable(L, -2);
+}
+void lua_create_elf_vec3f(lua_State* L, elf_vec3f vec)
+{
+	lua_elf_vec3f *ud;
+	ud = (lua_elf_vec3f*)lua_newuserdata(L, sizeof(lua_elf_vec3f));
+	ud->type = LUA_ELF_VEC3F;
+	ud->val = vec;
+	luaL_getmetatable(L, \"lua_elf_vec3f_mt\");
+	lua_setmetatable(L, -2);
+}
+void lua_create_elf_vec4f(lua_State* L, elf_vec4f vec)
+{
+	lua_elf_vec4f *ud;
+	ud = (lua_elf_vec4f*)lua_newuserdata(L, sizeof(lua_elf_vec4f));
+	ud->type = LUA_ELF_VEC4F;
+	ud->val = vec;
+	luaL_getmetatable(L, \"lua_elf_vec4f_mt\");
+	lua_setmetatable(L, -2);
+}
+void lua_create_elf_color(lua_State* L, elf_color col)
+{
+	lua_elf_color *ud;
+	ud = (lua_elf_color*)lua_newuserdata(L, sizeof(lua_elf_color));
+	ud->type = LUA_ELF_COLOR;
+	ud->val = col;
+	luaL_getmetatable(L, \"lua_elf_color_mt\");
+	lua_setmetatable(L, -2);
+}
+void lua_create_elf_object(lua_State* L, elf_object* obj)
+{
+	lua_elf_object *ud;
+	ud = (lua_elf_object*)lua_newuserdata(L, sizeof(lua_elf_object));
+	ud->type = LUA_ELF_OBJECT;
+	ud->object = obj;
+	elf_inc_ref(ud->object);
+	luaL_getmetatable(L, \"lua_elf_object_mt\");
+	lua_setmetatable(L, -2);
+}
+int lua_fail_arg_count(lua_State* L, const char* func_name, int a, int b)
+{
+	return luaL_error(L, "%s: Got %d arguments instead of %d", a, b);
+}
+int lua_fail_arg(lua_State *L, const char* func_name, int idx, const char* etype)
+{
+	return luaL_error(L, "%s: Argument %d is not of type %s", func_name, idx, etype);
 }
 """
+
 apiheader = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
@@ -163,7 +476,7 @@ apiheader = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://
 
 <div class="topic">BlendELF Lua API doc</div>
 <div class="info">
-This document contains all of the avaialable functions for the BlendELF Lua API.
+This document contains all of the available functions for the BlendELF Lua API.
 </div>
 
 <div class="apitopic">BlendELF TYPES</div>
@@ -218,58 +531,57 @@ elftypes = ['elf_vec2i',
 	'elf_vec4f',
 	'elf_color']
 
-elfgenobjs = ['elf_object',
-	'elf_actor',
-	'elf_gui_object']
+elfgenobjs = ['elf_object*',
+	'elf_actor*',
+	'elf_gui_object*']
 
-elfobjs = ['elf_config',
-	'elf_object',
-	'elf_list',
-	'elf_handle',
-	'elf_script',
-	'elf_actor',
-	'elf_camera',
-	'elf_texture',
-	'elf_material',
-	'elf_model',
-	'elf_entity',
-	'elf_light',
-	'elf_bone',
-	'elf_armature',
-	'elf_scene',
-	'elf_collision',
-	'elf_joint',
-	'elf_font',
-	'elf_gui_object',
-	'elf_gui',
-	'elf_label',
-	'elf_button',
-	'elf_picture',
-	'elf_text_field',
-	'elf_slider',
-	'elf_screen',
-	'elf_text_list',
-	'elf_check_box',
-	'elf_timer',
-	'elf_sst',
-	'elf_resources',
-	'elf_particle',
-	'elf_particles',
-	'elf_bezier_point',
-	'elf_bezier_curve',
-	'elf_ipo',
-	'elf_frame_player',
-	'elf_sound',
-	'elf_audio_source',
-	'elf_property',
-	'elf_client',
-	'elf_sprite',
-	'elf_directory',
-	'elf_directory_item',
-	'elf_vertice',
-	'elf_face',
-	'elf_mesh_data',
-	'elf_image']
+elfobjs = ['elf_config*',
+	'elf_object*',
+	'elf_list*',
+	'elf_handle*',
+	'elf_script*',
+	'elf_actor*',
+	'elf_camera*',
+	'elf_texture*',
+	'elf_material*',
+	'elf_model*',
+	'elf_entity*',
+	'elf_light*',
+	'elf_bone*',
+	'elf_armature*',
+	'elf_scene*',
+	'elf_collision*',
+	'elf_joint*',
+	'elf_font*',
+	'elf_gui_object*',
+	'elf_gui*',
+	'elf_label*',
+	'elf_button*',
+	'elf_picture*',
+	'elf_text_field*',
+	'elf_slider*',
+	'elf_screen*',
+	'elf_text_list*',
+	'elf_check_box*',
+	'elf_timer*',
+	'elf_resources*',
+	'elf_particle*',
+	'elf_particles*',
+	'elf_bezier_point*',
+	'elf_bezier_curve*',
+	'elf_ipo*',
+	'elf_frame_player*',
+	'elf_sound*',
+	'elf_audio_source*',
+	'elf_property*',
+	'elf_client*',
+	'elf_sprite*',
+	'elf_directory*',
+	'elf_directory_item*',
+	'elf_vertice*',
+	'elf_face*',
+	'elf_mesh_data*',
+	'elf_image*']
 
 defines = []
 functions = []
@@ -309,7 +621,7 @@ def get_parts(line):
 	tstr = ''
 	parts = []
 	for c in line:
-		if c in ' \t\n#();*,':
+		if c in ' \t\n#();,':
 			if len(tstr) > 0: parts.append(tstr)
 			tstr = ''
 			continue
@@ -368,17 +680,15 @@ def get_function(parts):
 	next = 0;
 	if parts[0] in pretypes:
 		func.type = parts[0] + ' ' + parts[1]
-		if func.type == 'const char': func.type += '*'
-		if func.type == 'unsigned char': func.type = 'bool'
-		func.orig_type = parts[0] + ' ' + parts[1]
+		func.orig_type = func.type
 		next = 2
 	elif parts[0] in types or parts[0] in elftypes:
 		func.type = parts[0]
-		func.orig_type = parts[0]
+		func.orig_type = func.type
 		next = 1
 	elif parts[0] in elfobjs:
-		func.type = 'elf_handle'
-		func.orig_type = parts[0]
+		func.type = parts[0]
+		func.orig_type = func.type
 		next = 1
 	else: return None
 
@@ -390,17 +700,15 @@ def get_function(parts):
 		param = Parameter()
 		if parts[next] in pretypes:
 			param.type = parts[next] + ' ' + parts[next+1]
-			if param.type == 'const char': param.type += '*'
-			if param.type == 'unsigned char': param.type = 'bool'
-			param.orig_type = parts[next] + ' ' + parts[next+1]
+			param.orig_type = param.type
 			next += 2
 		elif parts[next] in types or parts[next] in elftypes:
 			param.type = parts[next]
-			param.orig_type = parts[next]
+			param.orig_type = param.type
 			next += 1
 		elif parts[next] in elfobjs:
-			param.type = 'elf_handle'
-			param.orig_type = parts[next]
+			param.type = parts[next]
+			param.orig_type = param.type
 			next += 1
 		elif parts[next] == '//': break;
 		else: return None
@@ -433,7 +741,7 @@ for line in src:
 
 src.close()
 
-bindsh = open('elf/binds.h', 'w')
+bindsh = open('gfx/blendelf.h', 'w')
 bindsh.write('#ifndef ELF_BINDS_H\n#define ELF_BINDS_H\n')
 
 for define in defines:
@@ -451,101 +759,117 @@ for func in functions:
 bindsh.write('#endif\n')
 bindsh.close()
 
-bindsh = open('elf/binds.h')
-bindshtext = bindsh.read()
-bindsh.close()
-blendelfh = open('cppsdk/blendelf.h', 'w')
-blendelfh.write(bindshtext)
-blendelfh.close()
+bindsc = open('elf/binds.c', 'w')
 
-bindscpp = open('elf/binds.cpp', 'w')
-
-bindscpp.write(defs)
+bindsc.write(defs)
 
 for func in functions:
-	bindscpp.write('ELF_API '+func.type+' ELF_APIENTRY elf'+func.name+'(')
+	bindsc.write('static int lua_'+func.name+'(lua_State *L)\n')
+	bindsc.write('{\n')
+	if func.type != 'void':
+		bindsc.write('\t'+func.type+' result;\n')
 	for i in range(len(func.params)):
-		bindscpp.write(func.params[i].type+' '+func.params[i].name)
-		if(i < len(func.params)-1): bindscpp.write(', ')
-	bindscpp.write(')\n')
-
-	bindscpp.write('{\n')
-
-	if len(func.params) < 1:
-		if func.type == 'void':
-			bindscpp.write('\t'+func.orig_name+'();\n')
-		elif func.type in types or func.type in elftypes:
-			if func.orig_type == 'unsigned char':
-				bindscpp.write('\treturn (bool)'+func.orig_name+'();\n')
+		bindsc.write('\t'+func.params[i].type+' arg'+str(i)+';\n')
+	bindsc.write('\tif(lua_gettop(L) != '+str(len(func.params))+') {return lua_fail_arg_count(L, \"'+func.name+'\", lua_gettop(L), '+str(len(func.params))+');}\n')
+	for i in range(len(func.params)):
+		if func.params[i].type == 'int':
+			bindsc.write('\tif(!lua_isnumber(L, '+str(i+1)+')) {return lua_fail_arg(L, \"'+func.name+'\", '+str(i+1)+', \"number\");}\n')
+		if func.params[i].type == 'float':
+			bindsc.write('\tif(!lua_isnumber(L, '+str(i+1)+')) {return lua_fail_arg(L, \"'+func.name+'\", '+str(i+1)+', \"number\");}\n')
+		if func.params[i].type == 'double':
+			bindsc.write('\tif(!lua_isnumber(L, '+str(i+1)+')) {return lua_fail_arg(L, \"'+func.name+'\", '+str(i+1)+', \"number\");}\n')
+		if func.params[i].type == 'unsigned char':
+			bindsc.write('\tif(!lua_isboolean(L, '+str(i+1)+')) {return lua_fail_arg(L, \"'+func.name+'\", '+str(i+1)+', \"boolean\");}\n')
+		if func.params[i].type == 'const char*':
+			bindsc.write('\tif(!lua_isstring(L, '+str(i+1)+')) {return lua_fail_arg(L, \"'+func.name+'\", '+str(i+1)+', \"string\");}\n')
+		if func.params[i].type in elfobjs:
+			if func.params[i].type == 'elf_actor*':
+				bindsc.write('\tif(!lua_isuserdata(L, '+str(i+1)+') || ((lua_elf_userdata*)lua_touserdata(L,'+str(i+1)+'))->type != LUA_ELF_OBJECT ||\n\t\t!elf_is_actor(((lua_elf_object*)lua_touserdata(L, '+str(i+1)+'))->object))\n\t\t{return lua_fail_arg(L, \"'+func.name+'\", '+str(i+1)+', \"'+func.params[i].type[:-1]+'\");}\n')
+			elif func.params[i].type == 'elf_gui_object*':
+				bindsc.write('\tif(!lua_isuserdata(L, '+str(i+1)+') || ((lua_elf_userdata*)lua_touserdata(L,'+str(i+1)+'))->type != LUA_ELF_OBJECT ||\n\t\t!elf_is_gui_object(((lua_elf_object*)lua_touserdata(L, '+str(i+1)+'))->object))\n\t\t{return lua_fail_arg(L, \"'+func.name+'\", '+str(i+1)+', \"'+func.params[i].type[:-1]+'\");}\n')
+			elif func.params[i].type == 'elf_object*':
+				bindsc.write('\tif(!lua_isuserdata(L, '+str(i+1)+') || ((lua_elf_userdata*)lua_touserdata(L,'+str(i+1)+'))->type != LUA_ELF_OBJECT)\n\t\t{return lua_fail_arg(L, \"'+func.name+'\", '+str(i+1)+', \"'+func.params[i].type[:-1]+'\");}\n')
 			else:
-				bindscpp.write('\treturn '+func.orig_name+'();\n')
-		elif func.type in elfobjs:
-			bindscpp.write('\telf_handle handle;\n')
-			bindscpp.write('\thandle = (elf_object*)'+func.orig_name+'();\n')
-			bindscpp.write('\treturn handle;\n')
-	else:
-		if func.type == 'elf_handle':
-			bindscpp.write('\telf_handle handle;\n');
-		elif func.type in elftypes:
-			bindscpp.write('\t'+func.type+' _e_type;\n');
-			bindscpp.write('\tmemset(&_e_type, 0x0, sizeof('+func.type+'));\n')
+				bindsc.write('\tif(!lua_isuserdata(L, '+str(i+1)+') || ((lua_elf_userdata*)lua_touserdata(L,'+str(i+1)+'))->type != LUA_ELF_OBJECT ||\n\t\telf_get_object_type(((lua_elf_object*)lua_touserdata(L, '+str(i+1)+'))->object) != '+func.params[i].type[:-1].upper()+')\n\t\t{return lua_fail_arg(L, \"'+func.name+'\", '+str(i+1)+', \"'+func.params[i].type[:-1]+'\");}\n')
+		if func.params[i].type in elftypes:
+			bindsc.write('\tif(!lua_isuserdata(L, '+str(i+1)+')) {return lua_fail_arg(L, \"'+func.name+'\", '+str(i+1)+', \"'+func.params[i].type+'\");}\n')
+	for i in range(len(func.params)):
+		if func.params[i].type == 'int':
+			bindsc.write('\targ'+str(i)+' = (int)lua_tonumber(L, '+str(i+1)+');\n')
+		elif func.params[i].type == 'float':
+			bindsc.write('\targ'+str(i)+' = (float)lua_tonumber(L, '+str(i+1)+');\n')
+		elif func.params[i].type == 'double':
+			bindsc.write('\targ'+str(i)+' = lua_tonumber(L, '+str(i+1)+');\n')
+		elif func.params[i].type == 'unsigned char':
+			bindsc.write('\targ'+str(i)+' = (unsigned char)lua_toboolean(L, '+str(i+1)+');\n')
+		elif func.params[i].type == 'const char*':
+			bindsc.write('\targ'+str(i)+' = lua_tostring(L, '+str(i+1)+');\n')
+		elif func.params[i].type in elfobjs:
+			bindsc.write('\targ'+str(i)+' = ('+func.params[i].type+')((lua_elf_object*)lua_touserdata(L, '+str(i+1)+'))->object;\n')
+		elif func.params[i].type in elftypes:
+			bindsc.write('\targ'+str(i)+' = ((lua_'+func.params[i].type+'*)lua_touserdata(L, '+str(i+1)+'))->val;\n')
+	if func.type != 'void':
+		bindsc.write('\tresult = '+func.orig_name+'(')
+	else: bindsc.write('\t'+func.orig_name+'(')
+	for i in range(len(func.params)):
+		if i != len(func.params)-1:
+			bindsc.write('arg'+str(i)+', ')
+		else: bindsc.write('arg'+str(i))
+	bindsc.write(');\n')
+	if func.type == 'int':
+		bindsc.write('\tlua_pushnumber(L, (lua_Number)result);\n')
+	elif func.type == 'float':
+		bindsc.write('\tlua_pushnumber(L, (lua_Number)result);\n')
+	elif func.type == 'double':
+		bindsc.write('\tlua_pushnumber(L, (lua_Number)result);\n')
+	elif func.type == 'unsigned char':
+		bindsc.write('\tlua_pushboolean(L, result);\n')
+	elif func.type == 'const char*':
+		bindsc.write('\tlua_pushstring(L, result);\n')
+	elif func.type in elfobjs:
+		bindsc.write('\tif(result) lua_create_elf_object(L, (elf_object*)result);\n')
+		bindsc.write('\telse lua_pushnil(L);\n')
+	elif func.type in elftypes:
+		bindsc.write('\tlua_create_'+func.type+'(L, result);\n')
+	if func.type != 'void':
+		bindsc.write('\treturn 1;\n')
+	else: bindsc.write('\treturn 0;\n')
+	bindsc.write('}\n')
 
-		for param in func.params:
-			if param.orig_type in elfgenobjs or param.orig_type in elfobjs:
-				if param.orig_type == 'elf_object': bindscpp.write('\tif(!'+param.name+'.get())\n')
-				elif param.orig_type in elfgenobjs: bindscpp.write('\tif(!'+param.name+'.get() || !elf_is_'+param.orig_type[4:]+'('+param.name+'.get()))\n')
-				elif param.orig_type in elfobjs: bindscpp.write('\tif(!'+param.name+'.get() || elf_get_object_type('+param.name+'.get()) != '+param.orig_type.upper()+')\n')
-				bindscpp.write('\t{\n')
-				bindscpp.write('\t\tif(elf_get_current_script())\n')
-				bindscpp.write('\t\t{\n')
-				bindscpp.write('\t\t\telf_set_script_error(ELF_INVALID_HANDLE, \"'+func.name+'() -> invalid handle\");\n')
-				bindscpp.write('\t\t}\n')
-				bindscpp.write('\t\telse\n')
-				bindscpp.write('\t\t{\n')
-				bindscpp.write('\t\t\telf_set_error_no_save(ELF_INVALID_HANDLE, \"'+func.name+'() -> invalid handle\\n\");\n')
-				bindscpp.write('\t\t}\n')
-				if func.type in elfobjs:
-					bindscpp.write('\t\treturn handle;\n')
-				elif func.type in elftypes:
-					bindscpp.write('\t\treturn _e_type;\n')
-				elif func.type != 'void':
-					if func.type == 'unsigned int' or func.type == 'int' or func.type == 'float' or func.type == 'double':
-						bindscpp.write('\t\treturn 0;\n')
-					elif func.type == 'bool':
-						bindscpp.write('\t\treturn false;\n')
-					elif func.type == 'const char*':
-						bindscpp.write('\t\treturn \"\";\n')
-				else: bindscpp.write('\t\treturn;\n')
-				bindscpp.write('\t}\n')
-
-		if func.type in elfobjs:
-			bindscpp.write('\thandle = (elf_object*)')
-		elif func.type in elftypes:
-			bindscpp.write('\t_e_type = ')
-		elif func.type != 'void':
-			if func.orig_type == 'unsigned char':
-				bindscpp.write('\treturn (bool)')
-			else:
-				bindscpp.write('\treturn ')
-		else: bindscpp.write('\t')
-
-		bindscpp.write(func.orig_name+'(')
-		for i in range(len(func.params)):
-			if func.params[i].orig_type in elfobjs:
-				bindscpp.write('('+func.params[i].orig_type+'*)'+func.params[i].name+'.get()')
-			else: bindscpp.write(func.params[i].name)
-			if(i < len(func.params)-1): bindscpp.write(', ')
-		bindscpp.write(');\n')
-
-		if func.type in elfobjs:
-			bindscpp.write('\treturn handle;\n')
-		elif func.type in elftypes:
-			bindscpp.write('\treturn _e_type;\n')			
-
-	bindscpp.write('}\n')
-
-bindscpp.write('\n')
-bindscpp.close()
+bindsc.write('static const struct luaL_reg lua_elf_functions[] = {\n')
+for func in functions:
+	bindsc.write('\t{\"'+func.name+'\", lua_'+func.name+'},\n')
+bindsc.write('\t{NULL, NULL}\n};\n')
+bindsc.write('int luaopen_elf(lua_State* L)\n')
+bindsc.write('{\n')
+bindsc.write('\tlua_pushvalue(L, LUA_GLOBALSINDEX);\n')
+bindsc.write('\tluaL_register(L, NULL, lua_elf_functions);\n')
+for define in defines:
+	bindsc.write('\tlua_pushstring(L, \"'+define.name+'\");\n')
+	bindsc.write('\tlua_pushnumber(L, '+define.value+');\n')
+	bindsc.write('\tlua_settable(L, -3);\n')
+bindsc.write('\tlua_pop(L, 1);\n')
+bindsc.write('\tluaL_newmetatable(L, \"lua_elf_vec2i_mt\");\n')
+bindsc.write('\tluaL_register(L, NULL, lua_elf_vec2i_mt);\n')
+bindsc.write('\tlua_pop(L, 1);\n')
+bindsc.write('\tluaL_newmetatable(L, \"lua_elf_vec2f_mt\");\n')
+bindsc.write('\tluaL_register(L, NULL, lua_elf_vec2f_mt);\n')
+bindsc.write('\tlua_pop(L, 1);\n')
+bindsc.write('\tluaL_newmetatable(L, \"lua_elf_vec3f_mt\");\n')
+bindsc.write('\tluaL_register(L, NULL, lua_elf_vec3f_mt);\n')
+bindsc.write('\tlua_pop(L, 1);\n')
+bindsc.write('\tluaL_newmetatable(L, \"lua_elf_vec4f_mt\");\n')
+bindsc.write('\tluaL_register(L, NULL, lua_elf_vec4f_mt);\n')
+bindsc.write('\tlua_pop(L, 1);\n')
+bindsc.write('\tluaL_newmetatable(L, \"lua_elf_color_mt\");\n')
+bindsc.write('\tluaL_register(L, NULL, lua_elf_color_mt);\n')
+bindsc.write('\tlua_pop(L, 1);\n')
+bindsc.write('\tluaL_newmetatable(L, \"lua_elf_object_mt\");\n')
+bindsc.write('\tluaL_register(L, NULL, lua_elf_object_mt);\n')
+bindsc.write('\tlua_pop(L, 1);\n')
+bindsc.write('\treturn 0;\n')
+bindsc.write('}\n')
+bindsc.close()
 
 docs = open('docs/api_doc.html', 'w')
 
@@ -584,69 +908,4 @@ for func in functions:
 docs.write(apifooter)
 
 docs.close()
-
-import os
-os.system('swig -lua -c++ elf/blendelf.i')
-
-realbindslines = []
-
-realbinds = open('elf/blendelf_wrap.cxx')
-for line in realbinds:
-	realbindslines.append(line)
-realbinds.close()
-
-skipdef = False
-realbinds = open('elf/blendelf_wrap.cxx', 'w')
-
-realbinds.write('#include \"default.h\"\n')
-realbinds.write('#include \"../gfx/gfx.h\"\n')
-realbinds.write('#include \"blendelf.h\"\n')
-realbinds.write('#include \"types.h\"\n')
-realbinds.write('#include \"binds.h\"\n')
-
-for line in realbindslines:
-	if skipdef == True:
-		if len(line.strip()) > 0 and line.strip()[-1] == '\\': continue
-		else:
-			skipdef = False
-			continue
-	if "#define SWIG_fail_arg" in line:
-		realbinds.write('#define SWIG_fail_arg(func_name,argnum,type) \\\n')
-		realbinds.write('  {lua_Debug ar; \\\n')
-		realbinds.write('  struct elf_script *script; \\\n')
-		realbinds.write('  lua_getstack(L, 0 + 1, &ar); \\\n')
-		realbinds.write('  lua_getinfo(L, \"Sl\", &ar); \\\n')
-		realbinds.write('  script = elf_get_current_script(); \\\n')
-		realbinds.write('  if(ar.source[0] == \'@\') \\\n')
-		realbinds.write('    lua_pushfstring(L,\"[%s]:%d: error in %s (arg %d), expected \'%s\' got \'%s\'\", \\\n')
-		realbinds.write('    ar.short_src,ar.currentline,func_name,argnum,type,SWIG_Lua_typename(L,argnum)); \\\n')
-		realbinds.write('  else \\\n')
-		realbinds.write('    lua_pushfstring(L,\"[%s \\\"%s\\\"]:%d: error in %s (arg %d), expected \'%s\' got \'%s\'\", \\\n')
-		realbinds.write('    script->file_path,script->name,ar.currentline,func_name,argnum,type,SWIG_Lua_typename(L,argnum)); \\\n')
-		realbinds.write('  goto fail;}\n')
-		skipdef = True
-		continue
-	elif "#define SWIG_check_num_args" in line:
-		realbinds.write('#define SWIG_check_num_args(func_name,a,b) \\\n')
-		realbinds.write('  if (lua_gettop(L)<a || lua_gettop(L)>b) \\\n')
-		realbinds.write('  {lua_Debug ar; \\\n')
-		realbinds.write('  struct elf_script *script; \\\n')
-		realbinds.write('  lua_getstack(L, 0 + 1, &ar); \\\n')
-		realbinds.write('  lua_getinfo(L, \"Sl\", &ar); \\\n')
-		realbinds.write('  script = elf_get_current_script(); \\\n')
-		realbinds.write('  if(ar.source[0] == \'@\') \\\n')
-		realbinds.write('    lua_pushfstring(L,\"[%s]:%d: error in %s expected %d..%d args, got %d\", \\\n')
-		realbinds.write('    ar.short_src,ar.currentline,func_name,a,b,lua_gettop(L)); \\\n')
-		realbinds.write('  else \\\n')
-		realbinds.write('    lua_pushfstring(L,\"[%s \\\"%s\\\"]:%d: error in %s expected %d..%d args, got %d\", \\\n')
-		realbinds.write('    script->file_path,script->name,ar.currentline,func_name,a,b,lua_gettop(L)); \\\n')
-		realbinds.write('  goto fail;}\n')
-		skipdef = True
-		continue
-	elif "SWIG_name" not in line:
-		line = line.replace('\"elf_', '\"')
-		line = line.replace('\"ELF_', '\"')
-		line = line.replace('\"elf', '\"')
-	realbinds.write(line)
-realbinds.close()
 

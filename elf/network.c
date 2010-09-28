@@ -123,7 +123,7 @@ void GLFWCALL elf_run_client_networking(void* arg)
 }
 
 /* runs the engine as server by creating a new networking session */
-unsigned char elf_create_session(const char* address, unsigned short port)
+unsigned char elf_create_session(const char* address, int port)
 {
 	// cannot initialise server if the engine is already hosting a session
 	if(NULL != server)
@@ -158,7 +158,7 @@ unsigned char elf_create_session(const char* address, unsigned short port)
 	return ELF_TRUE;
 }
 
-unsigned char elf_connect_session(const char* address, unsigned short port)
+unsigned char elf_connect_session(const char* address, int port)
 {
 	elf_write_to_log("net: attempting to connect to %s:%d\n", address, port);
 
