@@ -17,7 +17,7 @@ BLENDELF_STATIC_LIBS = -lGL -lGLU /usr/lib/libGLEW.a /usr/lib/libglfw.a \
 	/usr/local/lib/libBulletDynamics.a \
 	/usr/local/lib/libLinearMath.a \
 	/usr/local/lib/libBulletCollision.a \
-	-lfreeimage -lfreetype -lopenal -pthread
+	-lfreeimage -lfreetype -lopenal -pthread -lassimp
 
 all:
 	python genwraps.py
@@ -27,8 +27,7 @@ all:
 	gcc -c elf/scripting.c $(DEV_CFLAGS) $(INCS)
 	gcc -c elf/network.c $(DEV_CFLAGS) $(INCS)
 	g++ -c elf/physics.cpp $(DEV_CFLAGS) $(INCS)
-	g++ -c elf/binds.cpp $(DEV_CFLAGS) $(INCS)
-	g++ -c elf/blendelf_wrap.cxx $(DEV_CFLAGS) $(INCS)
+	gcc -c elf/binds.c $(DEV_CFLAGS) $(INCS)
 	gcc -Wl,-rpath,linux_libraries -o blendelf *.o $(DEV_CFLAGS) $(BLENDELF_LIBS)
 	rm *.o
 
@@ -40,8 +39,7 @@ static:
 	gcc -c elf/scripting.c $(STA_CFLAGS) $(INCS)
 	gcc -c elf/network.c $(STA_CFLAGS) $(INCS)
 	g++ -c elf/physics.cpp $(STA_CFLAGS) $(INCS)
-	g++ -c elf/binds.cpp $(STA_CFLAGS) $(INCS)
-	g++ -c elf/blendelf_wrap.cxx $(STA_CFLAGS) $(INCS)
+	gcc -c elf/binds.c $(STA_CFLAGS) $(INCS)
 	gcc -Wl,-rpath,linux_libraries -o blendelf *.o $(STA_CFLAGS) $(BLENDELF_STATIC_LIBS)
 	rm *.o
 
@@ -53,8 +51,7 @@ shared:
 	gcc -c -fPIC elf/scripting.c $(SHR_CFLAGS) $(INCS)
 	gcc -c -fPIC elf/network.c $(SHR_CFLAGS) $(INCS)
 	g++ -c -fPIC elf/physics.cpp $(SHR_CFLAGS) $(INCS)
-	g++ -c -fPIC elf/binds.cpp $(SHR_CFLAGS) $(INCS)
-	g++ -c -fPIC elf/blendelf_wrap.cxx $(SHR_CFLAGS) $(INCS)
+	gcc -c -fPIC elf/binds.c $(SHR_CFLAGS) $(INCS)
 	gcc -Wl,-rpath,linux_libraries -shared -o libblendelf.so *.o $(SHR_CFLAGS) $(BLENDELF_STATIC_LIBS)
 	rm *.o
 
