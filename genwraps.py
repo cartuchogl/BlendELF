@@ -741,8 +741,8 @@ for line in src:
 
 src.close()
 
-bindsh = open('cppsdk/blendelf.h', 'w')
-bindsh.write('#ifndef ELF_BINDS_H\n#define ELF_BINDS_H\n')
+bindsh = open('csdk/blendelf.h', 'w')
+bindsh.write('#ifndef ELF_BLENDELF_H\n#define ELF_BLENDELF_H\n')
 
 for define in defines:
 	bindsh.write('#define ELF_'+define.name+' '+define.value+'\n')
