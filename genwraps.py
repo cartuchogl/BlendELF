@@ -880,7 +880,7 @@ for define in defines:
 		docs.write('<div class=\"apitopic\">'+define.mdoc+'</div>\n')
 	if len(define.mdocc) > 0:
 		docs.write('<div class=\"apiinfo\">'+define.mdocc+'</div>\n')
-	docs.write('<div class=\"apidefine\">elf.'+define.name+'</div>\n')
+	docs.write('<div class=\"apidefine\">'+define.name+'</div>\n')
 
 for func in functions:
 	if len(func.mdoc) > 0:
@@ -888,17 +888,17 @@ for func in functions:
 	if len(func.mdocc) > 0:
 		docs.write('<div class=\"apiinfo\">'+func.mdocc+'</div>\n')
 	docs.write('<div class=\"apifunc\">')
-	if func.type == 'elf_handle':
-		docs.write('<span class=\"apiobjtype\">object</span> ')
+	if func.type in elfobjs:
+		docs.write('<span class=\"apiobjtype\">'+func.type[:-1]+'</span> ')
 	elif func.type == 'const char*':
 		docs.write('<span class=\"apikeytype\">string</span> ')
 	elif func.type == 'void':
 		pass
 	else: docs.write('<span class=\"apikeytype\">'+func.type+'</span> ')
-	docs.write('elf.'+func.name+'( ')
+	docs.write(func.name+'( ')
 	for i in range(len(func.params)):
-		if func.params[i].type == 'elf_handle':
-			docs.write('<span class=\"apiobjtype\">object</span> '+func.params[i].name)
+		if func.params[i].type in elfobjs:
+			docs.write('<span class=\"apiobjtype\">'+func.params[i].type[:-1]+'</span> '+func.params[i].name)
 		elif func.params[i].type == 'const char*':
 			docs.write('<span class=\"apikeytype\">string</span> '+func.params[i].name)
 		else: docs.write('<span class="apikeytype">'+func.params[i].type+'</span> '+func.params[i].name)
