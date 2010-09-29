@@ -130,340 +130,340 @@ extern "C" {
 #define GFX_GBUFFER_FILL				0x0002
 #define GFX_GBUFFER_LIGHTING				0x0003
 
-typedef struct gfx_object				gfx_object;
-typedef struct gfx_general				gfx_general;
-typedef struct gfx_driver				gfx_driver;
-typedef struct gfx_transform				gfx_transform;
-typedef struct gfx_vertex_data				gfx_vertex_data;
-typedef struct gfx_vertex_array				gfx_vertex_array;
-typedef struct gfx_vertex_index				gfx_vertex_index;
-typedef struct gfx_texture				gfx_texture;
-typedef struct gfx_shader_program			gfx_shader_program;
-typedef struct gfx_render_target			gfx_render_target;
-typedef struct gfx_query				gfx_query;
-typedef struct gfx_gbuffer				gfx_gbuffer;
+typedef struct gfxObject				gfxObject;
+typedef struct gfxGeneral				gfxGeneral;
+typedef struct gfxDriver				gfxDriver;
+typedef struct gfxTransform				gfxTransform;
+typedef struct gfxVertexData				gfxVertexData;
+typedef struct gfxVertexArray				gfxVertexArray;
+typedef struct gfxVertexIndex				gfxVertexIndex;
+typedef struct gfxTexture				gfxTexture;
+typedef struct gfxShaderProgram			gfxShaderProgram;
+typedef struct gfxRenderTarget			gfxRenderTarget;
+typedef struct gfxQuery				gfxQuery;
+typedef struct gfxGbuffer				gfxGbuffer;
 
-typedef struct gfx_color {
+typedef struct gfxColor {
 	float r, g, b, a;
-} gfx_color;
+} gfxColor;
 
-typedef struct gfx_position {
+typedef struct gfxPosition {
 	float x, y, z;
-} gfx_position;
+} gfxPosition;
 
-typedef struct gfx_normal {
+typedef struct gfxNormal {
 	float x, y, z;
-} gfx_normal;
+} gfxNormal;
 
-typedef struct gfx_render_params {
-	unsigned char depth_test;
-	unsigned char depth_write;
-	unsigned char depth_func;
-	unsigned char color_write;
-	unsigned char alpha_write;
-	unsigned char alpha_test;
-	float alpha_threshold;
-	unsigned char cull_face;
-	unsigned char blend_mode;
-	float offset_scale;
-	float offset_bias;
-	float line_width;
-	unsigned char line_smooth;
-	unsigned char cull_face_mode;
-	unsigned char front_face;
+typedef struct gfxRenderParams {
+	unsigned char depthTest;
+	unsigned char depthWrite;
+	unsigned char depthFunc;
+	unsigned char colorWrite;
+	unsigned char alphaWrite;
+	unsigned char alphaTest;
+	float alphaThreshold;
+	unsigned char cullFace;
+	unsigned char blendMode;
+	float offsetScale;
+	float offsetBias;
+	float lineWidth;
+	unsigned char lineSmooth;
+	unsigned char cullFaceMode;
+	unsigned char frontFace;
 	unsigned char wireframe;
-	unsigned char vertex_color;
-} gfx_render_params;
+	unsigned char vertexColor;
+} gfxRenderParams;
 
-typedef struct gfx_fog_params {
+typedef struct gfxFogParams {
 	unsigned char mode;
 	float start;
 	float end;
-	gfx_color color;
-} gfx_fog_params;
+	gfxColor color;
+} gfxFogParams;
 
-typedef struct gfx_material_params {
-	gfx_color ambient_color;
-	gfx_color diffuse_color;
-	gfx_color specular_color;
+typedef struct gfxMaterialParams {
+	gfxColor ambientColor;
+	gfxColor diffuseColor;
+	gfxColor specularColor;
 	float shininess;
-} gfx_material_params;
+} gfxMaterialParams;
 
-typedef struct gfx_texture_params {
+typedef struct gfxTextureParams {
 	int type;
-	gfx_texture* texture;
-	int projection_mode;
-	float parallax_scale;
+	gfxTexture* texture;
+	int projectionMode;
+	float parallaxScale;
 	float matrix[16];
-} gfx_texture_params;
+} gfxTextureParams;
 
-typedef struct gfx_light_params {
+typedef struct gfxLightParams {
 	unsigned char type;
 	unsigned char mode;
-	gfx_position position;
-	gfx_normal direction;
-	gfx_color color;
+	gfxPosition position;
+	gfxNormal direction;
+	gfxColor color;
 	float distance;
-	float fade_speed;
-	float inner_cone;
-	float outer_cone;
-} gfx_light_params;
+	float fadeSpeed;
+	float innerCone;
+	float outerCone;
+} gfxLightParams;
 
-typedef struct gfx_shader_params {
-	gfx_render_params render_params;
-	gfx_fog_params fog_params;
-	gfx_material_params material_params;
-	gfx_texture_params texture_params[GFX_MAX_TEXTURES];
-	gfx_light_params light_params;
-	gfx_position camera_position;
-	float camera_matrix[16];
-	float clip_start;
-	float clip_end;
-	int viewport_width;
-	int viewport_height;
-	float projection_matrix[16];
-	float inv_projection_matrix[16];
-	float modelview_matrix[16];
-	gfx_gbuffer* gbuffer;
-	unsigned char gbuffer_mode;
-	gfx_shader_program* shader_program;
-} gfx_shader_params;
+typedef struct gfxShaderParams {
+	gfxRenderParams renderParams;
+	gfxFogParams fogParams;
+	gfxMaterialParams materialParams;
+	gfxTextureParams textureParams[GFX_MAX_TEXTURES];
+	gfxLightParams lightParams;
+	gfxPosition cameraPosition;
+	float cameraMatrix[16];
+	float clipStart;
+	float clipEnd;
+	int viewportWidth;
+	int viewportHeight;
+	float projectionMatrix[16];
+	float invProjectionMatrix[16];
+	float modelviewMatrix[16];
+	gfxGbuffer* gbuffer;
+	unsigned char gbufferMode;
+	gfxShaderProgram* shaderProgram;
+} gfxShaderParams;
 
-typedef struct gfx_shader_config {
+typedef struct gfxShaderConfig {
 	unsigned short int textures;
 	unsigned char light;
 	unsigned char gbuffer;
 	unsigned char specular;
-	unsigned char vertex_color;
+	unsigned char vertexColor;
 	unsigned char fog;
 	unsigned char blend;
-} gfx_shader_config;
+} gfxShaderConfig;
 
 //////////////////////////////// GENERAL ////////////////////////////////
 
-void gfx_init_general();
-void gfx_deinit_general();
+void gfxInitGeneral();
+void gfxDeinitGeneral();
 
-void gfx_inc_ref(gfx_object* obj);
-void gfx_dec_ref(gfx_object* obj);
-void gfx_inc_obj(int type);
-void gfx_dec_obj(int type);
+void gfxIncRef(gfxObject* obj);
+void gfxDecRef(gfxObject* obj);
+void gfxIncObj(int type);
+void gfxDecObj(int type);
 
-int gfx_get_object_type(gfx_object* obj);
-int gfx_get_object_ref_count(gfx_object* obj);
+int gfxGetObjectType(gfxObject* obj);
+int gfxGetObjectRefCount(gfxObject* obj);
 
-int gfx_get_global_ref_count();
-int gfx_get_global_obj_count();
+int gfxGetGlobalRefCount();
+int gfxGetGlobalObjCount();
 
 //////////////////////////////// MATH ////////////////////////////////
 
-void gfx_vec_to_euler(float* vec, float* euler);
-void gfx_vec_normalize(float* vec);
-void gfx_vec_dot_vec(float* vec1, float* vec2, float* dot);
-void gfx_vec_cross_product(float* vec1, float* vec2, float* vec3);
-float gfx_vec_length(float* vec);
+void gfxVecToEuler(float* vec, float* euler);
+void gfxVecNormalize(float* vec);
+void gfxVecDotVec(float* vec1, float* vec2, float* dot);
+void gfxVecCrossProduct(float* vec1, float* vec2, float* vec3);
+float gfxVecLength(float* vec);
 
-void gfx_qua_set_identity(float* qua);
-void gfx_qua_normalize(float* qua, float* result);
-void gfx_qua_get_inverse(float* qua, float* invqua);
-void gfx_qua_from_direction(float* dir, float* qua);
-void gfx_qua_from_angle_axis(float angle, float* axis, float* qua);
-void gfx_qua_from_euler(float x, float y, float z, float* qua);
-void gfx_qua_to_matrix4(float* qua, float* mat);
-void gfx_qua_to_euler(float* qua, float* euler);
-void gfx_rotate_qua(float x, float y, float z, float* qua);
-void gfx_rotate_qua_local(float x, float y, float z, float* qua);
-void gfx_mul_qua_vec(float* qua, float* vec1, float* vec2);
-void gfx_mul_qua_qua(float* qua1, float* qua2, float* qua3);
-void gfx_qua_slerp(float* qa, float* qb, double t, float* result);
+void gfxQuaSetIdentity(float* qua);
+void gfxQuaNormalize(float* qua, float* result);
+void gfxQuaGetInverse(float* qua, float* invqua);
+void gfxQuaFromDirection(float* dir, float* qua);
+void gfxQuaFromAngleAxis(float angle, float* axis, float* qua);
+void gfxQuaFromEuler(float x, float y, float z, float* qua);
+void gfxQuaToMatrix4(float* qua, float* mat);
+void gfxQuaToEuler(float* qua, float* euler);
+void gfxRotateQua(float x, float y, float z, float* qua);
+void gfxRotateQuaLocal(float x, float y, float z, float* qua);
+void gfxMulQuaVec(float* qua, float* vec1, float* vec2);
+void gfxMulQuaQua(float* qua1, float* qua2, float* qua3);
+void gfxQuaSlerp(float* qa, float* qb, double t, float* result);
 
-void gfx_matrix4_set_identity(float* mat);
-void gfx_matrix4_transpose(float* mat1, float* mat2);
-void gfx_matrix4_get_inverse_fast(float* mat1, float* mat2);
-unsigned char gfx_matrix4_get_inverse(float* mat1, float* mat2);
-void gfx_matrix3_to_qua(float* mat, float* qua);
-void gfx_matrix4_to_euler(float* mat, float* eul);
-void gfx_mul_matrix4_vec3(float* m1, float* vec1, float* vec2);
-void gfx_mul_matrix4_vec4(float* m1, float* vec1, float* vec2);
-void gfx_mul_matrix4_matrix4(float* m1, float* m2, float* m3);
+void gfxMatrix4SetIdentity(float* mat);
+void gfxMatrix4Transpose(float* mat1, float* mat2);
+void gfxMatrix4GetInverseFast(float* mat1, float* mat2);
+unsigned char gfxMatrix4GetInverse(float* mat1, float* mat2);
+void gfxMatrix3ToQua(float* mat, float* qua);
+void gfxMatrix4ToEuler(float* mat, float* eul);
+void gfxMulMatrix4Vec3(float* m1, float* vec1, float* vec2);
+void gfxMulMatrix4Vec4(float* m1, float* vec1, float* vec2);
+void gfxMulMatrix4Matrix4(float* m1, float* m2, float* m3);
 
-unsigned char gfx_box_sphere_intersect(float* bmin, float* bmax, float* spos, float srad);
+unsigned char gfxBoxSphereIntersect(float* bmin, float* bmax, float* spos, float srad);
 
-unsigned char gfx_aabb_inside_frustum(float frustum[6][4], float* min, float* max);
-unsigned char gfx_sphere_inside_frustum(float frustum[6][4], float* pos, float radius);
+unsigned char gfxAabbInsideFrustum(float frustum[6][4], float* min, float* max);
+unsigned char gfxSphereInsideFrustum(float frustum[6][4], float* pos, float radius);
 
 //////////////////////////////// TRANSFORM ////////////////////////////////
 
-void gfx_set_viewport(int x, int y, int width, int height);
-void gfx_get_perspective_projection_matrix(float fov, float aspect, float near, float far, float* mat);
-void gfx_get_orthographic_projection_matrix(float left, float right, float bottom, float top, float near, float far, float* matrix);
-void gfx_get_frustum(float proj[16], float modl[16], float frustum[6][4]);
-void gfx_set_perspective(float fov, float aspect, float near, float far);
-void gfx_set_orthographic(float left, float right, float bottom, float top, float near, float far);
+void gfxSetViewport(int x, int y, int width, int height);
+void gfxGetPerspectiveProjectionMatrix(float fov, float aspect, float near, float far, float* mat);
+void gfxGetOrthographicProjectionMatrix(float left, float right, float bottom, float top, float near, float far, float* matrix);
+void gfxGetFrustum(float proj[16], float modl[16], float frustum[6][4]);
+void gfxSetPerspective(float fov, float aspect, float near, float far);
+void gfxSetOrthographic(float left, float right, float bottom, float top, float near, float far);
 
-void gfx_project(float x, float y, float z, float modl[16], float proj[16], int viewport[4], float win_coord[3]);
-void gfx_un_project(float x, float y, float z, float modl[16], float proj[16], int viewport[4], float obj_coord[3]);
+void gfxProject(float x, float y, float z, float modl[16], float proj[16], int viewport[4], float winCoord[3]);
+void gfxUnProject(float x, float y, float z, float modl[16], float proj[16], int viewport[4], float objCoord[3]);
 
-void gfx_recalc_transform_matrix(gfx_transform* transform);
-float* gfx_get_transform_matrix(gfx_transform* transform);
-gfx_transform* gfx_create_camera_transform();
-gfx_transform* gfx_create_object_transform();
-void gfx_destroy_transform(gfx_transform* transform);
+void gfxRecalcTransformMatrix(gfxTransform* transform);
+float* gfxGetTransformMatrix(gfxTransform* transform);
+gfxTransform* gfxCreateCameraTransform();
+gfxTransform* gfxCreateObjectTransform();
+void gfxDestroyTransform(gfxTransform* transform);
 
-void gfx_set_transform_position(gfx_transform* transform, float x, float y, float z);
-void gfx_set_transform_rotation(gfx_transform* transform, float x, float y, float z);
-void gfx_set_transform_scale(gfx_transform* transform, float x, float y, float z);
-void gfx_set_transform_orientation(gfx_transform* transform, float x, float y, float z, float w);
-void gfx_rotate_transform(gfx_transform* transform, float x, float y, float z);
-void gfx_rotate_transform_local(gfx_transform* transform, float x, float y, float z);
-void gfx_move_transform(gfx_transform* transform, float x, float y, float z);
-void gfx_move_transform_local(gfx_transform* transform, float x, float y, float z);
-unsigned char gfx_get_transform_camera_mode(gfx_transform* transform);
-void gfx_get_transform_position(gfx_transform* transform, float* params);
-void gfx_get_transform_rotation(gfx_transform* transform, float* params);
-void gfx_get_transform_scale(gfx_transform* transofrm, float* paramt);
-void gfx_get_transform_orientation(gfx_transform* transform, float* params);
+void gfxSetTransformPosition(gfxTransform* transform, float x, float y, float z);
+void gfxSetTransformRotation(gfxTransform* transform, float x, float y, float z);
+void gfxSetTransformScale(gfxTransform* transform, float x, float y, float z);
+void gfxSetTransformOrientation(gfxTransform* transform, float x, float y, float z, float w);
+void gfxRotateTransform(gfxTransform* transform, float x, float y, float z);
+void gfxRotateTransformLocal(gfxTransform* transform, float x, float y, float z);
+void gfxMoveTransform(gfxTransform* transform, float x, float y, float z);
+void gfxMoveTransformLocal(gfxTransform* transform, float x, float y, float z);
+unsigned char gfxGetTransformCameraMode(gfxTransform* transform);
+void gfxGetTransformPosition(gfxTransform* transform, float* params);
+void gfxGetTransformRotation(gfxTransform* transform, float* params);
+void gfxGetTransformScale(gfxTransform* transofrm, float* paramt);
+void gfxGetTransformOrientation(gfxTransform* transform, float* params);
 
 //////////////////////////////// DRIVER ////////////////////////////////
 
-unsigned char gfx_init();
-void gfx_deinit();
+unsigned char gfxInit();
+void gfxDeinit();
 
-int gfx_get_version();
+int gfxGetVersion();
 
-void gfx_clear_buffers(float r, float g, float b, float a, float d);
-void gfx_clear_color_buffer(float r, float g, float b, float a);
-void gfx_clear_depth_buffer(float d);
+void gfxClearBuffers(float r, float g, float b, float a, float d);
+void gfxClearColorBuffer(float r, float g, float b, float a);
+void gfxClearDepthBuffer(float d);
 
-void gfx_read_pixels(int x, int y, int width, int height, int format, int data_format, void* data);
-void gfx_copy_frame_buffer(gfx_texture* texture, int ox, int oy, int x, int y, int width, int height);
+void gfxReadPixels(int x, int y, int width, int height, int format, int dataFormat, void* data);
+void gfxCopyFrameBuffer(gfxTexture* texture, int ox, int oy, int x, int y, int width, int height);
 
-void gfx_reset_vertices_drawn();
-int gfx_get_vertices_drawn(unsigned int draw_mode);
+void gfxResetVerticesDrawn();
+int gfxGetVerticesDrawn(unsigned int drawMode);
 
-void gfx_print_gl_error();
+void gfxPrintGLError();
 
-void gfx_set_scissor(int x, int y, int width, int height);
-void gfx_disable_scissor();
+void gfxSetScissor(int x, int y, int width, int height);
+void gfxDisableScissor();
 
 //////////////////////////////// VERTEX ARRAY/INDEX ////////////////////////////////
 
-gfx_vertex_data* gfx_create_vertex_data(int count, int format, int data_type);
-void gfx_destroy_vertex_data(void* data);
-int gfx_get_vertex_data_count(gfx_vertex_data* data);
-int gfx_get_vertex_data_format(gfx_vertex_data* data);
-int gfx_get_vertex_data_size_bytes(gfx_vertex_data* data);
+gfxVertexData* gfxCreateVertexData(int count, int format, int dataType);
+void gfxDestroyVertexData(void* data);
+int gfxGetVertexDataCount(gfxVertexData* data);
+int gfxGetVertexDataFormat(gfxVertexData* data);
+int gfxGetVertexDataSizeBytes(gfxVertexData* data);
 
-void* gfx_get_vertex_data_buffer(gfx_vertex_data* data);
-void gfx_update_vertex_data(gfx_vertex_data* data);
-void gfx_update_vertex_data_sub_data(gfx_vertex_data* data, int start, int length);
+void* gfxGetVertexDataBuffer(gfxVertexData* data);
+void gfxUpdateVertexData(gfxVertexData* data);
+void gfxUpdateVertexDataSubData(gfxVertexData* data, int start, int length);
 
-gfx_vertex_array* gfx_create_vertex_array(unsigned char gpu_data);
-void gfx_destroy_vertex_array(void* data);
+gfxVertexArray* gfxCreateVertexArray(unsigned char gpuData);
+void gfxDestroyVertexArray(void* data);
 
-int gfx_get_vertex_array_vertex_count(gfx_vertex_array* vertex_array);
-void gfx_set_vertex_array_data(gfx_vertex_array* vertex_array, int target, gfx_vertex_data* data);
-void gfx_reset_vertex_array(gfx_vertex_array* vertex_array);
-void gfx_set_vertex_array(gfx_vertex_array* vertex_array);
-void gfx_draw_vertex_array(gfx_vertex_array* vertex_array, int count, int draw_mode);
+int gfxGetVertexArrayVertexCount(gfxVertexArray* vertexArray);
+void gfxSetVertexArrayData(gfxVertexArray* vertexArray, int target, gfxVertexData* data);
+void gfxResetVertexArray(gfxVertexArray* vertexArray);
+void gfxSetVertexArray(gfxVertexArray* vertexArray);
+void gfxDrawVertexArray(gfxVertexArray* vertexArray, int count, int drawMode);
 
-gfx_vertex_index* gfx_create_vertex_index(unsigned char gpu_data, gfx_vertex_data* data);
-void gfx_destroy_vertex_index(void* data);
+gfxVertexIndex* gfxCreateVertexIndex(unsigned char gpuData, gfxVertexData* data);
+void gfxDestroyVertexIndex(void* data);
 
-int gfx_get_vertex_index_indice_count(gfx_vertex_index* vertex_index);
-void gfx_draw_vertex_index(gfx_vertex_index* vertex_index, unsigned int draw_mode);
+int gfxGetVertexIndexIndiceCount(gfxVertexIndex* vertexIndex);
+void gfxDrawVertexIndex(gfxVertexIndex* vertexIndex, unsigned int drawMode);
 
 //////////////////////////////// TEXTURE ////////////////////////////////
 
-int gfx_get_max_texture_size();
+int gfxGetMaxTextureSize();
 
-gfx_texture* gfx_create_texture();
-gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internal_format, int data_format, void* data);
-gfx_texture* gfx_create_cube_map(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internal_format, int data_format, void* xpos, void* xneg, void* ypos, void* yneg, void* zpos, void* zneg);
-void gfx_destroy_texture(void* data);
+gfxTexture* gfxCreateTexture();
+gfxTexture* gfxCreate_2dTexture(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internalFormat, int dataFormat, void* data);
+gfxTexture* gfxCreateCubeMap(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internalFormat, int dataFormat, void* xpos, void* xneg, void* ypos, void* yneg, void* zpos, void* zneg);
+void gfxDestroyTexture(void* data);
 
-int gfx_get_texture_type(gfx_texture* texture);
-int gfx_get_texture_width(gfx_texture* texture);
-int gfx_get_texture_height(gfx_texture* texture);
-int gfx_get_texture_format(gfx_texture* texture);
-int gfx_get_texture_data_format(gfx_texture* texture);
-void gfx_copy_framebuffer_to_texture(gfx_texture* texture);
+int gfxGetTextureType(gfxTexture* texture);
+int gfxGetTextureWidth(gfxTexture* texture);
+int gfxGetTextureHeight(gfxTexture* texture);
+int gfxGetTextureFormat(gfxTexture* texture);
+int gfxGetTextureDataFormat(gfxTexture* texture);
+void gfxCopyFramebufferToTexture(gfxTexture* texture);
 
 //////////////////////////////// SHADER PROGRAM ////////////////////////////////
 
-gfx_shader_program* gfx_create_shader_program(const char* vertex, const char* fragment);
-void gfx_destroy_shader_program(gfx_shader_program* shader_program);
-void gfx_destroy_shader_programs(gfx_shader_program* shader_program);
+gfxShaderProgram* gfxCreateShaderProgram(const char* vertex, const char* fragment);
+void gfxDestroyShaderProgram(gfxShaderProgram* shaderProgram);
+void gfxDestroyShaderPrograms(gfxShaderProgram* shaderProgram);
 
-void gfx_set_shader_program_uniform_1i(const char* name, int i);
-void gfx_set_shader_program_uniform_1f(const char* name, float f);
-void gfx_set_shader_program_uniform_vec2(const char* name, float x, float y);
-void gfx_set_shader_program_uniform_vec3(const char* name, float x, float y, float z);
-void gfx_set_shader_program_uniform_vec4(const char* name, float x, float y, float z, float w);
-void gfx_set_shader_program_uniform_mat4(const char* name, float* matrix);
+void gfxSetShaderProgramUniform_1i(const char* name, int i);
+void gfxSetShaderProgramUniform_1f(const char* name, float f);
+void gfxSetShaderProgramUniformVec2(const char* name, float x, float y);
+void gfxSetShaderProgramUniformVec3(const char* name, float x, float y, float z);
+void gfxSetShaderProgramUniformVec4(const char* name, float x, float y, float z, float w);
+void gfxSetShaderProgramUniformMat4(const char* name, float* matrix);
 
 //////////////////////////////// RENDER TARGET ////////////////////////////////
 
-gfx_render_target* gfx_create_render_target(unsigned int width, unsigned int height);
-void gfx_destroy_render_target(void* data);
+gfxRenderTarget* gfxCreateRenderTarget(unsigned int width, unsigned int height);
+void gfxDestroyRenderTarget(void* data);
 
-gfx_render_target* gfx_get_cur_render_target();
-void gfx_set_render_target_color_texture(gfx_render_target* render_target, unsigned int n, gfx_texture* color);
-void gfx_set_render_target_depth_texture(gfx_render_target* render_target, gfx_texture* depth);
-unsigned char gfx_set_render_target(gfx_render_target* render_target);
-void gfx_disable_render_target();
+gfxRenderTarget* gfxGetCurRenderTarget();
+void gfxSetRenderTargetColorTexture(gfxRenderTarget* renderTarget, unsigned int n, gfxTexture* color);
+void gfxSetRenderTargetDepthTexture(gfxRenderTarget* renderTarget, gfxTexture* depth);
+unsigned char gfxSetRenderTarget(gfxRenderTarget* renderTarget);
+void gfxDisableRenderTarget();
 
 //////////////////////////////// SHADER PARAMS ////////////////////////////////
 
-void gfx_set_color(gfx_color* color, float r, float g, float b, float a);
-void gfx_set_shader_params_default(gfx_shader_params* shader_params);
-void gfx_set_material_params_default(gfx_shader_params* shader_params);
-void gfx_set_texture_params_default(gfx_shader_params* shader_params);
-void gfx_set_shader_params(gfx_shader_params* shader_params);
+void gfxSetColor(gfxColor* color, float r, float g, float b, float a);
+void gfxSetShaderParamsDefault(gfxShaderParams* shaderParams);
+void gfxSetMaterialParamsDefault(gfxShaderParams* shaderParams);
+void gfxSetTextureParamsDefault(gfxShaderParams* shaderParams);
+void gfxSetShaderParams(gfxShaderParams* shaderParams);
 
 //////////////////////////////// DRAW ////////////////////////////////
 
-void gfx_draw_2d_quad(float x, float y, float width, float height);
-void gfx_draw_textured_2d_quad(float x, float y, float width, float height);
-void gfx_draw_textured_2d_quad_region(float x, float y, float width, float height, float tx, float ty, float twidth, float theight);
+void gfxDraw_2dQuad(float x, float y, float width, float height);
+void gfxDrawTextured_2dQuad(float x, float y, float width, float height);
+void gfxDrawTextured_2dQuadRegion(float x, float y, float width, float height, float tx, float ty, float twidth, float theight);
 
-void gfx_draw_bounding_box(float min[3], float max[3]);
-void gfx_draw_lines(int count, gfx_vertex_data* vertices);
-void gfx_draw_line_loop(int count, gfx_vertex_data* vertices);
-void gfx_draw_circle(int vertices, float size);
+void gfxDrawBoundingBox(float min[3], float max[3]);
+void gfxDrawLines(int count, gfxVertexData* vertices);
+void gfxDrawLineLoop(int count, gfxVertexData* vertices);
+void gfxDrawCircle(int vertices, float size);
 
 //////////////////////////////// SHADER GEN ////////////////////////////////
 
-void gfx_get_shader_program_config(gfx_shader_params* shader_params, gfx_shader_config* shader_config);
-gfx_shader_program* gfx_get_shader_program(gfx_shader_config* config);
+void gfxGetShaderProgramConfig(gfxShaderParams* shaderParams, gfxShaderConfig* shaderConfig);
+gfxShaderProgram* gfxGetShaderProgram(gfxShaderConfig* config);
 
 //////////////////////////////// QUERY ////////////////////////////////
 
-gfx_query* gfx_create_query();
-void gfx_destroy_query(gfx_query* query);
+gfxQuery* gfxCreateQuery();
+void gfxDestroyQuery(gfxQuery* query);
 
-void gfx_begin_query(gfx_query* query);
-void gfx_end_query(gfx_query* query);
-unsigned char gfx_is_query_result(gfx_query* query);
-int gfx_get_query_result(gfx_query* query);
+void gfxBeginQuery(gfxQuery* query);
+void gfxEndQuery(gfxQuery* query);
+unsigned char gfxIsQueryResult(gfxQuery* query);
+int gfxGetQueryResult(gfxQuery* query);
 
 //////////////////////////////// G-BUFFER ////////////////////////////////
 
-gfx_gbuffer* gfx_create_gbuffer(int width, int height);
-void gfx_destroy_gbuffer(void* data);
+gfxGbuffer* gfxCreateGbuffer(int width, int height);
+void gfxDestroyGbuffer(void* data);
 
-void gfx_bind_gbuffer(gfx_gbuffer* gbuffer, gfx_shader_params* shader_params);
-void gfx_bind_gbuffer_light(gfx_gbuffer* gbuffer, gfx_shader_params* shader_params);
-void gfx_bind_gbuffer_main(gfx_gbuffer* gbuffer, gfx_shader_params* shader_params);
+void gfxBindGbuffer(gfxGbuffer* gbuffer, gfxShaderParams* shaderParams);
+void gfxBindGbufferLight(gfxGbuffer* gbuffer, gfxShaderParams* shaderParams);
+void gfxBindGbufferMain(gfxGbuffer* gbuffer, gfxShaderParams* shaderParams);
 
-gfx_texture* gfx_get_gbuffer_depth(gfx_gbuffer* gbuffer);
-gfx_texture* gfx_get_gbuffer_diffuse(gfx_gbuffer* gbuffer);
-gfx_texture* gfx_get_gbuffer_specular(gfx_gbuffer* gbuffer);
-gfx_texture* gfx_get_gbuffer_main(gfx_gbuffer* gbuffer);
-gfx_texture* gfx_get_gbuffer_buf1(gfx_gbuffer* gbuffer);
-gfx_texture* gfx_get_gbuffer_buf2(gfx_gbuffer* gbuffer);
-gfx_texture* gfx_get_gbuffer_buf3(gfx_gbuffer* gbuffer);
-gfx_texture* gfx_get_gbuffer_buf4(gfx_gbuffer* gbuffer);
+gfxTexture* gfxGetGbufferDepth(gfxGbuffer* gbuffer);
+gfxTexture* gfxGetGbufferDiffuse(gfxGbuffer* gbuffer);
+gfxTexture* gfxGetGbufferSpecular(gfxGbuffer* gbuffer);
+gfxTexture* gfxGetGbufferMain(gfxGbuffer* gbuffer);
+gfxTexture* gfxGetGbufferBuf1(gfxGbuffer* gbuffer);
+gfxTexture* gfxGetGbufferBuf2(gfxGbuffer* gbuffer);
+gfxTexture* gfxGetGbufferBuf3(gfxGbuffer* gbuffer);
+gfxTexture* gfxGetGbufferBuf4(gfxGbuffer* gbuffer);
 
 #ifdef __cplusplus
 }

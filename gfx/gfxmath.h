@@ -1,5 +1,5 @@
 
-void gfx_vec_to_euler(float* vec, float* euler)
+void gfxVecToEuler(float* vec, float* euler)
 {
 	//euler[0] = -GFX_180_DIV_PI*atan(sqrt(vec[0]*vec[0]+vec[1]*vec[1])/vec[2]);
 	euler[0] = 0.0;
@@ -7,7 +7,7 @@ void gfx_vec_to_euler(float* vec, float* euler)
 	euler[2] = -GFX_180_DIV_PI*atan(vec[0]/(vec[1]));
 }
 
-void gfx_vec_normalize(float* vec)
+void gfxVecNormalize(float* vec)
 {
 	float length = 1.0/(float)sqrt(vec[0]*vec[0]+vec[1]*vec[1]+vec[2]*vec[2]);
 	vec[0] *= length;
@@ -15,30 +15,30 @@ void gfx_vec_normalize(float* vec)
 	vec[2] *= length;
 }
 
-void gfx_vec_dot_vec(float* vec1, float* vec2, float* dot)
+void gfxVecDotVec(float* vec1, float* vec2, float* dot)
 {
 	*dot = vec1[0]*vec2[0]+vec1[1]*vec2[1]+vec1[2]*vec2[2];
 }
 
-void gfx_vec_cross_product(float* vec1, float* vec2, float* vec3)
+void gfxVecCrossProduct(float* vec1, float* vec2, float* vec3)
 {
 	vec3[0] = vec1[1]*vec2[2]-vec1[2]*vec2[1];
 	vec3[1] = vec1[2]*vec2[0]-vec1[0]*vec2[2];
 	vec3[2] = vec1[0]*vec2[1]-vec1[1]*vec2[0];
 }
 
-float gfx_vec_length(float* vec)
+float gfxVecLength(float* vec)
 {
 	return (float)sqrt(vec[0]*vec[0]+vec[1]*vec[1]+vec[2]*vec[2]);
 }
 
-void gfx_qua_set_identity(float* qua)
+void gfxQuaSetIdentity(float* qua)
 {
 	qua[0] = qua[1] = qua[2] = 0.0;
 	qua[3] = 1.0;
 }
 
-void gfx_qua_normalize(float* qua, float* result)
+void gfxQuaNormalize(float* qua, float* result)
 {
 	float length = 1.0/sqrt(qua[0]*qua[0]+qua[1]*qua[1]+qua[2]*qua[2]+qua[3]*qua[3]);
 	result[0] = qua[0]*length;
@@ -47,7 +47,7 @@ void gfx_qua_normalize(float* qua, float* result)
 	result[3] = qua[3]*length;
 }
 
-void gfx_qua_get_inverse(float* qua, float* invqua)
+void gfxQuaGetInverse(float* qua, float* invqua)
 {
 	float length = 1.0/(qua[0]*qua[0]+qua[1]*qua[1]+qua[2]*qua[2]+qua[3]*qua[3]);
 	invqua[0] = qua[0]*(-length);
@@ -56,74 +56,74 @@ void gfx_qua_get_inverse(float* qua, float* invqua)
 	invqua[3] = qua[3]*length;
 }
 
-void gfx_qua_from_direction(float* dir, float* qua)
+void gfxQuaFromDirection(float* dir, float* qua)
 {
 	float up[3] = {0.0, 0.0, -1.0};
 	float right[3];
 	float scale;
-	float temp_qua[4];
+	float tempQua[4];
 
-	gfx_vec_cross_product(up, dir, right);
-	gfx_vec_cross_product(dir, right, up);
+	gfxVecCrossProduct(up, dir, right);
+	gfxVecCrossProduct(dir, right, up);
 
-	temp_qua[3] = (float)sqrt(1.0 + right[0]+up[1]+dir[2]) / 2.0;
-	scale = temp_qua[3]*4.0;
-	temp_qua[0] = (dir[1]-up[2])/scale;
-	temp_qua[1] = (right[2]-dir[0])/scale;
-	temp_qua[2] = (up[0]-right[1])/scale;
+	tempQua[3] = (float)sqrt(1.0 + right[0]+up[1]+dir[2]) / 2.0;
+	scale = tempQua[3]*4.0;
+	tempQua[0] = (dir[1]-up[2])/scale;
+	tempQua[1] = (right[2]-dir[0])/scale;
+	tempQua[2] = (up[0]-right[1])/scale;
 
-	gfx_qua_normalize(temp_qua, qua);
-	gfx_qua_get_inverse(qua, temp_qua);
-	memcpy(qua, temp_qua, sizeof(float)*4);
+	gfxQuaNormalize(tempQua, qua);
+	gfxQuaGetInverse(qua, tempQua);
+	memcpy(qua, tempQua, sizeof(float)*4);
 }
 
-void gfx_qua_from_angle_axis(float angle, float* axis, float* qua)
+void gfxQuaFromAngleAxis(float angle, float* axis, float* qua)
 {
-	float sin_a;
-	float cos_a;
+	float sinA;
+	float cosA;
 
-	sin_a = (float)sin(angle/2.0*GFX_PI_DIV_180);
-	cos_a = (float)cos(angle/2.0*GFX_PI_DIV_180);
+	sinA = (float)sin(angle/2.0*GFX_PI_DIV_180);
+	cosA = (float)cos(angle/2.0*GFX_PI_DIV_180);
 
-	qua[0] = axis[0]*sin_a;
-	qua[1] = axis[1]*sin_a;
-	qua[2] = axis[2]*sin_a;
-	qua[3] = cos_a;
+	qua[0] = axis[0]*sinA;
+	qua[1] = axis[1]*sinA;
+	qua[2] = axis[2]*sinA;
+	qua[3] = cosA;
 }
 
-void gfx_qua_from_euler(float x, float y, float z, float* qua)
+void gfxQuaFromEuler(float x, float y, float z, float* qua)
 {
-	float axis_angle_qua[4];
-	float temp_qua[4];
+	float axisAngleQua[4];
+	float tempQua[4];
 	float axis[3];
 
-	gfx_qua_set_identity(qua);
+	gfxQuaSetIdentity(qua);
 	memset(axis, 0x0, sizeof(float)*3);
 
 	if(x != 0.0)
 	{
 		axis[0] = 1.0; axis[1] = axis[2] = 0.0;
-		gfx_qua_from_angle_axis(x, axis, axis_angle_qua);
-		gfx_mul_qua_qua(axis_angle_qua, qua, temp_qua);
-		memcpy(qua, temp_qua, sizeof(float)*4);
+		gfxQuaFromAngleAxis(x, axis, axisAngleQua);
+		gfxMulQuaQua(axisAngleQua, qua, tempQua);
+		memcpy(qua, tempQua, sizeof(float)*4);
 	}
 	if(y != 0.0)
 	{
 		axis[1] = 1.0; axis[0] = axis[2] = 0.0;
-		gfx_qua_from_angle_axis(y, axis, axis_angle_qua);
-		gfx_mul_qua_qua(axis_angle_qua, qua, temp_qua);
-		memcpy(qua, temp_qua, sizeof(float)*4);
+		gfxQuaFromAngleAxis(y, axis, axisAngleQua);
+		gfxMulQuaQua(axisAngleQua, qua, tempQua);
+		memcpy(qua, tempQua, sizeof(float)*4);
 	}
 	if(z != 0.0)
 	{
 		axis[2] = 1.0; axis[0] = axis[1] = 0.0;
-		gfx_qua_from_angle_axis(z, axis, axis_angle_qua);
-		gfx_mul_qua_qua(axis_angle_qua, qua, temp_qua);
-		memcpy(qua, temp_qua, sizeof(float)*4);
+		gfxQuaFromAngleAxis(z, axis, axisAngleQua);
+		gfxMulQuaQua(axisAngleQua, qua, tempQua);
+		memcpy(qua, tempQua, sizeof(float)*4);
 	}
 }
 
-void gfx_qua_to_matrix4(float* qua, float* mat)
+void gfxQuaToMatrix4(float* qua, float* mat)
 {
 	float xx = 2*qua[0]*qua[0];
 	float xy = 2*qua[0]*qua[1];
@@ -141,7 +141,7 @@ void gfx_qua_to_matrix4(float* qua, float* mat)
 	mat[15] = 1.0f;
 }
 
-void gfx_qua_to_euler(float* qua, float* euler)
+void gfxQuaToEuler(float* qua, float* euler)
 {
 	float sqx = qua[0]*qua[0];
 	float sqy = qua[1]*qua[1];
@@ -157,83 +157,83 @@ void gfx_qua_to_euler(float* qua, float* euler)
 	euler[2] *= GFX_180_DIV_PI;
 }
 
-void gfx_rotate_qua(float x, float y, float z, float* qua)
+void gfxRotateQua(float x, float y, float z, float* qua)
 {
-	float axis_angle_qua[4];
-	float temp_qua0[4];
-	float temp_qua1[4];
+	float axisAngleQua[4];
+	float tempQua0[4];
+	float tempQua1[4];
 	float axis[3];
 
-	gfx_qua_set_identity(temp_qua0);
+	gfxQuaSetIdentity(tempQua0);
 	memset(axis, 0x0, sizeof(float)*3);
 
 	if(x != 0.0)
 	{
 		axis[0] = 1.0; axis[1] = axis[2] = 0.0;
-		gfx_qua_from_angle_axis(x, axis, axis_angle_qua);
-		gfx_mul_qua_qua(axis_angle_qua, temp_qua0, temp_qua1);
-		memcpy(temp_qua0, temp_qua1, sizeof(float)*4);
+		gfxQuaFromAngleAxis(x, axis, axisAngleQua);
+		gfxMulQuaQua(axisAngleQua, tempQua0, tempQua1);
+		memcpy(tempQua0, tempQua1, sizeof(float)*4);
 	}
 	if(y != 0.0)
 	{
 		axis[1] = 1.0; axis[0] = axis[2] = 0.0;
-		gfx_qua_from_angle_axis(y, axis, axis_angle_qua);
-		gfx_mul_qua_qua(axis_angle_qua, temp_qua0, temp_qua1);
-		memcpy(temp_qua0, temp_qua1, sizeof(float)*4);
+		gfxQuaFromAngleAxis(y, axis, axisAngleQua);
+		gfxMulQuaQua(axisAngleQua, tempQua0, tempQua1);
+		memcpy(tempQua0, tempQua1, sizeof(float)*4);
 	}
 	if(z != 0.0)
 	{
 		axis[2] = 1.0; axis[0] = axis[1] = 0.0;
-		gfx_qua_from_angle_axis(z, axis, axis_angle_qua);
-		gfx_mul_qua_qua(axis_angle_qua, temp_qua0, temp_qua1);
-		memcpy(temp_qua0, temp_qua1, sizeof(float)*4);
+		gfxQuaFromAngleAxis(z, axis, axisAngleQua);
+		gfxMulQuaQua(axisAngleQua, tempQua0, tempQua1);
+		memcpy(tempQua0, tempQua1, sizeof(float)*4);
 	}
 
-	memcpy(temp_qua1, qua, sizeof(float)*4);
-	gfx_mul_qua_qua(temp_qua0, temp_qua1, qua);
+	memcpy(tempQua1, qua, sizeof(float)*4);
+	gfxMulQuaQua(tempQua0, tempQua1, qua);
 }
 
-void gfx_rotate_qua_local(float x, float y, float z, float* qua)
+void gfxRotateQuaLocal(float x, float y, float z, float* qua)
 {
-	float axis_angle_qua[4];
-	float temp_qua0[4];
-	float temp_qua1[4];
-	float temp_axis[3];
+	float axisAngleQua[4];
+	float tempQua0[4];
+	float tempQua1[4];
+	float tempAxis[3];
 	float axis[3];
 
-	gfx_qua_set_identity(temp_qua0);
+	gfxQuaSetIdentity(tempQua0);
 	memset(axis, 0x0, sizeof(float)*3);
 
 	if(x != 0.0)
 	{
-		temp_axis[0] = 1.0; temp_axis[1] = temp_axis[2] = 0.0;
-		gfx_mul_qua_vec(qua, temp_axis, axis);
-		gfx_qua_from_angle_axis(x, axis, axis_angle_qua);
-		gfx_mul_qua_qua(axis_angle_qua, temp_qua0, temp_qua1);
-		memcpy(temp_qua0, temp_qua1, sizeof(float)*4);
+		tempAxis[0] = 1.0; tempAxis[1] = tempAxis[2] = 0.0;
+		gfxMulQuaVec(qua, tempAxis, axis);
+		gfxQuaFromAngleAxis(x, axis, axisAngleQua);
+		gfxMulQuaQua(axisAngleQua, tempQua0, tempQua1);
+		memcpy(tempQua0, tempQua1, sizeof(float)*4);
 	}
 	if(y != 0.0)
 	{
-		temp_axis[1] = 1.0; temp_axis[0] = temp_axis[2] = 0.0;
-		gfx_mul_qua_vec(qua, temp_axis, axis);
-		gfx_qua_from_angle_axis(y, axis, axis_angle_qua);
-		gfx_mul_qua_qua(axis_angle_qua, temp_qua0, temp_qua1);
-		memcpy(temp_qua0, temp_qua1, sizeof(float)*4);
+		tempAxis[1] = 1.0; tempAxis[0] = tempAxis[2] = 0.0;
+		gfxMulQuaVec(qua, tempAxis, axis);
+		gfxQuaFromAngleAxis(y, axis, axisAngleQua);
+		gfxMulQuaQua(axisAngleQua, tempQua0, tempQua1);
+		memcpy(tempQua0, tempQua1, sizeof(float)*4);
 	}
 	if(z != 0.0)
 	{
-		temp_axis[2] = 1.0; temp_axis[0] = temp_axis[1] = 0.0;
-		gfx_mul_qua_vec(qua, temp_axis, axis);
-		gfx_qua_from_angle_axis(z, axis, axis_angle_qua);
-		gfx_mul_qua_qua(axis_angle_qua, temp_qua0, temp_qua1);
-		memcpy(temp_qua0, temp_qua1, sizeof(float)*4);
+		tempAxis[2] = 1.0; tempAxis[0] = tempAxis[1] = 0.0;
+		gfxMulQuaVec(qua, tempAxis, axis);
+		gfxQuaFromAngleAxis(z, axis, axisAngleQua);
+		gfxMulQuaQua(axisAngleQua, tempQua0, tempQua1);
+		memcpy(tempQua0, tempQua1, sizeof(float)*4);
 	}
 
-	memcpy(temp_qua1, qua, sizeof(float)*4);
-	gfx_mul_qua_qua(temp_qua0, temp_qua1, qua);
+	memcpy(tempQua1, qua, sizeof(float)*4);
+	gfxMulQuaQua(tempQua0, tempQua1, qua);
 }
 
-void gfx_mul_qua_vec(float* qua, float* vec1, float* vec2)
+void gfxMulQuaVec(float* qua, float* vec1, float* vec2)
 {
 	float uv[3];
 	float uuv[3];
@@ -242,8 +242,8 @@ void gfx_mul_qua_vec(float* qua, float* vec1, float* vec2)
 
 	qvec[0] = qua[0]; qvec[1] = qua[1]; qvec[2] = qua[2];
 
-	gfx_vec_cross_product(qvec, vec1, uv);
-	gfx_vec_cross_product(qvec, uv, uuv);
+	gfxVecCrossProduct(qvec, vec1, uv);
+	gfxVecCrossProduct(qvec, uv, uuv);
 
 	qmul = 2.0*qua[3];
 	uv[0] *= qmul;
@@ -259,7 +259,7 @@ void gfx_mul_qua_vec(float* qua, float* vec1, float* vec2)
 	vec2[2] = vec1[2]+uv[2]+uuv[2];
 }
 
-void gfx_mul_qua_qua(float* qua1, float* qua2, float* qua3)
+void gfxMulQuaQua(float* qua1, float* qua2, float* qua3)
 {
 	qua3[0] =  qua1[0]*qua2[3]+qua1[1]*qua2[2]-qua1[2]*qua2[1]+qua1[3]*qua2[0];
 	qua3[1] = -qua1[0]*qua2[2]+qua1[1]*qua2[3]+qua1[2]*qua2[0]+qua1[3]*qua2[1];
@@ -267,19 +267,19 @@ void gfx_mul_qua_qua(float* qua1, float* qua2, float* qua3)
 	qua3[3] = -qua1[0]*qua2[0]-qua1[1]*qua2[1]-qua1[2]*qua2[2]+qua1[3]*qua2[3];
 }
 
-void gfx_qua_slerp(float* qa, float* qc, double t, float* result)
+void gfxQuaSlerp(float* qa, float* qc, double t, float* result)
 {
-	float cos_half_theta;
-	float half_theta;
-	float sin_half_theta;
-	float ratio_a;
-	float ratio_b;
+	float cosHalfTheta;
+	float halfTheta;
+	float sinHalfTheta;
+	float ratioA;
+	float ratioB;
 	float qb[4];
 
 	memcpy(qb, qc, sizeof(float)*4);
 
-	cos_half_theta = qa[3]*qb[3]+qa[0]*qb[0]+qa[1]*qb[1]+qa[2]*qb[2];
-	if(abs(cos_half_theta) >= 1.0)
+	cosHalfTheta = qa[3]*qb[3]+qa[0]*qb[0]+qa[1]*qb[1]+qa[2]*qb[2];
+	if(abs(cosHalfTheta) >= 1.0)
 	{
 		result[0] = qa[0];
 		result[1] = qa[1];
@@ -288,19 +288,19 @@ void gfx_qua_slerp(float* qa, float* qc, double t, float* result)
 		return;
 	}
 
-	if (cos_half_theta < 0.0)
+	if (cosHalfTheta < 0.0)
 	{
 		qb[0] = -qb[0];
 		qb[1] = -qb[1];
 		qb[2] = -qb[2];
 		qb[3] = -qb[3];
-		cos_half_theta = -cos_half_theta;
+		cosHalfTheta = -cosHalfTheta;
 	}
 
-	half_theta = acos(cos_half_theta);
-	sin_half_theta = sqrt(1.0-cos_half_theta*cos_half_theta);
+	halfTheta = acos(cosHalfTheta);
+	sinHalfTheta = sqrt(1.0-cosHalfTheta*cosHalfTheta);
 
-	if(fabs(sin_half_theta) < 0.001)
+	if(fabs(sinHalfTheta) < 0.001)
 	{
 		result[0] = (qa[0] * 0.5 + qb[0] * 0.5);
 		result[1] = (qa[1] * 0.5 + qb[1] * 0.5);
@@ -309,22 +309,22 @@ void gfx_qua_slerp(float* qa, float* qc, double t, float* result)
 		return;
 	}
 
-	ratio_a = sin((1 - t) * half_theta) / sin_half_theta;
-	ratio_b = sin(t * half_theta) / sin_half_theta; 
+	ratioA = sin((1 - t) * halfTheta) / sinHalfTheta;
+	ratioB = sin(t * halfTheta) / sinHalfTheta; 
 
-	result[0] = (qa[0] * ratio_a + qb[0] * ratio_b);
-	result[1] = (qa[1] * ratio_a + qb[1] * ratio_b);
-	result[2] = (qa[2] * ratio_a + qb[2] * ratio_b);
-	result[3] = (qa[3] * ratio_a + qb[3] * ratio_b);
+	result[0] = (qa[0] * ratioA + qb[0] * ratioB);
+	result[1] = (qa[1] * ratioA + qb[1] * ratioB);
+	result[2] = (qa[2] * ratioA + qb[2] * ratioB);
+	result[3] = (qa[3] * ratioA + qb[3] * ratioB);
 }
 
-void gfx_matrix4_set_identity(float* mat)
+void gfxMatrix4SetIdentity(float* mat)
 {
 	memset(mat, 0x0, sizeof(float)*16);
 	mat[0] = mat[5] = mat[10] = mat[15] = 1.0;
 }
 
-void gfx_matrix4_transpose(float* mat1, float* mat2)
+void gfxMatrix4Transpose(float* mat1, float* mat2)
 {
 	mat2[0] = mat1[0];
 	mat2[4] = mat1[1];
@@ -344,59 +344,59 @@ void gfx_matrix4_transpose(float* mat1, float* mat2)
 	mat2[15] = mat1[15];
 }
 
-#define _m11 0
-#define _m12 1
-#define _m13 2
-#define _m14 3
-#define _m21 4
-#define _m22 5
-#define _m23 6
-#define _m24 7
-#define _m31 8
-#define _m32 9
-#define _m33 10
-#define _m34 11
-#define _m41 12
-#define _m42 13
-#define _m43 14
-#define _m44 15
+#define M11 0
+#define M12 1
+#define M13 2
+#define M14 3
+#define M21 4
+#define M22 5
+#define M23 6
+#define M24 7
+#define M31 8
+#define M32 9
+#define M33 10
+#define M34 11
+#define M41 12
+#define M42 13
+#define M43 14
+#define M44 15
 
-float gfx_matrix4_get_determinant(float* mat1)
+float gfxMatrix4GetDeterminant(float* mat1)
 {
-	return mat1[_m11] * mat1[_m22] * mat1[_m33] * mat1[_m44] +
-		mat1[_m11] * mat1[_m23] * mat1[_m34] * mat1[_m42] +
-		mat1[_m11] * mat1[_m24] * mat1[_m32] * mat1[_m43] +
+	return mat1[M11] * mat1[M22] * mat1[M33] * mat1[M44] +
+		mat1[M11] * mat1[M23] * mat1[M34] * mat1[M42] +
+		mat1[M11] * mat1[M24] * mat1[M32] * mat1[M43] +
 
-		mat1[_m12] * mat1[_m21] * mat1[_m34] * mat1[_m43] +
-		mat1[_m12] * mat1[_m23] * mat1[_m31] * mat1[_m44] +
-		mat1[_m12] * mat1[_m24] * mat1[_m33] * mat1[_m41] +
+		mat1[M12] * mat1[M21] * mat1[M34] * mat1[M43] +
+		mat1[M12] * mat1[M23] * mat1[M31] * mat1[M44] +
+		mat1[M12] * mat1[M24] * mat1[M33] * mat1[M41] +
 
-		mat1[_m13] * mat1[_m21] * mat1[_m32] * mat1[_m44] +
-		mat1[_m13] * mat1[_m22] * mat1[_m34] * mat1[_m41] +
-		mat1[_m13] * mat1[_m24] * mat1[_m31] * mat1[_m42] +
+		mat1[M13] * mat1[M21] * mat1[M32] * mat1[M44] +
+		mat1[M13] * mat1[M22] * mat1[M34] * mat1[M41] +
+		mat1[M13] * mat1[M24] * mat1[M31] * mat1[M42] +
 
-		mat1[_m14] * mat1[_m21] * mat1[_m33] * mat1[_m42] +
-		mat1[_m14] * mat1[_m22] * mat1[_m31] * mat1[_m43] +
-		mat1[_m14] * mat1[_m23] * mat1[_m32] * mat1[_m41] -
+		mat1[M14] * mat1[M21] * mat1[M33] * mat1[M42] +
+		mat1[M14] * mat1[M22] * mat1[M31] * mat1[M43] +
+		mat1[M14] * mat1[M23] * mat1[M32] * mat1[M41] -
 
-		mat1[_m11] * mat1[_m22] * mat1[_m34] * mat1[_m43] -
-		mat1[_m11] * mat1[_m23] * mat1[_m32] * mat1[_m44] -
-		mat1[_m11] * mat1[_m24] * mat1[_m33] * mat1[_m42] -
+		mat1[M11] * mat1[M22] * mat1[M34] * mat1[M43] -
+		mat1[M11] * mat1[M23] * mat1[M32] * mat1[M44] -
+		mat1[M11] * mat1[M24] * mat1[M33] * mat1[M42] -
 
-		mat1[_m12] * mat1[_m21] * mat1[_m33] * mat1[_m44] -
-		mat1[_m12] * mat1[_m23] * mat1[_m34] * mat1[_m41] -
-		mat1[_m12] * mat1[_m24] * mat1[_m31] * mat1[_m43] -
+		mat1[M12] * mat1[M21] * mat1[M33] * mat1[M44] -
+		mat1[M12] * mat1[M23] * mat1[M34] * mat1[M41] -
+		mat1[M12] * mat1[M24] * mat1[M31] * mat1[M43] -
 
-		mat1[_m13] * mat1[_m21] * mat1[_m34] * mat1[_m42] -
-		mat1[_m13] * mat1[_m22] * mat1[_m31] * mat1[_m44] -
-		mat1[_m13] * mat1[_m24] * mat1[_m32] * mat1[_m41] -
+		mat1[M13] * mat1[M21] * mat1[M34] * mat1[M42] -
+		mat1[M13] * mat1[M22] * mat1[M31] * mat1[M44] -
+		mat1[M13] * mat1[M24] * mat1[M32] * mat1[M41] -
 
-		mat1[_m14] * mat1[_m21] * mat1[_m32] * mat1[_m43] -
-		mat1[_m14] * mat1[_m22] * mat1[_m33] * mat1[_m41] -
-		mat1[_m14] * mat1[_m23] * mat1[_m31] * mat1[_m42];
+		mat1[M14] * mat1[M21] * mat1[M32] * mat1[M43] -
+		mat1[M14] * mat1[M22] * mat1[M33] * mat1[M41] -
+		mat1[M14] * mat1[M23] * mat1[M31] * mat1[M42];
 }
 
-void gfx_matrix4_get_inverse_fast(float* mat1, float* mat2)
+void gfxMatrix4GetInverseFast(float* mat1, float* mat2)
 {
 	mat2[3] = mat2[7] = mat2[11] = 0.0; mat2[15] = 1.0;
 	mat2[0] = mat1[0];
@@ -415,7 +415,7 @@ void gfx_matrix4_get_inverse_fast(float* mat1, float* mat2)
 
 #define MATSWAP(a,b) {temp=(a);(a)=(b);(b)=temp;}
 
-unsigned char gfx_matrix4_get_inverse(float* mat1, float* mat2)
+unsigned char gfxMatrix4GetInverse(float* mat1, float* mat2)
 {
 	float matr[4][4], ident[4][4];
 	int i, j, k, l, ll;
@@ -512,7 +512,7 @@ unsigned char gfx_matrix4_get_inverse(float* mat1, float* mat2)
 	return GFX_TRUE;
 }
 
-void gfx_matrix3_to_qua(float* mat, float* qua)
+void gfxMatrix3ToQua(float* mat, float* qua)
 {
 	float S;
 	float tr = mat[0] + mat[4] + mat[8];
@@ -551,7 +551,7 @@ void gfx_matrix3_to_qua(float* mat, float* qua)
 	}
 }
 
-void gfx_matrix4_to_euler(float* mat, float* eul)
+void gfxMatrix4ToEuler(float* mat, float* eul)
 {
 	if(mat[4] > 0.998)
 	{
@@ -572,14 +572,14 @@ void gfx_matrix4_to_euler(float* mat, float* eul)
 	eul[2] = asin(mat[4])*GFX_180_DIV_PI;
 }
 
-void gfx_mul_matrix4_vec3(float* m1, float* vec1, float* vec2)
+void gfxMulMatrix4Vec3(float* m1, float* vec1, float* vec2)
 {
 	vec2[0] = m1[0]*vec1[0]+m1[1]*vec1[1]+m1[2]*vec1[2];
 	vec2[1] = m1[4]*vec1[0]+m1[5]*vec1[1]+m1[6]*vec1[2];
 	vec2[2] = m1[8]*vec1[0]+m1[9]*vec1[1]+m1[10]*vec1[2];
 }
 
-void gfx_mul_matrix4_vec4(float* m1, float* vec1, float* vec2)
+void gfxMulMatrix4Vec4(float* m1, float* vec1, float* vec2)
 {
 	vec2[0] = m1[0]*vec1[0]+m1[1]*vec1[1]+m1[2]*vec1[2]+m1[3]*vec1[3];
 	vec2[1] = m1[4]*vec1[0]+m1[5]*vec1[1]+m1[6]*vec1[2]+m1[7]*vec1[3];
@@ -587,7 +587,7 @@ void gfx_mul_matrix4_vec4(float* m1, float* vec1, float* vec2)
 	vec2[3] = m1[12]*vec1[0]+m1[13]*vec1[1]+m1[14]*vec1[2]+m1[15]*vec1[3];
 }
 
-void gfx_mul_matrix4_matrix4(float* m1, float* m2, float* m3)
+void gfxMulMatrix4Matrix4(float* m1, float* m2, float* m3)
 {
 	m3[0] = m1[0]*m2[0]+m1[1]*m2[4]+m1[2]*m2[8]+m1[3]*m2[12];
 	m3[1] = m1[0]*m2[1]+m1[1]*m2[5]+m1[2]*m2[9]+m1[3]*m2[13];
@@ -607,7 +607,7 @@ void gfx_mul_matrix4_matrix4(float* m1, float* m2, float* m3)
 	m3[15] = m1[12]*m2[3]+m1[13]*m2[7]+m1[14]*m2[11]+m1[15]*m2[15];
 }
 
-unsigned char gfx_box_sphere_intersect(float* bmin, float* bmax, float* spos, float srad)
+unsigned char gfxBoxSphereIntersect(float* bmin, float* bmax, float* spos, float srad)
 {
 	float dmin;
 	float r2;
@@ -627,7 +627,7 @@ unsigned char gfx_box_sphere_intersect(float* bmin, float* bmax, float* spos, fl
 	return GFX_FALSE;
 }
 
-unsigned char gfx_aabb_inside_frustum(float frustum[6][4], float* min, float* max)
+unsigned char gfxAabbInsideFrustum(float frustum[6][4], float* min, float* max)
 {
 	int i;
 
@@ -655,7 +655,7 @@ unsigned char gfx_aabb_inside_frustum(float frustum[6][4], float* min, float* ma
 	return GFX_TRUE;
 }
 
-unsigned char gfx_sphere_inside_frustum(float frustum[6][4], float* pos, float radius)
+unsigned char gfxSphereInsideFrustum(float frustum[6][4], float* pos, float radius)
 {
 	int i;
 

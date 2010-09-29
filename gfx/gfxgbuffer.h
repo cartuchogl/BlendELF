@@ -1,114 +1,114 @@
 
-gfx_gbuffer* gfx_create_gbuffer(int width, int height)
+gfxGbuffer* gfxCreateGbuffer(int width, int height)
 {
-	gfx_gbuffer* gbuffer;
+	gfxGbuffer* gbuffer;
 
-	gbuffer = (gfx_gbuffer*)malloc(sizeof(gfx_gbuffer));
-	memset(gbuffer, 0x0, sizeof(gfx_gbuffer));
-	gbuffer->obj_type = GFX_GBUFFER;
-	gbuffer->obj_destr = gfx_destroy_gbuffer;
+	gbuffer = (gfxGbuffer*)malloc(sizeof(gfxGbuffer));
+	memset(gbuffer, 0x0, sizeof(gfxGbuffer));
+	gbuffer->objType = GFX_GBUFFER;
+	gbuffer->objDestr = gfxDestroyGbuffer;
 
 	gbuffer->width = width;
 	gbuffer->height = height;
 
-	gbuffer->depth_tex = gfx_create_2d_texture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
-	gbuffer->buf1_tex = gfx_create_2d_texture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RG, GFX_RG16F, GFX_FLOAT, NULL);
-	gbuffer->buf2_tex = gfx_create_2d_texture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RGBA, GFX_RGBA, GFX_FLOAT, NULL);
-	gbuffer->buf3_tex = gfx_create_2d_texture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RGBA, GFX_RGBA, GFX_FLOAT, NULL);
-	gbuffer->diffuse_tex = gfx_create_2d_texture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RGBA, GFX_RGBA16F, GFX_FLOAT, NULL);
-	gbuffer->specular_tex = gfx_create_2d_texture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RGBA, GFX_RGBA16F, GFX_FLOAT, NULL);
-	gbuffer->main_tex = gfx_create_2d_texture(width, height, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
+	gbuffer->depthTex = gfxCreate_2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
+	gbuffer->buf1Tex = gfxCreate_2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RG, GFX_RG16F, GFX_FLOAT, NULL);
+	gbuffer->buf2Tex = gfxCreate_2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RGBA, GFX_RGBA, GFX_FLOAT, NULL);
+	gbuffer->buf3Tex = gfxCreate_2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RGBA, GFX_RGBA, GFX_FLOAT, NULL);
+	gbuffer->diffuseTex = gfxCreate_2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RGBA, GFX_RGBA16F, GFX_FLOAT, NULL);
+	gbuffer->specularTex = gfxCreate_2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RGBA, GFX_RGBA16F, GFX_FLOAT, NULL);
+	gbuffer->mainTex = gfxCreate_2dTexture(width, height, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
 
-	gbuffer->buf_rt = gfx_create_render_target(width, height);
-	gbuffer->light_rt = gfx_create_render_target(width, height);
-	gbuffer->main_rt = gfx_create_render_target(width, height);
+	gbuffer->bufRt = gfxCreateRenderTarget(width, height);
+	gbuffer->lightRt = gfxCreateRenderTarget(width, height);
+	gbuffer->mainRt = gfxCreateRenderTarget(width, height);
 
-	gfx_set_render_target_color_texture(gbuffer->buf_rt, 0, gbuffer->buf1_tex);
-	gfx_set_render_target_color_texture(gbuffer->buf_rt, 1, gbuffer->buf2_tex);
-	gfx_set_render_target_color_texture(gbuffer->buf_rt, 2, gbuffer->buf3_tex);
-	gfx_set_render_target_depth_texture(gbuffer->buf_rt, gbuffer->depth_tex);
+	gfxSetRenderTargetColorTexture(gbuffer->bufRt, 0, gbuffer->buf1Tex);
+	gfxSetRenderTargetColorTexture(gbuffer->bufRt, 1, gbuffer->buf2Tex);
+	gfxSetRenderTargetColorTexture(gbuffer->bufRt, 2, gbuffer->buf3Tex);
+	gfxSetRenderTargetDepthTexture(gbuffer->bufRt, gbuffer->depthTex);
 
-	gfx_set_render_target_color_texture(gbuffer->light_rt, 0, gbuffer->diffuse_tex);
-	gfx_set_render_target_color_texture(gbuffer->light_rt, 1, gbuffer->specular_tex);
+	gfxSetRenderTargetColorTexture(gbuffer->lightRt, 0, gbuffer->diffuseTex);
+	gfxSetRenderTargetColorTexture(gbuffer->lightRt, 1, gbuffer->specularTex);
 
-	gfx_set_render_target_color_texture(gbuffer->main_rt, 0, gbuffer->main_tex);
-	gfx_set_render_target_depth_texture(gbuffer->main_rt, gbuffer->depth_tex);
+	gfxSetRenderTargetColorTexture(gbuffer->mainRt, 0, gbuffer->mainTex);
+	gfxSetRenderTargetDepthTexture(gbuffer->mainRt, gbuffer->depthTex);
 
-	gfx_inc_ref((gfx_object*)gbuffer->depth_tex);
-	gfx_inc_ref((gfx_object*)gbuffer->buf1_tex);
-	gfx_inc_ref((gfx_object*)gbuffer->buf2_tex);
-	gfx_inc_ref((gfx_object*)gbuffer->buf3_tex);
-	gfx_inc_ref((gfx_object*)gbuffer->diffuse_tex);
-	gfx_inc_ref((gfx_object*)gbuffer->specular_tex);
-	gfx_inc_ref((gfx_object*)gbuffer->main_tex);
+	gfxIncRef((gfxObject*)gbuffer->depthTex);
+	gfxIncRef((gfxObject*)gbuffer->buf1Tex);
+	gfxIncRef((gfxObject*)gbuffer->buf2Tex);
+	gfxIncRef((gfxObject*)gbuffer->buf3Tex);
+	gfxIncRef((gfxObject*)gbuffer->diffuseTex);
+	gfxIncRef((gfxObject*)gbuffer->specularTex);
+	gfxIncRef((gfxObject*)gbuffer->mainTex);
 
 	return gbuffer;
 }
 
-void gfx_destroy_gbuffer(void* data)
+void gfxDestroyGbuffer(void* data)
 {
-	gfx_gbuffer* gbuffer = (gfx_gbuffer*)data;
+	gfxGbuffer* gbuffer = (gfxGbuffer*)data;
 
-	gfx_destroy_render_target(gbuffer->buf_rt);
-	gfx_destroy_render_target(gbuffer->light_rt);
-	gfx_destroy_render_target(gbuffer->main_rt);
+	gfxDestroyRenderTarget(gbuffer->bufRt);
+	gfxDestroyRenderTarget(gbuffer->lightRt);
+	gfxDestroyRenderTarget(gbuffer->mainRt);
 
-	gfx_dec_ref((gfx_object*)gbuffer->depth_tex);
-	gfx_dec_ref((gfx_object*)gbuffer->buf1_tex);
-	gfx_dec_ref((gfx_object*)gbuffer->buf2_tex);
-	gfx_dec_ref((gfx_object*)gbuffer->buf3_tex);
-	gfx_dec_ref((gfx_object*)gbuffer->diffuse_tex);
-	gfx_dec_ref((gfx_object*)gbuffer->specular_tex);
-	gfx_dec_ref((gfx_object*)gbuffer->main_tex);
+	gfxDecRef((gfxObject*)gbuffer->depthTex);
+	gfxDecRef((gfxObject*)gbuffer->buf1Tex);
+	gfxDecRef((gfxObject*)gbuffer->buf2Tex);
+	gfxDecRef((gfxObject*)gbuffer->buf3Tex);
+	gfxDecRef((gfxObject*)gbuffer->diffuseTex);
+	gfxDecRef((gfxObject*)gbuffer->specularTex);
+	gfxDecRef((gfxObject*)gbuffer->mainTex);
 }
 
-void gfx_bind_gbuffer(gfx_gbuffer* gbuffer, gfx_shader_params* shader_params)
+void gfxBindGbuffer(gfxGbuffer* gbuffer, gfxShaderParams* shaderParams)
 {
-	gfx_set_render_target(gbuffer->buf_rt);
+	gfxSetRenderTarget(gbuffer->bufRt);
 }
 
-void gfx_bind_gbuffer_light(gfx_gbuffer* gbuffer, gfx_shader_params* shader_params)
+void gfxBindGbufferLight(gfxGbuffer* gbuffer, gfxShaderParams* shaderParams)
 {
-	gfx_set_render_target(gbuffer->light_rt);
+	gfxSetRenderTarget(gbuffer->lightRt);
 }
 
-void gfx_bind_gbuffer_main(gfx_gbuffer* gbuffer, gfx_shader_params* shader_params)
+void gfxBindGbufferMain(gfxGbuffer* gbuffer, gfxShaderParams* shaderParams)
 {
-	gfx_set_render_target(gbuffer->main_rt);
+	gfxSetRenderTarget(gbuffer->mainRt);
 }
 
-gfx_texture* gfx_get_gbuffer_depth(gfx_gbuffer* gbuffer)
+gfxTexture* gfxGetGbufferDepth(gfxGbuffer* gbuffer)
 {
-	return gbuffer->depth_tex;
+	return gbuffer->depthTex;
 }
 
-gfx_texture* gfx_get_gbuffer_diffuse(gfx_gbuffer* gbuffer)
+gfxTexture* gfxGetGbufferDiffuse(gfxGbuffer* gbuffer)
 {
-	return gbuffer->diffuse_tex;
+	return gbuffer->diffuseTex;
 }
 
-gfx_texture* gfx_get_gbuffer_specular(gfx_gbuffer* gbuffer)
+gfxTexture* gfxGetGbufferSpecular(gfxGbuffer* gbuffer)
 {
-	return gbuffer->specular_tex;
+	return gbuffer->specularTex;
 }
 
-gfx_texture* gfx_get_gbuffer_main(gfx_gbuffer* gbuffer)
+gfxTexture* gfxGetGbufferMain(gfxGbuffer* gbuffer)
 {
-	return gbuffer->main_tex;
+	return gbuffer->mainTex;
 }
 
-gfx_texture* gfx_get_gbuffer_buf1(gfx_gbuffer* gbuffer)
+gfxTexture* gfxGetGbufferBuf1(gfxGbuffer* gbuffer)
 {
-	return gbuffer->buf1_tex;
+	return gbuffer->buf1Tex;
 }
 
-gfx_texture* gfx_get_gbuffer_buf2(gfx_gbuffer* gbuffer)
+gfxTexture* gfxGetGbufferBuf2(gfxGbuffer* gbuffer)
 {
-	return gbuffer->buf2_tex;
+	return gbuffer->buf2Tex;
 }
 
-gfx_texture* gfx_get_gbuffer_buf3(gfx_gbuffer* gbuffer)
+gfxTexture* gfxGetGbufferBuf3(gfxGbuffer* gbuffer)
 {
-	return gbuffer->buf3_tex;
+	return gbuffer->buf3Tex;
 }
 

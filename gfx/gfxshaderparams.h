@@ -1,5 +1,5 @@
 
-void gfx_set_color(gfx_color* color, float r, float g, float b, float a)
+void gfxSetColor(gfxColor* color, float r, float g, float b, float a)
 {
 	color->r = r;
 	color->g = g;
@@ -7,77 +7,77 @@ void gfx_set_color(gfx_color* color, float r, float g, float b, float a)
 	color->a = a;
 }
 
-void gfx_set_shader_params_default(gfx_shader_params* shader_params)
+void gfxSetShaderParamsDefault(gfxShaderParams* shaderParams)
 {
 	int i;
 
-	memset(shader_params, 0x0, sizeof(gfx_shader_params));
+	memset(shaderParams, 0x0, sizeof(gfxShaderParams));
 
-	shader_params->render_params.depth_test = GFX_TRUE;
-	shader_params->render_params.depth_write = GFX_TRUE;
-	shader_params->render_params.depth_func = GFX_LESS;
-	shader_params->render_params.color_write = GFX_TRUE;
-	shader_params->render_params.alpha_write = GFX_TRUE;
-	shader_params->render_params.alpha_threshold = 0.99;
-	shader_params->render_params.cull_face = GFX_TRUE;
-	shader_params->render_params.line_width = 1.0;
-	shader_params->render_params.cull_face_mode = GFX_BACK;
-	shader_params->render_params.front_face = GFX_COUNTER_CLOCK_WISE;
+	shaderParams->renderParams.depthTest = GFX_TRUE;
+	shaderParams->renderParams.depthWrite = GFX_TRUE;
+	shaderParams->renderParams.depthFunc = GFX_LESS;
+	shaderParams->renderParams.colorWrite = GFX_TRUE;
+	shaderParams->renderParams.alphaWrite = GFX_TRUE;
+	shaderParams->renderParams.alphaThreshold = 0.99;
+	shaderParams->renderParams.cullFace = GFX_TRUE;
+	shaderParams->renderParams.lineWidth = 1.0;
+	shaderParams->renderParams.cullFaceMode = GFX_BACK;
+	shaderParams->renderParams.frontFace = GFX_COUNTER_CLOCK_WISE;
 
-	gfx_set_color(&shader_params->material_params.diffuse_color, 1.0, 1.0, 1.0, 1.0);
-	gfx_set_color(&shader_params->material_params.specular_color, 1.0, 1.0, 1.0, 1.0);
+	gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 1.0, 1.0, 1.0);
+	gfxSetColor(&shaderParams->materialParams.specularColor, 1.0, 1.0, 1.0, 1.0);
 
 	for(i = 0; i < GFX_MAX_TEXTURES; i++)
 	{
-		shader_params->texture_params[i].type = GFX_COLOR_MAP;
-		shader_params->texture_params[i].texture = NULL;
-		shader_params->texture_params[i].projection_mode = GFX_NONE;
-		gfx_matrix4_set_identity(shader_params->texture_params[i].matrix);
+		shaderParams->textureParams[i].type = GFX_COLOR_MAP;
+		shaderParams->textureParams[i].texture = NULL;
+		shaderParams->textureParams[i].projectionMode = GFX_NONE;
+		gfxMatrix4SetIdentity(shaderParams->textureParams[i].matrix);
 	}
 
-	gfx_matrix4_set_identity(shader_params->projection_matrix);
-	gfx_matrix4_set_identity(shader_params->inv_projection_matrix);
-	gfx_matrix4_set_identity(shader_params->modelview_matrix);
+	gfxMatrix4SetIdentity(shaderParams->projectionMatrix);
+	gfxMatrix4SetIdentity(shaderParams->invProjectionMatrix);
+	gfxMatrix4SetIdentity(shaderParams->modelviewMatrix);
 
-	shader_params->shader_program = NULL;
+	shaderParams->shaderProgram = NULL;
 }
 
-void gfx_set_material_params_default(gfx_shader_params* shader_params)
+void gfxSetMaterialParamsDefault(gfxShaderParams* shaderParams)
 {
-	gfx_set_color(&shader_params->material_params.diffuse_color, 1.0, 1.0, 1.0, 1.0);
-	gfx_set_color(&shader_params->material_params.specular_color, 1.0, 1.0, 1.0, 1.0);
-	shader_params->material_params.shininess = 0.0;
+	gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 1.0, 1.0, 1.0);
+	gfxSetColor(&shaderParams->materialParams.specularColor, 1.0, 1.0, 1.0, 1.0);
+	shaderParams->materialParams.shininess = 0.0;
 }
 
-void gfx_set_texture_params_default(gfx_shader_params* shader_params)
+void gfxSetTextureParamsDefault(gfxShaderParams* shaderParams)
 {
 	int i;
 
 	for(i = 0; i < GFX_MAX_TEXTURES; i++)
 	{
-		shader_params->texture_params[i].type = GFX_COLOR_MAP;
-		shader_params->texture_params[i].texture = NULL;
-		shader_params->texture_params[i].projection_mode = GFX_NONE;
-		shader_params->texture_params[i].parallax_scale = 0.25;
-		gfx_matrix4_set_identity(shader_params->texture_params[i].matrix);
+		shaderParams->textureParams[i].type = GFX_COLOR_MAP;
+		shaderParams->textureParams[i].texture = NULL;
+		shaderParams->textureParams[i].projectionMode = GFX_NONE;
+		shaderParams->textureParams[i].parallaxScale = 0.25;
+		gfxMatrix4SetIdentity(shaderParams->textureParams[i].matrix);
 	}
 }
 
-void gfx_set_shader_params(gfx_shader_params* shader_params)
+void gfxSetShaderParams(gfxShaderParams* shaderParams)
 {
 	int i;
-	gfx_shader_config shader_config;
-	gfx_shader_program* shader_program = NULL;
+	gfxShaderConfig shaderConfig;
+	gfxShaderProgram* shaderProgram = NULL;
 
-	if(memcmp(&driver->shader_params.render_params, &shader_params->render_params, sizeof(gfx_render_params)))
+	if(memcmp(&driver->shaderParams.renderParams, &shaderParams->renderParams, sizeof(gfxRenderParams)))
 	{
-		if(shader_params->render_params.depth_test) glEnable(GL_DEPTH_TEST);
+		if(shaderParams->renderParams.depthTest) glEnable(GL_DEPTH_TEST);
 		else glDisable(GL_DEPTH_TEST);
 
-		if(shader_params->render_params.depth_write) glDepthMask(1);
+		if(shaderParams->renderParams.depthWrite) glDepthMask(1);
 		else glDepthMask(0);
 
-		switch(shader_params->render_params.depth_func)
+		switch(shaderParams->renderParams.depthFunc)
 		{
 			case GFX_NEVER: glDepthFunc(GL_NEVER); break;
 			case GFX_LESS: glDepthFunc(GL_LESS); break;
@@ -89,22 +89,22 @@ void gfx_set_shader_params(gfx_shader_params* shader_params)
 			case GFX_ALWAYS: glDepthFunc(GL_ALWAYS); break;
 		}
 
-		glColorMask(shader_params->render_params.color_write,
-			shader_params->render_params.color_write,
-			shader_params->render_params.color_write,
-			shader_params->render_params.alpha_write);
+		glColorMask(shaderParams->renderParams.colorWrite,
+			shaderParams->renderParams.colorWrite,
+			shaderParams->renderParams.colorWrite,
+			shaderParams->renderParams.alphaWrite);
 
-		if(shader_params->render_params.cull_face) glEnable(GL_CULL_FACE);
+		if(shaderParams->renderParams.cullFace) glEnable(GL_CULL_FACE);
 		else glDisable(GL_CULL_FACE);
 
-		if(shader_params->render_params.alpha_test)
+		if(shaderParams->renderParams.alphaTest)
 		{
 			glEnable(GL_ALPHA_TEST);
-			glAlphaFunc(GL_GREATER, shader_params->render_params.alpha_threshold);
+			glAlphaFunc(GL_GREATER, shaderParams->renderParams.alphaThreshold);
 		}
 		else glDisable(GL_ALPHA_TEST);
 
-		switch(shader_params->render_params.blend_mode)
+		switch(shaderParams->renderParams.blendMode)
 		{
 			case GFX_NONE:
 				glDisable(GL_BLEND);
@@ -131,68 +131,68 @@ void gfx_set_shader_params(gfx_shader_params* shader_params)
 				break;
 		}
 
-		if(!shader_params->render_params.offset_scale ||
-			!shader_params->render_params.offset_bias)
+		if(!shaderParams->renderParams.offsetScale ||
+			!shaderParams->renderParams.offsetBias)
 			glDisable(GL_POLYGON_OFFSET_FILL);
 		else
 		{
 			glEnable(GL_POLYGON_OFFSET_FILL);
-			glPolygonOffset(shader_params->render_params.offset_scale,
-				shader_params->render_params.offset_bias);
+			glPolygonOffset(shaderParams->renderParams.offsetScale,
+				shaderParams->renderParams.offsetBias);
 		}
 
-		glLineWidth(shader_params->render_params.line_width);
-		if(shader_params->render_params.line_smooth)
+		glLineWidth(shaderParams->renderParams.lineWidth);
+		if(shaderParams->renderParams.lineSmooth)
 			glEnable(GL_LINE_SMOOTH);
 		else glDisable(GL_LINE_SMOOTH);
 
-		if(shader_params->render_params.cull_face_mode == GFX_BACK)
+		if(shaderParams->renderParams.cullFaceMode == GFX_BACK)
 			glCullFace(GL_BACK);
 		else glCullFace(GL_FRONT);
 
-		if(shader_params->render_params.front_face == GFX_COUNTER_CLOCK_WISE)
+		if(shaderParams->renderParams.frontFace == GFX_COUNTER_CLOCK_WISE)
 			glFrontFace(GL_CCW);
 		else glFrontFace(GL_CW);
 
-		if(shader_params->render_params.wireframe)
+		if(shaderParams->renderParams.wireframe)
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
 	if(driver->version < 200)
 	{
-		if(memcmp(&driver->shader_params.texture_params, &shader_params->texture_params, sizeof(gfx_texture_params)*GFX_MAX_TEXTURES))
+		if(memcmp(&driver->shaderParams.textureParams, &shaderParams->textureParams, sizeof(gfxTextureParams)*GFX_MAX_TEXTURES))
 		{
 			for(i = 0; i < GFX_MAX_TEXTURES; i++)
 			{
 				glActiveTexture(GL_TEXTURE0+i);
 				glClientActiveTexture(GL_TEXTURE0+i);
 
-				if(shader_params->texture_params[i].texture &&
-					(shader_params->texture_params[i].type == GFX_COLOR_MAP ||
-					shader_params->texture_params[i].type == GFX_LIGHT_MAP ||
-					shader_params->texture_params[i].type == GFX_SHADOW_MAP))
+				if(shaderParams->textureParams[i].texture &&
+					(shaderParams->textureParams[i].type == GFX_COLOR_MAP ||
+					shaderParams->textureParams[i].type == GFX_LIGHT_MAP ||
+					shaderParams->textureParams[i].type == GFX_SHADOW_MAP))
 				{
 					if(!glIsEnabled(GL_TEXTURE_2D)) glEnable(GL_TEXTURE_2D);
 
-					glBindTexture(GL_TEXTURE_2D, shader_params->texture_params[i].texture->id);
+					glBindTexture(GL_TEXTURE_2D, shaderParams->textureParams[i].texture->id);
 
-					if(shader_params->texture_params[i].type == GFX_SHADOW_MAP)
+					if(shaderParams->textureParams[i].type == GFX_SHADOW_MAP)
 					{
 						glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
-						glTexGenfv(GL_S, GL_EYE_PLANE, &shader_params->texture_params[i].matrix[0]);
+						glTexGenfv(GL_S, GL_EYE_PLANE, &shaderParams->textureParams[i].matrix[0]);
 						glEnable(GL_TEXTURE_GEN_S);
 
 						glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
-						glTexGenfv(GL_T, GL_EYE_PLANE, &shader_params->texture_params[i].matrix[4]);
+						glTexGenfv(GL_T, GL_EYE_PLANE, &shaderParams->textureParams[i].matrix[4]);
 						glEnable(GL_TEXTURE_GEN_T);
 
 						glTexGeni(GL_R, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
-						glTexGenfv(GL_R, GL_EYE_PLANE, &shader_params->texture_params[i].matrix[8]);
+						glTexGenfv(GL_R, GL_EYE_PLANE, &shaderParams->textureParams[i].matrix[8]);
 						glEnable(GL_TEXTURE_GEN_R);
 
 						glTexGeni(GL_Q, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
-						glTexGenfv(GL_Q, GL_EYE_PLANE, &shader_params->texture_params[i].matrix[12]);
+						glTexGenfv(GL_Q, GL_EYE_PLANE, &shaderParams->textureParams[i].matrix[12]);
 						glEnable(GL_TEXTURE_GEN_Q);
 					}
 					else
@@ -203,7 +203,7 @@ void gfx_set_shader_params(gfx_shader_params* shader_params)
 						glDisable(GL_TEXTURE_GEN_Q);
 					}
 
-					if(shader_params->texture_params[i].projection_mode == GFX_SHADOW_PROJECTION)
+					if(shaderParams->textureParams[i].projectionMode == GFX_SHADOW_PROJECTION)
 					{
 						glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE_ARB, GL_NONE);
 					}
@@ -219,15 +219,15 @@ void gfx_set_shader_params(gfx_shader_params* shader_params)
 			}
 		}
 
-		if(memcmp(&driver->shader_params.fog_params, &shader_params->fog_params, sizeof(gfx_fog_params)))
+		if(memcmp(&driver->shaderParams.fogParams, &shaderParams->fogParams, sizeof(gfxFogParams)))
 		{
-			if(shader_params->fog_params.mode)
+			if(shaderParams->fogParams.mode)
 			{
 				glEnable(GL_FOG);
 				glFogi(GL_FOG_MODE, GL_LINEAR);
-				glFogf(GL_FOG_START, shader_params->fog_params.start);
-				glFogf(GL_FOG_END, shader_params->fog_params.start);
-				glFogfv(GL_FOG_COLOR, &shader_params->fog_params.color.r);
+				glFogf(GL_FOG_START, shaderParams->fogParams.start);
+				glFogf(GL_FOG_END, shaderParams->fogParams.start);
+				glFogfv(GL_FOG_COLOR, &shaderParams->fogParams.color.r);
 			}
 			else
 			{
@@ -235,9 +235,9 @@ void gfx_set_shader_params(gfx_shader_params* shader_params)
 			}
 		}
 
-		if(memcmp(&driver->shader_params.light_params, &shader_params->light_params, sizeof(gfx_light_params)))
+		if(memcmp(&driver->shaderParams.lightParams, &shaderParams->lightParams, sizeof(gfxLightParams)))
 		{
-			if(shader_params->light_params.type)
+			if(shaderParams->lightParams.type)
 			{
 				float position[4];
 
@@ -245,13 +245,13 @@ void gfx_set_shader_params(gfx_shader_params* shader_params)
 				glEnable(GL_LIGHT0);
 
 				glMatrixMode(GL_MODELVIEW);
-				glLoadMatrixf(shader_params->camera_matrix);
+				glLoadMatrixf(shaderParams->cameraMatrix);
 
-				glLightfv(GL_LIGHT0, GL_DIFFUSE, &shader_params->light_params.color.r);
-				glLightfv(GL_LIGHT0, GL_SPECULAR, &shader_params->light_params.color.r);
-				glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 1.0/shader_params->light_params.distance);
+				glLightfv(GL_LIGHT0, GL_DIFFUSE, &shaderParams->lightParams.color.r);
+				glLightfv(GL_LIGHT0, GL_SPECULAR, &shaderParams->lightParams.color.r);
+				glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 1.0/shaderParams->lightParams.distance);
 
-				if(shader_params->light_params.type != GFX_SPOT_LIGHT)
+				if(shaderParams->lightParams.type != GFX_SPOT_LIGHT)
 				{
 					glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 0.0);
 					glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180.0);
@@ -259,21 +259,21 @@ void gfx_set_shader_params(gfx_shader_params* shader_params)
 				else
 				{
 					// some really wild guesses for spot exponent here, doesn't work that well with the current system.
-					glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, shader_params->light_params.outer_cone/(shader_params->light_params.inner_cone+shader_params->light_params.outer_cone)*7.5);
-					glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, shader_params->light_params.inner_cone+shader_params->light_params.outer_cone);
-					glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, &shader_params->light_params.direction.x);
+					glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, shaderParams->lightParams.outerCone/(shaderParams->lightParams.innerCone+shaderParams->lightParams.outerCone)*7.5);
+					glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, shaderParams->lightParams.innerCone+shaderParams->lightParams.outerCone);
+					glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, &shaderParams->lightParams.direction.x);
 				}
 
-				if(shader_params->light_params.type == GFX_SUN_LIGHT)
+				if(shaderParams->lightParams.type == GFX_SUN_LIGHT)
 				{
-					position[0] = -shader_params->light_params.direction.x;
-					position[1] = -shader_params->light_params.direction.y;
-					position[2] = -shader_params->light_params.direction.z;
+					position[0] = -shaderParams->lightParams.direction.x;
+					position[1] = -shaderParams->lightParams.direction.y;
+					position[2] = -shaderParams->lightParams.direction.z;
 					position[3] = 0.0;
 				}
 				else
 				{
-					memcpy(position, &shader_params->light_params.position.x, sizeof(float)*3); 
+					memcpy(position, &shaderParams->lightParams.position.x, sizeof(float)*3); 
 					position[3] = 1.0;
 				}
 
@@ -285,44 +285,44 @@ void gfx_set_shader_params(gfx_shader_params* shader_params)
 			}
 		}
 
-		if(memcmp(&driver->shader_params.material_params, &shader_params->material_params, sizeof(gfx_material_params)))
+		if(memcmp(&driver->shaderParams.materialParams, &shaderParams->materialParams, sizeof(gfxMaterialParams)))
 		{
-			glColor4f(shader_params->material_params.diffuse_color.r,
-				shader_params->material_params.diffuse_color.g,
-				shader_params->material_params.diffuse_color.b,
-				shader_params->material_params.diffuse_color.a);
-			glMaterialfv(GL_FRONT, GL_AMBIENT, &shader_params->material_params.ambient_color.r);
-			glMaterialfv(GL_FRONT, GL_DIFFUSE, &shader_params->material_params.diffuse_color.r);
-			glMaterialfv(GL_FRONT, GL_SPECULAR, &shader_params->material_params.specular_color.r);
-			glMaterialf(GL_FRONT, GL_SHININESS, shader_params->material_params.shininess);
+			glColor4f(shaderParams->materialParams.diffuseColor.r,
+				shaderParams->materialParams.diffuseColor.g,
+				shaderParams->materialParams.diffuseColor.b,
+				shaderParams->materialParams.diffuseColor.a);
+			glMaterialfv(GL_FRONT, GL_AMBIENT, &shaderParams->materialParams.ambientColor.r);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, &shaderParams->materialParams.diffuseColor.r);
+			glMaterialfv(GL_FRONT, GL_SPECULAR, &shaderParams->materialParams.specularColor.r);
+			glMaterialf(GL_FRONT, GL_SHININESS, shaderParams->materialParams.shininess);
 		}
 
 		glMatrixMode(GL_PROJECTION);
-		glLoadMatrixf(shader_params->projection_matrix);
+		glLoadMatrixf(shaderParams->projectionMatrix);
 		glMatrixMode(GL_MODELVIEW);
-		glLoadMatrixf(shader_params->modelview_matrix);
+		glLoadMatrixf(shaderParams->modelviewMatrix);
 	}
 	else
 	{
-		if(memcmp(&driver->shader_params.texture_params, &shader_params->texture_params, sizeof(gfx_texture_params)*GFX_MAX_TEXTURES))
+		if(memcmp(&driver->shaderParams.textureParams, &shaderParams->textureParams, sizeof(gfxTextureParams)*GFX_MAX_TEXTURES))
 		{
 			for(i = 0; i < GFX_MAX_TEXTURES; i++)
 			{
 				glActiveTexture(GL_TEXTURE0+i);
 				glClientActiveTexture(GL_TEXTURE0+i);
 
-				if(shader_params->texture_params[i].texture)
+				if(shaderParams->textureParams[i].texture)
 				{
-					if(shader_params->texture_params[i].type != GFX_CUBE_MAP)
+					if(shaderParams->textureParams[i].type != GFX_CUBE_MAP)
 					{
-						glBindTexture(GL_TEXTURE_2D, shader_params->texture_params[i].texture->id);
+						glBindTexture(GL_TEXTURE_2D, shaderParams->textureParams[i].texture->id);
 					}
 					else
 					{
-						glBindTexture(GL_TEXTURE_CUBE_MAP, shader_params->texture_params[i].texture->id);
+						glBindTexture(GL_TEXTURE_CUBE_MAP, shaderParams->textureParams[i].texture->id);
 					}
 
-					switch(shader_params->texture_params[i].projection_mode)
+					switch(shaderParams->textureParams[i].projectionMode)
 					{
 						case GFX_NONE:
 							glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE_ARB, GL_NONE);
@@ -339,149 +339,149 @@ void gfx_set_shader_params(gfx_shader_params* shader_params)
 			}
 		}
 
-		shader_program = shader_params->shader_program;
+		shaderProgram = shaderParams->shaderProgram;
 
-		if(shader_program)
+		if(shaderProgram)
 		{
-			if(shader_program != driver->shader_params.shader_program)
-				glUseProgram(shader_program->id);
+			if(shaderProgram != driver->shaderParams.shaderProgram)
+				glUseProgram(shaderProgram->id);
 
 			// just inputting with values that do not make sense
-			driver->shader_config.textures = 255;
-			driver->shader_config.light = 255;
+			driver->shaderConfig.textures = 255;
+			driver->shaderConfig.light = 255;
 		}
 		else
 		{
-			gfx_get_shader_program_config(shader_params, &shader_config);
-			if(memcmp(&driver->shader_config, &shader_config, sizeof(gfx_shader_config)))
+			gfxGetShaderProgramConfig(shaderParams, &shaderConfig);
+			if(memcmp(&driver->shaderConfig, &shaderConfig, sizeof(gfxShaderConfig)))
 			{
-				memcpy(&driver->shader_config, &shader_config, sizeof(gfx_shader_config));
-				if(shader_params->gbuffer_mode > 0) shader_program = gfx_get_gbuf_shader_program(&shader_config);
-				else shader_program = gfx_get_shader_program(&shader_config);
-				if(shader_program) glUseProgram(shader_program->id);
+				memcpy(&driver->shaderConfig, &shaderConfig, sizeof(gfxShaderConfig));
+				if(shaderParams->gbufferMode > 0) shaderProgram = gfxGetGbufShaderProgram(&shaderConfig);
+				else shaderProgram = gfxGetShaderProgram(&shaderConfig);
+				if(shaderProgram) glUseProgram(shaderProgram->id);
 				else return;
 			}
 			else
 			{
-				shader_program = driver->shader_params.shader_program;
+				shaderProgram = driver->shaderParams.shaderProgram;
 			}
 		}
 
-		if(shader_program->projection_matrix_loc != -1)
-			glUniformMatrix4fv(shader_program->projection_matrix_loc,
-				1, GL_FALSE, shader_params->projection_matrix);
-		if(shader_program->inv_projection_matrix_loc != -1)
-			glUniformMatrix4fv(shader_program->inv_projection_matrix_loc,
-				1, GL_FALSE, shader_params->inv_projection_matrix);
-		if(shader_program->modelview_matrix_loc != -1)
-			glUniformMatrix4fv(shader_program->modelview_matrix_loc,
-				1, GL_FALSE, shader_params->modelview_matrix);
+		if(shaderProgram->projectionMatrixLoc != -1)
+			glUniformMatrix4fv(shaderProgram->projectionMatrixLoc,
+				1, GL_FALSE, shaderParams->projectionMatrix);
+		if(shaderProgram->invProjectionMatrixLoc != -1)
+			glUniformMatrix4fv(shaderProgram->invProjectionMatrixLoc,
+				1, GL_FALSE, shaderParams->invProjectionMatrix);
+		if(shaderProgram->modelviewMatrixLoc != -1)
+			glUniformMatrix4fv(shaderProgram->modelviewMatrixLoc,
+				1, GL_FALSE, shaderParams->modelviewMatrix);
 
-		if(shader_program->fog_start_loc != -1)
-			glUniform1f(shader_program->fog_start_loc, shader_params->fog_params.start);
-		if(shader_program->fog_end_loc != -1)
-			glUniform1f(shader_program->fog_end_loc, shader_params->fog_params.end);
-		if(shader_program->fog_color_loc != -1)
-			glUniform3fv(shader_program->fog_color_loc, 1, &shader_params->fog_params.color.r);
+		if(shaderProgram->fogStartLoc != -1)
+			glUniform1f(shaderProgram->fogStartLoc, shaderParams->fogParams.start);
+		if(shaderProgram->fogEndLoc != -1)
+			glUniform1f(shaderProgram->fogEndLoc, shaderParams->fogParams.end);
+		if(shaderProgram->fogColorLoc != -1)
+			glUniform3fv(shaderProgram->fogColorLoc, 1, &shaderParams->fogParams.color.r);
 
-		if(shader_program->ambient_color_loc != -1)
-			glUniform4fv(shader_program->ambient_color_loc, 1, &shader_params->material_params.ambient_color.r);
-		if(shader_program->diffuse_color_loc != -1)
-			glUniform4fv(shader_program->diffuse_color_loc, 1, &shader_params->material_params.diffuse_color.r);
-		if(shader_program->specular_color_loc != -1)
-			glUniform3fv(shader_program->specular_color_loc, 1, &shader_params->material_params.specular_color.r);
-		if(shader_program->shininess_loc != -1)
-			glUniform1f(shader_program->shininess_loc, shader_params->material_params.shininess);
+		if(shaderProgram->ambientColorLoc != -1)
+			glUniform4fv(shaderProgram->ambientColorLoc, 1, &shaderParams->materialParams.ambientColor.r);
+		if(shaderProgram->diffuseColorLoc != -1)
+			glUniform4fv(shaderProgram->diffuseColorLoc, 1, &shaderParams->materialParams.diffuseColor.r);
+		if(shaderProgram->specularColorLoc != -1)
+			glUniform3fv(shaderProgram->specularColorLoc, 1, &shaderParams->materialParams.specularColor.r);
+		if(shaderProgram->shininessLoc != -1)
+			glUniform1f(shaderProgram->shininessLoc, shaderParams->materialParams.shininess);
 
-		if(shader_program->texture0_loc != -1)
-			glUniform1i(shader_program->texture0_loc, 0);
-		if(shader_program->texture1_loc != -1)
-			glUniform1i(shader_program->texture1_loc, 1);
-		if(shader_program->texture2_loc != -1)
-			glUniform1i(shader_program->texture2_loc, 2);
-		if(shader_program->texture3_loc != -1)
-			glUniform1i(shader_program->texture3_loc, 3);
-		if(shader_program->alpha_threshold_loc != -1)
-			glUniform1f(shader_program->alpha_threshold_loc, shader_params->render_params.alpha_threshold);
+		if(shaderProgram->texture0Loc != -1)
+			glUniform1i(shaderProgram->texture0Loc, 0);
+		if(shaderProgram->texture1Loc != -1)
+			glUniform1i(shaderProgram->texture1Loc, 1);
+		if(shaderProgram->texture2Loc != -1)
+			glUniform1i(shaderProgram->texture2Loc, 2);
+		if(shaderProgram->texture3Loc != -1)
+			glUniform1i(shaderProgram->texture3Loc, 3);
+		if(shaderProgram->alphaThresholdLoc != -1)
+			glUniform1f(shaderProgram->alphaThresholdLoc, shaderParams->renderParams.alphaThreshold);
 
 		for(i = 0; i < GFX_MAX_TEXTURES; i++)
 		{
-			if(shader_params->texture_params[i].texture)
+			if(shaderParams->textureParams[i].texture)
 			{
-				switch(shader_params->texture_params[i].type)
+				switch(shaderParams->textureParams[i].type)
 				{
 					case GFX_COLOR_MAP:
-						if(shader_program->color_map_loc != -1)
-							glUniform1i(shader_program->color_map_loc, i);
+						if(shaderProgram->colorMapLoc != -1)
+							glUniform1i(shaderProgram->colorMapLoc, i);
 						break;
 					case GFX_NORMAL_MAP:
-						if(shader_program->normal_map_loc != -1)
-							glUniform1i(shader_program->normal_map_loc, i);
+						if(shaderProgram->normalMapLoc != -1)
+							glUniform1i(shaderProgram->normalMapLoc, i);
 						break;
 					case GFX_HEIGHT_MAP:
-						if(shader_program->parallax_scale_loc != -1)
-							glUniform1f(shader_program->parallax_scale_loc, shader_params->texture_params[i].parallax_scale);
-						if(shader_program->height_map_loc != -1)
-							glUniform1i(shader_program->height_map_loc, i);
+						if(shaderProgram->parallaxScaleLoc != -1)
+							glUniform1f(shaderProgram->parallaxScaleLoc, shaderParams->textureParams[i].parallaxScale);
+						if(shaderProgram->heightMapLoc != -1)
+							glUniform1i(shaderProgram->heightMapLoc, i);
 						break;
 					case GFX_SPECULAR_MAP:
-						if(shader_program->specular_map_loc != -1)
-							glUniform1i(shader_program->specular_map_loc, i);
+						if(shaderProgram->specularMapLoc != -1)
+							glUniform1i(shaderProgram->specularMapLoc, i);
 						break;
 					case GFX_COLOR_RAMP_MAP:
-						if(shader_program->color_ramp_map_loc != -1)
-							glUniform1i(shader_program->color_ramp_map_loc, i);
+						if(shaderProgram->colorRampMapLoc != -1)
+							glUniform1i(shaderProgram->colorRampMapLoc, i);
 						break;
 					case GFX_LIGHT_MAP:
-						if(shader_program->light_map_loc != -1)
-							glUniform1i(shader_program->light_map_loc, i);
+						if(shaderProgram->lightMapLoc != -1)
+							glUniform1i(shaderProgram->lightMapLoc, i);
 						break;
 					case GFX_SHADOW_MAP:
-						if(shader_program->shadow_map_loc != -1)
-							glUniform1i(shader_program->shadow_map_loc, i);
-						if(shader_program->shadow_projection_matrix_loc != -1)
-							glUniformMatrix4fv(shader_program->shadow_projection_matrix_loc,
-								1, GL_FALSE, shader_params->texture_params[i].matrix);
+						if(shaderProgram->shadowMapLoc != -1)
+							glUniform1i(shaderProgram->shadowMapLoc, i);
+						if(shaderProgram->shadowProjectionMatrixLoc != -1)
+							glUniformMatrix4fv(shaderProgram->shadowProjectionMatrixLoc,
+								1, GL_FALSE, shaderParams->textureParams[i].matrix);
 						break;
 					case GFX_CUBE_MAP:
-						if(shader_program->cube_map_loc != -1)
-							glUniform1i(shader_program->cube_map_loc, i);
+						if(shaderProgram->cubeMapLoc != -1)
+							glUniform1i(shaderProgram->cubeMapLoc, i);
 						break;
 				}
 			}
 		}
 
-		if(shader_params->light_params.type)
+		if(shaderParams->lightParams.type)
 		{
-			if(shader_program->light_position_loc != -1)
-				glUniform3fv(shader_program->light_position_loc, 1, &shader_params->light_params.position.x);
-			if(shader_program->light_color_loc != -1)
-				glUniform3fv(shader_program->light_color_loc, 1, &shader_params->light_params.color.r);
-			if(shader_program->light_distance_loc != -1)
-				glUniform1f(shader_program->light_distance_loc, shader_params->light_params.distance);
-			if(shader_program->light_fade_speed_loc != -1)
-				glUniform1f(shader_program->light_fade_speed_loc, shader_params->light_params.fade_speed);
-			if(shader_program->light_spot_direction_loc != -1)
-				glUniform3fv(shader_program->light_spot_direction_loc, 1, &shader_params->light_params.direction.x);
-			if(shader_program->light_inner_cone_cos_loc != -1)
-				glUniform1f(shader_program->light_inner_cone_cos_loc, (float)cos(shader_params->light_params.inner_cone*GFX_PI_DIV_180));
-			if(shader_program->light_outer_cone_cos_loc != -1)
-				glUniform1f(shader_program->light_outer_cone_cos_loc, (float)cos((shader_params->light_params.inner_cone+shader_params->light_params.outer_cone)*GFX_PI_DIV_180));
+			if(shaderProgram->lightPositionLoc != -1)
+				glUniform3fv(shaderProgram->lightPositionLoc, 1, &shaderParams->lightParams.position.x);
+			if(shaderProgram->lightColorLoc != -1)
+				glUniform3fv(shaderProgram->lightColorLoc, 1, &shaderParams->lightParams.color.r);
+			if(shaderProgram->lightDistanceLoc != -1)
+				glUniform1f(shaderProgram->lightDistanceLoc, shaderParams->lightParams.distance);
+			if(shaderProgram->lightFadeSpeedLoc != -1)
+				glUniform1f(shaderProgram->lightFadeSpeedLoc, shaderParams->lightParams.fadeSpeed);
+			if(shaderProgram->lightSpotDirectionLoc != -1)
+				glUniform3fv(shaderProgram->lightSpotDirectionLoc, 1, &shaderParams->lightParams.direction.x);
+			if(shaderProgram->lightInnerConeCosLoc != -1)
+				glUniform1f(shaderProgram->lightInnerConeCosLoc, (float)cos(shaderParams->lightParams.innerCone*GFX_PI_DIV_180));
+			if(shaderProgram->lightOuterConeCosLoc != -1)
+				glUniform1f(shaderProgram->lightOuterConeCosLoc, (float)cos((shaderParams->lightParams.innerCone+shaderParams->lightParams.outerCone)*GFX_PI_DIV_180));
 		}
 
-		if(shader_program->camera_position_loc != -1)
-			glUniform3fv(shader_program->camera_position_loc, 1, &shader_params->camera_position.x);
-		if(shader_program->clip_start_loc != -1)
-			glUniform1f(shader_program->clip_start_loc, shader_params->clip_start);
-		if(shader_program->clip_end_loc != -1)
-			glUniform1f(shader_program->clip_end_loc, shader_params->clip_end);
-		if(shader_program->viewport_width_loc != -1)
-			glUniform1i(shader_program->viewport_width_loc, shader_params->viewport_width);
-		if(shader_program->viewport_height_loc != -1)
-			glUniform1i(shader_program->viewport_height_loc, shader_params->viewport_height);
+		if(shaderProgram->cameraPositionLoc != -1)
+			glUniform3fv(shaderProgram->cameraPositionLoc, 1, &shaderParams->cameraPosition.x);
+		if(shaderProgram->clipStartLoc != -1)
+			glUniform1f(shaderProgram->clipStartLoc, shaderParams->clipStart);
+		if(shaderProgram->clipEndLoc != -1)
+			glUniform1f(shaderProgram->clipEndLoc, shaderParams->clipEnd);
+		if(shaderProgram->viewportWidthLoc != -1)
+			glUniform1i(shaderProgram->viewportWidthLoc, shaderParams->viewportWidth);
+		if(shaderProgram->viewportHeightLoc != -1)
+			glUniform1i(shaderProgram->viewportHeightLoc, shaderParams->viewportHeight);
 	}
 
-	memcpy(&driver->shader_params, shader_params, sizeof(gfx_shader_params));
-	driver->shader_params.shader_program = shader_program;
+	memcpy(&driver->shaderParams, shaderParams, sizeof(gfxShaderParams));
+	driver->shaderParams.shaderProgram = shaderProgram;
 }
 

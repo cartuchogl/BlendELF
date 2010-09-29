@@ -1,1014 +1,1014 @@
 
-elf_particle* elf_create_particle()
+elfParticle* elfCreateParticle()
 {
-	elf_particle* particle;
+	elfParticle* particle;
 
-	particle = (elf_particle*)malloc(sizeof(elf_particle));
-	memset(particle, 0x0, sizeof(elf_particle));
-	particle->obj_type = ELF_PARTICLE;
-	particle->obj_destr = elf_destroy_particle;
+	particle = (elfParticle*)malloc(sizeof(elfParticle));
+	memset(particle, 0x0, sizeof(elfParticle));
+	particle->objType = ELF_PARTICLE;
+	particle->objDestr = elfDestroyParticle;
 
-	elf_inc_obj(ELF_PARTICLE);
+	elfIncObj(ELF_PARTICLE);
 
 	return particle;
 }
 
-void elf_destroy_particle(void* data)
+void elfDestroyParticle(void* data)
 {
-	elf_particle* particle = (elf_particle*)data;
+	elfParticle* particle = (elfParticle*)data;
 
 	free(particle);
 
-	elf_dec_obj(ELF_PARTICLE);
+	elfDecObj(ELF_PARTICLE);
 }
 
-elf_particles* elf_create_particles(const char* name, int max_count)
+elfParticles* elfCreateParticles(const char* name, int maxCount)
 {
-	elf_particles* particles;
-	float* tex_coord_buffer;
-	float* color_buffer;
+	elfParticles* particles;
+	float* texCoordBuffer;
+	float* colorBuffer;
 	int i, j, k;
 
-	if(max_count < 1) return NULL;
+	if(maxCount < 1) return NULL;
 
-	particles = (elf_particles*)malloc(sizeof(elf_particles));
-	memset(particles, 0x0, sizeof(elf_particles));
-	particles->obj_type = ELF_PARTICLES;
-	particles->obj_destr = elf_destroy_particles;
+	particles = (elfParticles*)malloc(sizeof(elfParticles));
+	memset(particles, 0x0, sizeof(elfParticles));
+	particles->objType = ELF_PARTICLES;
+	particles->objDestr = elfDestroyParticles;
 
-	elf_init_actor((elf_actor*)particles, ELF_FALSE);
+	elfInitActor((elfActor*)particles, ELF_FALSE);
 
-	particles->max_count = max_count;
-	particles->particles = elf_create_list();
-	elf_inc_ref((elf_object*)particles->particles);
+	particles->maxCount = maxCount;
+	particles->particles = elfCreateList();
+	elfIncRef((elfObject*)particles->particles);
 
-	particles->draw_mode = ELF_ADD;
-	particles->spawn_delay = 0.02;
+	particles->drawMode = ELF_ADD;
+	particles->spawnDelay = 0.02;
 	particles->spawn = ELF_TRUE;
-	particles->size_min = 1.0;
-	particles->size_max = 1.0;
-	particles->size_growth_min = 0.0;
-	particles->size_growth_max = 0.0;
-	particles->rotation_min = 0.0;
-	particles->rotation_max = 0.0;
-	particles->rotation_growth_min = 0.0;
-	particles->rotation_growth_max = 0.0;
-	particles->life_span_min = 3.0;
-	particles->life_span_max = 3.0;
-	particles->fade_speed_min = 0.33;
-	particles->fade_speed_max = 0.33;
-	particles->velocity_min.x = -10.0; particles->velocity_min.y = -10.0; particles->velocity_min.z = -10.0;
-	particles->velocity_max.x = 10.0; particles->velocity_max.y = 10.0; particles->velocity_max.z = 10.0;
-	particles->color_min.r = 1.0; particles->color_min.g = 1.0; particles->color_min.b = 1.0; particles->color_min.a = 1.0;
-	particles->color_max.r = 1.0; particles->color_max.g = 1.0; particles->color_max.b = 1.0; particles->color_max.a = 1.0;
+	particles->sizeMin = 1.0;
+	particles->sizeMax = 1.0;
+	particles->sizeGrowthMin = 0.0;
+	particles->sizeGrowthMax = 0.0;
+	particles->rotationMin = 0.0;
+	particles->rotationMax = 0.0;
+	particles->rotationGrowthMin = 0.0;
+	particles->rotationGrowthMax = 0.0;
+	particles->lifeSpanMin = 3.0;
+	particles->lifeSpanMax = 3.0;
+	particles->fadeSpeedMin = 0.33;
+	particles->fadeSpeedMax = 0.33;
+	particles->velocityMin.x = -10.0; particles->velocityMin.y = -10.0; particles->velocityMin.z = -10.0;
+	particles->velocityMax.x = 10.0; particles->velocityMax.y = 10.0; particles->velocityMax.z = 10.0;
+	particles->colorMin.r = 1.0; particles->colorMin.g = 1.0; particles->colorMin.b = 1.0; particles->colorMin.a = 1.0;
+	particles->colorMax.r = 1.0; particles->colorMax.g = 1.0; particles->colorMax.b = 1.0; particles->colorMax.a = 1.0;
 
-	particles->vertices = gfx_create_vertex_data(3*6*max_count, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-	particles->tex_coords = gfx_create_vertex_data(2*6*max_count, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-	particles->colors = gfx_create_vertex_data(4*6*max_count,  GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-	particles->vertex_array = gfx_create_vertex_array(GFX_FALSE);
-	gfx_set_vertex_array_data(particles->vertex_array, GFX_VERTEX, particles->vertices);
-	gfx_set_vertex_array_data(particles->vertex_array, GFX_TEX_COORD, particles->tex_coords);
-	gfx_set_vertex_array_data(particles->vertex_array, GFX_COLOR, particles->colors);
+	particles->vertices = gfxCreateVertexData(3*6*maxCount, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
+	particles->texCoords = gfxCreateVertexData(2*6*maxCount, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
+	particles->colors = gfxCreateVertexData(4*6*maxCount,  GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
+	particles->vertexArray = gfxCreateVertexArray(GFX_FALSE);
+	gfxSetVertexArrayData(particles->vertexArray, GFX_VERTEX, particles->vertices);
+	gfxSetVertexArrayData(particles->vertexArray, GFX_TEX_COORD, particles->texCoords);
+	gfxSetVertexArrayData(particles->vertexArray, GFX_COLOR, particles->colors);
 
-	gfx_inc_ref((gfx_object*)particles->vertices);
-	gfx_inc_ref((gfx_object*)particles->tex_coords);
-	gfx_inc_ref((gfx_object*)particles->colors);
-	gfx_inc_ref((gfx_object*)particles->vertex_array);
+	gfxIncRef((gfxObject*)particles->vertices);
+	gfxIncRef((gfxObject*)particles->texCoords);
+	gfxIncRef((gfxObject*)particles->colors);
+	gfxIncRef((gfxObject*)particles->vertexArray);
 
-	tex_coord_buffer = (float*)gfx_get_vertex_data_buffer(particles->tex_coords);
-	color_buffer = (float*)gfx_get_vertex_data_buffer(particles->colors);
+	texCoordBuffer = (float*)gfxGetVertexDataBuffer(particles->texCoords);
+	colorBuffer = (float*)gfxGetVertexDataBuffer(particles->colors);
 
-	for(i = 0; i < particles->max_count; i++)
+	for(i = 0; i < particles->maxCount; i++)
 	{
 		j = i*12;
 		k = i*24;
 
-		tex_coord_buffer[j] = 0.0;
-		tex_coord_buffer[j+1] = 1.0;
-		tex_coord_buffer[j+2] = 0.0;
-		tex_coord_buffer[j+3] = 0.0;
-		tex_coord_buffer[j+4] = 1.0;
-		tex_coord_buffer[j+5] = 0.0;
+		texCoordBuffer[j] = 0.0;
+		texCoordBuffer[j+1] = 1.0;
+		texCoordBuffer[j+2] = 0.0;
+		texCoordBuffer[j+3] = 0.0;
+		texCoordBuffer[j+4] = 1.0;
+		texCoordBuffer[j+5] = 0.0;
 
-		tex_coord_buffer[j+6] = 0.0;
-		tex_coord_buffer[j+7] = 1.0;
-		tex_coord_buffer[j+8] = 1.0;
-		tex_coord_buffer[j+9] = 0.0;
-		tex_coord_buffer[j+10] = 1.0;
-		tex_coord_buffer[j+11] = 1.0;
+		texCoordBuffer[j+6] = 0.0;
+		texCoordBuffer[j+7] = 1.0;
+		texCoordBuffer[j+8] = 1.0;
+		texCoordBuffer[j+9] = 0.0;
+		texCoordBuffer[j+10] = 1.0;
+		texCoordBuffer[j+11] = 1.0;
 
-		color_buffer[k] = 1.0;
-		color_buffer[k+1] = 1.0;
-		color_buffer[k+2] = 1.0;
-		color_buffer[k+3] = 1.0;
-		color_buffer[k+4] = 1.0;
-		color_buffer[k+5] = 1.0;
-		color_buffer[k+6] = 1.0;
-		color_buffer[k+7] = 1.0;
-		color_buffer[k+8] = 1.0;
-		color_buffer[k+9] = 1.0;
-		color_buffer[k+10] = 1.0;
-		color_buffer[k+11] = 1.0;
-		color_buffer[k+12] = 1.0;
-		color_buffer[k+13] = 1.0;
-		color_buffer[k+14] = 1.0;
-		color_buffer[k+15] = 1.0;
-		color_buffer[k+16] = 1.0;
-		color_buffer[k+17] = 1.0;
-		color_buffer[k+18] = 1.0;
-		color_buffer[k+19] = 1.0;
-		color_buffer[k+20] = 1.0;
-		color_buffer[k+21] = 1.0;
-		color_buffer[k+22] = 1.0;
-		color_buffer[k+23] = 1.0;
+		colorBuffer[k] = 1.0;
+		colorBuffer[k+1] = 1.0;
+		colorBuffer[k+2] = 1.0;
+		colorBuffer[k+3] = 1.0;
+		colorBuffer[k+4] = 1.0;
+		colorBuffer[k+5] = 1.0;
+		colorBuffer[k+6] = 1.0;
+		colorBuffer[k+7] = 1.0;
+		colorBuffer[k+8] = 1.0;
+		colorBuffer[k+9] = 1.0;
+		colorBuffer[k+10] = 1.0;
+		colorBuffer[k+11] = 1.0;
+		colorBuffer[k+12] = 1.0;
+		colorBuffer[k+13] = 1.0;
+		colorBuffer[k+14] = 1.0;
+		colorBuffer[k+15] = 1.0;
+		colorBuffer[k+16] = 1.0;
+		colorBuffer[k+17] = 1.0;
+		colorBuffer[k+18] = 1.0;
+		colorBuffer[k+19] = 1.0;
+		colorBuffer[k+20] = 1.0;
+		colorBuffer[k+21] = 1.0;
+		colorBuffer[k+22] = 1.0;
+		colorBuffer[k+23] = 1.0;
 	}
 
-	particles->dobject = elf_create_physics_object_box(0.5, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0);
-	elf_set_physics_object_actor(particles->dobject, (elf_actor*)particles);
-	elf_inc_ref((elf_object*)particles->dobject);
+	particles->dobject = elfCreatePhysicsObjectBox(0.5, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0);
+	elfSetPhysicsObjectActor(particles->dobject, (elfActor*)particles);
+	elfIncRef((elfObject*)particles->dobject);
 
-	particles->pbb_lengths.x = particles->pbb_lengths.y = particles->pbb_lengths.z = 1.0;
+	particles->pbbLengths.x = particles->pbbLengths.y = particles->pbbLengths.z = 1.0;
 
-	if(name) particles->name = elf_create_string(name);
+	if(name) particles->name = elfCreateString(name);
 
-	particles->id = ++gen->particles_id_counter;
+	particles->id = ++gen->particlesIdCounter;
 
-	elf_inc_obj(ELF_PARTICLES);
+	elfIncObj(ELF_PARTICLES);
 
 	return particles;
 }
 
-void elf_init_new_particle(elf_particles* particles, elf_particle* particle)
+void elfInitNewParticle(elfParticles* particles, elfParticle* particle)
 {
 	static int num;
 	static float* vertices;
-	static elf_vec4f orient;
-	static elf_vec3f local_pos;
-	static elf_vec3f result;
+	static elfVec4f orient;
+	static elfVec3f localPos;
+	static elfVec3f result;
 
-	particle->life_span = elf_random_float_range(particles->life_span_min, particles->life_span_max);
-	particle->fade_speed = elf_random_float_range(particles->fade_speed_min, particles->fade_speed_max);
-	particle->size = elf_random_float_range(particles->size_min, particles->size_max);
-	particle->size_growth = elf_random_float_range(particles->size_growth_min, particles->size_growth_max);
-	particle->rotation = elf_random_float_range(particles->rotation_min, particles->rotation_max);
-	particle->rotation_growth = elf_random_float_range(particles->rotation_growth_min, particles->rotation_growth_max);
-	if(particles->model && elf_get_model_vertice_count(particles->model) > 0)
+	particle->lifeSpan = elfRandomFloatRange(particles->lifeSpanMin, particles->lifeSpanMax);
+	particle->fadeSpeed = elfRandomFloatRange(particles->fadeSpeedMin, particles->fadeSpeedMax);
+	particle->size = elfRandomFloatRange(particles->sizeMin, particles->sizeMax);
+	particle->sizeGrowth = elfRandomFloatRange(particles->sizeGrowthMin, particles->sizeGrowthMax);
+	particle->rotation = elfRandomFloatRange(particles->rotationMin, particles->rotationMax);
+	particle->rotationGrowth = elfRandomFloatRange(particles->rotationGrowthMin, particles->rotationGrowthMax);
+	if(particles->model && elfGetModelVerticeCount(particles->model) > 0)
 	{
-		elf_get_actor_position_((elf_actor*)particles, &particle->position.x);
-		num = elf_random_int_range(0, elf_get_model_vertice_count(particles->model));
-		vertices = elf_get_model_vertices(particles->model);
+		elfGetActorPosition_((elfActor*)particles, &particle->position.x);
+		num = elfRandomIntRange(0, elfGetModelVerticeCount(particles->model));
+		vertices = elfGetModelVertices(particles->model);
 		particle->position.x += vertices[3*num];
 		particle->position.y += vertices[3*num+1];
 		particle->position.z += vertices[3*num+2];
 	}
 	else if(particles->entity && particles->entity->model &&
-		elf_get_model_vertice_count(particles->entity->model) > 0)
+		elfGetModelVerticeCount(particles->entity->model) > 0)
 	{
-		elf_get_actor_position_((elf_actor*)particles->entity, &particle->position.x);
-		num = elf_random_int_range(0, elf_get_model_vertice_count(particles->entity->model));
-		if(!particles->entity->vertices)  vertices = (float*)gfx_get_vertex_data_buffer(particles->entity->model->vertices);
-		else vertices = (float*)gfx_get_vertex_data_buffer(particles->entity->vertices);
-		local_pos.x = vertices[3*num];
-		local_pos.y = vertices[3*num+1];
-		local_pos.z = vertices[3*num+2];
-		elf_get_actor_orientation_((elf_actor*)particles->entity, &orient.x);
-		gfx_mul_qua_vec(&orient.x, &local_pos.x, &result.x);
+		elfGetActorPosition_((elfActor*)particles->entity, &particle->position.x);
+		num = elfRandomIntRange(0, elfGetModelVerticeCount(particles->entity->model));
+		if(!particles->entity->vertices)  vertices = (float*)gfxGetVertexDataBuffer(particles->entity->model->vertices);
+		else vertices = (float*)gfxGetVertexDataBuffer(particles->entity->vertices);
+		localPos.x = vertices[3*num];
+		localPos.y = vertices[3*num+1];
+		localPos.z = vertices[3*num+2];
+		elfGetActorOrientation_((elfActor*)particles->entity, &orient.x);
+		gfxMulQuaVec(&orient.x, &localPos.x, &result.x);
 		particle->position.x += result.x;
 		particle->position.y += result.y;
 		particle->position.z += result.z;
 	}
 	else
 	{
-		elf_get_actor_position_((elf_actor*)particles, &particle->position.x);
-		particle->position.x += elf_random_float_range(particles->position_min.x, particles->position_max.x);
-		particle->position.y += elf_random_float_range(particles->position_min.y, particles->position_max.y);
-		particle->position.z += elf_random_float_range(particles->position_min.z, particles->position_max.z);
+		elfGetActorPosition_((elfActor*)particles, &particle->position.x);
+		particle->position.x += elfRandomFloatRange(particles->positionMin.x, particles->positionMax.x);
+		particle->position.y += elfRandomFloatRange(particles->positionMin.y, particles->positionMax.y);
+		particle->position.z += elfRandomFloatRange(particles->positionMin.z, particles->positionMax.z);
 	}
-	particle->velocity.x = elf_random_float_range(particles->velocity_min.x, particles->velocity_max.x);
-	particle->velocity.y = elf_random_float_range(particles->velocity_min.y, particles->velocity_max.y);
-	particle->velocity.z = elf_random_float_range(particles->velocity_min.z, particles->velocity_max.z);
-	particle->color.r = elf_random_float_range(particles->color_min.r, particles->color_max.r);
-	particle->color.g = elf_random_float_range(particles->color_min.g, particles->color_max.g);
-	particle->color.b = elf_random_float_range(particles->color_min.b, particles->color_max.b);
-	particle->color.a = elf_random_float_range(particles->color_min.a, particles->color_max.a);
+	particle->velocity.x = elfRandomFloatRange(particles->velocityMin.x, particles->velocityMax.x);
+	particle->velocity.y = elfRandomFloatRange(particles->velocityMin.y, particles->velocityMax.y);
+	particle->velocity.z = elfRandomFloatRange(particles->velocityMin.z, particles->velocityMax.z);
+	particle->color.r = elfRandomFloatRange(particles->colorMin.r, particles->colorMax.r);
+	particle->color.g = elfRandomFloatRange(particles->colorMin.g, particles->colorMax.g);
+	particle->color.b = elfRandomFloatRange(particles->colorMin.b, particles->colorMax.b);
+	particle->color.a = elfRandomFloatRange(particles->colorMin.a, particles->colorMax.a);
 }
 
-void elf_calc_particles_aabb(elf_particles* particles)
+void elfCalcParticlesAabb(elfParticles* particles)
 {
-	elf_vec3f position;
+	elfVec3f position;
 
-	particles->cull_aabb_min.x = particles->life_span_max*(particles->velocity_min.x+elf_float_min(0.0, particles->gravity.x));
-	particles->cull_aabb_min.y = particles->life_span_max*(particles->velocity_min.y+elf_float_min(0.0, particles->gravity.y));
-	particles->cull_aabb_min.z = particles->life_span_max*(particles->velocity_min.z+elf_float_min(0.0, particles->gravity.z));
+	particles->cullAabbMin.x = particles->lifeSpanMax*(particles->velocityMin.x+elfFloatMin(0.0, particles->gravity.x));
+	particles->cullAabbMin.y = particles->lifeSpanMax*(particles->velocityMin.y+elfFloatMin(0.0, particles->gravity.y));
+	particles->cullAabbMin.z = particles->lifeSpanMax*(particles->velocityMin.z+elfFloatMin(0.0, particles->gravity.z));
 
-	particles->cull_aabb_max.x = particles->life_span_max*(particles->velocity_max.x+elf_float_max(0.0, particles->gravity.x));
-	particles->cull_aabb_max.y = particles->life_span_max*(particles->velocity_max.y+elf_float_max(0.0, particles->gravity.y));
-	particles->cull_aabb_max.z = particles->life_span_max*(particles->velocity_max.z+elf_float_max(0.0, particles->gravity.z));
+	particles->cullAabbMax.x = particles->lifeSpanMax*(particles->velocityMax.x+elfFloatMax(0.0, particles->gravity.x));
+	particles->cullAabbMax.y = particles->lifeSpanMax*(particles->velocityMax.y+elfFloatMax(0.0, particles->gravity.y));
+	particles->cullAabbMax.z = particles->lifeSpanMax*(particles->velocityMax.z+elfFloatMax(0.0, particles->gravity.z));
 
 	if(particles->model)
 	{
-		particles->cull_aabb_min.x += particles->model->bb_min.x;
-		particles->cull_aabb_min.y += particles->model->bb_min.y;
-		particles->cull_aabb_min.z += particles->model->bb_min.z;
+		particles->cullAabbMin.x += particles->model->bbMin.x;
+		particles->cullAabbMin.y += particles->model->bbMin.y;
+		particles->cullAabbMin.z += particles->model->bbMin.z;
 
-		particles->cull_aabb_max.x += particles->model->bb_max.x;
-		particles->cull_aabb_max.y += particles->model->bb_max.y;
-		particles->cull_aabb_max.z += particles->model->bb_max.z;
+		particles->cullAabbMax.x += particles->model->bbMax.x;
+		particles->cullAabbMax.y += particles->model->bbMax.y;
+		particles->cullAabbMax.z += particles->model->bbMax.z;
 	}
 	else if(particles->entity)
 	{
-		particles->cull_aabb_min.x += particles->entity->cull_aabb_min.x;
-		particles->cull_aabb_min.y += particles->entity->cull_aabb_min.y;
-		particles->cull_aabb_min.z += particles->entity->cull_aabb_min.z;
+		particles->cullAabbMin.x += particles->entity->cullAabbMin.x;
+		particles->cullAabbMin.y += particles->entity->cullAabbMin.y;
+		particles->cullAabbMin.z += particles->entity->cullAabbMin.z;
 
-		particles->cull_aabb_max.x += particles->entity->cull_aabb_max.x;
-		particles->cull_aabb_max.y += particles->entity->cull_aabb_max.y;
-		particles->cull_aabb_max.z += particles->entity->cull_aabb_max.z;
+		particles->cullAabbMax.x += particles->entity->cullAabbMax.x;
+		particles->cullAabbMax.y += particles->entity->cullAabbMax.y;
+		particles->cullAabbMax.z += particles->entity->cullAabbMax.z;
 	}
 	else
 	{
-		particles->cull_aabb_min.x += particles->position_min.x;
-		particles->cull_aabb_min.y += particles->position_min.y;
-		particles->cull_aabb_min.z += particles->position_min.z;
+		particles->cullAabbMin.x += particles->positionMin.x;
+		particles->cullAabbMin.y += particles->positionMin.y;
+		particles->cullAabbMin.z += particles->positionMin.z;
 
-		particles->cull_aabb_max.x += particles->position_max.x;
-		particles->cull_aabb_max.y += particles->position_max.y;
-		particles->cull_aabb_max.z += particles->position_max.z;
+		particles->cullAabbMax.x += particles->positionMax.x;
+		particles->cullAabbMax.y += particles->positionMax.y;
+		particles->cullAabbMax.z += particles->positionMax.z;
 	}
 
 	if(!particles->entity)
 	{
-		elf_get_actor_position_((elf_actor*)particles, &position.x);
+		elfGetActorPosition_((elfActor*)particles, &position.x);
 	}
 	else
 	{
-		elf_get_actor_position_((elf_actor*)particles->entity, &position.x);
+		elfGetActorPosition_((elfActor*)particles->entity, &position.x);
 	}
 
-	particles->cull_aabb_min.x += position.x;
-	particles->cull_aabb_min.y += position.y;
-	particles->cull_aabb_min.z += position.z;
+	particles->cullAabbMin.x += position.x;
+	particles->cullAabbMin.y += position.y;
+	particles->cullAabbMin.z += position.z;
 
-	particles->cull_aabb_max.x += position.x;
-	particles->cull_aabb_max.y += position.y;
-	particles->cull_aabb_max.z += position.z;
+	particles->cullAabbMax.x += position.x;
+	particles->cullAabbMax.y += position.y;
+	particles->cullAabbMax.z += position.z;
 }
 
-void elf_particles_pre_draw(elf_particles* particles)
+void elfParticlesPreDraw(elfParticles* particles)
 {
-	elf_actor_pre_draw((elf_actor*)particles);
+	elfActorPreDraw((elfActor*)particles);
 
-	if(particles->moved) elf_calc_particles_aabb(particles);
+	if(particles->moved) elfCalcParticlesAabb(particles);
 }
 
-void elf_particles_post_draw(elf_particles* particles)
+void elfParticlesPostDraw(elfParticles* particles)
 {
-	elf_actor_post_draw((elf_actor*)particles);
+	elfActorPostDraw((elfActor*)particles);
 }
 
-void elf_update_particles(elf_particles* particles, float sync)
+void elfUpdateParticles(elfParticles* particles, float sync)
 {
-	elf_particle* particle;
-	int spawn_count;
+	elfParticle* particle;
+	int spawnCount;
 	int i;
 
-	elf_update_actor((elf_actor*)particles);
+	elfUpdateActor((elfActor*)particles);
 
 	// update, remove and spawn particles
-	particles->cur_time += sync;
-	spawn_count = (int)(particles->cur_time/particles->spawn_delay);
-	if(elf_get_list_length(particles->particles)+spawn_count > particles->max_count)
-		spawn_count -= (elf_get_list_length(particles->particles)+spawn_count)-particles->max_count;
-	if(spawn_count > 0) particles->cur_time -= particles->spawn_delay*spawn_count;
+	particles->curTime += sync;
+	spawnCount = (int)(particles->curTime/particles->spawnDelay);
+	if(elfGetListLength(particles->particles)+spawnCount > particles->maxCount)
+		spawnCount -= (elfGetListLength(particles->particles)+spawnCount)-particles->maxCount;
+	if(spawnCount > 0) particles->curTime -= particles->spawnDelay*spawnCount;
 
-	for(particle = (elf_particle*)elf_begin_list(particles->particles); particle;
-		particle = (elf_particle*)elf_next_in_list(particles->particles))
+	for(particle = (elfParticle*)elfBeginList(particles->particles); particle;
+		particle = (elfParticle*)elfNextInList(particles->particles))
 	{
-		if(particle->life_span < 0.0 || particle->color.a < 0.0)
+		if(particle->lifeSpan < 0.0 || particle->color.a < 0.0)
 		{
-			if(spawn_count > 0 && particles->spawn)
+			if(spawnCount > 0 && particles->spawn)
 			{
-				elf_init_new_particle(particles, particle);
-				spawn_count--;
+				elfInitNewParticle(particles, particle);
+				spawnCount--;
 			}
 			else
 			{
-				elf_remove_from_list(particles->particles, (elf_object*)particle);
+				elfRemoveFromList(particles->particles, (elfObject*)particle);
 			}
 			continue;
 		}
-		particle->size += particle->size_growth*sync;
-		particle->rotation += particle->rotation_growth*sync;
+		particle->size += particle->sizeGrowth*sync;
+		particle->rotation += particle->rotationGrowth*sync;
 		particle->position.x += particle->velocity.x*sync;
 		particle->position.y += particle->velocity.y*sync;
 		particle->position.z += particle->velocity.z*sync;
-		particle->life_span -= sync;
+		particle->lifeSpan -= sync;
 		particle->velocity.x += particles->gravity.x*sync;
 		particle->velocity.y += particles->gravity.y*sync;
 		particle->velocity.z += particles->gravity.z*sync;
-		particle->color.a -= particle->fade_speed*sync;
+		particle->color.a -= particle->fadeSpeed*sync;
 	}
 
 	// spawn particles
 	if(particles->spawn)
 	{
-		for(i = 0; i < spawn_count; i++)
+		for(i = 0; i < spawnCount; i++)
 		{
-			particle = elf_create_particle();
+			particle = elfCreateParticle();
 
-			elf_init_new_particle(particles, particle);
+			elfInitNewParticle(particles, particle);
 
-			elf_append_to_list(particles->particles, (elf_object*)particle);
+			elfAppendToList(particles->particles, (elfObject*)particle);
 		}
 	}
 }
 
-void elf_draw_particles(elf_particles* particles, elf_camera* camera, gfx_shader_params* shader_params)
+void elfDrawParticles(elfParticles* particles, elfCamera* camera, gfxShaderParams* shaderParams)
 {
-	elf_particle* particle;
+	elfParticle* particle;
 	int i, j;
 	float offset;
 	float pos[3];
-	float camera_pos[3];
-	float camera_orient[4];
-	float inv_camera_pos[3];
-	float inv_camera_orient[4];
-	float particle_offset[3];
-	elf_color real_color;
-	float sin_x1;
-	float cos_y1;
-	float sin_x2;
-	float cos_y2;
-	float sin_x3;
-	float cos_y3;
-	float sin_x4;
-	float cos_y4;
+	float cameraPos[3];
+	float cameraOrient[4];
+	float invCameraPos[3];
+	float invCameraOrient[4];
+	float particleOffset[3];
+	elfColor realColor;
+	float sinX1;
+	float cosY1;
+	float sinX2;
+	float cosY2;
+	float sinX3;
+	float cosY3;
+	float sinX4;
+	float cosY4;
 	float radius;
-	float* vertex_buffer;
-	float* color_buffer;
+	float* vertexBuffer;
+	float* colorBuffer;
 
-	vertex_buffer = (float*)gfx_get_vertex_data_buffer(particles->vertices);
-	color_buffer = (float*)gfx_get_vertex_data_buffer(particles->colors);
+	vertexBuffer = (float*)gfxGetVertexDataBuffer(particles->vertices);
+	colorBuffer = (float*)gfxGetVertexDataBuffer(particles->colors);
 
-	elf_get_actor_position_((elf_actor*)camera, camera_pos);
-	elf_get_actor_orientation_((elf_actor*)camera, camera_orient);
+	elfGetActorPosition_((elfActor*)camera, cameraPos);
+	elfGetActorOrientation_((elfActor*)camera, cameraOrient);
 
-	inv_camera_pos[0] = -camera_pos[0]; inv_camera_pos[1] = -camera_pos[1]; inv_camera_pos[2] = -camera_pos[2];
-	gfx_qua_get_inverse(camera_orient, inv_camera_orient);
+	invCameraPos[0] = -cameraPos[0]; invCameraPos[1] = -cameraPos[1]; invCameraPos[2] = -cameraPos[2];
+	gfxQuaGetInverse(cameraOrient, invCameraOrient);
 
 	// rotating the particles takes up a lot of processing power, so see if it is really
 	// necessary before going ahead and doing it
-	if(elf_about_zero(particles->rotation_min) && elf_about_zero(particles->rotation_max) &&
-		elf_about_zero(particles->rotation_growth_min) && elf_about_zero(particles->rotation_growth_max))
+	if(elfAboutZero(particles->rotationMin) && elfAboutZero(particles->rotationMax) &&
+		elfAboutZero(particles->rotationGrowthMin) && elfAboutZero(particles->rotationGrowthMax))
 	{
-		for(i = 0, j = 0, particle = (elf_particle*)elf_begin_list(particles->particles); particle;
-			particle = (elf_particle*)elf_next_in_list(particles->particles), i++)
+		for(i = 0, j = 0, particle = (elfParticle*)elfBeginList(particles->particles); particle;
+			particle = (elfParticle*)elfNextInList(particles->particles), i++)
 		{
-			particle_offset[0] = inv_camera_pos[0]+particle->position.x;
-			particle_offset[1] = inv_camera_pos[1]+particle->position.y;
-			particle_offset[2] = inv_camera_pos[2]+particle->position.z;
+			particleOffset[0] = invCameraPos[0]+particle->position.x;
+			particleOffset[1] = invCameraPos[1]+particle->position.y;
+			particleOffset[2] = invCameraPos[2]+particle->position.z;
 
-			gfx_mul_qua_vec(inv_camera_orient, particle_offset, pos);
+			gfxMulQuaVec(invCameraOrient, particleOffset, pos);
 
 			j = i*18;
 			offset = particle->size*0.5;
 
-			vertex_buffer[j] = pos[0]-offset;
-			vertex_buffer[j+1] = pos[1]+offset;
-			vertex_buffer[j+2] = pos[2];
-			vertex_buffer[j+3] = pos[0]-offset;
-			vertex_buffer[j+4] = pos[1]-offset;
-			vertex_buffer[j+5] = pos[2];
-			vertex_buffer[j+6] = pos[0]+offset;
-			vertex_buffer[j+7] = pos[1]-offset;
-			vertex_buffer[j+8] = pos[2];
+			vertexBuffer[j] = pos[0]-offset;
+			vertexBuffer[j+1] = pos[1]+offset;
+			vertexBuffer[j+2] = pos[2];
+			vertexBuffer[j+3] = pos[0]-offset;
+			vertexBuffer[j+4] = pos[1]-offset;
+			vertexBuffer[j+5] = pos[2];
+			vertexBuffer[j+6] = pos[0]+offset;
+			vertexBuffer[j+7] = pos[1]-offset;
+			vertexBuffer[j+8] = pos[2];
 
-			vertex_buffer[j+9] = pos[0]-offset;
-			vertex_buffer[j+10] = pos[1]+offset;
-			vertex_buffer[j+11] = pos[2];
-			vertex_buffer[j+12] = pos[0]+offset;
-			vertex_buffer[j+13] = pos[1]-offset;
-			vertex_buffer[j+14] = pos[2];
-			vertex_buffer[j+15] = pos[0]+offset;
-			vertex_buffer[j+16] = pos[1]+offset;
-			vertex_buffer[j+17] = pos[2];
+			vertexBuffer[j+9] = pos[0]-offset;
+			vertexBuffer[j+10] = pos[1]+offset;
+			vertexBuffer[j+11] = pos[2];
+			vertexBuffer[j+12] = pos[0]+offset;
+			vertexBuffer[j+13] = pos[1]-offset;
+			vertexBuffer[j+14] = pos[2];
+			vertexBuffer[j+15] = pos[0]+offset;
+			vertexBuffer[j+16] = pos[1]+offset;
+			vertexBuffer[j+17] = pos[2];
 
 			j = i*24;
-			real_color = particle->color;
-			if(particles->draw_mode == ELF_ADD)
+			realColor = particle->color;
+			if(particles->drawMode == ELF_ADD)
 			{
-				real_color.r *= real_color.a;
-				real_color.g *= real_color.a;
-				real_color.b *= real_color.a;
-				real_color.a = 1.0;
+				realColor.r *= realColor.a;
+				realColor.g *= realColor.a;
+				realColor.b *= realColor.a;
+				realColor.a = 1.0;
 			}
 
-			color_buffer[j] = real_color.r;
-			color_buffer[j+1] = real_color.g;
-			color_buffer[j+2] = real_color.b;
-			color_buffer[j+3] = real_color.a;
-			color_buffer[j+4] = real_color.r;
-			color_buffer[j+5] = real_color.g;
-			color_buffer[j+6] = real_color.b;
-			color_buffer[j+7] = real_color.a;
-			color_buffer[j+8] = real_color.r;
-			color_buffer[j+9] = real_color.g;
-			color_buffer[j+10] = real_color.b;
-			color_buffer[j+11] = real_color.a;
-			color_buffer[j+12] = real_color.r;
-			color_buffer[j+13] = real_color.g;
-			color_buffer[j+14] = real_color.b;
-			color_buffer[j+15] = real_color.a;
-			color_buffer[j+16] = real_color.r;
-			color_buffer[j+17] = real_color.g;
-			color_buffer[j+18] = real_color.b;
-			color_buffer[j+19] = particle->color.a;
-			color_buffer[j+20] = real_color.r;
-			color_buffer[j+21] = real_color.g;
-			color_buffer[j+22] = real_color.b;
-			color_buffer[j+23] = particle->color.a;
+			colorBuffer[j] = realColor.r;
+			colorBuffer[j+1] = realColor.g;
+			colorBuffer[j+2] = realColor.b;
+			colorBuffer[j+3] = realColor.a;
+			colorBuffer[j+4] = realColor.r;
+			colorBuffer[j+5] = realColor.g;
+			colorBuffer[j+6] = realColor.b;
+			colorBuffer[j+7] = realColor.a;
+			colorBuffer[j+8] = realColor.r;
+			colorBuffer[j+9] = realColor.g;
+			colorBuffer[j+10] = realColor.b;
+			colorBuffer[j+11] = realColor.a;
+			colorBuffer[j+12] = realColor.r;
+			colorBuffer[j+13] = realColor.g;
+			colorBuffer[j+14] = realColor.b;
+			colorBuffer[j+15] = realColor.a;
+			colorBuffer[j+16] = realColor.r;
+			colorBuffer[j+17] = realColor.g;
+			colorBuffer[j+18] = realColor.b;
+			colorBuffer[j+19] = particle->color.a;
+			colorBuffer[j+20] = realColor.r;
+			colorBuffer[j+21] = realColor.g;
+			colorBuffer[j+22] = realColor.b;
+			colorBuffer[j+23] = particle->color.a;
 		}
 	}
 	else
 	{
-		for(i = 0, j = 0, particle = (elf_particle*)elf_begin_list(particles->particles); particle;
-			particle = (elf_particle*)elf_next_in_list(particles->particles), i++)
+		for(i = 0, j = 0, particle = (elfParticle*)elfBeginList(particles->particles); particle;
+			particle = (elfParticle*)elfNextInList(particles->particles), i++)
 		{
 
-			particle_offset[0] = inv_camera_pos[0]+particle->position.x;
-			particle_offset[1] = inv_camera_pos[1]+particle->position.y;
-			particle_offset[2] = inv_camera_pos[2]+particle->position.z;
+			particleOffset[0] = invCameraPos[0]+particle->position.x;
+			particleOffset[1] = invCameraPos[1]+particle->position.y;
+			particleOffset[2] = invCameraPos[2]+particle->position.z;
 
-			gfx_mul_qua_vec(inv_camera_orient, particle_offset, pos);
+			gfxMulQuaVec(invCameraOrient, particleOffset, pos);
 
 			j = i*18;
 			offset = particle->size*0.5;
 			radius = offset/0.707107;
-			sin_x1 = sin(GFX_PI_DIV_180*(45.0+particle->rotation));
-			cos_y1 = cos(GFX_PI_DIV_180*(45.0+particle->rotation));
-			sin_x2 = sin(GFX_PI_DIV_180*(135.0+particle->rotation));
-			cos_y2 = cos(GFX_PI_DIV_180*(135.0+particle->rotation));
-			sin_x3 = sin(GFX_PI_DIV_180*(225.0+particle->rotation));
-			cos_y3 = cos(GFX_PI_DIV_180*(225.0+particle->rotation));
-			sin_x4 = sin(GFX_PI_DIV_180*(315.0+particle->rotation));
-			cos_y4 = cos(GFX_PI_DIV_180*(315.0+particle->rotation));
+			sinX1 = sin(GFX_PI_DIV_180*(45.0+particle->rotation));
+			cosY1 = cos(GFX_PI_DIV_180*(45.0+particle->rotation));
+			sinX2 = sin(GFX_PI_DIV_180*(135.0+particle->rotation));
+			cosY2 = cos(GFX_PI_DIV_180*(135.0+particle->rotation));
+			sinX3 = sin(GFX_PI_DIV_180*(225.0+particle->rotation));
+			cosY3 = cos(GFX_PI_DIV_180*(225.0+particle->rotation));
+			sinX4 = sin(GFX_PI_DIV_180*(315.0+particle->rotation));
+			cosY4 = cos(GFX_PI_DIV_180*(315.0+particle->rotation));
 
-			vertex_buffer[j] = pos[0]+radius*sin_x4;
-			vertex_buffer[j+1] = pos[1]+radius*cos_y4;
-			vertex_buffer[j+2] = pos[2];
-			vertex_buffer[j+3] = pos[0]+radius*sin_x3;
-			vertex_buffer[j+4] = pos[1]+radius*cos_y3;
-			vertex_buffer[j+5] = pos[2];
-			vertex_buffer[j+6] = pos[0]+radius*sin_x2;
-			vertex_buffer[j+7] = pos[1]+radius*cos_y2;
-			vertex_buffer[j+8] = pos[2];
+			vertexBuffer[j] = pos[0]+radius*sinX4;
+			vertexBuffer[j+1] = pos[1]+radius*cosY4;
+			vertexBuffer[j+2] = pos[2];
+			vertexBuffer[j+3] = pos[0]+radius*sinX3;
+			vertexBuffer[j+4] = pos[1]+radius*cosY3;
+			vertexBuffer[j+5] = pos[2];
+			vertexBuffer[j+6] = pos[0]+radius*sinX2;
+			vertexBuffer[j+7] = pos[1]+radius*cosY2;
+			vertexBuffer[j+8] = pos[2];
 
-			vertex_buffer[j+9] = pos[0]+radius*sin_x4;
-			vertex_buffer[j+10] = pos[1]+radius*cos_y4;
-			vertex_buffer[j+11] = pos[2];
-			vertex_buffer[j+12] = pos[0]+radius*sin_x2;
-			vertex_buffer[j+13] = pos[1]+radius*cos_y2;
-			vertex_buffer[j+14] = pos[2];
-			vertex_buffer[j+15] = pos[0]+radius*sin_x1;
-			vertex_buffer[j+16] = pos[1]+radius*cos_y1;
-			vertex_buffer[j+17] = pos[2];
+			vertexBuffer[j+9] = pos[0]+radius*sinX4;
+			vertexBuffer[j+10] = pos[1]+radius*cosY4;
+			vertexBuffer[j+11] = pos[2];
+			vertexBuffer[j+12] = pos[0]+radius*sinX2;
+			vertexBuffer[j+13] = pos[1]+radius*cosY2;
+			vertexBuffer[j+14] = pos[2];
+			vertexBuffer[j+15] = pos[0]+radius*sinX1;
+			vertexBuffer[j+16] = pos[1]+radius*cosY1;
+			vertexBuffer[j+17] = pos[2];
 
 			j = i*24;
-			real_color = particle->color;
-			if(particles->draw_mode == ELF_ADD)
+			realColor = particle->color;
+			if(particles->drawMode == ELF_ADD)
 			{
-				real_color.r *= real_color.a;
-				real_color.g *= real_color.a;
-				real_color.b *= real_color.a;
-				real_color.a = 1.0;
+				realColor.r *= realColor.a;
+				realColor.g *= realColor.a;
+				realColor.b *= realColor.a;
+				realColor.a = 1.0;
 			}
 
-			color_buffer[j] = real_color.r;
-			color_buffer[j+1] = real_color.g;
-			color_buffer[j+2] = real_color.b;
-			color_buffer[j+3] = real_color.a;
-			color_buffer[j+4] = real_color.r;
-			color_buffer[j+5] = real_color.g;
-			color_buffer[j+6] = real_color.b;
-			color_buffer[j+7] = real_color.a;
-			color_buffer[j+8] = real_color.r;
-			color_buffer[j+9] = real_color.g;
-			color_buffer[j+10] = real_color.b;
-			color_buffer[j+11] = real_color.a;
-			color_buffer[j+12] = real_color.r;
-			color_buffer[j+13] = real_color.g;
-			color_buffer[j+14] = real_color.b;
-			color_buffer[j+15] = real_color.a;
-			color_buffer[j+16] = real_color.r;
-			color_buffer[j+17] = real_color.g;
-			color_buffer[j+18] = real_color.b;
-			color_buffer[j+19] = particle->color.a;
-			color_buffer[j+20] = real_color.r;
-			color_buffer[j+21] = real_color.g;
-			color_buffer[j+22] = real_color.b;
-			color_buffer[j+23] = particle->color.a;
+			colorBuffer[j] = realColor.r;
+			colorBuffer[j+1] = realColor.g;
+			colorBuffer[j+2] = realColor.b;
+			colorBuffer[j+3] = realColor.a;
+			colorBuffer[j+4] = realColor.r;
+			colorBuffer[j+5] = realColor.g;
+			colorBuffer[j+6] = realColor.b;
+			colorBuffer[j+7] = realColor.a;
+			colorBuffer[j+8] = realColor.r;
+			colorBuffer[j+9] = realColor.g;
+			colorBuffer[j+10] = realColor.b;
+			colorBuffer[j+11] = realColor.a;
+			colorBuffer[j+12] = realColor.r;
+			colorBuffer[j+13] = realColor.g;
+			colorBuffer[j+14] = realColor.b;
+			colorBuffer[j+15] = realColor.a;
+			colorBuffer[j+16] = realColor.r;
+			colorBuffer[j+17] = realColor.g;
+			colorBuffer[j+18] = realColor.b;
+			colorBuffer[j+19] = particle->color.a;
+			colorBuffer[j+20] = realColor.r;
+			colorBuffer[j+21] = realColor.g;
+			colorBuffer[j+22] = realColor.b;
+			colorBuffer[j+23] = particle->color.a;
 		}
 	}
 
-	if(elf_get_list_length(particles->particles) > 0)
+	if(elfGetListLength(particles->particles) > 0)
 	{
-		shader_params->render_params.blend_mode = particles->draw_mode;
-		shader_params->render_params.vertex_color = GFX_TRUE;
-		gfx_matrix4_set_identity(shader_params->modelview_matrix);
-		if(particles->texture) shader_params->texture_params->texture = particles->texture->texture;
-		else shader_params->texture_params->texture = NULL;
-		shader_params->texture_params->type = GFX_COLOR_MAP;
-		gfx_set_shader_params(shader_params);
+		shaderParams->renderParams.blendMode = particles->drawMode;
+		shaderParams->renderParams.vertexColor = GFX_TRUE;
+		gfxMatrix4SetIdentity(shaderParams->modelviewMatrix);
+		if(particles->texture) shaderParams->textureParams->texture = particles->texture->texture;
+		else shaderParams->textureParams->texture = NULL;
+		shaderParams->textureParams->type = GFX_COLOR_MAP;
+		gfxSetShaderParams(shaderParams);
 
-		gfx_draw_vertex_array(particles->vertex_array, 6*elf_get_list_length(particles->particles), GFX_TRIANGLES);
+		gfxDrawVertexArray(particles->vertexArray, 6*elfGetListLength(particles->particles), GFX_TRIANGLES);
 	}
 }
 
-void elf_draw_particles_debug(elf_particles* particles, gfx_shader_params* shader_params)
+void elfDrawParticlesDebug(elfParticles* particles, gfxShaderParams* shaderParams)
 {
 	float min[3];
 	float max[3];
-	float* vertex_buffer;
+	float* vertexBuffer;
 
-	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(particles->transform),
-		shader_params->camera_matrix, shader_params->modelview_matrix);
+	gfxMulMatrix4Matrix4(gfxGetTransformMatrix(particles->transform),
+		shaderParams->cameraMatrix, shaderParams->modelviewMatrix);
 
 	min[0] = min[1] = min[2] = -0.5;
 	max[0] = max[1] = max[2] = 0.5;
 
-	vertex_buffer = (float*)gfx_get_vertex_data_buffer(eng->lines);
+	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->lines);
 
-	vertex_buffer[0] = 0.0;
-	vertex_buffer[1] = 0.0;
-	vertex_buffer[2] = min[2];
-	vertex_buffer[3] = 0.0;
-	vertex_buffer[4] = 0.0;
-	vertex_buffer[5] = max[2];
+	vertexBuffer[0] = 0.0;
+	vertexBuffer[1] = 0.0;
+	vertexBuffer[2] = min[2];
+	vertexBuffer[3] = 0.0;
+	vertexBuffer[4] = 0.0;
+	vertexBuffer[5] = max[2];
 
-	vertex_buffer[6] = 0.0;
-	vertex_buffer[7] = min[1];
-	vertex_buffer[8] = 0.0;
-	vertex_buffer[9] = 0.0;
-	vertex_buffer[10] = max[1];
-	vertex_buffer[11] = 0.0;
+	vertexBuffer[6] = 0.0;
+	vertexBuffer[7] = min[1];
+	vertexBuffer[8] = 0.0;
+	vertexBuffer[9] = 0.0;
+	vertexBuffer[10] = max[1];
+	vertexBuffer[11] = 0.0;
 
-	vertex_buffer[12] = min[0];
-	vertex_buffer[13] = 0.0;
-	vertex_buffer[14] = 0.0;
-	vertex_buffer[15] = max[0];
-	vertex_buffer[16] = 0.0;
-	vertex_buffer[17] = 0.0;
+	vertexBuffer[12] = min[0];
+	vertexBuffer[13] = 0.0;
+	vertexBuffer[14] = 0.0;
+	vertexBuffer[15] = max[0];
+	vertexBuffer[16] = 0.0;
+	vertexBuffer[17] = 0.0;
 
-	vertex_buffer[18] = min[0];
-	vertex_buffer[19] = min[1];
-	vertex_buffer[20] = min[2];
-	vertex_buffer[21] = max[0];
-	vertex_buffer[22] = max[1];
-	vertex_buffer[23] = max[2];
+	vertexBuffer[18] = min[0];
+	vertexBuffer[19] = min[1];
+	vertexBuffer[20] = min[2];
+	vertexBuffer[21] = max[0];
+	vertexBuffer[22] = max[1];
+	vertexBuffer[23] = max[2];
 
-	vertex_buffer[24] = min[0];
-	vertex_buffer[25] = max[1];
-	vertex_buffer[26] = min[2];
-	vertex_buffer[27] = max[0];
-	vertex_buffer[28] = min[1];
-	vertex_buffer[29] = max[2];
+	vertexBuffer[24] = min[0];
+	vertexBuffer[25] = max[1];
+	vertexBuffer[26] = min[2];
+	vertexBuffer[27] = max[0];
+	vertexBuffer[28] = min[1];
+	vertexBuffer[29] = max[2];
 
-	vertex_buffer[30] = max[0];
-	vertex_buffer[31] = min[1];
-	vertex_buffer[32] = min[2];
-	vertex_buffer[33] = min[0];
-	vertex_buffer[34] = max[1];
-	vertex_buffer[35] = max[2];
+	vertexBuffer[30] = max[0];
+	vertexBuffer[31] = min[1];
+	vertexBuffer[32] = min[2];
+	vertexBuffer[33] = min[0];
+	vertexBuffer[34] = max[1];
+	vertexBuffer[35] = max[2];
 
-	vertex_buffer[36] = max[0];
-	vertex_buffer[37] = max[1];
-	vertex_buffer[38] = min[2];
-	vertex_buffer[39] = min[0];
-	vertex_buffer[40] = min[1];
-	vertex_buffer[41] = max[2];
+	vertexBuffer[36] = max[0];
+	vertexBuffer[37] = max[1];
+	vertexBuffer[38] = min[2];
+	vertexBuffer[39] = min[0];
+	vertexBuffer[40] = min[1];
+	vertexBuffer[41] = max[2];
 
-	if(!particles->selected) gfx_set_color(&shader_params->material_params.diffuse_color, 0.35, 0.75, 0.75, 1.0);
-	else gfx_set_color(&shader_params->material_params.diffuse_color, 1.0, 0.0, 0.0, 1.0);
-	gfx_set_shader_params(shader_params);
-	gfx_draw_lines(14, eng->lines);
+	if(!particles->selected) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.35, 0.75, 0.75, 1.0);
+	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 0.0, 0.0, 1.0);
+	gfxSetShaderParams(shaderParams);
+	gfxDrawLines(14, eng->lines);
 }
 
-void elf_destroy_particles(void* data)
+void elfDestroyParticles(void* data)
 {
-	elf_particles* particles = (elf_particles*)data;
+	elfParticles* particles = (elfParticles*)data;
 
-	elf_clean_actor((elf_actor*)particles);
+	elfCleanActor((elfActor*)particles);
 
-	elf_dec_ref((elf_object*)particles->particles);
-	if(particles->texture) elf_dec_ref((elf_object*)particles->texture);
-	if(particles->model) elf_dec_ref((elf_object*)particles->model);
-	if(particles->entity) elf_dec_ref((elf_object*)particles->entity);
+	elfDecRef((elfObject*)particles->particles);
+	if(particles->texture) elfDecRef((elfObject*)particles->texture);
+	if(particles->model) elfDecRef((elfObject*)particles->model);
+	if(particles->entity) elfDecRef((elfObject*)particles->entity);
 
-	gfx_dec_ref((gfx_object*)particles->vertex_array);
-	gfx_dec_ref((gfx_object*)particles->vertices);
-	gfx_dec_ref((gfx_object*)particles->tex_coords);
-	gfx_dec_ref((gfx_object*)particles->colors);
+	gfxDecRef((gfxObject*)particles->vertexArray);
+	gfxDecRef((gfxObject*)particles->vertices);
+	gfxDecRef((gfxObject*)particles->texCoords);
+	gfxDecRef((gfxObject*)particles->colors);
 
 	free(particles);
 
-	elf_dec_obj(ELF_PARTICLES);
+	elfDecObj(ELF_PARTICLES);
 }
 
-const char* elf_get_particles_name(elf_particles* particles)
+const char* elfGetParticlesName(elfParticles* particles)
 {
 	return particles->name;
 }
 
-const char* elf_get_particles_file_path(elf_particles* particles)
+const char* elfGetParticlesFilePath(elfParticles* particles)
 {
-	return particles->file_path;
+	return particles->filePath;
 }
 
-void elf_set_particles_max_count(elf_particles* particles, int max_count)
+void elfSetParticlesMaxCount(elfParticles* particles, int maxCount)
 {
 	int i, j, k;
-	float* tex_coord_buffer;
-	float* color_buffer;
+	float* texCoordBuffer;
+	float* colorBuffer;
 
-	if(max_count < 1) return;
+	if(maxCount < 1) return;
 
-	particles->max_count = max_count;
+	particles->maxCount = maxCount;
 
-	elf_dec_ref((elf_object*)particles->particles);
-	particles->particles = elf_create_list();
-	elf_inc_ref((elf_object*)particles->particles);
+	elfDecRef((elfObject*)particles->particles);
+	particles->particles = elfCreateList();
+	elfIncRef((elfObject*)particles->particles);
 
-	gfx_dec_ref((gfx_object*)particles->vertices);
-	gfx_dec_ref((gfx_object*)particles->tex_coords);
-	gfx_dec_ref((gfx_object*)particles->colors);
-	gfx_dec_ref((gfx_object*)particles->vertex_array);
+	gfxDecRef((gfxObject*)particles->vertices);
+	gfxDecRef((gfxObject*)particles->texCoords);
+	gfxDecRef((gfxObject*)particles->colors);
+	gfxDecRef((gfxObject*)particles->vertexArray);
 
-	particles->vertices = gfx_create_vertex_data(3*6*max_count, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-	particles->tex_coords = gfx_create_vertex_data(2*6*max_count, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-	particles->colors = gfx_create_vertex_data(4*6*max_count,  GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-	particles->vertex_array = gfx_create_vertex_array(GFX_FALSE);
-	gfx_set_vertex_array_data(particles->vertex_array, GFX_VERTEX, particles->vertices);
-	gfx_set_vertex_array_data(particles->vertex_array, GFX_TEX_COORD, particles->tex_coords);
-	gfx_set_vertex_array_data(particles->vertex_array, GFX_COLOR, particles->colors);
+	particles->vertices = gfxCreateVertexData(3*6*maxCount, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
+	particles->texCoords = gfxCreateVertexData(2*6*maxCount, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
+	particles->colors = gfxCreateVertexData(4*6*maxCount,  GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
+	particles->vertexArray = gfxCreateVertexArray(GFX_FALSE);
+	gfxSetVertexArrayData(particles->vertexArray, GFX_VERTEX, particles->vertices);
+	gfxSetVertexArrayData(particles->vertexArray, GFX_TEX_COORD, particles->texCoords);
+	gfxSetVertexArrayData(particles->vertexArray, GFX_COLOR, particles->colors);
 
-	gfx_inc_ref((gfx_object*)particles->vertices);
-	gfx_inc_ref((gfx_object*)particles->tex_coords);
-	gfx_inc_ref((gfx_object*)particles->colors);
-	gfx_inc_ref((gfx_object*)particles->vertex_array);
+	gfxIncRef((gfxObject*)particles->vertices);
+	gfxIncRef((gfxObject*)particles->texCoords);
+	gfxIncRef((gfxObject*)particles->colors);
+	gfxIncRef((gfxObject*)particles->vertexArray);
 
-	tex_coord_buffer = (float*)gfx_get_vertex_data_buffer(particles->tex_coords);
-	color_buffer = (float*)gfx_get_vertex_data_buffer(particles->colors);
+	texCoordBuffer = (float*)gfxGetVertexDataBuffer(particles->texCoords);
+	colorBuffer = (float*)gfxGetVertexDataBuffer(particles->colors);
 
-	for(i = 0; i < particles->max_count; i++)
+	for(i = 0; i < particles->maxCount; i++)
 	{
 		j = i*12;
 		k = i*24;
 
-		tex_coord_buffer[j] = 0.0;
-		tex_coord_buffer[j+1] = 1.0;
-		tex_coord_buffer[j+2] = 0.0;
-		tex_coord_buffer[j+3] = 0.0;
-		tex_coord_buffer[j+4] = 1.0;
-		tex_coord_buffer[j+5] = 0.0;
+		texCoordBuffer[j] = 0.0;
+		texCoordBuffer[j+1] = 1.0;
+		texCoordBuffer[j+2] = 0.0;
+		texCoordBuffer[j+3] = 0.0;
+		texCoordBuffer[j+4] = 1.0;
+		texCoordBuffer[j+5] = 0.0;
 
-		tex_coord_buffer[j+6] = 0.0;
-		tex_coord_buffer[j+7] = 1.0;
-		tex_coord_buffer[j+8] = 1.0;
-		tex_coord_buffer[j+9] = 0.0;
-		tex_coord_buffer[j+10] = 1.0;
-		tex_coord_buffer[j+11] = 1.0;
+		texCoordBuffer[j+6] = 0.0;
+		texCoordBuffer[j+7] = 1.0;
+		texCoordBuffer[j+8] = 1.0;
+		texCoordBuffer[j+9] = 0.0;
+		texCoordBuffer[j+10] = 1.0;
+		texCoordBuffer[j+11] = 1.0;
 
-		color_buffer[k] = 1.0;
-		color_buffer[k+1] = 1.0;
-		color_buffer[k+2] = 1.0;
-		color_buffer[k+3] = 1.0;
-		color_buffer[k+4] = 1.0;
-		color_buffer[k+5] = 1.0;
-		color_buffer[k+6] = 1.0;
-		color_buffer[k+7] = 1.0;
-		color_buffer[k+8] = 1.0;
-		color_buffer[k+9] = 1.0;
-		color_buffer[k+10] = 1.0;
-		color_buffer[k+11] = 1.0;
-		color_buffer[k+12] = 1.0;
-		color_buffer[k+13] = 1.0;
-		color_buffer[k+14] = 1.0;
-		color_buffer[k+15] = 1.0;
-		color_buffer[k+16] = 1.0;
-		color_buffer[k+17] = 1.0;
-		color_buffer[k+18] = 1.0;
-		color_buffer[k+19] = 1.0;
-		color_buffer[k+20] = 1.0;
-		color_buffer[k+21] = 1.0;
-		color_buffer[k+22] = 1.0;
-		color_buffer[k+23] = 1.0;
+		colorBuffer[k] = 1.0;
+		colorBuffer[k+1] = 1.0;
+		colorBuffer[k+2] = 1.0;
+		colorBuffer[k+3] = 1.0;
+		colorBuffer[k+4] = 1.0;
+		colorBuffer[k+5] = 1.0;
+		colorBuffer[k+6] = 1.0;
+		colorBuffer[k+7] = 1.0;
+		colorBuffer[k+8] = 1.0;
+		colorBuffer[k+9] = 1.0;
+		colorBuffer[k+10] = 1.0;
+		colorBuffer[k+11] = 1.0;
+		colorBuffer[k+12] = 1.0;
+		colorBuffer[k+13] = 1.0;
+		colorBuffer[k+14] = 1.0;
+		colorBuffer[k+15] = 1.0;
+		colorBuffer[k+16] = 1.0;
+		colorBuffer[k+17] = 1.0;
+		colorBuffer[k+18] = 1.0;
+		colorBuffer[k+19] = 1.0;
+		colorBuffer[k+20] = 1.0;
+		colorBuffer[k+21] = 1.0;
+		colorBuffer[k+22] = 1.0;
+		colorBuffer[k+23] = 1.0;
 	}
 }
 
-void elf_set_particles_draw_mode(elf_particles* particles, int mode)
+void elfSetParticlesDrawMode(elfParticles* particles, int mode)
 {
-	if(particles->draw_mode < 1 || particles->draw_mode > 4) return;
-	particles->draw_mode = mode;
+	if(particles->drawMode < 1 || particles->drawMode > 4) return;
+	particles->drawMode = mode;
 }
 
-void elf_set_particles_texture(elf_particles* particles, elf_texture* texture)
+void elfSetParticlesTexture(elfParticles* particles, elfTexture* texture)
 {
-	if(particles->texture) elf_dec_ref((elf_object*)particles->texture);
+	if(particles->texture) elfDecRef((elfObject*)particles->texture);
 	particles->texture = texture;
-	if(particles->texture) elf_inc_ref((elf_object*)particles->texture);
+	if(particles->texture) elfIncRef((elfObject*)particles->texture);
 }
 
-void elf_clear_particles_texture(elf_particles* particles)
+void elfClearParticlesTexture(elfParticles* particles)
 {
-	if(particles->texture) elf_dec_ref((elf_object*)particles->texture);
+	if(particles->texture) elfDecRef((elfObject*)particles->texture);
 	particles->texture = NULL;
 }
 
-void elf_set_particles_model(elf_particles* particles, elf_model* model)
+void elfSetParticlesModel(elfParticles* particles, elfModel* model)
 {
-	if(particles->entity) elf_dec_ref((elf_object*)particles->entity);
+	if(particles->entity) elfDecRef((elfObject*)particles->entity);
 	particles->entity = NULL;
 
-	if(particles->model) elf_dec_ref((elf_object*)particles->model);
+	if(particles->model) elfDecRef((elfObject*)particles->model);
 	particles->model = model;
-	if(particles->model) elf_inc_ref((elf_object*)particles->model);
+	if(particles->model) elfIncRef((elfObject*)particles->model);
 
-	elf_calc_particles_aabb(particles);
+	elfCalcParticlesAabb(particles);
 }
 
-void elf_clear_particles_model(elf_particles* particles)
+void elfClearParticlesModel(elfParticles* particles)
 {
-	if(particles->model) elf_dec_ref((elf_object*)particles->model);
+	if(particles->model) elfDecRef((elfObject*)particles->model);
 	particles->model = NULL;
 
-	elf_calc_particles_aabb(particles);
+	elfCalcParticlesAabb(particles);
 }
 
-void elf_set_particles_entity(elf_particles* particles, elf_entity* entity)
+void elfSetParticlesEntity(elfParticles* particles, elfEntity* entity)
 {
-	if(particles->model) elf_dec_ref((elf_object*)particles->model);
+	if(particles->model) elfDecRef((elfObject*)particles->model);
 	particles->model = NULL;
 
-	if(particles->entity) elf_dec_ref((elf_object*)particles->entity);
+	if(particles->entity) elfDecRef((elfObject*)particles->entity);
 	particles->entity = entity;
-	if(particles->entity) elf_inc_ref((elf_object*)particles->entity);
+	if(particles->entity) elfIncRef((elfObject*)particles->entity);
 
-	elf_calc_particles_aabb(particles);
+	elfCalcParticlesAabb(particles);
 }
 
-void elf_clear_particles_entity(elf_particles* particles)
+void elfClearParticlesEntity(elfParticles* particles)
 {
-	if(particles->entity) elf_dec_ref((elf_object*)particles->entity);
+	if(particles->entity) elfDecRef((elfObject*)particles->entity);
 	particles->entity = NULL;
 
-	elf_calc_particles_aabb(particles);
+	elfCalcParticlesAabb(particles);
 }
 
-void elf_set_particles_gravity(elf_particles* particles, float x, float y, float z)
+void elfSetParticlesGravity(elfParticles* particles, float x, float y, float z)
 {
 	particles->gravity.x = x;
 	particles->gravity.y = y;
 	particles->gravity.z = z;
 
-	elf_calc_particles_aabb(particles);
+	elfCalcParticlesAabb(particles);
 }
 
-void elf_set_particles_spawn_delay(elf_particles* particles, float delay)
+void elfSetParticlesSpawnDelay(elfParticles* particles, float delay)
 {
-	particles->spawn_delay = delay;
-	if(particles->spawn_delay < 0.00001) particles->spawn_delay = 0.00001;
+	particles->spawnDelay = delay;
+	if(particles->spawnDelay < 0.00001) particles->spawnDelay = 0.00001;
 }
 
-void elf_set_particles_spawn(elf_particles* particles, unsigned char spawn)
+void elfSetParticlesSpawn(elfParticles* particles, unsigned char spawn)
 {
 	particles->spawn = !spawn == ELF_FALSE;
 }
 
-void elf_set_particles_size(elf_particles* particles, float min, float max)
+void elfSetParticlesSize(elfParticles* particles, float min, float max)
 {
-	particles->size_min = min;
-	particles->size_max = max;
+	particles->sizeMin = min;
+	particles->sizeMax = max;
 }
 
-void elf_set_particles_size_growth(elf_particles* particles, float min, float max)
+void elfSetParticlesSizeGrowth(elfParticles* particles, float min, float max)
 {
-	particles->size_growth_min = min;
-	particles->size_growth_max = max;
+	particles->sizeGrowthMin = min;
+	particles->sizeGrowthMax = max;
 }
 
-void elf_set_particles_rotation(elf_particles* particles, float min, float max)
+void elfSetParticlesRotation(elfParticles* particles, float min, float max)
 {
-	particles->rotation_min = min;
-	particles->rotation_max = max;
+	particles->rotationMin = min;
+	particles->rotationMax = max;
 }
 
-void elf_set_particles_rotation_growth(elf_particles* particles, float min, float max)
+void elfSetParticlesRotationGrowth(elfParticles* particles, float min, float max)
 {
-	particles->rotation_growth_min = min;
-	particles->rotation_growth_max = max;
+	particles->rotationGrowthMin = min;
+	particles->rotationGrowthMax = max;
 }
 
-void elf_set_particles_life_span(elf_particles* particles, float min, float max)
+void elfSetParticlesLifeSpan(elfParticles* particles, float min, float max)
 {
-	particles->life_span_min = min;
-	particles->life_span_max = max;
+	particles->lifeSpanMin = min;
+	particles->lifeSpanMax = max;
 }
 
-void elf_set_particles_fade_speed(elf_particles* particles, float min, float max)
+void elfSetParticlesFadeSpeed(elfParticles* particles, float min, float max)
 {
-	particles->fade_speed_min = min;
-	particles->fade_speed_max = max;
+	particles->fadeSpeedMin = min;
+	particles->fadeSpeedMax = max;
 }
 
-void elf_set_particles_velocity_min(elf_particles* particles, float x, float y, float z)
+void elfSetParticlesVelocityMin(elfParticles* particles, float x, float y, float z)
 {
-	particles->velocity_min.x = x;
-	particles->velocity_min.y = y;
-	particles->velocity_min.z = z;
+	particles->velocityMin.x = x;
+	particles->velocityMin.y = y;
+	particles->velocityMin.z = z;
 
-	elf_calc_particles_aabb(particles);
+	elfCalcParticlesAabb(particles);
 }
 
-void elf_set_particles_position_min(elf_particles* particles, float x, float y, float z)
+void elfSetParticlesPositionMin(elfParticles* particles, float x, float y, float z)
 {
-	particles->position_min.x = x;
-	particles->position_min.y = y;
-	particles->position_min.z = z;
+	particles->positionMin.x = x;
+	particles->positionMin.y = y;
+	particles->positionMin.z = z;
 
-	elf_calc_particles_aabb(particles);
+	elfCalcParticlesAabb(particles);
 }
 
-void elf_set_particles_position_max(elf_particles* particles, float x, float y, float z)
+void elfSetParticlesPositionMax(elfParticles* particles, float x, float y, float z)
 {
-	particles->position_max.x = x;
-	particles->position_max.y = y;
-	particles->position_max.z = z;
+	particles->positionMax.x = x;
+	particles->positionMax.y = y;
+	particles->positionMax.z = z;
 
-	elf_calc_particles_aabb(particles);
+	elfCalcParticlesAabb(particles);
 }
 
-void elf_set_particles_velocity_max(elf_particles* particles, float x, float y, float z)
+void elfSetParticlesVelocityMax(elfParticles* particles, float x, float y, float z)
 {
-	particles->velocity_max.x = x;
-	particles->velocity_max.y = y;
-	particles->velocity_max.z = z;
+	particles->velocityMax.x = x;
+	particles->velocityMax.y = y;
+	particles->velocityMax.z = z;
 
-	elf_calc_particles_aabb(particles);
+	elfCalcParticlesAabb(particles);
 }
 
-void elf_set_particles_color_min(elf_particles* particles, float r, float g, float b, float a)
+void elfSetParticlesColorMin(elfParticles* particles, float r, float g, float b, float a)
 {
-	particles->color_min.r = r;
-	particles->color_min.g = g;
-	particles->color_min.b = b;
-	particles->color_min.a = a;
+	particles->colorMin.r = r;
+	particles->colorMin.g = g;
+	particles->colorMin.b = b;
+	particles->colorMin.a = a;
 }
 
-void elf_set_particles_color_max(elf_particles* particles, float r, float g, float b, float a)
+void elfSetParticlesColorMax(elfParticles* particles, float r, float g, float b, float a)
 {
-	particles->color_max.r = r;
-	particles->color_max.g = g;
-	particles->color_max.b = b;
-	particles->color_max.a = a;
+	particles->colorMax.r = r;
+	particles->colorMax.g = g;
+	particles->colorMax.b = b;
+	particles->colorMax.a = a;
 }
 
-int elf_get_particles_max_count(elf_particles* particles)
+int elfGetParticlesMaxCount(elfParticles* particles)
 {
-	return particles->max_count;
+	return particles->maxCount;
 }
 
-int elf_get_particles_count(elf_particles* particles)
+int elfGetParticlesCount(elfParticles* particles)
 {
-	return elf_get_list_length(particles->particles);
+	return elfGetListLength(particles->particles);
 }
 
-int elf_get_particles_draw_mode(elf_particles* particles)
+int elfGetParticlesDrawMode(elfParticles* particles)
 {
-	return particles->draw_mode;
+	return particles->drawMode;
 }
 
-elf_texture* elf_get_particles_texture(elf_particles* particles)
+elfTexture* elfGetParticlesTexture(elfParticles* particles)
 {
 	return particles->texture;
 }
 
-elf_model* elf_get_particles_model(elf_particles* particles)
+elfModel* elfGetParticlesModel(elfParticles* particles)
 {
 	return particles->model;
 }
 
-elf_entity* elf_get_particles_entity(elf_particles* particles)
+elfEntity* elfGetParticlesEntity(elfParticles* particles)
 {
 	return particles->entity;
 }
 
-elf_vec3f elf_get_particles_gravity(elf_particles* particles)
+elfVec3f elfGetParticlesGravity(elfParticles* particles)
 {
 	return particles->gravity;
 }
 
-float elf_get_particles_spawn_delay(elf_particles* particles)
+float elfGetParticlesSpawnDelay(elfParticles* particles)
 {
-	return particles->spawn_delay;
+	return particles->spawnDelay;
 }
 
-unsigned char elf_get_particles_spawn(elf_particles* particles)
+unsigned char elfGetParticlesSpawn(elfParticles* particles)
 {
 	return particles->spawn;
 }
 
-float elf_get_particles_size_min(elf_particles* particles)
+float elfGetParticlesSizeMin(elfParticles* particles)
 {
-	return particles->size_min;
+	return particles->sizeMin;
 }
 
-float elf_get_particles_size_max(elf_particles* particles)
+float elfGetParticlesSizeMax(elfParticles* particles)
 {
-	return particles->size_max;
+	return particles->sizeMax;
 }
 
-float elf_get_particles_rotation_min(elf_particles* particles)
+float elfGetParticlesRotationMin(elfParticles* particles)
 {
-	return particles->rotation_min;
+	return particles->rotationMin;
 }
 
-float elf_get_particles_rotation_max(elf_particles* particles)
+float elfGetParticlesRotationMax(elfParticles* particles)
 {
-	return particles->rotation_max;
+	return particles->rotationMax;
 }
 
-float elf_get_particles_rotation_growth_min(elf_particles* particles)
+float elfGetParticlesRotationGrowthMin(elfParticles* particles)
 {
-	return particles->rotation_growth_min;
+	return particles->rotationGrowthMin;
 }
 
-float elf_get_particles_rotation_growth_max(elf_particles* particles)
+float elfGetParticlesRotationGrowthMax(elfParticles* particles)
 {
-	return particles->rotation_growth_max;
+	return particles->rotationGrowthMax;
 }
 
-float elf_get_particles_size_growth_min(elf_particles* particles)
+float elfGetParticlesSizeGrowthMin(elfParticles* particles)
 {
-	return particles->size_growth_min;
+	return particles->sizeGrowthMin;
 }
 
-float elf_get_particles_size_growth_max(elf_particles* particles)
+float elfGetParticlesSizeGrowthMax(elfParticles* particles)
 {
-	return particles->size_growth_max;
+	return particles->sizeGrowthMax;
 }
 
-float elf_get_particles_life_span_min(elf_particles* particles)
+float elfGetParticlesLifeSpanMin(elfParticles* particles)
 {
-	return particles->life_span_min;
+	return particles->lifeSpanMin;
 }
 
-float elf_get_particles_life_span_max(elf_particles* particles)
+float elfGetParticlesLifeSpanMax(elfParticles* particles)
 {
-	return particles->life_span_max;
+	return particles->lifeSpanMax;
 }
 
-float elf_get_particles_fade_speed_min(elf_particles* particles)
+float elfGetParticlesFadeSpeedMin(elfParticles* particles)
 {
-	return particles->fade_speed_min;
+	return particles->fadeSpeedMin;
 }
 
-float elf_get_particles_fade_speed_max(elf_particles* particles)
+float elfGetParticlesFadeSpeedMax(elfParticles* particles)
 {
-	return particles->fade_speed_max;
+	return particles->fadeSpeedMax;
 }
 
-elf_vec3f elf_get_particles_position_min(elf_particles* particles)
+elfVec3f elfGetParticlesPositionMin(elfParticles* particles)
 {
-	return particles->position_min;
+	return particles->positionMin;
 }
 
-elf_vec3f elf_get_particles_position_max(elf_particles* particles)
+elfVec3f elfGetParticlesPositionMax(elfParticles* particles)
 {
-	return particles->position_max;
+	return particles->positionMax;
 }
 
-elf_vec3f elf_get_particles_velocity_min(elf_particles* particles)
+elfVec3f elfGetParticlesVelocityMin(elfParticles* particles)
 {
-	return particles->velocity_min;
+	return particles->velocityMin;
 }
 
-elf_vec3f elf_get_particles_velocity_max(elf_particles* particles)
+elfVec3f elfGetParticlesVelocityMax(elfParticles* particles)
 {
-	return particles->velocity_max;
+	return particles->velocityMax;
 }
 
-elf_color elf_get_particles_color_min(elf_particles* particles)
+elfColor elfGetParticlesColorMin(elfParticles* particles)
 {
-	return particles->color_min;
+	return particles->colorMin;
 }
 
-elf_color elf_get_particles_color_max(elf_particles* particles)
+elfColor elfGetParticlesColorMax(elfParticles* particles)
 {
-	return particles->color_max;
+	return particles->colorMax;
 }
 
-unsigned char elf_cull_particles(elf_particles* particles, elf_camera* camera)
+unsigned char elfCullParticles(elfParticles* particles, elfCamera* camera)
 {
-	return !elf_aabb_inside_frustum(camera, &particles->cull_aabb_min.x, &particles->cull_aabb_max.x);
+	return !elfAabbInsideFrustum(camera, &particles->cullAabbMin.x, &particles->cullAabbMax.x);
 }
 

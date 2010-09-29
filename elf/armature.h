@@ -1,53 +1,53 @@
 
-elf_bone* elf_create_bone(const char* name)
+elfBone* elfCreateBone(const char* name)
 {
-	elf_bone* bone;
+	elfBone* bone;
 
-	bone = (elf_bone*)malloc(sizeof(elf_bone));
-	memset(bone, 0x0, sizeof(elf_bone));
-	bone->obj_type = ELF_BONE;
-	bone->obj_destr = elf_destroy_bone;
+	bone = (elfBone*)malloc(sizeof(elfBone));
+	memset(bone, 0x0, sizeof(elfBone));
+	bone->objType = ELF_BONE;
+	bone->objDestr = elfDestroyBone;
 
-	if(name) bone->name = elf_create_string(name);
+	if(name) bone->name = elfCreateString(name);
 
-	bone->children = elf_create_list();
-	elf_inc_ref((elf_object*)bone->children);
+	bone->children = elfCreateList();
+	elfIncRef((elfObject*)bone->children);
 
-	elf_inc_obj(ELF_BONE);
+	elfIncObj(ELF_BONE);
 
 	return bone;
 }
 
-void elf_destroy_bone(void* data)
+void elfDestroyBone(void* data)
 {
-	elf_bone* bone = (elf_bone*)data;
+	elfBone* bone = (elfBone*)data;
 
-	if(bone->name) elf_destroy_string(bone->name);
+	if(bone->name) elfDestroyString(bone->name);
 	if(bone->frames) free(bone->frames);
 	
-	elf_dec_ref((elf_object*)bone->children);
+	elfDecRef((elfObject*)bone->children);
 
 	free(bone);
 
-	elf_dec_obj(ELF_BONE);
+	elfDecObj(ELF_BONE);
 }
 
-elf_armature* elf_get_bone_armature(elf_bone* bone)
+elfArmature* elfGetBoneArmature(elfBone* bone)
 {
 	return bone->armature;
 }
 
-elf_bone* elf_get_bone_parent(elf_bone* bone)
+elfBone* elfGetBoneParent(elfBone* bone)
 {
 	return bone->parent;
 }
 
-elf_bone* elf_get_bone_child_by_name(elf_bone* bone, const char* name)
+elfBone* elfGetBoneChildByName(elfBone* bone, const char* name)
 {
-	elf_bone* cbone;
+	elfBone* cbone;
 
-	for(cbone = (elf_bone*)elf_begin_list(bone->children); cbone;
-		cbone = (elf_bone*)elf_next_in_list(bone->children))
+	for(cbone = (elfBone*)elfBeginList(bone->children); cbone;
+		cbone = (elfBone*)elfNextInList(bone->children))
 	{
 		if(!strcmp(cbone->name, name))
 		{
@@ -58,12 +58,12 @@ elf_bone* elf_get_bone_child_by_name(elf_bone* bone, const char* name)
 	return NULL;
 }
 
-elf_bone* elf_get_bone_child_by_id(elf_bone* bone, int id)
+elfBone* elfGetBoneChildById(elfBone* bone, int id)
 {
-	elf_bone* cbone;
+	elfBone* cbone;
 
-	for(cbone = (elf_bone*)elf_begin_list(bone->children); cbone;
-		cbone = (elf_bone*)elf_next_in_list(bone->children))
+	for(cbone = (elfBone*)elfBeginList(bone->children); cbone;
+		cbone = (elfBone*)elfNextInList(bone->children))
 	{
 		if(cbone->id == id)
 		{
@@ -74,246 +74,246 @@ elf_bone* elf_get_bone_child_by_id(elf_bone* bone, int id)
 	return NULL;
 }
 
-elf_bone* elf_get_bone_child_by_index(elf_bone* bone, int idx)
+elfBone* elfGetBoneChildByIndex(elfBone* bone, int idx)
 {
-	return (elf_bone*)elf_get_item_from_list(bone->children, idx);
+	return (elfBone*)elfGetItemFromList(bone->children, idx);
 }
 
-elf_vec3f elf_get_bone_position(elf_bone* bone)
+elfVec3f elfGetBonePosition(elfBone* bone)
 {
-	return bone->cur_pos;
+	return bone->curPos;
 }
 
-elf_vec3f elf_get_bone_rotation(elf_bone* bone)
+elfVec3f elfGetBoneRotation(elfBone* bone)
 {
-	elf_vec3f result;
+	elfVec3f result;
 
-	gfx_qua_to_euler(&bone->cur_qua.x, &result.x);
+	gfxQuaToEuler(&bone->curQua.x, &result.x);
 
 	return result;
 }
 
-elf_vec4f elf_get_bone_orientation(elf_bone* bone)
+elfVec4f elfGetBoneOrientation(elfBone* bone)
 {
 	return bone->qua;
 }
 
-void elf_set_bone_armature(elf_bone* bone, elf_armature* armature)
+void elfSetBoneArmature(elfBone* bone, elfArmature* armature)
 {
-	elf_bone* cbone;
+	elfBone* cbone;
 
 	bone->armature = armature;
 
-	for(cbone = (elf_bone*)elf_begin_list(bone->children); cbone;
-		cbone = (elf_bone*)elf_next_in_list(bone->children))
+	for(cbone = (elfBone*)elfBeginList(bone->children); cbone;
+		cbone = (elfBone*)elfNextInList(bone->children))
 	{
-		elf_set_bone_armature(cbone, armature);
+		elfSetBoneArmature(cbone, armature);
 	}
 }
 
-int elf_get_bone_max_id(elf_bone* bone)
+int elfGetBoneMaxId(elfBone* bone)
 {
-	int max_id;
-	int cur_max_id;
-	elf_bone* cbone;
+	int maxId;
+	int curMaxId;
+	elfBone* cbone;
 
-	max_id = bone->id;
+	maxId = bone->id;
 
-	for(cbone = (elf_bone*)elf_begin_list(bone->children); cbone;
-		cbone = (elf_bone*)elf_next_in_list(bone->children))
+	for(cbone = (elfBone*)elfBeginList(bone->children); cbone;
+		cbone = (elfBone*)elfNextInList(bone->children))
 	{
-		cur_max_id = elf_get_bone_max_id(cbone);
-		if(cur_max_id > max_id) max_id = cur_max_id;
+		curMaxId = elfGetBoneMaxId(cbone);
+		if(curMaxId > maxId) maxId = curMaxId;
 	}
 
-	return max_id;
+	return maxId;
 }
 
-void elf_populate_bone_array(elf_bone* bone, elf_bone* *bones)
+void elfPopulateBoneArray(elfBone* bone, elfBone* *bones)
 {
-	elf_bone* cbone;
+	elfBone* cbone;
 
 	bones[bone->id] = bone;
 
-	for(cbone = (elf_bone*)elf_begin_list(bone->children); cbone;
-		cbone = (elf_bone*)elf_next_in_list(bone->children))
+	for(cbone = (elfBone*)elfBeginList(bone->children); cbone;
+		cbone = (elfBone*)elfNextInList(bone->children))
 	{
-		elf_populate_bone_array(cbone, bones);
+		elfPopulateBoneArray(cbone, bones);
 	}
 }
 
-void elf_update_armature_bones(elf_armature* armature)
+void elfUpdateArmatureBones(elfArmature* armature)
 {
-	int max_id;
-	int cur_max_id;
-	elf_bone* cbone;
+	int maxId;
+	int curMaxId;
+	elfBone* cbone;
 
-	max_id = 0;
-	for(cbone = (elf_bone*)elf_begin_list(armature->root_bones); cbone;
-		cbone = (elf_bone*)elf_next_in_list(armature->root_bones))
+	maxId = 0;
+	for(cbone = (elfBone*)elfBeginList(armature->rootBones); cbone;
+		cbone = (elfBone*)elfNextInList(armature->rootBones))
 	{
-		cur_max_id = elf_get_bone_max_id(cbone);
-		if(cur_max_id > max_id) max_id = cur_max_id;
+		curMaxId = elfGetBoneMaxId(cbone);
+		if(curMaxId > maxId) maxId = curMaxId;
 	}
 
 	if(armature->bones) free(armature->bones);
-	armature->bones = (elf_bone**)malloc(sizeof(elf_bone*)*(max_id+1));
-	memset(armature->bones, 0x0, sizeof(elf_bone*)*(max_id+1));
+	armature->bones = (elfBone**)malloc(sizeof(elfBone*)*(maxId+1));
+	memset(armature->bones, 0x0, sizeof(elfBone*)*(maxId+1));
 
-	armature->bone_count = max_id+1;
+	armature->boneCount = maxId+1;
 
-	for(cbone = (elf_bone*)elf_begin_list(armature->root_bones); cbone;
-		cbone = (elf_bone*)elf_next_in_list(armature->root_bones))
+	for(cbone = (elfBone*)elfBeginList(armature->rootBones); cbone;
+		cbone = (elfBone*)elfNextInList(armature->rootBones))
 	{
-		elf_populate_bone_array(cbone, armature->bones);
+		elfPopulateBoneArray(cbone, armature->bones);
 	}
 }
 
-elf_armature* elf_create_armature(const char* name)
+elfArmature* elfCreateArmature(const char* name)
 {
-	elf_armature* armature;
+	elfArmature* armature;
 
-	armature = (elf_armature*)malloc(sizeof(elf_armature));
-	memset(armature, 0x0, sizeof(elf_armature));
-	armature->obj_type = ELF_ARMATURE;
-	armature->obj_destr = elf_destroy_armature;
+	armature = (elfArmature*)malloc(sizeof(elfArmature));
+	memset(armature, 0x0, sizeof(elfArmature));
+	armature->objType = ELF_ARMATURE;
+	armature->objDestr = elfDestroyArmature;
 
-	armature->root_bones = elf_create_list();
-	elf_inc_ref((elf_object*)armature->root_bones);
+	armature->rootBones = elfCreateList();
+	elfIncRef((elfObject*)armature->rootBones);
 
-	if(name) armature->name = elf_create_string(name);
+	if(name) armature->name = elfCreateString(name);
 
-	armature->id = ++gen->armature_id_counter;
+	armature->id = ++gen->armatureIdCounter;
 
-	elf_inc_obj(ELF_ARMATURE);
+	elfIncObj(ELF_ARMATURE);
 
 	return armature;
 }
 
-void elf_deform_entity_with_armature(elf_armature* armature, elf_entity* entity, float frame)
+void elfDeformEntityWithArmature(elfArmature* armature, elfEntity* entity, float frame)
 {
 	int i, j;
 	int id;
-	float temp_vec1[3];
-	float temp_vec2[3];
+	float tempVec1[3];
+	float tempVec2[3];
 	int cid;
 	int nid;
 	float t;
-	float temp_qua[4];
-	float* vertex_buffer;
-	float* normal_buffer;
-	float* orig_vertex_buffer;
-	float* orig_normal_buffer;
-	elf_bone* bone;
-	elf_model* model;
+	float tempQua[4];
+	float* vertexBuffer;
+	float* normalBuffer;
+	float* origVertexBuffer;
+	float* origNormalBuffer;
+	elfBone* bone;
+	elfModel* model;
 
-	model = elf_get_entity_model(entity);
+	model = elfGetEntityModel(entity);
 
-	if(!model || !armature->bone_count || !model->boneids || !model->weights) return;
+	if(!model || !armature->boneCount || !model->boneids || !model->weights) return;
 
 	cid = ((int)frame)-1;
 	if(cid < 0) cid = 0;
 	nid = cid+1;
-	if(frame > armature->frame_count) cid = nid = armature->frame_count-1;
+	if(frame > armature->frameCount) cid = nid = armature->frameCount-1;
 	t = frame-((int)frame);
 
-	armature->cur_frame = frame;
-	if(armature->cur_frame > armature->frame_count) armature->cur_frame = armature->frame_count;
+	armature->curFrame = frame;
+	if(armature->curFrame > armature->frameCount) armature->curFrame = armature->frameCount;
 
-	for(i = 0; i < armature->bone_count; i++)
+	for(i = 0; i < armature->boneCount; i++)
 	{
 		bone = armature->bones[i];
 		if(!bone) continue;
 
-		bone->cur_offset_pos.x = bone->frames[cid].offset_pos.x+(bone->frames[nid].offset_pos.x-bone->frames[cid].offset_pos.x)*t;
-		bone->cur_offset_pos.y = bone->frames[cid].offset_pos.y+(bone->frames[nid].offset_pos.y-bone->frames[cid].offset_pos.y)*t;
-		bone->cur_offset_pos.z = bone->frames[cid].offset_pos.z+(bone->frames[nid].offset_pos.z-bone->frames[cid].offset_pos.z)*t;
-		bone->cur_pos.x = bone->pos.x+bone->cur_offset_pos.x;
-		bone->cur_pos.y = bone->pos.y+bone->cur_offset_pos.y;
-		bone->cur_pos.z = bone->pos.z+bone->cur_offset_pos.z;
+		bone->curOffsetPos.x = bone->frames[cid].offsetPos.x+(bone->frames[nid].offsetPos.x-bone->frames[cid].offsetPos.x)*t;
+		bone->curOffsetPos.y = bone->frames[cid].offsetPos.y+(bone->frames[nid].offsetPos.y-bone->frames[cid].offsetPos.y)*t;
+		bone->curOffsetPos.z = bone->frames[cid].offsetPos.z+(bone->frames[nid].offsetPos.z-bone->frames[cid].offsetPos.z)*t;
+		bone->curPos.x = bone->pos.x+bone->curOffsetPos.x;
+		bone->curPos.y = bone->pos.y+bone->curOffsetPos.y;
+		bone->curPos.z = bone->pos.z+bone->curOffsetPos.z;
 
-		gfx_qua_slerp(&bone->frames[cid].offset_qua.x, &bone->frames[nid].offset_qua.x, t, &bone->cur_offset_qua.x);
-		gfx_mul_qua_qua(&bone->qua.x, &bone->cur_offset_qua.x, temp_qua);
-		memcpy(&bone->cur_qua.x, temp_qua, sizeof(float)*4);
+		gfxQuaSlerp(&bone->frames[cid].offsetQua.x, &bone->frames[nid].offsetQua.x, t, &bone->curOffsetQua.x);
+		gfxMulQuaQua(&bone->qua.x, &bone->curOffsetQua.x, tempQua);
+		memcpy(&bone->curQua.x, tempQua, sizeof(float)*4);
 	}
 
 	if(!entity->vertices)
 	{
-		entity->vertices = gfx_create_vertex_data(3*model->vertice_count, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-		gfx_inc_ref((gfx_object*)entity->vertices);
+		entity->vertices = gfxCreateVertexData(3*model->verticeCount, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
+		gfxIncRef((gfxObject*)entity->vertices);
 	}
 
 	if(!entity->normals)
 	{
-		entity->normals = gfx_create_vertex_data(3*model->vertice_count, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-		gfx_inc_ref((gfx_object*)entity->normals);
+		entity->normals = gfxCreateVertexData(3*model->verticeCount, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
+		gfxIncRef((gfxObject*)entity->normals);
 	}
 
-	vertex_buffer = (float*)gfx_get_vertex_data_buffer(entity->vertices);
-	normal_buffer = (float*)gfx_get_vertex_data_buffer(entity->normals);
-	orig_vertex_buffer = (float*)gfx_get_vertex_data_buffer(model->vertices);
-	orig_normal_buffer = (float*)gfx_get_vertex_data_buffer(model->normals);
+	vertexBuffer = (float*)gfxGetVertexDataBuffer(entity->vertices);
+	normalBuffer = (float*)gfxGetVertexDataBuffer(entity->normals);
+	origVertexBuffer = (float*)gfxGetVertexDataBuffer(model->vertices);
+	origNormalBuffer = (float*)gfxGetVertexDataBuffer(model->normals);
 
-	for(i = 0; i < model->vertice_count; i++)
+	for(i = 0; i < model->verticeCount; i++)
 	{
-		memset(&vertex_buffer[i*3], 0x0, sizeof(float)*3);
-		memset(&normal_buffer[i*3], 0x0, sizeof(float)*3);
+		memset(&vertexBuffer[i*3], 0x0, sizeof(float)*3);
+		memset(&normalBuffer[i*3], 0x0, sizeof(float)*3);
 
 		for(j = 0; j < 4; j++)
 		{
 			id = model->boneids[i*4+j];
 
-			if(id < 0 || id > (int)armature->bone_count-1 || !(bone = armature->bones[id])) continue;
+			if(id < 0 || id > (int)armature->boneCount-1 || !(bone = armature->bones[id])) continue;
 
-			memcpy(temp_vec1, &orig_vertex_buffer[i*3], sizeof(float)*3);
-			temp_vec1[0] -= bone->pos.x;
-			temp_vec1[1] -= bone->pos.y;
-			temp_vec1[2] -= bone->pos.z;
-			gfx_mul_qua_vec(&bone->cur_offset_qua.x, temp_vec1, temp_vec2);
-			temp_vec2[0] += bone->pos.x;
-			temp_vec2[1] += bone->pos.y;
-			temp_vec2[2] += bone->pos.z;
-			temp_vec2[0] += bone->cur_offset_pos.x;
-			temp_vec2[1] += bone->cur_offset_pos.y;
-			temp_vec2[2] += bone->cur_offset_pos.z;
+			memcpy(tempVec1, &origVertexBuffer[i*3], sizeof(float)*3);
+			tempVec1[0] -= bone->pos.x;
+			tempVec1[1] -= bone->pos.y;
+			tempVec1[2] -= bone->pos.z;
+			gfxMulQuaVec(&bone->curOffsetQua.x, tempVec1, tempVec2);
+			tempVec2[0] += bone->pos.x;
+			tempVec2[1] += bone->pos.y;
+			tempVec2[2] += bone->pos.z;
+			tempVec2[0] += bone->curOffsetPos.x;
+			tempVec2[1] += bone->curOffsetPos.y;
+			tempVec2[2] += bone->curOffsetPos.z;
 
-			vertex_buffer[i*3] += temp_vec2[0]*model->weights[i*4+j];
-			vertex_buffer[i*3+1] += temp_vec2[1]*model->weights[i*4+j];
-			vertex_buffer[i*3+2] += temp_vec2[2]*model->weights[i*4+j];
+			vertexBuffer[i*3] += tempVec2[0]*model->weights[i*4+j];
+			vertexBuffer[i*3+1] += tempVec2[1]*model->weights[i*4+j];
+			vertexBuffer[i*3+2] += tempVec2[2]*model->weights[i*4+j];
 
-			gfx_mul_qua_vec(&bone->cur_offset_qua.x, &orig_normal_buffer[i*3], temp_vec1);
+			gfxMulQuaVec(&bone->curOffsetQua.x, &origNormalBuffer[i*3], tempVec1);
 
-			normal_buffer[i*3] += temp_vec1[0]*model->weights[i*4+j];
-			normal_buffer[i*3+1] += temp_vec1[1]*model->weights[i*4+j];
-			normal_buffer[i*3+2] += temp_vec1[2]*model->weights[i*4+j];
+			normalBuffer[i*3] += tempVec1[0]*model->weights[i*4+j];
+			normalBuffer[i*3+1] += tempVec1[1]*model->weights[i*4+j];
+			normalBuffer[i*3+2] += tempVec1[2]*model->weights[i*4+j];
 		}
 	}
 	
-	gfx_update_vertex_data(entity->vertices);
-	gfx_update_vertex_data(entity->normals);
+	gfxUpdateVertexData(entity->vertices);
+	gfxUpdateVertexData(entity->normals);
 }
 
-void elf_destroy_armature(void* data)
+void elfDestroyArmature(void* data)
 {
-	elf_armature* armature = (elf_armature*)data;
+	elfArmature* armature = (elfArmature*)data;
 
-	if(armature->name) elf_destroy_string(armature->name);
-	if(armature->file_path) elf_destroy_string(armature->file_path);
+	if(armature->name) elfDestroyString(armature->name);
+	if(armature->filePath) elfDestroyString(armature->filePath);
 
-	elf_dec_ref((elf_object*)armature->root_bones);
+	elfDecRef((elfObject*)armature->rootBones);
 
 	if(armature->bones) free(armature->bones);
 
 	free(armature);
 
-	elf_dec_obj(ELF_ARMATURE);
+	elfDecObj(ELF_ARMATURE);
 }
 
-elf_bone* elf_get_bone_from_armature_by_name(const char* name, elf_armature* armature)
+elfBone* elfGetBoneFromArmatureByName(const char* name, elfArmature* armature)
 {
 	int i;
 
-	for(i = 0; i < (int)armature->bone_count; i++)
+	for(i = 0; i < (int)armature->boneCount; i++)
 	{
 		if(armature->bones[i] && !strcmp(armature->bones[i]->name, name))
 		{
@@ -324,73 +324,73 @@ elf_bone* elf_get_bone_from_armature_by_name(const char* name, elf_armature* arm
 	return NULL;
 }
 
-elf_bone* elf_get_bone_from_armature_by_id(int id, elf_armature* armature)
+elfBone* elfGetBoneFromArmatureById(int id, elfArmature* armature)
 {
-	if(id < 0 || id > armature->bone_count-1) return NULL;
+	if(id < 0 || id > armature->boneCount-1) return NULL;
 
 	return armature->bones[id];
 }
 
-void elf_add_root_bone_to_armature(elf_armature* armature, elf_bone* bone)
+void elfAddRootBoneToArmature(elfArmature* armature, elfBone* bone)
 {
 	if(bone->parent) return;
-	elf_append_to_list(armature->root_bones, (elf_object*)bone);
-	elf_set_bone_armature(bone, armature);
-	elf_update_armature_bones(armature);
+	elfAppendToList(armature->rootBones, (elfObject*)bone);
+	elfSetBoneArmature(bone, armature);
+	elfUpdateArmatureBones(armature);
 }
 
-void elf_draw_bone_hierarchy(elf_bone* bone, gfx_shader_params* shader_params)
+void elfDrawBoneHierarchy(elfBone* bone, gfxShaderParams* shaderParams)
 {
-	elf_bone* cbone;
+	elfBone* cbone;
 	float min[3];
 	float max[3];
-	elf_vec3f pos;
-	elf_vec3f axis;
-	elf_vec4f orient;
-	float* vertex_buffer;
+	elfVec3f pos;
+	elfVec3f axis;
+	elfVec4f orient;
+	float* vertexBuffer;
 
-	pos = bone->cur_pos;
-	orient = bone->cur_qua;
+	pos = bone->curPos;
+	orient = bone->curQua;
 
-	vertex_buffer = (float*)gfx_get_vertex_data_buffer(eng->lines);
+	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->lines);
 
-	vertex_buffer[0] = pos.x;
-	vertex_buffer[1] = pos.y;
-	vertex_buffer[2] = pos.z;
+	vertexBuffer[0] = pos.x;
+	vertexBuffer[1] = pos.y;
+	vertexBuffer[2] = pos.z;
 
 	axis.x = 0.2; axis.y = 0.0; axis.z = 0.0;
-	axis = elf_mul_qua_vec3f(orient, axis);
-	vertex_buffer[3] = pos.x+axis.x;
-	vertex_buffer[4] = pos.y+axis.y;
-	vertex_buffer[5] = pos.z+axis.z;
+	axis = elfMulQuaVec3f(orient, axis);
+	vertexBuffer[3] = pos.x+axis.x;
+	vertexBuffer[4] = pos.y+axis.y;
+	vertexBuffer[5] = pos.z+axis.z;
 
-	shader_params->render_params.blend_mode = GFX_NONE;
-	gfx_set_color(&shader_params->material_params.diffuse_color, 0.0, 0.0, 1.0, 1.0);
-	gfx_set_shader_params(shader_params);
+	shaderParams->renderParams.blendMode = GFX_NONE;
+	gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.0, 0.0, 1.0, 1.0);
+	gfxSetShaderParams(shaderParams);
 
-	gfx_draw_lines(2, eng->lines);
+	gfxDrawLines(2, eng->lines);
 
 	axis.x = 0.0; axis.y = 0.2; axis.z = 0.0;
-	axis = elf_mul_qua_vec3f(orient, axis);
-	vertex_buffer[3] = pos.x+axis.x;
-	vertex_buffer[4] = pos.y+axis.y;
-	vertex_buffer[5] = pos.z+axis.z;
+	axis = elfMulQuaVec3f(orient, axis);
+	vertexBuffer[3] = pos.x+axis.x;
+	vertexBuffer[4] = pos.y+axis.y;
+	vertexBuffer[5] = pos.z+axis.z;
 
-	gfx_set_color(&shader_params->material_params.diffuse_color, 0.0, 1.0, 0.0, 1.0);
-	gfx_set_shader_params(shader_params);
+	gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.0, 1.0, 0.0, 1.0);
+	gfxSetShaderParams(shaderParams);
 
-	gfx_draw_lines(2, eng->lines);
+	gfxDrawLines(2, eng->lines);
 
 	axis.x = 0.0; axis.y = 0.0; axis.z = 0.2;
-	axis = elf_mul_qua_vec3f(orient, axis);
-	vertex_buffer[3] = pos.x+axis.x;
-	vertex_buffer[4] = pos.y+axis.y;
-	vertex_buffer[5] = pos.z+axis.z;
+	axis = elfMulQuaVec3f(orient, axis);
+	vertexBuffer[3] = pos.x+axis.x;
+	vertexBuffer[4] = pos.y+axis.y;
+	vertexBuffer[5] = pos.z+axis.z;
 
-	gfx_set_color(&shader_params->material_params.diffuse_color, 1.0, 0.0, 0.0, 1.0);
-	gfx_set_shader_params(shader_params);
+	gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 0.0, 0.0, 1.0);
+	gfxSetShaderParams(shaderParams);
 
-	gfx_draw_lines(2, eng->lines);
+	gfxDrawLines(2, eng->lines);
 
 	min[0] = pos.x-0.05;
 	min[1] = pos.y-0.05;
@@ -400,33 +400,33 @@ void elf_draw_bone_hierarchy(elf_bone* bone, gfx_shader_params* shader_params)
 	max[1] = pos.y+0.05;
 	max[2] = pos.z+0.05;
 
-	shader_params->render_params.blend_mode = GFX_ADD;
-	gfx_set_color(&shader_params->material_params.diffuse_color, 1.0, 0.4, 0.2, 1.0);
-	gfx_set_shader_params(shader_params);
+	shaderParams->renderParams.blendMode = GFX_ADD;
+	gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 0.4, 0.2, 1.0);
+	gfxSetShaderParams(shaderParams);
 
-	gfx_draw_bounding_box(min, max);
+	gfxDrawBoundingBox(min, max);
 
-	for(cbone = (elf_bone*)elf_begin_list(bone->children); cbone;
-		cbone = (elf_bone*)elf_next_in_list(bone->children))
+	for(cbone = (elfBone*)elfBeginList(bone->children); cbone;
+		cbone = (elfBone*)elfNextInList(bone->children))
 	{
-		vertex_buffer[3] = cbone->cur_pos.x;
-		vertex_buffer[4] = cbone->cur_pos.y;
-		vertex_buffer[5] = cbone->cur_pos.z;
+		vertexBuffer[3] = cbone->curPos.x;
+		vertexBuffer[4] = cbone->curPos.y;
+		vertexBuffer[5] = cbone->curPos.z;
 
-		gfx_draw_lines(2, eng->lines);
+		gfxDrawLines(2, eng->lines);
 
-		elf_draw_bone_hierarchy(cbone, shader_params);
+		elfDrawBoneHierarchy(cbone, shaderParams);
 	}
 }
 
-void elf_draw_armature_debug(elf_armature* armature, gfx_shader_params* shader_params)
+void elfDrawArmatureDebug(elfArmature* armature, gfxShaderParams* shaderParams)
 {
-	elf_bone* bone;
+	elfBone* bone;
 
-	for(bone = (elf_bone*)elf_begin_list(armature->root_bones); bone;
-		bone = (elf_bone*)elf_next_in_list(armature->root_bones))
+	for(bone = (elfBone*)elfBeginList(armature->rootBones); bone;
+		bone = (elfBone*)elfNextInList(armature->rootBones))
 	{
-		elf_draw_bone_hierarchy(bone, shader_params);
+		elfDrawBoneHierarchy(bone, shaderParams);
 	}
 }
 

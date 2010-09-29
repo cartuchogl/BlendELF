@@ -1,102 +1,102 @@
 
-gfx_general* gfx_create_general()
+gfxGeneral* gfxCreateGeneral()
 {
-	gfx_general* general;
+	gfxGeneral* general;
 
-	general = (gfx_general*)malloc(sizeof(gfx_general));
-	memset(general, 0x0, sizeof(gfx_general));
+	general = (gfxGeneral*)malloc(sizeof(gfxGeneral));
+	memset(general, 0x0, sizeof(gfxGeneral));
 
 	return general;
 }
 
-void gfx_destroy_general(gfx_general* general)
+void gfxDestroyGeneral(gfxGeneral* general)
 {
 	free(general);	
 }
 
-void gfx_dump_ref_table()
+void gfxDumpRefTable()
 {
 	int i;
 
-	elf_write_to_log("---------- REF COUNT TABLE ----------\n");
+	elfWriteToLog("---------- REF COUNT TABLE ----------\n");
 
 	for(i = 0; i < GFX_OBJECT_TYPE_COUNT; i++)
 	{
-		elf_write_to_log("%d : %d\n", i, gfx_gen->ref_table[i]);
+		elfWriteToLog("%d : %d\n", i, gfxGen->refTable[i]);
 	}
 
-	elf_write_to_log("-------------------------------------\n");
+	elfWriteToLog("-------------------------------------\n");
 }
 
-void gfx_dump_obj_table()
+void gfxDumpObjTable()
 {
 	int i;
 
-	elf_write_to_log("---------- OBJ COUNT TABLE ----------\n");
+	elfWriteToLog("---------- OBJ COUNT TABLE ----------\n");
 
 	for(i = 0; i < GFX_OBJECT_TYPE_COUNT; i++)
 	{
-		elf_write_to_log("%d : %d\n", i, gfx_gen->obj_table[i]);
+		elfWriteToLog("%d : %d\n", i, gfxGen->objTable[i]);
 	}
 
-	elf_write_to_log("-------------------------------------\n");
+	elfWriteToLog("-------------------------------------\n");
 }
 
-void gfx_inc_ref(gfx_object* obj)
+void gfxIncRef(gfxObject* obj)
 {
-	gfx_gen->ref_count++;
-	gfx_gen->ref_table[obj->obj_type]++;
-	obj->obj_ref_count++;
+	gfxGen->refCount++;
+	gfxGen->refTable[obj->objType]++;
+	obj->objRefCount++;
 }
 
-void gfx_dec_ref(gfx_object* obj)
+void gfxDecRef(gfxObject* obj)
 {
-	gfx_gen->ref_count--;
-	gfx_gen->ref_table[obj->obj_type]--;
-	obj->obj_ref_count--;
+	gfxGen->refCount--;
+	gfxGen->refTable[obj->objType]--;
+	obj->objRefCount--;
 
-	if(obj->obj_ref_count < 1)
+	if(obj->objRefCount < 1)
 	{
-		if(obj->obj_destr)
+		if(obj->objDestr)
 		{
-			obj->obj_destr(obj);
+			obj->objDestr(obj);
 		}
 		else
 		{
-			elf_write_to_log("error: no destructor specified for object\n");
+			elfWriteToLog("error: no destructor specified for object\n");
 		}
 	}
 }
 
-void gfx_inc_obj(int type)
+void gfxIncObj(int type)
 {
-	gfx_gen->obj_count++;
-	gfx_gen->obj_table[type]++;
+	gfxGen->objCount++;
+	gfxGen->objTable[type]++;
 }
 
-void gfx_dec_obj(int type)
+void gfxDecObj(int type)
 {
-	gfx_gen->obj_count--;
-	gfx_gen->obj_table[type]--;
+	gfxGen->objCount--;
+	gfxGen->objTable[type]--;
 }
 
-int gfx_get_object_type(gfx_object* obj)
+int gfxGetObjectType(gfxObject* obj)
 {
-	return obj->obj_type;
+	return obj->objType;
 }
 
-int gfx_get_object_ref_count(gfx_object* obj)
+int gfxGetObjectRefCount(gfxObject* obj)
 {
-	return obj->obj_ref_count;
+	return obj->objRefCount;
 }
 
-int gfx_get_global_ref_count()
+int gfxGetGlobalRefCount()
 {
-	return gfx_gen->ref_count;
+	return gfxGen->refCount;
 }
 
-int gfx_get_global_obj_count()
+int gfxGetGlobalObjCount()
 {
-	return gfx_gen->obj_count;
+	return gfxGen->objCount;
 }
 

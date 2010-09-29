@@ -1,157 +1,157 @@
 
 #define GFX_OBJECT_HEADER \
-	int obj_type; \
-	int obj_ref_count; \
-	void (*obj_destr)(void*)
+	int objType; \
+	int objRefCount; \
+	void (*objDestr)(void*)
 
-struct gfx_object {
+struct gfxObject {
 	GFX_OBJECT_HEADER;
 };
 
-struct gfx_general {
-	int ref_count;
-	int obj_count;
-	int ref_table[GFX_OBJECT_TYPE_COUNT];
-	int obj_table[GFX_OBJECT_TYPE_COUNT];
+struct gfxGeneral {
+	int refCount;
+	int objCount;
+	int refTable[GFX_OBJECT_TYPE_COUNT];
+	int objTable[GFX_OBJECT_TYPE_COUNT];
 };
 
-struct gfx_driver {
-	int format_sizes[GFX_MAX_FORMATS];
+struct gfxDriver {
+	int formatSizes[GFX_MAX_FORMATS];
 	int formats[GFX_MAX_FORMATS];
-	int draw_modes[GFX_MAX_DRAW_MODES];
-	int texture_internal_formats[GFX_MAX_TEXTURE_FORMATS];
-	int texture_data_formats[GFX_MAX_TEXTURE_FORMATS];
-	int vertex_data_draw_modes[GFX_MAX_VERTEX_DATA_TYPES];
+	int drawModes[GFX_MAX_DRAW_MODES];
+	int textureInternalFormats[GFX_MAX_TEXTURE_FORMATS];
+	int textureDataFormats[GFX_MAX_TEXTURE_FORMATS];
+	int vertexDataDrawModes[GFX_MAX_VERTEX_DATA_TYPES];
 
-	gfx_render_target* render_target;
-	gfx_shader_program* shader_programs;
-	gfx_shader_params shader_params;
+	gfxRenderTarget* renderTarget;
+	gfxShaderProgram* shaderPrograms;
+	gfxShaderParams shaderParams;
 
 	int version;
-	int max_texture_size;
-	int max_texture_image_units;
-	int max_draw_buffers;
-	int max_color_attachments;
-	float max_anisotropy;
-	unsigned char dirty_vertex_arrays;
-	unsigned int vertices_drawn[GFX_MAX_DRAW_MODES];
+	int maxTextureSize;
+	int maxTextureImageUnits;
+	int maxDrawBuffers;
+	int maxColorAttachments;
+	float maxAnisotropy;
+	unsigned char dirtyVertexArrays;
+	unsigned int verticesDrawn[GFX_MAX_DRAW_MODES];
 
-	gfx_vertex_data* quad_vertex_data;
-	gfx_vertex_data* quad_tex_coord_data;
-	gfx_vertex_data* quad_normal_data;
-	gfx_vertex_array* quad_vertex_array;
+	gfxVertexData* quadVertexData;
+	gfxVertexData* quadTexCoordData;
+	gfxVertexData* quadNormalData;
+	gfxVertexArray* quadVertexArray;
 
-	gfx_vertex_data* bb_vertex_data;
-	gfx_vertex_data* bb_index_data;
-	gfx_vertex_array* bb_vertex_array;
-	gfx_vertex_index* bb_vertex_index;
+	gfxVertexData* bbVertexData;
+	gfxVertexData* bbIndexData;
+	gfxVertexArray* bbVertexArray;
+	gfxVertexIndex* bbVertexIndex;
 
-	gfx_vertex_array* line_vertex_array;
+	gfxVertexArray* lineVertexArray;
 
-	gfx_vertex_data* circle_vertex_data;
-	gfx_vertex_array* circle_vertex_array;
-	int prev_circle_vertice_count;
-	float prev_circle_size;
+	gfxVertexData* circleVertexData;
+	gfxVertexArray* circleVertexArray;
+	int prevCircleVerticeCount;
+	float prevCircleSize;
 
-	gfx_shader_config shader_config;
+	gfxShaderConfig shaderConfig;
 };
 
-struct gfx_transform {
+struct gfxTransform {
 	float position[3];
 	float rotation[3];
 	float scale[3];
 	float orient[4];
 	float matrix[16];
-	unsigned char recalc_matrix;
-	unsigned char camera_mode;
+	unsigned char recalcMatrix;
+	unsigned char cameraMode;
 };
 
-struct gfx_vertex_data {
+struct gfxVertexData {
 	GFX_OBJECT_HEADER;
 	unsigned int vbo;
 	int count;
 	int format;
-	int size_bytes;
-	int data_type;
+	int sizeBytes;
+	int dataType;
 	void* data;
 	unsigned char changed;
 };
 
-typedef struct gfx_varr {
-	gfx_vertex_data* data;
-	int vertex_count;
-	int element_count;
-	int vertex_size_bytes;
-} gfx_varr;
+typedef struct gfxVarr {
+	gfxVertexData* data;
+	int vertexCount;
+	int elementCount;
+	int vertexSizeBytes;
+} gfxVarr;
 
-struct gfx_vertex_array {
+struct gfxVertexArray {
 	GFX_OBJECT_HEADER;
-	int vertex_count;
-	gfx_varr varrs[GFX_MAX_VERTEX_ARRAYS];
-	unsigned char gpu_data;
+	int vertexCount;
+	gfxVarr varrs[GFX_MAX_VERTEX_ARRAYS];
+	unsigned char gpuData;
 };
 
-struct gfx_vertex_index {
+struct gfxVertexIndex {
 	GFX_OBJECT_HEADER;
-	int indice_count;
-	gfx_vertex_data* data;
-	unsigned char gpu_data;
+	int indiceCount;
+	gfxVertexData* data;
+	unsigned char gpuData;
 };
 
-struct gfx_texture {
+struct gfxTexture {
 	GFX_OBJECT_HEADER;
 	unsigned int id;
 	int type;
 	int width;
 	int height;
 	int format;
-	int data_format;
+	int dataFormat;
 };
 
-struct gfx_shader_program {
-	gfx_shader_program* next;
+struct gfxShaderProgram {
+	gfxShaderProgram* next;
 	unsigned int id;
-	int projection_matrix_loc;
-	int inv_projection_matrix_loc;
-	int modelview_matrix_loc;
-	int texture0_loc;
-	int texture1_loc;
-	int texture2_loc;
-	int texture3_loc;
-	int color_map_loc;
-	int normal_map_loc;
-	int height_map_loc;
-	int specular_map_loc;
-	int color_ramp_map_loc;
-	int light_map_loc;
-	int cube_map_loc;
-	int shadow_projection_matrix_loc;
-	int shadow_map_loc;
-	int ambient_color_loc;
-	int diffuse_color_loc;
-	int specular_color_loc;
-	int shininess_loc;
-	int light_position_loc;
-	int light_color_loc;
-	int light_spot_direction_loc;
-	int light_distance_loc;
-	int light_fade_speed_loc;
-	int light_inner_cone_cos_loc;
-	int light_outer_cone_cos_loc;
-	int camera_position_loc;
-	int clip_start_loc;
-	int clip_end_loc;
-	int viewport_width_loc;
-	int viewport_height_loc;
-	int parallax_scale_loc;
-	int alpha_threshold_loc;
-	int fog_start_loc;
-	int fog_end_loc;
-	int fog_color_loc;
-	gfx_shader_config config;
+	int projectionMatrixLoc;
+	int invProjectionMatrixLoc;
+	int modelviewMatrixLoc;
+	int texture0Loc;
+	int texture1Loc;
+	int texture2Loc;
+	int texture3Loc;
+	int colorMapLoc;
+	int normalMapLoc;
+	int heightMapLoc;
+	int specularMapLoc;
+	int colorRampMapLoc;
+	int lightMapLoc;
+	int cubeMapLoc;
+	int shadowProjectionMatrixLoc;
+	int shadowMapLoc;
+	int ambientColorLoc;
+	int diffuseColorLoc;
+	int specularColorLoc;
+	int shininessLoc;
+	int lightPositionLoc;
+	int lightColorLoc;
+	int lightSpotDirectionLoc;
+	int lightDistanceLoc;
+	int lightFadeSpeedLoc;
+	int lightInnerConeCosLoc;
+	int lightOuterConeCosLoc;
+	int cameraPositionLoc;
+	int clipStartLoc;
+	int clipEndLoc;
+	int viewportWidthLoc;
+	int viewportHeightLoc;
+	int parallaxScaleLoc;
+	int alphaThresholdLoc;
+	int fogStartLoc;
+	int fogEndLoc;
+	int fogColorLoc;
+	gfxShaderConfig config;
 };
 
-struct gfx_render_target {
+struct gfxRenderTarget {
 	GFX_OBJECT_HEADER;
 	unsigned int fb;
 	unsigned int rb;
@@ -159,28 +159,28 @@ struct gfx_render_target {
 	unsigned char targets[16];
 };
 
-struct gfx_query {
+struct gfxQuery {
 	unsigned int id;
 };
 
-struct gfx_gbuffer {
+struct gfxGbuffer {
 	GFX_OBJECT_HEADER;
 
 	int width;
 	int height;
 
-	gfx_render_target* buf_rt;
-	gfx_render_target* light_rt;
-	gfx_render_target* main_rt;
+	gfxRenderTarget* bufRt;
+	gfxRenderTarget* lightRt;
+	gfxRenderTarget* mainRt;
 
-	gfx_texture* depth_tex;
-	gfx_texture* buf1_tex;
-	gfx_texture* buf2_tex;
-	gfx_texture* buf3_tex;
-	gfx_texture* buf4_tex;
-	gfx_texture* diffuse_tex;
-	gfx_texture* specular_tex;
+	gfxTexture* depthTex;
+	gfxTexture* buf1Tex;
+	gfxTexture* buf2Tex;
+	gfxTexture* buf3Tex;
+	gfxTexture* buf4Tex;
+	gfxTexture* diffuseTex;
+	gfxTexture* specularTex;
 
-	gfx_texture* main_tex;
+	gfxTexture* mainTex;
 };
 

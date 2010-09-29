@@ -7,56 +7,56 @@
 
 #define ELF_AUDIO_STREAM_CHUNK_SIZE 4096*8
 
-typedef struct elf_data_chunk			elf_data_chunk;
-typedef struct elf_data_dump			elf_data_dump;
+typedef struct elfDataChunk			elfDataChunk;
+typedef struct elfDataDump			elfDataDump;
 
-struct elf_data_chunk {
-	elf_data_chunk* next;
+struct elfDataChunk {
+	elfDataChunk* next;
 	int length;
 	void* data;
 };
 
-struct elf_data_dump {
-	elf_data_chunk* first;
+struct elfDataDump {
+	elfDataChunk* first;
 	int offset;
 };
 
-elf_data_chunk* elf_create_data_chunk()
+elfDataChunk* elfCreateDataChunk()
 {
-	elf_data_chunk* chunk;
+	elfDataChunk* chunk;
 
-	chunk = (elf_data_chunk*)malloc(sizeof(elf_data_chunk));
-	memset(chunk, 0x0, sizeof(elf_data_chunk));
+	chunk = (elfDataChunk*)malloc(sizeof(elfDataChunk));
+	memset(chunk, 0x0, sizeof(elfDataChunk));
 
 	return chunk;
 }
 
-void elf_destroy_data_chunk(elf_data_chunk* chunk)
+void elfDestroyDataChunk(elfDataChunk* chunk)
 {
-	if(chunk->next) elf_destroy_data_chunk(chunk->next);
+	if(chunk->next) elfDestroyDataChunk(chunk->next);
 	if(chunk->data) free(chunk->data);
 	free(chunk);
 }
 
-elf_data_dump* elf_create_data_dump()
+elfDataDump* elfCreateDataDump()
 {
-	elf_data_dump* dump;
+	elfDataDump* dump;
 
-	dump = (elf_data_dump*)malloc(sizeof(elf_data_dump));
-	memset(dump, 0x0, sizeof(elf_data_dump));
+	dump = (elfDataDump*)malloc(sizeof(elfDataDump));
+	memset(dump, 0x0, sizeof(elfDataDump));
 
 	return dump;
 }
 
-void elf_destroy_data_dump(elf_data_dump* dump)
+void elfDestroyDataDump(elfDataDump* dump)
 {
-	if(dump->first) elf_destroy_data_chunk(dump->first);
+	if(dump->first) elfDestroyDataChunk(dump->first);
 	free(dump);
 }
 
-int elf_get_data_dump_length(elf_data_dump* dump)
+int elfGetDataDumpLength(elfDataDump* dump)
 {
-	elf_data_chunk* chk;
+	elfDataChunk* chk;
 	int length;
 
 	length = 0;
@@ -71,12 +71,12 @@ int elf_get_data_dump_length(elf_data_dump* dump)
 	return length;
 }
 
-void elf_add_chunk_to_data_dump(elf_data_dump* dump, void* data, int length)
+void elfAddChunkToDataDump(elfDataDump* dump, void* data, int length)
 {
-	elf_data_chunk* chunk;
-	elf_data_chunk* chk;
+	elfDataChunk* chunk;
+	elfDataChunk* chk;
 
-	chunk = elf_create_data_chunk();
+	chunk = elfCreateDataChunk();
 	chunk->length = length;
 	chunk->data = malloc(length);
 	memcpy(chunk->data, data, length);
@@ -93,10 +93,10 @@ void elf_add_chunk_to_data_dump(elf_data_dump* dump, void* data, int length)
 	}
 }
 
-void elf_data_dump_to_buffer(elf_data_dump* dump, void* buf)
+void elfDataDumpToBuffer(elfDataDump* dump, void* buf)
 {
 	int offset;
-	elf_data_chunk* chk;
+	elfDataChunk* chk;
 
 	offset = 0;
 
@@ -109,27 +109,27 @@ void elf_data_dump_to_buffer(elf_data_dump* dump, void* buf)
 	}
 }
 
-struct elf_audio_device {
+struct elfAudioDevice {
 	ELF_OBJECT_HEADER;
 	ALCdevice* device;
 	ALCcontext* context;
 	float volume;
 	float rolloff;
-	elf_list* sources;
+	elfList* sources;
 };
 
-struct elf_audio_source {
+struct elfAudioSource {
 	ELF_OBJECT_HEADER;
-	elf_sound* sound;
+	elfSound* sound;
 	ALuint source;
 	unsigned char loop;
 	unsigned char paused;
 };
 
-struct elf_sound {
+struct elfSound {
 	ELF_OBJECT_HEADER;
-	char* file_path;
-	unsigned char file_type;
+	char* filePath;
+	unsigned char fileType;
 	ALuint buffer[3];
 	int freq;
 	int format;
@@ -137,40 +137,40 @@ struct elf_sound {
 	unsigned char streamed;
 	unsigned char streaming;
 	unsigned char eof;
-	OggVorbis_File ogg_file;
+	OggVorbis_File oggFile;
 	FILE* file;
 	int length;
 	int position;
-	unsigned char oldest_buffer;
+	unsigned char oldestBuffer;
 };
 
-elf_audio_device* audio_device = NULL;
+elfAudioDevice* audioDevice = NULL;
 
-elf_audio_device* elf_create_audio_device()
+elfAudioDevice* elfCreateAudioDevice()
 {
-	elf_audio_device* device;
+	elfAudioDevice* device;
 
-	device = (elf_audio_device*)malloc(sizeof(elf_audio_device));
-	memset(device, 0x0, sizeof(elf_audio_device));
-	device->obj_type = ELF_AUDIO_DEVICE;
-	device->obj_destr = elf_destroy_audio_device;
+	device = (elfAudioDevice*)malloc(sizeof(elfAudioDevice));
+	memset(device, 0x0, sizeof(elfAudioDevice));
+	device->objType = ELF_AUDIO_DEVICE;
+	device->objDestr = elfDestroyAudioDevice;
 
 	device->volume = 1.0;
 	device->rolloff = 1.0;
 
-	device->sources = elf_create_list();
-	elf_inc_ref((elf_object*)device->sources);
+	device->sources = elfCreateList();
+	elfIncRef((elfObject*)device->sources);
 
-	elf_inc_obj(ELF_AUDIO_DEVICE);
+	elfIncObj(ELF_AUDIO_DEVICE);
 
 	return device;
 }
 
-void elf_destroy_audio_device(void* data)
+void elfDestroyAudioDevice(void* data)
 {
-	elf_audio_device* device = (elf_audio_device*)data;
+	elfAudioDevice* device = (elfAudioDevice*)data;
 
-	if(device->sources) elf_dec_ref((elf_object*)device->sources);
+	if(device->sources) elfDecRef((elfObject*)device->sources);
 
 	if(device->device)
 	{
@@ -181,39 +181,39 @@ void elf_destroy_audio_device(void* data)
 
 	free(device);
 
-	elf_dec_obj(ELF_AUDIO_DEVICE);
+	elfDecObj(ELF_AUDIO_DEVICE);
 }
 
-unsigned char elf_init_audio()
+unsigned char elfInitAudio()
 {
-	if(audio_device)
+	if(audioDevice)
 	{
-		elf_write_to_log("warning: cannot initialize audio twice\n");
+		elfWriteToLog("warning: cannot initialize audio twice\n");
 		return ELF_TRUE;
 	}
 
-	audio_device = elf_create_audio_device();
-	elf_inc_ref((elf_object*)audio_device);
+	audioDevice = elfCreateAudioDevice();
+	elfIncRef((elfObject*)audioDevice);
 
-	audio_device->device = alcOpenDevice(NULL);
-	if(!audio_device->device)
+	audioDevice->device = alcOpenDevice(NULL);
+	if(!audioDevice->device)
 	{
-		elf_write_to_log("warning: could not create audio device\n");
-		elf_deinit_audio();
+		elfWriteToLog("warning: could not create audio device\n");
+		elfDeinitAudio();
 		return ELF_FALSE;
 	}
 
-	audio_device->context = alcCreateContext(audio_device->device, NULL);
-	if(!audio_device->context)
+	audioDevice->context = alcCreateContext(audioDevice->device, NULL);
+	if(!audioDevice->context)
 	{
-		elf_write_to_log("warning: could not create audio context\n");
-		alcCloseDevice(audio_device->device);
-		audio_device->device = NULL;
-		elf_deinit_audio();
+		elfWriteToLog("warning: could not create audio context\n");
+		alcCloseDevice(audioDevice->device);
+		audioDevice->device = NULL;
+		elfDeinitAudio();
 		return ELF_FALSE;
 	}
 
-	alcMakeContextCurrent(audio_device->context);
+	alcMakeContextCurrent(audioDevice->context);
 
 	alGetError();
 
@@ -225,98 +225,98 @@ unsigned char elf_init_audio()
 	return ELF_TRUE;
 }
 
-void elf_deinit_audio()
+void elfDeinitAudio()
 {
-	if(!audio_device) return;
+	if(!audioDevice) return;
 
-	elf_dec_ref((elf_object*)audio_device);
+	elfDecRef((elfObject*)audioDevice);
 
-	audio_device = NULL;
+	audioDevice = NULL;
 }
 
-void elf_update_audio()
+void elfUpdateAudio()
 {
-	elf_audio_source* source;
+	elfAudioSource* source;
 
-	for(source = (elf_audio_source*)elf_begin_list(audio_device->sources); source;
-		source = (elf_audio_source*)elf_next_in_list(audio_device->sources))
+	for(source = (elfAudioSource*)elfBeginList(audioDevice->sources); source;
+		source = (elfAudioSource*)elfNextInList(audioDevice->sources))
 	{
 		if(source->sound->streamed && !source->paused)
 		{
-			elf_stream_audio_source(source);
+			elfStreamAudioSource(source);
 		}
 
-		if(elf_get_object_ref_count((elf_object*)source) < 2 &&
-			!elf_is_sound_playing(source) &&
-			!elf_is_sound_paused(source))
+		if(elfGetObjectRefCount((elfObject*)source) < 2 &&
+			!elfIsSoundPlaying(source) &&
+			!elfIsSoundPaused(source))
 		{
 			if(source->sound->streamed)
 			{
-				if(source->sound->eof && !source->loop) elf_remove_from_list(audio_device->sources, (elf_object*)source);
+				if(source->sound->eof && !source->loop) elfRemoveFromList(audioDevice->sources, (elfObject*)source);
 			}
 			else
 			{
-				elf_remove_from_list(audio_device->sources, (elf_object*)source);
+				elfRemoveFromList(audioDevice->sources, (elfObject*)source);
 			}
 		}
 	}
 }
 
-void elf_set_audio_volume(float volume)
+void elfSetAudioVolume(float volume)
 {
-	if(!audio_device) return;
+	if(!audioDevice) return;
 	alListenerf(AL_GAIN, volume);
 }
 
-float elf_get_audio_volume()
+float elfGetAudioVolume()
 {
-	if(!audio_device) return 0.0;
-	return audio_device->volume;
+	if(!audioDevice) return 0.0;
+	return audioDevice->volume;
 }
 
-void elf_set_audio_rolloff(float rolloff)
+void elfSetAudioRolloff(float rolloff)
 {
-	if(!audio_device) return;
-	audio_device->rolloff = rolloff;
+	if(!audioDevice) return;
+	audioDevice->rolloff = rolloff;
 }
 
-float elf_get_audio_rolloff()
+float elfGetAudioRolloff()
 {
-	if(!audio_device) return 0.0;
-	return audio_device->rolloff;
+	if(!audioDevice) return 0.0;
+	return audioDevice->rolloff;
 }
 
-void elf_set_audio_listener_position(float x, float y, float z)
+void elfSetAudioListenerPosition(float x, float y, float z)
 {
-	if(!audio_device) return;
+	if(!audioDevice) return;
 	alListener3f(AL_POSITION, x, y, z);
 }
 
-void elf_set_audio_listener_orientation(float* params)
+void elfSetAudioListenerOrientation(float* params)
 {
-	if(!audio_device) return;
+	if(!audioDevice) return;
 	alListenerfv(AL_ORIENTATION, params);
 }
 
-elf_sound* elf_create_sound()
+elfSound* elfCreateSound()
 {
-	elf_sound* sound;
+	elfSound* sound;
 
-	sound = (elf_sound*)malloc(sizeof(elf_sound));
-	memset(sound, 0x0, sizeof(elf_sound));
-	sound->obj_type = ELF_SOUND;
-	sound->obj_destr = elf_destroy_sound;
+	sound = (elfSound*)malloc(sizeof(elfSound));
+	memset(sound, 0x0, sizeof(elfSound));
+	sound->objType = ELF_SOUND;
+	sound->objDestr = elfDestroySound;
 
-	elf_inc_obj(ELF_SOUND);
+	elfIncObj(ELF_SOUND);
 
 	return sound;
 }
 
-void elf_destroy_sound(void* data)
+void elfDestroySound(void* data)
 {
-	elf_sound* sound = (elf_sound*)data;
+	elfSound* sound = (elfSound*)data;
 
-	if(sound->file_path) elf_destroy_string(sound->file_path);
+	if(sound->filePath) elfDestroyString(sound->filePath);
 	if(!sound->streamed)
 	{
 		if(sound->buffer[0]) alDeleteBuffers(1, &sound->buffer[0]);
@@ -324,52 +324,52 @@ void elf_destroy_sound(void* data)
 	else
 	{
 		alDeleteBuffers(3, sound->buffer);
-		if(sound->file_type == ELF_OGG) ov_clear(&sound->ogg_file);
-		if(sound->file_type == ELF_WAV) fclose(sound->file);
+		if(sound->fileType == ELF_OGG) ov_clear(&sound->oggFile);
+		if(sound->fileType == ELF_WAV) fclose(sound->file);
 	}
 	free(sound);
 
-	elf_dec_obj(ELF_SOUND);
+	elfDecObj(ELF_SOUND);
 }
 
-unsigned char elf_init_sound_with_ogg(elf_sound* snd, const char* file_path)
+unsigned char elfInitSoundWithOgg(elfSound* snd, const char* filePath)
 {
 	vorbis_info* info = NULL;
 
-	if(snd->streamed && snd->file_type == ELF_OGG)
+	if(snd->streamed && snd->fileType == ELF_OGG)
 	{
-		ov_clear(&snd->ogg_file);
+		ov_clear(&snd->oggFile);
 		snd->file = NULL;
 	}
-	if(snd->streamed && snd->file_type == ELF_WAV)
+	if(snd->streamed && snd->fileType == ELF_WAV)
 	{
 		fclose(snd->file);
 		snd->file = NULL;
 	}
 
-	snd->file_type = ELF_NONE;
+	snd->fileType = ELF_NONE;
 	snd->length = 0;
 	snd->position = 0;
 	snd->eof = ELF_FALSE;
 
-	snd->file = fopen(file_path, "rb");
+	snd->file = fopen(filePath, "rb");
 	if(!snd->file)
 	{
-		elf_set_error(ELF_CANT_OPEN_FILE, "error: can't open file \"%s\"\n", file_path);
+		elfSetError(ELF_CANT_OPEN_FILE, "error: can't open file \"%s\"\n", filePath);
 		return ELF_FALSE;
 	}
 
-	snd->file_type = ELF_OGG;
+	snd->fileType = ELF_OGG;
 
-	ov_open(snd->file, &snd->ogg_file, NULL, 0);
-	info = ov_info(&snd->ogg_file, -1);
+	ov_open(snd->file, &snd->oggFile, NULL, 0);
+	info = ov_info(&snd->oggFile, -1);
 
 	if(info->channels == 1) snd->format = AL_FORMAT_MONO16;
 	else if(info->channels == 2) snd->format = AL_FORMAT_STEREO16;
 	else
 	{
-		elf_set_error(ELF_CANT_OPEN_FILE, "error: invalid number of channels in \"%s\"\n", file_path);
-		ov_clear(&snd->ogg_file);
+		elfSetError(ELF_CANT_OPEN_FILE, "error: invalid number of channels in \"%s\"\n", filePath);
+		ov_clear(&snd->oggFile);
 		return ELF_FALSE;
 	}
 
@@ -378,89 +378,89 @@ unsigned char elf_init_sound_with_ogg(elf_sound* snd, const char* file_path)
 	return ELF_TRUE;
 }
 
-unsigned char elf_init_sound_with_wav(elf_sound* snd, const char* file_path)
+unsigned char elfInitSoundWithWav(elfSound* snd, const char* filePath)
 {
 	char buf[ELF_AUDIO_STREAM_CHUNK_SIZE];
 
 	char magic[5] = "\0\0\0\0";
-	unsigned int chunk_length = 0;
-	int junk_data = 0;
-	unsigned short int audio_format = 0;
+	unsigned int chunkLength = 0;
+	int junkData = 0;
+	unsigned short int audioFormat = 0;
 	unsigned short int channels = 0;
 	unsigned int freq = 0;
-	unsigned char fmt_found = ELF_FALSE;
-	unsigned char data_found = ELF_FALSE;
+	unsigned char fmtFound = ELF_FALSE;
+	unsigned char dataFound = ELF_FALSE;
 
-	if(snd->streamed && snd->file_type == ELF_OGG)
+	if(snd->streamed && snd->fileType == ELF_OGG)
 	{
-		ov_clear(&snd->ogg_file);
+		ov_clear(&snd->oggFile);
 		snd->file = NULL;
 	}
-	if(snd->streamed && snd->file_type == ELF_WAV)
+	if(snd->streamed && snd->fileType == ELF_WAV)
 	{
 		fclose(snd->file);
 		snd->file = NULL;
 	}
 
-	snd->file_type = ELF_NONE;
+	snd->fileType = ELF_NONE;
 	snd->length = 0;
 	snd->position = 0;
 	snd->eof = ELF_FALSE;
 
-	snd->file = fopen(file_path, "rb");
+	snd->file = fopen(filePath, "rb");
 	if(!snd->file)
 	{
-		elf_set_error(ELF_CANT_OPEN_FILE, "error: can't open file \"%s\"\n", file_path);
+		elfSetError(ELF_CANT_OPEN_FILE, "error: can't open file \"%s\"\n", filePath);
 		return ELF_FALSE;
 	}
 
-	snd->file_type = ELF_WAV;
+	snd->fileType = ELF_WAV;
 
 	fread(&magic, sizeof(int), 1, snd->file);
 	if(strcmp((char*)&magic, "RIFF"))
 	{
-		elf_set_error(ELF_INVALID_FILE, "error: \"%s\" invalid wav file, RIFF not found\n", file_path);
+		elfSetError(ELF_INVALID_FILE, "error: \"%s\" invalid wav file, RIFF not found\n", filePath);
 		return ELF_FALSE;
 	}
 
-	fread(&chunk_length, sizeof(unsigned int), 1, snd->file);
+	fread(&chunkLength, sizeof(unsigned int), 1, snd->file);
 	fread(&magic, sizeof(int), 1, snd->file);
 	if(strcmp((char*)&magic, "WAVE"))
 	{
-		elf_set_error(ELF_INVALID_FILE, "error: \"%s\" invalid wav file, WAVE not found\n", file_path);
+		elfSetError(ELF_INVALID_FILE, "error: \"%s\" invalid wav file, WAVE not found\n", filePath);
 		return ELF_FALSE;
 	}
 
 	while(1)
 	{
-		if(fmt_found && data_found) break;
+		if(fmtFound && dataFound) break;
 
 		if(feof(snd->file))
 		{
-			if(!fmt_found || !data_found)
+			if(!fmtFound || !dataFound)
 			{
-				elf_set_error(ELF_INVALID_FILE, "error: \"%s\" invalid wav file\n", file_path);
+				elfSetError(ELF_INVALID_FILE, "error: \"%s\" invalid wav file\n", filePath);
 				return ELF_FALSE;
 			}
 			break;
 		}
 
 		fread(&magic, sizeof(int), 1, snd->file);
-		fread(&chunk_length, sizeof(unsigned int), 1, snd->file);
+		fread(&chunkLength, sizeof(unsigned int), 1, snd->file);
 		if(strcmp((char*)&magic, "fmt ") == 0)
 		{
-			fread(&audio_format, sizeof(unsigned short int), 1, snd->file);
+			fread(&audioFormat, sizeof(unsigned short int), 1, snd->file);
 			fread(&channels, sizeof(unsigned short int), 1, snd->file);
 			fread(&freq, sizeof(unsigned int), 1, snd->file);
-			fread(&junk_data, sizeof(unsigned int), 1, snd->file);
-			fread(&junk_data, sizeof(unsigned short int), 1, snd->file);
-			fread(&junk_data, sizeof(unsigned short int), 1, snd->file);
+			fread(&junkData, sizeof(unsigned int), 1, snd->file);
+			fread(&junkData, sizeof(unsigned short int), 1, snd->file);
+			fread(&junkData, sizeof(unsigned short int), 1, snd->file);
 
-			if(chunk_length-16 > 0) fread(buf, 1, chunk_length-16, snd->file);
+			if(chunkLength-16 > 0) fread(buf, 1, chunkLength-16, snd->file);
 
-			if(audio_format != 1)
+			if(audioFormat != 1)
 			{
-				elf_set_error(ELF_INVALID_FILE, "error: \"%s\" invalid wav file, invalid audio format\n", file_path);
+				elfSetError(ELF_INVALID_FILE, "error: \"%s\" invalid wav file, invalid audio format\n", filePath);
 				return ELF_FALSE;
 			}
 
@@ -470,72 +470,72 @@ unsigned char elf_init_sound_with_wav(elf_sound* snd, const char* file_path)
 			else if(channels == 2) snd->format = AL_FORMAT_STEREO16;
 			else
 			{
-				elf_set_error(ELF_INVALID_FILE, "error: \"%s\" invalid wav file, invalid number of channels\n", file_path);
+				elfSetError(ELF_INVALID_FILE, "error: \"%s\" invalid wav file, invalid number of channels\n", filePath);
 				return ELF_FALSE;
 			}
 
-			fmt_found = ELF_TRUE;
+			fmtFound = ELF_TRUE;
 		}
 		else if(strcmp((char*)&magic, "data") == 0)
 		{
-			snd->length = chunk_length;
-			data_found = ELF_TRUE;
+			snd->length = chunkLength;
+			dataFound = ELF_TRUE;
 		}
 	}
 
 	return ELF_TRUE;
 }
 
-elf_sound* elf_load_sound(const char* file_path)
+elfSound* elfLoadSound(const char* filePath)
 {
-	elf_sound* snd = NULL;
+	elfSound* snd = NULL;
 
-	elf_data_dump* dump;
+	elfDataDump* dump;
 	char buf[ELF_AUDIO_STREAM_CHUNK_SIZE];
-	int bytes_read = 0;
+	int bytesRead = 0;
 	char* data;
 
 	int endian = 0;
-	int bit_stream = 0;
+	int bitStream = 0;
 
 	char* type = NULL;
 
-	if(!audio_device) return NULL;
+	if(!audioDevice) return NULL;
 
-	snd = elf_create_sound();
-	snd->file_path = elf_create_string(file_path);
+	snd = elfCreateSound();
+	snd->filePath = elfCreateString(filePath);
 
-	type = strrchr((char*)file_path, '.');
+	type = strrchr((char*)filePath, '.');
 
 	if(strcmp(type, ".ogg") == 0)
 	{
-		if(!elf_init_sound_with_ogg(snd, snd->file_path))
+		if(!elfInitSoundWithOgg(snd, snd->filePath))
 		{
-			elf_destroy_sound(snd);
+			elfDestroySound(snd);
 			return NULL;
 		}
 
-		dump = elf_create_data_dump();
+		dump = elfCreateDataDump();
 		do
 		{
-			bytes_read = ov_read(&snd->ogg_file, buf, ELF_AUDIO_STREAM_CHUNK_SIZE, endian, 2, 1, &bit_stream);
-			elf_add_chunk_to_data_dump(dump, buf, bytes_read);
-			snd->length += bytes_read;
+			bytesRead = ov_read(&snd->oggFile, buf, ELF_AUDIO_STREAM_CHUNK_SIZE, endian, 2, 1, &bitStream);
+			elfAddChunkToDataDump(dump, buf, bytesRead);
+			snd->length += bytesRead;
 		}
-		while (bytes_read > 0);
+		while (bytesRead > 0);
 
-		snd->length = elf_get_data_dump_length(dump);
+		snd->length = elfGetDataDumpLength(dump);
 		data = (char*)malloc(snd->length);
-		elf_data_dump_to_buffer(dump, data);
+		elfDataDumpToBuffer(dump, data);
 
-		elf_destroy_data_dump(dump);
-		ov_clear(&snd->ogg_file);
+		elfDestroyDataDump(dump);
+		ov_clear(&snd->oggFile);
 	}
 	else if(strcmp(type, ".wav") == 0)
 	{
-		if(!elf_init_sound_with_wav(snd, snd->file_path))
+		if(!elfInitSoundWithWav(snd, snd->filePath))
 		{
-			elf_destroy_sound(snd);
+			elfDestroySound(snd);
 			return NULL;
 		}
 
@@ -547,8 +547,8 @@ elf_sound* elf_load_sound(const char* file_path)
 	}
 	else
 	{
-		elf_set_error(ELF_UNKNOWN_FORMAT, "error: can't load \"%s\", unknown format\n", file_path);
-		elf_destroy_sound(snd);
+		elfSetError(ELF_UNKNOWN_FORMAT, "error: can't load \"%s\", unknown format\n", filePath);
+		elfDestroySound(snd);
 		return NULL;
 	}
 
@@ -560,41 +560,41 @@ elf_sound* elf_load_sound(const char* file_path)
 	return snd;
 }
 
-elf_sound* elf_load_streamed_sound(const char* file_path)
+elfSound* elfLoadStreamedSound(const char* filePath)
 {
-	elf_sound* snd = NULL;
+	elfSound* snd = NULL;
 
 	char* type = NULL;
 
-	if(!audio_device) return NULL;
+	if(!audioDevice) return NULL;
 
-	snd = elf_create_sound();
+	snd = elfCreateSound();
 
-	snd->file_path = elf_create_string(file_path);
+	snd->filePath = elfCreateString(filePath);
 	snd->streamed = ELF_TRUE;
 
-	type = strrchr((char*)file_path, '.');
+	type = strrchr((char*)filePath, '.');
 
 	if(strcmp(type, ".ogg") == 0)
 	{
-		if(!elf_init_sound_with_ogg(snd, snd->file_path))
+		if(!elfInitSoundWithOgg(snd, snd->filePath))
 		{
-			elf_destroy_sound(snd);
+			elfDestroySound(snd);
 			return NULL;
 		}
 	}
 	else if(strcmp(type, ".wav") == 0)
 	{
-		if(!elf_init_sound_with_wav(snd, snd->file_path))
+		if(!elfInitSoundWithWav(snd, snd->filePath))
 		{
-			elf_destroy_sound(snd);
+			elfDestroySound(snd);
 			return NULL;
 		}
 	}
 	else
 	{
-		elf_set_error(ELF_UNKNOWN_FORMAT, "error: can't load \"%s\", unknown format\n", file_path);
-		elf_destroy_sound(snd);
+		elfSetError(ELF_UNKNOWN_FORMAT, "error: can't load \"%s\", unknown format\n", filePath);
+		elfDestroySound(snd);
 		return NULL;
 	}
 
@@ -603,117 +603,117 @@ elf_sound* elf_load_streamed_sound(const char* file_path)
 	return snd;
 }
 
-int elf_get_sound_file_type(elf_sound* sound)
+int elfGetSoundFileType(elfSound* sound)
 {
-	return sound->file_type;
+	return sound->fileType;
 }
 
-elf_audio_source* elf_play_sound(elf_sound* sound, float volume)
+elfAudioSource* elfPlaySound(elfSound* sound, float volume)
 {
-	elf_audio_source* source;
+	elfAudioSource* source;
 
-	if(!audio_device || sound->streaming) return NULL;
+	if(!audioDevice || sound->streaming) return NULL;
 
-	source = elf_create_audio_source();
+	source = elfCreateAudioSource();
 
 	// clear errors
 	alGetError();
 
 	source->sound = sound;
-	elf_inc_ref((elf_object*)sound);
+	elfIncRef((elfObject*)sound);
 
 	alGenSources(1, &source->source);
 
 	// check if everything went well
 	if(alGetError() != AL_NO_ERROR)
 	{
-		elf_destroy_audio_source(source);
+		elfDestroyAudioSource(source);
 		return NULL;
 	}
 
 	if(!source->sound->streamed) alSourcei(source->source, AL_BUFFER, sound->buffer[0]);
 
 	alSourcef(source->source, AL_GAIN, volume);
-	alSourcef(source->source, AL_ROLLOFF_FACTOR, audio_device->rolloff);
+	alSourcef(source->source, AL_ROLLOFF_FACTOR, audioDevice->rolloff);
 
 	if(source->sound->streamed)
 	{
-		elf_stream_audio_source(source);
+		elfStreamAudioSource(source);
 		source->sound->streaming = ELF_TRUE;
 	}
 	alSourcePlay(source->source);
 
-	elf_append_to_list(audio_device->sources, (elf_object*)source);
+	elfAppendToList(audioDevice->sources, (elfObject*)source);
 
 	return source;
 }
 
-elf_audio_source* elf_play_entity_sound(elf_entity* entity, elf_sound* sound, float volume)
+elfAudioSource* elfPlayEntitySound(elfEntity* entity, elfSound* sound, float volume)
 {
-	elf_audio_source* source;
+	elfAudioSource* source;
 	float position[3];
 
-	if(!audio_device || sound->streaming) return NULL;
+	if(!audioDevice || sound->streaming) return NULL;
 
-	source = elf_create_audio_source();
+	source = elfCreateAudioSource();
 
 	// clear errors
 	alGetError();
 
 	source->sound = sound;
-	elf_inc_ref((elf_object*)sound);
+	elfIncRef((elfObject*)sound);
 
 	alGenSources(1, &source->source);
 
 	// check if everything went well
 	if(alGetError() != AL_NO_ERROR)
 	{
-		elf_destroy_audio_source(source);
+		elfDestroyAudioSource(source);
 		return NULL;
 	}
 
 	if(!source->sound->streamed) alSourcei(source->source, AL_BUFFER, sound->buffer[0]);
 
 	alSourcef(source->source, AL_GAIN, volume);
-	alSourcef(source->source, AL_ROLLOFF_FACTOR, audio_device->rolloff);
+	alSourcef(source->source, AL_ROLLOFF_FACTOR, audioDevice->rolloff);
 
-	elf_get_actor_position_((elf_actor*)entity, position);
+	elfGetActorPosition_((elfActor*)entity, position);
 	alSource3f(source->source, AL_POSITION, position[0], position[1], position[2]);
 
 	if(source->sound->streamed)
 	{
-		elf_stream_audio_source(source);
+		elfStreamAudioSource(source);
 		source->sound->streaming = ELF_TRUE;
 	}
 	alSourcePlay(source->source);
 
-	elf_append_to_list(audio_device->sources, (elf_object*)source);
-	elf_append_to_list(entity->sources, (elf_object*)source);
+	elfAppendToList(audioDevice->sources, (elfObject*)source);
+	elfAppendToList(entity->sources, (elfObject*)source);
 
 	return source;
 }
 
-elf_audio_source* elf_loop_sound(elf_sound* sound, float volume)
+elfAudioSource* elfLoopSound(elfSound* sound, float volume)
 {
-	elf_audio_source* source;
+	elfAudioSource* source;
 
-	if(!audio_device || sound->streaming) return NULL;
+	if(!audioDevice || sound->streaming) return NULL;
 
-	source = elf_create_audio_source();
+	source = elfCreateAudioSource();
 
 	// clear errors
 	alGetError();
 
 	source->loop = ELF_TRUE;
 	source->sound = sound;
-	elf_inc_ref((elf_object*)sound);
+	elfIncRef((elfObject*)sound);
 
 	alGenSources(1, &source->source);
 
 	// check if everything went well
 	if(alGetError() != AL_NO_ERROR)
 	{
-		elf_destroy_audio_source(source);
+		elfDestroyAudioSource(source);
 		return NULL;
 	}
 
@@ -724,42 +724,42 @@ elf_audio_source* elf_loop_sound(elf_sound* sound, float volume)
 	}
 
 	alSourcef(source->source, AL_GAIN, volume);
-	alSourcef(source->source, AL_ROLLOFF_FACTOR, audio_device->rolloff);
+	alSourcef(source->source, AL_ROLLOFF_FACTOR, audioDevice->rolloff);
 
 	if(source->sound->streamed)
 	{
-		elf_stream_audio_source(source);
+		elfStreamAudioSource(source);
 		source->sound->streaming = ELF_TRUE;
 	}
 	alSourcePlay(source->source);
 
-	elf_append_to_list(audio_device->sources, (elf_object*)source);
+	elfAppendToList(audioDevice->sources, (elfObject*)source);
 
 	return source;
 }
 
-elf_audio_source* elf_loop_entity_sound(elf_entity* entity, elf_sound* sound, float volume)
+elfAudioSource* elfLoopEntitySound(elfEntity* entity, elfSound* sound, float volume)
 {
-	elf_audio_source* source;
+	elfAudioSource* source;
 	float position[3];
 
-	if(!audio_device || sound->streaming) return NULL;
+	if(!audioDevice || sound->streaming) return NULL;
 
-	source = elf_create_audio_source();
+	source = elfCreateAudioSource();
 
 	// clear errors
 	alGetError();
 
 	source->loop = ELF_TRUE;
 	source->sound = sound;
-	elf_inc_ref((elf_object*)sound);
+	elfIncRef((elfObject*)sound);
 
 	alGenSources(1, &source->source);
 
 	// check if everything went well
 	if(alGetError() != AL_NO_ERROR)
 	{
-		elf_destroy_audio_source(source);
+		elfDestroyAudioSource(source);
 		return NULL;
 	}
 
@@ -770,39 +770,39 @@ elf_audio_source* elf_loop_entity_sound(elf_entity* entity, elf_sound* sound, fl
 	}
 
 	alSourcef(source->source, AL_GAIN, volume);
-	alSourcef(source->source, AL_ROLLOFF_FACTOR, audio_device->rolloff);
+	alSourcef(source->source, AL_ROLLOFF_FACTOR, audioDevice->rolloff);
 
-	elf_get_actor_position_((elf_actor*)entity, position);
+	elfGetActorPosition_((elfActor*)entity, position);
 	alSource3f(source->source, AL_POSITION, position[0], position[1], position[2]);
 
 	if(source->sound->streamed)
 	{
-		elf_stream_audio_source(source);
+		elfStreamAudioSource(source);
 		source->sound->streaming = ELF_TRUE;
 	}
 	alSourcePlay(source->source);
 
-	elf_append_to_list(audio_device->sources, (elf_object*)source);
-	elf_append_to_list(entity->sources, (elf_object*)source);
+	elfAppendToList(audioDevice->sources, (elfObject*)source);
+	elfAppendToList(entity->sources, (elfObject*)source);
 
 	return source;
 }
 
-elf_audio_source* elf_create_audio_source()
+elfAudioSource* elfCreateAudioSource()
 {
-	elf_audio_source* source;
+	elfAudioSource* source;
 
-	source = (elf_audio_source*)malloc(sizeof(elf_audio_source));
-	memset(source, 0x0, sizeof(elf_audio_source));
-	source->obj_type = ELF_AUDIO_SOURCE;
-	source->obj_destr = elf_destroy_audio_source;
+	source = (elfAudioSource*)malloc(sizeof(elfAudioSource));
+	memset(source, 0x0, sizeof(elfAudioSource));
+	source->objType = ELF_AUDIO_SOURCE;
+	source->objDestr = elfDestroyAudioSource;
 
-	elf_inc_obj(ELF_AUDIO_SOURCE);
+	elfIncObj(ELF_AUDIO_SOURCE);
 
 	return source;
 }
 
-void elf_stream_audio_source(elf_audio_source* source)
+void elfStreamAudioSource(elfAudioSource* source)
 {
 	int queued;
 	int processed;
@@ -810,17 +810,17 @@ void elf_stream_audio_source(elf_audio_source* source)
 
 	char buf[ELF_AUDIO_STREAM_CHUNK_SIZE];
 	int read;
-	int bytes_read;
-	int bytes_to_read;
+	int bytesRead;
+	int bytesToRead;
 
 	int endian = 0;
-	int bit_stream = 0;
+	int bitStream = 0;
 
 	if(!source->sound->eof)
 	{
-		if(!elf_is_sound_playing(source) && !elf_is_sound_paused(source))
+		if(!elfIsSoundPlaying(source) && !elfIsSoundPaused(source))
 		{
-			elf_resume_sound(source);
+			elfResumeSound(source);
 		}
 	}
 	else
@@ -838,98 +838,98 @@ void elf_stream_audio_source(elf_audio_source* source)
 
 	if(queued < 3)
 	{
-		bytes_read = 0;
-		if(source->sound->file_type == ELF_OGG)
+		bytesRead = 0;
+		if(source->sound->fileType == ELF_OGG)
 		{
-			bytes_to_read = ELF_AUDIO_STREAM_CHUNK_SIZE;
+			bytesToRead = ELF_AUDIO_STREAM_CHUNK_SIZE;
 
 			do
 			{
-				read = ov_read(&source->sound->ogg_file, &buf[bytes_read], ELF_AUDIO_STREAM_CHUNK_SIZE-bytes_read, endian, 2, 1, &bit_stream);
+				read = ov_read(&source->sound->oggFile, &buf[bytesRead], ELF_AUDIO_STREAM_CHUNK_SIZE-bytesRead, endian, 2, 1, &bitStream);
 				if(read < 1)
 				{
-					if(source->loop) elf_init_sound_with_ogg(source->sound, source->sound->file_path);
+					if(source->loop) elfInitSoundWithOgg(source->sound, source->sound->filePath);
 					else source->sound->eof = ELF_TRUE;
 					break;
 				}
-				bytes_read += read;
-				bytes_to_read -= read;
+				bytesRead += read;
+				bytesToRead -= read;
 			}
-			while (bytes_to_read > 0);
+			while (bytesToRead > 0);
 
-			source->sound->position += bytes_read;
+			source->sound->position += bytesRead;
 		}
-		else if(source->sound->file_type == ELF_WAV)
+		else if(source->sound->fileType == ELF_WAV)
 		{
 			if(source->sound->length-source->sound->position > ELF_AUDIO_STREAM_CHUNK_SIZE)
-				bytes_to_read = ELF_AUDIO_STREAM_CHUNK_SIZE;
-			else bytes_to_read = source->sound->length-source->sound->position;
+				bytesToRead = ELF_AUDIO_STREAM_CHUNK_SIZE;
+			else bytesToRead = source->sound->length-source->sound->position;
 
-			if(bytes_to_read > 0) fread(buf, sizeof(char), bytes_to_read, source->sound->file);
+			if(bytesToRead > 0) fread(buf, sizeof(char), bytesToRead, source->sound->file);
 			else
 			{
-				if(source->loop) elf_init_sound_with_wav(source->sound, source->sound->file_path);
+				if(source->loop) elfInitSoundWithWav(source->sound, source->sound->filePath);
 				else source->sound->eof = ELF_TRUE;
 			}
 
-			bytes_read = bytes_to_read;
-			source->sound->position += bytes_read;
+			bytesRead = bytesToRead;
+			source->sound->position += bytesRead;
 		}
 
-		if(bytes_read > 0)
+		if(bytesRead > 0)
 		{
-			alBufferData(source->sound->buffer[source->sound->oldest_buffer], source->sound->format, buf, bytes_read, source->sound->freq);
-			alSourceQueueBuffers(source->source, 1, &source->sound->buffer[source->sound->oldest_buffer]);
-			source->sound->oldest_buffer++;
-			if(source->sound->oldest_buffer > 2) source->sound->oldest_buffer = 0;
+			alBufferData(source->sound->buffer[source->sound->oldestBuffer], source->sound->format, buf, bytesRead, source->sound->freq);
+			alSourceQueueBuffers(source->source, 1, &source->sound->buffer[source->sound->oldestBuffer]);
+			source->sound->oldestBuffer++;
+			if(source->sound->oldestBuffer > 2) source->sound->oldestBuffer = 0;
 		}
 	}
 }
 
-void elf_destroy_audio_source(void* data)
+void elfDestroyAudioSource(void* data)
 {
-	elf_audio_source* source = (elf_audio_source*)data;
+	elfAudioSource* source = (elfAudioSource*)data;
 
 	if(source->sound)
 	{
 		source->sound->streaming = ELF_FALSE;
-		elf_dec_ref((elf_object*)source->sound);
+		elfDecRef((elfObject*)source->sound);
 	}
 	if(source->source) alDeleteSources(1, &source->source);
 
 	free(source);
 
-	elf_dec_obj(ELF_AUDIO_SOURCE);
+	elfDecObj(ELF_AUDIO_SOURCE);
 }
 
-void elf_set_sound_volume(elf_audio_source* source, float volume)
+void elfSetSoundVolume(elfAudioSource* source, float volume)
 {
 	alSourcef(source->source, AL_GAIN, volume);
 }
 
-float elf_get_sound_volume(elf_audio_source* source)
+float elfGetSoundVolume(elfAudioSource* source)
 {
 	float volume = 0.0;
 	alGetSourcef(source->source, AL_GAIN, &volume);
 	return volume;
 }
 
-void elf_pause_sound(elf_audio_source* audio_source)
+void elfPauseSound(elfAudioSource* audioSource)
 {
-	alSourcePause(audio_source->source);
-	audio_source->paused = ELF_TRUE;
+	alSourcePause(audioSource->source);
+	audioSource->paused = ELF_TRUE;
 }
 
-void elf_resume_sound(elf_audio_source* source)
+void elfResumeSound(elfAudioSource* source)
 {
-	if(elf_is_sound_playing(source)) return;
+	if(elfIsSoundPlaying(source)) return;
 
 	if(source->sound->streamed)
 	{
 		if(source->sound->eof)
 		{
-			if(source->sound->file_type == ELF_OGG) elf_init_sound_with_ogg(source->sound, source->sound->file_path);
-			else if(source->sound->file_type == ELF_WAV) elf_init_sound_with_wav(source->sound, source->sound->file_path);
+			if(source->sound->fileType == ELF_OGG) elfInitSoundWithOgg(source->sound, source->sound->filePath);
+			else if(source->sound->fileType == ELF_WAV) elfInitSoundWithWav(source->sound, source->sound->filePath);
 		}
 		else
 		{
@@ -943,7 +943,7 @@ void elf_resume_sound(elf_audio_source* source)
 	source->paused = ELF_FALSE;
 }
 
-void elf_stop_sound(elf_audio_source* source)
+void elfStopSound(elfAudioSource* source)
 {
 	int queued;
 	unsigned int buffer;
@@ -962,7 +962,7 @@ void elf_stop_sound(elf_audio_source* source)
 	}
 }
 
-unsigned char elf_is_sound_playing(elf_audio_source* source)
+unsigned char elfIsSoundPlaying(elfAudioSource* source)
 {
 	int state = 0;
 	alGetSourcei(source->source, AL_SOURCE_STATE, &state);
@@ -970,12 +970,12 @@ unsigned char elf_is_sound_playing(elf_audio_source* source)
 	return ELF_FALSE;
 }
 
-unsigned char elf_is_sound_paused(elf_audio_source* source)
+unsigned char elfIsSoundPaused(elfAudioSource* source)
 {
 	return source->paused;
 }
 
-void elf_set_sound_position(elf_audio_source* source, float x, float y, float z)
+void elfSetSoundPosition(elfAudioSource* source, float x, float y, float z)
 {
 	alSource3f(source->source, AL_POSITION, x, y, z);
 }

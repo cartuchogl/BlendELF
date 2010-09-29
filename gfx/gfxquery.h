@@ -1,33 +1,33 @@
 
-gfx_query* gfx_create_query()
+gfxQuery* gfxCreateQuery()
 {
-	gfx_query* query;
+	gfxQuery* query;
 
-	query = (gfx_query*)malloc(sizeof(gfx_query));
-	memset(query, 0x0, sizeof(gfx_query));
+	query = (gfxQuery*)malloc(sizeof(gfxQuery));
+	memset(query, 0x0, sizeof(gfxQuery));
 
 	glGenQueries(1, &query->id);
 
 	return query;
 }
 
-void gfx_destroy_query(gfx_query* query)
+void gfxDestroyQuery(gfxQuery* query)
 {
 	glDeleteQueries(1, &query->id);
 	free(query);
 }
 
-void gfx_begin_query(gfx_query* query)
+void gfxBeginQuery(gfxQuery* query)
 {
 	glBeginQuery(GL_SAMPLES_PASSED, query->id);
 }
 
-void gfx_end_query(gfx_query* query)
+void gfxEndQuery(gfxQuery* query)
 {
 	glEndQuery(GL_SAMPLES_PASSED);
 }
 
-unsigned char gfx_is_query_result(gfx_query* query)
+unsigned char gfxIsQueryResult(gfxQuery* query)
 {
 	int result;
 
@@ -37,7 +37,7 @@ unsigned char gfx_is_query_result(gfx_query* query)
 	return result == GL_TRUE;
 }
 
-int gfx_get_query_result(gfx_query* query)
+int gfxGetQueryResult(gfxQuery* query)
 {
 	int result;
 

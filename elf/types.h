@@ -1,8 +1,8 @@
 
 #define ELF_OBJECT_HEADER \
-	int obj_type; \
-	int obj_ref_count; \
-	void (*obj_destr)(void*)
+	int objType; \
+	int objRefCount; \
+	void (*objDestr)(void*)
 
 #define ELF_RESOURCE_HEADER \
 	ELF_OBJECT_HEADER; \
@@ -11,237 +11,237 @@
 
 #define ELF_ACTOR_HEADER \
 	ELF_RESOURCE_HEADER; \
-	char* file_path; \
-	elf_scene* scene; \
-	gfx_transform* transform; \
-	elf_list* joints; \
-	elf_script* script; \
-	elf_list* sources; \
-	elf_ipo* ipo; \
-	elf_frame_player* ipo_player; \
-	elf_list* properties; \
-	elf_physics_object* object; \
-	elf_physics_object* dobject; \
+	char* filePath; \
+	elfScene* scene; \
+	gfxTransform* transform; \
+	elfList* joints; \
+	elfScript* script; \
+	elfList* sources; \
+	elfIpo* ipo; \
+	elfFramePlayer* ipoPlayer; \
+	elfList* properties; \
+	elfPhysicsObject* object; \
+	elfPhysicsObject* dobject; \
 	unsigned char physics; \
-	elf_vec3f pbb_lengths; \
-	elf_vec3f pbb_offset; \
-	unsigned char pbb_offset_set; \
+	elfVec3f pbbLengths; \
+	elfVec3f pbbOffset; \
+	unsigned char pbbOffsetSet; \
 	unsigned char shape; \
 	float mass; \
-	float lin_damp; \
-	float ang_damp; \
-	float lin_sleep; \
-	float ang_sleep; \
+	float linDamp; \
+	float angDamp; \
+	float linSleep; \
+	float angSleep; \
 	float restitution; \
-	elf_vec3f anis_fric; \
-	elf_vec3f lin_factor; \
-	elf_vec3f ang_factor; \
+	elfVec3f anisFric; \
+	elfVec3f linFactor; \
+	elfVec3f angFactor; \
 	unsigned char moved; \
 	unsigned char selected
 
 #define ELF_GUI_OBJECT_HEADER \
 	ELF_OBJECT_HEADER; \
 	char* name; \
-	elf_vec2i pos; \
-	elf_vec2i rel_pos; \
+	elfVec2i pos; \
+	elfVec2i relPos; \
 	int width, height; \
-	elf_color color; \
+	elfColor color; \
 	unsigned char visible; \
-	elf_gui* root; \
-	elf_gui_object* parent; \
-	elf_list* children; \
-	elf_list* screens; \
-	elf_script* script; \
+	elfGui* root; \
+	elfGuiObject* parent; \
+	elfList* children; \
+	elfList* screens; \
+	elfScript* script; \
 	int event
 
-struct elf_object {
+struct elfObject {
 	ELF_OBJECT_HEADER;
 };
 
-struct elf_resource {
+struct elfResource {
 	ELF_RESOURCE_HEADER;
 };
 
-struct elf_string {
+struct elfString {
 	ELF_OBJECT_HEADER;
 	char* str;
 };
 
-typedef struct elf_list_ptr {
-	struct elf_list_ptr* prev;
-	struct elf_list_ptr* next;
-	elf_object* obj;
-} elf_list_ptr;
+typedef struct elfListPtr {
+	struct elfListPtr* prev;
+	struct elfListPtr* next;
+	elfObject* obj;
+} elfListPtr;
 
-struct elf_list {
+struct elfList {
 	ELF_OBJECT_HEADER;
-	elf_list_ptr* first;
-	elf_list_ptr* last;
-	elf_list_ptr* cur;
-	elf_list_ptr* next;
+	elfListPtr* first;
+	elfListPtr* last;
+	elfListPtr* cur;
+	elfListPtr* next;
 	int length;
 };
 
-struct elf_general {
+struct elfGeneral {
 	ELF_OBJECT_HEADER;
 	char* log;
 
-	char* err_str;
-	int err_code;
+	char* errStr;
+	int errCode;
 
-	int scene_id_counter;
-	int script_id_counter;
-	int texture_id_counter;
-	int material_id_counter;
-	int model_id_counter;
-	int camera_id_counter;
-	int entity_id_counter;
-	int light_id_counter;
-	int armature_id_counter;
-	int particles_id_counter;
-	int sprite_id_counter;
+	int sceneIdCounter;
+	int scriptIdCounter;
+	int textureIdCounter;
+	int materialIdCounter;
+	int modelIdCounter;
+	int cameraIdCounter;
+	int entityIdCounter;
+	int lightIdCounter;
+	int armatureIdCounter;
+	int particlesIdCounter;
+	int spriteIdCounter;
 
-	int ref_count;
-	int obj_count;
-	int ref_table[ELF_OBJECT_TYPE_COUNT];
-	int obj_table[ELF_OBJECT_TYPE_COUNT];
+	int refCount;
+	int objCount;
+	int refTable[ELF_OBJECT_TYPE_COUNT];
+	int objTable[ELF_OBJECT_TYPE_COUNT];
 };
 
-struct elf_config {
+struct elfConfig {
 	ELF_OBJECT_HEADER;
-	int window_size[2];
+	int windowSize[2];
 	int multisamples;
 	unsigned char fullscreen;
-	unsigned char texture_compress;
-	float texture_anisotropy;
-	int shadow_map_size;
+	unsigned char textureCompress;
+	float textureAnisotropy;
+	int shadowMapSize;
 	char* start;
 	char* log;
 };
 
-struct elf_key_event {
+struct elfKeyEvent {
 	ELF_OBJECT_HEADER;
 	int key;
 	unsigned char state;
 };
 
-struct elf_char_event {
+struct elfCharEvent {
 	ELF_OBJECT_HEADER;
 	int code;
 	unsigned char state;
 };
 
-typedef struct elf_joystick {
+typedef struct elfJoystick {
 	unsigned char present;
-	float axis_pos[2];
-	unsigned char cur_buts[16];
-	unsigned char prv_buts[16];
-} elf_joystick;
+	float axisPos[2];
+	unsigned char curButs[16];
+	unsigned char prvButs[16];
+} elfJoystick;
 
-struct elf_video_mode {
+struct elfVideoMode {
 	ELF_OBJECT_HEADER;
-	elf_vec2i reso;
+	elfVec2i reso;
 };
 
-struct elf_context {
+struct elfContext {
 	ELF_OBJECT_HEADER;
 	int width;
 	int height;
 	unsigned char fullscreen;
 	char* title;
 	int multisamples;
-	elf_list* video_modes;
-	unsigned char cur_keys[256];
-	unsigned char prv_keys[256];
-	int mouse_position[2];
-	int prv_mouse_position[2];
-	unsigned char hide_mouse;
-	int mouse_wheel;
-	unsigned char cur_mbuts[3];
-	unsigned char prv_mbuts[3];
-	elf_joystick joysticks[16];
-	elf_list* events;
+	elfList* videoModes;
+	unsigned char curKeys[256];
+	unsigned char prvKeys[256];
+	int mousePosition[2];
+	int prvMousePosition[2];
+	unsigned char hideMouse;
+	int mouseWheel;
+	unsigned char curMbuts[3];
+	unsigned char prvMbuts[3];
+	elfJoystick joysticks[16];
+	elfList* events;
 };
 
-struct elf_engine {
+struct elfEngine {
 	ELF_OBJECT_HEADER;
 
 	char cwd[256];
 
-	unsigned char free_run;
+	unsigned char freeRun;
 
 	int fps;
-	elf_timer* fps_timer;
-	elf_timer* fps_limit_timer;
-	elf_timer* time_sync_timer;
+	elfTimer* fpsTimer;
+	elfTimer* fpsLimitTimer;
+	elfTimer* timeSyncTimer;
 	unsigned int frames;
-	int fps_limit;
-	float tick_rate;
+	int fpsLimit;
+	float tickRate;
 	float speed;
 	float sync;
-	unsigned char f10_exit;
+	unsigned char f10Exit;
 	unsigned char quit;
 
-	gfx_gbuffer* gbuffer;
+	gfxGbuffer* gbuffer;
 
-	elf_post_process* post_process;
+	elfPostProcess* postProcess;
 
-	gfx_texture* shadow_map;
-	gfx_render_target* shadow_target;
+	gfxTexture* shadowMap;
+	gfxRenderTarget* shadowTarget;
 
-	int shadow_map_size;
-	unsigned char texture_compress;
-	float texture_anisotropy;
+	int shadowMapSize;
+	unsigned char textureCompress;
+	float textureAnisotropy;
 
-	unsigned char occlusion_culling;
-	unsigned char debug_draw;
+	unsigned char occlusionCulling;
+	unsigned char debugDraw;
 
-	elf_color ambient_color;
+	elfColor ambientColor;
 
 	unsigned char fog;
-	float fog_start;
-	float fog_end;
-	elf_color fog_color;
+	float fogStart;
+	float fogEnd;
+	elfColor fogColor;
 
-	gfx_vertex_data* lines;
-	gfx_vertex_array* sprite_vertex_array;
+	gfxVertexData* lines;
+	gfxVertexArray* spriteVertexArray;
 
-	elf_scene* scene;
-	elf_gui* gui;
+	elfScene* scene;
+	elfGui* gui;
 
-	elf_object* actor;
+	elfObject* actor;
 };
 
-struct elf_directory {
+struct elfDirectory {
 	ELF_OBJECT_HEADER;
 	char* path;
-	elf_list* items;
+	elfList* items;
 };
 
-struct elf_directory_item {
+struct elfDirectoryItem {
 	ELF_OBJECT_HEADER;
 	char* name;
-	unsigned char item_type;
+	unsigned char itemType;
 };
 
-struct elf_frame_player {
+struct elfFramePlayer {
 	ELF_OBJECT_HEADER;
 	float start;
 	float end;
-	float cur_frame;
+	float curFrame;
 	float speed;
 	unsigned char pause;
 	unsigned char loop;
-	void* user_data;
-	void (*callback)(elf_frame_player* );
+	void* userData;
+	void (*callback)(elfFramePlayer* );
 };
 
-struct elf_timer {
+struct elfTimer {
 	ELF_OBJECT_HEADER;
 	double start;
 };
 
-struct elf_image {
+struct elfImage {
 	ELF_OBJECT_HEADER;
 	int width;
 	int height;
@@ -249,534 +249,534 @@ struct elf_image {
 	unsigned char* data;
 };
 
-struct elf_texture {
+struct elfTexture {
 	ELF_RESOURCE_HEADER;
-	char* file_path;
-	gfx_texture* texture;
+	char* filePath;
+	gfxTexture* texture;
 
 	void* data;
-	int data_size;
+	int dataSize;
 };
 
-struct elf_material {
+struct elfMaterial {
 	ELF_RESOURCE_HEADER;
-	char* file_path;
-	elf_color diffuse_color;
-	elf_color ambient_color;
-	elf_color specular_color;
-	float spec_power;
+	char* filePath;
+	elfColor diffuseColor;
+	elfColor ambientColor;
+	elfColor specularColor;
+	float specPower;
 	unsigned char lighting;
 
-	elf_texture* diffuse_map;
-	elf_texture* normal_map;
-	elf_texture* height_map;
-	elf_texture* specular_map;
-	elf_texture* light_map;
-	elf_texture* cube_map;
+	elfTexture* diffuseMap;
+	elfTexture* normalMap;
+	elfTexture* heightMap;
+	elfTexture* specularMap;
+	elfTexture* lightMap;
+	elfTexture* cubeMap;
 
-	float parallax_scale;
+	float parallaxScale;
 
-	unsigned char alpha_test;
-	float alpha_threshold;
+	unsigned char alphaTest;
+	float alphaThreshold;
 };
 
-struct elf_bezier_point {
+struct elfBezierPoint {
 	ELF_OBJECT_HEADER;
-	elf_vec2f c1;
-	elf_vec2f p;
-	elf_vec2f c2;
+	elfVec2f c1;
+	elfVec2f p;
+	elfVec2f c2;
 };
 
-struct elf_bezier_curve {
+struct elfBezierCurve {
 	ELF_OBJECT_HEADER;
-	unsigned char curve_type;
+	unsigned char curveType;
 	unsigned char interpolation;
-	elf_list* points;
+	elfList* points;
 };
 
-struct elf_ipo {
+struct elfIpo {
 	ELF_OBJECT_HEADER;
-	elf_list* curves;
+	elfList* curves;
 	unsigned char loc;
 	unsigned char rot;
 	unsigned char scale;
 	unsigned char qua;
 };
 
-struct elf_property {
+struct elfProperty {
 	ELF_OBJECT_HEADER;
 	char* name;
-	unsigned char property_type;
+	unsigned char propertyType;
 	int ival;
 	float fval;
 	char* sval;
 	unsigned char bval;
 };
 
-struct elf_actor {
+struct elfActor {
 	ELF_ACTOR_HEADER;
 };
 
-struct elf_camera {
+struct elfCamera {
 	ELF_ACTOR_HEADER;
 	int mode;
-	int viewp_x, viewp_y;
-	int viewp_width, viewp_height;
-	elf_vec3f position;
+	int viewpX, viewpY;
+	int viewpWidth, viewpHeight;
+	elfVec3f position;
 	float fov;
 	float aspect;
-	int ortho_x, ortho_y;
-	int ortho_width, ortho_height;
-	float clip_far, clip_near;
-	float far_plane_width, far_plane_height;
+	int orthoX, orthoY;
+	int orthoWidth, orthoHeight;
+	float clipFar, clipNear;
+	float farPlaneWidth, farPlaneHeight;
 	float frustum[6][4];
-	float projection_matrix[16];
-	float modelview_matrix[16];
+	float projectionMatrix[16];
+	float modelviewMatrix[16];
 };
 
-struct elf_vertice {
+struct elfVertice {
 	ELF_OBJECT_HEADER;
-	elf_vec3f position;
-	elf_vec3f normal;
-	elf_vec2f tex_coord;
+	elfVec3f position;
+	elfVec3f normal;
+	elfVec2f texCoord;
 };
 
-struct elf_face {
+struct elfFace {
 	ELF_OBJECT_HEADER;
 	int v1, v2, v3;
 };
 
-struct elf_mesh_data {
+struct elfMeshData {
 	ELF_OBJECT_HEADER;
-	elf_list* vertices;
-	elf_list* faces;
+	elfList* vertices;
+	elfList* faces;
 };
 
-typedef struct elf_model_area {
-	int indice_count;
-	gfx_vertex_data* index;
-	gfx_vertex_index* vertex_index;
-	unsigned int material_number;
-} elf_model_area;
+typedef struct elfModelArea {
+	int indiceCount;
+	gfxVertexData* index;
+	gfxVertexIndex* vertexIndex;
+	unsigned int materialNumber;
+} elfModelArea;
 
-struct elf_model {
+struct elfModel {
 	ELF_RESOURCE_HEADER;
-	char* file_path;
-	int vertice_count;
-	int frame_count;
-	int area_count;
-	int indice_count;
-	gfx_vertex_array* vertex_array;
-	gfx_vertex_data* vertices;
-	gfx_vertex_data* normals;
-	gfx_vertex_data* tex_coords;
-	gfx_vertex_data* tangents;
+	char* filePath;
+	int verticeCount;
+	int frameCount;
+	int areaCount;
+	int indiceCount;
+	gfxVertexArray* vertexArray;
+	gfxVertexData* vertices;
+	gfxVertexData* normals;
+	gfxVertexData* texCoords;
+	gfxVertexData* tangents;
 	unsigned int* index;
 	float* weights;
 	int* boneids;
-	elf_physics_tri_mesh* tri_mesh;
-	elf_model_area* areas;
-	elf_vec3f bb_min;
-	elf_vec3f bb_max;
+	elfPhysicsTriMesh* triMesh;
+	elfModelArea* areas;
+	elfVec3f bbMin;
+	elfVec3f bbMax;
 };
 
-struct elf_entity {
+struct elfEntity {
 	ELF_ACTOR_HEADER;
 
-	elf_model* model;
+	elfModel* model;
 
-	elf_armature* armature;
-	gfx_vertex_data* vertices;
-	gfx_vertex_data* normals;
+	elfArmature* armature;
+	gfxVertexData* vertices;
+	gfxVertexData* normals;
 
-	elf_list* materials;
-	elf_frame_player* armature_player;
-	float prev_armature_frame;
+	elfList* materials;
+	elfFramePlayer* armaturePlayer;
+	float prevArmatureFrame;
 
-	elf_vec3f position;
-	elf_vec3f scale;
-	elf_vec3f bb_min;
-	elf_vec3f bb_max;
-	elf_vec3f bb_offset;
-	elf_vec3f arm_bb_min;
-	elf_vec3f arm_bb_max;
-	elf_vec3f cull_aabb_min;
-	elf_vec3f cull_aabb_max;
-	float cull_radius;
+	elfVec3f position;
+	elfVec3f scale;
+	elfVec3f bbMin;
+	elfVec3f bbMax;
+	elfVec3f bbOffset;
+	elfVec3f armBbMin;
+	elfVec3f armBbMax;
+	elfVec3f cullAabbMin;
+	elfVec3f cullAabbMax;
+	float cullRadius;
 
-	gfx_query* query;
+	gfxQuery* query;
 	unsigned char visible;
 	unsigned char occluder;
 	unsigned char culled;
 };
 
-struct elf_light {
+struct elfLight {
 	ELF_ACTOR_HEADER;
-	int light_type;
-	elf_color color;
+	int lightType;
+	elfColor color;
 	float distance;
-	float fade_speed;
-	float inner_cone;
-	float outer_cone;
+	float fadeSpeed;
+	float innerCone;
+	float outerCone;
 	unsigned char visible;
 	unsigned char shaft;
-	float shaft_size;
-	float shaft_intensity;
-	float shaft_fade_off;
+	float shaftSize;
+	float shaftIntensity;
+	float shaftFadeOff;
 
 	unsigned char shadows;
-	elf_camera* shadow_camera;
+	elfCamera* shadowCamera;
 
-	float projection_matrix[16];
+	float projectionMatrix[16];
 };
 
-typedef struct elf_bone_frame {
-	elf_vec3f pos;
-	elf_vec4f qua;
-	elf_vec3f offset_pos;
-	elf_vec4f offset_qua;
-} elf_bone_frame;
+typedef struct elfBoneFrame {
+	elfVec3f pos;
+	elfVec4f qua;
+	elfVec3f offsetPos;
+	elfVec4f offsetQua;
+} elfBoneFrame;
 
-struct elf_bone {
+struct elfBone {
 	ELF_RESOURCE_HEADER;
-	elf_bone* parent;
-	elf_vec3f pos;
-	elf_vec4f qua;
-	elf_vec3f cur_pos;
-	elf_vec4f cur_qua;
-	elf_vec3f cur_offset_pos;
-	elf_vec4f cur_offset_qua;
-	elf_bone_frame* frames;
-	elf_list* children;
-	elf_armature* armature;
+	elfBone* parent;
+	elfVec3f pos;
+	elfVec4f qua;
+	elfVec3f curPos;
+	elfVec4f curQua;
+	elfVec3f curOffsetPos;
+	elfVec4f curOffsetQua;
+	elfBoneFrame* frames;
+	elfList* children;
+	elfArmature* armature;
 };
 
-struct elf_armature {
+struct elfArmature {
 	ELF_RESOURCE_HEADER;
-	char* file_path;
-	int frame_count;
-	int bone_count;
-	elf_list* root_bones;
-	elf_bone* *bones;
-	float cur_frame;
-	elf_vec3f bb_min;
-	elf_vec3f bb_max;
+	char* filePath;
+	int frameCount;
+	int boneCount;
+	elfList* rootBones;
+	elfBone* *bones;
+	float curFrame;
+	elfVec3f bbMin;
+	elfVec3f bbMax;
 };
 
-struct elf_particle {
+struct elfParticle {
 	ELF_OBJECT_HEADER;
 	float size;
-	float size_growth;
+	float sizeGrowth;
 	float rotation;
-	float rotation_growth;
-	elf_color color;
-	float life_span;
-	float fade_speed;
-	elf_vec3f position;
-	elf_vec3f velocity;
+	float rotationGrowth;
+	elfColor color;
+	float lifeSpan;
+	float fadeSpeed;
+	elfVec3f position;
+	elfVec3f velocity;
 };
 
-struct elf_particles {
+struct elfParticles {
 	ELF_ACTOR_HEADER;
 
-	int max_count;
-	unsigned char draw_mode;
-	elf_list* particles;
-	elf_texture* texture;
-	elf_model* model;
-	elf_entity* entity;
-	gfx_vertex_array* vertex_array;
-	gfx_vertex_data* vertices;
-	gfx_vertex_data* tex_coords;
-	gfx_vertex_data* colors;
+	int maxCount;
+	unsigned char drawMode;
+	elfList* particles;
+	elfTexture* texture;
+	elfModel* model;
+	elfEntity* entity;
+	gfxVertexArray* vertexArray;
+	gfxVertexData* vertices;
+	gfxVertexData* texCoords;
+	gfxVertexData* colors;
 
-	float spawn_delay;
+	float spawnDelay;
 	unsigned char spawn;
-	float cur_time;
-	elf_vec3f gravity;
-	float size_min;
-	float size_max;
-	float size_growth_min;
-	float size_growth_max;
-	float rotation_min;
-	float rotation_max;
-	float rotation_growth_min;
-	float rotation_growth_max;
-	float life_span_min;
-	float life_span_max;
-	float fade_speed_min;
-	float fade_speed_max;
-	elf_vec3f velocity_min;
-	elf_vec3f velocity_max;
-	elf_vec3f position_min;
-	elf_vec3f position_max;
-	elf_color color_min;
-	elf_color color_max;
+	float curTime;
+	elfVec3f gravity;
+	float sizeMin;
+	float sizeMax;
+	float sizeGrowthMin;
+	float sizeGrowthMax;
+	float rotationMin;
+	float rotationMax;
+	float rotationGrowthMin;
+	float rotationGrowthMax;
+	float lifeSpanMin;
+	float lifeSpanMax;
+	float fadeSpeedMin;
+	float fadeSpeedMax;
+	elfVec3f velocityMin;
+	elfVec3f velocityMax;
+	elfVec3f positionMin;
+	elfVec3f positionMax;
+	elfColor colorMin;
+	elfColor colorMax;
 
-	elf_vec3f cull_aabb_min;
-	elf_vec3f cull_aabb_max;
+	elfVec3f cullAabbMin;
+	elfVec3f cullAabbMax;
 };
 
-struct elf_sprite {
+struct elfSprite {
 	ELF_ACTOR_HEADER;
 
-	elf_material* material;
-	elf_frame_player* frame_player;
+	elfMaterial* material;
+	elfFramePlayer* framePlayer;
 
-	unsigned char face_camera;
+	unsigned char faceCamera;
 
-	elf_vec3f position;
-	elf_vec2f scale;
-	elf_vec2f tex_size;
-	elf_vec3f real_scale;
-	float cull_radius;
+	elfVec3f position;
+	elfVec2f scale;
+	elfVec2f texSize;
+	elfVec3f realScale;
+	float cullRadius;
 
-	gfx_query* query;
+	gfxQuery* query;
 	unsigned char visible;
 	unsigned char occluder;
 	unsigned char culled;
 };
 
-struct elf_scene {
+struct elfScene {
 	ELF_RESOURCE_HEADER;
-	char* file_path;
-	elf_color ambient_color;
+	char* filePath;
+	elfColor ambientColor;
 	unsigned char physics;
-	unsigned char run_scripts;
+	unsigned char runScripts;
 
-	elf_list* scripts;
-	elf_list* textures;
-	elf_list* materials;
-	elf_list* models;
-	elf_list* cameras;
-	elf_list* entities;
-	elf_list* lights;
-	elf_list* armatures;
-	elf_list* particles;
-	elf_list* sprites;
+	elfList* scripts;
+	elfList* textures;
+	elfList* materials;
+	elfList* models;
+	elfList* cameras;
+	elfList* entities;
+	elfList* lights;
+	elfList* armatures;
+	elfList* particles;
+	elfList* sprites;
 
-	elf_list* entity_queue;
-	int entity_queue_count;
+	elfList* entityQueue;
+	int entityQueueCount;
 
-	elf_list* sprite_queue;
-	int sprite_queue_count;
+	elfList* spriteQueue;
+	int spriteQueueCount;
 
-	elf_physics_world* world;
-	elf_physics_world* dworld;
+	elfPhysicsWorld* world;
+	elfPhysicsWorld* dworld;
 
-	elf_camera* cur_camera;
+	elfCamera* curCamera;
 
-	gfx_shader_params shader_params;
+	gfxShaderParams shaderParams;
 
-	gfx_shader_program* compose_fog_shdr;
+	gfxShaderProgram* composeFogShdr;
 
-	elf_pak* pak;
+	elfPak* pak;
 };
 
-struct elf_pak_index {
+struct elfPakIndex {
 	ELF_OBJECT_HEADER;
-	unsigned char index_type;
+	unsigned char indexType;
 	char* name;
 	unsigned int offset;
 };
 
-struct elf_pak {
+struct elfPak {
 	ELF_OBJECT_HEADER;
-	char* file_path;
-	elf_list* indexes;
+	char* filePath;
+	elfList* indexes;
 
-	int texture_count;
-	int material_count;
-	int model_count;
-	int camera_count;
-	int entity_count;
-	int light_count;
-	int armature_count;
-	int scene_count;
-	int script_count;
+	int textureCount;
+	int materialCount;
+	int modelCount;
+	int cameraCount;
+	int entityCount;
+	int lightCount;
+	int armatureCount;
+	int sceneCount;
+	int scriptCount;
 };
 
-struct elf_post_process {
+struct elfPostProcess {
 	ELF_OBJECT_HEADER;
 
-	gfx_texture* main_rt_color[2];
-	gfx_texture* main_rt_depth;
-	gfx_render_target* main_rt;
+	gfxTexture* mainRtColor[2];
+	gfxTexture* mainRtDepth;
+	gfxRenderTarget* mainRt;
 
-	gfx_texture* rt_tex_high_1;
-	gfx_texture* rt_tex_high_2;
-	gfx_texture* rt_tex_high_depth;
-	gfx_texture* rt_tex_med_1;
-	gfx_texture* rt_tex_med_2;
-	gfx_texture* rt_tex_med_3;
-	gfx_texture* rt_tex_low_1;
-	gfx_texture* rt_tex_low_2;
-	gfx_texture* rt_tex_tiny_1;
-	gfx_texture* rt_tex_tiny_2;
+	gfxTexture* rtTexHigh_1;
+	gfxTexture* rtTexHigh_2;
+	gfxTexture* rtTexHighDepth;
+	gfxTexture* rtTexMed_1;
+	gfxTexture* rtTexMed_2;
+	gfxTexture* rtTexMed_3;
+	gfxTexture* rtTexLow_1;
+	gfxTexture* rtTexLow_2;
+	gfxTexture* rtTexTiny_1;
+	gfxTexture* rtTexTiny_2;
 
-	gfx_render_target* rt_high;
-	gfx_render_target* rt_med;
-	gfx_render_target* rt_low;
-	gfx_render_target* rt_tiny;
+	gfxRenderTarget* rtHigh;
+	gfxRenderTarget* rtMed;
+	gfxRenderTarget* rtLow;
+	gfxRenderTarget* rtTiny;
 	
-	gfx_shader_program* hipass_shdr;
-	gfx_shader_program* blur_shdr;
-	gfx_shader_program* bloom_combine_shdr;
-	gfx_shader_program* dof_combine_shdr;
-	gfx_shader_program* ssao_shdr;
-	gfx_shader_program* ssao_combine_shdr;
-	gfx_shader_program* light_shaft_shdr;
+	gfxShaderProgram* hipassShdr;
+	gfxShaderProgram* blurShdr;
+	gfxShaderProgram* bloomCombineShdr;
+	gfxShaderProgram* dofCombineShdr;
+	gfxShaderProgram* ssaoShdr;
+	gfxShaderProgram* ssaoCombineShdr;
+	gfxShaderProgram* lightShaftShdr;
 
 	unsigned char bloom;
-	float bloom_threshold;
+	float bloomThreshold;
 
 	unsigned char dof;
-	float dof_focal_range;
-	float dof_focal_distance;
-	unsigned char dof_auto_focus;
+	float dofFocalRange;
+	float dofFocalDistance;
+	unsigned char dofAutoFocus;
 
 	unsigned char ssao;
-	float ssao_amount;
+	float ssaoAmount;
 
-	unsigned char light_shafts;
-	float light_shafts_intensity;
-	gfx_transform* light_shaft_transform;
+	unsigned char lightShafts;
+	float lightShaftsIntensity;
+	gfxTransform* lightShaftTransform;
 
-	int buffer_width;
-	int buffer_height;
+	int bufferWidth;
+	int bufferHeight;
 
-	gfx_shader_params shader_params;
+	gfxShaderParams shaderParams;
 };
 
-struct elf_script {
+struct elfScript {
 	ELF_RESOURCE_HEADER;
-	char* file_path;
+	char* filePath;
 	char* text;
 	unsigned char error;
 };
 
-typedef struct elf_character {
+typedef struct elfCharacter {
 	char code;
-	gfx_texture* texture;
-	int offset_x, offset_y;
-} elf_character;
+	gfxTexture* texture;
+	int offsetX, offsetY;
+} elfCharacter;
 
-struct elf_font {
+struct elfFont {
 	ELF_OBJECT_HEADER;
 	char* name;
-	char* file_path;
+	char* filePath;
 	int size;
-	elf_character chars[128];
-	int offset_y;
+	elfCharacter chars[128];
+	int offsetY;
 };
 
-struct elf_area {
-	elf_vec2i pos;
-	elf_vec2i size;
+struct elfArea {
+	elfVec2i pos;
+	elfVec2i size;
 };
 
-struct elf_gui_object {
+struct elfGuiObject {
 	ELF_GUI_OBJECT_HEADER;
 };
 
-struct elf_label {
+struct elfLabel {
 	ELF_GUI_OBJECT_HEADER;
-	elf_font* font;
+	elfFont* font;
 	char* text;
 };
 
-struct elf_button {
+struct elfButton {
 	ELF_GUI_OBJECT_HEADER;
 	unsigned char state;
-	elf_texture* off;
-	elf_texture* over;
-	elf_texture* on;
+	elfTexture* off;
+	elfTexture* over;
+	elfTexture* on;
 };
 
-struct elf_picture {
+struct elfPicture {
 	ELF_GUI_OBJECT_HEADER;
-	elf_texture* texture;
-	elf_vec2f scale;
+	elfTexture* texture;
+	elfVec2f scale;
 };
 
-struct elf_text_field {
+struct elfTextField {
 	ELF_GUI_OBJECT_HEADER;
-	elf_texture* texture;
-	elf_font* font;
-	int offset_x, offset_y;
-	elf_color text_color;
-	int cursor_pos;
-	int draw_pos;
-	int draw_offset;
+	elfTexture* texture;
+	elfFont* font;
+	int offsetX, offsetY;
+	elfColor textColor;
+	int cursorPos;
+	int drawPos;
+	int drawOffset;
 	char* text;
 };
 
-struct elf_slider {
+struct elfSlider {
 	ELF_GUI_OBJECT_HEADER;
-	elf_texture* background;
-	elf_texture* slider;
+	elfTexture* background;
+	elfTexture* slider;
 	float value;
 };
 
-struct elf_screen {
+struct elfScreen {
 	ELF_GUI_OBJECT_HEADER;
-	elf_texture* texture;
+	elfTexture* texture;
 };
 
-struct elf_text_list {
+struct elfTextList {
 	ELF_GUI_OBJECT_HEADER;
-	elf_color selection_color;
-	elf_color light_color;
-	elf_color dark_color;
-	elf_font* font;
-	elf_list* items;
+	elfColor selectionColor;
+	elfColor lightColor;
+	elfColor darkColor;
+	elfFont* font;
+	elfList* items;
 	int rows;
-	int list_width;
+	int listWidth;
 	int selection;
 	int offset;
 };
 
-struct elf_check_box {
+struct elfCheckBox {
 	ELF_GUI_OBJECT_HEADER;
 	unsigned char state;
-	elf_texture* off;
-	elf_texture* on;
+	elfTexture* off;
+	elfTexture* on;
 };
 
-struct elf_gui {
+struct elfGui {
 	ELF_GUI_OBJECT_HEADER;
-	elf_font* def_font;
-	gfx_shader_params shader_params;
-	elf_gui_object* trace;
-	elf_gui_object* target;
-	elf_text_field* active_text_field;
-	elf_screen* focus_screen;
+	elfFont* defFont;
+	gfxShaderParams shaderParams;
+	elfGuiObject* trace;
+	elfGuiObject* target;
+	elfTextField* activeTextField;
+	elfScreen* focusScreen;
 
-	unsigned char update_size;
+	unsigned char updateSize;
 
-	int cur_key;
-	float key_step;
-	unsigned char key_repeat;
+	int curKey;
+	float keyStep;
+	unsigned char keyRepeat;
 
-	char cur_char;
-	float char_step;
-	unsigned char char_repeat;
+	char curChar;
+	float charStep;
+	unsigned char charRepeat;
 };
 
-struct elf_server {
+struct elfServer {
 	ENetHost* host;
 	ENetAddress address;
 	ENetEvent event;
 	GLFWthread thread;
 };
 
-struct elf_client {
+struct elfClient {
 	ELF_OBJECT_HEADER;
 };
 
-struct elf_networking_event {
+struct elfNetworkingEvent {
 	ELF_OBJECT_HEADER;
-	int event_type;
-	elf_client* client;
+	int eventType;
+	elfClient* client;
 };
 

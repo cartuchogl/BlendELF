@@ -5,9 +5,9 @@
 #include "blendelf.h"
 #include "types.h"
 
-elf_general* gen = NULL;
-elf_context* ctx = NULL;
-elf_engine* eng = NULL;
+elfGeneral* gen = NULL;
+elfContext* ctx = NULL;
+elfEngine* eng = NULL;
 
 #include "general.h"
 #include "config.h"
@@ -45,53 +45,53 @@ elf_engine* eng = NULL;
 
 int main()
 {
-	elf_config* config;
-	elf_script* script;
+	elfConfig* config;
+	elfScript* script;
 
-	elf_init_general();
+	elfInitGeneral();
 
-	if(!(config = elf_read_config("config.txt")))
-		config = elf_create_config();
+	if(!(config = elfReadConfig("config.txt")))
+		config = elfCreateConfig();
 
 	if(strlen(config->start) < 1)
 	{
-		if(config->start) elf_destroy_string(config->start);
-		config->start = elf_create_string("start.pak");
+		if(config->start) elfDestroyString(config->start);
+		config->start = elfCreateString("start.pak");
 	}
 
-	if(!elf_init(config->window_size[0], config->window_size[1], "BlendELF", config->multisamples, !config->fullscreen == ELF_FALSE, config->log))
+	if(!elfInit(config->windowSize[0], config->windowSize[1], "BlendELF", config->multisamples, !config->fullscreen == ELF_FALSE, config->log))
 	{
-		elf_set_error(ELF_CANT_INITIALIZE, "error: can't initialize engine\n");
-		elf_destroy_config(config);
+		elfSetError(ELF_CANT_INITIALIZE, "error: can't initialize engine\n");
+		elfDestroyConfig(config);
 		return -1;
 	}
 
-	elf_set_texture_compress(config->texture_compress);
-	elf_set_texture_anisotropy(config->texture_anisotropy);
-	elf_set_shadow_map_size(config->shadow_map_size);
+	elfSetTextureCompress(config->textureCompress);
+	elfSetTextureAnisotropy(config->textureAnisotropy);
+	elfSetShadowMapSize(config->shadowMapSize);
 
-	script = elf_create_script_from_file("init.lua");
+	script = elfCreateScriptFromFile("init.lua");
 	if(script)
 	{
-		elf_inc_ref((elf_object*)script);
-		elf_run_script(script);
-		elf_dec_ref((elf_object*)script);
+		elfIncRef((elfObject*)script);
+		elfRunScript(script);
+		elfDecRef((elfObject*)script);
 	}
 	else
 	{
-		if(!elf_load_scene(config->start))
+		if(!elfLoadScene(config->start))
 		{
-			elf_destroy_config(config);
-			elf_deinit();
+			elfDestroyConfig(config);
+			elfDeinit();
 			return -1;
 		}
 
-		while(elf_run());
+		while(elfRun());
 	}
 
-	elf_destroy_config(config);
+	elfDestroyConfig(config);
 
-	elf_deinit();
+	elfDeinit();
 
 	return 0;
 }

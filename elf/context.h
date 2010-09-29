@@ -1,141 +1,141 @@
 
-void mouse_button_callback(int button, int state);
-void mouse_position_callback(int x, int y);
-void mouse_wheel_callback(int wheel);
-void key_callback(int key, int state);
-void char_callback(int code, int state);
+void mouseButtonCallback(int button, int state);
+void mousePositionCallback(int x, int y);
+void mouseWheelCallback(int wheel);
+void keyCallback(int key, int state);
+void charCallback(int code, int state);
 
-elf_video_mode* elf_create_video_mode()
+elfVideoMode* elfCreateVideoMode()
 {
-	elf_video_mode* video_mode;
+	elfVideoMode* videoMode;
 
-	video_mode = (elf_video_mode*)malloc(sizeof(elf_video_mode));
-	memset(video_mode, 0x0, sizeof(elf_video_mode));
-	video_mode->obj_type = ELF_VIDEO_MODE;
-	video_mode->obj_destr = elf_destroy_video_mode;
+	videoMode = (elfVideoMode*)malloc(sizeof(elfVideoMode));
+	memset(videoMode, 0x0, sizeof(elfVideoMode));
+	videoMode->objType = ELF_VIDEO_MODE;
+	videoMode->objDestr = elfDestroyVideoMode;
 
-	elf_inc_obj(ELF_VIDEO_MODE);
+	elfIncObj(ELF_VIDEO_MODE);
 
-	return video_mode;
+	return videoMode;
 }
 
-void elf_destroy_video_mode(void* data)
+void elfDestroyVideoMode(void* data)
 {
-	elf_video_mode* video_mode = (elf_video_mode*)data;
+	elfVideoMode* videoMode = (elfVideoMode*)data;
 
-	free(video_mode);
+	free(videoMode);
 
-	elf_dec_obj(ELF_VIDEO_MODE);
+	elfDecObj(ELF_VIDEO_MODE);
 }
 
-elf_key_event* elf_create_key_event()
+elfKeyEvent* elfCreateKeyEvent()
 {
-	elf_key_event* key_event;
+	elfKeyEvent* keyEvent;
 
-	key_event = (elf_key_event*)malloc(sizeof(elf_key_event));
-	memset(key_event, 0x0, sizeof(elf_key_event));
-	key_event->obj_type = ELF_KEY_EVENT;
-	key_event->obj_destr = elf_destroy_key_event;
+	keyEvent = (elfKeyEvent*)malloc(sizeof(elfKeyEvent));
+	memset(keyEvent, 0x0, sizeof(elfKeyEvent));
+	keyEvent->objType = ELF_KEY_EVENT;
+	keyEvent->objDestr = elfDestroyKeyEvent;
 
-	elf_inc_obj(ELF_KEY_EVENT);
+	elfIncObj(ELF_KEY_EVENT);
 
-	return key_event;
+	return keyEvent;
 }
 
-void elf_destroy_key_event(void* data)
+void elfDestroyKeyEvent(void* data)
 {
-	elf_key_event* key_event = (elf_key_event*)data;
+	elfKeyEvent* keyEvent = (elfKeyEvent*)data;
 
-	free(key_event);
+	free(keyEvent);
 
-	elf_dec_obj(ELF_KEY_EVENT);
+	elfDecObj(ELF_KEY_EVENT);
 }
 
-elf_char_event* elf_create_char_event()
+elfCharEvent* elfCreateCharEvent()
 {
-	elf_char_event* char_event;
+	elfCharEvent* charEvent;
 
-	char_event = (elf_char_event*)malloc(sizeof(elf_char_event));
-	memset(char_event, 0x0, sizeof(elf_char_event));
-	char_event->obj_type = ELF_CHAR_EVENT;
-	char_event->obj_destr = elf_destroy_char_event;
+	charEvent = (elfCharEvent*)malloc(sizeof(elfCharEvent));
+	memset(charEvent, 0x0, sizeof(elfCharEvent));
+	charEvent->objType = ELF_CHAR_EVENT;
+	charEvent->objDestr = elfDestroyCharEvent;
 
-	elf_inc_obj(ELF_CHAR_EVENT);
+	elfIncObj(ELF_CHAR_EVENT);
 
-	return char_event;
+	return charEvent;
 }
 
-void elf_destroy_char_event(void* data)
+void elfDestroyCharEvent(void* data)
 {
-	elf_char_event* char_event = (elf_char_event*)data;
+	elfCharEvent* charEvent = (elfCharEvent*)data;
 
-	free(char_event);
+	free(charEvent);
 
-	elf_dec_obj(ELF_CHAR_EVENT);
+	elfDecObj(ELF_CHAR_EVENT);
 }
 
-elf_context* elf_create_context()
+elfContext* elfCreateContext()
 {
-	elf_context* context;
+	elfContext* context;
 
-	context = (elf_context*)malloc(sizeof(elf_context));
-	memset(context, 0x0, sizeof(elf_context));
-	context->obj_type = ELF_CONTEXT;
-	context->obj_destr = elf_destroy_context;
+	context = (elfContext*)malloc(sizeof(elfContext));
+	memset(context, 0x0, sizeof(elfContext));
+	context->objType = ELF_CONTEXT;
+	context->objDestr = elfDestroyContext;
 
-	context->video_modes = elf_create_list();
-	context->events = elf_create_list();
+	context->videoModes = elfCreateList();
+	context->events = elfCreateList();
 
-	elf_inc_ref((elf_object*)context->video_modes);
-	elf_inc_ref((elf_object*)context->events);
+	elfIncRef((elfObject*)context->videoModes);
+	elfIncRef((elfObject*)context->events);
 
-	elf_inc_obj(ELF_CONTEXT);
+	elfIncObj(ELF_CONTEXT);
 
 	return context;
 }
 
-void elf_destroy_context(void* data)
+void elfDestroyContext(void* data)
 {
-	elf_context* context = (elf_context*)data;
+	elfContext* context = (elfContext*)data;
 
-	if(context->title) elf_destroy_string(context->title);
+	if(context->title) elfDestroyString(context->title);
 	
-	elf_dec_ref((elf_object*)context->video_modes);
-	elf_dec_ref((elf_object*)context->events);
+	elfDecRef((elfObject*)context->videoModes);
+	elfDecRef((elfObject*)context->events);
 
 	free(context);
 
-	elf_dec_obj(ELF_CONTEXT);
+	elfDecObj(ELF_CONTEXT);
 }
 
-unsigned char elf_init_context(int width, int height,
+unsigned char elfInitContext(int width, int height,
 	const char* title, int multisamples, unsigned char fullscreen)
 {
 	int i;
-	int video_mode_count;
+	int videoModeCount;
 	GLFWvidmode* vidmodes;
-	elf_video_mode* video_mode;
+	elfVideoMode* videoMode;
 
 	if(ctx)
 	{
-		elf_write_to_log("warning: can not open window twice\n");
+		elfWriteToLog("warning: can not open window twice\n");
 		return ELF_FALSE;
 	}
 
 	if(width < 1 || height < 1)
 	{
-		elf_set_error(ELF_INVALID_SIZE, "error: invalid window size (%d, %d)\n", width, height);
+		elfSetError(ELF_INVALID_SIZE, "error: invalid window size (%d, %d)\n", width, height);
 		return ELF_FALSE;
 	}
 
-	ctx = elf_create_context();
-	elf_inc_ref((elf_object*)ctx);
+	ctx = elfCreateContext();
+	elfIncRef((elfObject*)ctx);
 
 	ctx->width = width;
 	ctx->height = height;
 	ctx->multisamples = multisamples;
 	ctx->fullscreen = (fullscreen == ELF_FALSE) ? ELF_FALSE : ELF_TRUE;
-	ctx->title = elf_create_string(title);
+	ctx->title = elfCreateString(title);
 
 	glfwInit();
 
@@ -145,7 +145,7 @@ unsigned char elf_init_context(int width, int height,
 	if(!glfwOpenWindow(width, height, 8, 8, 8, 0, 24, 0,
 		(fullscreen == ELF_FALSE) ? GLFW_WINDOW : GLFW_FULLSCREEN))
 	{
-		elf_dec_ref((elf_object*)ctx);
+		elfDecRef((elfObject*)ctx);
 		return ELF_FALSE;
 	}
 
@@ -157,36 +157,36 @@ unsigned char elf_init_context(int width, int height,
 	glfwPollEvents();
 	glfwSwapInterval(0);
 
-	glfwSetMouseButtonCallback(mouse_button_callback);
-	glfwSetMousePosCallback(mouse_position_callback);
-	glfwSetMouseWheelCallback(mouse_wheel_callback);
-	glfwSetKeyCallback(key_callback);
-	glfwSetCharCallback(char_callback);
+	glfwSetMouseButtonCallback(mouseButtonCallback);
+	glfwSetMousePosCallback(mousePositionCallback);
+	glfwSetMouseWheelCallback(mouseWheelCallback);
+	glfwSetKeyCallback(keyCallback);
+	glfwSetCharCallback(charCallback);
 
 	vidmodes = (GLFWvidmode*)malloc(sizeof(GLFWvidmode)*256);
-	video_mode_count = glfwGetVideoModes(vidmodes, 256);
+	videoModeCount = glfwGetVideoModes(vidmodes, 256);
 
-	for(i = 0; i < video_mode_count; i++)
+	for(i = 0; i < videoModeCount; i++)
 	{
 		if(vidmodes[i].RedBits == 8 && vidmodes[i].GreenBits == 8 && vidmodes[i].BlueBits == 8)
 		{
-			video_mode = elf_create_video_mode();
-			video_mode->reso.x = vidmodes[i].Width;
-			video_mode->reso.y = vidmodes[i].Height;
-			elf_append_to_list(ctx->video_modes, (elf_object*)video_mode);
+			videoMode = elfCreateVideoMode();
+			videoMode->reso.x = vidmodes[i].Width;
+			videoMode->reso.y = vidmodes[i].Height;
+			elfAppendToList(ctx->videoModes, (elfObject*)videoMode);
 		}
 	}
 
 	// dunno what I'm doing here, just wondering if the bit counts aren't
 	// 8 for some reason... 
-	if(video_mode_count > 0 && elf_get_list_length(ctx->video_modes) == 0)
+	if(videoModeCount > 0 && elfGetListLength(ctx->videoModes) == 0)
 	{
-		for(i = 0; i < video_mode_count; i++)
+		for(i = 0; i < videoModeCount; i++)
 		{
-			video_mode = elf_create_video_mode();
-			video_mode->reso.x = vidmodes[i].Width;
-			video_mode->reso.y = vidmodes[i].Height;
-			elf_append_to_list(ctx->video_modes, (elf_object*)video_mode);
+			videoMode = elfCreateVideoMode();
+			videoMode->reso.x = vidmodes[i].Width;
+			videoMode->reso.y = vidmodes[i].Height;
+			elfAppendToList(ctx->videoModes, (elfObject*)videoMode);
 		}
 	}
 
@@ -195,17 +195,17 @@ unsigned char elf_init_context(int width, int height,
 	return ELF_TRUE;
 }
 
-void elf_deinit_context()
+void elfDeinitContext()
 {
 	if(!ctx) return;
 
 	glfwTerminate();
 
-	elf_dec_ref((elf_object*)ctx);
+	elfDecRef((elfObject*)ctx);
 	ctx = NULL;
 }
 
-unsigned char elf_resize_context(int width, int height)
+unsigned char elfResizeContext(int width, int height)
 {
 	if(width <= 0 || height <= 0 || (width == ctx->width &&
 		height == ctx->height)) return ELF_FALSE;
@@ -217,41 +217,41 @@ unsigned char elf_resize_context(int width, int height)
 	return ELF_FALSE;
 }
 
-void elf_set_title(const char* title)
+void elfSetTitle(const char* title)
 {
 	if(!title || !strlen(title)) return;
 
-	if(ctx->title) elf_destroy_string(ctx->title);
+	if(ctx->title) elfDestroyString(ctx->title);
 
-	ctx->title = elf_create_string(title);
+	ctx->title = elfCreateString(title);
 
 	glfwSetWindowTitle(title);
 	glfwPollEvents();
 }
 
-int elf_get_window_width()
+int elfGetWindowWidth()
 {
 	return ctx->width;
 }
 
-int elf_get_window_height()
+int elfGetWindowHeight()
 {
 	return ctx->height;
 }
 
-int elf_get_video_mode_count()
+int elfGetVideoModeCount()
 {
-	return elf_get_list_length(ctx->video_modes);
+	return elfGetListLength(ctx->videoModes);
 }
 
-elf_vec2i elf_get_video_mode(int idx)
+elfVec2i elfGetVideoMode(int idx)
 {
-	elf_video_mode* mode;
-	elf_vec2i reso;
+	elfVideoMode* mode;
+	elfVec2i reso;
 
-	memset(&reso.x, 0x0, sizeof(elf_vec2i));
+	memset(&reso.x, 0x0, sizeof(elfVec2i));
 
-	mode = (elf_video_mode*)elf_get_item_from_list(ctx->video_modes, idx);
+	mode = (elfVideoMode*)elfGetItemFromList(ctx->videoModes, idx);
 
 	if(mode)
 	{
@@ -261,52 +261,52 @@ elf_vec2i elf_get_video_mode(int idx)
 	return reso;
 }
 
-int elf_get_multisamples()
+int elfGetMultisamples()
 {
 	return ctx->multisamples;
 }
 
-unsigned char elf_is_fullscreen()
+unsigned char elfIsFullscreen()
 {
 	return ctx->fullscreen;
 }
 
-const char* elf_get_title()
+const char* elfGetTitle()
 {
 	return ctx->title;
 }
 
-double elf_get_time()
+double elfGetTime()
 {
 	return glfwGetTime();
 }
 
-void elf_sleep(float time)
+void elfSleep(float time)
 {
 	glfwSleep(time);
 }
 
-unsigned char elf_is_window_opened()
+unsigned char elfIsWindowOpened()
 {
 	return glfwGetWindowParam(GLFW_OPENED);
 }
 
-void elf_swap_buffers()
+void elfSwapBuffers()
 {
 	int i;
 
-	elf_destroy_list(ctx->events);
-	ctx->events = elf_create_list();
+	elfDestroyList(ctx->events);
+	ctx->events = elfCreateList();
 
-	memcpy(ctx->prv_mbuts, ctx->cur_mbuts, sizeof(unsigned char)*3);
-	memcpy(ctx->prv_keys, ctx->cur_keys, sizeof(unsigned char)*256);
-	memcpy(ctx->prv_mouse_position, ctx->mouse_position, sizeof(int)*2);
+	memcpy(ctx->prvMbuts, ctx->curMbuts, sizeof(unsigned char)*3);
+	memcpy(ctx->prvKeys, ctx->curKeys, sizeof(unsigned char)*256);
+	memcpy(ctx->prvMousePosition, ctx->mousePosition, sizeof(int)*2);
 
 	for(i = 0; i < 16; i++)
 	{
 		if(ctx->joysticks[i].present)
 		{
-			memcpy(ctx->joysticks[i].prv_buts, ctx->joysticks[i].cur_buts, sizeof(unsigned char)*16);
+			memcpy(ctx->joysticks[i].prvButs, ctx->joysticks[i].curButs, sizeof(unsigned char)*16);
 		}
 	}
 
@@ -317,257 +317,257 @@ void elf_swap_buffers()
 		ctx->joysticks[i].present = glfwGetJoystickParam(GLFW_JOYSTICK_1+i, GLFW_PRESENT) == GL_TRUE;
 		if(ctx->joysticks[i].present)
 		{
-			glfwGetJoystickPos(GLFW_JOYSTICK_1+i, ctx->joysticks[i].axis_pos, 2);
-			glfwGetJoystickButtons(GLFW_JOYSTICK_1+i, ctx->joysticks[i].cur_buts, 16);
+			glfwGetJoystickPos(GLFW_JOYSTICK_1+i, ctx->joysticks[i].axisPos, 2);
+			glfwGetJoystickButtons(GLFW_JOYSTICK_1+i, ctx->joysticks[i].curButs, 16);
 		}
 	}
 }
 
-void mouse_button_callback(int button, int state)
+void mouseButtonCallback(int button, int state)
 {
-	unsigned int elf_button;
+	unsigned int elfButton;
 
 	switch(button)
 	{
-		case GLFW_MOUSE_BUTTON_LEFT: elf_button = ELF_BUTTON_LEFT; break;
-		case GLFW_MOUSE_BUTTON_MIDDLE: elf_button = ELF_BUTTON_MIDDLE; break;
-		case GLFW_MOUSE_BUTTON_RIGHT: elf_button = ELF_BUTTON_RIGHT; break;
+		case GLFW_MOUSE_BUTTON_LEFT: elfButton = ELF_BUTTON_LEFT; break;
+		case GLFW_MOUSE_BUTTON_MIDDLE: elfButton = ELF_BUTTON_MIDDLE; break;
+		case GLFW_MOUSE_BUTTON_RIGHT: elfButton = ELF_BUTTON_RIGHT; break;
 		default: return;
 	}
 
-	ctx->cur_mbuts[elf_button] = (state == GLFW_PRESS) ? ELF_TRUE : ELF_FALSE;
+	ctx->curMbuts[elfButton] = (state == GLFW_PRESS) ? ELF_TRUE : ELF_FALSE;
 }
 
-void mouse_position_callback(int x, int y)
+void mousePositionCallback(int x, int y)
 {
-	ctx->mouse_position[0] = x;
-	ctx->mouse_position[1] = y;
+	ctx->mousePosition[0] = x;
+	ctx->mousePosition[1] = y;
 }
 
-void mouse_wheel_callback(int wheel)
+void mouseWheelCallback(int wheel)
 {
-	ctx->mouse_wheel = wheel;
+	ctx->mouseWheel = wheel;
 }
 
-void key_callback(int key, int state)
+void keyCallback(int key, int state)
 {
-	unsigned int elf_key;
-	elf_key_event* key_event;
+	unsigned int elfKey;
+	elfKeyEvent* keyEvent;
 
 	if(key >= 32 && key < 127)
 	{
-		elf_key = key;
+		elfKey = key;
 	}
 	else
 	{
 		switch(key)
 		{
-			case GLFW_KEY_ESC: elf_key = ELF_KEY_ESC; break;
-			case GLFW_KEY_F1: elf_key = ELF_KEY_F1; break;
-			case GLFW_KEY_F2: elf_key = ELF_KEY_F2; break;
-			case GLFW_KEY_F3: elf_key = ELF_KEY_F3; break;
-			case GLFW_KEY_F4: elf_key = ELF_KEY_F4; break;
-			case GLFW_KEY_F5: elf_key = ELF_KEY_F5; break;
-			case GLFW_KEY_F6: elf_key = ELF_KEY_F6; break;
-			case GLFW_KEY_F7: elf_key = ELF_KEY_F7; break;
-			case GLFW_KEY_F8: elf_key = ELF_KEY_F8; break;
-			case GLFW_KEY_F9: elf_key = ELF_KEY_F9; break;
-			case GLFW_KEY_F10: elf_key = ELF_KEY_F10; break;
-			case GLFW_KEY_F11: elf_key = ELF_KEY_F11; break;
-			case GLFW_KEY_F12: elf_key = ELF_KEY_F12; break;
-			case GLFW_KEY_UP: elf_key = ELF_KEY_UP; break;
-			case GLFW_KEY_DOWN: elf_key = ELF_KEY_DOWN; break;
-			case GLFW_KEY_LEFT: elf_key = ELF_KEY_LEFT; break;
-			case GLFW_KEY_RIGHT: elf_key = ELF_KEY_RIGHT; break;
-			case GLFW_KEY_LSHIFT: elf_key = ELF_KEY_LSHIFT; break;
-			case GLFW_KEY_RSHIFT: elf_key = ELF_KEY_RSHIFT; break;
-			case GLFW_KEY_LCTRL: elf_key = ELF_KEY_LCTRL; break;
-			case GLFW_KEY_RCTRL: elf_key = ELF_KEY_RCTRL; break;
-			case GLFW_KEY_LALT: elf_key = ELF_KEY_LALT; break;
-			case GLFW_KEY_RALT: elf_key = ELF_KEY_RALT; break;
-			case GLFW_KEY_TAB: elf_key = ELF_KEY_TAB; break;
-			case GLFW_KEY_ENTER: elf_key = ELF_KEY_ENTER; break;
-			case GLFW_KEY_BACKSPACE: elf_key = ELF_KEY_BACKSPACE; break;
-			case GLFW_KEY_INSERT: elf_key = ELF_KEY_INSERT; break;
-			case GLFW_KEY_DEL: elf_key = ELF_KEY_DEL; break;
-			case GLFW_KEY_PAGEUP: elf_key = ELF_KEY_PAGEUP; break;
-			case GLFW_KEY_PAGEDOWN: elf_key = ELF_KEY_PAGEDOWN; break;
-			case GLFW_KEY_HOME: elf_key = ELF_KEY_HOME; break;
-			case GLFW_KEY_END: elf_key = ELF_KEY_END; break;
-			case GLFW_KEY_KP_0: elf_key = ELF_KEY_KP_0; break;
-			case GLFW_KEY_KP_1: elf_key = ELF_KEY_KP_1; break;
-			case GLFW_KEY_KP_2: elf_key = ELF_KEY_KP_2; break;
-			case GLFW_KEY_KP_3: elf_key = ELF_KEY_KP_3; break;
-			case GLFW_KEY_KP_4: elf_key = ELF_KEY_KP_4; break;
-			case GLFW_KEY_KP_5: elf_key = ELF_KEY_KP_5; break;
-			case GLFW_KEY_KP_6: elf_key = ELF_KEY_KP_6; break;
-			case GLFW_KEY_KP_7: elf_key = ELF_KEY_KP_7; break;
-			case GLFW_KEY_KP_8: elf_key = ELF_KEY_KP_8; break;
-			case GLFW_KEY_KP_9: elf_key = ELF_KEY_KP_9; break;
-			case GLFW_KEY_KP_DIVIDE: elf_key = ELF_KEY_KP_DIVIDE; break;
-			case GLFW_KEY_KP_MULTIPLY: elf_key = ELF_KEY_KP_MULTIPLY; break;
-			case GLFW_KEY_KP_SUBTRACT: elf_key = ELF_KEY_KP_SUBTRACT; break;
-			case GLFW_KEY_KP_ADD: elf_key = ELF_KEY_KP_ADD; break;
-			case GLFW_KEY_KP_DECIMAL: elf_key = ELF_KEY_KP_DECIMAL; break;
-			case GLFW_KEY_KP_EQUAL: elf_key = ELF_KEY_KP_EQUAL; break;
-			case GLFW_KEY_KP_ENTER: elf_key = ELF_KEY_KP_ENTER; break;
-			case GLFW_KEY_SPACE: elf_key = ELF_KEY_SPACE; break;
+			case GLFW_KEY_ESC: elfKey = ELF_KEY_ESC; break;
+			case GLFW_KEY_F1: elfKey = ELF_KEY_F1; break;
+			case GLFW_KEY_F2: elfKey = ELF_KEY_F2; break;
+			case GLFW_KEY_F3: elfKey = ELF_KEY_F3; break;
+			case GLFW_KEY_F4: elfKey = ELF_KEY_F4; break;
+			case GLFW_KEY_F5: elfKey = ELF_KEY_F5; break;
+			case GLFW_KEY_F6: elfKey = ELF_KEY_F6; break;
+			case GLFW_KEY_F7: elfKey = ELF_KEY_F7; break;
+			case GLFW_KEY_F8: elfKey = ELF_KEY_F8; break;
+			case GLFW_KEY_F9: elfKey = ELF_KEY_F9; break;
+			case GLFW_KEY_F10: elfKey = ELF_KEY_F10; break;
+			case GLFW_KEY_F11: elfKey = ELF_KEY_F11; break;
+			case GLFW_KEY_F12: elfKey = ELF_KEY_F12; break;
+			case GLFW_KEY_UP: elfKey = ELF_KEY_UP; break;
+			case GLFW_KEY_DOWN: elfKey = ELF_KEY_DOWN; break;
+			case GLFW_KEY_LEFT: elfKey = ELF_KEY_LEFT; break;
+			case GLFW_KEY_RIGHT: elfKey = ELF_KEY_RIGHT; break;
+			case GLFW_KEY_LSHIFT: elfKey = ELF_KEY_LSHIFT; break;
+			case GLFW_KEY_RSHIFT: elfKey = ELF_KEY_RSHIFT; break;
+			case GLFW_KEY_LCTRL: elfKey = ELF_KEY_LCTRL; break;
+			case GLFW_KEY_RCTRL: elfKey = ELF_KEY_RCTRL; break;
+			case GLFW_KEY_LALT: elfKey = ELF_KEY_LALT; break;
+			case GLFW_KEY_RALT: elfKey = ELF_KEY_RALT; break;
+			case GLFW_KEY_TAB: elfKey = ELF_KEY_TAB; break;
+			case GLFW_KEY_ENTER: elfKey = ELF_KEY_ENTER; break;
+			case GLFW_KEY_BACKSPACE: elfKey = ELF_KEY_BACKSPACE; break;
+			case GLFW_KEY_INSERT: elfKey = ELF_KEY_INSERT; break;
+			case GLFW_KEY_DEL: elfKey = ELF_KEY_DEL; break;
+			case GLFW_KEY_PAGEUP: elfKey = ELF_KEY_PAGEUP; break;
+			case GLFW_KEY_PAGEDOWN: elfKey = ELF_KEY_PAGEDOWN; break;
+			case GLFW_KEY_HOME: elfKey = ELF_KEY_HOME; break;
+			case GLFW_KEY_END: elfKey = ELF_KEY_END; break;
+			case GLFW_KEY_KP_0: elfKey = ELF_KEY_KP_0; break;
+			case GLFW_KEY_KP_1: elfKey = ELF_KEY_KP_1; break;
+			case GLFW_KEY_KP_2: elfKey = ELF_KEY_KP_2; break;
+			case GLFW_KEY_KP_3: elfKey = ELF_KEY_KP_3; break;
+			case GLFW_KEY_KP_4: elfKey = ELF_KEY_KP_4; break;
+			case GLFW_KEY_KP_5: elfKey = ELF_KEY_KP_5; break;
+			case GLFW_KEY_KP_6: elfKey = ELF_KEY_KP_6; break;
+			case GLFW_KEY_KP_7: elfKey = ELF_KEY_KP_7; break;
+			case GLFW_KEY_KP_8: elfKey = ELF_KEY_KP_8; break;
+			case GLFW_KEY_KP_9: elfKey = ELF_KEY_KP_9; break;
+			case GLFW_KEY_KP_DIVIDE: elfKey = ELF_KEY_KP_DIVIDE; break;
+			case GLFW_KEY_KP_MULTIPLY: elfKey = ELF_KEY_KP_MULTIPLY; break;
+			case GLFW_KEY_KP_SUBTRACT: elfKey = ELF_KEY_KP_SUBTRACT; break;
+			case GLFW_KEY_KP_ADD: elfKey = ELF_KEY_KP_ADD; break;
+			case GLFW_KEY_KP_DECIMAL: elfKey = ELF_KEY_KP_DECIMAL; break;
+			case GLFW_KEY_KP_EQUAL: elfKey = ELF_KEY_KP_EQUAL; break;
+			case GLFW_KEY_KP_ENTER: elfKey = ELF_KEY_KP_ENTER; break;
+			case GLFW_KEY_SPACE: elfKey = ELF_KEY_SPACE; break;
 			default: return;
 		}
 	}
 
-	ctx->cur_keys[elf_key] = (state == GLFW_PRESS) ? ELF_TRUE : ELF_FALSE;
+	ctx->curKeys[elfKey] = (state == GLFW_PRESS) ? ELF_TRUE : ELF_FALSE;
 
-	key_event = elf_create_key_event();
-	key_event->key = elf_key;
-	key_event->state = (state == GLFW_PRESS) ? ELF_TRUE : ELF_FALSE;
+	keyEvent = elfCreateKeyEvent();
+	keyEvent->key = elfKey;
+	keyEvent->state = (state == GLFW_PRESS) ? ELF_TRUE : ELF_FALSE;
 
-	elf_append_to_list(ctx->events, (elf_object*)key_event);
+	elfAppendToList(ctx->events, (elfObject*)keyEvent);
 }
 
-void char_callback(int code, int state)
+void charCallback(int code, int state)
 {
-	elf_char_event* char_event;
+	elfCharEvent* charEvent;
 
-	char_event = elf_create_char_event();
-	char_event->code = code;
-	char_event->state = (state == GLFW_PRESS) ? ELF_TRUE : ELF_FALSE;
+	charEvent = elfCreateCharEvent();
+	charEvent->code = code;
+	charEvent->state = (state == GLFW_PRESS) ? ELF_TRUE : ELF_FALSE;
 
-	elf_append_to_list(ctx->events, (elf_object*)char_event);
+	elfAppendToList(ctx->events, (elfObject*)charEvent);
 }
 
-elf_vec2i elf_get_mouse_position()
+elfVec2i elfGetMousePosition()
 {
-	elf_vec2i pos;
+	elfVec2i pos;
 
-	pos.x = ctx->mouse_position[0];
-	pos.y = ctx->mouse_position[1];
+	pos.x = ctx->mousePosition[0];
+	pos.y = ctx->mousePosition[1];
 
 	return pos;
 }
 
-elf_vec2i elf_get_mouse_force()
+elfVec2i elfGetMouseForce()
 {
-	elf_vec2i force;
+	elfVec2i force;
 
-	force.x = ctx->mouse_position[0]-ctx->prv_mouse_position[0];
-	force.y = ctx->mouse_position[1]-ctx->prv_mouse_position[1];
+	force.x = ctx->mousePosition[0]-ctx->prvMousePosition[0];
+	force.y = ctx->mousePosition[1]-ctx->prvMousePosition[1];
 
 	return force;
 }
 
-void elf_set_mouse_position(int x, int y)
+void elfSetMousePosition(int x, int y)
 {
 	glfwSetMousePos(x, y);
 
-	ctx->mouse_position[0] = x;
-	ctx->mouse_position[1] = y;
+	ctx->mousePosition[0] = x;
+	ctx->mousePosition[1] = y;
 
-	if(ctx->mouse_position[0] < 0) ctx->mouse_position[0] = 0;
-	else if(ctx->mouse_position[0] > elf_get_window_width()) ctx->mouse_position[0] = elf_get_window_width();
-	if(ctx->mouse_position[1] < 0) ctx->mouse_position[1] = 0;
-	else if(ctx->mouse_position[1] > elf_get_window_width()) ctx->mouse_position[1] = elf_get_window_height();
+	if(ctx->mousePosition[0] < 0) ctx->mousePosition[0] = 0;
+	else if(ctx->mousePosition[0] > elfGetWindowWidth()) ctx->mousePosition[0] = elfGetWindowWidth();
+	if(ctx->mousePosition[1] < 0) ctx->mousePosition[1] = 0;
+	else if(ctx->mousePosition[1] > elfGetWindowWidth()) ctx->mousePosition[1] = elfGetWindowHeight();
 }
 
-void elf_hide_mouse(unsigned char hide)
+void elfHideMouse(unsigned char hide)
 {
 	if(hide)
 	{
 		glfwDisable(GLFW_MOUSE_CURSOR);
-		ctx->hide_mouse = ELF_TRUE;
+		ctx->hideMouse = ELF_TRUE;
 	}
 	else
 	{
 		glfwEnable(GLFW_MOUSE_CURSOR);
-		ctx->hide_mouse = ELF_FALSE;
+		ctx->hideMouse = ELF_FALSE;
 	}
 }
 
-unsigned char elf_is_mouse_hidden()
+unsigned char elfIsMouseHidden()
 {
-	return ctx->hide_mouse;
+	return ctx->hideMouse;
 }
 
-int elf_get_mouse_wheel()
+int elfGetMouseWheel()
 {
-	return ctx->mouse_wheel;
+	return ctx->mouseWheel;
 }
 
-int elf_get_mouse_button_state(int button)
+int elfGetMouseButtonState(int button)
 {
 	if(button < 0 || button > 2) return 0;
-	if(ctx->prv_mbuts[button])
+	if(ctx->prvMbuts[button])
 	{
-		if(ctx->cur_mbuts[button]) return ELF_DOWN;
+		if(ctx->curMbuts[button]) return ELF_DOWN;
 		else return ELF_RELEASED;
 	}
 	else
 	{
-		if(ctx->cur_mbuts[button]) return ELF_PRESSED;
+		if(ctx->curMbuts[button]) return ELF_PRESSED;
 		else return ELF_UP;
 	}
 }
 
-int elf_get_key_state(int key)
+int elfGetKeyState(int key)
 {
 	if(key < 0 || key > 256) return 0;
-	if(ctx->prv_keys[key])
+	if(ctx->prvKeys[key])
 	{
-		if(ctx->cur_keys[key]) return ELF_DOWN;
+		if(ctx->curKeys[key]) return ELF_DOWN;
 		else return ELF_RELEASED;
 	}
 	else
 	{
-		if(ctx->cur_keys[key]) return ELF_PRESSED;
+		if(ctx->curKeys[key]) return ELF_PRESSED;
 		else return ELF_UP;
 	}
 }
 
-unsigned char elf_get_joystick_present(int joy)
+unsigned char elfGetJoystickPresent(int joy)
 {
 	if(joy < 0 || joy > 15) return ELF_FALSE;
 	return ctx->joysticks[joy].present;
 }
 
-elf_vec2f elf_get_joystick_axis(int joy)
+elfVec2f elfGetJoystickAxis(int joy)
 {
-	elf_vec2f pos;
-	memset(&pos, 0x0, sizeof(elf_vec2f));
+	elfVec2f pos;
+	memset(&pos, 0x0, sizeof(elfVec2f));
 	if(joy < 0 || joy > 15) return pos;
-	pos.x = ctx->joysticks[joy].axis_pos[0];
-	pos.y = ctx->joysticks[joy].axis_pos[1];
+	pos.x = ctx->joysticks[joy].axisPos[0];
+	pos.y = ctx->joysticks[joy].axisPos[1];
 	return pos;
 }
 
-int elf_get_joystick_button_state(int joy, int but)
+int elfGetJoystickButtonState(int joy, int but)
 {
 	if(joy < 0 || joy > 15) return ELF_UP;
 	if(but < 0 || but > 15) return ELF_UP;
-	if(ctx->joysticks[joy].prv_buts[but])
+	if(ctx->joysticks[joy].prvButs[but])
 	{
-		if(ctx->joysticks[joy].cur_buts[but]) return ELF_DOWN;
+		if(ctx->joysticks[joy].curButs[but]) return ELF_DOWN;
 		else return ELF_RELEASED;
 	}
 	else
 	{
-		if(ctx->joysticks[joy].cur_buts[but]) return ELF_PRESSED;
+		if(ctx->joysticks[joy].curButs[but]) return ELF_PRESSED;
 		else return ELF_UP;
 	}
 }
 
-int elf_get_event_count()
+int elfGetEventCount()
 {
-	return elf_get_list_length(ctx->events);
+	return elfGetListLength(ctx->events);
 }
 
-elf_object* elf_get_event(int idx)
+elfObject* elfGetEvent(int idx)
 {
-	elf_object* obj;
+	elfObject* obj;
 	int i;
 
-	if(idx < 0 || idx > elf_get_list_length(ctx->events)-1) return NULL;
+	if(idx < 0 || idx > elfGetListLength(ctx->events)-1) return NULL;
 
-	for(i = 0, obj = elf_begin_list(ctx->events); obj; obj = elf_next_in_list(ctx->events), i++)
+	for(i = 0, obj = elfBeginList(ctx->events); obj; obj = elfNextInList(ctx->events), i++)
 	{
 		if(i == idx) return obj;
 	}
@@ -575,13 +575,13 @@ elf_object* elf_get_event(int idx)
 	return NULL;
 }
 
-int elf_get_key_event_key(elf_key_event* key_event)
+int elfGetKeyEventKey(elfKeyEvent* keyEvent)
 {
-	return key_event->key;
+	return keyEvent->key;
 }
 
-int elf_get_key_event_state(elf_key_event* key_event)
+int elfGetKeyEventState(elfKeyEvent* keyEvent)
 {
-	return key_event->state;
+	return keyEvent->state;
 }
 

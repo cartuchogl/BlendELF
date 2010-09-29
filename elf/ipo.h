@@ -1,138 +1,138 @@
 
-elf_bezier_point* elf_create_bezier_point()
+elfBezierPoint* elfCreateBezierPoint()
 {
-	elf_bezier_point* point;
+	elfBezierPoint* point;
 
-	point = (elf_bezier_point*)malloc(sizeof(elf_bezier_point));
-	memset(point, 0x0, sizeof(elf_bezier_point));
-	point->obj_type = ELF_BEZIER_POINT;
-	point->obj_destr = elf_destroy_bezier_point;
+	point = (elfBezierPoint*)malloc(sizeof(elfBezierPoint));
+	memset(point, 0x0, sizeof(elfBezierPoint));
+	point->objType = ELF_BEZIER_POINT;
+	point->objDestr = elfDestroyBezierPoint;
 
-	elf_inc_obj(ELF_BEZIER_POINT);
+	elfIncObj(ELF_BEZIER_POINT);
 
 	return point;
 }
 
-void elf_destroy_bezier_point(void* data)
+void elfDestroyBezierPoint(void* data)
 {
-	elf_bezier_point* point = (elf_bezier_point*)data;
+	elfBezierPoint* point = (elfBezierPoint*)data;
 
 	free(point);
 
-	elf_dec_obj(ELF_BEZIER_POINT);
+	elfDecObj(ELF_BEZIER_POINT);
 }
 
-void elf_set_bezier_point_position(elf_bezier_point* point, float x, float y)
+void elfSetBezierPointPosition(elfBezierPoint* point, float x, float y)
 {
 	point->p.x = x;
 	point->p.y = y;
 }
 
-void elf_set_bezier_point_control1(elf_bezier_point* point, float x, float y)
+void elfSetBezierPointControl1(elfBezierPoint* point, float x, float y)
 {
 	point->c1.x = x;
 	point->c1.y = y;
 }
 
-void elf_set_bezier_point_control2(elf_bezier_point* point, float x, float y)
+void elfSetBezierPointControl2(elfBezierPoint* point, float x, float y)
 {
 	point->c2.x = x;
 	point->c2.y = y;
 }
 
-elf_vec2f elf_get_bezier_point_position(elf_bezier_point* point)
+elfVec2f elfGetBezierPointPosition(elfBezierPoint* point)
 {
 	return point->p;
 }
 
-elf_vec2f elf_get_bezier_point_control1(elf_bezier_point* point)
+elfVec2f elfGetBezierPointControl1(elfBezierPoint* point)
 {
 	return point->c1;
 }
 
-elf_vec2f elf_get_bezier_point_control2(elf_bezier_point* point)
+elfVec2f elfGetBezierPointControl2(elfBezierPoint* point)
 {
 	return point->c2;
 }
 
-elf_bezier_curve* elf_create_bezier_curve()
+elfBezierCurve* elfCreateBezierCurve()
 {
-	elf_bezier_curve* curve;
+	elfBezierCurve* curve;
 
-	curve = (elf_bezier_curve*)malloc(sizeof(elf_bezier_curve));
-	memset(curve, 0x0, sizeof(elf_bezier_curve));
-	curve->obj_type = ELF_BEZIER_CURVE;
-	curve->obj_destr = elf_destroy_bezier_curve;
+	curve = (elfBezierCurve*)malloc(sizeof(elfBezierCurve));
+	memset(curve, 0x0, sizeof(elfBezierCurve));
+	curve->objType = ELF_BEZIER_CURVE;
+	curve->objDestr = elfDestroyBezierCurve;
 
-	curve->points = elf_create_list();
-	elf_inc_ref((elf_object*)curve->points);
+	curve->points = elfCreateList();
+	elfIncRef((elfObject*)curve->points);
 
-	elf_inc_obj(ELF_BEZIER_CURVE);
+	elfIncObj(ELF_BEZIER_CURVE);
 
 	return curve;
 }
 
-void elf_destroy_bezier_curve(void* data)
+void elfDestroyBezierCurve(void* data)
 {
-	elf_bezier_curve* curve = (elf_bezier_curve*)data;
+	elfBezierCurve* curve = (elfBezierCurve*)data;
 
-	elf_dec_ref((elf_object*)curve->points);
+	elfDecRef((elfObject*)curve->points);
 
 	free(curve);
 
-	elf_dec_obj(ELF_BEZIER_CURVE);
+	elfDecObj(ELF_BEZIER_CURVE);
 }
 
-void elf_set_bezier_curve_type(elf_bezier_curve* curve, int type)
+void elfSetBezierCurveType(elfBezierCurve* curve, int type)
 {
 	if(type >= ELF_LOC_X && type <= ELF_QUA_W)
 	{
-		curve->curve_type = type;
+		curve->curveType = type;
 	}
 }
 
-int elf_get_bezier_curve_type(elf_bezier_curve* curve)
+int elfGetBezierCurveType(elfBezierCurve* curve)
 {
-	return curve->curve_type;
+	return curve->curveType;
 }
 
-void elf_add_point_to_bezier_curve(elf_bezier_curve* curve, elf_bezier_point* point)
+void elfAddPointToBezierCurve(elfBezierCurve* curve, elfBezierPoint* point)
 {
 	int i;
-	elf_bezier_point* pnt;
+	elfBezierPoint* pnt;
 
-	for(i = 0, pnt = (elf_bezier_point*)elf_begin_list(curve->points); pnt;
-		pnt = (elf_bezier_point*)elf_next_in_list(curve->points), i++)
+	for(i = 0, pnt = (elfBezierPoint*)elfBeginList(curve->points); pnt;
+		pnt = (elfBezierPoint*)elfNextInList(curve->points), i++)
 	{
 		if(pnt->p.x > point->p.x)
 		{
-			elf_insert_to_list(curve->points, i, (elf_object*)point);
+			elfInsertToList(curve->points, i, (elfObject*)point);
 			return;
 		}
 	}
 
-	elf_append_to_list(curve->points, (elf_object*)point);
+	elfAppendToList(curve->points, (elfObject*)point);
 }
 
-int elf_get_curve_point_count(elf_bezier_curve* curve)
+int elfGetCurvePointCount(elfBezierCurve* curve)
 {
-	return elf_get_list_length(curve->points);
+	return elfGetListLength(curve->points);
 }
 
-elf_bezier_point* elf_get_point_from_bezier_curve(elf_bezier_curve* curve, int idx)
+elfBezierPoint* elfGetPointFromBezierCurve(elfBezierCurve* curve, int idx)
 {
-	return (elf_bezier_point*)elf_get_item_from_list(curve->points, idx);
+	return (elfBezierPoint*)elfGetItemFromList(curve->points, idx);
 }
 
-float elf_get_bezier_curve_value(elf_bezier_curve* curve, float x)
+float elfGetBezierCurveValue(elfBezierCurve* curve, float x)
 {
-	elf_bezier_point* pnt;
-	elf_bezier_point* point1 = NULL;
-	elf_bezier_point* point2 = NULL;
+	elfBezierPoint* pnt;
+	elfBezierPoint* point1 = NULL;
+	elfBezierPoint* point2 = NULL;
 	float t;
 
-	for(pnt = (elf_bezier_point*)elf_begin_list(curve->points); pnt;
-		pnt = (elf_bezier_point*)elf_next_in_list(curve->points))
+	for(pnt = (elfBezierPoint*)elfBeginList(curve->points); pnt;
+		pnt = (elfBezierPoint*)elfNextInList(curve->points))
 	{
 		if(pnt->p.x > x)
 		{
@@ -149,132 +149,132 @@ float elf_get_bezier_curve_value(elf_bezier_curve* curve, float x)
 	return point1->p.y+(point2->p.y-point1->p.y)*t;
 }
 
-elf_ipo* elf_create_ipo()
+elfIpo* elfCreateIpo()
 {
-	elf_ipo* ipo;
+	elfIpo* ipo;
 
-	ipo = (elf_ipo*)malloc(sizeof(elf_ipo));
-	memset(ipo, 0x0, sizeof(elf_ipo));
-	ipo->obj_type = ELF_IPO;
-	ipo->obj_destr = elf_destroy_ipo;
+	ipo = (elfIpo*)malloc(sizeof(elfIpo));
+	memset(ipo, 0x0, sizeof(elfIpo));
+	ipo->objType = ELF_IPO;
+	ipo->objDestr = elfDestroyIpo;
 
-	ipo->curves = elf_create_list();
-	elf_inc_ref((elf_object*)ipo->curves);
+	ipo->curves = elfCreateList();
+	elfIncRef((elfObject*)ipo->curves);
 
-	elf_inc_obj(ELF_IPO);
+	elfIncObj(ELF_IPO);
 
 	return ipo;
 }
 
-void elf_destroy_ipo(void* data)
+void elfDestroyIpo(void* data)
 {
-	elf_ipo* ipo = (elf_ipo*)data;
+	elfIpo* ipo = (elfIpo*)data;
 
-	elf_dec_ref((elf_object*)ipo->curves);
+	elfDecRef((elfObject*)ipo->curves);
 
 	free(ipo);
 
-	elf_dec_obj(ELF_IPO);
+	elfDecObj(ELF_IPO);
 }
 
-unsigned char elf_add_curve_to_ipo(elf_ipo* ipo, elf_bezier_curve* curve)
+unsigned char elfAddCurveToIpo(elfIpo* ipo, elfBezierCurve* curve)
 {
-	elf_bezier_curve* cur;
+	elfBezierCurve* cur;
 
-	for(cur = (elf_bezier_curve*)elf_begin_list(ipo->curves); cur;
-		cur = (elf_bezier_curve*)elf_next_in_list(ipo->curves))
+	for(cur = (elfBezierCurve*)elfBeginList(ipo->curves); cur;
+		cur = (elfBezierCurve*)elfNextInList(ipo->curves))
 	{
-		if(cur->curve_type == curve->curve_type) return ELF_FALSE;
+		if(cur->curveType == curve->curveType) return ELF_FALSE;
 	}
 
-	elf_append_to_list(ipo->curves, (elf_object*)curve);
+	elfAppendToList(ipo->curves, (elfObject*)curve);
 
-	if(curve->curve_type >= ELF_LOC_X && curve->curve_type <= ELF_LOC_Z) ipo->loc = ELF_TRUE;
-	if(curve->curve_type >= ELF_ROT_X && curve->curve_type <= ELF_ROT_Z) ipo->rot = ELF_TRUE;
-	if(curve->curve_type >= ELF_SCALE_X && curve->curve_type <= ELF_SCALE_Z) ipo->scale = ELF_TRUE;
-	if(curve->curve_type >= ELF_QUA_X && curve->curve_type <= ELF_QUA_W) ipo->qua = ELF_TRUE;
+	if(curve->curveType >= ELF_LOC_X && curve->curveType <= ELF_LOC_Z) ipo->loc = ELF_TRUE;
+	if(curve->curveType >= ELF_ROT_X && curve->curveType <= ELF_ROT_Z) ipo->rot = ELF_TRUE;
+	if(curve->curveType >= ELF_SCALE_X && curve->curveType <= ELF_SCALE_Z) ipo->scale = ELF_TRUE;
+	if(curve->curveType >= ELF_QUA_X && curve->curveType <= ELF_QUA_W) ipo->qua = ELF_TRUE;
 
 	return ELF_TRUE;
 }
 
-int elf_get_ipo_curve_count(elf_ipo* ipo)
+int elfGetIpoCurveCount(elfIpo* ipo)
 {
-	return elf_get_list_length(ipo->curves);
+	return elfGetListLength(ipo->curves);
 }
 
-elf_bezier_curve* elf_get_curve_from_ipo(elf_ipo* ipo, int idx)
+elfBezierCurve* elfGetCurveFromIpo(elfIpo* ipo, int idx)
 {
-	return (elf_bezier_curve*)elf_get_item_from_list(ipo->curves, idx);
+	return (elfBezierCurve*)elfGetItemFromList(ipo->curves, idx);
 }
 
-elf_vec3f elf_get_ipo_loc(elf_ipo* ipo, float x)
+elfVec3f elfGetIpoLoc(elfIpo* ipo, float x)
 {
-	elf_bezier_curve* curve;
-	elf_vec3f result;
+	elfBezierCurve* curve;
+	elfVec3f result;
 
-	memset(&result, 0x0, sizeof(elf_vec3f));
+	memset(&result, 0x0, sizeof(elfVec3f));
 
-	for(curve = (elf_bezier_curve*)elf_begin_list(ipo->curves); curve;
-		curve = (elf_bezier_curve*)elf_next_in_list(ipo->curves))
+	for(curve = (elfBezierCurve*)elfBeginList(ipo->curves); curve;
+		curve = (elfBezierCurve*)elfNextInList(ipo->curves))
 	{
-		if(curve->curve_type == ELF_LOC_X) result.x = elf_get_bezier_curve_value(curve, x);
-		else if(curve->curve_type == ELF_LOC_Y) result.y = elf_get_bezier_curve_value(curve, x);
-		else if(curve->curve_type == ELF_LOC_Z) result.z = elf_get_bezier_curve_value(curve, x);
+		if(curve->curveType == ELF_LOC_X) result.x = elfGetBezierCurveValue(curve, x);
+		else if(curve->curveType == ELF_LOC_Y) result.y = elfGetBezierCurveValue(curve, x);
+		else if(curve->curveType == ELF_LOC_Z) result.z = elfGetBezierCurveValue(curve, x);
 	}
 
 	return result;
 }
 
-elf_vec3f elf_get_ipo_rot(elf_ipo* ipo, float x)
+elfVec3f elfGetIpoRot(elfIpo* ipo, float x)
 {
-	elf_bezier_curve* curve;
-	elf_vec3f result;
+	elfBezierCurve* curve;
+	elfVec3f result;
 
-	memset(&result, 0x0, sizeof(elf_vec3f));
+	memset(&result, 0x0, sizeof(elfVec3f));
 
-	for(curve = (elf_bezier_curve*)elf_begin_list(ipo->curves); curve;
-		curve = (elf_bezier_curve*)elf_next_in_list(ipo->curves))
+	for(curve = (elfBezierCurve*)elfBeginList(ipo->curves); curve;
+		curve = (elfBezierCurve*)elfNextInList(ipo->curves))
 	{
-		if(curve->curve_type == ELF_ROT_X) result.x = elf_get_bezier_curve_value(curve, x);
-		else if(curve->curve_type == ELF_ROT_Y) result.y = elf_get_bezier_curve_value(curve, x);
-		else if(curve->curve_type == ELF_ROT_Z) result.z = elf_get_bezier_curve_value(curve, x);
+		if(curve->curveType == ELF_ROT_X) result.x = elfGetBezierCurveValue(curve, x);
+		else if(curve->curveType == ELF_ROT_Y) result.y = elfGetBezierCurveValue(curve, x);
+		else if(curve->curveType == ELF_ROT_Z) result.z = elfGetBezierCurveValue(curve, x);
 	}
 
 	return result;
 }
 
-elf_vec3f elf_get_ipo_scale(elf_ipo* ipo, float x)
+elfVec3f elfGetIpoScale(elfIpo* ipo, float x)
 {
-	elf_bezier_curve* curve;
-	elf_vec3f result;
+	elfBezierCurve* curve;
+	elfVec3f result;
 
-	memset(&result, 0x0, sizeof(elf_vec3f));
+	memset(&result, 0x0, sizeof(elfVec3f));
 
-	for(curve = (elf_bezier_curve*)elf_begin_list(ipo->curves); curve;
-		curve = (elf_bezier_curve*)elf_next_in_list(ipo->curves))
+	for(curve = (elfBezierCurve*)elfBeginList(ipo->curves); curve;
+		curve = (elfBezierCurve*)elfNextInList(ipo->curves))
 	{
-		if(curve->curve_type == ELF_SCALE_X) result.x = elf_get_bezier_curve_value(curve, x);
-		else if(curve->curve_type == ELF_SCALE_Y) result.y = elf_get_bezier_curve_value(curve, x);
-		else if(curve->curve_type == ELF_SCALE_Z) result.z = elf_get_bezier_curve_value(curve, x);
+		if(curve->curveType == ELF_SCALE_X) result.x = elfGetBezierCurveValue(curve, x);
+		else if(curve->curveType == ELF_SCALE_Y) result.y = elfGetBezierCurveValue(curve, x);
+		else if(curve->curveType == ELF_SCALE_Z) result.z = elfGetBezierCurveValue(curve, x);
 	}
 
 	return result;
 }
 
-elf_vec4f elf_get_ipo_qua(elf_ipo* ipo, float x)
+elfVec4f elfGetIpoQua(elfIpo* ipo, float x)
 {
-	elf_bezier_curve* curve;
-	elf_vec4f result;
+	elfBezierCurve* curve;
+	elfVec4f result;
 
-	memset(&result, 0x0, sizeof(elf_vec4f));
+	memset(&result, 0x0, sizeof(elfVec4f));
 
-	for(curve = (elf_bezier_curve*)elf_begin_list(ipo->curves); curve;
-		curve = (elf_bezier_curve*)elf_next_in_list(ipo->curves))
+	for(curve = (elfBezierCurve*)elfBeginList(ipo->curves); curve;
+		curve = (elfBezierCurve*)elfNextInList(ipo->curves))
 	{
-		if(curve->curve_type == ELF_QUA_X) result.x = elf_get_bezier_curve_value(curve, x);
-		else if(curve->curve_type == ELF_QUA_Y) result.y = elf_get_bezier_curve_value(curve, x);
-		else if(curve->curve_type == ELF_QUA_Z) result.z = elf_get_bezier_curve_value(curve, x);
-		else if(curve->curve_type == ELF_QUA_W) result.w = elf_get_bezier_curve_value(curve, x);
+		if(curve->curveType == ELF_QUA_X) result.x = elfGetBezierCurveValue(curve, x);
+		else if(curve->curveType == ELF_QUA_Y) result.y = elfGetBezierCurveValue(curve, x);
+		else if(curve->curveType == ELF_QUA_Z) result.z = elfGetBezierCurveValue(curve, x);
+		else if(curve->curveType == ELF_QUA_W) result.w = elfGetBezierCurveValue(curve, x);
 	}
 
 	return result;

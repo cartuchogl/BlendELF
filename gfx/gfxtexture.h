@@ -1,28 +1,28 @@
 
-int gfx_get_max_texture_size()
+int gfxGetMaxTextureSize()
 {
-	return driver->max_texture_size;
+	return driver->maxTextureSize;
 }
 
-gfx_texture* gfx_create_texture()
+gfxTexture* gfxCreateTexture()
 {
-	gfx_texture* texture;
+	gfxTexture* texture;
 
-	texture = (gfx_texture*)malloc(sizeof(gfx_texture));
-	memset(texture, 0x0, sizeof(gfx_texture));
-	texture->obj_type = GFX_TEXTURE;
-	texture->obj_destr = gfx_destroy_texture;
+	texture = (gfxTexture*)malloc(sizeof(gfxTexture));
+	memset(texture, 0x0, sizeof(gfxTexture));
+	texture->objType = GFX_TEXTURE;
+	texture->objDestr = gfxDestroyTexture;
 
-	gfx_inc_obj(GFX_TEXTURE);
+	gfxIncObj(GFX_TEXTURE);
 
 	return texture;
 }
 
-gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internal_format, int data_format, void* data)
+gfxTexture* gfxCreate_2dTexture(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internalFormat, int dataFormat, void* data)
 {
-	gfx_texture* texture;
+	gfxTexture* texture;
 
-	if(width == 0 || height == 0 || (int)width > gfx_get_max_texture_size() || (int)height > gfx_get_max_texture_size())
+	if(width == 0 || height == 0 || (int)width > gfxGetMaxTextureSize() || (int)height > gfxGetMaxTextureSize())
 	{
 		printf("error: invalid dimensions when creating texture\n");
 		return NULL;
@@ -34,19 +34,19 @@ gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, floa
 		return NULL;
 	}
 
-	if(!(data_format >= GFX_FLOAT && data_format < GFX_MAX_FORMATS))
+	if(!(dataFormat >= GFX_FLOAT && dataFormat < GFX_MAX_FORMATS))
 	{
 		printf("error: invalid data format when creating texture\n");
 		return NULL;
 	}
 
-	texture = gfx_create_texture();
+	texture = gfxCreateTexture();
 
 	texture->type = GFX_2D_MAP_TEXTURE;
 	texture->width = width;
 	texture->height = height;
 	texture->format = format;
-	texture->data_format = data_format;
+	texture->dataFormat = dataFormat;
 
 	glActiveTexture(GL_TEXTURE0);
 	glClientActiveTexture(GL_TEXTURE0);
@@ -95,22 +95,22 @@ gfx_texture* gfx_create_2d_texture(unsigned int width, unsigned int height, floa
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy);
 	}
 
-	glTexImage2D(GL_TEXTURE_2D, 0, driver->texture_internal_formats[internal_format], width, height, 0,
-		driver->texture_data_formats[format], driver->formats[data_format], data);
+	glTexImage2D(GL_TEXTURE_2D, 0, driver->textureInternalFormats[internalFormat], width, height, 0,
+		driver->textureDataFormats[format], driver->formats[dataFormat], data);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-	driver->shader_params.texture_params[0].texture = NULL;
+	driver->shaderParams.textureParams[0].texture = NULL;
 
 	return texture;
 }
 
-gfx_texture* gfx_create_cube_map(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internal_format, int data_format, void* xpos, void* xneg, void* ypos, void* yneg, void* zpos, void* zneg)
+gfxTexture* gfxCreateCubeMap(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internalFormat, int dataFormat, void* xpos, void* xneg, void* ypos, void* yneg, void* zpos, void* zneg)
 {
-	gfx_texture* texture;
+	gfxTexture* texture;
 
 	if(driver->version < 130) return NULL;
 
-	if(width == 0 || height == 0 || (int)width > gfx_get_max_texture_size() || (int)height > gfx_get_max_texture_size())
+	if(width == 0 || height == 0 || (int)width > gfxGetMaxTextureSize() || (int)height > gfxGetMaxTextureSize())
 	{
 		printf("error: invalid dimensions when creating texture\n");
 		return NULL;
@@ -122,19 +122,19 @@ gfx_texture* gfx_create_cube_map(unsigned int width, unsigned int height, float 
 		return NULL;
 	}
 
-	if(!(data_format >= GFX_FLOAT && data_format < GFX_MAX_FORMATS))
+	if(!(dataFormat >= GFX_FLOAT && dataFormat < GFX_MAX_FORMATS))
 	{
 		printf("error: invalid data format when creating texture\n");
 		return NULL;
 	}
 
-	texture = gfx_create_texture();
+	texture = gfxCreateTexture();
 
 	texture->type = GFX_CUBE_MAP_TEXTURE;
 	texture->width = width;
 	texture->height = height;
 	texture->format = format;
-	texture->data_format = data_format;
+	texture->dataFormat = dataFormat;
 
 	glActiveTexture(GL_TEXTURE0);
 	glClientActiveTexture(GL_TEXTURE0);
@@ -149,63 +149,63 @@ gfx_texture* gfx_create_cube_map(unsigned int width, unsigned int height, float 
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, driver->texture_internal_formats[internal_format], width, height, 0,
-		driver->texture_data_formats[format], driver->formats[data_format], xpos);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, driver->texture_internal_formats[internal_format], width, height, 0,
-		driver->texture_data_formats[format], driver->formats[data_format], xneg);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, driver->texture_internal_formats[internal_format], width, height, 0,
-		driver->texture_data_formats[format], driver->formats[data_format], ypos);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, driver->texture_internal_formats[internal_format], width, height, 0,
-		driver->texture_data_formats[format], driver->formats[data_format], yneg);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, driver->texture_internal_formats[internal_format], width, height, 0,
-		driver->texture_data_formats[format], driver->formats[data_format], zpos);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, driver->texture_internal_formats[internal_format], width, height, 0,
-		driver->texture_data_formats[format], driver->formats[data_format], zneg);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, driver->textureInternalFormats[internalFormat], width, height, 0,
+		driver->textureDataFormats[format], driver->formats[dataFormat], xpos);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, driver->textureInternalFormats[internalFormat], width, height, 0,
+		driver->textureDataFormats[format], driver->formats[dataFormat], xneg);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, driver->textureInternalFormats[internalFormat], width, height, 0,
+		driver->textureDataFormats[format], driver->formats[dataFormat], ypos);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, driver->textureInternalFormats[internalFormat], width, height, 0,
+		driver->textureDataFormats[format], driver->formats[dataFormat], yneg);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, driver->textureInternalFormats[internalFormat], width, height, 0,
+		driver->textureDataFormats[format], driver->formats[dataFormat], zpos);
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, driver->textureInternalFormats[internalFormat], width, height, 0,
+		driver->textureDataFormats[format], driver->formats[dataFormat], zneg);
 
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-	driver->shader_params.texture_params[0].texture = NULL;
+	driver->shaderParams.textureParams[0].texture = NULL;
 
 	return texture;
 }
 
-void gfx_destroy_texture(void* data)
+void gfxDestroyTexture(void* data)
 {
-	gfx_texture* texture = (gfx_texture*)data;
+	gfxTexture* texture = (gfxTexture*)data;
 
 	if(texture->id) glDeleteTextures(1, &texture->id);
 
 	free(texture);
 
-	gfx_dec_obj(GFX_TEXTURE);
+	gfxDecObj(GFX_TEXTURE);
 
 }
 
-int gfx_get_texture_type(gfx_texture* texture)
+int gfxGetTextureType(gfxTexture* texture)
 {
 	return texture->type;
 }
 
-int gfx_get_texture_width(gfx_texture* texture)
+int gfxGetTextureWidth(gfxTexture* texture)
 {
 	return texture->width;
 }
 
-int gfx_get_texture_height(gfx_texture* texture)
+int gfxGetTextureHeight(gfxTexture* texture)
 {
 	return texture->height;
 }
 
-int gfx_get_texture_format(gfx_texture* texture)
+int gfxGetTextureFormat(gfxTexture* texture)
 {
 	return texture->format;
 }
 
-int gfx_get_texture_data_format(gfx_texture* texture)
+int gfxGetTextureDataFormat(gfxTexture* texture)
 {
-	return texture->data_format;
+	return texture->dataFormat;
 }
 
-void gfx_copy_framebuffer_to_texture(gfx_texture* texture)
+void gfxCopyFramebufferToTexture(gfxTexture* texture)
 {
 	glActiveTexture(GL_TEXTURE0);
 	glClientActiveTexture(GL_TEXTURE0);

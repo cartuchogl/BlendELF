@@ -1,10 +1,10 @@
 
-void gfx_set_viewport(int x, int y, int width, int height)
+void gfxSetViewport(int x, int y, int width, int height)
 {
 	glViewport(x, y, width, height);
 }
 
-void gfx_get_perspective_projection_matrix(float fov, float aspect, float near, float far, float* mat)
+void gfxGetPerspectiveProjectionMatrix(float fov, float aspect, float near, float far, float* mat)
 {
 	float top, bottom, left, right;
 
@@ -21,7 +21,7 @@ void gfx_get_perspective_projection_matrix(float fov, float aspect, float near, 
 	mat[14] = (-2*far*near)/(far-near);
 }
 
-void gfx_get_orthographic_projection_matrix(float left, float right, float bottom, float top, float near, float far, float* matrix)
+void gfxGetOrthographicProjectionMatrix(float left, float right, float bottom, float top, float near, float far, float* matrix)
 {
 	memset(matrix, 0x0, sizeof(float)*16);
 	matrix[0] = 2/(right-left);
@@ -33,7 +33,7 @@ void gfx_get_orthographic_projection_matrix(float left, float right, float botto
 	matrix[15] = 1;
 }
 
-void gfx_project(float x, float y, float z, float modl[16], float proj[16], int viewp[4], float win_coord[3])
+void gfxProject(float x, float y, float z, float modl[16], float proj[16], int viewp[4], float winCoord[3])
 {
 	float ftempo[8];
 
@@ -52,39 +52,39 @@ void gfx_project(float x, float y, float z, float modl[16], float proj[16], int 
 	ftempo[5] *= ftempo[7];
 	ftempo[6] *= ftempo[7];
 
-	win_coord[0] = viewp[0] + viewp[2] * (ftempo[4]+1.0) * 0.5;
-	win_coord[1] = viewp[1] + viewp[3] * (ftempo[5]+1.0) * 0.5;
-	win_coord[2] = (ftempo[6] + 1.0) * 0.5;
+	winCoord[0] = viewp[0] + viewp[2] * (ftempo[4]+1.0) * 0.5;
+	winCoord[1] = viewp[1] + viewp[3] * (ftempo[5]+1.0) * 0.5;
+	winCoord[2] = (ftempo[6] + 1.0) * 0.5;
 }
 
-void gfx_un_project(float x, float y, float z, float modl[16], float proj[16], int viewp[4], float obj_coord[3])
+void gfxUnProject(float x, float y, float z, float modl[16], float proj[16], int viewp[4], float objCoord[3])
 {
 	float m[16], m2[16], in[4], out[4];
 
-	gfx_mul_matrix4_matrix4(proj, modl, m2);
-	gfx_matrix4_get_inverse(m2, m);
+	gfxMulMatrix4Matrix4(proj, modl, m2);
+	gfxMatrix4GetInverse(m2, m);
 
 	in[0] = (x - (float)viewp[0]) / (float)viewp[2] * 2.0 - 1.0;
 	in[1] = (y - (float)viewp[1]) / (float)viewp[3] * 2.0 - 1.0;
 	in[2] = 2.0 * z - 1.0;
 	in[3] = 1.0;
 
-	gfx_mul_matrix4_vec4(m, in, out);
+	gfxMulMatrix4Vec4(m, in, out);
 	if(out[3] == 0.0) return;
 
 	out[3] = 1.0 / out[3];
-	obj_coord[0] = out[0] * out[3];
-	obj_coord[1] = out[1] * out[3];
-	obj_coord[2] = out[2] * out[3];
+	objCoord[0] = out[0] * out[3];
+	objCoord[1] = out[1] * out[3];
+	objCoord[2] = out[2] * out[3];
 }
 
-void gfx_get_frustum(float proj[16], float modl[16], float frustum[6][4])
+void gfxGetFrustum(float proj[16], float modl[16], float frustum[6][4])
 {
 	float clip[16];
 	int i;
 	float length;
 
-	gfx_mul_matrix4_matrix4(modl, proj, clip);
+	gfxMulMatrix4Matrix4(modl, proj, clip);
 
 	// right plane
 	frustum[0][0] = clip[3]-clip[0];
@@ -129,83 +129,83 @@ void gfx_get_frustum(float proj[16], float modl[16], float frustum[6][4])
 	}
 }
 
-void gfx_recalc_transform_matrix(gfx_transform* transform)
+void gfxRecalcTransformMatrix(gfxTransform* transform)
 {
-	float temp_matrix1[16];
-	float temp_matrix2[16];
-	float inv_qua[4];
+	float tempMatrix1[16];
+	float tempMatrix2[16];
+	float invQua[4];
 
-	if(transform->camera_mode == GFX_FALSE)
+	if(transform->cameraMode == GFX_FALSE)
 	{
-		gfx_matrix4_set_identity(transform->matrix);
+		gfxMatrix4SetIdentity(transform->matrix);
 
 		transform->matrix[12] = transform->position[0];
 		transform->matrix[13] = transform->position[1];
 		transform->matrix[14] = transform->position[2];
-		gfx_qua_get_inverse(transform->orient, inv_qua);
-		gfx_qua_to_matrix4(inv_qua, temp_matrix1);
-		gfx_mul_matrix4_matrix4(temp_matrix1, transform->matrix, temp_matrix2);
+		gfxQuaGetInverse(transform->orient, invQua);
+		gfxQuaToMatrix4(invQua, tempMatrix1);
+		gfxMulMatrix4Matrix4(tempMatrix1, transform->matrix, tempMatrix2);
 
-		gfx_matrix4_set_identity(temp_matrix1);
+		gfxMatrix4SetIdentity(tempMatrix1);
 
-		temp_matrix1[0] = transform->scale[0];
-		temp_matrix1[5] = transform->scale[1];
-		temp_matrix1[10] = transform->scale[2];
-		gfx_mul_matrix4_matrix4(temp_matrix1, temp_matrix2, transform->matrix);
+		tempMatrix1[0] = transform->scale[0];
+		tempMatrix1[5] = transform->scale[1];
+		tempMatrix1[10] = transform->scale[2];
+		gfxMulMatrix4Matrix4(tempMatrix1, tempMatrix2, transform->matrix);
 	}
 	else
 	{
-		gfx_matrix4_set_identity(temp_matrix1);
+		gfxMatrix4SetIdentity(tempMatrix1);
 
-		temp_matrix1[12] = -transform->position[0];
-		temp_matrix1[13] = -transform->position[1];
-		temp_matrix1[14] = -transform->position[2];
+		tempMatrix1[12] = -transform->position[0];
+		tempMatrix1[13] = -transform->position[1];
+		tempMatrix1[14] = -transform->position[2];
 
-		gfx_qua_to_matrix4(transform->orient, temp_matrix2);
+		gfxQuaToMatrix4(transform->orient, tempMatrix2);
 
-		gfx_mul_matrix4_matrix4(temp_matrix1, temp_matrix2, transform->matrix);
+		gfxMulMatrix4Matrix4(tempMatrix1, tempMatrix2, transform->matrix);
 	}
 }
 
-float* gfx_get_transform_matrix(gfx_transform* transform)
+float* gfxGetTransformMatrix(gfxTransform* transform)
 {
-	if(transform->recalc_matrix == GFX_TRUE)
+	if(transform->recalcMatrix == GFX_TRUE)
 	{
-		gfx_recalc_transform_matrix(transform);
-		transform->recalc_matrix = GFX_FALSE;
+		gfxRecalcTransformMatrix(transform);
+		transform->recalcMatrix = GFX_FALSE;
 	}
 
 	return transform->matrix;
 }
 
-gfx_transform* gfx_create_camera_transform()
+gfxTransform* gfxCreateCameraTransform()
 {
-	gfx_transform* transform;
+	gfxTransform* transform;
 
-	transform = (gfx_transform*)malloc(sizeof(gfx_transform));
-	memset(transform, 0x0, sizeof(gfx_transform));
+	transform = (gfxTransform*)malloc(sizeof(gfxTransform));
+	memset(transform, 0x0, sizeof(gfxTransform));
 
-	gfx_qua_set_identity(transform->orient);
-	gfx_matrix4_set_identity(transform->matrix);
+	gfxQuaSetIdentity(transform->orient);
+	gfxMatrix4SetIdentity(transform->matrix);
 
 	transform->scale[0] = 1.0;
 	transform->scale[1] = 1.0;
 	transform->scale[2] = 1.0;
 
-	transform->camera_mode = GFX_TRUE;
+	transform->cameraMode = GFX_TRUE;
 
 	return transform;
 }
 
-gfx_transform* gfx_create_object_transform()
+gfxTransform* gfxCreateObjectTransform()
 {
-	gfx_transform* transform;
+	gfxTransform* transform;
 
-	transform = (gfx_transform*)malloc(sizeof(gfx_transform));
-	memset(transform, 0x0, sizeof(gfx_transform));
+	transform = (gfxTransform*)malloc(sizeof(gfxTransform));
+	memset(transform, 0x0, sizeof(gfxTransform));
 
-	gfx_qua_set_identity(transform->orient);
-	gfx_matrix4_set_identity(transform->matrix);
+	gfxQuaSetIdentity(transform->orient);
+	gfxMatrix4SetIdentity(transform->matrix);
 
 	transform->scale[0] = 1.0;
 	transform->scale[1] = 1.0;
@@ -214,122 +214,122 @@ gfx_transform* gfx_create_object_transform()
 	return transform;
 }
 
-void gfx_destroy_transform(gfx_transform* transform)
+void gfxDestroyTransform(gfxTransform* transform)
 {
 	free(transform);
 }
 
-void gfx_set_transform_position(gfx_transform* transform, float x, float y, float z)
+void gfxSetTransformPosition(gfxTransform* transform, float x, float y, float z)
 {
 	transform->position[0] = x;
 	transform->position[1] = y;
 	transform->position[2] = z;
 
-	transform->recalc_matrix = GFX_TRUE;
+	transform->recalcMatrix = GFX_TRUE;
 }
 
-void gfx_set_transform_rotation(gfx_transform* transform, float x, float y, float z)
+void gfxSetTransformRotation(gfxTransform* transform, float x, float y, float z)
 {
 	transform->rotation[0] = x;
 	transform->rotation[1] = y;
 	transform->rotation[2] = z;
 
-	gfx_qua_from_euler(x, y, z, transform->orient);
+	gfxQuaFromEuler(x, y, z, transform->orient);
 
-	transform->recalc_matrix = GFX_TRUE;
+	transform->recalcMatrix = GFX_TRUE;
 }
 
-void gfx_set_transform_scale(gfx_transform* transform, float x, float y, float z)
+void gfxSetTransformScale(gfxTransform* transform, float x, float y, float z)
 {
 	transform->scale[0] = x;
 	transform->scale[1] = y;
 	transform->scale[2] = z;
 
-	transform->recalc_matrix = GFX_TRUE;
+	transform->recalcMatrix = GFX_TRUE;
 }
 
-void gfx_set_transform_orientation(gfx_transform* transform, float x, float y, float z, float w)
+void gfxSetTransformOrientation(gfxTransform* transform, float x, float y, float z, float w)
 {
 	transform->orient[0] = x;
 	transform->orient[1] = y;
 	transform->orient[2] = z;
 	transform->orient[3] = w;
 
-	gfx_qua_to_euler(transform->orient, transform->rotation);
+	gfxQuaToEuler(transform->orient, transform->rotation);
 
-	transform->recalc_matrix = GFX_TRUE;
+	transform->recalcMatrix = GFX_TRUE;
 }
 
-void gfx_rotate_transform(gfx_transform* transform, float x, float y, float z)
+void gfxRotateTransform(gfxTransform* transform, float x, float y, float z)
 {
 	transform->rotation[0] += x;
 	transform->rotation[1] += y;
 	transform->rotation[2] += z;
 
-	gfx_rotate_qua(x, y, z, transform->orient);
+	gfxRotateQua(x, y, z, transform->orient);
 
-	transform->recalc_matrix = GFX_TRUE;
+	transform->recalcMatrix = GFX_TRUE;
 }
 
-void gfx_rotate_transform_local(gfx_transform* transform, float x, float y, float z)
+void gfxRotateTransformLocal(gfxTransform* transform, float x, float y, float z)
 {
 	transform->rotation[0] += x;
 	transform->rotation[1] += y;
 	transform->rotation[2] += z;
 
-	gfx_rotate_qua_local(x, y, z, transform->orient);
+	gfxRotateQuaLocal(x, y, z, transform->orient);
 
-	transform->recalc_matrix = GFX_TRUE;
+	transform->recalcMatrix = GFX_TRUE;
 }
 
-void gfx_move_transform(gfx_transform* transform, float x, float y, float z)
+void gfxMoveTransform(gfxTransform* transform, float x, float y, float z)
 {
 	transform->position[0] += x;
 	transform->position[1] += y;
 	transform->position[2] += z;
 
-	transform->recalc_matrix = GFX_TRUE;
+	transform->recalcMatrix = GFX_TRUE;
 }
 
-void gfx_move_transform_local(gfx_transform* transform, float x, float y, float z)
+void gfxMoveTransformLocal(gfxTransform* transform, float x, float y, float z)
 {
-	float temp_vec[3];
+	float tempVec[3];
 	float vec[3];
 
-	temp_vec[0] = x;
-	temp_vec[1] = y;
-	temp_vec[2] = z;
+	tempVec[0] = x;
+	tempVec[1] = y;
+	tempVec[2] = z;
 
-	gfx_mul_qua_vec(transform->orient, temp_vec, vec);
+	gfxMulQuaVec(transform->orient, tempVec, vec);
 
 	transform->position[0] += vec[0];
 	transform->position[1] += vec[1];
 	transform->position[2] += vec[2];
 
-	transform->recalc_matrix = GFX_TRUE;
+	transform->recalcMatrix = GFX_TRUE;
 }
 
-unsigned char gfx_get_transform_camera_mode(gfx_transform* transform)
+unsigned char gfxGetTransformCameraMode(gfxTransform* transform)
 {
-	return transform->camera_mode;
+	return transform->cameraMode;
 }
 
-void gfx_get_transform_position(gfx_transform* transform, float* params)
+void gfxGetTransformPosition(gfxTransform* transform, float* params)
 {
 	memcpy(params, transform->position, sizeof(float)*3);
 }
 
-void gfx_get_transform_rotation(gfx_transform* transform, float* params)
+void gfxGetTransformRotation(gfxTransform* transform, float* params)
 {
 	memcpy(params, transform->rotation, sizeof(float)*3);
 }
 
-void gfx_get_transform_scale(gfx_transform* transform, float* params)
+void gfxGetTransformScale(gfxTransform* transform, float* params)
 {
 	memcpy(params, transform->scale, sizeof(float)*3);
 }
 
-void gfx_get_transform_orientation(gfx_transform* transform, float* params)
+void gfxGetTransformOrientation(gfxTransform* transform, float* params)
 {
 	memcpy(params, transform->orient, sizeof(float)*4);
 }

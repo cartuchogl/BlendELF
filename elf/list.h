@@ -1,66 +1,66 @@
 
-elf_list_ptr* elf_create_list_ptr()
+elfListPtr* elfCreateListPtr()
 {
-	elf_list_ptr* ptr;
+	elfListPtr* ptr;
 
-	ptr = (elf_list_ptr*)malloc(sizeof(elf_list_ptr));
-	memset(ptr, 0x0, sizeof(elf_list_ptr));
+	ptr = (elfListPtr*)malloc(sizeof(elfListPtr));
+	memset(ptr, 0x0, sizeof(elfListPtr));
 
-	elf_inc_obj(ELF_LIST_PTR);
+	elfIncObj(ELF_LIST_PTR);
 
 	return ptr;
 }
 
-void elf_destroy_list_ptr(elf_list_ptr* ptr)
+void elfDestroyListPtr(elfListPtr* ptr)
 {
-	if(ptr->obj) elf_dec_ref(ptr->obj);
+	if(ptr->obj) elfDecRef(ptr->obj);
 
 	free(ptr);
 
-	elf_dec_obj(ELF_LIST_PTR);
+	elfDecObj(ELF_LIST_PTR);
 }
 
-void elf_destroy_list_ptrs(elf_list_ptr* ptr)
+void elfDestroyListPtrs(elfListPtr* ptr)
 {
-	if(ptr->next) elf_destroy_list_ptrs(ptr->next);
+	if(ptr->next) elfDestroyListPtrs(ptr->next);
 
-	elf_destroy_list_ptr(ptr);
+	elfDestroyListPtr(ptr);
 }
 
-elf_list* elf_create_list()
+elfList* elfCreateList()
 {
-	elf_list* list;
+	elfList* list;
 
-	list = (elf_list*)malloc(sizeof(elf_list));
-	memset(list, 0x0, sizeof(elf_list));
-	list->obj_type = ELF_LIST;
-	list->obj_destr = elf_destroy_list;
+	list = (elfList*)malloc(sizeof(elfList));
+	memset(list, 0x0, sizeof(elfList));
+	list->objType = ELF_LIST;
+	list->objDestr = elfDestroyList;
 
-	elf_inc_obj(ELF_LIST);
+	elfIncObj(ELF_LIST);
 
 	return list;
 }
 
-void elf_destroy_list(void* data)
+void elfDestroyList(void* data)
 {
-	elf_list* list = (elf_list*)data;
+	elfList* list = (elfList*)data;
 
-	if(list->first) elf_destroy_list_ptrs(list->first);
+	if(list->first) elfDestroyListPtrs(list->first);
 
 	free(list);
 
-	elf_dec_obj(ELF_LIST);
+	elfDecObj(ELF_LIST);
 }
 
-int elf_get_list_length(elf_list* list)
+int elfGetListLength(elfList* list)
 {
 	return list->length;
 }
 
-void elf_insert_to_list(elf_list* list, int idx, elf_object* obj)
+void elfInsertToList(elfList* list, int idx, elfObject* obj)
 {
-	elf_list_ptr* ptr;
-	elf_list_ptr* tptr;
+	elfListPtr* ptr;
+	elfListPtr* tptr;
 	int i;
 
 	if(idx < 0 || idx > list->length) return;
@@ -70,14 +70,14 @@ void elf_insert_to_list(elf_list* list, int idx, elf_object* obj)
 
 	if(!ptr)
 	{
-		list->first = elf_create_list_ptr();
+		list->first = elfCreateListPtr();
 		list->first->obj = obj;
 		list->last = list->first;
 		list->length = 1;
 	}
 	else if(idx == 0)
 	{
-		ptr->prev = elf_create_list_ptr();
+		ptr->prev = elfCreateListPtr();
 		ptr->prev->obj = obj;
 		ptr->prev->next = ptr;
 		list->first = ptr->prev;
@@ -85,7 +85,7 @@ void elf_insert_to_list(elf_list* list, int idx, elf_object* obj)
 	}
 	else if(idx == list->length)
 	{
-		list->last->next = elf_create_list_ptr();
+		list->last->next = elfCreateListPtr();
 		list->last->next->obj = obj;
 		list->last->next->prev = list->last;
 		list->last = list->last->next;
@@ -99,7 +99,7 @@ void elf_insert_to_list(elf_list* list, int idx, elf_object* obj)
 			i++;
 		}
 		tptr = ptr->prev;
-		tptr->next = elf_create_list_ptr();
+		tptr->next = elfCreateListPtr();
 		tptr->next->obj = obj;
 		tptr->next->next = ptr;
 		tptr->next->prev = tptr;
@@ -107,35 +107,35 @@ void elf_insert_to_list(elf_list* list, int idx, elf_object* obj)
 		list->length++;
 	}
 
-	elf_inc_ref(obj);
+	elfIncRef(obj);
 }
 
-void elf_append_to_list(elf_list* list, elf_object* obj)
+void elfAppendToList(elfList* list, elfObject* obj)
 {
 	if(!obj) return;
 
 	if(!list->first)
 	{
-		list->first = elf_create_list_ptr();
+		list->first = elfCreateListPtr();
 		list->first->obj = obj;
 		list->last = list->first;
 		list->length = 1;
 	}
 	else
 	{
-		list->last->next = elf_create_list_ptr();
+		list->last->next = elfCreateListPtr();
 		list->last->next->obj = obj;
 		list->last->next->prev = list->last;
 		list->last = list->last->next;
 		list->length++;
 	}
 
-	elf_inc_ref(obj);
+	elfIncRef(obj);
 }
 
-elf_object* elf_get_item_from_list(elf_list* list, int idx)
+elfObject* elfGetItemFromList(elfList* list, int idx)
 {
-	elf_list_ptr* ptr;
+	elfListPtr* ptr;
 	int i;
 
 	if(idx < 0 || idx > list->length-1) return NULL;
@@ -156,17 +156,17 @@ elf_object* elf_get_item_from_list(elf_list* list, int idx)
 	return NULL;
 }
 
-unsigned char elf_remove_from_list(elf_list* list, elf_object* obj)
+unsigned char elfRemoveFromList(elfList* list, elfObject* obj)
 {
-	elf_list_ptr* ptr;
-	elf_list_ptr* prev_ptr;
+	elfListPtr* ptr;
+	elfListPtr* prevPtr;
 
-	prev_ptr = NULL;
+	prevPtr = NULL;
 	ptr = list->first;
 
 	if(list->cur && obj == list->cur->obj)
 	{
-		prev_ptr = list->cur->prev;
+		prevPtr = list->cur->prev;
 		ptr = list->cur;
 		list->cur = list->cur->prev;
 	}
@@ -175,10 +175,10 @@ unsigned char elf_remove_from_list(elf_list* list, elf_object* obj)
 	{
 		if(ptr->obj == obj)
 		{
-			if(prev_ptr)
+			if(prevPtr)
 			{
-				prev_ptr->next = ptr->next;
-				if(ptr->next) ptr->next->prev = prev_ptr;
+				prevPtr->next = ptr->next;
+				if(ptr->next) ptr->next->prev = prevPtr;
 			}
 			else
 			{
@@ -186,19 +186,19 @@ unsigned char elf_remove_from_list(elf_list* list, elf_object* obj)
 				if(list->first) list->first->prev = NULL;
 			}
 			if(ptr == list->last) list->last = ptr->prev;
-			elf_destroy_list_ptr(ptr);
+			elfDestroyListPtr(ptr);
 			list->length--;
 
 			return ELF_TRUE;
 		}
-		prev_ptr = ptr;
+		prevPtr = ptr;
 		ptr = ptr->next;
 	}
 
 	return ELF_FALSE;
 }
 
-elf_object* elf_begin_list(elf_list* list)
+elfObject* elfBeginList(elfList* list)
 {
 	list->cur = list->first;
 	if(list->cur)
@@ -209,7 +209,7 @@ elf_object* elf_begin_list(elf_list* list)
 	return NULL;
 }
 
-elf_object* elf_next_in_list(elf_list* list)
+elfObject* elfNextInList(elfList* list)
 {
 	list->cur = list->next;
 	if(list->cur)
@@ -220,7 +220,7 @@ elf_object* elf_next_in_list(elf_list* list)
 	return NULL;
 }
 
-elf_object* elf_rbegin_list(elf_list* list)
+elfObject* elfRbeginList(elfList* list)
 {
 	list->cur = list->last;
 	if(list->cur)
@@ -231,7 +231,7 @@ elf_object* elf_rbegin_list(elf_list* list)
 	return NULL;
 }
 
-elf_object* elf_rnext_in_list(elf_list* list)
+elfObject* elfRnextInList(elfList* list)
 {
 	list->cur = list->next;
 	if(list->cur)
@@ -242,33 +242,33 @@ elf_object* elf_rnext_in_list(elf_list* list)
 	return NULL;
 }
 
-void elf_set_list_cur_ptr(elf_list* list, elf_object* ptr)
+void elfSetListCurPtr(elfList* list, elfObject* ptr)
 {
 	if(list->cur)
 	{
-		elf_dec_ref((elf_object*)list->cur->obj);
+		elfDecRef((elfObject*)list->cur->obj);
 		list->cur->obj = ptr;
-		elf_inc_ref((elf_object*)list->cur->obj);
+		elfIncRef((elfObject*)list->cur->obj);
 	}
 }
 
-void elf_seek_list(elf_list* list, elf_object* ptr)
+void elfSeekList(elfList* list, elfObject* ptr)
 {
-	elf_object* obj;
+	elfObject* obj;
 
-	for(obj = elf_begin_list(list); obj;
-		obj = elf_next_in_list(list))
+	for(obj = elfBeginList(list); obj;
+		obj = elfNextInList(list))
 	{
 		if(obj == ptr) return;
 	}
 }
 
-void elf_rseek_list(elf_list* list, elf_object* ptr)
+void elfRseekList(elfList* list, elfObject* ptr)
 {
-	elf_object* obj;
+	elfObject* obj;
 
-	for(obj = elf_rbegin_list(list); obj;
-		obj = elf_rnext_in_list(list))
+	for(obj = elfRbeginList(list); obj;
+		obj = elfRnextInList(list))
 	{
 		if(obj == ptr) return;
 	}

@@ -1,76 +1,76 @@
 
-gfx_vertex_data* gfx_create_vertex_data(int count, int format, int data_type)
+gfxVertexData* gfxCreateVertexData(int count, int format, int dataType)
 {
-	gfx_vertex_data* data;
+	gfxVertexData* data;
 
 	if(count <= 0) return NULL;
 	if(!(format >= GFX_FLOAT && format < GFX_MAX_FORMATS)) return NULL;
-	if(!(data_type >= GFX_VERTEX_DATA_STATIC && data_type < GFX_MAX_VERTEX_DATA_TYPES)) return NULL;
+	if(!(dataType >= GFX_VERTEX_DATA_STATIC && dataType < GFX_MAX_VERTEX_DATA_TYPES)) return NULL;
 
-	data = (gfx_vertex_data*)malloc(sizeof(gfx_vertex_data));
-	memset(data, 0x0, sizeof(gfx_vertex_data));
-	data->obj_type = GFX_VERTEX_DATA;
-	data->obj_destr = gfx_destroy_vertex_data;
+	data = (gfxVertexData*)malloc(sizeof(gfxVertexData));
+	memset(data, 0x0, sizeof(gfxVertexData));
+	data->objType = GFX_VERTEX_DATA;
+	data->objDestr = gfxDestroyVertexData;
 
 	data->count = count;
 	data->format = format;
-	data->size_bytes = driver->format_sizes[format]*count;
-	data->data_type = data_type;
-	data->data = malloc(data->size_bytes);
-	memset(data->data, 0x0, data->size_bytes);
+	data->sizeBytes = driver->formatSizes[format]*count;
+	data->dataType = dataType;
+	data->data = malloc(data->sizeBytes);
+	memset(data->data, 0x0, data->sizeBytes);
 
-	gfx_inc_obj(GFX_VERTEX_DATA);
+	gfxIncObj(GFX_VERTEX_DATA);
 
 	return data;
 }
 
-void gfx_destroy_vertex_data(void* data)
+void gfxDestroyVertexData(void* data)
 {
-	gfx_vertex_data* vertex_data = (gfx_vertex_data*)data;
+	gfxVertexData* vertexData = (gfxVertexData*)data;
 
-	if(vertex_data->vbo) glDeleteBuffers(1, &vertex_data->vbo);
+	if(vertexData->vbo) glDeleteBuffers(1, &vertexData->vbo);
 
-	free(vertex_data->data);
-	free(vertex_data);
+	free(vertexData->data);
+	free(vertexData);
 
-	gfx_dec_obj(GFX_VERTEX_DATA);
+	gfxDecObj(GFX_VERTEX_DATA);
 }
 
-int gfx_get_vertex_data_count(gfx_vertex_data* data)
+int gfxGetVertexDataCount(gfxVertexData* data)
 {
 	return data->count;
 }
 
-int gfx_get_vertex_data_format(gfx_vertex_data* data)
+int gfxGetVertexDataFormat(gfxVertexData* data)
 {
 	return data->format;
 }
 
-void* gfx_get_vertex_data_buffer(gfx_vertex_data* data)
+void* gfxGetVertexDataBuffer(gfxVertexData* data)
 {
 	return data->data;
 }
 
-int gfx_get_vertex_data_size_bytes(gfx_vertex_data* data)
+int gfxGetVertexDataSizeBytes(gfxVertexData* data)
 {
-	return data->size_bytes;
+	return data->sizeBytes;
 }
 
-void gfx_update_vertex_data(gfx_vertex_data* data)
+void gfxUpdateVertexData(gfxVertexData* data)
 {
 	if(data->vbo)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, data->vbo);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, data->size_bytes, data->data);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, data->sizeBytes, data->data);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 	data->changed = GFX_FALSE;
 }
 
-void gfx_update_vertex_data_sub_data(gfx_vertex_data* data, int start, int length)
+void gfxUpdateVertexDataSubData(gfxVertexData* data, int start, int length)
 {
-	if(start > data->size_bytes) return;
-	if(start+length > data->size_bytes) length -= (start+length)-data->size_bytes;
+	if(start > data->sizeBytes) return;
+	if(start+length > data->sizeBytes) length -= (start+length)-data->sizeBytes;
 
 	if(data->vbo)
 	{
@@ -81,63 +81,63 @@ void gfx_update_vertex_data_sub_data(gfx_vertex_data* data, int start, int lengt
 	data->changed = GFX_FALSE;
 }
 
-void gfx_init_vertex_data_vbo(gfx_vertex_data* data)
+void gfxInitVertexDataVbo(gfxVertexData* data)
 {
 	if(!data->vbo)
 	{
 		glGenBuffers(1, &data->vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, data->vbo);
-		glBufferData(GL_ARRAY_BUFFER, data->size_bytes, data->data,
-			driver->vertex_data_draw_modes[data->data_type]);
+		glBufferData(GL_ARRAY_BUFFER, data->sizeBytes, data->data,
+			driver->vertexDataDrawModes[data->dataType]);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 	data->changed = GFX_FALSE;
 }
 
-gfx_vertex_array* gfx_create_vertex_array(unsigned char gpu_data)
+gfxVertexArray* gfxCreateVertexArray(unsigned char gpuData)
 {
-	gfx_vertex_array* vertex_array = NULL;
+	gfxVertexArray* vertexArray = NULL;
 
-	vertex_array = (gfx_vertex_array*)malloc(sizeof(gfx_vertex_array));
-	memset(vertex_array, 0x0, sizeof(gfx_vertex_array));
-	vertex_array->obj_type = GFX_VERTEX_ARRAY;
-	vertex_array->obj_destr = gfx_destroy_vertex_array;
+	vertexArray = (gfxVertexArray*)malloc(sizeof(gfxVertexArray));
+	memset(vertexArray, 0x0, sizeof(gfxVertexArray));
+	vertexArray->objType = GFX_VERTEX_ARRAY;
+	vertexArray->objDestr = gfxDestroyVertexArray;
 
-	vertex_array->gpu_data = !gpu_data == GFX_FALSE;
+	vertexArray->gpuData = !gpuData == GFX_FALSE;
 
-	gfx_inc_obj(GFX_VERTEX_ARRAY);
+	gfxIncObj(GFX_VERTEX_ARRAY);
 
-	return vertex_array;
+	return vertexArray;
 }
 
-void gfx_destroy_vertex_array(void* data)
+void gfxDestroyVertexArray(void* data)
 {
 	int i;
-	gfx_vertex_array* vertex_array = (gfx_vertex_array*)data;
+	gfxVertexArray* vertexArray = (gfxVertexArray*)data;
 
 	for(i = 0; i < GFX_MAX_VERTEX_ARRAYS; i++)
 	{
-		if(vertex_array->varrs[i].data)
+		if(vertexArray->varrs[i].data)
 		{
-			gfx_dec_ref((gfx_object*)vertex_array->varrs[i].data);
+			gfxDecRef((gfxObject*)vertexArray->varrs[i].data);
 		}
 	}
 
-	gfx_dec_obj(GFX_VERTEX_ARRAY);
+	gfxDecObj(GFX_VERTEX_ARRAY);
 
-	free(vertex_array);
+	free(vertexArray);
 }
 
-int gfx_get_vertex_array_vertex_count(gfx_vertex_array* vertex_array)
+int gfxGetVertexArrayVertexCount(gfxVertexArray* vertexArray)
 {
-	return vertex_array->vertex_count;
+	return vertexArray->vertexCount;
 }
 
-void gfx_set_vertex_array_data(gfx_vertex_array* vertex_array, int target, gfx_vertex_data* data)
+void gfxSetVertexArrayData(gfxVertexArray* vertexArray, int target, gfxVertexData* data)
 {
-	gfx_varr* varr;
+	gfxVarr* varr;
 	int i;
-	int varr_count;
+	int varrCount;
 
 	if(!(target >= GFX_VERTEX && target < GFX_MAX_VERTEX_ARRAYS))
 	{
@@ -145,79 +145,79 @@ void gfx_set_vertex_array_data(gfx_vertex_array* vertex_array, int target, gfx_v
 		return;
 	}
 
-	varr = &vertex_array->varrs[target];
+	varr = &vertexArray->varrs[target];
 
 	switch(target)
 	{
-		case GFX_VERTEX: varr->element_count = 3; break;
-		case GFX_NORMAL: varr->element_count = 3; break;
-		case GFX_TEX_COORD: varr->element_count = 2; break;
-		case GFX_COLOR: varr->element_count = 4; break;
-		case GFX_TANGENT: varr->element_count = 3; break;
-		case GFX_WEIGHTS: varr->element_count = 4; break;
-		case GFX_BONEIDS: varr->element_count = 4; break;
+		case GFX_VERTEX: varr->elementCount = 3; break;
+		case GFX_NORMAL: varr->elementCount = 3; break;
+		case GFX_TEX_COORD: varr->elementCount = 2; break;
+		case GFX_COLOR: varr->elementCount = 4; break;
+		case GFX_TANGENT: varr->elementCount = 3; break;
+		case GFX_WEIGHTS: varr->elementCount = 4; break;
+		case GFX_BONEIDS: varr->elementCount = 4; break;
 		default: printf("error: invalid target for vertex array data\n"); return;
 	}
 
-	varr->vertex_count = data->count/varr->element_count;
-	varr->vertex_size_bytes = driver->format_sizes[data->format]*varr->element_count;
+	varr->vertexCount = data->count/varr->elementCount;
+	varr->vertexSizeBytes = driver->formatSizes[data->format]*varr->elementCount;
 
-	if(vertex_array->vertex_count == 0) vertex_array->vertex_count = varr->vertex_count;
-	else if(varr->vertex_count < vertex_array->vertex_count) vertex_array->vertex_count = varr->vertex_count;
+	if(vertexArray->vertexCount == 0) vertexArray->vertexCount = varr->vertexCount;
+	else if(varr->vertexCount < vertexArray->vertexCount) vertexArray->vertexCount = varr->vertexCount;
 	else
 	{
-		varr_count = 0;
+		varrCount = 0;
 		for(i = 0; i < GFX_MAX_VERTEX_ARRAYS; i++)
-			if(vertex_array->varrs[i].data) varr_count++;
-		if(varr_count < 2) vertex_array->vertex_count = varr->vertex_count;
+			if(vertexArray->varrs[i].data) varrCount++;
+		if(varrCount < 2) vertexArray->vertexCount = varr->vertexCount;
 	}
 
-	if(varr->data) gfx_dec_ref((gfx_object*)varr->data);
+	if(varr->data) gfxDecRef((gfxObject*)varr->data);
 	varr->data = data;
-	gfx_inc_ref((gfx_object*)varr->data);
+	gfxIncRef((gfxObject*)varr->data);
 
-	if(vertex_array->gpu_data && driver->version >= 200) gfx_init_vertex_data_vbo(varr->data);
+	if(vertexArray->gpuData && driver->version >= 200) gfxInitVertexDataVbo(varr->data);
 }
 
-void gfx_set_vertex_array(gfx_vertex_array* vertex_array)
+void gfxSetVertexArray(gfxVertexArray* vertexArray)
 {
 	int i;
 
 	if(driver->version < 200)
 	{
-		if(vertex_array->varrs[GFX_VERTEX].data)
+		if(vertexArray->varrs[GFX_VERTEX].data)
 		{
 			glEnableClientState(GL_VERTEX_ARRAY);
-			glVertexPointer(3, driver->formats[vertex_array->varrs[GFX_VERTEX].data->format], 0, vertex_array->varrs[GFX_VERTEX].data->data);
+			glVertexPointer(3, driver->formats[vertexArray->varrs[GFX_VERTEX].data->format], 0, vertexArray->varrs[GFX_VERTEX].data->data);
 		}
 		else
 		{
 			glDisableClientState(GL_VERTEX_ARRAY);
 		}
 
-		if(vertex_array->varrs[GFX_NORMAL].data)
+		if(vertexArray->varrs[GFX_NORMAL].data)
 		{
 			glEnableClientState(GL_NORMAL_ARRAY);
-			glNormalPointer(driver->formats[vertex_array->varrs[GFX_NORMAL].data->format], 0, vertex_array->varrs[GFX_NORMAL].data->data);
+			glNormalPointer(driver->formats[vertexArray->varrs[GFX_NORMAL].data->format], 0, vertexArray->varrs[GFX_NORMAL].data->data);
 		}
 		else
 		{
 			glDisableClientState(GL_NORMAL_ARRAY);
 		}
 
-		if(vertex_array->varrs[GFX_COLOR].data)
+		if(vertexArray->varrs[GFX_COLOR].data)
 		{
 			// input something that doesn't make sense so that the driver will know something has changed in the color
-			gfx_set_color(&driver->shader_params.material_params.diffuse_color, 10.3, 10.056, 10.230, 1.0);
+			gfxSetColor(&driver->shaderParams.materialParams.diffuseColor, 10.3, 10.056, 10.230, 1.0);
 			glEnableClientState(GL_COLOR_ARRAY);
-			glColorPointer(4, driver->formats[vertex_array->varrs[GFX_COLOR].data->format], 0, vertex_array->varrs[GFX_COLOR].data->data);
+			glColorPointer(4, driver->formats[vertexArray->varrs[GFX_COLOR].data->format], 0, vertexArray->varrs[GFX_COLOR].data->data);
 		}
 		else
 		{
 			glDisableClientState(GL_COLOR_ARRAY);
 		}
 
-		if(vertex_array->varrs[GFX_TEX_COORD].data)
+		if(vertexArray->varrs[GFX_TEX_COORD].data)
 		{
 			for(i = 0; i < GFX_MAX_TEXTURES-1; i++)
 			{
@@ -225,7 +225,7 @@ void gfx_set_vertex_array(gfx_vertex_array* vertex_array)
 				glClientActiveTexture(GL_TEXTURE0+i);
 
 				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-				glTexCoordPointer(2, driver->formats[vertex_array->varrs[GFX_TEX_COORD].data->format], 0, vertex_array->varrs[GFX_TEX_COORD].data->data);
+				glTexCoordPointer(2, driver->formats[vertexArray->varrs[GFX_TEX_COORD].data->format], 0, vertexArray->varrs[GFX_TEX_COORD].data->data);
 			}
 		}
 		else
@@ -241,16 +241,16 @@ void gfx_set_vertex_array(gfx_vertex_array* vertex_array)
 	}
 	else
 	{
-		if(vertex_array->gpu_data)
+		if(vertexArray->gpuData)
 		{
 			for(i = 0; i < GFX_MAX_VERTEX_ARRAYS; i++)
 			{
-				if(vertex_array->varrs[i].data)
+				if(vertexArray->varrs[i].data)
 				{
 					glEnableVertexAttribArray(i);
-					glBindBuffer(GL_ARRAY_BUFFER, vertex_array->varrs[i].data->vbo);
-					glVertexAttribPointer(i, vertex_array->varrs[i].element_count,
-						driver->formats[vertex_array->varrs[i].data->format], GL_FALSE, 0, 0);
+					glBindBuffer(GL_ARRAY_BUFFER, vertexArray->varrs[i].data->vbo);
+					glVertexAttribPointer(i, vertexArray->varrs[i].elementCount,
+						driver->formats[vertexArray->varrs[i].data->format], GL_FALSE, 0, 0);
 				}
 				else
 				{
@@ -258,19 +258,19 @@ void gfx_set_vertex_array(gfx_vertex_array* vertex_array)
 				}
 			}
 
-			driver->dirty_vertex_arrays = GFX_TRUE;
+			driver->dirtyVertexArrays = GFX_TRUE;
 		}
 		else
 		{
 			for(i = 0; i < GFX_MAX_VERTEX_ARRAYS; i++)
 			{
-				if(vertex_array->varrs[i].data)
+				if(vertexArray->varrs[i].data)
 				{
 					glEnableVertexAttribArray(i);
-					if(driver->dirty_vertex_arrays) glBindBuffer(GL_ARRAY_BUFFER, 0);
-					glVertexAttribPointer(i, vertex_array->varrs[i].element_count,
-						driver->formats[vertex_array->varrs[i].data->format],
-						GL_FALSE, 0, vertex_array->varrs[i].data->data);
+					if(driver->dirtyVertexArrays) glBindBuffer(GL_ARRAY_BUFFER, 0);
+					glVertexAttribPointer(i, vertexArray->varrs[i].elementCount,
+						driver->formats[vertexArray->varrs[i].data->format],
+						GL_FALSE, 0, vertexArray->varrs[i].data->data);
 				}
 				else
 				{
@@ -278,75 +278,75 @@ void gfx_set_vertex_array(gfx_vertex_array* vertex_array)
 				}
 			}
 
-			driver->dirty_vertex_arrays = GFX_FALSE;
+			driver->dirtyVertexArrays = GFX_FALSE;
 		}
 	}
 }
 
-void gfx_draw_vertex_array(gfx_vertex_array* vertex_array, int count, int draw_mode)
+void gfxDrawVertexArray(gfxVertexArray* vertexArray, int count, int drawMode)
 {
-	if(count > vertex_array->vertex_count) count -= count-vertex_array->vertex_count;
+	if(count > vertexArray->vertexCount) count -= count-vertexArray->vertexCount;
 
-	gfx_set_vertex_array(vertex_array);
+	gfxSetVertexArray(vertexArray);
 
-	glDrawArrays(driver->draw_modes[draw_mode], 0, count);
+	glDrawArrays(driver->drawModes[drawMode], 0, count);
 
-	driver->vertices_drawn[draw_mode] += count;
+	driver->verticesDrawn[drawMode] += count;
 }
 
-gfx_vertex_index* gfx_create_vertex_index(unsigned char gpu_data, gfx_vertex_data* data)
+gfxVertexIndex* gfxCreateVertexIndex(unsigned char gpuData, gfxVertexData* data)
 {
-	gfx_vertex_index* vertex_index = NULL;
+	gfxVertexIndex* vertexIndex = NULL;
 
-	vertex_index = (gfx_vertex_index*)malloc(sizeof(gfx_vertex_index));
-	memset(vertex_index, 0x0, sizeof(gfx_vertex_index));
-	vertex_index->obj_type = GFX_VERTEX_INDEX;
-	vertex_index->obj_destr = gfx_destroy_vertex_index;
+	vertexIndex = (gfxVertexIndex*)malloc(sizeof(gfxVertexIndex));
+	memset(vertexIndex, 0x0, sizeof(gfxVertexIndex));
+	vertexIndex->objType = GFX_VERTEX_INDEX;
+	vertexIndex->objDestr = gfxDestroyVertexIndex;
 
-	vertex_index->data = data;
-	gfx_inc_ref((gfx_object*)vertex_index->data);
-	vertex_index->indice_count = gfx_get_vertex_data_count(data);
+	vertexIndex->data = data;
+	gfxIncRef((gfxObject*)vertexIndex->data);
+	vertexIndex->indiceCount = gfxGetVertexDataCount(data);
 
-	vertex_index->gpu_data = !gpu_data == GFX_FALSE;
+	vertexIndex->gpuData = !gpuData == GFX_FALSE;
 
-	if(vertex_index->gpu_data && driver->version >= 200) gfx_init_vertex_data_vbo(data);
+	if(vertexIndex->gpuData && driver->version >= 200) gfxInitVertexDataVbo(data);
 
-	gfx_inc_obj(GFX_VERTEX_INDEX);
+	gfxIncObj(GFX_VERTEX_INDEX);
 
-	return vertex_index;
+	return vertexIndex;
 }
 
-void gfx_destroy_vertex_index(void* data)
+void gfxDestroyVertexIndex(void* data)
 {
-	gfx_vertex_index* vertex_index = (gfx_vertex_index*)data;
+	gfxVertexIndex* vertexIndex = (gfxVertexIndex*)data;
 
-	if(vertex_index->data) gfx_dec_ref((gfx_object*)vertex_index->data);
+	if(vertexIndex->data) gfxDecRef((gfxObject*)vertexIndex->data);
 
-	free(vertex_index);
+	free(vertexIndex);
 
-	gfx_dec_obj(GFX_VERTEX_INDEX);
+	gfxDecObj(GFX_VERTEX_INDEX);
 }
 
-int gfx_get_vertex_index_indice_count(gfx_vertex_index* vertex_index)
+int gfxGetVertexIndexIndiceCount(gfxVertexIndex* vertexIndex)
 {
-	return vertex_index->indice_count;
+	return vertexIndex->indiceCount;
 }
 
-void gfx_draw_vertex_index(gfx_vertex_index* vertex_index, unsigned int draw_mode)
+void gfxDrawVertexIndex(gfxVertexIndex* vertexIndex, unsigned int drawMode)
 {
-	if(vertex_index->gpu_data && driver->version >= 200)
+	if(vertexIndex->gpuData && driver->version >= 200)
 	{
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertex_index->data->vbo);
-		glDrawElements(driver->draw_modes[draw_mode], vertex_index->indice_count,
-			driver->formats[vertex_index->data->format], 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexIndex->data->vbo);
+		glDrawElements(driver->drawModes[drawMode], vertexIndex->indiceCount,
+			driver->formats[vertexIndex->data->format], 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 	else
 	{
-		glDrawElements(driver->draw_modes[draw_mode],  vertex_index->indice_count,
-			driver->formats[vertex_index->data->format], vertex_index->data->data);
+		glDrawElements(driver->drawModes[drawMode],  vertexIndex->indiceCount,
+			driver->formats[vertexIndex->data->format], vertexIndex->data->data);
 	}
 
-	driver->vertices_drawn[draw_mode] += vertex_index->indice_count;
+	driver->verticesDrawn[drawMode] += vertexIndex->indiceCount;
 }
 

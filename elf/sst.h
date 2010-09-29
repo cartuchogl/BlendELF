@@ -1,5 +1,5 @@
 
-char* elf_read_next(const char* text, int* pos)
+char* elfReadNext(const char* text, int* pos)
 {
 	int start, end;
 	char* str;
@@ -26,75 +26,75 @@ char* elf_read_next(const char* text, int* pos)
 	memcpy(str, &text[start], sizeof(char)*(end-start));
 	str[end-start] = '\0';
 
-	elf_inc_obj(ELF_STRING);
+	elfIncObj(ELF_STRING);
 
 	return str;
 }
 
-char* elf_read_sst_string(const char* text, int* pos)
+char* elfReadSstString(const char* text, int* pos)
 {
-	return elf_read_next(text, pos);
+	return elfReadNext(text, pos);
 }
 
-float elf_read_sst_float(const char* text, int* pos)
+float elfReadSstFloat(const char* text, int* pos)
 {
 	char* str;
 	float val;
 
-	str = elf_read_next(text, pos);
+	str = elfReadNext(text, pos);
 	val = (float)atof(str);
-	elf_destroy_string(str);
+	elfDestroyString(str);
 
 	return val;
 }
 
-void elf_read_sst_floats(const char* text, int* pos, int n, float* params)
+void elfReadSstFloats(const char* text, int* pos, int n, float* params)
 {
 	int i;
 	char* str;
 
-	for(i = 0; i < n && (str = elf_read_next(text, pos)); i++)
+	for(i = 0; i < n && (str = elfReadNext(text, pos)); i++)
 	{
 		params[i] = (float)atof(str);
-		elf_destroy_string(str);
+		elfDestroyString(str);
 	}
 }
 
-int elf_read_sst_int(const char* text, int* pos)
+int elfReadSstInt(const char* text, int* pos)
 {
 	char* str;
 	int val;
 
-	str = elf_read_next(text, pos);
+	str = elfReadNext(text, pos);
 	val = atoi(str);
-	elf_destroy_string(str);
+	elfDestroyString(str);
 
 	return val;
 }
 
-void elf_read_sst_ints(const char* text, int* pos, int n, int* params)
+void elfReadSstInts(const char* text, int* pos, int n, int* params)
 {
 	int i;
 	char* str;
 
-	for(i = 0; i < n && (str = elf_read_next(text, pos)); i++)
+	for(i = 0; i < n && (str = elfReadNext(text, pos)); i++)
 	{
 		params[i] = atoi(str);
-		elf_destroy_string(str);
+		elfDestroyString(str);
 	}
 }
 
-unsigned char elf_read_sst_bool(const char* text, int* pos)
+unsigned char elfReadSstBool(const char* text, int* pos)
 {
 	char* str;
 	unsigned char result;
 
-	str = elf_read_next(text, pos);
+	str = elfReadNext(text, pos);
 
 	if(!strcmp(str, "FALSE")) result = ELF_FALSE;
 	else result = ELF_TRUE;
 
-	elf_destroy_string(str);
+	elfDestroyString(str);
 
 	return result;
 }

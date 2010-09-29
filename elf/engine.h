@@ -1,206 +1,206 @@
 
-elf_engine* elf_create_engine()
+elfEngine* elfCreateEngine()
 {
-	elf_engine* engine;
-	gfx_vertex_data* vertex_data;
-	float* vertex_buffer;
+	elfEngine* engine;
+	gfxVertexData* vertexData;
+	float* vertexBuffer;
 
-	engine = (elf_engine*)malloc(sizeof(elf_engine));
-	memset(engine, 0x0, sizeof(elf_engine));
-	engine->obj_type = ELF_ENGINE;
-	engine->obj_destr = elf_destroy_engine;
+	engine = (elfEngine*)malloc(sizeof(elfEngine));
+	memset(engine, 0x0, sizeof(elfEngine));
+	engine->objType = ELF_ENGINE;
+	engine->objDestr = elfDestroyEngine;
 
-	engine->fps_timer = elf_create_timer();
-	engine->fps_limit_timer = elf_create_timer();
-	engine->time_sync_timer = elf_create_timer();
+	engine->fpsTimer = elfCreateTimer();
+	engine->fpsLimitTimer = elfCreateTimer();
+	engine->timeSyncTimer = elfCreateTimer();
 
-	elf_inc_ref((elf_object*)engine->fps_timer);
-	elf_inc_ref((elf_object*)engine->fps_limit_timer);
-	elf_inc_ref((elf_object*)engine->time_sync_timer);
+	elfIncRef((elfObject*)engine->fpsTimer);
+	elfIncRef((elfObject*)engine->fpsLimitTimer);
+	elfIncRef((elfObject*)engine->timeSyncTimer);
 
-	engine->free_run = ELF_TRUE;
-	engine->fps_limit = 0;
+	engine->freeRun = ELF_TRUE;
+	engine->fpsLimit = 0;
 	engine->speed = 1.0;
-	engine->f10_exit = ELF_TRUE;
+	engine->f10Exit = ELF_TRUE;
 
-	engine->shadow_map_size = 1024;
-	engine->shadow_map = gfx_create_2d_texture(1024, 1024, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
-	engine->shadow_target = gfx_create_render_target(1024, 1024);
-	gfx_set_render_target_depth_texture(engine->shadow_target, engine->shadow_map);
-	engine->texture_anisotropy = 1.0;
-	engine->occlusion_culling = ELF_FALSE;
+	engine->shadowMapSize = 1024;
+	engine->shadowMap = gfxCreate_2dTexture(1024, 1024, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
+	engine->shadowTarget = gfxCreateRenderTarget(1024, 1024);
+	gfxSetRenderTargetDepthTexture(engine->shadowTarget, engine->shadowMap);
+	engine->textureAnisotropy = 1.0;
+	engine->occlusionCulling = ELF_FALSE;
 
-	engine->lines = gfx_create_vertex_data(512, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-	gfx_inc_ref((gfx_object*)engine->lines);
+	engine->lines = gfxCreateVertexData(512, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
+	gfxIncRef((gfxObject*)engine->lines);
 
-	engine->sprite_vertex_array = gfx_create_vertex_array(GFX_FALSE);
-	gfx_inc_ref((gfx_object*)engine->sprite_vertex_array);
+	engine->spriteVertexArray = gfxCreateVertexArray(GFX_FALSE);
+	gfxIncRef((gfxObject*)engine->spriteVertexArray);
 
-	vertex_data = gfx_create_vertex_data(36, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
+	vertexData = gfxCreateVertexData(36, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
 
-	vertex_buffer = (float*)gfx_get_vertex_data_buffer(vertex_data);
+	vertexBuffer = (float*)gfxGetVertexDataBuffer(vertexData);
 
-	vertex_buffer[0] = -0.5;
-	vertex_buffer[1] = 0.5;
-	vertex_buffer[2] = 0.0;
-	vertex_buffer[3] = -0.5;
-	vertex_buffer[4] = -0.5;
-	vertex_buffer[5] = 0.0;
-	vertex_buffer[6] = 0.5;
-	vertex_buffer[7] = -0.5;
-	vertex_buffer[8] = 0.0;
+	vertexBuffer[0] = -0.5;
+	vertexBuffer[1] = 0.5;
+	vertexBuffer[2] = 0.0;
+	vertexBuffer[3] = -0.5;
+	vertexBuffer[4] = -0.5;
+	vertexBuffer[5] = 0.0;
+	vertexBuffer[6] = 0.5;
+	vertexBuffer[7] = -0.5;
+	vertexBuffer[8] = 0.0;
 
-	vertex_buffer[9] = -0.5;
-	vertex_buffer[10] = 0.5;
-	vertex_buffer[11] = 0.0;
-	vertex_buffer[12] = 0.5;
-	vertex_buffer[13] = -0.5;
-	vertex_buffer[14] = 0.0;
-	vertex_buffer[15] = 0.5;
-	vertex_buffer[16] = 0.5;
-	vertex_buffer[17] = 0.0;
+	vertexBuffer[9] = -0.5;
+	vertexBuffer[10] = 0.5;
+	vertexBuffer[11] = 0.0;
+	vertexBuffer[12] = 0.5;
+	vertexBuffer[13] = -0.5;
+	vertexBuffer[14] = 0.0;
+	vertexBuffer[15] = 0.5;
+	vertexBuffer[16] = 0.5;
+	vertexBuffer[17] = 0.0;
 
-	vertex_buffer[18] = 0.5;
-	vertex_buffer[19] = 0.5;
-	vertex_buffer[20] = 0.0;
-	vertex_buffer[21] = 0.5;
-	vertex_buffer[22] = -0.5;
-	vertex_buffer[23] = 0.0;
-	vertex_buffer[24] = -0.5;
-	vertex_buffer[25] = -0.5;
-	vertex_buffer[26] = 0.0;
+	vertexBuffer[18] = 0.5;
+	vertexBuffer[19] = 0.5;
+	vertexBuffer[20] = 0.0;
+	vertexBuffer[21] = 0.5;
+	vertexBuffer[22] = -0.5;
+	vertexBuffer[23] = 0.0;
+	vertexBuffer[24] = -0.5;
+	vertexBuffer[25] = -0.5;
+	vertexBuffer[26] = 0.0;
 
-	vertex_buffer[27] = 0.5;
-	vertex_buffer[28] = 0.5;
-	vertex_buffer[29] = 0.0;
-	vertex_buffer[30] = -0.5;
-	vertex_buffer[31] = -0.5;
-	vertex_buffer[32] = 0.0;
-	vertex_buffer[33] = -0.5;
-	vertex_buffer[34] = 0.5;
-	vertex_buffer[35] = 0.0;
+	vertexBuffer[27] = 0.5;
+	vertexBuffer[28] = 0.5;
+	vertexBuffer[29] = 0.0;
+	vertexBuffer[30] = -0.5;
+	vertexBuffer[31] = -0.5;
+	vertexBuffer[32] = 0.0;
+	vertexBuffer[33] = -0.5;
+	vertexBuffer[34] = 0.5;
+	vertexBuffer[35] = 0.0;
 
-	gfx_set_vertex_array_data(engine->sprite_vertex_array, GFX_VERTEX, vertex_data);
+	gfxSetVertexArrayData(engine->spriteVertexArray, GFX_VERTEX, vertexData);
 
-	vertex_data = gfx_create_vertex_data(24, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
+	vertexData = gfxCreateVertexData(24, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
 
-	vertex_buffer = (float*)gfx_get_vertex_data_buffer(vertex_data);
+	vertexBuffer = (float*)gfxGetVertexDataBuffer(vertexData);
 
-	vertex_buffer[0] = 0.0;
-	vertex_buffer[1] = 1.0;
-	vertex_buffer[2] = 0.0;
-	vertex_buffer[3] = 0.0;
-	vertex_buffer[4] = 1.0;
-	vertex_buffer[5] = 0.0;
+	vertexBuffer[0] = 0.0;
+	vertexBuffer[1] = 1.0;
+	vertexBuffer[2] = 0.0;
+	vertexBuffer[3] = 0.0;
+	vertexBuffer[4] = 1.0;
+	vertexBuffer[5] = 0.0;
 
-	vertex_buffer[6] = 0.0;
-	vertex_buffer[7] = 1.0;
-	vertex_buffer[8] = 1.0;
-	vertex_buffer[9] = 0.0;
-	vertex_buffer[10] = 1.0;
-	vertex_buffer[11] = 1.0;
+	vertexBuffer[6] = 0.0;
+	vertexBuffer[7] = 1.0;
+	vertexBuffer[8] = 1.0;
+	vertexBuffer[9] = 0.0;
+	vertexBuffer[10] = 1.0;
+	vertexBuffer[11] = 1.0;
 
-	vertex_buffer[12] = 0.0;
-	vertex_buffer[13] = 1.0;
-	vertex_buffer[14] = 0.0;
-	vertex_buffer[15] = 0.0;
-	vertex_buffer[16] = 1.0;
-	vertex_buffer[17] = 0.0;
+	vertexBuffer[12] = 0.0;
+	vertexBuffer[13] = 1.0;
+	vertexBuffer[14] = 0.0;
+	vertexBuffer[15] = 0.0;
+	vertexBuffer[16] = 1.0;
+	vertexBuffer[17] = 0.0;
 
-	vertex_buffer[18] = 0.0;
-	vertex_buffer[19] = 1.0;
-	vertex_buffer[20] = 1.0;
-	vertex_buffer[21] = 0.0;
-	vertex_buffer[22] = 1.0;
-	vertex_buffer[23] = 1.0;
+	vertexBuffer[18] = 0.0;
+	vertexBuffer[19] = 1.0;
+	vertexBuffer[20] = 1.0;
+	vertexBuffer[21] = 0.0;
+	vertexBuffer[22] = 1.0;
+	vertexBuffer[23] = 1.0;
 
-	gfx_set_vertex_array_data(engine->sprite_vertex_array, GFX_TEX_COORD, vertex_data);
+	gfxSetVertexArrayData(engine->spriteVertexArray, GFX_TEX_COORD, vertexData);
 
-	vertex_data = gfx_create_vertex_data(36, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
+	vertexData = gfxCreateVertexData(36, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
 
-	vertex_buffer = (float*)gfx_get_vertex_data_buffer(vertex_data);
+	vertexBuffer = (float*)gfxGetVertexDataBuffer(vertexData);
 
-	vertex_buffer[0] = 0.0;
-	vertex_buffer[1] = 0.0;
-	vertex_buffer[2] = 1.0;
-	vertex_buffer[3] = 0.0;
-	vertex_buffer[4] = 0.0;
-	vertex_buffer[5] = 1.0;
-	vertex_buffer[6] = 0.0;
-	vertex_buffer[7] = 0.0;
-	vertex_buffer[8] = 1.0;
+	vertexBuffer[0] = 0.0;
+	vertexBuffer[1] = 0.0;
+	vertexBuffer[2] = 1.0;
+	vertexBuffer[3] = 0.0;
+	vertexBuffer[4] = 0.0;
+	vertexBuffer[5] = 1.0;
+	vertexBuffer[6] = 0.0;
+	vertexBuffer[7] = 0.0;
+	vertexBuffer[8] = 1.0;
 
-	vertex_buffer[9] = 0.0;
-	vertex_buffer[10] = 0.0;
-	vertex_buffer[11] = 1.0;
-	vertex_buffer[12] = 0.0;
-	vertex_buffer[13] = 0.0;
-	vertex_buffer[14] = 1.0;
-	vertex_buffer[15] = 0.0;
-	vertex_buffer[16] = 0.0;
-	vertex_buffer[17] = 1.0;
+	vertexBuffer[9] = 0.0;
+	vertexBuffer[10] = 0.0;
+	vertexBuffer[11] = 1.0;
+	vertexBuffer[12] = 0.0;
+	vertexBuffer[13] = 0.0;
+	vertexBuffer[14] = 1.0;
+	vertexBuffer[15] = 0.0;
+	vertexBuffer[16] = 0.0;
+	vertexBuffer[17] = 1.0;
 
-	vertex_buffer[18] = 0.0;
-	vertex_buffer[19] = 0.0;
-	vertex_buffer[20] = -1.0;
-	vertex_buffer[21] = 0.0;
-	vertex_buffer[22] = 0.0;
-	vertex_buffer[23] = -1.0;
-	vertex_buffer[24] = 0.0;
-	vertex_buffer[25] = 0.0;
-	vertex_buffer[26] = -1.0;
+	vertexBuffer[18] = 0.0;
+	vertexBuffer[19] = 0.0;
+	vertexBuffer[20] = -1.0;
+	vertexBuffer[21] = 0.0;
+	vertexBuffer[22] = 0.0;
+	vertexBuffer[23] = -1.0;
+	vertexBuffer[24] = 0.0;
+	vertexBuffer[25] = 0.0;
+	vertexBuffer[26] = -1.0;
 
-	vertex_buffer[27] = 0.0;
-	vertex_buffer[28] = 0.0;
-	vertex_buffer[29] = -1.0;
-	vertex_buffer[30] = 0.0;
-	vertex_buffer[31] = 0.0;
-	vertex_buffer[32] = -1.0;
-	vertex_buffer[33] = 0.0;
-	vertex_buffer[34] = 0.0;
-	vertex_buffer[35] = -1.0;
+	vertexBuffer[27] = 0.0;
+	vertexBuffer[28] = 0.0;
+	vertexBuffer[29] = -1.0;
+	vertexBuffer[30] = 0.0;
+	vertexBuffer[31] = 0.0;
+	vertexBuffer[32] = -1.0;
+	vertexBuffer[33] = 0.0;
+	vertexBuffer[34] = 0.0;
+	vertexBuffer[35] = -1.0;
 
-	gfx_set_vertex_array_data(engine->sprite_vertex_array, GFX_NORMAL, vertex_data);
+	gfxSetVertexArrayData(engine->spriteVertexArray, GFX_NORMAL, vertexData);
 
-	elf_inc_obj(ELF_ENGINE);
+	elfIncObj(ELF_ENGINE);
 
 	return engine;
 }
 
-void elf_destroy_engine(void* data)
+void elfDestroyEngine(void* data)
 {
-	elf_engine* engine = (elf_engine*)data;
+	elfEngine* engine = (elfEngine*)data;
 
-	gfx_dec_ref((gfx_object*)engine->lines);
-	gfx_dec_ref((gfx_object*)engine->sprite_vertex_array);
+	gfxDecRef((gfxObject*)engine->lines);
+	gfxDecRef((gfxObject*)engine->spriteVertexArray);
 
-	if(engine->scene) elf_dec_ref((elf_object*)engine->scene);
-	if(engine->gui) elf_dec_ref((elf_object*)engine->gui);
+	if(engine->scene) elfDecRef((elfObject*)engine->scene);
+	if(engine->gui) elfDecRef((elfObject*)engine->gui);
 
-	if(engine->post_process) elf_destroy_post_process(engine->post_process);
-	gfx_destroy_render_target(engine->shadow_target);
-	gfx_destroy_texture(engine->shadow_map);
+	if(engine->postProcess) elfDestroyPostProcess(engine->postProcess);
+	gfxDestroyRenderTarget(engine->shadowTarget);
+	gfxDestroyTexture(engine->shadowMap);
 
-	elf_dec_ref((elf_object*)engine->fps_timer);
-	elf_dec_ref((elf_object*)engine->fps_limit_timer);
-	elf_dec_ref((elf_object*)engine->time_sync_timer);
+	elfDecRef((elfObject*)engine->fpsTimer);
+	elfDecRef((elfObject*)engine->fpsLimitTimer);
+	elfDecRef((elfObject*)engine->timeSyncTimer);
 
 	free(engine);
 
-	elf_dec_obj(ELF_ENGINE);
+	elfDecObj(ELF_ENGINE);
 }
 
-unsigned char elf_init_engine()
+unsigned char elfInitEngine()
 {
 	if(eng)
 	{
-		elf_set_error(ELF_CANT_INITIALIZE, "error: can't initialize the engine twice!\n");
+		elfSetError(ELF_CANT_INITIALIZE, "error: can't initialize the engine twice!\n");
 		return ELF_FALSE;
 	}
 
-	eng = elf_create_engine();
+	eng = elfCreateEngine();
 	if(!eng) return ELF_FALSE;
-	elf_inc_ref((elf_object*)eng);
+	elfIncRef((elfObject*)eng);
 
 #ifdef ELF_WINDOWS
 	GetCurrentDirectoryA(255, eng->cwd);
@@ -211,212 +211,212 @@ unsigned char elf_init_engine()
 	return ELF_TRUE;
 }
 
-void elf_deinit_engine()
+void elfDeinitEngine()
 {
 	if(!eng) return;
 
-	elf_dec_ref((elf_object*)eng);
+	elfDecRef((elfObject*)eng);
 	eng = NULL;
 }
 
-unsigned char elf_init(int width, int height,
+unsigned char elfInit(int width, int height,
 	const char* title, int multisamples, unsigned char fullscreen, const char* log)
 {
-	elf_init_general();
-	elf_set_log_file_path(log);
+	elfInitGeneral();
+	elfSetLogFilePath(log);
 
-	elf_start_log("BlendELF 0.9 Beta\n");
+	elfStartLog("BlendELF 0.9 Beta\n");
 
-	if(!elf_init_context(width, height, title, multisamples, fullscreen)) return ELF_FALSE;
-	if(!gfx_init())
+	if(!elfInitContext(width, height, title, multisamples, fullscreen)) return ELF_FALSE;
+	if(!gfxInit())
 	{
-		elf_deinit_context();
+		elfDeinitContext();
 		return ELF_FALSE;
 	}
-	elf_init_audio();
-	elf_init_engine();
-	elf_init_scripting();
-	elf_init_networking();
+	elfInitAudio();
+	elfInitEngine();
+	elfInitScripting();
+	elfInitNetworking();
 
 	return ELF_TRUE;
 }
 
-unsigned char elf_init_with_config(const char* file_path)
+unsigned char elfInitWithConfig(const char* filePath)
 {
-	elf_config* config;
+	elfConfig* config;
 
-	elf_init_general();
+	elfInitGeneral();
 
-	if(!(config = elf_read_config("config.txt")))
-		config = elf_create_config();
+	if(!(config = elfReadConfig("config.txt")))
+		config = elfCreateConfig();
 
-	if(!elf_init(config->window_size[0], config->window_size[1], "BlendELF", config->multisamples, !config->fullscreen == ELF_FALSE, config->log))
+	if(!elfInit(config->windowSize[0], config->windowSize[1], "BlendELF", config->multisamples, !config->fullscreen == ELF_FALSE, config->log))
 	{
-		elf_set_error(ELF_CANT_INITIALIZE, "error: could not initialize engine\n");
-		elf_destroy_config(config);
+		elfSetError(ELF_CANT_INITIALIZE, "error: could not initialize engine\n");
+		elfDestroyConfig(config);
 		return ELF_FALSE;
 	}
 
-	elf_set_texture_compress(config->texture_compress);
-	elf_set_texture_anisotropy(config->texture_anisotropy);
-	elf_set_shadow_map_size(config->shadow_map_size);
+	elfSetTextureCompress(config->textureCompress);
+	elfSetTextureAnisotropy(config->textureAnisotropy);
+	elfSetShadowMapSize(config->shadowMapSize);
 
-	if(strlen(config->start) > 0) elf_load_scene(config->start);
+	if(strlen(config->start) > 0) elfLoadScene(config->start);
 
-	elf_destroy_config(config);
+	elfDestroyConfig(config);
 
 	return ELF_TRUE;
 }
 
-void elf_limit_engine_fps()
+void elfLimitEngineFps()
 {
-	if(eng->fps_limit > 0)
+	if(eng->fpsLimit > 0)
 	{
-		if(elf_get_elapsed_time(eng->fps_limit_timer) > 0.0)
+		if(elfGetElapsedTime(eng->fpsLimitTimer) > 0.0)
 		{
-			while(elf_get_elapsed_time(eng->fps_limit_timer) < 1.0/(float)eng->fps_limit);
-			elf_start_timer(eng->fps_limit_timer);
+			while(elfGetElapsedTime(eng->fpsLimitTimer) < 1.0/(float)eng->fpsLimit);
+			elfStartTimer(eng->fpsLimitTimer);
 		}
 		else
 		{
-			elf_start_timer(eng->fps_limit_timer);
+			elfStartTimer(eng->fpsLimitTimer);
 		}
 	}
 }
 
-void elf_update_engine()
+void elfUpdateEngine()
 {
-	elf_update_audio();
+	elfUpdateAudio();
 
-	if(elf_get_elapsed_time(eng->time_sync_timer) > 0.0)
+	if(elfGetElapsedTime(eng->timeSyncTimer) > 0.0)
 	{
-		if(elf_about_zero(eng->tick_rate))
-			eng->sync = (eng->sync*4.0+((float)elf_get_elapsed_time(eng->time_sync_timer)*eng->speed))/5.0;
-		else eng->sync = eng->tick_rate;
+		if(elfAboutZero(eng->tickRate))
+			eng->sync = (eng->sync*4.0+((float)elfGetElapsedTime(eng->timeSyncTimer)*eng->speed))/5.0;
+		else eng->sync = eng->tickRate;
 
-		elf_start_timer(eng->time_sync_timer);
+		elfStartTimer(eng->timeSyncTimer);
 
 		if(eng->sync > 0.0)
 		{
-			if(eng->gui) elf_update_gui(eng->gui, eng->sync);
+			if(eng->gui) elfUpdateGui(eng->gui, eng->sync);
 
 			if(eng->scene)
 			{
-				elf_update_scene(eng->scene, eng->sync);
+				elfUpdateScene(eng->scene, eng->sync);
 			}
 		}
 	}
 	else
 	{
-		elf_start_timer(eng->time_sync_timer);
+		elfStartTimer(eng->timeSyncTimer);
 	}
 
-	elf_update_scripting();
+	elfUpdateScripting();
 }
 
-void elf_count_engine_fps()
+void elfCountEngineFps()
 {
 	eng->frames++;
 
-	if(elf_get_elapsed_time(eng->fps_timer) > 0.0)
+	if(elfGetElapsedTime(eng->fpsTimer) > 0.0)
 	{
-		if(elf_get_elapsed_time(eng->fps_timer) >= 1.0)
+		if(elfGetElapsedTime(eng->fpsTimer) >= 1.0)
 		{
 			eng->fps = eng->frames;
 			eng->frames = 0;
-			elf_start_timer(eng->fps_timer);
+			elfStartTimer(eng->fpsTimer);
 		}
 	}
 	else
 	{
-		elf_start_timer(eng->fps_timer);
+		elfStartTimer(eng->fpsTimer);
 	}
 }
 
-unsigned char elf_run()
+unsigned char elfRun()
 {
-	if(!eng || !eng->free_run) return ELF_FALSE;
+	if(!eng || !eng->freeRun) return ELF_FALSE;
 
-	eng->free_run = ELF_FALSE;
+	eng->freeRun = ELF_FALSE;
 
-	if((eng->f10_exit && elf_get_key_state(ELF_KEY_F10)) || !elf_is_window_opened() || eng->quit)
+	if((eng->f10Exit && elfGetKeyState(ELF_KEY_F10)) || !elfIsWindowOpened() || eng->quit)
 	{
-		eng->free_run = ELF_TRUE;
+		eng->freeRun = ELF_TRUE;
 		return ELF_FALSE;
 	}
 
-	gfx_reset_vertices_drawn();
+	gfxResetVerticesDrawn();
 
-	if(eng->post_process)
+	if(eng->postProcess)
 	{
-		if(elf_get_multisamples() < 1)
+		if(elfGetMultisamples() < 1)
 		{
-			gfx_set_render_target(eng->post_process->main_rt);
-			gfx_set_render_target_color_texture(eng->post_process->main_rt, 0, eng->post_process->main_rt_color[0]);
+			gfxSetRenderTarget(eng->postProcess->mainRt);
+			gfxSetRenderTargetColorTexture(eng->postProcess->mainRt, 0, eng->postProcess->mainRtColor[0]);
 		}
-		gfx_clear_buffers(0.0, 0.0, 0.0, 1.0, 1.0);
+		gfxClearBuffers(0.0, 0.0, 0.0, 1.0, 1.0);
 	}
 	else
 	{
-		gfx_clear_buffers(0.0, 0.0, 0.0, 1.0, 1.0);
+		gfxClearBuffers(0.0, 0.0, 0.0, 1.0, 1.0);
 	}
 
 	if(eng->scene)
 	{
-		elf_scene_pre_draw(eng->scene);
-		elf_draw_scene(eng->scene);
-		elf_scene_post_draw(eng->scene);
+		elfScenePreDraw(eng->scene);
+		elfDrawScene(eng->scene);
+		elfScenePostDraw(eng->scene);
 	}
 
-	if(eng->scene && eng->post_process)
+	if(eng->scene && eng->postProcess)
 	{
-		if(elf_get_multisamples() > 0)
+		if(elfGetMultisamples() > 0)
 		{
-			gfx_copy_frame_buffer(eng->post_process->main_rt_color[0], 0, 0, 0, 0, elf_get_window_width(), elf_get_window_height());
-			if(eng->post_process->dof || eng->post_process->ssao)
-				gfx_copy_frame_buffer(eng->post_process->main_rt_depth, 0, 0, 0, 0, elf_get_window_width(), elf_get_window_height());
+			gfxCopyFrameBuffer(eng->postProcess->mainRtColor[0], 0, 0, 0, 0, elfGetWindowWidth(), elfGetWindowHeight());
+			if(eng->postProcess->dof || eng->postProcess->ssao)
+				gfxCopyFrameBuffer(eng->postProcess->mainRtDepth, 0, 0, 0, 0, elfGetWindowWidth(), elfGetWindowHeight());
 		}
-		elf_run_post_process(eng->post_process, eng->scene);
+		elfRunPostProcess(eng->postProcess, eng->scene);
 	}
-	if(eng->scene && eng->debug_draw) elf_draw_scene_debug(eng->scene);
-	if(eng->gui) elf_draw_gui(eng->gui);
+	if(eng->scene && eng->debugDraw) elfDrawSceneDebug(eng->scene);
+	if(eng->gui) elfDrawGui(eng->gui);
 
-	elf_swap_buffers();
+	elfSwapBuffers();
 
-	elf_limit_engine_fps();
-	elf_update_engine();
-	elf_count_engine_fps();
+	elfLimitEngineFps();
+	elfUpdateEngine();
+	elfCountEngineFps();
 
-	eng->free_run = ELF_TRUE;
+	eng->freeRun = ELF_TRUE;
 
-	elf_sleep(0.001);
+	elfSleep(0.001);
 
 	return ELF_TRUE;
 }
 
-void elf_deinit()
+void elfDeinit()
 {
-	elf_deinit_networking();
-	elf_deinit_scripting();
-	elf_deinit_engine();
-	elf_deinit_audio();
-	gfx_deinit();
-	elf_deinit_context();
-	elf_deinit_general();
+	elfDeinitNetworking();
+	elfDeinitScripting();
+	elfDeinitEngine();
+	elfDeinitAudio();
+	gfxDeinit();
+	elfDeinitContext();
+	elfDeinitGeneral();
 }
 
-void elf_resize_window(int width, int height)
+void elfResizeWindow(int width, int height)
 {
-	elf_set_error(ELF_MISSING_FEATURE, "error: resizing not yet in a usable state\n");
+	elfSetError(ELF_MISSING_FEATURE, "error: resizing not yet in a usable state\n");
 
-	/*if(width <= 0 || height <= 0 || (width == elf_get_window_width() &&
-		height == elf_get_window_height())) return;
+	/*if(width <= 0 || height <= 0 || (width == elfGetWindowWidth() &&
+		height == elfGetWindowHeight())) return;
 
-	elf_resize_context(width, height);
-	elf_init_post_process_buffers(eng->post_process);*/
+	elfResizeContext(width, height);
+	elfInitPostProcessBuffers(eng->postProcess);*/
 }
 
-const char* elf_get_platform()
+const char* elfGetPlatform()
 {
 #if defined(ELF_WINDOWS)
 	return "windows";
@@ -427,164 +427,164 @@ const char* elf_get_platform()
 #endif
 }
 
-int elf_get_version_major()
+int elfGetVersionMajor()
 {
 	return 0;
 }
 
-int elf_get_version_minor()
+int elfGetVersionMinor()
 {
 	return 9;
 }
 
-const char* elf_get_version_release()
+const char* elfGetVersionRelease()
 {
 	return "Beta 2";
 }
 
-const char* elf_get_version()
+const char* elfGetVersion()
 {
 	return "BlendELF 0.9 Beta 2";
 }
 
-char* elf_get_directory_from_path(const char* file_path)
+char* elfGetDirectoryFromPath(const char* filePath)
 {
 	int idx;
 
-	if(strlen(file_path) < 1) return elf_create_string("");
+	if(strlen(filePath) < 1) return elfCreateString("");
 
-	idx = elf_rfind_chars_from_string(file_path, "/\\");
+	idx = elfRfindCharsFromString(filePath, "/\\");
 	if(idx < 1)
 	{
-		return elf_create_string("");
+		return elfCreateString("");
 	}
 	else
 	{
-		return elf_sub_string((char*)file_path, 0, idx+1);
+		return elfSubString((char*)filePath, 0, idx+1);
 	}
 }
 
-const char* elf_get_current_directory()
+const char* elfGetCurrentDirectory()
 {
 	return eng->cwd;
 }
 
-const char* elf_get_error_string()
+const char* elfGetErrorString()
 {
-	return gen->err_str;
+	return gen->errStr;
 }
 
-int elf_get_error()
+int elfGetError()
 {
-	return gen->err_code;
+	return gen->errCode;
 }
 
-void elf_quit()
+void elfQuit()
 {
 	eng->quit = ELF_TRUE;
 }
 
-void elf_set_f10_exit(unsigned char exit)
+void elfSetF10Exit(unsigned char exit)
 {
-	eng->f10_exit = !(exit == ELF_FALSE);
+	eng->f10Exit = !(exit == ELF_FALSE);
 }
 
-unsigned char elf_get_f10_exit()
+unsigned char elfGetF10Exit()
 {
-	return eng->f10_exit;
+	return eng->f10Exit;
 }
 
-elf_scene* elf_load_scene(const char* file_path)
+elfScene* elfLoadScene(const char* filePath)
 {
-	elf_scene* scene;
+	elfScene* scene;
 
-	scene = elf_create_scene_from_file(file_path);
+	scene = elfCreateSceneFromFile(filePath);
 	if(scene)
 	{
-		if(eng->scene) elf_dec_ref((elf_object*)eng->scene);
+		if(eng->scene) elfDecRef((elfObject*)eng->scene);
 		eng->scene = scene;
-		elf_inc_ref((elf_object*)eng->scene);
+		elfIncRef((elfObject*)eng->scene);
 	}
 
 	return scene;
 }
 
-void elf_set_scene(elf_scene* scene)
+void elfSetScene(elfScene* scene)
 {
-	if(eng->scene) elf_dec_ref((elf_object*)eng->scene);
+	if(eng->scene) elfDecRef((elfObject*)eng->scene);
 	eng->scene = scene;
-	if(eng->scene) elf_inc_ref((elf_object*)eng->scene);
+	if(eng->scene) elfIncRef((elfObject*)eng->scene);
 }
 
-elf_scene* elf_get_scene()
+elfScene* elfGetScene()
 {
 	return eng->scene;
 }
 
-void elf_set_gui(elf_gui* gui)
+void elfSetGui(elfGui* gui)
 {
-	if(eng->gui) elf_dec_ref((elf_object*)eng->gui);
+	if(eng->gui) elfDecRef((elfObject*)eng->gui);
 	eng->gui = gui;
-	if(eng->gui) elf_inc_ref((elf_object*)eng->gui);
+	if(eng->gui) elfIncRef((elfObject*)eng->gui);
 }
 
-elf_gui* elf_get_gui()
+elfGui* elfGetGui()
 {
 	return eng->gui;
 }
 
-float elf_get_sync()
+float elfGetSync()
 {
 	return eng->sync;
 }
 
-int elf_get_fps()
+int elfGetFps()
 {
 	return eng->fps;
 }
 
-void elf_set_fps_limit(int fps_limit)
+void elfSetFpsLimit(int fpsLimit)
 {
-	eng->fps_limit = fps_limit;
-	if(eng->fps_limit < 0) eng->fps_limit = 0;
+	eng->fpsLimit = fpsLimit;
+	if(eng->fpsLimit < 0) eng->fpsLimit = 0;
 }
 
-int elf_get_fps_limit()
+int elfGetFpsLimit()
 {
-	return eng->fps_limit;
+	return eng->fpsLimit;
 }
 
-void elf_set_tick_rate(float tick_rate)
+void elfSetTickRate(float tickRate)
 {
-	eng->tick_rate = tick_rate;
-	if(eng->tick_rate < 0.0) eng->tick_rate = 0.0;
+	eng->tickRate = tickRate;
+	if(eng->tickRate < 0.0) eng->tickRate = 0.0;
 }
 
-float elf_get_tick_rate()
+float elfGetTickRate()
 {
-	return eng->tick_rate;
+	return eng->tickRate;
 }
 
-void elf_set_speed(float speed)
+void elfSetSpeed(float speed)
 {
 	eng->speed = speed;
 	if(eng->speed < 0.0001) eng->speed = 0.0001;
 }
 
-float elf_get_speed()
+float elfGetSpeed()
 {
 	return eng->speed;
 }
 
-unsigned char elf_save_screen_shot(const char* file_path)
+unsigned char elfSaveScreenShot(const char* filePath)
 {
 	unsigned char* data;
 
-	data = (unsigned char*)malloc(sizeof(unsigned char)*elf_get_window_width()*elf_get_window_height()*4);
+	data = (unsigned char*)malloc(sizeof(unsigned char)*elfGetWindowWidth()*elfGetWindowHeight()*4);
 
-	gfx_read_pixels(0, 0, elf_get_window_width(), elf_get_window_height(), GFX_BGRA, GFX_UBYTE, data);
+	gfxReadPixels(0, 0, elfGetWindowWidth(), elfGetWindowHeight(), GFX_BGRA, GFX_UBYTE, data);
 
-	if(!elf_save_image_data(file_path, elf_get_window_width(), elf_get_window_height(), 32, data))
+	if(!elfSaveImageData(filePath, elfGetWindowWidth(), elfGetWindowHeight(), 32, data))
 	{
 		free(data);
 		return ELF_FALSE;
@@ -595,407 +595,407 @@ unsigned char elf_save_screen_shot(const char* file_path)
 	return ELF_TRUE;
 }
 
-void elf_set_texture_compress(unsigned char compress)
+void elfSetTextureCompress(unsigned char compress)
 {
-	eng->texture_compress = !compress == ELF_FALSE;
+	eng->textureCompress = !compress == ELF_FALSE;
 }
 
-unsigned char elf_get_texture_compress()
+unsigned char elfGetTextureCompress()
 {
-	return eng->texture_compress;
+	return eng->textureCompress;
 }
 
-void elf_set_texture_anisotropy(float anisotropy)
+void elfSetTextureAnisotropy(float anisotropy)
 {
-	eng->texture_anisotropy = anisotropy;
+	eng->textureAnisotropy = anisotropy;
 }
 
-float elf_get_texture_anisotropy()
+float elfGetTextureAnisotropy()
 {
-	return eng->texture_anisotropy;
+	return eng->textureAnisotropy;
 }
 
-void elf_set_shadow_map_size(int size)
+void elfSetShadowMapSize(int size)
 {
 	// why would someone want a shadow map of 1 pixel?...
 	if(size < 1) return;
 
-	gfx_destroy_render_target(eng->shadow_target);
-	gfx_destroy_texture(eng->shadow_map);
+	gfxDestroyRenderTarget(eng->shadowTarget);
+	gfxDestroyTexture(eng->shadowMap);
 
-	eng->shadow_map_size = size;
-	eng->shadow_map = gfx_create_2d_texture(size, size, 0.0f, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
-	eng->shadow_target = gfx_create_render_target(size, size);
-	gfx_set_render_target_depth_texture(eng->shadow_target, eng->shadow_map);
+	eng->shadowMapSize = size;
+	eng->shadowMap = gfxCreate_2dTexture(size, size, 0.0f, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
+	eng->shadowTarget = gfxCreateRenderTarget(size, size);
+	gfxSetRenderTargetDepthTexture(eng->shadowTarget, eng->shadowMap);
 }
 
-int elf_get_shadow_map_size()
+int elfGetShadowMapSize()
 {
-	return eng->shadow_map_size;
+	return eng->shadowMapSize;
 }
 
-int elf_get_polygons_rendered()
+int elfGetPolygonsRendered()
 {
-	return gfx_get_vertices_drawn(GFX_TRIANGLES)/3+gfx_get_vertices_drawn(GFX_TRIANGLE_STRIP)/3;
+	return gfxGetVerticesDrawn(GFX_TRIANGLES)/3+gfxGetVerticesDrawn(GFX_TRIANGLE_STRIP)/3;
 }
 
-void elf_set_fog(float start, float end, float r, float g, float b)
+void elfSetFog(float start, float end, float r, float g, float b)
 {
 	eng->fog = ELF_TRUE;
-	eng->fog_start = start;
-	eng->fog_end = end;
-	eng->fog_color.r = r;
-	eng->fog_color.g = g;
-	eng->fog_color.b = b;
+	eng->fogStart = start;
+	eng->fogEnd = end;
+	eng->fogColor.r = r;
+	eng->fogColor.g = g;
+	eng->fogColor.b = b;
 }
 
-void elf_disable_fog()
+void elfDisableFog()
 {
 	eng->fog = ELF_FALSE;
 }
 
-float elf_get_fog_start()
+float elfGetFogStart()
 {
-	return eng->fog_start;
+	return eng->fogStart;
 }
 
-float elf_get_fog_end()
+float elfGetFogEnd()
 {
-	return eng->fog_end;
+	return eng->fogEnd;
 }
 
-elf_color elf_get_fog_color()
+elfColor elfGetFogColor()
 {
-	return eng->fog_color;
+	return eng->fogColor;
 }
 
-void elf_set_bloom(float threshold)
+void elfSetBloom(float threshold)
 {
-	if(gfx_get_version() < 200) return;
+	if(gfxGetVersion() < 200) return;
 
-	if(!eng->post_process) eng->post_process = elf_create_post_process();
-	elf_set_post_process_bloom(eng->post_process, threshold);
+	if(!eng->postProcess) eng->postProcess = elfCreatePostProcess();
+	elfSetPostProcessBloom(eng->postProcess, threshold);
 }
 
-void elf_disable_bloom()
+void elfDisableBloom()
 {
-	if(eng->post_process)
+	if(eng->postProcess)
 	{
-		elf_disable_post_process_bloom(eng->post_process);
-		if(!elf_is_post_process_bloom(eng->post_process) &&
-			!elf_is_post_process_ssao(eng->post_process) &&
-			!elf_is_post_process_dof(eng->post_process) &&
-			!elf_is_post_process_light_shafts(eng->post_process))
+		elfDisablePostProcessBloom(eng->postProcess);
+		if(!elfIsPostProcessBloom(eng->postProcess) &&
+			!elfIsPostProcessSsao(eng->postProcess) &&
+			!elfIsPostProcessDof(eng->postProcess) &&
+			!elfIsPostProcessLightShafts(eng->postProcess))
 		{
-			elf_destroy_post_process(eng->post_process);
-			eng->post_process = NULL;
+			elfDestroyPostProcess(eng->postProcess);
+			eng->postProcess = NULL;
 		}
 	}
 }
 
-float elf_get_bloom_threshold()
+float elfGetBloomThreshold()
 {
-	if(!eng->post_process) return ELF_FALSE;
-	return elf_get_post_process_bloom_threshold(eng->post_process);
+	if(!eng->postProcess) return ELF_FALSE;
+	return elfGetPostProcessBloomThreshold(eng->postProcess);
 }
 
-void elf_set_dof(float focal_range, float focal_distance)
+void elfSetDof(float focalRange, float focalDistance)
 {
-	if(gfx_get_version() < 200) return;
+	if(gfxGetVersion() < 200) return;
 
-	if(!eng->post_process) eng->post_process = elf_create_post_process();
-	elf_set_post_process_dof(eng->post_process, focal_range, focal_distance);
+	if(!eng->postProcess) eng->postProcess = elfCreatePostProcess();
+	elfSetPostProcessDof(eng->postProcess, focalRange, focalDistance);
 }
 
-void elf_disable_dof()
+void elfDisableDof()
 {
-	if(eng->post_process)
+	if(eng->postProcess)
 	{
-		elf_disable_post_process_dof(eng->post_process);
-		if(!elf_is_post_process_bloom(eng->post_process) &&
-			!elf_is_post_process_ssao(eng->post_process) &&
-			!elf_is_post_process_dof(eng->post_process) &&
-			!elf_is_post_process_light_shafts(eng->post_process))
+		elfDisablePostProcessDof(eng->postProcess);
+		if(!elfIsPostProcessBloom(eng->postProcess) &&
+			!elfIsPostProcessSsao(eng->postProcess) &&
+			!elfIsPostProcessDof(eng->postProcess) &&
+			!elfIsPostProcessLightShafts(eng->postProcess))
 		{
-			elf_destroy_post_process(eng->post_process);
-			eng->post_process = NULL;
+			elfDestroyPostProcess(eng->postProcess);
+			eng->postProcess = NULL;
 		}
 	}
 }
 
-float elf_get_dof_focal_range()
+float elfGetDofFocalRange()
 {
-	if(!eng->post_process) return ELF_FALSE;
-	return elf_get_post_process_dof_focal_range(eng->post_process);
+	if(!eng->postProcess) return ELF_FALSE;
+	return elfGetPostProcessDofFocalRange(eng->postProcess);
 }
 
-float elf_get_dof_focal_distance()
+float elfGetDofFocalDistance()
 {
-	if(!eng->post_process) return ELF_FALSE;
-	return elf_get_post_process_dof_focal_distance(eng->post_process);
+	if(!eng->postProcess) return ELF_FALSE;
+	return elfGetPostProcessDofFocalDistance(eng->postProcess);
 }
 
-void elf_set_ssao(float amount)
+void elfSetSsao(float amount)
 {
-	if(gfx_get_version() < 200) return;
+	if(gfxGetVersion() < 200) return;
 
-	if(!eng->post_process) eng->post_process = elf_create_post_process();
-	elf_set_post_process_ssao(eng->post_process, amount);
+	if(!eng->postProcess) eng->postProcess = elfCreatePostProcess();
+	elfSetPostProcessSsao(eng->postProcess, amount);
 }
 
-void elf_disable_ssao()
+void elfDisableSsao()
 {
-	if(eng->post_process)
+	if(eng->postProcess)
 	{
-		elf_disable_post_process_ssao(eng->post_process);
-		if(!elf_is_post_process_bloom(eng->post_process) &&
-			!elf_is_post_process_ssao(eng->post_process) &&
-			!elf_is_post_process_dof(eng->post_process) &&
-			!elf_is_post_process_light_shafts(eng->post_process))
+		elfDisablePostProcessSsao(eng->postProcess);
+		if(!elfIsPostProcessBloom(eng->postProcess) &&
+			!elfIsPostProcessSsao(eng->postProcess) &&
+			!elfIsPostProcessDof(eng->postProcess) &&
+			!elfIsPostProcessLightShafts(eng->postProcess))
 		{
-			elf_destroy_post_process(eng->post_process);
-			eng->post_process = NULL;
+			elfDestroyPostProcess(eng->postProcess);
+			eng->postProcess = NULL;
 		}
 	}
 }
 
-float elf_get_ssao_amount()
+float elfGetSsaoAmount()
 {
-	if(eng->post_process) return elf_get_post_process_ssao_amount(eng->post_process);
+	if(eng->postProcess) return elfGetPostProcessSsaoAmount(eng->postProcess);
 	return 0.0;
 }
 
-void elf_set_light_shafts(float intensity)
+void elfSetLightShafts(float intensity)
 {
-	if(gfx_get_version() < 200) return;
+	if(gfxGetVersion() < 200) return;
 
-	if(!eng->post_process) eng->post_process = elf_create_post_process();
-	elf_set_post_process_light_shafts(eng->post_process, intensity);
+	if(!eng->postProcess) eng->postProcess = elfCreatePostProcess();
+	elfSetPostProcessLightShafts(eng->postProcess, intensity);
 }
 
-void elf_disable_light_shafts()
+void elfDisableLightShafts()
 {
-	if(eng->post_process)
+	if(eng->postProcess)
 	{
-		elf_disable_post_process_light_shafts(eng->post_process);
-		if(!elf_is_post_process_bloom(eng->post_process) &&
-			!elf_is_post_process_ssao(eng->post_process) &&
-			!elf_is_post_process_dof(eng->post_process) &&
-			!elf_is_post_process_light_shafts(eng->post_process))
+		elfDisablePostProcessLightShafts(eng->postProcess);
+		if(!elfIsPostProcessBloom(eng->postProcess) &&
+			!elfIsPostProcessSsao(eng->postProcess) &&
+			!elfIsPostProcessDof(eng->postProcess) &&
+			!elfIsPostProcessLightShafts(eng->postProcess))
 		{
-			elf_destroy_post_process(eng->post_process);
-			eng->post_process = NULL;
+			elfDestroyPostProcess(eng->postProcess);
+			eng->postProcess = NULL;
 		}
 	}
 }
 
-float elf_get_light_shafts_intensity()
+float elfGetLightShaftsIntensity()
 {
-	if(eng->post_process) return elf_get_post_process_light_shafts_intensity(eng->post_process);
+	if(eng->postProcess) return elfGetPostProcessLightShaftsIntensity(eng->postProcess);
 	return 0.0;
 }
 
-unsigned char elf_is_fog()
+unsigned char elfIsFog()
 {
 	return eng->fog;
 }
 
-unsigned char elf_is_bloom()
+unsigned char elfIsBloom()
 {
-	if(eng->post_process) return elf_is_post_process_bloom(eng->post_process);
+	if(eng->postProcess) return elfIsPostProcessBloom(eng->postProcess);
 	return ELF_FALSE;
 }
 
-unsigned char elf_is_ssao()
+unsigned char elfIsSsao()
 {
-	if(eng->post_process) return elf_is_post_process_ssao(eng->post_process);
+	if(eng->postProcess) return elfIsPostProcessSsao(eng->postProcess);
 	return ELF_FALSE;
 }
 
-unsigned char elf_is_dof()
+unsigned char elfIsDof()
 {
-	if(eng->post_process) return elf_is_post_process_dof(eng->post_process);
+	if(eng->postProcess) return elfIsPostProcessDof(eng->postProcess);
 	return ELF_FALSE;
 }
 
-unsigned char elf_is_light_shafts()
+unsigned char elfIsLightShafts()
 {
-	if(eng->post_process) return elf_is_post_process_light_shafts(eng->post_process);
+	if(eng->postProcess) return elfIsPostProcessLightShafts(eng->postProcess);
 	return ELF_FALSE;
 }
 
-void elf_set_occlusion_culling(unsigned char cull)
+void elfSetOcclusionCulling(unsigned char cull)
 {
-	eng->occlusion_culling = !cull == ELF_FALSE;
+	eng->occlusionCulling = !cull == ELF_FALSE;
 }
 
-unsigned char elf_is_occlusion_culling()
+unsigned char elfIsOcclusionCulling()
 {
-	return eng->occlusion_culling;
+	return eng->occlusionCulling;
 }
 
-void elf_set_debug_draw(unsigned char debug_draw)
+void elfSetDebugDraw(unsigned char debugDraw)
 {
-	eng->debug_draw = !debug_draw == ELF_FALSE;
+	eng->debugDraw = !debugDraw == ELF_FALSE;
 }
 
-unsigned char elf_is_debug_draw()
+unsigned char elfIsDebugDraw()
 {
-	return eng->debug_draw;
+	return eng->debugDraw;
 }
 
-elf_object* elf_get_actor()
+elfObject* elfGetActor()
 {
 	return eng->actor;
 }
 
-elf_directory_item* elf_create_directory_item()
+elfDirectoryItem* elfCreateDirectoryItem()
 {
-	elf_directory_item* dir_item;
+	elfDirectoryItem* dirItem;
 
-	dir_item = (elf_directory_item*)malloc(sizeof(elf_directory_item));
-	memset(dir_item, 0x0, sizeof(elf_directory_item));
-	dir_item->obj_type = ELF_DIRECTORY_ITEM;
-	dir_item->obj_destr = elf_destroy_directory_item;
+	dirItem = (elfDirectoryItem*)malloc(sizeof(elfDirectoryItem));
+	memset(dirItem, 0x0, sizeof(elfDirectoryItem));
+	dirItem->objType = ELF_DIRECTORY_ITEM;
+	dirItem->objDestr = elfDestroyDirectoryItem;
 
-	elf_inc_obj(ELF_DIRECTORY_ITEM);
+	elfIncObj(ELF_DIRECTORY_ITEM);
 
-	return dir_item;
+	return dirItem;
 }
 
-void elf_destroy_directory_item(void* data)
+void elfDestroyDirectoryItem(void* data)
 {
-	elf_directory_item* directory_item = (elf_directory_item*)data;
+	elfDirectoryItem* directoryItem = (elfDirectoryItem*)data;
 
-	if(directory_item->name) elf_destroy_string(directory_item->name);
+	if(directoryItem->name) elfDestroyString(directoryItem->name);
 
-	free(directory_item);
+	free(directoryItem);
 
-	elf_dec_obj(ELF_DIRECTORY_ITEM);
+	elfDecObj(ELF_DIRECTORY_ITEM);
 }
 
-elf_directory* elf_create_directory()
+elfDirectory* elfCreateDirectory()
 {
-	elf_directory* directory;
+	elfDirectory* directory;
 
-	directory = (elf_directory*)malloc(sizeof(elf_directory));
-	memset(directory, 0x0, sizeof(elf_directory));
-	directory->obj_type = ELF_DIRECTORY;
-	directory->obj_destr = elf_destroy_directory;
+	directory = (elfDirectory*)malloc(sizeof(elfDirectory));
+	memset(directory, 0x0, sizeof(elfDirectory));
+	directory->objType = ELF_DIRECTORY;
+	directory->objDestr = elfDestroyDirectory;
 
-	directory->items = elf_create_list();
+	directory->items = elfCreateList();
 
-	elf_inc_obj(ELF_DIRECTORY);
+	elfIncObj(ELF_DIRECTORY);
 
 	return directory;
 }
 
-void elf_destroy_directory(void* data)
+void elfDestroyDirectory(void* data)
 {
-	elf_directory* directory = (elf_directory*)data;
+	elfDirectory* directory = (elfDirectory*)data;
 
-	if(directory->path) elf_destroy_string(directory->path);
-	elf_destroy_list(directory->items);
+	if(directory->path) elfDestroyString(directory->path);
+	elfDestroyList(directory->items);
 
 	free(directory);
 
-	elf_dec_obj(ELF_DIRECTORY);
+	elfDecObj(ELF_DIRECTORY);
 }
 
-void elf_append_folder_to_directory_item_list(elf_list* items, elf_directory_item* nitem)
+void elfAppendFolderToDirectoryItemList(elfList* items, elfDirectoryItem* nitem)
 {
-	elf_directory_item* dir_item;
+	elfDirectoryItem* dirItem;
 	int i;
 
-	for(i = 0, dir_item = (elf_directory_item*)elf_begin_list(items); dir_item;
-		dir_item = (elf_directory_item*)elf_next_in_list(items), i++)
+	for(i = 0, dirItem = (elfDirectoryItem*)elfBeginList(items); dirItem;
+		dirItem = (elfDirectoryItem*)elfNextInList(items), i++)
 	{
-		if(dir_item->item_type == ELF_FILE)
+		if(dirItem->itemType == ELF_FILE)
 		{
-			elf_insert_to_list(items, i, (elf_object*)nitem);
+			elfInsertToList(items, i, (elfObject*)nitem);
 			return;
 		}
 		else continue;
 	}
 
-	elf_append_to_list(items, (elf_object*)nitem);
+	elfAppendToList(items, (elfObject*)nitem);
 }
 
-typedef struct elf_dir_item_emul {
+typedef struct elfDirItemEmul {
 	char* str;
 	int type;
-} elf_dir_item_emul;
+} elfDirItemEmul;
 
 static int alphacmp(const void* a, const void* b)
 {
-	return strcmp((*((elf_dir_item_emul*)a)).str, (*((elf_dir_item_emul*)b)).str);
+	return strcmp((*((elfDirItemEmul*)a)).str, (*((elfDirItemEmul*)b)).str);
 }
 
-elf_directory* elf_read_directory(const char* path)
+elfDirectory* elfReadDirectory(const char* path)
 {
-	elf_directory* directory;
-	elf_directory_item* dir_item;
+	elfDirectory* directory;
+	elfDirectoryItem* dirItem;
 	DIR* dir;
 	struct dirent* dp;
-	elf_dir_item_emul* names;
-	int item_count;
+	elfDirItemEmul* names;
+	int itemCount;
 	int i;
 
 	if(!(dir = opendir(path)))
 	{
-		elf_set_error(ELF_CANT_OPEN_DIRECTORY, "error: could not open directory \"%s\"\n", path);
+		elfSetError(ELF_CANT_OPEN_DIRECTORY, "error: could not open directory \"%s\"\n", path);
 		return NULL;
 	}
 	else
 	{
-		directory = elf_create_directory();
-		directory->path = elf_create_string(path);
+		directory = elfCreateDirectory();
+		directory->path = elfCreateString(path);
 
 		while((dp = readdir(dir)))
 		{
-			dir_item = elf_create_directory_item();
-			dir_item->name = elf_create_string(dp->d_name);
+			dirItem = elfCreateDirectoryItem();
+			dirItem->name = elfCreateString(dp->d_name);
 
 #ifdef ELF_WINDOWS
-			if(dp->data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) dir_item->item_type = ELF_DIR;
-			else dir_item->item_type = ELF_FILE;
+			if(dp->data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) dirItem->itemType = ELF_DIR;
+			else dirItem->itemType = ELF_FILE;
 #else
-			if(dp->d_type == 4) dir_item->item_type = ELF_DIR;
-			else dir_item->item_type = ELF_FILE;
+			if(dp->d_type == 4) dirItem->itemType = ELF_DIR;
+			else dirItem->itemType = ELF_FILE;
 #endif
 
-			elf_append_to_list(directory->items, (elf_object*)dir_item);
+			elfAppendToList(directory->items, (elfObject*)dirItem);
 		}
 
-		item_count = elf_get_list_length(directory->items);
+		itemCount = elfGetListLength(directory->items);
 
-		names = (elf_dir_item_emul*)malloc(sizeof(elf_dir_item_emul)*item_count);
-		memset(names, 0x0, sizeof(elf_dir_item_emul)*item_count);
+		names = (elfDirItemEmul*)malloc(sizeof(elfDirItemEmul)*itemCount);
+		memset(names, 0x0, sizeof(elfDirItemEmul)*itemCount);
 
-		for(i = 0, dir_item = (elf_directory_item*)elf_begin_list(directory->items); dir_item;
-			dir_item = (elf_directory_item*)elf_next_in_list(directory->items), i++)
+		for(i = 0, dirItem = (elfDirectoryItem*)elfBeginList(directory->items); dirItem;
+			dirItem = (elfDirectoryItem*)elfNextInList(directory->items), i++)
 		{
-			names[i].str = (char*)malloc(sizeof(char)*(strlen(dir_item->name)+1));
-			memcpy(names[i].str, dir_item->name, sizeof(char)*(strlen(dir_item->name)+1));
-			names[i].type = dir_item->item_type;
+			names[i].str = (char*)malloc(sizeof(char)*(strlen(dirItem->name)+1));
+			memcpy(names[i].str, dirItem->name, sizeof(char)*(strlen(dirItem->name)+1));
+			names[i].type = dirItem->itemType;
 		}
 
-		qsort(names, item_count, sizeof(elf_dir_item_emul), alphacmp);
+		qsort(names, itemCount, sizeof(elfDirItemEmul), alphacmp);
 
-		elf_destroy_directory(directory);
+		elfDestroyDirectory(directory);
 
-		directory = elf_create_directory();
-		directory->path = elf_create_string(path);
+		directory = elfCreateDirectory();
+		directory->path = elfCreateString(path);
 
-		for(i = 0; i < item_count; i++)
+		for(i = 0; i < itemCount; i++)
 		{
-			dir_item = elf_create_directory_item();
-			dir_item->name = elf_create_string(names[i].str);
-			dir_item->item_type = names[i].type;
+			dirItem = elfCreateDirectoryItem();
+			dirItem->name = elfCreateString(names[i].str);
+			dirItem->itemType = names[i].type;
 
-			if(dir_item->item_type == ELF_DIR)
-				elf_append_folder_to_directory_item_list(directory->items, dir_item);
-			else elf_append_to_list(directory->items, (elf_object*)dir_item);
+			if(dirItem->itemType == ELF_DIR)
+				elfAppendFolderToDirectoryItemList(directory->items, dirItem);
+			else elfAppendToList(directory->items, (elfObject*)dirItem);
 
 			free(names[i].str);
 		}
@@ -1006,53 +1006,53 @@ elf_directory* elf_read_directory(const char* path)
 	}
 }
 
-const char* elf_get_directory_path(elf_directory* directory)
+const char* elfGetDirectoryPath(elfDirectory* directory)
 {
 	return directory->path;
 }
 
-int elf_get_directory_item_count(elf_directory* directory)
+int elfGetDirectoryItemCount(elfDirectory* directory)
 {
-	return elf_get_list_length(directory->items);
+	return elfGetListLength(directory->items);
 }
 
-elf_directory_item* elf_get_directory_item(elf_directory* directory, int idx)
+elfDirectoryItem* elfGetDirectoryItem(elfDirectory* directory, int idx)
 {
 	int i;
-	elf_directory_item* dir_item;
+	elfDirectoryItem* dirItem;
 
-	if(idx < 0 || idx > elf_get_list_length(directory->items)-1) return NULL;
+	if(idx < 0 || idx > elfGetListLength(directory->items)-1) return NULL;
 
-	for(i = 0, dir_item = (elf_directory_item*)elf_begin_list(directory->items); dir_item;
-		dir_item = (elf_directory_item*)elf_next_in_list(directory->items), i++)
+	for(i = 0, dirItem = (elfDirectoryItem*)elfBeginList(directory->items); dirItem;
+		dirItem = (elfDirectoryItem*)elfNextInList(directory->items), i++)
 	{
-		if(i == idx) return dir_item;
+		if(i == idx) return dirItem;
 	}
 
 	return NULL;
 }
 
-const char* elf_get_directory_item_name(elf_directory_item* dir_item)
+const char* elfGetDirectoryItemName(elfDirectoryItem* dirItem)
 {
-	return dir_item->name;
+	return dirItem->name;
 }
 
-int elf_get_directory_item_type(elf_directory_item* dir_item)
+int elfGetDirectoryItemType(elfDirectoryItem* dirItem)
 {
-	return dir_item->item_type;
+	return dirItem->itemType;
 }
 
-elf_vec3f elf_create_vec3f()
+elfVec3f elfCreateVec3f()
 {
-	elf_vec3f result;
-	memset(&result, 0x0, sizeof(elf_vec3f));
+	elfVec3f result;
+	memset(&result, 0x0, sizeof(elfVec3f));
 	return result;
 }
 
-elf_vec3f elf_create_vec3f_from_values(float x, float y, float z)
+elfVec3f elfCreateVec3fFromValues(float x, float y, float z)
 {
-	elf_vec3f result;
-	memset(&result, 0x0, sizeof(elf_vec3f));
+	elfVec3f result;
+	memset(&result, 0x0, sizeof(elfVec3f));
 
 	result.x = x;
 	result.y = y;
@@ -1061,137 +1061,137 @@ elf_vec3f elf_create_vec3f_from_values(float x, float y, float z)
 	return result;
 }
 
-elf_vec4f elf_create_qua()
+elfVec4f elfCreateQua()
 {
-	elf_vec4f result;
-	memset(&result, 0x0, sizeof(elf_vec4f));
+	elfVec4f result;
+	memset(&result, 0x0, sizeof(elfVec4f));
 	return result;
 }
 
-elf_vec4f elf_create_qua_from_euler(float x, float y, float z)
+elfVec4f elfCreateQuaFromEuler(float x, float y, float z)
 {
-	elf_vec4f result;
-	memset(&result, 0x0, sizeof(elf_vec4f));
+	elfVec4f result;
+	memset(&result, 0x0, sizeof(elfVec4f));
 
-	gfx_qua_from_euler(x, y, z, &result.x);
+	gfxQuaFromEuler(x, y, z, &result.x);
 
 	return result;
 }
 
-elf_vec4f elf_create_qua_from_angle_axis(float angle, float x, float y, float z)
+elfVec4f elfCreateQuaFromAngleAxis(float angle, float x, float y, float z)
 {
-	elf_vec4f qua;
+	elfVec4f qua;
 	float axis[3];
 
 	axis[0] = x; axis[1] = y; axis[2] = z;
-	gfx_qua_from_angle_axis(angle, axis, &qua.x);
+	gfxQuaFromAngleAxis(angle, axis, &qua.x);
 
 	return qua;
 }
 
-elf_vec3f elf_mul_qua_vec3f(elf_vec4f qua, elf_vec3f vec)
+elfVec3f elfMulQuaVec3f(elfVec4f qua, elfVec3f vec)
 {
-	elf_vec3f result;
+	elfVec3f result;
 
-	gfx_mul_qua_vec(&qua.x, &vec.x, &result.x);
+	gfxMulQuaVec(&qua.x, &vec.x, &result.x);
 
 	return result;
 }
 
-elf_vec4f elf_mul_qua_qua(elf_vec4f qua1, elf_vec4f qua2)
+elfVec4f elfMulQuaQua(elfVec4f qua1, elfVec4f qua2)
 {
-	elf_vec4f result;
+	elfVec4f result;
 
-	gfx_mul_qua_qua(&qua1.x, &qua2.x, &result.x);
+	gfxMulQuaQua(&qua1.x, &qua2.x, &result.x);
 
 	return result;
 }
 
-elf_vec4f elf_get_qua_inverted(elf_vec4f qua)
+elfVec4f elfGetQuaInverted(elfVec4f qua)
 {
-	elf_vec4f result;
+	elfVec4f result;
 
-	gfx_qua_get_inverse(&qua.x, &result.x);
+	gfxQuaGetInverse(&qua.x, &result.x);
 
 	return result;
 }
 
-elf_vec3f elf_rotate_vec3f(elf_vec3f vec, float x, float y, float z)
+elfVec3f elfRotateVec3f(elfVec3f vec, float x, float y, float z)
 {
-	elf_vec4f qua;
-	elf_vec3f result;
+	elfVec4f qua;
+	elfVec3f result;
 
-	gfx_qua_from_euler(x, y, z, &qua.x);
+	gfxQuaFromEuler(x, y, z, &qua.x);
 
-	gfx_mul_qua_vec(&qua.x, &vec.x, &result.x);
+	gfxMulQuaVec(&qua.x, &vec.x, &result.x);
 
 	return result;
 }
 
-elf_vec3f elf_sub_vec3f_vec3f(elf_vec3f vec1, elf_vec3f vec2)
+elfVec3f elfSubVec3fVec3f(elfVec3f vec1, elfVec3f vec2)
 {
-	elf_vec3f result;
+	elfVec3f result;
 	result.x = vec1.x-vec2.x;
 	result.y = vec1.y-vec2.y;
 	result.z = vec1.z-vec2.z;
 	return result;
 }
 
-elf_vec3f elf_add_vec3f_vec3f(elf_vec3f vec1, elf_vec3f vec2)
+elfVec3f elfAddVec3fVec3f(elfVec3f vec1, elfVec3f vec2)
 {
-	elf_vec3f result;
+	elfVec3f result;
 	result.x = vec1.x+vec2.x;
 	result.y = vec1.y+vec2.y;
 	result.z = vec1.z+vec2.z;
 	return result;
 }
 
-float elf_get_vec3f_length(elf_vec3f vec)
+float elfGetVec3fLength(elfVec3f vec)
 {
-	return gfx_vec_length(&vec.x);
+	return gfxVecLength(&vec.x);
 }
 
-unsigned char elf_about_zero(float val)
+unsigned char elfAboutZero(float val)
 {
 	if(val < 0.0001 && val > -0.0001) return ELF_TRUE;
 	return ELF_FALSE;
 }
 
-float elf_float_abs(float val)
+float elfFloatAbs(float val)
 {
 	if(val < 0.0) return -val;
 	return val;
 }
 
-float elf_float_min(float a, float b)
+float elfFloatMin(float a, float b)
 {
 	if(a < b) return a;
 	return b;
 }
 
-float elf_float_max(float a, float b)
+float elfFloatMax(float a, float b)
 {
 	if(a > b) return a;
 	return b;
 }
 
-float elf_random_float()
+float elfRandomFloat()
 {
 	return (float)rand()/(float)RAND_MAX;
 }
 
-float elf_random_float_range(float min, float max)
+float elfRandomFloatRange(float min, float max)
 {
-	return min+(max-min)*elf_random_float();
+	return min+(max-min)*elfRandomFloat();
 }
 
-int elf_random_int()
+int elfRandomInt()
 {
 	return rand();
 }
 
-int elf_random_int_range(int min, int max)
+int elfRandomIntRange(int min, int max)
 {
-	return (int)(((float)(min+(max-min)))*elf_random_float());
+	return (int)(((float)(min+(max-min)))*elfRandomFloat());
 }
 

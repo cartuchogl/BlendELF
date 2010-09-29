@@ -1,10 +1,10 @@
 
-elf_resource* elf_get_resource_by_id(elf_list* resources, int id)
+elfResource* elfGetResourceById(elfList* resources, int id)
 {
-	elf_resource* obj;
+	elfResource* obj;
 
-	for(obj = (elf_resource*)elf_begin_list(resources); obj;
-		obj = (elf_resource*)elf_next_in_list(resources))
+	for(obj = (elfResource*)elfBeginList(resources); obj;
+		obj = (elfResource*)elfNextInList(resources))
 	{
 		if(obj->id == id) return obj;
 	}
@@ -12,12 +12,12 @@ elf_resource* elf_get_resource_by_id(elf_list* resources, int id)
 	return NULL;
 }
 
-elf_resource* elf_get_resource_by_name(elf_list* resources, const char* name)
+elfResource* elfGetResourceByName(elfList* resources, const char* name)
 {
-	elf_resource* obj;
+	elfResource* obj;
 
-	for(obj = (elf_resource*)elf_begin_list(resources); obj;
-		obj = (elf_resource*)elf_next_in_list(resources))
+	for(obj = (elfResource*)elfBeginList(resources); obj;
+		obj = (elfResource*)elfNextInList(resources))
 	{
 		if(!strcmp(obj->name, name)) return obj;
 	}
@@ -25,29 +25,29 @@ elf_resource* elf_get_resource_by_name(elf_list* resources, const char* name)
 	return NULL;
 }
 
-void elf_set_unique_name_for_resource(elf_list* named_objects, elf_resource* object)
+void elfSetUniqueNameForResource(elfList* namedObjects, elfResource* object)
 {
 	char* tname;
 	char* nname;
-	int dot_pos;
+	int dotPos;
 	int num;
 
 	if(object->name && strlen(object->name))
 	{
-		if(!elf_get_resource_by_name(named_objects, object->name))
+		if(!elfGetResourceByName(namedObjects, object->name))
 		{
 			return;
 		}
 
-		dot_pos = elf_rfind_char_from_string(object->name, '.');
+		dotPos = elfRfindCharFromString(object->name, '.');
 
-		if(dot_pos == (int)strlen(object->name)-1)
+		if(dotPos == (int)strlen(object->name)-1)
 		{
 			tname = (char*)malloc(sizeof(char)*(strlen(object->name)+1));
 			memcpy(tname, object->name, sizeof(char)*strlen(object->name));
 			tname[strlen(object->name)] = '\0';
 		}
-		else if(dot_pos == -1 || !elf_is_string_positive_int(&object->name[dot_pos+1]))
+		else if(dotPos == -1 || !elfIsStringPositiveInt(&object->name[dotPos+1]))
 		{
 			tname = (char*)malloc(sizeof(char)*(strlen(object->name)+2));
 			sprintf(tname, "%s.", object->name);
@@ -55,9 +55,9 @@ void elf_set_unique_name_for_resource(elf_list* named_objects, elf_resource* obj
 		}
 		else
 		{
-			tname = (char*)malloc(sizeof(char)*(dot_pos+2));
-			memcpy(tname, object->name, sizeof(char)*(dot_pos+1));
-			tname[dot_pos+1] = '\0';
+			tname = (char*)malloc(sizeof(char)*(dotPos+2));
+			memcpy(tname, object->name, sizeof(char)*(dotPos+1));
+			tname[dotPos+1] = '\0';
 		}
 	}
 	else
@@ -73,7 +73,7 @@ void elf_set_unique_name_for_resource(elf_list* named_objects, elf_resource* obj
 	num = 1;
 	sprintf(nname, "%s%d", tname, num);
 
-	while(elf_get_resource_by_name(named_objects, nname))
+	while(elfGetResourceByName(namedObjects, nname))
 	{
 		memset(nname, 0x0, sizeof(char)*(strlen(tname)+12));
 		num++;
@@ -81,8 +81,8 @@ void elf_set_unique_name_for_resource(elf_list* named_objects, elf_resource* obj
 		if(num < -1) break;
 	}
 
-	if(object->name) elf_destroy_string(object->name);
-	object->name = elf_create_string(nname);
+	if(object->name) elfDestroyString(object->name);
+	object->name = elfCreateString(nname);
 
 	free(nname);
 	free(tname);

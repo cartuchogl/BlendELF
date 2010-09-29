@@ -1,419 +1,419 @@
 
-elf_material* elf_create_material(const char* name)
+elfMaterial* elfCreateMaterial(const char* name)
 {
-	elf_material* material;
+	elfMaterial* material;
 
-	material = (elf_material*)malloc(sizeof(elf_material));
-	memset(material, 0x0, sizeof(elf_material));
-	material->obj_type = ELF_MATERIAL;
-	material->obj_destr = elf_destroy_material;
+	material = (elfMaterial*)malloc(sizeof(elfMaterial));
+	memset(material, 0x0, sizeof(elfMaterial));
+	material->objType = ELF_MATERIAL;
+	material->objDestr = elfDestroyMaterial;
 
-	material->diffuse_color.r = material->diffuse_color.g = material->diffuse_color.b = material->diffuse_color.a = 1.0;
-	material->ambient_color.r = material->ambient_color.g = material->ambient_color.b = material->ambient_color.a = 1.0;
-	material->specular_color.r = material->specular_color.g = material->specular_color.b = 0.25; material->specular_color.a = 1.0;
-	material->spec_power = 32.0;
+	material->diffuseColor.r = material->diffuseColor.g = material->diffuseColor.b = material->diffuseColor.a = 1.0;
+	material->ambientColor.r = material->ambientColor.g = material->ambientColor.b = material->ambientColor.a = 1.0;
+	material->specularColor.r = material->specularColor.g = material->specularColor.b = 0.25; material->specularColor.a = 1.0;
+	material->specPower = 32.0;
 	material->lighting = ELF_TRUE;
 
-	material->alpha_test = ELF_FALSE;
-	material->alpha_threshold = 0.99;
-	material->parallax_scale = 0.25;
+	material->alphaTest = ELF_FALSE;
+	material->alphaThreshold = 0.99;
+	material->parallaxScale = 0.25;
 
-	if(name) material->name = elf_create_string(name);
+	if(name) material->name = elfCreateString(name);
 
-	elf_inc_obj(ELF_MATERIAL);
+	elfIncObj(ELF_MATERIAL);
 
-	material->id = ++gen->material_id_counter;
+	material->id = ++gen->materialIdCounter;
 
 	return material;
 }
 
-void elf_destroy_material(void* data)
+void elfDestroyMaterial(void* data)
 {
-	elf_material* material = (elf_material*)data;
+	elfMaterial* material = (elfMaterial*)data;
 
-	if(material->name) elf_destroy_string(material->name);
-	if(material->file_path) elf_destroy_string(material->file_path);
+	if(material->name) elfDestroyString(material->name);
+	if(material->filePath) elfDestroyString(material->filePath);
 
-	if(material->diffuse_map) elf_dec_ref((elf_object*)material->diffuse_map);
-	if(material->normal_map) elf_dec_ref((elf_object*)material->normal_map);
-	if(material->height_map) elf_dec_ref((elf_object*)material->height_map);
-	if(material->specular_map) elf_dec_ref((elf_object*)material->specular_map);
-	if(material->light_map) elf_dec_ref((elf_object*)material->light_map);
-	if(material->cube_map) elf_dec_ref((elf_object*)material->cube_map);
+	if(material->diffuseMap) elfDecRef((elfObject*)material->diffuseMap);
+	if(material->normalMap) elfDecRef((elfObject*)material->normalMap);
+	if(material->heightMap) elfDecRef((elfObject*)material->heightMap);
+	if(material->specularMap) elfDecRef((elfObject*)material->specularMap);
+	if(material->lightMap) elfDecRef((elfObject*)material->lightMap);
+	if(material->cubeMap) elfDecRef((elfObject*)material->cubeMap);
 
 	free(material);
 
-	elf_dec_obj(ELF_MATERIAL);
+	elfDecObj(ELF_MATERIAL);
 }
 
-void elf_set_material_diffuse_color(elf_material* material, float r, float g, float b, float a)
+void elfSetMaterialDiffuseColor(elfMaterial* material, float r, float g, float b, float a)
 {
-	material->diffuse_color.r = r;
-	material->diffuse_color.g = g;
-	material->diffuse_color.b = b;
-	material->diffuse_color.a = a;
+	material->diffuseColor.r = r;
+	material->diffuseColor.g = g;
+	material->diffuseColor.b = b;
+	material->diffuseColor.a = a;
 }
 
-void elf_set_material_ambient_color(elf_material* material, float r, float g, float b, float a)
+void elfSetMaterialAmbientColor(elfMaterial* material, float r, float g, float b, float a)
 {
-	material->ambient_color.r = r;
-	material->ambient_color.g = g;
-	material->ambient_color.b = b;
-	material->ambient_color.a = a;
+	material->ambientColor.r = r;
+	material->ambientColor.g = g;
+	material->ambientColor.b = b;
+	material->ambientColor.a = a;
 }
 
-void elf_set_material_specular_color(elf_material* material, float r, float g, float b, float a)
+void elfSetMaterialSpecularColor(elfMaterial* material, float r, float g, float b, float a)
 {
-	material->specular_color.r = r;
-	material->specular_color.g = g;
-	material->specular_color.b = b;
-	material->specular_color.a = a;
+	material->specularColor.r = r;
+	material->specularColor.g = g;
+	material->specularColor.b = b;
+	material->specularColor.a = a;
 }
 
-void elf_set_material_specular_power(elf_material* material, float power)
+void elfSetMaterialSpecularPower(elfMaterial* material, float power)
 {
-	material->spec_power = power;
+	material->specPower = power;
 }
 
-void elf_set_material_lighting(elf_material* material, unsigned char lighting)
+void elfSetMaterialLighting(elfMaterial* material, unsigned char lighting)
 {
 	material->lighting = !lighting == ELF_FALSE;
 }
 
-void elf_set_material_name(elf_material* material, const char* name)
+void elfSetMaterialName(elfMaterial* material, const char* name)
 {
-	if(material->name) elf_destroy_string(material->name);
-	material->name = elf_create_string(name);
+	if(material->name) elfDestroyString(material->name);
+	material->name = elfCreateString(name);
 }
 
-const char* elf_get_material_name(elf_material* material)
+const char* elfGetMaterialName(elfMaterial* material)
 {
 	return material->name;
 }
 
-const char* elf_get_material_file_path(elf_material* material)
+const char* elfGetMaterialFilePath(elfMaterial* material)
 {
-	return material->file_path;
+	return material->filePath;
 }
 
-elf_color elf_get_material_diffuse_color(elf_material* material)
+elfColor elfGetMaterialDiffuseColor(elfMaterial* material)
 {
-	return material->diffuse_color;
+	return material->diffuseColor;
 }
 
-elf_color elf_get_material_ambient_color(elf_material* material)
+elfColor elfGetMaterialAmbientColor(elfMaterial* material)
 {
-	return material->ambient_color;
+	return material->ambientColor;
 }
 
-elf_color elf_get_material_specular_color(elf_material* material)
+elfColor elfGetMaterialSpecularColor(elfMaterial* material)
 {
-	return material->specular_color;
+	return material->specularColor;
 }
 
-float elf_get_material_specular_power(elf_material* material)
+float elfGetMaterialSpecularPower(elfMaterial* material)
 {
-	return material->spec_power;
+	return material->specPower;
 }
 
-unsigned char elf_get_material_lighting(elf_material* material)
+unsigned char elfGetMaterialLighting(elfMaterial* material)
 {
 	return material->lighting;
 }
 
-void elf_set_material_diffuse_map(elf_material* material, elf_texture* texture)
+void elfSetMaterialDiffuseMap(elfMaterial* material, elfTexture* texture)
 {
 	int format;
 
-	if(material->diffuse_map) elf_dec_ref((elf_object*)material->diffuse_map);
-	material->diffuse_map = texture;
-	if(material->diffuse_map)
+	if(material->diffuseMap) elfDecRef((elfObject*)material->diffuseMap);
+	material->diffuseMap = texture;
+	if(material->diffuseMap)
 	{
-		elf_inc_ref((elf_object*)material->diffuse_map);
+		elfIncRef((elfObject*)material->diffuseMap);
 
-		format = elf_get_texture_format(material->diffuse_map);
+		format = elfGetTextureFormat(material->diffuseMap);
 		if(format == GFX_RGBA || format == GFX_COMPRESSED_RGBA ||
 			format == GFX_BGRA || format == GFX_LUMINANCE_ALPHA)
-			material->alpha_test = ELF_TRUE;
+			material->alphaTest = ELF_TRUE;
 	}
 }
 
-void elf_set_material_normal_map(elf_material* material, elf_texture* texture)
+void elfSetMaterialNormalMap(elfMaterial* material, elfTexture* texture)
 {
-	if(material->normal_map) elf_dec_ref((elf_object*)material->normal_map);
-	material->normal_map = texture;
-	if(material->normal_map) elf_inc_ref((elf_object*)material->normal_map);
+	if(material->normalMap) elfDecRef((elfObject*)material->normalMap);
+	material->normalMap = texture;
+	if(material->normalMap) elfIncRef((elfObject*)material->normalMap);
 }
 
-void elf_set_material_height_map(elf_material* material, elf_texture* texture)
+void elfSetMaterialHeightMap(elfMaterial* material, elfTexture* texture)
 {
-	if(material->height_map) elf_dec_ref((elf_object*)material->height_map);
-	material->height_map = texture;
-	if(material->height_map) elf_inc_ref((elf_object*)material->height_map);
+	if(material->heightMap) elfDecRef((elfObject*)material->heightMap);
+	material->heightMap = texture;
+	if(material->heightMap) elfIncRef((elfObject*)material->heightMap);
 }
 
-void elf_set_material_specular_map(elf_material* material, elf_texture* texture)
+void elfSetMaterialSpecularMap(elfMaterial* material, elfTexture* texture)
 {
-	if(material->specular_map) elf_dec_ref((elf_object*)material->specular_map);
-	material->specular_map = texture;
-	if(material->specular_map) elf_inc_ref((elf_object*)material->specular_map);
+	if(material->specularMap) elfDecRef((elfObject*)material->specularMap);
+	material->specularMap = texture;
+	if(material->specularMap) elfIncRef((elfObject*)material->specularMap);
 }
 
-void elf_set_material_light_map(elf_material* material, elf_texture* texture)
+void elfSetMaterialLightMap(elfMaterial* material, elfTexture* texture)
 {
-	if(material->light_map) elf_dec_ref((elf_object*)material->light_map);
-	material->light_map = texture;
-	if(material->light_map) elf_inc_ref((elf_object*)material->light_map);
+	if(material->lightMap) elfDecRef((elfObject*)material->lightMap);
+	material->lightMap = texture;
+	if(material->lightMap) elfIncRef((elfObject*)material->lightMap);
 }
 
-void elf_set_material_cube_map(elf_material* material, elf_texture* texture)
+void elfSetMaterialCubeMap(elfMaterial* material, elfTexture* texture)
 {
-	if(gfx_get_texture_type(texture->texture) != GFX_CUBE_MAP_TEXTURE) return;
-	if(material->cube_map) elf_dec_ref((elf_object*)material->cube_map);
-	material->cube_map = texture;
-	if(material->cube_map) elf_inc_ref((elf_object*)material->cube_map);
+	if(gfxGetTextureType(texture->texture) != GFX_CUBE_MAP_TEXTURE) return;
+	if(material->cubeMap) elfDecRef((elfObject*)material->cubeMap);
+	material->cubeMap = texture;
+	if(material->cubeMap) elfIncRef((elfObject*)material->cubeMap);
 }
 
-void elf_clear_material_diffuse_map(elf_material* material)
+void elfClearMaterialDiffuseMap(elfMaterial* material)
 {
-	if(material->diffuse_map) elf_dec_ref((elf_object*)material->diffuse_map);
-	material->diffuse_map = NULL;
+	if(material->diffuseMap) elfDecRef((elfObject*)material->diffuseMap);
+	material->diffuseMap = NULL;
 }
 
-void elf_clear_material_normal_map(elf_material* material)
+void elfClearMaterialNormalMap(elfMaterial* material)
 {
-	if(material->normal_map) elf_dec_ref((elf_object*)material->normal_map);
-	material->normal_map = NULL;
+	if(material->normalMap) elfDecRef((elfObject*)material->normalMap);
+	material->normalMap = NULL;
 }
 
-void elf_clear_material_height_map(elf_material* material)
+void elfClearMaterialHeightMap(elfMaterial* material)
 {
-	if(material->height_map) elf_dec_ref((elf_object*)material->height_map);
-	material->height_map = NULL;
+	if(material->heightMap) elfDecRef((elfObject*)material->heightMap);
+	material->heightMap = NULL;
 }
 
-void elf_clear_material_specular_map(elf_material* material)
+void elfClearMaterialSpecularMap(elfMaterial* material)
 {
-	if(material->specular_map) elf_dec_ref((elf_object*)material->specular_map);
-	material->specular_map = NULL;
+	if(material->specularMap) elfDecRef((elfObject*)material->specularMap);
+	material->specularMap = NULL;
 }
 
-void elf_clear_material_light_map(elf_material* material)
+void elfClearMaterialLightMap(elfMaterial* material)
 {
-	if(material->light_map) elf_dec_ref((elf_object*)material->light_map);
-	material->light_map = NULL;
+	if(material->lightMap) elfDecRef((elfObject*)material->lightMap);
+	material->lightMap = NULL;
 }
 
-void elf_clear_material_cube_map(elf_material* material)
+void elfClearMaterialCubeMap(elfMaterial* material)
 {
-	if(material->cube_map) elf_dec_ref((elf_object*)material->cube_map);
-	material->cube_map = NULL;
+	if(material->cubeMap) elfDecRef((elfObject*)material->cubeMap);
+	material->cubeMap = NULL;
 }
 
-elf_texture* elf_get_material_diffuse_map(elf_material* material)
+elfTexture* elfGetMaterialDiffuseMap(elfMaterial* material)
 {
-	return material->diffuse_map;
+	return material->diffuseMap;
 }
 
-elf_texture* elf_get_material_normal_map(elf_material* material)
+elfTexture* elfGetMaterialNormalMap(elfMaterial* material)
 {
-	return material->normal_map;
+	return material->normalMap;
 }
 
-elf_texture* elf_get_material_height_map(elf_material* material)
+elfTexture* elfGetMaterialHeightMap(elfMaterial* material)
 {
-	return material->height_map;
+	return material->heightMap;
 }
 
-elf_texture* elf_get_material_specular_map(elf_material* material)
+elfTexture* elfGetMaterialSpecularMap(elfMaterial* material)
 {
-	return material->specular_map;
+	return material->specularMap;
 }
 
-elf_texture* elf_get_material_light_map(elf_material* material)
+elfTexture* elfGetMaterialLightMap(elfMaterial* material)
 {
-	return material->light_map;
+	return material->lightMap;
 }
 
-elf_texture* elf_get_material_cube_map(elf_material* material)
+elfTexture* elfGetMaterialCubeMap(elfMaterial* material)
 {
-	return material->cube_map;
+	return material->cubeMap;
 }
 
-void elf_set_material_parallax_scale(elf_material* material, float scale)
+void elfSetMaterialParallaxScale(elfMaterial* material, float scale)
 {
-	material->parallax_scale = scale;
-	if(material->parallax_scale < 0.0) material->parallax_scale = 0.0;
+	material->parallaxScale = scale;
+	if(material->parallaxScale < 0.0) material->parallaxScale = 0.0;
 }
 
-void elf_set_material_alpha_test(elf_material* material, unsigned char alpha_test)
+void elfSetMaterialAlphaTest(elfMaterial* material, unsigned char alphaTest)
 {
-	material->alpha_test = !alpha_test == ELF_FALSE;
+	material->alphaTest = !alphaTest == ELF_FALSE;
 }
 
-void elf_set_material_alpha_threshold(elf_material* material, float threshold)
+void elfSetMaterialAlphaThreshold(elfMaterial* material, float threshold)
 {
-	material->alpha_threshold = threshold;
-	if(material->alpha_threshold < 0.0) material->alpha_threshold = 0.0;
-	if(material->alpha_threshold > 1.0) material->alpha_threshold = 1.0;
+	material->alphaThreshold = threshold;
+	if(material->alphaThreshold < 0.0) material->alphaThreshold = 0.0;
+	if(material->alphaThreshold > 1.0) material->alphaThreshold = 1.0;
 }
 
-float elf_get_material_parallax_scale(elf_material* material)
+float elfGetMaterialParallaxScale(elfMaterial* material)
 {
-	return material->parallax_scale;
+	return material->parallaxScale;
 }
 
-unsigned char elf_get_material_alpha_test(elf_material* material)
+unsigned char elfGetMaterialAlphaTest(elfMaterial* material)
 {
-	return material->alpha_test;
+	return material->alphaTest;
 }
 
-float elf_get_material_alpha_threshold(elf_material* material)
+float elfGetMaterialAlphaThreshold(elfMaterial* material)
 {
-	return material->alpha_threshold;
+	return material->alphaThreshold;
 }
 
-void elf_set_texture_params_default(gfx_texture_params* params)
+void elfSetTextureParamsDefault(gfxTextureParams* params)
 {
 	params->type = ELF_COLOR_MAP;
 	params->texture = NULL;
-	params->projection_mode = GFX_NONE;
-	params->parallax_scale = 0.0;
+	params->projectionMode = GFX_NONE;
+	params->parallaxScale = 0.0;
 }
 
-void elf_set_material(elf_material* material, int mode, gfx_shader_params* shader_params)
+void elfSetMaterial(elfMaterial* material, int mode, gfxShaderParams* shaderParams)
 {
 	int i;
 
-	for(i = 0; i < 6; i++) elf_set_texture_params_default(&shader_params->texture_params[i]);
+	for(i = 0; i < 6; i++) elfSetTextureParamsDefault(&shaderParams->textureParams[i]);
 
 	if(mode == ELF_DRAW_DEPTH)
 	{
-		if(material->diffuse_map && material->alpha_test)
+		if(material->diffuseMap && material->alphaTest)
 		{
-			shader_params->render_params.alpha_test = ELF_TRUE;
-			shader_params->render_params.alpha_threshold = material->alpha_threshold;
-			shader_params->texture_params[0].type = ELF_COLOR_MAP;
-			shader_params->texture_params[0].texture = material->diffuse_map->texture;
-			shader_params->texture_params[0].projection_mode = GFX_NONE;
+			shaderParams->renderParams.alphaTest = ELF_TRUE;
+			shaderParams->renderParams.alphaThreshold = material->alphaThreshold;
+			shaderParams->textureParams[0].type = ELF_COLOR_MAP;
+			shaderParams->textureParams[0].texture = material->diffuseMap->texture;
+			shaderParams->textureParams[0].projectionMode = GFX_NONE;
 		}
 	}
 	else if(mode == ELF_DRAW_AMBIENT)
 	{
-		shader_params->material_params.diffuse_color.r = material->ambient_color.r*eng->ambient_color.r;
-		shader_params->material_params.diffuse_color.g = material->ambient_color.g*eng->ambient_color.g;
-		shader_params->material_params.diffuse_color.b = material->ambient_color.b*eng->ambient_color.b;
-		shader_params->material_params.diffuse_color.a = 1.0;
+		shaderParams->materialParams.diffuseColor.r = material->ambientColor.r*eng->ambientColor.r;
+		shaderParams->materialParams.diffuseColor.g = material->ambientColor.g*eng->ambientColor.g;
+		shaderParams->materialParams.diffuseColor.b = material->ambientColor.b*eng->ambientColor.b;
+		shaderParams->materialParams.diffuseColor.a = 1.0;
 
-		if(material->diffuse_map)
+		if(material->diffuseMap)
 		{
-			shader_params->texture_params[0].type = ELF_COLOR_MAP;
-			shader_params->texture_params[0].texture = material->diffuse_map->texture;
-			shader_params->texture_params[0].projection_mode = GFX_NONE;
+			shaderParams->textureParams[0].type = ELF_COLOR_MAP;
+			shaderParams->textureParams[0].texture = material->diffuseMap->texture;
+			shaderParams->textureParams[0].projectionMode = GFX_NONE;
 		}
 
-		if(material->height_map)
+		if(material->heightMap)
 		{
-			shader_params->texture_params[2].type = ELF_HEIGHT_MAP;
-			shader_params->texture_params[2].texture = material->height_map->texture;
-			shader_params->texture_params[2].projection_mode = GFX_NONE;
-			shader_params->texture_params[2].parallax_scale = material->parallax_scale*0.05;
+			shaderParams->textureParams[2].type = ELF_HEIGHT_MAP;
+			shaderParams->textureParams[2].texture = material->heightMap->texture;
+			shaderParams->textureParams[2].projectionMode = GFX_NONE;
+			shaderParams->textureParams[2].parallaxScale = material->parallaxScale*0.05;
 		}
 
-		if(material->light_map)
+		if(material->lightMap)
 		{
-			shader_params->texture_params[4].type = ELF_LIGHT_MAP;
-			shader_params->texture_params[4].texture = material->light_map->texture;
-			shader_params->texture_params[4].projection_mode = GFX_NONE;
+			shaderParams->textureParams[4].type = ELF_LIGHT_MAP;
+			shaderParams->textureParams[4].texture = material->lightMap->texture;
+			shaderParams->textureParams[4].projectionMode = GFX_NONE;
 		}
 
-		if(material->cube_map)
+		if(material->cubeMap)
 		{
-			shader_params->texture_params[5].type = ELF_CUBE_MAP;
-			shader_params->texture_params[5].texture = material->cube_map->texture;
-			shader_params->texture_params[5].projection_mode = GFX_NONE;
+			shaderParams->textureParams[5].type = ELF_CUBE_MAP;
+			shaderParams->textureParams[5].texture = material->cubeMap->texture;
+			shaderParams->textureParams[5].projectionMode = GFX_NONE;
 		}
 	}
 	else if(mode == ELF_DRAW_WITHOUT_LIGHTING)
 	{
-		memcpy(&shader_params->material_params.diffuse_color.r, &material->diffuse_color.r, sizeof(float)*4);
+		memcpy(&shaderParams->materialParams.diffuseColor.r, &material->diffuseColor.r, sizeof(float)*4);
 
-		if(material->diffuse_map)
+		if(material->diffuseMap)
 		{
-			shader_params->texture_params[0].type = ELF_COLOR_MAP;
-			shader_params->texture_params[0].texture = material->diffuse_map->texture;
-			shader_params->texture_params[0].projection_mode = GFX_NONE;
+			shaderParams->textureParams[0].type = ELF_COLOR_MAP;
+			shaderParams->textureParams[0].texture = material->diffuseMap->texture;
+			shaderParams->textureParams[0].projectionMode = GFX_NONE;
 		}
 
-		if(material->height_map)
+		if(material->heightMap)
 		{
-			shader_params->texture_params[2].type = ELF_HEIGHT_MAP;
-			shader_params->texture_params[2].texture = material->height_map->texture;
-			shader_params->texture_params[2].projection_mode = GFX_NONE;
-			shader_params->texture_params[2].parallax_scale = material->parallax_scale*0.05;
+			shaderParams->textureParams[2].type = ELF_HEIGHT_MAP;
+			shaderParams->textureParams[2].texture = material->heightMap->texture;
+			shaderParams->textureParams[2].projectionMode = GFX_NONE;
+			shaderParams->textureParams[2].parallaxScale = material->parallaxScale*0.05;
 		}
 
-		if(material->light_map)
+		if(material->lightMap)
 		{
-			shader_params->texture_params[4].type = ELF_LIGHT_MAP;
-			shader_params->texture_params[4].texture = material->light_map->texture;
-			shader_params->texture_params[4].projection_mode = GFX_NONE;
+			shaderParams->textureParams[4].type = ELF_LIGHT_MAP;
+			shaderParams->textureParams[4].texture = material->lightMap->texture;
+			shaderParams->textureParams[4].projectionMode = GFX_NONE;
 		}
 
-		if(material->cube_map)
+		if(material->cubeMap)
 		{
-			shader_params->texture_params[5].type = ELF_CUBE_MAP;
-			shader_params->texture_params[5].texture = material->cube_map->texture;
-			shader_params->texture_params[5].projection_mode = GFX_NONE;
+			shaderParams->textureParams[5].type = ELF_CUBE_MAP;
+			shaderParams->textureParams[5].texture = material->cubeMap->texture;
+			shaderParams->textureParams[5].projectionMode = GFX_NONE;
 		}
 	}
 	else if(mode == ELF_DRAW_WITH_LIGHTING)
 	{
-		memcpy(&shader_params->material_params.diffuse_color.r, &material->diffuse_color.r, sizeof(float)*4);
-		memcpy(&shader_params->material_params.specular_color.r, &material->specular_color.r, sizeof(float)*4);
-		shader_params->material_params.shininess = material->spec_power;
+		memcpy(&shaderParams->materialParams.diffuseColor.r, &material->diffuseColor.r, sizeof(float)*4);
+		memcpy(&shaderParams->materialParams.specularColor.r, &material->specularColor.r, sizeof(float)*4);
+		shaderParams->materialParams.shininess = material->specPower;
 
-		if(material->diffuse_map)
+		if(material->diffuseMap)
 		{
-			shader_params->texture_params[0].type = ELF_COLOR_MAP;
-			shader_params->texture_params[0].texture = material->diffuse_map->texture;
-			shader_params->texture_params[0].projection_mode = GFX_NONE;
+			shaderParams->textureParams[0].type = ELF_COLOR_MAP;
+			shaderParams->textureParams[0].texture = material->diffuseMap->texture;
+			shaderParams->textureParams[0].projectionMode = GFX_NONE;
 		}
 
-		if(material->normal_map)
+		if(material->normalMap)
 		{
-			shader_params->texture_params[1].type = ELF_NORMAL_MAP;
-			shader_params->texture_params[1].texture = material->normal_map->texture;
-			shader_params->texture_params[1].projection_mode = GFX_NONE;
+			shaderParams->textureParams[1].type = ELF_NORMAL_MAP;
+			shaderParams->textureParams[1].texture = material->normalMap->texture;
+			shaderParams->textureParams[1].projectionMode = GFX_NONE;
 		}
 
-		if(material->height_map)
+		if(material->heightMap)
 		{
-			shader_params->texture_params[2].type = ELF_HEIGHT_MAP;
-			shader_params->texture_params[2].texture = material->height_map->texture;
-			shader_params->texture_params[2].projection_mode = GFX_NONE;
-			shader_params->texture_params[2].parallax_scale = material->parallax_scale*0.05;
+			shaderParams->textureParams[2].type = ELF_HEIGHT_MAP;
+			shaderParams->textureParams[2].texture = material->heightMap->texture;
+			shaderParams->textureParams[2].projectionMode = GFX_NONE;
+			shaderParams->textureParams[2].parallaxScale = material->parallaxScale*0.05;
 		}
 
-		if(material->specular_map)
+		if(material->specularMap)
 		{
-			shader_params->texture_params[3].type = ELF_SPECULAR_MAP;
-			shader_params->texture_params[3].texture = material->specular_map->texture;
-			shader_params->texture_params[3].projection_mode = GFX_NONE;
+			shaderParams->textureParams[3].type = ELF_SPECULAR_MAP;
+			shaderParams->textureParams[3].texture = material->specularMap->texture;
+			shaderParams->textureParams[3].projectionMode = GFX_NONE;
 		}
 
-		if(material->light_map)
+		if(material->lightMap)
 		{
-			shader_params->texture_params[4].type = ELF_LIGHT_MAP;
-			shader_params->texture_params[4].texture = material->light_map->texture;
-			shader_params->texture_params[4].projection_mode = GFX_NONE;
+			shaderParams->textureParams[4].type = ELF_LIGHT_MAP;
+			shaderParams->textureParams[4].texture = material->lightMap->texture;
+			shaderParams->textureParams[4].projectionMode = GFX_NONE;
 		}
 
-		if(material->cube_map)
+		if(material->cubeMap)
 		{
-			shader_params->texture_params[5].type = ELF_CUBE_MAP;
-			shader_params->texture_params[5].texture = material->cube_map->texture;
-			shader_params->texture_params[5].projection_mode = GFX_NONE;
+			shaderParams->textureParams[5].type = ELF_CUBE_MAP;
+			shaderParams->textureParams[5].texture = material->cubeMap->texture;
+			shaderParams->textureParams[5].projectionMode = GFX_NONE;
 		}
 	}
 }

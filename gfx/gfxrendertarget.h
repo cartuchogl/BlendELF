@@ -1,5 +1,5 @@
 
-unsigned char gfx_check_render_target()
+unsigned char gfxCheckRenderTarget()
 {
 	GLenum status;
 
@@ -33,72 +33,72 @@ unsigned char gfx_check_render_target()
 	return GFX_TRUE;
 }
 
-gfx_render_target* gfx_create_render_target(unsigned int width, unsigned int height)
+gfxRenderTarget* gfxCreateRenderTarget(unsigned int width, unsigned int height)
 {
-	gfx_render_target* render_target;
+	gfxRenderTarget* renderTarget;
 
 	if(!width || !height) return NULL;
 
-	render_target = (gfx_render_target*)malloc(sizeof(gfx_render_target));
-	memset(render_target, 0x0, sizeof(gfx_render_target));
-	render_target->obj_type = GFX_RENDER_TARGET;
-	render_target->obj_destr = gfx_destroy_render_target;
+	renderTarget = (gfxRenderTarget*)malloc(sizeof(gfxRenderTarget));
+	memset(renderTarget, 0x0, sizeof(gfxRenderTarget));
+	renderTarget->objType = GFX_RENDER_TARGET;
+	renderTarget->objDestr = gfxDestroyRenderTarget;
 
-	glGenFramebuffersEXT(1, &render_target->fb);
+	glGenFramebuffersEXT(1, &renderTarget->fb);
 
-	gfx_inc_obj(GFX_RENDER_TARGET);
+	gfxIncObj(GFX_RENDER_TARGET);
 
-	return render_target;
+	return renderTarget;
 }
 
-void gfx_destroy_render_target(void* data)
+void gfxDestroyRenderTarget(void* data)
 {
-	gfx_render_target* render_target = (gfx_render_target*)data;
+	gfxRenderTarget* renderTarget = (gfxRenderTarget*)data;
 
-	if(render_target->fb) glDeleteFramebuffersEXT(1, &render_target->fb);
+	if(renderTarget->fb) glDeleteFramebuffersEXT(1, &renderTarget->fb);
 
-	free(render_target);
+	free(renderTarget);
 
-	gfx_dec_obj(GFX_RENDER_TARGET);
+	gfxDecObj(GFX_RENDER_TARGET);
 }
 
-gfx_render_target* gfx_get_cur_render_target()
+gfxRenderTarget* gfxGetCurRenderTarget()
 {
-	return driver->render_target;
+	return driver->renderTarget;
 }
 
-void gfx_set_render_target_color_texture(gfx_render_target* render_target, unsigned int n, gfx_texture* color)
+void gfxSetRenderTargetColorTexture(gfxRenderTarget* renderTarget, unsigned int n, gfxTexture* color)
 {
-	gfx_render_target* rt;
+	gfxRenderTarget* rt;
 
-	if((int)n > driver->max_draw_buffers-1) return;
+	if((int)n > driver->maxDrawBuffers-1) return;
 
-	if(driver->render_target != render_target)
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, render_target->fb);
+	if(driver->renderTarget != renderTarget)
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, renderTarget->fb);
 
 	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT+n,
 		GL_TEXTURE_2D, color->id, 0);
 
-	render_target->targets[n] = GFX_TRUE;
+	renderTarget->targets[n] = GFX_TRUE;
 
-	if(!driver->render_target)
+	if(!driver->renderTarget)
 	{
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 	}
-	else if(driver->render_target != render_target)
+	else if(driver->renderTarget != renderTarget)
 	{
-		rt = driver->render_target;
-		driver->render_target = NULL;
-		gfx_set_render_target(rt);
+		rt = driver->renderTarget;
+		driver->renderTarget = NULL;
+		gfxSetRenderTarget(rt);
 	}
 }
 
-void gfx_set_render_target_depth_texture(gfx_render_target* render_target, gfx_texture* depth)
+void gfxSetRenderTargetDepthTexture(gfxRenderTarget* renderTarget, gfxTexture* depth)
 {
-	gfx_render_target* rt;
+	gfxRenderTarget* rt;
 
-	if(driver->render_target != render_target)
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, render_target->fb);
+	if(driver->renderTarget != renderTarget)
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, renderTarget->fb);
 
 	if(depth)
 	{
@@ -115,63 +115,63 @@ void gfx_set_render_target_depth_texture(gfx_render_target* render_target, gfx_t
 			GL_TEXTURE_2D, 0);
 	}
 
-	if(!driver->render_target)
+	if(!driver->renderTarget)
 	{
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 	}
-	else if(driver->render_target != render_target)
+	else if(driver->renderTarget != renderTarget)
 	{
-		rt = driver->render_target;
-		driver->render_target = NULL;
-		gfx_set_render_target(rt);
+		rt = driver->renderTarget;
+		driver->renderTarget = NULL;
+		gfxSetRenderTarget(rt);
 	}
 }
 
-unsigned char gfx_set_render_target(gfx_render_target* render_target)
+unsigned char gfxSetRenderTarget(gfxRenderTarget* renderTarget)
 {
 	int i, j;
-	GLenum draw_buffers[16];
+	GLenum drawBuffers[16];
 
-	if(driver->render_target == render_target) return GFX_TRUE;
+	if(driver->renderTarget == renderTarget) return GFX_TRUE;
 
-	for(i = 0, j = 0; i < driver->max_draw_buffers; i++)
+	for(i = 0, j = 0; i < driver->maxDrawBuffers; i++)
 	{
-		if(render_target->targets[i])
+		if(renderTarget->targets[i])
 		{
-			draw_buffers[j] = GL_COLOR_ATTACHMENT0_EXT+i;
+			drawBuffers[j] = GL_COLOR_ATTACHMENT0_EXT+i;
 			j++;
 		}
 	}
 
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, render_target->fb);
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, renderTarget->fb);
 
-	if(j) glDrawBuffers(j, draw_buffers);
+	if(j) glDrawBuffers(j, drawBuffers);
 	else
 	{
 		glDrawBuffer(GL_NONE);
 		glReadBuffer(GL_NONE);
 	}
 
-	if(!gfx_check_render_target())
+	if(!gfxCheckRenderTarget())
 	{
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 		return GFX_FALSE;
 	}
 
-	driver->render_target = render_target;
+	driver->renderTarget = renderTarget;
 
 	return GFX_TRUE;
 }
 
-void gfx_disable_render_target()
+void gfxDisableRenderTarget()
 {
 	int i, j;
 
-	if(!driver->render_target) return;
+	if(!driver->renderTarget) return;
 
-	for(i = 0, j = 0; i < driver->max_draw_buffers; i++)
+	for(i = 0, j = 0; i < driver->maxDrawBuffers; i++)
 	{
-		if(driver->render_target->targets[i])
+		if(driver->renderTarget->targets[i])
 		{
 			j++;
 		}
@@ -180,7 +180,7 @@ void gfx_disable_render_target()
 	glDrawBuffer(GL_BACK);
 	glReadBuffer(GL_BACK);
 
-	driver->render_target = NULL;
+	driver->renderTarget = NULL;
 
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 }

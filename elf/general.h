@@ -1,174 +1,174 @@
 
-void elf_init_general()
+void elfInitGeneral()
 {
 	if(gen) return;
 
-	gen = (elf_general*)malloc(sizeof(elf_general));
-	memset(gen, 0x0, sizeof(elf_general));
-	gen->obj_type = ELF_GENERAL;
+	gen = (elfGeneral*)malloc(sizeof(elfGeneral));
+	memset(gen, 0x0, sizeof(elfGeneral));
+	gen->objType = ELF_GENERAL;
 
-	gen->log = elf_create_string("elf.log");
+	gen->log = elfCreateString("elf.log");
 
 }
 
-void elf_deinit_general()
+void elfDeinitGeneral()
 {
 	if(!gen) return;
 
-	if(gen->err_str) elf_destroy_string(gen->err_str);
+	if(gen->errStr) elfDestroyString(gen->errStr);
 
-	if(gen->ref_count > 0)
+	if(gen->refCount > 0)
 	{
-		elf_write_to_log("error: possible memory leak in ELF, [%d] references not dereferenced\n",
-			elf_get_global_ref_count());
-		elf_dump_ref_table();
+		elfWriteToLog("error: possible memory leak in ELF, [%d] references not dereferenced\n",
+			elfGetGlobalRefCount());
+		elfDumpRefTable();
 	}
 
-	if(gen->ref_count < 0)
+	if(gen->refCount < 0)
 	{
-		elf_write_to_log("error: possible double free in ELF, [%d] negative reference count\n",
-			elf_get_global_ref_count());
-		elf_dump_ref_table();
+		elfWriteToLog("error: possible double free in ELF, [%d] negative reference count\n",
+			elfGetGlobalRefCount());
+		elfDumpRefTable();
 	}
 
-	if(gen->obj_count > 1)
+	if(gen->objCount > 1)
 	{
-		elf_write_to_log("error: possible memory leak in ELF, [%d] objects not destroyed\n",
-			elf_get_global_obj_count()-1);
-		elf_dump_obj_table();
+		elfWriteToLog("error: possible memory leak in ELF, [%d] objects not destroyed\n",
+			elfGetGlobalObjCount()-1);
+		elfDumpObjTable();
 	}
 
-	if(gen->obj_count < 1)
+	if(gen->objCount < 1)
 	{
-		elf_write_to_log("error: possible double free in ELF, [%d] negative object count\n",
-			elf_get_global_obj_count()-1);
-		elf_dump_obj_table();
+		elfWriteToLog("error: possible double free in ELF, [%d] negative object count\n",
+			elfGetGlobalObjCount()-1);
+		elfDumpObjTable();
 	}
 
-	if(gen->log) elf_destroy_string(gen->log);
+	if(gen->log) elfDestroyString(gen->log);
 
 	free(gen);
 }
 
-void elf_inc_ref(elf_object* obj)
+void elfIncRef(elfObject* obj)
 {
-	gen->ref_count++;
-	gen->ref_table[obj->obj_type]++;
-	obj->obj_ref_count++;
+	gen->refCount++;
+	gen->refTable[obj->objType]++;
+	obj->objRefCount++;
 }
 
-void elf_dec_ref(elf_object* obj)
+void elfDecRef(elfObject* obj)
 {
-	gen->ref_count--;
-	gen->ref_table[obj->obj_type]--;
-	obj->obj_ref_count--;
+	gen->refCount--;
+	gen->refTable[obj->objType]--;
+	obj->objRefCount--;
 
-	if(obj->obj_ref_count < 1)
+	if(obj->objRefCount < 1)
 	{
-		if(obj->obj_destr)
+		if(obj->objDestr)
 		{
-			obj->obj_destr(obj);
+			obj->objDestr(obj);
 		}
 		else
 		{
-			elf_write_to_log("error: no destructor specified for object\n");
+			elfWriteToLog("error: no destructor specified for object\n");
 		}
 	}
 }
 
-void elf_inc_obj(int type)
+void elfIncObj(int type)
 {
-	gen->obj_count++;
-	gen->obj_table[type]++;
+	gen->objCount++;
+	gen->objTable[type]++;
 }
 
-void elf_dec_obj(int type)
+void elfDecObj(int type)
 {
-	gen->obj_count--;
-	gen->obj_table[type]--;
+	gen->objCount--;
+	gen->objTable[type]--;
 }
 
-void elf_dump_ref_table()
-{
-	int i;
-
-	elf_write_to_log("---------- REF COUNT TABLE ----------\n");
-
-	for(i = 0; i < ELF_OBJECT_TYPE_COUNT; i++)
-	{
-		elf_write_to_log("%d : %d\n", i, gen->ref_table[i]);
-	}
-
-	elf_write_to_log("-------------------------------------\n");
-}
-
-void elf_dump_obj_table()
+void elfDumpRefTable()
 {
 	int i;
 
-	elf_write_to_log("---------- OBJ COUNT TABLE ----------\n");
+	elfWriteToLog("---------- REF COUNT TABLE ----------\n");
 
 	for(i = 0; i < ELF_OBJECT_TYPE_COUNT; i++)
 	{
-		elf_write_to_log("%d : %d\n", i, gen->obj_table[i]);
+		elfWriteToLog("%d : %d\n", i, gen->refTable[i]);
 	}
 
-	elf_write_to_log("-------------------------------------\n");
+	elfWriteToLog("-------------------------------------\n");
 }
 
-int elf_get_object_type(elf_object* obj)
+void elfDumpObjTable()
 {
-	return obj->obj_type;
+	int i;
+
+	elfWriteToLog("---------- OBJ COUNT TABLE ----------\n");
+
+	for(i = 0; i < ELF_OBJECT_TYPE_COUNT; i++)
+	{
+		elfWriteToLog("%d : %d\n", i, gen->objTable[i]);
+	}
+
+	elfWriteToLog("-------------------------------------\n");
 }
 
-int elf_get_object_ref_count(elf_object* obj)
+int elfGetObjectType(elfObject* obj)
 {
-	return obj->obj_ref_count;
+	return obj->objType;
 }
 
-int elf_get_global_ref_count()
+int elfGetObjectRefCount(elfObject* obj)
 {
-	return gen->ref_count;
+	return obj->objRefCount;
 }
 
-int elf_get_global_obj_count()
+int elfGetGlobalRefCount()
 {
-	return gen->obj_count;
+	return gen->refCount;
 }
 
-unsigned char elf_is_actor(elf_object* obj)
+int elfGetGlobalObjCount()
 {
-	if(obj->obj_type == ELF_CAMERA || obj->obj_type == ELF_ENTITY ||
-		obj->obj_type == ELF_LIGHT || obj->obj_type == ELF_PARTICLES ||
-		obj->obj_type == ELF_SPRITE) return ELF_TRUE;
+	return gen->objCount;
+}
+
+unsigned char elfIsActor(elfObject* obj)
+{
+	if(obj->objType == ELF_CAMERA || obj->objType == ELF_ENTITY ||
+		obj->objType == ELF_LIGHT || obj->objType == ELF_PARTICLES ||
+		obj->objType == ELF_SPRITE) return ELF_TRUE;
 	return ELF_FALSE;
 }
 
-unsigned char elf_is_gui_object(elf_object* obj)
+unsigned char elfIsGuiObject(elfObject* obj)
 {
-	if(obj->obj_type == ELF_GUI || obj->obj_type == ELF_LABEL || obj->obj_type == ELF_BUTTON ||
-		obj->obj_type == ELF_PICTURE || obj->obj_type == ELF_TEXT_FIELD ||
-		obj->obj_type == ELF_SLIDER || obj->obj_type == ELF_SCREEN ||
-		obj->obj_type == ELF_TEXT_LIST || obj->obj_type == ELF_CHECK_BOX) return ELF_TRUE;
+	if(obj->objType == ELF_GUI || obj->objType == ELF_LABEL || obj->objType == ELF_BUTTON ||
+		obj->objType == ELF_PICTURE || obj->objType == ELF_TEXT_FIELD ||
+		obj->objType == ELF_SLIDER || obj->objType == ELF_SCREEN ||
+		obj->objType == ELF_TEXT_LIST || obj->objType == ELF_CHECK_BOX) return ELF_TRUE;
 	return ELF_FALSE;
 }
 
-void elf_set_log_file_path(const char* file_path)
+void elfSetLogFilePath(const char* filePath)
 {
 	FILE* file;
 
-	file = fopen(file_path, "a");
+	file = fopen(filePath, "a");
 	if(!file)
 	{
-		file = fopen(file_path, "w");
+		file = fopen(filePath, "w");
 		if(!file)
 		{
-			printf("error: can't open log file \"%s\", reverting to default\n", file_path);
+			printf("error: can't open log file \"%s\", reverting to default\n", filePath);
 			return;
 		}
 	}
 
-	if(gen->log) elf_destroy_string(gen->log);
-	gen->log = elf_create_string(file_path);
+	if(gen->log) elfDestroyString(gen->log);
+	gen->log = elfCreateString(filePath);
 }
 

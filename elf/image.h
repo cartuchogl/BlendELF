@@ -1,25 +1,25 @@
 
-elf_image* elf_create_image()
+elfImage* elfCreateImage()
 {
-	elf_image* image;
+	elfImage* image;
 
-	image = (elf_image*)malloc(sizeof(elf_image));
-	memset(image, 0x0, sizeof(elf_image));
-	image->obj_type = ELF_IMAGE;
-	image->obj_destr = elf_destroy_image;
+	image = (elfImage*)malloc(sizeof(elfImage));
+	memset(image, 0x0, sizeof(elfImage));
+	image->objType = ELF_IMAGE;
+	image->objDestr = elfDestroyImage;
 
-	elf_inc_obj(ELF_IMAGE);
+	elfIncObj(ELF_IMAGE);
 
 	return image;
 }
 
-elf_image* elf_create_empty_image(int width, int height, int bpp)
+elfImage* elfCreateEmptyImage(int width, int height, int bpp)
 {
-	elf_image* image;
+	elfImage* image;
 
 	if(width < 0 || height < 0 || (bpp != 8 && bpp != 16 && bpp != 24 && bpp != 32)) return NULL;
 
-	image = elf_create_image();
+	image = elfCreateImage();
 
 	image->width = width;
 	image->height = height;
@@ -31,45 +31,45 @@ elf_image* elf_create_empty_image(int width, int height, int bpp)
 	return image;
 }
 
-elf_image* elf_create_image_from_file(const char* file_path)
+elfImage* elfCreateImageFromFile(const char* filePath)
 {
-	elf_image* image;
+	elfImage* image;
 	FIBITMAP* in;
-	int size_bytes;
+	int sizeBytes;
 	const char* type;
 
-	type = strrchr(file_path, '.');
+	type = strrchr(filePath, '.');
 	if(!type)
 	{
-		elf_set_error(ELF_CANT_OPEN_FILE, "error: can't open file \"%s\"\n", file_path);
+		elfSetError(ELF_CANT_OPEN_FILE, "error: can't open file \"%s\"\n", filePath);
 		return NULL;
 	}
 
 	if(strcmp(type, ".jpg") == 0)
-		in = FreeImage_Load(FIF_JPEG, file_path, JPEG_ACCURATE);
+		in = FreeImage_Load(FIF_JPEG, filePath, JPEG_ACCURATE);
 	else if(strcmp(type, ".png") == 0)
-		in = FreeImage_Load(FIF_PNG, file_path, 0);
+		in = FreeImage_Load(FIF_PNG, filePath, 0);
 	else if(strcmp(type, ".tga") == 0)
-		in = FreeImage_Load(FIF_TARGA, file_path, 0);
+		in = FreeImage_Load(FIF_TARGA, filePath, 0);
 	else if(strcmp(type, ".pcx") == 0)
-		in = FreeImage_Load(FIF_PCX, file_path, 0);
+		in = FreeImage_Load(FIF_PCX, filePath, 0);
 	else if(strcmp(type, ".bmp") == 0)
-		in = FreeImage_Load(FIF_BMP, file_path, 0);
+		in = FreeImage_Load(FIF_BMP, filePath, 0);
 	else if(strcmp(type, ".dds") == 0)
-		in = FreeImage_Load(FIF_DDS, file_path, 0);
+		in = FreeImage_Load(FIF_DDS, filePath, 0);
 	else
 	{
-		elf_set_error(ELF_UNKNOWN_FORMAT, "error: can't load image \"%s\", unknown format\n", file_path);
+		elfSetError(ELF_UNKNOWN_FORMAT, "error: can't load image \"%s\", unknown format\n", filePath);
 		return NULL;
 	}
 
 	if(!in)
 	{
-		elf_set_error(ELF_CANT_OPEN_FILE, "error: can't open file \"%s\"\n", file_path);
+		elfSetError(ELF_CANT_OPEN_FILE, "error: can't open file \"%s\"\n", filePath);
 		return NULL;
 	}
 
-	image = elf_create_image();
+	image = elfCreateImage();
 
 	image->width = FreeImage_GetWidth(in);
 	image->height = FreeImage_GetHeight(in);
@@ -77,15 +77,15 @@ elf_image* elf_create_image_from_file(const char* file_path)
 
 	if(image->width == 0 || image->height == 0)
 	{
-		elf_set_error(ELF_INVALID_SIZE, "error: \"%s\" has invalid size\n", file_path);
+		elfSetError(ELF_INVALID_SIZE, "error: \"%s\" has invalid size\n", filePath);
 		FreeImage_Unload(in);
 		free(image);
 		return 0;
 	}
 
-	size_bytes = image->width*image->height*(image->bpp/8);
+	sizeBytes = image->width*image->height*(image->bpp/8);
 
-	image->data = (unsigned char*)malloc(size_bytes);
+	image->data = (unsigned char*)malloc(sizeBytes);
 
 	FreeImage_ConvertToRawBits((BYTE*)image->data, in, image->width*(image->bpp/8), image->bpp,
 		FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK, FALSE);
@@ -95,18 +95,18 @@ elf_image* elf_create_image_from_file(const char* file_path)
 	return image;
 }
 
-void elf_destroy_image(void* data)
+void elfDestroyImage(void* data)
 {
-	elf_image* image = (elf_image*)data;
+	elfImage* image = (elfImage*)data;
 
 	if(image->data) free(image->data);
 
 	free(image);
 
-	elf_dec_obj(ELF_IMAGE);
+	elfDecObj(ELF_IMAGE);
 }
 
-void elf_set_image_pixel(elf_image* image, int x, int y, float r, float g, float b, float a)
+void elfSetImagePixel(elfImage* image, int x, int y, float r, float g, float b, float a)
 {
 	int offset;
 
@@ -120,27 +120,27 @@ void elf_set_image_pixel(elf_image* image, int x, int y, float r, float g, float
 	if(image->bpp == 32) image->data[offset+3] = (unsigned char)(a*255);
 }
 
-int elf_get_image_width(elf_image* image)
+int elfGetImageWidth(elfImage* image)
 {
 	return image->width;
 }
 
-int elf_get_image_height(elf_image* image)
+int elfGetImageHeight(elfImage* image)
 {
 	return image->height;
 }
 
-int elf_get_image_bits_per_pixel(elf_image* image)
+int elfGetImageBitsPerPixel(elfImage* image)
 {
 	return image->bpp;
 }
 
-elf_color elf_get_image_pixel(elf_image* image, int x, int y)
+elfColor elfGetImagePixel(elfImage* image, int x, int y)
 {
 	int offset;
-	elf_color color;
+	elfColor color;
 
-	memset(&color, 0x0, sizeof(elf_color));
+	memset(&color, 0x0, sizeof(elfColor));
 
 	if(x < 0 || x >= image->width || y < 0 || y >= image->height) return color;
 
@@ -155,12 +155,12 @@ elf_color elf_get_image_pixel(elf_image* image, int x, int y)
 }
 
 
-void* elf_get_image_data(elf_image* image)
+void* elfGetImageData(elfImage* image)
 {
 	return image->data;
 }
 
-unsigned char elf_save_image_data(const char* file_path, int width, int height, unsigned char bpp, void* data)
+unsigned char elfSaveImageData(const char* filePath, int width, int height, unsigned char bpp, void* data)
 {
 	FIBITMAP* out;
 	FIBITMAP* temp;
@@ -181,27 +181,27 @@ unsigned char elf_save_image_data(const char* file_path, int width, int height, 
 
 	if(!out)
 	{
-		elf_set_error(ELF_CANT_OPEN_FILE, "error: can't save image \"%s\"\n", file_path);
+		elfSetError(ELF_CANT_OPEN_FILE, "error: can't save image \"%s\"\n", filePath);
 		return ELF_FALSE;
 	}
 
-	type = strrchr(file_path, '.');
+	type = strrchr(filePath, '.');
 	if(strcmp(type, ".bmp") == 0)
-		FreeImage_Save(FIF_BMP, out, file_path, 0);
+		FreeImage_Save(FIF_BMP, out, filePath, 0);
 	else if(strcmp(type, ".tga") == 0)
-		FreeImage_Save(FIF_TARGA, out, file_path, 0);
+		FreeImage_Save(FIF_TARGA, out, filePath, 0);
 	else if(strcmp(type, ".jpg") == 0)
-		FreeImage_Save(FIF_JPEG, out, file_path, JPEG_QUALITYSUPERB);
+		FreeImage_Save(FIF_JPEG, out, filePath, JPEG_QUALITYSUPERB);
 	else if(strcmp(type, ".pcx") == 0)
-		FreeImage_Save(FIF_PCX, out, file_path, 0);
+		FreeImage_Save(FIF_PCX, out, filePath, 0);
 	else if(strcmp(type, ".png") == 0)
-		FreeImage_Save(FIF_PNG, out, file_path, 0);
+		FreeImage_Save(FIF_PNG, out, filePath, 0);
 	else if(strcmp(type, ".dds") == 0)
-		FreeImage_Save(FIF_DDS, out, file_path, 0);
+		FreeImage_Save(FIF_DDS, out, filePath, 0);
 	else
 	{
 		FreeImage_Unload(out);
-		elf_set_error(ELF_UNKNOWN_FORMAT, "error: can't save image \"%s\", unknown format\n", file_path);
+		elfSetError(ELF_UNKNOWN_FORMAT, "error: can't save image \"%s\", unknown format\n", filePath);
 		return ELF_FALSE;
 	}
 

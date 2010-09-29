@@ -1,112 +1,112 @@
 
-elf_sprite* elf_create_sprite(const char* name)
+elfSprite* elfCreateSprite(const char* name)
 {
-	elf_sprite* sprite;
+	elfSprite* sprite;
 
-	sprite = (elf_sprite*)malloc(sizeof(elf_sprite));
-	memset(sprite, 0x0, sizeof(elf_sprite));
-	sprite->obj_type = ELF_SPRITE;
-	sprite->obj_destr = elf_destroy_sprite;
+	sprite = (elfSprite*)malloc(sizeof(elfSprite));
+	memset(sprite, 0x0, sizeof(elfSprite));
+	sprite->objType = ELF_SPRITE;
+	sprite->objDestr = elfDestroySprite;
 
-	elf_init_actor((elf_actor*)sprite, ELF_FALSE);
+	elfInitActor((elfActor*)sprite, ELF_FALSE);
 
 	sprite->scale.x = sprite->scale.y = 1.0;
-	sprite->tex_size.x = sprite->tex_size.y = 0.6;
-	sprite->real_scale.x = sprite->real_scale.y = 0.6; sprite->real_scale.z = 1.0;
-	sprite->query = gfx_create_query();
+	sprite->texSize.x = sprite->texSize.y = 0.6;
+	sprite->realScale.x = sprite->realScale.y = 0.6; sprite->realScale.z = 1.0;
+	sprite->query = gfxCreateQuery();
 	sprite->visible = ELF_TRUE;
 	sprite->culled = ELF_TRUE;
 
-	sprite->dobject = elf_create_physics_object_box(0.3, 0.3, 0.01, 0.0, 0.0, 0.0, 0.0);
-	elf_set_physics_object_actor(sprite->dobject, (elf_actor*)sprite);
-	elf_inc_ref((elf_object*)sprite->dobject);
+	sprite->dobject = elfCreatePhysicsObjectBox(0.3, 0.3, 0.01, 0.0, 0.0, 0.0, 0.0);
+	elfSetPhysicsObjectActor(sprite->dobject, (elfActor*)sprite);
+	elfIncRef((elfObject*)sprite->dobject);
 
-	sprite->pbb_lengths.x = sprite->pbb_lengths.y = 0.6; sprite->pbb_lengths.z = 0.01;
+	sprite->pbbLengths.x = sprite->pbbLengths.y = 0.6; sprite->pbbLengths.z = 0.01;
 
-	sprite->frame_player = elf_create_frame_player();
-	elf_inc_ref((elf_object*)sprite->frame_player);
+	sprite->framePlayer = elfCreateFramePlayer();
+	elfIncRef((elfObject*)sprite->framePlayer);
 
-	if(name) sprite->name = elf_create_string(name);
+	if(name) sprite->name = elfCreateString(name);
 
-	sprite->id = ++gen->sprite_id_counter;
+	sprite->id = ++gen->spriteIdCounter;
 
-	elf_inc_obj(ELF_SPRITE);
+	elfIncObj(ELF_SPRITE);
 
 	return sprite;
 }
 
-void elf_update_sprite(elf_sprite* sprite)
+void elfUpdateSprite(elfSprite* sprite)
 {
-	elf_update_actor((elf_actor*)sprite);
+	elfUpdateActor((elfActor*)sprite);
 }
 
-void elf_sprite_pre_draw(elf_sprite* sprite, elf_camera* camera)
+void elfSpritePreDraw(elfSprite* sprite, elfCamera* camera)
 {
-	elf_vec4f orient;
+	elfVec4f orient;
 
-	elf_actor_pre_draw((elf_actor*)sprite);
+	elfActorPreDraw((elfActor*)sprite);
 
-	elf_get_actor_position_((elf_actor*)sprite, &sprite->position.x);
+	elfGetActorPosition_((elfActor*)sprite, &sprite->position.x);
 
-	if(sprite->face_camera && camera)
+	if(sprite->faceCamera && camera)
 	{
-		elf_get_actor_orientation_((elf_actor*)camera, &orient.x);
-		elf_set_actor_orientation((elf_actor*)sprite, orient.x, orient.y, orient.z, orient.w);
+		elfGetActorOrientation_((elfActor*)camera, &orient.x);
+		elfSetActorOrientation((elfActor*)sprite, orient.x, orient.y, orient.z, orient.w);
 	}
 }
 
-void elf_sprite_post_draw(elf_sprite* sprite)
+void elfSpritePostDraw(elfSprite* sprite)
 {
-	elf_actor_post_draw((elf_actor*)sprite);
+	elfActorPostDraw((elfActor*)sprite);
 }
 
-void elf_destroy_sprite(void* data)
+void elfDestroySprite(void* data)
 {
-	elf_sprite* sprite = (elf_sprite*)data;
+	elfSprite* sprite = (elfSprite*)data;
 
-	elf_clean_actor((elf_actor*)sprite);
+	elfCleanActor((elfActor*)sprite);
 
-	if(sprite->query) gfx_destroy_query(sprite->query);
+	if(sprite->query) gfxDestroyQuery(sprite->query);
 
-	if(sprite->material) elf_dec_ref((elf_object*)sprite->material);
-	elf_dec_ref((elf_object*)sprite->frame_player);
+	if(sprite->material) elfDecRef((elfObject*)sprite->material);
+	elfDecRef((elfObject*)sprite->framePlayer);
 
 	free(sprite);
 
-	elf_dec_obj(ELF_SPRITE);
+	elfDecObj(ELF_SPRITE);
 }
 
-void elf_calc_sprite_bounds(elf_sprite* sprite)
+void elfCalcSpriteBounds(elfSprite* sprite)
 {
 	if(sprite->material)
 	{
-		if(sprite->material->diffuse_map && sprite->material->diffuse_map->texture)
+		if(sprite->material->diffuseMap && sprite->material->diffuseMap->texture)
 		{
-			sprite->tex_size.x = (float)gfx_get_texture_width(sprite->material->diffuse_map->texture)/100.0;
-			sprite->tex_size.y = (float)gfx_get_texture_height(sprite->material->diffuse_map->texture)/100.0;
+			sprite->texSize.x = (float)gfxGetTextureWidth(sprite->material->diffuseMap->texture)/100.0;
+			sprite->texSize.y = (float)gfxGetTextureHeight(sprite->material->diffuseMap->texture)/100.0;
 		}
 	}
 	else
 	{
 		sprite->scale.x = sprite->scale.y = 1.0;
-		sprite->tex_size.x = sprite->tex_size.y = 0.6;
-		sprite->real_scale.x = sprite->real_scale.y = 0.6; sprite->real_scale.z = 1.0;
-		sprite->pbb_lengths.x = sprite->pbb_lengths.y = 0.6; sprite->pbb_lengths.z = 0.01;
+		sprite->texSize.x = sprite->texSize.y = 0.6;
+		sprite->realScale.x = sprite->realScale.y = 0.6; sprite->realScale.z = 1.0;
+		sprite->pbbLengths.x = sprite->pbbLengths.y = 0.6; sprite->pbbLengths.z = 0.01;
 	}
 
-	sprite->pbb_lengths.x = sprite->tex_size.x;
-	sprite->pbb_lengths.y = sprite->tex_size.y;
-	sprite->pbb_lengths.z = 0.01;
-	sprite->real_scale.x = sprite->scale.x*sprite->tex_size.x;
-	sprite->real_scale.y = sprite->scale.y*sprite->tex_size.y;
-	sprite->real_scale.z = 0.0;
+	sprite->pbbLengths.x = sprite->texSize.x;
+	sprite->pbbLengths.y = sprite->texSize.y;
+	sprite->pbbLengths.z = 0.01;
+	sprite->realScale.x = sprite->scale.x*sprite->texSize.x;
+	sprite->realScale.y = sprite->scale.y*sprite->texSize.y;
+	sprite->realScale.z = 0.0;
 
-	sprite->cull_radius = elf_get_vec3f_length(sprite->real_scale)/2.0;
+	sprite->cullRadius = elfGetVec3fLength(sprite->realScale)/2.0;
 
-	sprite->real_scale.z = 1.0;
+	sprite->realScale.z = 1.0;
 }
 
-void elf_reset_sprite_debug_physics_object(elf_sprite* sprite)
+void elfResetSpriteDebugPhysicsObject(elfSprite* sprite)
 {
 	float position[3];
 	float orient[4];
@@ -114,80 +114,80 @@ void elf_reset_sprite_debug_physics_object(elf_sprite* sprite)
 
 	if(sprite->dobject)
 	{
-		elf_set_physics_object_actor(sprite->dobject, NULL);
-		elf_set_physics_object_world(sprite->dobject, NULL);
-		elf_dec_ref((elf_object*)sprite->dobject);
+		elfSetPhysicsObjectActor(sprite->dobject, NULL);
+		elfSetPhysicsObjectWorld(sprite->dobject, NULL);
+		elfDecRef((elfObject*)sprite->dobject);
 	}
 
-	sprite->dobject = elf_create_physics_object_box(sprite->tex_size.x/2.0,
-		sprite->tex_size.y/2.0, 0.01/2.0, 0.0, 0.0, 0.0, 0.0);
+	sprite->dobject = elfCreatePhysicsObjectBox(sprite->texSize.x/2.0,
+		sprite->texSize.y/2.0, 0.01/2.0, 0.0, 0.0, 0.0, 0.0);
 
-	elf_set_physics_object_actor(sprite->dobject, (elf_actor*)sprite);
-	elf_inc_ref((elf_object*)sprite->dobject);
+	elfSetPhysicsObjectActor(sprite->dobject, (elfActor*)sprite);
+	elfIncRef((elfObject*)sprite->dobject);
 
-	gfx_get_transform_position(sprite->transform, position);
-	gfx_get_transform_orientation(sprite->transform, orient);
-	gfx_get_transform_scale(sprite->transform, scale);
+	gfxGetTransformPosition(sprite->transform, position);
+	gfxGetTransformOrientation(sprite->transform, orient);
+	gfxGetTransformScale(sprite->transform, scale);
 
-	elf_set_physics_object_position(sprite->dobject, position[0], position[1], position[2]);
-	elf_set_physics_object_orientation(sprite->dobject, orient[0], orient[1], orient[2], orient[3]);
-	elf_set_physics_object_scale(sprite->dobject, scale[0], scale[1], scale[2]);
+	elfSetPhysicsObjectPosition(sprite->dobject, position[0], position[1], position[2]);
+	elfSetPhysicsObjectOrientation(sprite->dobject, orient[0], orient[1], orient[2], orient[3]);
+	elfSetPhysicsObjectScale(sprite->dobject, scale[0], scale[1], scale[2]);
 
-	if(sprite->scene) elf_set_physics_object_world(sprite->dobject, sprite->scene->dworld);
+	if(sprite->scene) elfSetPhysicsObjectWorld(sprite->dobject, sprite->scene->dworld);
 }
 
-void elf_set_sprite_material(elf_sprite* sprite, elf_material* material)
+void elfSetSpriteMaterial(elfSprite* sprite, elfMaterial* material)
 {
-	if(sprite->material) elf_dec_ref((elf_object*)sprite->material);
+	if(sprite->material) elfDecRef((elfObject*)sprite->material);
 	sprite->material = material;
-	if(sprite->material) elf_inc_ref((elf_object*)sprite->material);
+	if(sprite->material) elfIncRef((elfObject*)sprite->material);
 
-	elf_calc_sprite_bounds(sprite);
+	elfCalcSpriteBounds(sprite);
 
-	gfx_set_transform_scale(sprite->transform, sprite->real_scale.x, sprite->real_scale.y, sprite->real_scale.z);
+	gfxSetTransformScale(sprite->transform, sprite->realScale.x, sprite->realScale.y, sprite->realScale.z);
 
 	if(sprite->object)
 	{
-		elf_set_actor_physics((elf_actor*)sprite, elf_get_actor_shape((elf_actor*)sprite),
-			elf_get_actor_mass((elf_actor*)sprite));
+		elfSetActorPhysics((elfActor*)sprite, elfGetActorShape((elfActor*)sprite),
+			elfGetActorMass((elfActor*)sprite));
 	}
 
-	elf_reset_sprite_debug_physics_object(sprite);
+	elfResetSpriteDebugPhysicsObject(sprite);
 }
 
-void elf_set_sprite_scale(elf_sprite* sprite, float x, float y)
+void elfSetSpriteScale(elfSprite* sprite, float x, float y)
 {
 	sprite->scale.x = x; sprite->scale.y = y;
 
-	elf_calc_sprite_bounds(sprite);
+	elfCalcSpriteBounds(sprite);
 
-	gfx_set_transform_scale(sprite->transform, sprite->real_scale.x, sprite->real_scale.y, sprite->real_scale.z);
+	gfxSetTransformScale(sprite->transform, sprite->realScale.x, sprite->realScale.y, sprite->realScale.z);
 
-	if(sprite->object) elf_set_physics_object_scale(sprite->object, sprite->scale.x, sprite->scale.y, 1.0);
-	if(sprite->dobject) elf_set_physics_object_scale(sprite->dobject, sprite->scale.x, sprite->scale.y, 1.0);
+	if(sprite->object) elfSetPhysicsObjectScale(sprite->object, sprite->scale.x, sprite->scale.y, 1.0);
+	if(sprite->dobject) elfSetPhysicsObjectScale(sprite->dobject, sprite->scale.x, sprite->scale.y, 1.0);
 }
 
-void elf_set_sprite_face_camera(elf_sprite* sprite, unsigned char face_camera)
+void elfSetSpriteFaceCamera(elfSprite* sprite, unsigned char faceCamera)
 {
-	sprite->face_camera = !face_camera == ELF_FALSE;
+	sprite->faceCamera = !faceCamera == ELF_FALSE;
 }
 
-elf_material* elf_get_sprite_material(elf_sprite* sprite)
+elfMaterial* elfGetSpriteMaterial(elfSprite* sprite)
 {
 	return sprite->material;
 }
 
-elf_vec2f elf_get_sprite_scale(elf_sprite* sprite)
+elfVec2f elfGetSpriteScale(elfSprite* sprite)
 {
 	return sprite->scale;
 }
 
-unsigned char elf_get_sprite_face_camera(elf_sprite* sprite)
+unsigned char elfGetSpriteFaceCamera(elfSprite* sprite)
 {
-	return sprite->face_camera;
+	return sprite->faceCamera;
 }
 
-void elf_set_sprite_visible(elf_sprite* sprite, unsigned char visible)
+void elfSetSpriteVisible(elfSprite* sprite, unsigned char visible)
 {
 	if(sprite->visible == visible) return;
 
@@ -196,86 +196,86 @@ void elf_set_sprite_visible(elf_sprite* sprite, unsigned char visible)
 	sprite->moved = ELF_TRUE;
 }
 
-unsigned char elf_get_sprite_visible(elf_sprite* sprite)
+unsigned char elfGetSpriteVisible(elfSprite* sprite)
 {
 	return sprite->visible;
 }
 
-void elf_set_sprite_occluder(elf_sprite* sprite, unsigned char occluder)
+void elfSetSpriteOccluder(elfSprite* sprite, unsigned char occluder)
 {
 	sprite->occluder = !occluder == ELF_FALSE;
 }
 
-unsigned char elf_get_sprite_occluder(elf_sprite* sprite)
+unsigned char elfGetSpriteOccluder(elfSprite* sprite)
 {
 	return sprite->occluder;
 }
 
-unsigned char elf_cull_sprite(elf_sprite* sprite, elf_camera* camera)
+unsigned char elfCullSprite(elfSprite* sprite, elfCamera* camera)
 {
 	if(!sprite->material || !sprite->visible) return ELF_TRUE;
 
-	return !elf_sphere_inside_frustum(camera, &sprite->position.x, sprite->cull_radius);
+	return !elfSphereInsideFrustum(camera, &sprite->position.x, sprite->cullRadius);
 }
 
-void elf_draw_sprite(elf_sprite* sprite, int mode, gfx_shader_params* shader_params)
+void elfDrawSprite(elfSprite* sprite, int mode, gfxShaderParams* shaderParams)
 {
 	if(!sprite->material || !sprite->visible ||
 		(mode == ELF_DRAW_WITHOUT_LIGHTING && sprite->material->lighting)) return;
 
-	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(sprite->transform),
-			shader_params->camera_matrix, shader_params->modelview_matrix);
+	gfxMulMatrix4Matrix4(gfxGetTransformMatrix(sprite->transform),
+			shaderParams->cameraMatrix, shaderParams->modelviewMatrix);
 
-	elf_set_material(sprite->material, mode, shader_params);
-	gfx_set_shader_params(shader_params);
+	elfSetMaterial(sprite->material, mode, shaderParams);
+	gfxSetShaderParams(shaderParams);
 
-	gfx_draw_vertex_array(eng->sprite_vertex_array, 12, GFX_TRIANGLES);
+	gfxDrawVertexArray(eng->spriteVertexArray, 12, GFX_TRIANGLES);
 }
 
-void elf_draw_sprite_debug(elf_sprite* sprite, gfx_shader_params* shader_params)
+void elfDrawSpriteDebug(elfSprite* sprite, gfxShaderParams* shaderParams)
 {
-	float* vertex_buffer;
+	float* vertexBuffer;
 
-	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(sprite->transform),
-		shader_params->camera_matrix, shader_params->modelview_matrix);
+	gfxMulMatrix4Matrix4(gfxGetTransformMatrix(sprite->transform),
+		shaderParams->cameraMatrix, shaderParams->modelviewMatrix);
 
-	vertex_buffer = (float*)gfx_get_vertex_data_buffer(eng->lines);
+	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->lines);
 
-	vertex_buffer[0] = -0.5;
-	vertex_buffer[1] = 0.5;
-	vertex_buffer[2] = 0.0;
+	vertexBuffer[0] = -0.5;
+	vertexBuffer[1] = 0.5;
+	vertexBuffer[2] = 0.0;
 
-	vertex_buffer[3] = -0.5;
-	vertex_buffer[4] = -0.5;
-	vertex_buffer[5] = 0.0;
+	vertexBuffer[3] = -0.5;
+	vertexBuffer[4] = -0.5;
+	vertexBuffer[5] = 0.0;
 
-	vertex_buffer[6] = -0.5;
-	vertex_buffer[7] = -0.5;
-	vertex_buffer[8] = 0.0;
+	vertexBuffer[6] = -0.5;
+	vertexBuffer[7] = -0.5;
+	vertexBuffer[8] = 0.0;
 
-	vertex_buffer[9] = 0.5;
-	vertex_buffer[10] = -0.5;
-	vertex_buffer[11] = 0.0;
+	vertexBuffer[9] = 0.5;
+	vertexBuffer[10] = -0.5;
+	vertexBuffer[11] = 0.0;
 
-	vertex_buffer[12] = 0.5;
-	vertex_buffer[13] = -0.5;
-	vertex_buffer[14] = 0.0;
+	vertexBuffer[12] = 0.5;
+	vertexBuffer[13] = -0.5;
+	vertexBuffer[14] = 0.0;
 
-	vertex_buffer[15] = 0.5;
-	vertex_buffer[16] = 0.5;
-	vertex_buffer[17] = 0.0;
+	vertexBuffer[15] = 0.5;
+	vertexBuffer[16] = 0.5;
+	vertexBuffer[17] = 0.0;
 
-	vertex_buffer[18] = 0.5;
-	vertex_buffer[19] = 0.5;
-	vertex_buffer[20] = 0.0;
+	vertexBuffer[18] = 0.5;
+	vertexBuffer[19] = 0.5;
+	vertexBuffer[20] = 0.0;
 
-	vertex_buffer[21] = -0.5;
-	vertex_buffer[22] = 0.5;
-	vertex_buffer[23] = 0.0;
+	vertexBuffer[21] = -0.5;
+	vertexBuffer[22] = 0.5;
+	vertexBuffer[23] = 0.0;
 
-	if(!sprite->selected) gfx_set_color(&shader_params->material_params.diffuse_color, 0.6, 0.2, 0.6, 1.0);
-	else gfx_set_color(&shader_params->material_params.diffuse_color, 1.0, 0.0, 0.0, 1.0);
-	gfx_set_shader_params(shader_params);
-	gfx_draw_lines(8, eng->lines);
+	if(!sprite->selected) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.6, 0.2, 0.6, 1.0);
+	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 0.0, 0.0, 1.0);
+	gfxSetShaderParams(shaderParams);
+	gfxDrawLines(8, eng->lines);
 }
 

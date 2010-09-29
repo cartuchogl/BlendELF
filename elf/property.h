@@ -1,95 +1,95 @@
 
-elf_property* elf_create_property(const char* name)
+elfProperty* elfCreateProperty(const char* name)
 {
-	elf_property* property;
+	elfProperty* property;
 
-	property = (elf_property*)malloc(sizeof(elf_property));
-	memset(property, 0x0, sizeof(elf_property));
-	property->obj_type = ELF_PROPERTY;
-	property->obj_destr = elf_destroy_property;
+	property = (elfProperty*)malloc(sizeof(elfProperty));
+	memset(property, 0x0, sizeof(elfProperty));
+	property->objType = ELF_PROPERTY;
+	property->objDestr = elfDestroyProperty;
 
-	property->property_type = ELF_PROPERTY_INT;
+	property->propertyType = ELF_PROPERTY_INT;
 
-	if(property) property->name = elf_create_string(name);
+	if(property) property->name = elfCreateString(name);
 
-	elf_inc_obj(ELF_PROPERTY);
+	elfIncObj(ELF_PROPERTY);
 
 	return property;
 }
 
-void elf_destroy_property(void* data)
+void elfDestroyProperty(void* data)
 {
-	elf_property* property = (elf_property*)data;
+	elfProperty* property = (elfProperty*)data;
 
-	if(property->name) elf_destroy_string(property->name);
-	if(property->sval) elf_destroy_string(property->sval);
+	if(property->name) elfDestroyString(property->name);
+	if(property->sval) elfDestroyString(property->sval);
 
 	free(property);
 
-	elf_dec_obj(ELF_PROPERTY);
+	elfDecObj(ELF_PROPERTY);
 }
 
-int elf_get_property_type(elf_property* property)
+int elfGetPropertyType(elfProperty* property)
 {
-	return property->property_type;
+	return property->propertyType;
 }
 
-int elf_get_property_int(elf_property* property)
+int elfGetPropertyInt(elfProperty* property)
 {
 	return property->ival;
 }
 
-float elf_get_property_float(elf_property* property)
+float elfGetPropertyFloat(elfProperty* property)
 {
 	return property->fval;
 }
 
-const char* elf_get_property_string(elf_property* property)
+const char* elfGetPropertyString(elfProperty* property)
 {
 	return property->sval;
 }
 
-unsigned char elf_get_property_bool(elf_property* property)
+unsigned char elfGetPropertyBool(elfProperty* property)
 {
 	return property->bval;
 }
 
-void elf_set_property_int(elf_property* property, int ival)
+void elfSetPropertyInt(elfProperty* property, int ival)
 {
-	property->property_type = ELF_PROPERTY_INT;
+	property->propertyType = ELF_PROPERTY_INT;
 	property->ival = ival;
 	property->fval = 0.0;
-	if(property->sval) elf_destroy_string(property->sval);
+	if(property->sval) elfDestroyString(property->sval);
 	property->sval = NULL;
 	property->bval = ELF_FALSE;
 }
 
-void elf_set_property_float(elf_property* property, float fval)
+void elfSetPropertyFloat(elfProperty* property, float fval)
 {
-	property->property_type = ELF_PROPERTY_FLOAT;
+	property->propertyType = ELF_PROPERTY_FLOAT;
 	property->ival = 0;
 	property->fval = fval;
-	if(property->sval) elf_destroy_string(property->sval);
+	if(property->sval) elfDestroyString(property->sval);
 	property->sval = NULL;
 	property->bval = ELF_FALSE;
 }
 
-void elf_set_property_string(elf_property* property, const char* sval)
+void elfSetPropertyString(elfProperty* property, const char* sval)
 {
-	property->property_type = ELF_PROPERTY_STRING;
+	property->propertyType = ELF_PROPERTY_STRING;
 	property->ival = 0;
 	property->fval = 0.0;
-	if(property->sval) elf_destroy_string(property->sval);
-	property->sval = elf_create_string(sval);
+	if(property->sval) elfDestroyString(property->sval);
+	property->sval = elfCreateString(sval);
 	property->bval = ELF_FALSE;
 }
 
-void elf_set_property_bool(elf_property* property, unsigned char bval)
+void elfSetPropertyBool(elfProperty* property, unsigned char bval)
 {
-	property->property_type = ELF_PROPERTY_BOOL;
+	property->propertyType = ELF_PROPERTY_BOOL;
 	property->ival = 0;
 	property->fval = 0.0;
-	if(property->sval) elf_destroy_string(property->sval);
+	if(property->sval) elfDestroyString(property->sval);
 	property->sval = NULL;
 	property->bval = !bval == ELF_FALSE;
 }

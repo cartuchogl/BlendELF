@@ -13,15 +13,15 @@
 #include "types.h"
 
 // global networking variables
-int elf_net_connect_timeout = 5000;
-int elf_net_event_timeout = 100;
+int elfNetConnectTimeout = 5000;
+int elfNetEventTimeout = 100;
 
 // global server variables
-elf_server* server = NULL;
-unsigned char run_server = ELF_FALSE;
+elfServer* server = NULL;
+unsigned char runServer = ELF_FALSE;
 
 // global client variables
-unsigned char run_client = ELF_FALSE;
+unsigned char runClient = ELF_FALSE;
 
 ENetHost* client;
 ENetAddress clientAddress;
@@ -31,11 +31,11 @@ ENetEvent clientEvent;
 GLFWthread clientThread;
 
 /* initialises networking */
-unsigned char elf_init_networking()
+unsigned char elfInitNetworking()
 {
 	if(enet_initialize() != 0)
 	{
-		elf_write_to_log("net: an error occurred while initialising networking\n");
+		elfWriteToLog("net: an error occurred while initialising networking\n");
 		return ELF_FALSE;
 	}
 
@@ -43,29 +43,29 @@ unsigned char elf_init_networking()
 }
 
 /* the server thread */
-void GLFWCALL elf_run_networking(void* arg)
+void GLFWCALL elfRunNetworking(void* arg)
 {
 	// we can't run this unless the server is initialised
 	if(server == NULL)
 		return;
 
-	// run until run_server is set to false
-	while(run_server)
+	// run until runServer is set to false
+	while(runServer)
 	{
 		if(enet_host_service(server->host, &server->event, 100) > 0)
 		{
-			elf_write_to_log("net: cake event %d\n", server->event.type);
+			elfWriteToLog("net: cake event %d\n", server->event.type);
 
 			switch(server->event.type)
 			{
 			case ENET_EVENT_TYPE_CONNECT:
-				elf_write_to_log("net: client connected from %x:%u\n",
+				elfWriteToLog("net: client connected from %x:%u\n",
 					server->event.peer->address.host,
 					server->event.peer->address.port);
 
 				break;
 			case ENET_EVENT_TYPE_RECEIVE:
-				elf_write_to_log("net: packet of length %d received: %s\n",
+				elfWriteToLog("net: packet of length %d received: %s\n",
 					server->event.packet->dataLength,
 					server->event.packet->data);
 
@@ -74,7 +74,7 @@ void GLFWCALL elf_run_networking(void* arg)
 				enet_packet_destroy(server->event.packet);
 				break;
 			case ENET_EVENT_TYPE_DISCONNECT:
-				elf_write_to_log("net: server - client disconnected.\n");
+				elfWriteToLog("net: server - client disconnected.\n");
 				break;
 			default:
 				break;
@@ -84,28 +84,28 @@ void GLFWCALL elf_run_networking(void* arg)
 }
 
 /* the client thread */
-void GLFWCALL elf_run_client_networking(void* arg)
+void GLFWCALL elfRunClientNetworking(void* arg)
 {
 	if(client == NULL)
 		return;
 
-	while(run_client)
+	while(runClient)
 	{
 		if(enet_host_service(client, &clientEvent, 100) > 0)
 		{
-			elf_write_to_log("net: cookie event %d\n", clientEvent.type);
+			elfWriteToLog("net: cookie event %d\n", clientEvent.type);
 			switch(clientEvent.type)
 			{
 			case ENET_EVENT_TYPE_CONNECT:
 				printf("you like cake");
-				//elf_write_to_log("net: server - client connected.\n");
-				//elf_write_to_log("net: client connected from %x:%u\n",
+				//elfWriteToLog("net: server - client connected.\n");
+				//elfWriteToLog("net: client connected from %x:%u\n",
 				//	event.peer->address.host,
 				//	event.peer->address.port);
 
 				break;
 			case ENET_EVENT_TYPE_RECEIVE:
-				elf_write_to_log("net: packet of length %d received\n",
+				elfWriteToLog("net: packet of length %d received\n",
 					clientEvent.packet->dataLength);
 
 				// TODO: add event to queue
@@ -113,7 +113,7 @@ void GLFWCALL elf_run_client_networking(void* arg)
 				enet_packet_destroy(clientEvent.packet);
 				break;
 			case ENET_EVENT_TYPE_DISCONNECT:
-				elf_write_to_log("net: client - client disconnected.\n");
+				elfWriteToLog("net: client - client disconnected.\n");
 				break;
 			default:
 				break;
@@ -123,17 +123,17 @@ void GLFWCALL elf_run_client_networking(void* arg)
 }
 
 /* runs the engine as server by creating a new networking session */
-unsigned char elf_create_session(const char* address, int port)
+unsigned char elfCreateSession(const char* address, int port)
 {
 	// cannot initialise server if the engine is already hosting a session
 	if(NULL != server)
 	{
-		elf_write_to_log("net: aborting attempt to initialise server: server is already initialised\n");
+		elfWriteToLog("net: aborting attempt to initialise server: server is already initialised\n");
 		return ELF_FALSE;
 	}
 
 	// initialise the server handle
-	server = (elf_server*)malloc(sizeof(elf_server));
+	server = (elfServer*)malloc(sizeof(elfServer));
 
 	enet_address_set_host(&server->address, address);
 	server->address.port = port;
@@ -144,27 +144,27 @@ unsigned char elf_create_session(const char* address, int port)
 
 	if(NULL == server->host)
 	{
-		elf_write_to_log("net: unable to initialise server\n");
+		elfWriteToLog("net: unable to initialise server\n");
 		return ELF_FALSE;
 	}
 
-	elf_write_to_log("net: server initialised at %s:%d\n", address, port);
+	elfWriteToLog("net: server initialised at %s:%d\n", address, port);
 
 	// run the server thread
-	run_server = ELF_TRUE;
-	server->thread = glfwCreateThread(elf_run_networking, server);
+	runServer = ELF_TRUE;
+	server->thread = glfwCreateThread(elfRunNetworking, server);
 
 	// server has successfully been initialised
 	return ELF_TRUE;
 }
 
-unsigned char elf_connect_session(const char* address, int port)
+unsigned char elfConnectSession(const char* address, int port)
 {
-	elf_write_to_log("net: attempting to connect to %s:%d\n", address, port);
+	elfWriteToLog("net: attempting to connect to %s:%d\n", address, port);
 
 	if(NULL != peer)
 	{
-		elf_write_to_log("net: aborting attempt to connect to server: client is already connected\n");
+		elfWriteToLog("net: aborting attempt to connect to server: client is already connected\n");
 		return ELF_FALSE;
 	}
 
@@ -172,7 +172,7 @@ unsigned char elf_connect_session(const char* address, int port)
 
 	if(NULL == client)
 	{
-		elf_write_to_log("net: failed to create client\n");
+		elfWriteToLog("net: failed to create client\n");
 		return ELF_FALSE;
 	}
 
@@ -186,36 +186,36 @@ unsigned char elf_connect_session(const char* address, int port)
 
 	if(NULL == peer)
 	{
-		elf_write_to_log("net: failed to connect to server\n");
+		elfWriteToLog("net: failed to connect to server\n");
 		return ELF_FALSE;
 	}
 
-	if(enet_host_service(client, &clientEvent, elf_net_connect_timeout) > 0 && clientEvent.type == ENET_EVENT_TYPE_CONNECT)
+	if(enet_host_service(client, &clientEvent, elfNetConnectTimeout) > 0 && clientEvent.type == ENET_EVENT_TYPE_CONNECT)
 	{
-		elf_write_to_log("net: successfully connected to %s:%d\n", address, port);
+		elfWriteToLog("net: successfully connected to %s:%d\n", address, port);
 
-		run_client = ELF_TRUE;
+		runClient = ELF_TRUE;
 
-		clientThread = glfwCreateThread(elf_run_client_networking, client);
+		clientThread = glfwCreateThread(elfRunClientNetworking, client);
 
 		return ELF_TRUE;
 	}
 
 	enet_peer_reset(peer);
 
-	elf_write_to_log("net: unable to connect to host\n");
+	elfWriteToLog("net: unable to connect to host\n");
 
 	return ELF_FALSE;
 }
 
-unsigned char elf_disconnect_session()
+unsigned char elfDisconnectSession()
 {
 	if(NULL == peer)
 	{
 		return ELF_FALSE;
 	}
 
-	run_client = ELF_FALSE;
+	runClient = ELF_FALSE;
 
 	if(glfwWaitThread(clientThread, GLFW_WAIT))
 	{
@@ -231,20 +231,20 @@ unsigned char elf_disconnect_session()
 	}
 	else
 	{
-		elf_write_to_log("net: unable to terminate client thread");
+		elfWriteToLog("net: unable to terminate client thread");
 
 		return ELF_FALSE;
 	}
 }
 
-unsigned char elf_stop_session()
+unsigned char elfStopSession()
 {
 	if(NULL == server)
 	{
 		return ELF_FALSE;
 	}
 
-	run_server = ELF_FALSE;
+	runServer = ELF_FALSE;
 
 	if(glfwWaitThread(server->thread, GLFW_WAIT))
 	{
@@ -257,12 +257,12 @@ unsigned char elf_stop_session()
 	}
 	else
 	{
-		elf_write_to_log("net: unable to terminate server thread");
+		elfWriteToLog("net: unable to terminate server thread");
 		return ELF_FALSE;
 	}
 }
 
-void elf_send_string_to_clients(const char* message)
+void elfSendStringToClients(const char* message)
 {
 	ENetPacket* packet;
 
@@ -272,7 +272,7 @@ void elf_send_string_to_clients(const char* message)
 	enet_host_broadcast(server->host, 0, packet);
 }
 
-void elf_send_string_to_server(const char* message)
+void elfSendStringToServer(const char* message)
 {
 	ENetPacket* packet;
 
@@ -282,17 +282,17 @@ void elf_send_string_to_server(const char* message)
 	enet_host_broadcast(client, 0, packet);
 }
 
-const char* elf_get_server_data_as_string()
+const char* elfGetServerDataAsString()
 {
 	return (char*)clientEvent.packet->data;
 }
 
-const char* elf_get_client_data_as_string()
+const char* elfGetClientDataAsString()
 {
 	return (char*)server->event.packet->data;
 }
 
-int elf_get_server_event()
+int elfGetServerEvent()
 {
 	switch(server->event.type)
 	{
@@ -309,7 +309,7 @@ int elf_get_server_event()
 	return (int)ELF_NET_NONE;
 }
 
-int elf_get_client_event()
+int elfGetClientEvent()
 {
 	switch(clientEvent.type)
 	{
@@ -326,29 +326,29 @@ int elf_get_client_event()
 	return (int)ELF_NET_NONE;
 }
 
-int elf_get_current_client()
+int elfGetCurrentClient()
 {
 	return (int)server->event.peer->incomingPeerID;
 }
 
 /* gets a value indicating whether the engine is running in server mode */
-unsigned char elf_is_server()
+unsigned char elfIsServer()
 {
 	return NULL == peer;
 }
 
 /* gets a value indicating whether the engine is running in client mode */
-unsigned char elf_is_client()
+unsigned char elfIsClient()
 {
 	return NULL == server;
 }
 
 /* deinitialises networking */
-void elf_deinit_networking()
+void elfDeinitNetworking()
 {
 	if(NULL != peer)
 	{
-		elf_disconnect_session();
+		elfDisconnectSession();
 	}
 	if(NULL != server)
 	{

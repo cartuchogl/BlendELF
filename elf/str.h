@@ -1,5 +1,5 @@
 
-char* elf_create_string(const char* str)
+char* elfCreateString(const char* str)
 {
 	char* nstr;
 
@@ -10,44 +10,44 @@ char* elf_create_string(const char* str)
 
 	memcpy(nstr, str, sizeof(char)*strlen(str));
 
-	elf_inc_obj(ELF_STRING);
+	elfIncObj(ELF_STRING);
 
 	return nstr;
 }
 
-void elf_destroy_string(char* str)
+void elfDestroyString(char* str)
 {
 	free(str);
 
-	elf_dec_obj(ELF_STRING);
+	elfDecObj(ELF_STRING);
 }
 
-elf_string* elf_create_string_object()
+elfString* elfCreateStringObject()
 {
-	elf_string* string;
+	elfString* string;
 
-	string = (elf_string*)malloc(sizeof(elf_string));
-	memset(string, 0x0, sizeof(elf_string));
-	string->obj_type = ELF_STRING;
-	string->obj_destr = elf_destroy_string_object;
+	string = (elfString*)malloc(sizeof(elfString));
+	memset(string, 0x0, sizeof(elfString));
+	string->objType = ELF_STRING;
+	string->objDestr = elfDestroyStringObject;
 
-	elf_inc_obj(ELF_STRING);
+	elfIncObj(ELF_STRING);
 
 	return string;
 }
 
-void elf_destroy_string_object(void* data)
+void elfDestroyStringObject(void* data)
 {
-	elf_string* string = (elf_string*)data;
+	elfString* string = (elfString*)data;
 
-	if(string->str) elf_destroy_string(string->str);
+	if(string->str) elfDestroyString(string->str);
 
 	free(string);
 
-	elf_dec_obj(ELF_STRING);
+	elfDecObj(ELF_STRING);
 }
 
-char* elf_remove_char_from_string(char* str, int idx)
+char* elfRemoveCharFromString(char* str, int idx)
 {
 	char* nstr;
 
@@ -60,12 +60,12 @@ char* elf_remove_char_from_string(char* str, int idx)
 	if(sizeof(char)*(strlen(str)-idx) > 0)
 		memcpy(&nstr[idx], &str[idx+1], sizeof(char)*(strlen(str)-idx));
 
-	elf_inc_obj(ELF_STRING);
+	elfIncObj(ELF_STRING);
 
 	return nstr;
 }
 
-char* elf_append_char_to_string(char* str, char c)
+char* elfAppendCharToString(char* str, char c)
 {
 	char* nstr;
 
@@ -74,12 +74,12 @@ char* elf_append_char_to_string(char* str, char c)
 	nstr[strlen(str)] = c;
 	nstr[strlen(str)+1] = '\0';
 
-	elf_inc_obj(ELF_STRING);
+	elfIncObj(ELF_STRING);
 
 	return nstr;
 }
 
-char* elf_insert_char_to_string(char* str, int idx, char c)
+char* elfInsertCharToString(char* str, int idx, char c)
 {
 	char* nstr;
 
@@ -94,12 +94,12 @@ char* elf_insert_char_to_string(char* str, int idx, char c)
 	nstr[idx] = c;
 	nstr[strlen(str)+1] = '\0';
 
-	elf_inc_obj(ELF_STRING);
+	elfIncObj(ELF_STRING);
 
 	return nstr;
 }
 
-char* elf_merge_strings(const char* str1, const char* str2)
+char* elfMergeStrings(const char* str1, const char* str2)
 {
 	char* nstr;
 
@@ -111,12 +111,12 @@ char* elf_merge_strings(const char* str1, const char* str2)
 	memcpy(&nstr[strlen(str1)], str2, sizeof(char)*strlen(str2));
 	nstr[strlen(str1)+strlen(str2)] = '\0';
 
-	elf_inc_obj(ELF_STRING);
+	elfIncObj(ELF_STRING);
 
 	return nstr;
 }
 
-char* elf_merge_strings3(const char* str1, const char* str2, const char* str3)
+char* elfMergeStrings3(const char* str1, const char* str2, const char* str3)
 {
 	char* nstr;
 	int bytes;
@@ -132,12 +132,12 @@ char* elf_merge_strings3(const char* str1, const char* str2, const char* str3)
 	memcpy(&nstr[strlen(str1)], str2, sizeof(char)*strlen(str2));
 	memcpy(&nstr[strlen(str1)+strlen(str2)], str3, sizeof(char)*strlen(str3));
 
-	elf_inc_obj(ELF_STRING);
+	elfIncObj(ELF_STRING);
 
 	return nstr;
 }
 
-char* elf_sub_string(char* str, int start, int len)
+char* elfSubString(char* str, int start, int len)
 {
 	char* nstr;
 
@@ -145,7 +145,7 @@ char* elf_sub_string(char* str, int start, int len)
 	{
 		nstr = (char*)malloc(sizeof(char)*1);
 		nstr[0] = '\0';
-		elf_inc_obj(ELF_STRING);
+		elfIncObj(ELF_STRING);
 		return nstr;
 	}
 
@@ -154,7 +154,7 @@ char* elf_sub_string(char* str, int start, int len)
 	{
 		nstr = (char*)malloc(sizeof(char)*1);
 		nstr[0] = '\0';
-		elf_inc_obj(ELF_STRING);
+		elfIncObj(ELF_STRING);
 		return nstr;
 	}
 
@@ -162,27 +162,27 @@ char* elf_sub_string(char* str, int start, int len)
 	memcpy(nstr, &str[start], sizeof(char)*len);
 	nstr[len] = '\0';
 
-	elf_inc_obj(ELF_STRING);
+	elfIncObj(ELF_STRING);
 
 	return nstr;
 }
 
-unsigned char elf_is_char_number(char c)
+unsigned char elfIsCharNumber(char c)
 {
-	char num_chars[14] = "0123456789.-+";
+	char numChars[14] = "0123456789.-+";
 	int i;
 
 	for(i = 0; i < 13; i++)
 	{
-		if(c == num_chars[i]) return ELF_TRUE;
+		if(c == numChars[i]) return ELF_TRUE;
 	}
 
 	return ELF_FALSE;
 }
 
-unsigned char elf_is_string_number(const char* str)
+unsigned char elfIsStringNumber(const char* str)
 {
-	char num_chars[12] = "0123456789.";
+	char numChars[12] = "0123456789.";
 	int dots;
 	int i;
 	int offset;
@@ -198,32 +198,32 @@ unsigned char elf_is_string_number(const char* str)
 
 	if(dots > 1) return ELF_FALSE;
 
-	num_chars[11] = '\0';
+	numChars[11] = '\0';
 
 	for(i = offset; i < (int)strlen(str); i++)
 	{
-		if(!strchr(num_chars, str[i])) return ELF_FALSE;
+		if(!strchr(numChars, str[i])) return ELF_FALSE;
 	}
 
 	return ELF_TRUE;
 }
 
-unsigned char elf_is_string_positive_int(const char* str)
+unsigned char elfIsStringPositiveInt(const char* str)
 {
-	char num_chars[11] = "0123456789";
+	char numChars[11] = "0123456789";
 	int i;
 
-	num_chars[10] = '\0';
+	numChars[10] = '\0';
 
 	for(i = 0; i < (int)strlen(str); i++)
 	{
-		if(!strchr(num_chars, str[i])) return ELF_FALSE;
+		if(!strchr(numChars, str[i])) return ELF_FALSE;
 	}
 
 	return ELF_TRUE;
 }
 
-int elf_rfind_char_from_string(const char* str, char chr)
+int elfRfindCharFromString(const char* str, char chr)
 {
 	int result = -1;
 
@@ -235,7 +235,7 @@ int elf_rfind_char_from_string(const char* str, char chr)
 	return result;
 }
 
-int elf_rfind_chars_from_string(const char* str, const char* chrs)
+int elfRfindCharsFromString(const char* str, const char* chrs)
 {
 	int i;
 	int result = -1;
@@ -251,25 +251,25 @@ int elf_rfind_chars_from_string(const char* str, const char* chrs)
 	return result;
 }
 
-char* elf_get_file_folder(const char* file_path)
+char* elfGetFileFolder(const char* filePath)
 {
 	char* str;
 	char* nstr;
 
-	str = elf_create_string(file_path);
+	str = elfCreateString(filePath);
 
-	if(elf_rfind_char_from_string(file_path, '/') != -1)
+	if(elfRfindCharFromString(filePath, '/') != -1)
 	{
-		nstr = elf_sub_string(str, 0, elf_rfind_char_from_string(str, '/')+1);
-		elf_destroy_string(str);
+		nstr = elfSubString(str, 0, elfRfindCharFromString(str, '/')+1);
+		elfDestroyString(str);
 		str = nstr;
 		nstr = NULL;
 	}
 
-	if(elf_rfind_char_from_string(file_path, '\\') != -1)
+	if(elfRfindCharFromString(filePath, '\\') != -1)
 	{
-		nstr = elf_sub_string(str, 0, elf_rfind_char_from_string(str, '\\')+1);
-		elf_destroy_string(str);
+		nstr = elfSubString(str, 0, elfRfindCharFromString(str, '\\')+1);
+		elfDestroyString(str);
 		str = nstr;
 		nstr = NULL;
 	}

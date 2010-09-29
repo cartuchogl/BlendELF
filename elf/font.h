@@ -1,24 +1,24 @@
 
-elf_font* elf_create_font()
+elfFont* elfCreateFont()
 {
-	elf_font* font;
+	elfFont* font;
 
-	font = (elf_font*)malloc(sizeof(elf_font));
-	memset(font, 0x0, sizeof(elf_font));
-	font->obj_type = ELF_FONT;
-	font->obj_destr = elf_destroy_font;
+	font = (elfFont*)malloc(sizeof(elfFont));
+	memset(font, 0x0, sizeof(elfFont));
+	font->objType = ELF_FONT;
+	font->objDestr = elfDestroyFont;
 
-	elf_inc_obj(ELF_FONT);
+	elfIncObj(ELF_FONT);
 
 	return font;
 }
 
-elf_font* elf_create_font_from_file(const char* file_path, int size)
+elfFont* elfCreateFontFromFile(const char* filePath, int size)
 {
 	FT_Library library;
 	FT_Face face;
 	FT_GlyphSlot slot;
-	elf_font* font;
+	elfFont* font;
 	int width;
 	int height;
 	unsigned char* data;
@@ -27,25 +27,25 @@ elf_font* elf_create_font_from_file(const char* file_path, int size)
 
 	if(size < 1)
 	{
-		elf_set_error(ELF_INVALID_SIZE, "error: can not load a font size smaller than 1\n");
+		elfSetError(ELF_INVALID_SIZE, "error: can not load a font size smaller than 1\n");
 		return NULL;
 	}
 
 	error = FT_Init_FreeType(&library);
 	if(error)
 	{
-		elf_set_error(ELF_CANT_INITIALIZE, "error: could not initialize freetype, could not open \"%s\"\n", file_path);
+		elfSetError(ELF_CANT_INITIALIZE, "error: could not initialize freetype, could not open \"%s\"\n", filePath);
 		return NULL;
 	}
 
-	error = FT_New_Face(library, file_path, 0, &face);
+	error = FT_New_Face(library, filePath, 0, &face);
 	if(error)
 	{
-		elf_set_error(ELF_CANT_OPEN_FILE, "error: can't open file \"%s\"\n", file_path);
+		elfSetError(ELF_CANT_OPEN_FILE, "error: can't open file \"%s\"\n", filePath);
 		error = FT_Done_FreeType(library);
 		if(error)
 		{
-			elf_set_error(ELF_CANT_OPEN_FILE, "error: can't deinitialize freetype\n");
+			elfSetError(ELF_CANT_OPEN_FILE, "error: can't deinitialize freetype\n");
 			return NULL;
 		}
 		return NULL;
@@ -54,7 +54,7 @@ elf_font* elf_create_font_from_file(const char* file_path, int size)
 	error = FT_Set_Pixel_Sizes(face, 0, size);
 	if(error)
 	{
-		elf_set_error(ELF_INVALID_SIZE, "error: can't set the size of font \"%s\"\n", file_path);
+		elfSetError(ELF_INVALID_SIZE, "error: can't set the size of font \"%s\"\n", filePath);
 
 		error = FT_Done_Face(face);
 		error = FT_Done_FreeType(library);
@@ -62,9 +62,9 @@ elf_font* elf_create_font_from_file(const char* file_path, int size)
 		return NULL;
 	}
 
-	font = elf_create_font();
+	font = elfCreateFont();
 
-	font->file_path = elf_create_string(file_path);
+	font->filePath = elfCreateString(filePath);
 	font->size = size;
 
 	slot = face->glyph;
@@ -74,7 +74,7 @@ elf_font* elf_create_font_from_file(const char* file_path, int size)
 		error = FT_Load_Char(face, (char)i, FT_LOAD_RENDER|FT_LOAD_FORCE_AUTOHINT);
 		if(error)
 		{
-			elf_write_to_log("warning: could not load character \"%c\" in font \"%s\"\n", (char)i, file_path);
+			elfWriteToLog("warning: could not load character \"%c\" in font \"%s\"\n", (char)i, filePath);
 			continue;
 		}
 
@@ -93,11 +93,11 @@ elf_font* elf_create_font_from_file(const char* file_path, int size)
 		}
 
 		font->chars[i].code = (char)i;
-		font->chars[i].offset_x = width+size/7;
-		font->chars[i].offset_y = -(face->glyph->bitmap.rows-face->glyph->bitmap_top);
-		font->chars[i].texture = gfx_create_2d_texture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_LUMINANCE_ALPHA, GFX_LUMINANCE_ALPHA, GFX_UBYTE, data);
+		font->chars[i].offsetX = width+size/7;
+		font->chars[i].offsetY = -(face->glyph->bitmap.rows-face->glyph->bitmap_top);
+		font->chars[i].texture = gfxCreate_2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_LUMINANCE_ALPHA, GFX_LUMINANCE_ALPHA, GFX_UBYTE, data);
 
-		if(-font->chars[i].offset_y > font->offset_y) font->offset_y = -font->chars[i].offset_y;
+		if(-font->chars[i].offsetY > font->offsetY) font->offsetY = -font->chars[i].offsetY;
 
 		free(data);
 		data = NULL;
@@ -109,43 +109,43 @@ elf_font* elf_create_font_from_file(const char* file_path, int size)
 	return font;
 }
 
-void elf_destroy_font(void* data)
+void elfDestroyFont(void* data)
 {
 	int i;
-	elf_font* font = (elf_font*)data;
+	elfFont* font = (elfFont*)data;
 
-	if(font->name) elf_destroy_string(font->name);
-	if(font->file_path) elf_destroy_string(font->file_path);
+	if(font->name) elfDestroyString(font->name);
+	if(font->filePath) elfDestroyString(font->filePath);
 
 	for(i = 0; i < 128; i++)
-		if(font->chars[i].texture) gfx_destroy_texture(font->chars[i].texture);
+		if(font->chars[i].texture) gfxDestroyTexture(font->chars[i].texture);
 
 	free(font);
 
-	elf_dec_obj(ELF_FONT);
+	elfDecObj(ELF_FONT);
 }
 
-const char* elf_get_font_name(elf_font* font)
+const char* elfGetFontName(elfFont* font)
 {
 	return font->name;
 }
 
-const char* elf_get_font_file_path(elf_font* font)
+const char* elfGetFontFilePath(elfFont* font)
 {
-	return font->file_path;
+	return font->filePath;
 }
 
-int elf_get_font_size(elf_font* font)
+int elfGetFontSize(elfFont* font)
 {
 	return font->size;
 }
 
-int elf_get_string_width(elf_font* font, const char* str)
+int elfGetStringWidth(elfFont* font, const char* str)
 {
 	int x = 0;
 	int ox = 0;
 	int y = font->size;
-	elf_character* chr = 0;
+	elfCharacter* chr = 0;
 	unsigned int i;
 
 	for(i = 0; i < strlen(str); i++)
@@ -161,8 +161,8 @@ int elf_get_string_width(elf_font* font, const char* str)
 		}
 		else
 		{
-			if(i != strlen(str)-1 || !chr->texture) ox += chr->offset_x;
-			else ox += gfx_get_texture_width(chr->texture);
+			if(i != strlen(str)-1 || !chr->texture) ox += chr->offsetX;
+			else ox += gfxGetTextureWidth(chr->texture);
 		}
 		if(ox > x) x = ox;
 	}
@@ -170,11 +170,11 @@ int elf_get_string_width(elf_font* font, const char* str)
 	return x;
 }
 
-int elf_get_string_height(elf_font* font, const char* str)
+int elfGetStringHeight(elfFont* font, const char* str)
 {
 	int ox = 0;
 	int y = font->size;
-	elf_character* chr = 0;
+	elfCharacter* chr = 0;
 	unsigned int i;
 
 	for(i = 0; i < strlen(str); i++)
@@ -190,19 +190,19 @@ int elf_get_string_height(elf_font* font, const char* str)
 		}
 		else
 		{
-			if(i != strlen(str)-1 || !chr->texture) ox += chr->offset_x;
-			else ox += gfx_get_texture_width(chr->texture);
+			if(i != strlen(str)-1 || !chr->texture) ox += chr->offsetX;
+			else ox += gfxGetTextureWidth(chr->texture);
 		}
 	}
 
 	return y;
 }
 
-void elf_draw_string(elf_font* font, const char* str, int x, int y, gfx_shader_params* shader_params)
+void elfDrawString(elfFont* font, const char* str, int x, int y, gfxShaderParams* shaderParams)
 {
 	int ox;
 	int oy;
-	elf_character* chr;
+	elfCharacter* chr;
 	unsigned int i;
 
 	ox = x;
@@ -222,12 +222,12 @@ void elf_draw_string(elf_font* font, const char* str, int x, int y, gfx_shader_p
 		else
 		{
 			if(!chr->texture) continue;
-			shader_params->texture_params[0].texture = chr->texture;
-			shader_params->texture_params[0].type = GFX_COLOR_MAP;
-			gfx_set_shader_params(shader_params);
-			gfx_draw_textured_2d_quad((float)ox, (float)(oy+chr->offset_y+font->offset_y),
-				(float)gfx_get_texture_width(chr->texture), (float)gfx_get_texture_height(chr->texture));
-			ox += chr->offset_x;
+			shaderParams->textureParams[0].texture = chr->texture;
+			shaderParams->textureParams[0].type = GFX_COLOR_MAP;
+			gfxSetShaderParams(shaderParams);
+			gfxDrawTextured_2dQuad((float)ox, (float)(oy+chr->offsetY+font->offsetY),
+				(float)gfxGetTextureWidth(chr->texture), (float)gfxGetTextureHeight(chr->texture));
+			ox += chr->offsetX;
 		}
 	}
 }

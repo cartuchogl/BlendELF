@@ -1,99 +1,99 @@
 
-elf_frame_player* elf_create_frame_player()
+elfFramePlayer* elfCreateFramePlayer()
 {
-	elf_frame_player* player;
+	elfFramePlayer* player;
 
-	player = (elf_frame_player*)malloc(sizeof(elf_frame_player));
-	memset(player, 0x0, sizeof(elf_frame_player));
-	player->obj_type = ELF_FRAME_PLAYER;
-	player->obj_destr = elf_destroy_frame_player;
+	player = (elfFramePlayer*)malloc(sizeof(elfFramePlayer));
+	memset(player, 0x0, sizeof(elfFramePlayer));
+	player->objType = ELF_FRAME_PLAYER;
+	player->objDestr = elfDestroyFramePlayer;
 
-	player->cur_frame = 1.0;
+	player->curFrame = 1.0;
 
-	elf_inc_obj(ELF_FRAME_PLAYER);
+	elfIncObj(ELF_FRAME_PLAYER);
 	
 	return player;
 }
 
-void elf_destroy_frame_player(void* data)
+void elfDestroyFramePlayer(void* data)
 {
-	elf_frame_player* player = (elf_frame_player*)data;
+	elfFramePlayer* player = (elfFramePlayer*)data;
 
 	free(player);
 
-	elf_dec_obj(ELF_FRAME_PLAYER);
+	elfDecObj(ELF_FRAME_PLAYER);
 }
 
-void elf_update_frame_player(elf_frame_player* player)
+void elfUpdateFramePlayer(elfFramePlayer* player)
 {
 	if(player->end > 1.0 && !player->pause)
 	{
-		player->cur_frame += player->speed*elf_get_sync();
+		player->curFrame += player->speed*elfGetSync();
 		if(player->loop)
 		{
-			if(player->cur_frame > player->end+1) elf_set_frame_player_frame(player, player->start);
-			else elf_set_frame_player_frame(player, player->cur_frame);
+			if(player->curFrame > player->end+1) elfSetFramePlayerFrame(player, player->start);
+			else elfSetFramePlayerFrame(player, player->curFrame);
 		}
 		else
 		{
-			if(player->cur_frame > player->end)
+			if(player->curFrame > player->end)
 			{
-				elf_set_frame_player_frame(player, player->cur_frame);
-				elf_stop_frame_player(player);
+				elfSetFramePlayerFrame(player, player->curFrame);
+				elfStopFramePlayer(player);
 			}
-			else elf_set_frame_player_frame(player, player->cur_frame);
+			else elfSetFramePlayerFrame(player, player->curFrame);
 		}
 	}
 }
 
-void elf_set_frame_player_frame(elf_frame_player* player, float frame)
+void elfSetFramePlayerFrame(elfFramePlayer* player, float frame)
 {
-	player->cur_frame = frame;
-	if(player->cur_frame < 1.0) player->cur_frame = 1.0;
+	player->curFrame = frame;
+	if(player->curFrame < 1.0) player->curFrame = 1.0;
 
-	if(elf_is_frame_player_playing(player) || elf_is_frame_player_paused(player))
+	if(elfIsFramePlayerPlaying(player) || elfIsFramePlayerPaused(player))
 	{
-		if(player->cur_frame < player->start) player->cur_frame = player->start;
+		if(player->curFrame < player->start) player->curFrame = player->start;
 		if(player->loop)
 		{
-			if(player->cur_frame > player->end+1) player->cur_frame = player->start;
+			if(player->curFrame > player->end+1) player->curFrame = player->start;
 		}
 		else
 		{
-			if(player->cur_frame > player->end) player->cur_frame = player->end;
+			if(player->curFrame > player->end) player->curFrame = player->end;
 		}
 	}
 
 	if(player->callback) player->callback(player);
 }
 
-void elf_play_frame_player(elf_frame_player* player, float start, float end, float speed)
+void elfPlayFramePlayer(elfFramePlayer* player, float start, float end, float speed)
 {
 	player->start = start;
 	player->end = end;
 	if(player->start < 1.0) player->start = 1.0;
 	if(player->end < player->start) player->end = player->start;
-	player->cur_frame = player->start;
+	player->curFrame = player->start;
 	player->speed = speed;
 	player->loop = ELF_FALSE;
 	player->pause = ELF_FALSE;
 
-	elf_set_frame_player_frame(player, player->cur_frame);
+	elfSetFramePlayerFrame(player, player->curFrame);
 }
 
-void elf_loop_frame_player(elf_frame_player* player, float start, float end, float speed)
+void elfLoopFramePlayer(elfFramePlayer* player, float start, float end, float speed)
 {
 	player->start = start;
 	player->end = end;
-	player->cur_frame = start;
+	player->curFrame = start;
 	player->speed = speed;
 	player->pause = ELF_FALSE;
 	player->loop = ELF_TRUE;
 
-	elf_set_frame_player_frame(player, player->cur_frame);
+	elfSetFramePlayerFrame(player, player->curFrame);
 }
 
-void elf_stop_frame_player(elf_frame_player* player)
+void elfStopFramePlayer(elfFramePlayer* player)
 {
 	player->start = 0.0f;
 	player->end = 0.0f;
@@ -102,59 +102,59 @@ void elf_stop_frame_player(elf_frame_player* player)
 	player->loop = ELF_FALSE;
 }
 
-void elf_pause_frame_player(elf_frame_player* player)
+void elfPauseFramePlayer(elfFramePlayer* player)
 {
 	if(player->end > 0.99999) player->pause = ELF_TRUE;
 }
 
-void elf_resume_frame_player(elf_frame_player* player)
+void elfResumeFramePlayer(elfFramePlayer* player)
 {
 	if(player->end > 0.99999) player->pause = ELF_FALSE;
 }
 
-float elf_get_frame_player_start(elf_frame_player* player)
+float elfGetFramePlayerStart(elfFramePlayer* player)
 {
 	return player->start;
 }
 
-float elf_get_frame_player_end(elf_frame_player* player)
+float elfGetFramePlayerEnd(elfFramePlayer* player)
 {
 	return player->end;
 }
 
-float elf_get_frame_player_speed(elf_frame_player* player)
+float elfGetFramePlayerSpeed(elfFramePlayer* player)
 {
 	return player->speed;
 }
 
-float elf_get_frame_player_frame(elf_frame_player* player)
+float elfGetFramePlayerFrame(elfFramePlayer* player)
 {
-	return player->cur_frame;
+	return player->curFrame;
 }
 
-unsigned char elf_is_frame_player_playing(elf_frame_player* player)
+unsigned char elfIsFramePlayerPlaying(elfFramePlayer* player)
 {
 	if(player->end > 0.99999 && !player->pause) return ELF_TRUE;
 	return ELF_FALSE;
 }
 
-unsigned char elf_is_frame_player_paused(elf_frame_player* player)
+unsigned char elfIsFramePlayerPaused(elfFramePlayer* player)
 {
 	if(player->pause) return ELF_TRUE;
 	return ELF_FALSE;
 }
 
-void elf_set_frame_player_user_data(elf_frame_player* player, void* user_data)
+void elfSetFramePlayerUserData(elfFramePlayer* player, void* userData)
 {
-	player->user_data = user_data;
+	player->userData = userData;
 }
 
-void* elf_get_frame_player_user_data(elf_frame_player* player)
+void* elfGetFramePlayerUserData(elfFramePlayer* player)
 {
-	return player->user_data;
+	return player->userData;
 }
 
-void elf_set_frame_player_callback(elf_frame_player* player, void (*callback)(elf_frame_player*))
+void elfSetFramePlayerCallback(elfFramePlayer* player, void (*callback)(elfFramePlayer*))
 {
 	player->callback = callback;
 }

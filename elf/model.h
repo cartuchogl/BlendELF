@@ -1,129 +1,129 @@
 
-elf_model* elf_create_model(const char* name)
+elfModel* elfCreateModel(const char* name)
 {
-	elf_model* model;
+	elfModel* model;
 
-	model = (elf_model*)malloc(sizeof(elf_model));
-	memset(model, 0x0, sizeof(elf_model));
-	model->obj_type = ELF_MODEL;
-	model->obj_destr = elf_destroy_model;
+	model = (elfModel*)malloc(sizeof(elfModel));
+	memset(model, 0x0, sizeof(elfModel));
+	model->objType = ELF_MODEL;
+	model->objDestr = elfDestroyModel;
 
-	model->id = ++gen->model_id_counter;
+	model->id = ++gen->modelIdCounter;
 
-	if(name) model->name = elf_create_string(name);
+	if(name) model->name = elfCreateString(name);
 
-	elf_inc_obj(ELF_MODEL);
+	elfIncObj(ELF_MODEL);
 
 	return model;
 }
 
-elf_model* elf_create_model_from_mesh_data(elf_mesh_data* mesh_data)
+elfModel* elfCreateModelFromMeshData(elfMeshData* meshData)
 {
-	elf_model* model;
-	float* vertex_buffer;
-	float* normal_buffer;
-	float* texcoord_buffer;
-	unsigned int* index_buffer;
+	elfModel* model;
+	float* vertexBuffer;
+	float* normalBuffer;
+	float* texcoordBuffer;
+	unsigned int* indexBuffer;
 	int i, j;
-	elf_face* face;
-	elf_vertice* vertice;
+	elfFace* face;
+	elfVertice* vertice;
 
-	if(elf_get_mesh_data_vertice_count(mesh_data) < 3) return NULL;
-	if(elf_get_mesh_data_face_count(mesh_data) < 1) return NULL;
+	if(elfGetMeshDataVerticeCount(meshData) < 3) return NULL;
+	if(elfGetMeshDataFaceCount(meshData) < 1) return NULL;
 
-	model = elf_create_model(NULL);
+	model = elfCreateModel(NULL);
 
-	model->vertice_count = elf_get_list_length(mesh_data->vertices);
-	model->frame_count = 1;
-	model->area_count = 1;
-	model->indice_count = elf_get_list_length(mesh_data->faces)*3;
+	model->verticeCount = elfGetListLength(meshData->vertices);
+	model->frameCount = 1;
+	model->areaCount = 1;
+	model->indiceCount = elfGetListLength(meshData->faces)*3;
 
-	model->vertices = gfx_create_vertex_data(3*model->vertice_count, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
-	model->normals = gfx_create_vertex_data(3*model->vertice_count, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
-	model->tex_coords = gfx_create_vertex_data(2*model->vertice_count, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
+	model->vertices = gfxCreateVertexData(3*model->verticeCount, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
+	model->normals = gfxCreateVertexData(3*model->verticeCount, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
+	model->texCoords = gfxCreateVertexData(2*model->verticeCount, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
 
-	gfx_inc_ref((gfx_object*)model->vertices);
-	gfx_inc_ref((gfx_object*)model->normals);
-	gfx_inc_ref((gfx_object*)model->tex_coords);
+	gfxIncRef((gfxObject*)model->vertices);
+	gfxIncRef((gfxObject*)model->normals);
+	gfxIncRef((gfxObject*)model->texCoords);
 
-	vertex_buffer = (float*)gfx_get_vertex_data_buffer(model->vertices);
-	normal_buffer = (float*)gfx_get_vertex_data_buffer(model->normals);
-	texcoord_buffer = (float*)gfx_get_vertex_data_buffer(model->tex_coords);
+	vertexBuffer = (float*)gfxGetVertexDataBuffer(model->vertices);
+	normalBuffer = (float*)gfxGetVertexDataBuffer(model->normals);
+	texcoordBuffer = (float*)gfxGetVertexDataBuffer(model->texCoords);
 
-	model->areas = (elf_model_area*)malloc(sizeof(elf_model_area)*model->area_count);
-	memset(model->areas, 0x0, sizeof(elf_model_area)*model->area_count);
+	model->areas = (elfModelArea*)malloc(sizeof(elfModelArea)*model->areaCount);
+	memset(model->areas, 0x0, sizeof(elfModelArea)*model->areaCount);
 
-	model->areas[0].indice_count = model->indice_count;
-	model->areas[0].index = gfx_create_vertex_data(model->areas[0].indice_count, GFX_UINT, GFX_VERTEX_DATA_STATIC);
-	gfx_inc_ref((gfx_object*)model->areas[0].index);
+	model->areas[0].indiceCount = model->indiceCount;
+	model->areas[0].index = gfxCreateVertexData(model->areas[0].indiceCount, GFX_UINT, GFX_VERTEX_DATA_STATIC);
+	gfxIncRef((gfxObject*)model->areas[0].index);
 
 	// model->index should contain ALL of the indexes of the model regardless of the material
 	// its used for generating the physics triangle mesh of the model
-	model->index = (unsigned int*)malloc(sizeof(unsigned int)*model->areas[0].indice_count);
+	model->index = (unsigned int*)malloc(sizeof(unsigned int)*model->areas[0].indiceCount);
 
-	index_buffer = (unsigned int*)gfx_get_vertex_data_buffer(model->areas[0].index);
+	indexBuffer = (unsigned int*)gfxGetVertexDataBuffer(model->areas[0].index);
 
-	for(i = 0, face = (elf_face*)elf_begin_list(mesh_data->faces); face;
-		face = (elf_face*)elf_next_in_list(mesh_data->faces), i+=3)
+	for(i = 0, face = (elfFace*)elfBeginList(meshData->faces); face;
+		face = (elfFace*)elfNextInList(meshData->faces), i+=3)
 	{
-		index_buffer[i] = face->v1;
-		index_buffer[i+1] = face->v2;
-		index_buffer[i+2] = face->v3;
+		indexBuffer[i] = face->v1;
+		indexBuffer[i+1] = face->v2;
+		indexBuffer[i+2] = face->v3;
 	}
 
-	for(i = 0, j = 0, vertice = (elf_vertice*)elf_begin_list(mesh_data->vertices); vertice;
-		vertice = (elf_vertice*)elf_next_in_list(mesh_data->vertices), i += 3, j += 2)
+	for(i = 0, j = 0, vertice = (elfVertice*)elfBeginList(meshData->vertices); vertice;
+		vertice = (elfVertice*)elfNextInList(meshData->vertices), i += 3, j += 2)
 	{
-		vertex_buffer[i] = vertice->position.x;
-		vertex_buffer[i+1] = vertice->position.y;
-		vertex_buffer[i+2] = vertice->position.z;
+		vertexBuffer[i] = vertice->position.x;
+		vertexBuffer[i+1] = vertice->position.y;
+		vertexBuffer[i+2] = vertice->position.z;
 
-		normal_buffer[i] = vertice->normal.x;
-		normal_buffer[i+1] = vertice->normal.y;
-		normal_buffer[i+2] = vertice->normal.z;
+		normalBuffer[i] = vertice->normal.x;
+		normalBuffer[i+1] = vertice->normal.y;
+		normalBuffer[i+2] = vertice->normal.z;
 
-		texcoord_buffer[j] = vertice->tex_coord.x;
-		texcoord_buffer[j+1] = vertice->tex_coord.y;
+		texcoordBuffer[j] = vertice->texCoord.x;
+		texcoordBuffer[j+1] = vertice->texCoord.y;
 	}
 
 	// get bounding box values
-	memcpy(&model->bb_min.x, vertex_buffer, sizeof(float)*3);
-	memcpy(&model->bb_max.x, vertex_buffer, sizeof(float)*3);
+	memcpy(&model->bbMin.x, vertexBuffer, sizeof(float)*3);
+	memcpy(&model->bbMax.x, vertexBuffer, sizeof(float)*3);
 
-	for(j = 3; j < model->vertice_count*3; j+=3)
+	for(j = 3; j < model->verticeCount*3; j+=3)
 	{
-		if(vertex_buffer[j] < model->bb_min.x) model->bb_min.x = vertex_buffer[j];
-		if(vertex_buffer[j+1] < model->bb_min.y) model->bb_min.y = vertex_buffer[j+1];
-		if(vertex_buffer[j+2] < model->bb_min.z) model->bb_min.z = vertex_buffer[j+2];
+		if(vertexBuffer[j] < model->bbMin.x) model->bbMin.x = vertexBuffer[j];
+		if(vertexBuffer[j+1] < model->bbMin.y) model->bbMin.y = vertexBuffer[j+1];
+		if(vertexBuffer[j+2] < model->bbMin.z) model->bbMin.z = vertexBuffer[j+2];
 
-		if(vertex_buffer[j] > model->bb_max.x) model->bb_max.x = vertex_buffer[j];
-		if(vertex_buffer[j+1] > model->bb_max.y) model->bb_max.y = vertex_buffer[j+1];
-		if(vertex_buffer[j+2] > model->bb_max.z) model->bb_max.z = vertex_buffer[j+2];
+		if(vertexBuffer[j] > model->bbMax.x) model->bbMax.x = vertexBuffer[j];
+		if(vertexBuffer[j+1] > model->bbMax.y) model->bbMax.y = vertexBuffer[j+1];
+		if(vertexBuffer[j+2] > model->bbMax.z) model->bbMax.z = vertexBuffer[j+2];
 	}
 
-	model->vertex_array = gfx_create_vertex_array(GFX_TRUE);
-	gfx_inc_ref((gfx_object*)model->vertex_array);
+	model->vertexArray = gfxCreateVertexArray(GFX_TRUE);
+	gfxIncRef((gfxObject*)model->vertexArray);
 
-	gfx_set_vertex_array_data(model->vertex_array, GFX_VERTEX, model->vertices);
-	gfx_set_vertex_array_data(model->vertex_array, GFX_NORMAL, model->normals);
-	gfx_set_vertex_array_data(model->vertex_array, GFX_TEX_COORD, model->tex_coords);
+	gfxSetVertexArrayData(model->vertexArray, GFX_VERTEX, model->vertices);
+	gfxSetVertexArrayData(model->vertexArray, GFX_NORMAL, model->normals);
+	gfxSetVertexArrayData(model->vertexArray, GFX_TEX_COORD, model->texCoords);
 
-	model->areas[0].vertex_index = gfx_create_vertex_index(GFX_TRUE, model->areas[0].index);
-	gfx_inc_ref((gfx_object*)model->areas[0].vertex_index);
+	model->areas[0].vertexIndex = gfxCreateVertexIndex(GFX_TRUE, model->areas[0].index);
+	gfxIncRef((gfxObject*)model->areas[0].vertexIndex);
 
-	memcpy(model->index, index_buffer, sizeof(unsigned int)*model->areas[0].indice_count);
+	memcpy(model->index, indexBuffer, sizeof(unsigned int)*model->areas[0].indiceCount);
 
 	return model;
 }
 
-void elf_generate_model_tangents(elf_model* model)
+void elfGenerateModelTangents(elfModel* model)
 {
-	float* vertex_buffer;
-	float* tex_coord_buffer;
-	float* normal_buffer;
-	float* tangent_buffer;
+	float* vertexBuffer;
+	float* texCoordBuffer;
+	float* normalBuffer;
+	float* tangentBuffer;
 	float* vertices;
-	float* tex_coords;
+	float* texCoords;
 	float* tangents;
 	float edge1[3];
 	float edge2[3];
@@ -134,42 +134,42 @@ void elf_generate_model_tangents(elf_model* model)
 	float dot;
 	int i, j;
 
-	if(!model->vertices || !model->tex_coords || !model->index) return;
+	if(!model->vertices || !model->texCoords || !model->index) return;
 
-	if(model->tangents) gfx_dec_ref((gfx_object*)model->tangents);
+	if(model->tangents) gfxDecRef((gfxObject*)model->tangents);
 
-	vertex_buffer = (float*)gfx_get_vertex_data_buffer(model->vertices);
-	tex_coord_buffer = (float*)gfx_get_vertex_data_buffer(model->tex_coords);
+	vertexBuffer = (float*)gfxGetVertexDataBuffer(model->vertices);
+	texCoordBuffer = (float*)gfxGetVertexDataBuffer(model->texCoords);
 
-	vertices = (float*)malloc(sizeof(float)*model->indice_count*3);
-	tex_coords = (float*)malloc(sizeof(float)*model->indice_count*2);
-	tangents = (float*)malloc(sizeof(float)*model->indice_count*3);
+	vertices = (float*)malloc(sizeof(float)*model->indiceCount*3);
+	texCoords = (float*)malloc(sizeof(float)*model->indiceCount*2);
+	tangents = (float*)malloc(sizeof(float)*model->indiceCount*3);
 
 	// create corresponding vertice and tex coord arrays independent of index
-	for(i = 0; i < (int)model->indice_count/3; i++)
+	for(i = 0; i < (int)model->indiceCount/3; i++)
 	{
-		vertices[i*9] = vertex_buffer[model->index[i*3]*3];
-		vertices[i*9+1] = vertex_buffer[model->index[i*3]*3+1];
-		vertices[i*9+2] = vertex_buffer[model->index[i*3]*3+2];
-		vertices[i*9+3] = vertex_buffer[model->index[i*3+1]*3];
-		vertices[i*9+4] = vertex_buffer[model->index[i*3+1]*3+1];
-		vertices[i*9+5] = vertex_buffer[model->index[i*3+1]*3+2];
-		vertices[i*9+6] = vertex_buffer[model->index[i*3+2]*3];
-		vertices[i*9+7] = vertex_buffer[model->index[i*3+2]*3+1];
-		vertices[i*9+8] = vertex_buffer[model->index[i*3+2]*3+2];
+		vertices[i*9] = vertexBuffer[model->index[i*3]*3];
+		vertices[i*9+1] = vertexBuffer[model->index[i*3]*3+1];
+		vertices[i*9+2] = vertexBuffer[model->index[i*3]*3+2];
+		vertices[i*9+3] = vertexBuffer[model->index[i*3+1]*3];
+		vertices[i*9+4] = vertexBuffer[model->index[i*3+1]*3+1];
+		vertices[i*9+5] = vertexBuffer[model->index[i*3+1]*3+2];
+		vertices[i*9+6] = vertexBuffer[model->index[i*3+2]*3];
+		vertices[i*9+7] = vertexBuffer[model->index[i*3+2]*3+1];
+		vertices[i*9+8] = vertexBuffer[model->index[i*3+2]*3+2];
 
-		tex_coords[i*6] = tex_coord_buffer[model->index[i*3]*2];
-		tex_coords[i*6+1] = tex_coord_buffer[model->index[i*3]*2+1];
-		tex_coords[i*6+2] = tex_coord_buffer[model->index[i*3+1]*2];
-		tex_coords[i*6+3] = tex_coord_buffer[model->index[i*3+1]*2+1];
-		tex_coords[i*6+4] = tex_coord_buffer[model->index[i*3+2]*2];
-		tex_coords[i*6+5] = tex_coord_buffer[model->index[i*3+2]*2+1];
+		texCoords[i*6] = texCoordBuffer[model->index[i*3]*2];
+		texCoords[i*6+1] = texCoordBuffer[model->index[i*3]*2+1];
+		texCoords[i*6+2] = texCoordBuffer[model->index[i*3+1]*2];
+		texCoords[i*6+3] = texCoordBuffer[model->index[i*3+1]*2+1];
+		texCoords[i*6+4] = texCoordBuffer[model->index[i*3+2]*2];
+		texCoords[i*6+5] = texCoordBuffer[model->index[i*3+2]*2+1];
 	}
 
-	memset(tangents, 0x0, sizeof(float)*model->indice_count*3);
+	memset(tangents, 0x0, sizeof(float)*model->indiceCount*3);
 
 	// calculate tangents
-	for(i = 0, j = 0; i < (int)model->indice_count*3; i+=9, j+=6)
+	for(i = 0, j = 0; i < (int)model->indiceCount*3; i+=9, j+=6)
 	{
 		edge1[0] = vertices[i+3]-vertices[i];
 		edge1[1] = vertices[i+4]-vertices[i+1];
@@ -178,10 +178,10 @@ void elf_generate_model_tangents(elf_model* model)
 		edge2[1] = vertices[i+7]-vertices[i+1];
 		edge2[2] = vertices[i+8]-vertices[i+2];
 
-		edge1uv[0] = tex_coords[j+2]-tex_coords[j];
-		edge1uv[1] = tex_coords[j+3]-tex_coords[j+1];
-		edge2uv[0] = tex_coords[j+4]-tex_coords[j];
-		edge2uv[1] = tex_coords[j+5]-tex_coords[j+1];
+		edge1uv[0] = texCoords[j+2]-texCoords[j];
+		edge1uv[1] = texCoords[j+3]-texCoords[j+1];
+		edge2uv[0] = texCoords[j+4]-texCoords[j];
+		edge2uv[1] = texCoords[j+5]-texCoords[j+1];
 
 		cp = edge1uv[1]*edge2uv[0]-edge1uv[0]*edge2uv[1];
 
@@ -192,78 +192,78 @@ void elf_generate_model_tangents(elf_model* model)
 			tangents[i+1] = (edge1[1]*(-edge2uv[1])+edge2[1]*edge1uv[1])*mul;
 			tangents[i+2] = (edge1[2]*(-edge2uv[1])+edge2[2]*edge1uv[1])*mul;
 
-			gfx_vec_normalize(&tangents[i]);
+			gfxVecNormalize(&tangents[i]);
 
 			memcpy(&tangents[i+3], &tangents[i], sizeof(float)*3);
 			memcpy(&tangents[i+6], &tangents[i], sizeof(float)*3);
 		}
 	}
 
-	model->tangents = gfx_create_vertex_data(3*model->vertice_count, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
-	gfx_inc_ref((gfx_object*)model->tangents);
+	model->tangents = gfxCreateVertexData(3*model->verticeCount, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
+	gfxIncRef((gfxObject*)model->tangents);
 
-	tangent_buffer = (float*)gfx_get_vertex_data_buffer(model->tangents);
+	tangentBuffer = (float*)gfxGetVertexDataBuffer(model->tangents);
 
 	// smooth tangents
-	for(i = 0; i < (int)model->indice_count/3; i++)
+	for(i = 0; i < (int)model->indiceCount/3; i++)
 	{
-		tangent_buffer[model->index[i*3]*3] += tangents[i*9];
-		tangent_buffer[model->index[i*3]*3+1] += tangents[i*9+1];
-		tangent_buffer[model->index[i*3]*3+2] += tangents[i*9+2];
-		tangent_buffer[model->index[i*3+1]*3] += tangents[i*9+3];
-		tangent_buffer[model->index[i*3+1]*3+1] += tangents[i*9+4];
-		tangent_buffer[model->index[i*3+1]*3+2] += tangents[i*9+5];
-		tangent_buffer[model->index[i*3+2]*3] += tangents[i*9+6];
-		tangent_buffer[model->index[i*3+2]*3+1] += tangents[i*9+7];
-		tangent_buffer[model->index[i*3+2]*3+2] += tangents[i*9+8];
+		tangentBuffer[model->index[i*3]*3] += tangents[i*9];
+		tangentBuffer[model->index[i*3]*3+1] += tangents[i*9+1];
+		tangentBuffer[model->index[i*3]*3+2] += tangents[i*9+2];
+		tangentBuffer[model->index[i*3+1]*3] += tangents[i*9+3];
+		tangentBuffer[model->index[i*3+1]*3+1] += tangents[i*9+4];
+		tangentBuffer[model->index[i*3+1]*3+2] += tangents[i*9+5];
+		tangentBuffer[model->index[i*3+2]*3] += tangents[i*9+6];
+		tangentBuffer[model->index[i*3+2]*3+1] += tangents[i*9+7];
+		tangentBuffer[model->index[i*3+2]*3+2] += tangents[i*9+8];
 	}
 
-	for(i = 0; i < (int)model->vertice_count*3; i+=3)
+	for(i = 0; i < (int)model->verticeCount*3; i+=3)
 	{
-		gfx_vec_normalize(&tangent_buffer[i]);
+		gfxVecNormalize(&tangentBuffer[i]);
 	}
 
-	normal_buffer = (float*)gfx_get_vertex_data_buffer(model->normals);
+	normalBuffer = (float*)gfxGetVertexDataBuffer(model->normals);
 
 	// orthogonize tangents
-	for(i = 0; i < (int)model->vertice_count*3; i+=3)
+	for(i = 0; i < (int)model->verticeCount*3; i+=3)
 	{
-		gfx_vec_dot_vec(&tangent_buffer[i], &normal_buffer[i], &dot);
-		tangent_buffer[i] -= normal_buffer[i]*dot;
-		tangent_buffer[i+1] -= normal_buffer[i+1]*dot;
-		tangent_buffer[i+2] -= normal_buffer[i+2]*dot;
-		gfx_vec_normalize(&tangent_buffer[i]);
+		gfxVecDotVec(&tangentBuffer[i], &normalBuffer[i], &dot);
+		tangentBuffer[i] -= normalBuffer[i]*dot;
+		tangentBuffer[i+1] -= normalBuffer[i+1]*dot;
+		tangentBuffer[i+2] -= normalBuffer[i+2]*dot;
+		gfxVecNormalize(&tangentBuffer[i]);
 	}
 
-	gfx_set_vertex_array_data(model->vertex_array, GFX_TANGENT, model->tangents);
+	gfxSetVertexArrayData(model->vertexArray, GFX_TANGENT, model->tangents);
 
 	free(vertices);
-	free(tex_coords);
+	free(texCoords);
 	free(tangents);
 }
 
-void elf_destroy_model(void* data)
+void elfDestroyModel(void* data)
 {
 	int i;
-	elf_model* model = (elf_model*)data;
+	elfModel* model = (elfModel*)data;
 
-	if(model->name) elf_destroy_string(model->name);
-	if(model->file_path) elf_destroy_string(model->file_path);
+	if(model->name) elfDestroyString(model->name);
+	if(model->filePath) elfDestroyString(model->filePath);
 
-	if(model->vertex_array) gfx_dec_ref((gfx_object*)model->vertex_array);
-	if(model->vertices) gfx_dec_ref((gfx_object*)model->vertices);
-	if(model->normals) gfx_dec_ref((gfx_object*)model->normals);
-	if(model->tex_coords) gfx_dec_ref((gfx_object*)model->tex_coords);
-	if(model->tangents) gfx_dec_ref((gfx_object*)model->tangents);
+	if(model->vertexArray) gfxDecRef((gfxObject*)model->vertexArray);
+	if(model->vertices) gfxDecRef((gfxObject*)model->vertices);
+	if(model->normals) gfxDecRef((gfxObject*)model->normals);
+	if(model->texCoords) gfxDecRef((gfxObject*)model->texCoords);
+	if(model->tangents) gfxDecRef((gfxObject*)model->tangents);
 
 	if(model->areas)
 	{
-		for(i = 0; i < model->area_count; i++)
+		for(i = 0; i < model->areaCount; i++)
 		{
-			if(model->areas[i].indice_count > 0)
+			if(model->areas[i].indiceCount > 0)
 			{
-				gfx_dec_ref((gfx_object*)model->areas[i].index);
-				gfx_dec_ref((gfx_object*)model->areas[i].vertex_index);
+				gfxDecRef((gfxObject*)model->areas[i].index);
+				gfxDecRef((gfxObject*)model->areas[i].vertexIndex);
 			}
 		}
 		free(model->areas);
@@ -272,91 +272,91 @@ void elf_destroy_model(void* data)
 	if(model->index) free(model->index);
 	if(model->weights) free(model->weights);
 	if(model->boneids) free(model->boneids);
-	if(model->tri_mesh) elf_dec_ref((elf_object*)model->tri_mesh);
+	if(model->triMesh) elfDecRef((elfObject*)model->triMesh);
 
 	free(model);
 
-	elf_dec_obj(ELF_MODEL);
+	elfDecObj(ELF_MODEL);
 }
 
-void elf_set_model_name(elf_model* model, const char* name)
+void elfSetModelName(elfModel* model, const char* name)
 {
-	if(model->name) elf_destroy_string(model->name);
-	model->name = elf_create_string(name);
+	if(model->name) elfDestroyString(model->name);
+	model->name = elfCreateString(name);
 }
 
-const char* elf_get_model_name(elf_model* model)
+const char* elfGetModelName(elfModel* model)
 {
 	return model->name;
 }
 
-const char* elf_get_model_file_path(elf_model* model)
+const char* elfGetModelFilePath(elfModel* model)
 {
-	return model->file_path;
+	return model->filePath;
 }
 
-int elf_get_model_vertice_count(elf_model* model)
+int elfGetModelVerticeCount(elfModel* model)
 {
-	return model->vertice_count;
+	return model->verticeCount;
 }
 
-int elf_get_model_indice_count(elf_model* model)
+int elfGetModelIndiceCount(elfModel* model)
 {
-	return model->indice_count;
+	return model->indiceCount;
 }
 
-elf_vec3f elf_get_model_bounding_box_min(elf_model* model)
+elfVec3f elfGetModelBoundingBoxMin(elfModel* model)
 {
-	return model->bb_min;
+	return model->bbMin;
 }
 
-elf_vec3f elf_get_model_bounding_box_max(elf_model* model)
+elfVec3f elfGetModelBoundingBoxMax(elfModel* model)
 {
-	return model->bb_max;
+	return model->bbMax;
 }
 
-float* elf_get_model_vertices(elf_model* model)
+float* elfGetModelVertices(elfModel* model)
 {
-	return (float*)gfx_get_vertex_data_buffer(model->vertices);
+	return (float*)gfxGetVertexDataBuffer(model->vertices);
 }
 
-float* elf_get_model_normals(elf_model* model)
+float* elfGetModelNormals(elfModel* model)
 {
 	if(!model->normals) return NULL;
-	return (float*)gfx_get_vertex_data_buffer(model->normals);
+	return (float*)gfxGetVertexDataBuffer(model->normals);
 }
 
-float* elf_get_model_tex_coords(elf_model* model)
+float* elfGetModelTexCoords(elfModel* model)
 {
-	if(!model->tex_coords) return NULL;
-	return (float*)model->tex_coords;
+	if(!model->texCoords) return NULL;
+	return (float*)model->texCoords;
 }
 
-float* elf_get_model_tangents(elf_model* model)
+float* elfGetModelTangents(elfModel* model)
 {
 	if(!model->tangents) return NULL;
-	return (float*)gfx_get_vertex_data_buffer(model->tangents);
+	return (float*)gfxGetVertexDataBuffer(model->tangents);
 }
 
-unsigned int* elf_get_model_indices(elf_model* model)
+unsigned int* elfGetModelIndices(elfModel* model)
 {
 	return model->index;
 }
 
-void elf_draw_model(elf_list* materials, elf_model* model, int mode, gfx_shader_params* shader_params)
+void elfDrawModel(elfList* materials, elfModel* model, int mode, gfxShaderParams* shaderParams)
 {
 	int i;
-	elf_material* material;
+	elfMaterial* material;
 	unsigned char found;
 
-	if(!model->vertex_array) return;
+	if(!model->vertexArray) return;
 
 	if(mode == ELF_DRAW_WITHOUT_LIGHTING)
 	{
 		found = ELF_FALSE;
 
-		for(material = (elf_material*)elf_begin_list(materials); material;
-			material = (elf_material*)elf_next_in_list(materials))
+		for(material = (elfMaterial*)elfBeginList(materials); material;
+			material = (elfMaterial*)elfNextInList(materials))
 		{
 			if(!material->lighting)
 			{
@@ -368,12 +368,12 @@ void elf_draw_model(elf_list* materials, elf_model* model, int mode, gfx_shader_
 		if(!found) return;
 	}
 
-	gfx_set_vertex_array(model->vertex_array);
+	gfxSetVertexArray(model->vertexArray);
 
-	for(i = 0, material = (elf_material*)elf_begin_list(materials); i < (int)model->area_count;
-		i++, material = (elf_material*)elf_next_in_list(materials))
+	for(i = 0, material = (elfMaterial*)elfBeginList(materials); i < (int)model->areaCount;
+		i++, material = (elfMaterial*)elfNextInList(materials))
 	{
-		if(model->areas[i].vertex_index)
+		if(model->areas[i].vertexIndex)
 		{
 			if(material)
 			{
@@ -386,21 +386,21 @@ void elf_draw_model(elf_list* materials, elf_model* model, int mode, gfx_shader_
 					if(material->lighting) continue;
 				}
 
-				elf_set_material(material, mode, shader_params);
+				elfSetMaterial(material, mode, shaderParams);
 
-				gfx_set_shader_params(shader_params);
+				gfxSetShaderParams(shaderParams);
 			}
 
-			gfx_draw_vertex_index(model->areas[i].vertex_index, GFX_TRIANGLES);
+			gfxDrawVertexIndex(model->areas[i].vertexIndex, GFX_TRIANGLES);
 		}
 	}
 }
 
-void elf_draw_model_bounding_box(elf_model* model, gfx_shader_params* shader_params)
+void elfDrawModelBoundingBox(elfModel* model, gfxShaderParams* shaderParams)
 {
-	if(!model->vertex_array) return;
+	if(!model->vertexArray) return;
 
-	gfx_set_shader_params(shader_params);
-	gfx_draw_bounding_box(&model->bb_min.x, &model->bb_max.x);
+	gfxSetShaderParams(shaderParams);
+	gfxDrawBoundingBox(&model->bbMin.x, &model->bbMax.x);
 }
 

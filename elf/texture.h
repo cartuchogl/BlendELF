@@ -1,345 +1,345 @@
 
-elf_texture* elf_create_texture()
+elfTexture* elfCreateTexture()
 {
-	elf_texture* texture;
+	elfTexture* texture;
 
-	texture = (elf_texture*)malloc(sizeof(elf_texture));
-	memset(texture, 0x0, sizeof(elf_texture));
-	texture->obj_type = ELF_TEXTURE;
-	texture->obj_destr = elf_destroy_texture;
+	texture = (elfTexture*)malloc(sizeof(elfTexture));
+	memset(texture, 0x0, sizeof(elfTexture));
+	texture->objType = ELF_TEXTURE;
+	texture->objDestr = elfDestroyTexture;
 
-	texture->id = ++gen->texture_id_counter;
+	texture->id = ++gen->textureIdCounter;
 
-	elf_inc_obj(ELF_TEXTURE);
+	elfIncObj(ELF_TEXTURE);
 
 	return texture;
 }
 
-elf_texture* elf_create_texture_from_file(const char* file_path)
+elfTexture* elfCreateTextureFromFile(const char* filePath)
 {
-	elf_image* image;
-	elf_texture* texture;
+	elfImage* image;
+	elfTexture* texture;
 	int format;
-	int internal_format;
+	int internalFormat;
 
-	image = elf_create_image_from_file(file_path);
+	image = elfCreateImageFromFile(filePath);
 	if(!image) return NULL;
 
-	switch(elf_get_image_bits_per_pixel(image))
+	switch(elfGetImageBitsPerPixel(image))
 	{
-		case 8: format = GFX_LUMINANCE; internal_format = GFX_LUMINANCE; break;
-		case 16: format = GFX_LUMINANCE_ALPHA; internal_format = GFX_LUMINANCE_ALPHA; break;
+		case 8: format = GFX_LUMINANCE; internalFormat = GFX_LUMINANCE; break;
+		case 16: format = GFX_LUMINANCE_ALPHA; internalFormat = GFX_LUMINANCE_ALPHA; break;
 		case 24:
 			format = GFX_BGR;
-			if(gfx_get_version() >= 130)
-				internal_format = eng->texture_compress ? GFX_COMPRESSED_RGB : GFX_RGB;
-			else internal_format = GFX_RGB;
+			if(gfxGetVersion() >= 130)
+				internalFormat = eng->textureCompress ? GFX_COMPRESSED_RGB : GFX_RGB;
+			else internalFormat = GFX_RGB;
 			break;
 		case 32:
 			format = GFX_BGRA;
-			if(gfx_get_version() >= 130)
-				internal_format = eng->texture_compress ? GFX_COMPRESSED_RGBA : GFX_RGBA;
-			else internal_format = GFX_RGBA;
+			if(gfxGetVersion() >= 130)
+				internalFormat = eng->textureCompress ? GFX_COMPRESSED_RGBA : GFX_RGBA;
+			else internalFormat = GFX_RGBA;
 			break;
 		default:
-			elf_set_error(ELF_INVALID_FILE, "error: unsupported bits per pixel value [%d] in image \"%s\"\n", elf_get_image_bits_per_pixel(image), file_path);
-			elf_destroy_image(image);
+			elfSetError(ELF_INVALID_FILE, "error: unsupported bits per pixel value [%d] in image \"%s\"\n", elfGetImageBitsPerPixel(image), filePath);
+			elfDestroyImage(image);
 			return NULL;
 	}
 
-	texture = elf_create_texture();
+	texture = elfCreateTexture();
 
-	texture->name = elf_create_string(file_path);
-	texture->file_path = elf_create_string(file_path);
+	texture->name = elfCreateString(filePath);
+	texture->filePath = elfCreateString(filePath);
 
-	texture->texture = gfx_create_2d_texture(elf_get_image_width(image), elf_get_image_height(image),
-		eng->texture_anisotropy, GFX_REPEAT, GFX_LINEAR, format, internal_format, GFX_UBYTE, elf_get_image_data(image));
+	texture->texture = gfxCreate_2dTexture(elfGetImageWidth(image), elfGetImageHeight(image),
+		eng->textureAnisotropy, GFX_REPEAT, GFX_LINEAR, format, internalFormat, GFX_UBYTE, elfGetImageData(image));
 
 	if(!texture->texture)
 	{
-		elf_set_error(ELF_CANT_CREATE, "error: failed to create texture \"%s\"\n", file_path);
-		elf_destroy_texture(texture);
-		elf_destroy_image(image);
+		elfSetError(ELF_CANT_CREATE, "error: failed to create texture \"%s\"\n", filePath);
+		elfDestroyTexture(texture);
+		elfDestroyImage(image);
 		return NULL;
 	}
 
-	elf_destroy_image(image);
+	elfDestroyImage(image);
 
 	return texture;
 }
 
-elf_texture* elf_create_texture_from_image(elf_image* image)
+elfTexture* elfCreateTextureFromImage(elfImage* image)
 {
-	elf_texture* texture;
+	elfTexture* texture;
 	int format;
-	int internal_format;
+	int internalFormat;
 
-	switch(elf_get_image_bits_per_pixel(image))
+	switch(elfGetImageBitsPerPixel(image))
 	{
-		case 8: format = GFX_LUMINANCE; internal_format = GFX_LUMINANCE; break;
-		case 16: format = GFX_LUMINANCE_ALPHA; internal_format = GFX_LUMINANCE_ALPHA; break;
+		case 8: format = GFX_LUMINANCE; internalFormat = GFX_LUMINANCE; break;
+		case 16: format = GFX_LUMINANCE_ALPHA; internalFormat = GFX_LUMINANCE_ALPHA; break;
 		case 24:
 			format = GFX_BGR;
-			if(gfx_get_version() >= 130)
-				internal_format = eng->texture_compress ? GFX_COMPRESSED_RGB : GFX_RGB;
-			else internal_format = GFX_RGB;
+			if(gfxGetVersion() >= 130)
+				internalFormat = eng->textureCompress ? GFX_COMPRESSED_RGB : GFX_RGB;
+			else internalFormat = GFX_RGB;
 			break;
 		case 32:
 			format = GFX_BGRA;
-			if(gfx_get_version() >= 130)
-				internal_format = eng->texture_compress ? GFX_COMPRESSED_RGBA : GFX_RGBA;
-			else internal_format = GFX_RGBA;
+			if(gfxGetVersion() >= 130)
+				internalFormat = eng->textureCompress ? GFX_COMPRESSED_RGBA : GFX_RGBA;
+			else internalFormat = GFX_RGBA;
 			break;
 		default:
-			elf_set_error(ELF_INVALID_FILE, "error: unsupported bits per pixel value [%d] for image\n", elf_get_image_bits_per_pixel(image));
+			elfSetError(ELF_INVALID_FILE, "error: unsupported bits per pixel value [%d] for image\n", elfGetImageBitsPerPixel(image));
 			return NULL;
 	}
 
-	texture = elf_create_texture();
+	texture = elfCreateTexture();
 
-	texture->texture = gfx_create_2d_texture(elf_get_image_width(image), elf_get_image_height(image),
-		eng->texture_anisotropy, GFX_REPEAT, GFX_LINEAR, format, internal_format, GFX_UBYTE, elf_get_image_data(image));
+	texture->texture = gfxCreate_2dTexture(elfGetImageWidth(image), elfGetImageHeight(image),
+		eng->textureAnisotropy, GFX_REPEAT, GFX_LINEAR, format, internalFormat, GFX_UBYTE, elfGetImageData(image));
 
 	if(!texture->texture)
 	{
-		elf_set_error(ELF_CANT_CREATE, "error: failed to create texture\n");
-		elf_destroy_texture(texture);
+		elfSetError(ELF_CANT_CREATE, "error: failed to create texture\n");
+		elfDestroyTexture(texture);
 		return NULL;
 	}
 
 	return texture;
 }
 
-elf_texture* elf_create_cube_map_from_files(const char* xpos, const char* xneg, const char* ypos, const char* yneg, const char* zpos, const char* zneg)
+elfTexture* elfCreateCubeMapFromFiles(const char* xpos, const char* xneg, const char* ypos, const char* yneg, const char* zpos, const char* zneg)
 {
-	elf_image* xposi;
-	elf_image* xnegi;
-	elf_image* yposi;
-	elf_image* ynegi;
-	elf_image* zposi;
-	elf_image* znegi;
+	elfImage* xposi;
+	elfImage* xnegi;
+	elfImage* yposi;
+	elfImage* ynegi;
+	elfImage* zposi;
+	elfImage* znegi;
 
-	elf_texture* texture;
+	elfTexture* texture;
 	int format;
-	int internal_format;
+	int internalFormat;
 
-	xposi = elf_create_image_from_file(xpos);
-	xnegi = elf_create_image_from_file(xneg);
-	yposi = elf_create_image_from_file(ypos);
-	ynegi = elf_create_image_from_file(yneg);
-	zposi = elf_create_image_from_file(zpos);
-	znegi = elf_create_image_from_file(zneg);
+	xposi = elfCreateImageFromFile(xpos);
+	xnegi = elfCreateImageFromFile(xneg);
+	yposi = elfCreateImageFromFile(ypos);
+	ynegi = elfCreateImageFromFile(yneg);
+	zposi = elfCreateImageFromFile(zpos);
+	znegi = elfCreateImageFromFile(zneg);
 
 	if(!xposi || !xnegi || !yposi || !ynegi || !zposi || !znegi)
 	{
-		elf_set_error(ELF_CANT_OPEN_FILE, "error: can't open all of the cube map images\n");
-		if(xposi) elf_destroy_image(xposi);
-		if(xnegi) elf_destroy_image(xnegi);
-		if(yposi) elf_destroy_image(yposi);
-		if(ynegi) elf_destroy_image(ynegi);
-		if(zposi) elf_destroy_image(zposi);
-		if(znegi) elf_destroy_image(znegi);
+		elfSetError(ELF_CANT_OPEN_FILE, "error: can't open all of the cube map images\n");
+		if(xposi) elfDestroyImage(xposi);
+		if(xnegi) elfDestroyImage(xnegi);
+		if(yposi) elfDestroyImage(yposi);
+		if(ynegi) elfDestroyImage(ynegi);
+		if(zposi) elfDestroyImage(zposi);
+		if(znegi) elfDestroyImage(znegi);
 		return NULL;
 	}
 
-	if(elf_get_image_bits_per_pixel(xposi) != elf_get_image_bits_per_pixel(xnegi) ||
-		elf_get_image_bits_per_pixel(xposi) != elf_get_image_bits_per_pixel(yposi) ||
-		elf_get_image_bits_per_pixel(xposi) != elf_get_image_bits_per_pixel(ynegi) ||
-		elf_get_image_bits_per_pixel(xposi) != elf_get_image_bits_per_pixel(zposi) ||
-		elf_get_image_bits_per_pixel(xposi) != elf_get_image_bits_per_pixel(znegi))
+	if(elfGetImageBitsPerPixel(xposi) != elfGetImageBitsPerPixel(xnegi) ||
+		elfGetImageBitsPerPixel(xposi) != elfGetImageBitsPerPixel(yposi) ||
+		elfGetImageBitsPerPixel(xposi) != elfGetImageBitsPerPixel(ynegi) ||
+		elfGetImageBitsPerPixel(xposi) != elfGetImageBitsPerPixel(zposi) ||
+		elfGetImageBitsPerPixel(xposi) != elfGetImageBitsPerPixel(znegi))
 	{
-		elf_set_error(ELF_INVALID_FILE, "error: cube map images have different bits per pixel count\n");
-		elf_destroy_image(xposi);
-		elf_destroy_image(xnegi);
-		elf_destroy_image(yposi);
-		elf_destroy_image(ynegi);
-		elf_destroy_image(zposi);
-		elf_destroy_image(znegi);
+		elfSetError(ELF_INVALID_FILE, "error: cube map images have different bits per pixel count\n");
+		elfDestroyImage(xposi);
+		elfDestroyImage(xnegi);
+		elfDestroyImage(yposi);
+		elfDestroyImage(ynegi);
+		elfDestroyImage(zposi);
+		elfDestroyImage(znegi);
 		return NULL;
 	}
 
-	if(elf_get_image_width(xposi) != elf_get_image_width(xnegi) ||
-		elf_get_image_width(xposi) != elf_get_image_width(yposi) ||
-		elf_get_image_width(xposi) != elf_get_image_width(ynegi) ||
-		elf_get_image_width(xposi) != elf_get_image_width(zposi) ||
-		elf_get_image_width(xposi) != elf_get_image_width(znegi))
+	if(elfGetImageWidth(xposi) != elfGetImageWidth(xnegi) ||
+		elfGetImageWidth(xposi) != elfGetImageWidth(yposi) ||
+		elfGetImageWidth(xposi) != elfGetImageWidth(ynegi) ||
+		elfGetImageWidth(xposi) != elfGetImageWidth(zposi) ||
+		elfGetImageWidth(xposi) != elfGetImageWidth(znegi))
 	{
-		elf_set_error(ELF_INVALID_FILE, "error: cube map images have different dimensions, \"%s\"\n", xpos);
-		elf_destroy_image(xposi);
-		elf_destroy_image(xnegi);
-		elf_destroy_image(yposi);
-		elf_destroy_image(ynegi);
-		elf_destroy_image(zposi);
-		elf_destroy_image(znegi);
+		elfSetError(ELF_INVALID_FILE, "error: cube map images have different dimensions, \"%s\"\n", xpos);
+		elfDestroyImage(xposi);
+		elfDestroyImage(xnegi);
+		elfDestroyImage(yposi);
+		elfDestroyImage(ynegi);
+		elfDestroyImage(zposi);
+		elfDestroyImage(znegi);
 		return NULL;
 	}
 
-	if(elf_get_image_height(xposi) != elf_get_image_height(xnegi) ||
-		elf_get_image_height(xposi) != elf_get_image_height(yposi) ||
-		elf_get_image_height(xposi) != elf_get_image_height(ynegi) ||
-		elf_get_image_height(xposi) != elf_get_image_height(zposi) ||
-		elf_get_image_height(xposi) != elf_get_image_height(znegi))
+	if(elfGetImageHeight(xposi) != elfGetImageHeight(xnegi) ||
+		elfGetImageHeight(xposi) != elfGetImageHeight(yposi) ||
+		elfGetImageHeight(xposi) != elfGetImageHeight(ynegi) ||
+		elfGetImageHeight(xposi) != elfGetImageHeight(zposi) ||
+		elfGetImageHeight(xposi) != elfGetImageHeight(znegi))
 	{
-		elf_set_error(ELF_INVALID_FILE, "error: cube map images have different dimensions, \"%s\"\n", xpos);
-		elf_destroy_image(xposi);
-		elf_destroy_image(xnegi);
-		elf_destroy_image(yposi);
-		elf_destroy_image(ynegi);
-		elf_destroy_image(zposi);
-		elf_destroy_image(znegi);
+		elfSetError(ELF_INVALID_FILE, "error: cube map images have different dimensions, \"%s\"\n", xpos);
+		elfDestroyImage(xposi);
+		elfDestroyImage(xnegi);
+		elfDestroyImage(yposi);
+		elfDestroyImage(ynegi);
+		elfDestroyImage(zposi);
+		elfDestroyImage(znegi);
 		return NULL;
 	}
 
-	switch(elf_get_image_bits_per_pixel(xposi))
+	switch(elfGetImageBitsPerPixel(xposi))
 	{
-		case 8: format = GFX_LUMINANCE; internal_format = GFX_LUMINANCE; break;
-		case 16: format = GFX_LUMINANCE_ALPHA; internal_format = GFX_LUMINANCE_ALPHA; break;
-		case 24: format = GFX_BGR; internal_format = eng->texture_compress ? GFX_COMPRESSED_RGB : GFX_RGB; break;
-		case 32: format = GFX_BGRA; internal_format = eng->texture_compress ? GFX_COMPRESSED_RGBA : GFX_RGBA; break;
+		case 8: format = GFX_LUMINANCE; internalFormat = GFX_LUMINANCE; break;
+		case 16: format = GFX_LUMINANCE_ALPHA; internalFormat = GFX_LUMINANCE_ALPHA; break;
+		case 24: format = GFX_BGR; internalFormat = eng->textureCompress ? GFX_COMPRESSED_RGB : GFX_RGB; break;
+		case 32: format = GFX_BGRA; internalFormat = eng->textureCompress ? GFX_COMPRESSED_RGBA : GFX_RGBA; break;
 		default:
-			elf_set_error(ELF_INVALID_FILE, "error: unsupported bits per pixel value [%d] in cube map image \"%s\"\n", elf_get_image_bits_per_pixel(xposi), xpos);
-			elf_destroy_image(xposi);
-			elf_destroy_image(xnegi);
-			elf_destroy_image(yposi);
-			elf_destroy_image(ynegi);
-			elf_destroy_image(zposi);
-			elf_destroy_image(znegi);
+			elfSetError(ELF_INVALID_FILE, "error: unsupported bits per pixel value [%d] in cube map image \"%s\"\n", elfGetImageBitsPerPixel(xposi), xpos);
+			elfDestroyImage(xposi);
+			elfDestroyImage(xnegi);
+			elfDestroyImage(yposi);
+			elfDestroyImage(ynegi);
+			elfDestroyImage(zposi);
+			elfDestroyImage(znegi);
 			return NULL;
 	}
 
-	texture = elf_create_texture();
+	texture = elfCreateTexture();
 
-	texture->name = elf_create_string(xpos);
-	texture->file_path = elf_create_string(xpos);
+	texture->name = elfCreateString(xpos);
+	texture->filePath = elfCreateString(xpos);
 
-	texture->texture = gfx_create_cube_map(elf_get_image_width(xposi), elf_get_image_height(xposi),
-		eng->texture_anisotropy, GFX_REPEAT, GFX_LINEAR, format, internal_format, GFX_UBYTE,
-		elf_get_image_data(xposi), elf_get_image_data(xnegi), elf_get_image_data(yposi),
-		elf_get_image_data(ynegi), elf_get_image_data(zposi), elf_get_image_data(znegi));
+	texture->texture = gfxCreateCubeMap(elfGetImageWidth(xposi), elfGetImageHeight(xposi),
+		eng->textureAnisotropy, GFX_REPEAT, GFX_LINEAR, format, internalFormat, GFX_UBYTE,
+		elfGetImageData(xposi), elfGetImageData(xnegi), elfGetImageData(yposi),
+		elfGetImageData(ynegi), elfGetImageData(zposi), elfGetImageData(znegi));
 
 	if(!texture->texture)
 	{
-		elf_set_error(ELF_CANT_CREATE, "error: failed to create cube map \"%s\"\n", xposi);
-		elf_destroy_texture(texture);
-		elf_destroy_image(xposi);
-		elf_destroy_image(xnegi);
-		elf_destroy_image(yposi);
-		elf_destroy_image(ynegi);
-		elf_destroy_image(zposi);
-		elf_destroy_image(znegi);
+		elfSetError(ELF_CANT_CREATE, "error: failed to create cube map \"%s\"\n", xposi);
+		elfDestroyTexture(texture);
+		elfDestroyImage(xposi);
+		elfDestroyImage(xnegi);
+		elfDestroyImage(yposi);
+		elfDestroyImage(ynegi);
+		elfDestroyImage(zposi);
+		elfDestroyImage(znegi);
 		return NULL;
 	}
 
-	elf_destroy_image(xposi);
-	elf_destroy_image(xnegi);
-	elf_destroy_image(yposi);
-	elf_destroy_image(ynegi);
-	elf_destroy_image(zposi);
-	elf_destroy_image(znegi);
+	elfDestroyImage(xposi);
+	elfDestroyImage(xnegi);
+	elfDestroyImage(yposi);
+	elfDestroyImage(ynegi);
+	elfDestroyImage(zposi);
+	elfDestroyImage(znegi);
 
 	return texture;
 }
 
-void elf_destroy_texture(void* data)
+void elfDestroyTexture(void* data)
 {
-	elf_texture* texture = (elf_texture*)data;
+	elfTexture* texture = (elfTexture*)data;
 
-	if(texture->name) elf_destroy_string(texture->name);
-	if(texture->file_path) elf_destroy_string(texture->file_path);
+	if(texture->name) elfDestroyString(texture->name);
+	if(texture->filePath) elfDestroyString(texture->filePath);
 
-	if(texture->texture) gfx_destroy_texture(texture->texture);
+	if(texture->texture) gfxDestroyTexture(texture->texture);
 	if(texture->data) free(texture->data);
 
-	elf_dec_obj(ELF_TEXTURE);
+	elfDecObj(ELF_TEXTURE);
 
 	free(texture);
 }
 
-void elf_set_texture_name(elf_texture* texture, const char* name)
+void elfSetTextureName(elfTexture* texture, const char* name)
 {
-	if(texture->name) elf_destroy_string(texture->name);
-	texture->name = elf_create_string(name);
+	if(texture->name) elfDestroyString(texture->name);
+	texture->name = elfCreateString(name);
 }
 
-const char* elf_get_texture_name(elf_texture* texture)
+const char* elfGetTextureName(elfTexture* texture)
 {
 	return texture->name;
 }
 
-const char* elf_get_texture_file_path(elf_texture* texture)
+const char* elfGetTextureFilePath(elfTexture* texture)
 {
-	return texture->file_path;
+	return texture->filePath;
 }
 
-int elf_get_texture_width(elf_texture* texture)
+int elfGetTextureWidth(elfTexture* texture)
 {
-	return gfx_get_texture_width(texture->texture);
+	return gfxGetTextureWidth(texture->texture);
 }
 
-int elf_get_texture_height(elf_texture* texture)
+int elfGetTextureHeight(elfTexture* texture)
 {
-	return gfx_get_texture_height(texture->texture);
+	return gfxGetTextureHeight(texture->texture);
 }
 
-int elf_get_texture_format(elf_texture* texture)
+int elfGetTextureFormat(elfTexture* texture)
 {
-	return gfx_get_texture_format(texture->texture);
+	return gfxGetTextureFormat(texture->texture);
 }
 
-int elf_get_texture_data_format(elf_texture* texture)
+int elfGetTextureDataFormat(elfTexture* texture)
 {
-	return gfx_get_texture_data_format(texture->texture);
+	return gfxGetTextureDataFormat(texture->texture);
 }
 
-gfx_texture* elf_get_gfx_texture(elf_texture* texture)
+gfxTexture* elfGetGfxTexture(elfTexture* texture)
 {
 	return texture->texture;
 }
 
-void elf_set_texture(int slot, elf_texture* texture, gfx_shader_params* shader_params)
+void elfSetTexture(int slot, elfTexture* texture, gfxShaderParams* shaderParams)
 {
 	if(!texture->texture || slot < 0 || slot > GFX_MAX_TEXTURES-1) return;
 
-	shader_params->texture_params[slot].texture = texture->texture;
+	shaderParams->textureParams[slot].texture = texture->texture;
 }
 
-unsigned char elf_load_texture_data(elf_texture* texture)
+unsigned char elfLoadTextureData(elfTexture* texture)
 {
-	const char* file_type;
+	const char* fileType;
 	FILE* file;
-	elf_pak* pak;
-	elf_pak_index* index;
+	elfPak* pak;
+	elfPakIndex* index;
 	int magic;
 	char name[ELF_NAME_LENGTH];
 	unsigned char type;
 
 	if(texture->data) return ELF_TRUE;
 
-	file_type = strrchr(texture->file_path, '.');
+	fileType = strrchr(texture->filePath, '.');
 
-	if(!strcmp(file_type, ".pak"))
+	if(!strcmp(fileType, ".pak"))
 	{
-		pak = elf_create_pak_from_file(texture->file_path);
+		pak = elfCreatePakFromFile(texture->filePath);
 		if(!pak) return ELF_FALSE;
 
-		index = elf_get_pak_index_by_name(pak, texture->name, ELF_TEXTURE);
+		index = elfGetPakIndexByName(pak, texture->name, ELF_TEXTURE);
 		if(!index)
 		{
-			elf_set_error(ELF_INVALID_FILE, "error: couldn't fine index for \"%s//%s\"\n", texture->file_path, texture->name);
-			elf_destroy_pak(pak);
+			elfSetError(ELF_INVALID_FILE, "error: couldn't fine index for \"%s//%s\"\n", texture->filePath, texture->name);
+			elfDestroyPak(pak);
 			return ELF_FALSE;
 		}
 
-		file = fopen(pak->file_path, "rb");
-		fseek(file, elf_get_pak_index_offset(index), SEEK_SET);
+		file = fopen(pak->filePath, "rb");
+		fseek(file, elfGetPakIndexOffset(index), SEEK_SET);
 		if(feof(file)) return ELF_FALSE;
 
 		fread((char*)&magic, sizeof(int), 1, file);
 
 		if(magic != 179532108)
 		{
-			elf_set_error(ELF_INVALID_FILE, "error: invalid texture \"%s//%s\", wrong magic number\n", texture->file_path, texture->name);
-			elf_destroy_pak(pak);
+			elfSetError(ELF_INVALID_FILE, "error: invalid texture \"%s//%s\", wrong magic number\n", texture->filePath, texture->name);
+			elfDestroyPak(pak);
 			fclose(file);
 			return ELF_FALSE;
 		}
@@ -349,37 +349,37 @@ unsigned char elf_load_texture_data(elf_texture* texture)
 
 		if(type == 1)
 		{
-			fread((char*)&texture->data_size, sizeof(int), 1, file);
+			fread((char*)&texture->dataSize, sizeof(int), 1, file);
 	 
-			texture->data = (char*)malloc(texture->data_size);
-			fread((char*)texture->data, 1, texture->data_size, file);
+			texture->data = (char*)malloc(texture->dataSize);
+			fread((char*)texture->data, 1, texture->dataSize, file);
 		}
 		else
 		{
-			elf_set_error(ELF_UNKNOWN_FORMAT, "error: can't load texture \"%s//%s\", unknown format\n", texture->file_path, texture->name);
-			elf_destroy_pak(pak);
+			elfSetError(ELF_UNKNOWN_FORMAT, "error: can't load texture \"%s//%s\", unknown format\n", texture->filePath, texture->name);
+			elfDestroyPak(pak);
 			fclose(file);
 			return ELF_FALSE;
 		}
 
-		elf_destroy_pak(pak);
+		elfDestroyPak(pak);
 		fclose(file);
 	}
 	else
 	{
-		file = fopen(texture->file_path, "rb");
+		file = fopen(texture->filePath, "rb");
 		if(!file)
 		{
-			elf_set_error(ELF_CANT_OPEN_FILE, "error: can't open file \"%s\"", texture->file_path);
+			elfSetError(ELF_CANT_OPEN_FILE, "error: can't open file \"%s\"", texture->filePath);
 			return ELF_FALSE;
 		}
 
 		fseek(file, 0, SEEK_END);
-		texture->data_size = ftell(file);
+		texture->dataSize = ftell(file);
 		fseek(file, 0, SEEK_SET);
 
-		texture->data = malloc(texture->data_size);
-		fread((char*)texture->data, 1, texture->data_size, file);
+		texture->data = malloc(texture->dataSize);
+		fread((char*)texture->data, 1, texture->dataSize, file);
 
 		fclose(file);
 	}
@@ -387,10 +387,10 @@ unsigned char elf_load_texture_data(elf_texture* texture)
 	return ELF_TRUE;
 }
 
-void elf_unload_texture_data(elf_texture* texture)
+void elfUnloadTextureData(elfTexture* texture)
 {
 	if(texture->data) free(texture->data);
 	texture->data = NULL;
-	texture->data_size = 0;
+	texture->dataSize = 0;
 }
 

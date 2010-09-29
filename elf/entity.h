@@ -1,308 +1,308 @@
 
-elf_entity* elf_create_entity(const char* name)
+elfEntity* elfCreateEntity(const char* name)
 {
-	elf_entity* entity;
+	elfEntity* entity;
 
-	entity = (elf_entity*)malloc(sizeof(elf_entity));
-	memset(entity, 0x0, sizeof(elf_entity));
-	entity->obj_type = ELF_ENTITY;
-	entity->obj_destr = elf_destroy_entity;
+	entity = (elfEntity*)malloc(sizeof(elfEntity));
+	memset(entity, 0x0, sizeof(elfEntity));
+	entity->objType = ELF_ENTITY;
+	entity->objDestr = elfDestroyEntity;
 
-	elf_init_actor((elf_actor*)entity, ELF_FALSE);
+	elfInitActor((elfActor*)entity, ELF_FALSE);
 
 	entity->scale.x = entity->scale.y = entity->scale.z = 1.0;
-	entity->query = gfx_create_query();
+	entity->query = gfxCreateQuery();
 	entity->visible = ELF_TRUE;
 
-	entity->materials = elf_create_list();
-	elf_inc_ref((elf_object*)entity->materials);
+	entity->materials = elfCreateList();
+	elfIncRef((elfObject*)entity->materials);
 
 	entity->culled = ELF_TRUE;
 
-	entity->dobject = elf_create_physics_object_box(0.2, 0.2, 0.2, 0.0, 0.0, 0.0, 0.0);
-	elf_set_physics_object_actor(entity->dobject, (elf_actor*)entity);
-	elf_inc_ref((elf_object*)entity->dobject);
+	entity->dobject = elfCreatePhysicsObjectBox(0.2, 0.2, 0.2, 0.0, 0.0, 0.0, 0.0);
+	elfSetPhysicsObjectActor(entity->dobject, (elfActor*)entity);
+	elfIncRef((elfObject*)entity->dobject);
 
-	entity->pbb_lengths.x = entity->pbb_lengths.y = entity->pbb_lengths.z = 0.4;
+	entity->pbbLengths.x = entity->pbbLengths.y = entity->pbbLengths.z = 0.4;
 
-	entity->armature_player = elf_create_frame_player();
-	elf_inc_ref((elf_object*)entity->armature_player);
+	entity->armaturePlayer = elfCreateFramePlayer();
+	elfIncRef((elfObject*)entity->armaturePlayer);
 
-	if(name) entity->name = elf_create_string(name);
+	if(name) entity->name = elfCreateString(name);
 
-	entity->id = ++gen->entity_id_counter;
+	entity->id = ++gen->entityIdCounter;
 
-	elf_inc_obj(ELF_ENTITY);
+	elfIncObj(ELF_ENTITY);
 
 	return entity;
 }
 
-void elf_generate_entity_tangents(elf_entity* entity)
+void elfGenerateEntityTangents(elfEntity* entity)
 {
-	elf_material* material;
+	elfMaterial* material;
 
-	if(!entity->model || elf_get_model_tangents(entity->model)) return;
+	if(!entity->model || elfGetModelTangents(entity->model)) return;
 
-	for(material = (elf_material*)elf_begin_list(entity->materials); material;
-		material = (elf_material*)elf_next_in_list(entity->materials))
+	for(material = (elfMaterial*)elfBeginList(entity->materials); material;
+		material = (elfMaterial*)elfNextInList(entity->materials))
 	{
-		if(elf_get_material_normal_map(material))
+		if(elfGetMaterialNormalMap(material))
 		{
-			elf_generate_model_tangents(entity->model);
+			elfGenerateModelTangents(entity->model);
 			return;
 		}
 	}
 }
 
-void elf_update_entity(elf_entity* entity)
+void elfUpdateEntity(elfEntity* entity)
 {
-	elf_update_actor((elf_actor*)entity);
-	elf_update_frame_player(entity->armature_player);
+	elfUpdateActor((elfActor*)entity);
+	elfUpdateFramePlayer(entity->armaturePlayer);
 }
 
-void elf_entity_pre_draw(elf_entity* entity)
+void elfEntityPreDraw(elfEntity* entity)
 {
-	elf_actor_pre_draw((elf_actor*)entity);
+	elfActorPreDraw((elfActor*)entity);
 
-	gfx_get_transform_position(entity->transform, &entity->position.x);
+	gfxGetTransformPosition(entity->transform, &entity->position.x);
 
-	if(entity->armature && fabs(elf_get_frame_player_frame(entity->armature_player)-entity->prev_armature_frame) > 0.0001 &&
-		elf_get_frame_player_frame(entity->armature_player) <= entity->armature->frame_count)
+	if(entity->armature && fabs(elfGetFramePlayerFrame(entity->armaturePlayer)-entity->prevArmatureFrame) > 0.0001 &&
+		elfGetFramePlayerFrame(entity->armaturePlayer) <= entity->armature->frameCount)
 	{
-		elf_deform_entity_with_armature(entity->armature, entity, elf_get_frame_player_frame(entity->armature_player));
-		entity->prev_armature_frame = elf_get_frame_player_frame(entity->armature_player);
+		elfDeformEntityWithArmature(entity->armature, entity, elfGetFramePlayerFrame(entity->armaturePlayer));
+		entity->prevArmatureFrame = elfGetFramePlayerFrame(entity->armaturePlayer);
 	}
 
 	if(entity->moved)
 	{
-		elf_calc_entity_aabb(entity);
+		elfCalcEntityAabb(entity);
 	}
 }
 
-void elf_entity_post_draw(elf_entity* entity)
+void elfEntityPostDraw(elfEntity* entity)
 {
-	elf_actor_post_draw((elf_actor*)entity);
+	elfActorPostDraw((elfActor*)entity);
 }
 
-void elf_destroy_entity(void* data)
+void elfDestroyEntity(void* data)
 {
-	elf_entity* entity = (elf_entity*)data;
+	elfEntity* entity = (elfEntity*)data;
 
-	elf_clean_actor((elf_actor*)entity);
+	elfCleanActor((elfActor*)entity);
 
-	if(entity->model) elf_dec_ref((elf_object*)entity->model);
-	if(entity->armature) elf_dec_ref((elf_object*)entity->armature);
-	if(entity->vertices) gfx_dec_ref((gfx_object*)entity->vertices);
-	if(entity->normals) gfx_dec_ref((gfx_object*)entity->normals);
-	if(entity->query) gfx_destroy_query(entity->query);
+	if(entity->model) elfDecRef((elfObject*)entity->model);
+	if(entity->armature) elfDecRef((elfObject*)entity->armature);
+	if(entity->vertices) gfxDecRef((gfxObject*)entity->vertices);
+	if(entity->normals) gfxDecRef((gfxObject*)entity->normals);
+	if(entity->query) gfxDestroyQuery(entity->query);
 
-	elf_dec_ref((elf_object*)entity->materials);
-	elf_dec_ref((elf_object*)entity->armature_player);
+	elfDecRef((elfObject*)entity->materials);
+	elfDecRef((elfObject*)entity->armaturePlayer);
 
 	free(entity);
 
-	elf_dec_obj(ELF_ENTITY);
+	elfDecObj(ELF_ENTITY);
 }
 
-void elf_eval_entity_aabb_corner(elf_entity* entity, elf_vec4f* orient, elf_vec3f* corner, elf_vec3f* result)
+void elfEvalEntityAabbCorner(elfEntity* entity, elfVec4f* orient, elfVec3f* corner, elfVec3f* result)
 {
-	corner->x -= entity->bb_offset.x;
-	corner->y -= entity->bb_offset.y;
-	corner->z -= entity->bb_offset.z;
-	gfx_mul_qua_vec(&orient->x, &corner->x, &result->x);
+	corner->x -= entity->bbOffset.x;
+	corner->y -= entity->bbOffset.y;
+	corner->z -= entity->bbOffset.z;
+	gfxMulQuaVec(&orient->x, &corner->x, &result->x);
 
-	if(result->x < entity->cull_aabb_min.x) entity->cull_aabb_min.x = result->x;
-	if(result->y < entity->cull_aabb_min.y) entity->cull_aabb_min.y = result->y;
-	if(result->z < entity->cull_aabb_min.z) entity->cull_aabb_min.z = result->z;
-	if(result->x > entity->cull_aabb_max.x) entity->cull_aabb_max.x = result->x;
-	if(result->y > entity->cull_aabb_max.y) entity->cull_aabb_max.y = result->y;
-	if(result->z > entity->cull_aabb_max.z) entity->cull_aabb_max.z = result->z;
+	if(result->x < entity->cullAabbMin.x) entity->cullAabbMin.x = result->x;
+	if(result->y < entity->cullAabbMin.y) entity->cullAabbMin.y = result->y;
+	if(result->z < entity->cullAabbMin.z) entity->cullAabbMin.z = result->z;
+	if(result->x > entity->cullAabbMax.x) entity->cullAabbMax.x = result->x;
+	if(result->y > entity->cullAabbMax.y) entity->cullAabbMax.y = result->y;
+	if(result->z > entity->cullAabbMax.z) entity->cullAabbMax.z = result->z;
 }
 
-void elf_eval_entity_aabb_armature_corner(elf_entity* entity, elf_vec4f* orient, elf_vec3f* corner, elf_vec3f* result)
+void elfEvalEntityAabbArmatureCorner(elfEntity* entity, elfVec4f* orient, elfVec3f* corner, elfVec3f* result)
 {
-	gfx_mul_qua_vec(&orient->x, &corner->x, &result->x);
+	gfxMulQuaVec(&orient->x, &corner->x, &result->x);
 
-	if(result->x < entity->cull_aabb_min.x) entity->cull_aabb_min.x = result->x;
-	if(result->y < entity->cull_aabb_min.y) entity->cull_aabb_min.y = result->y;
-	if(result->z < entity->cull_aabb_min.z) entity->cull_aabb_min.z = result->z;
-	if(result->x > entity->cull_aabb_max.x) entity->cull_aabb_max.x = result->x;
-	if(result->y > entity->cull_aabb_max.y) entity->cull_aabb_max.y = result->y;
-	if(result->z > entity->cull_aabb_max.z) entity->cull_aabb_max.z = result->z;
+	if(result->x < entity->cullAabbMin.x) entity->cullAabbMin.x = result->x;
+	if(result->y < entity->cullAabbMin.y) entity->cullAabbMin.y = result->y;
+	if(result->z < entity->cullAabbMin.z) entity->cullAabbMin.z = result->z;
+	if(result->x > entity->cullAabbMax.x) entity->cullAabbMax.x = result->x;
+	if(result->y > entity->cullAabbMax.y) entity->cullAabbMax.y = result->y;
+	if(result->z > entity->cullAabbMax.z) entity->cullAabbMax.z = result->z;
 }
 
-void elf_calc_entity_aabb(elf_entity* entity)
+void elfCalcEntityAabb(elfEntity* entity)
 {
-	elf_vec3f tmp_vec;
+	elfVec3f tmpVec;
 
-	elf_vec3f position;
-	elf_vec4f orient;
-	elf_vec3f corner;
-	elf_vec3f result;
+	elfVec3f position;
+	elfVec4f orient;
+	elfVec3f corner;
+	elfVec3f result;
 
-	gfx_get_transform_position(entity->transform, &position.x);
-	gfx_get_transform_orientation(entity->transform, &orient.x);
+	gfxGetTransformPosition(entity->transform, &position.x);
+	gfxGetTransformOrientation(entity->transform, &orient.x);
 
-	corner = entity->bb_min;
-	corner.x -= entity->bb_offset.x;
-	corner.y -= entity->bb_offset.y;
-	corner.z -= entity->bb_offset.z;
-	gfx_mul_qua_vec(&orient.x, &corner.x, &result.x);
+	corner = entity->bbMin;
+	corner.x -= entity->bbOffset.x;
+	corner.y -= entity->bbOffset.y;
+	corner.z -= entity->bbOffset.z;
+	gfxMulQuaVec(&orient.x, &corner.x, &result.x);
 	
-	entity->cull_aabb_min = corner;
-	entity->cull_aabb_max = corner;
+	entity->cullAabbMin = corner;
+	entity->cullAabbMax = corner;
 
-	corner.x = entity->bb_min.x; corner.y = entity->bb_max.y; corner.z = entity->bb_min.z;
-	elf_eval_entity_aabb_corner(entity, &orient, &corner, &result);
+	corner.x = entity->bbMin.x; corner.y = entity->bbMax.y; corner.z = entity->bbMin.z;
+	elfEvalEntityAabbCorner(entity, &orient, &corner, &result);
 
-	corner.x = entity->bb_min.x; corner.y = entity->bb_max.y; corner.z = entity->bb_max.z;
-	elf_eval_entity_aabb_corner(entity, &orient, &corner, &result);
+	corner.x = entity->bbMin.x; corner.y = entity->bbMax.y; corner.z = entity->bbMax.z;
+	elfEvalEntityAabbCorner(entity, &orient, &corner, &result);
 
-	corner.x = entity->bb_min.x; corner.y = entity->bb_min.y; corner.z = entity->bb_max.z;
-	elf_eval_entity_aabb_corner(entity, &orient, &corner, &result);
+	corner.x = entity->bbMin.x; corner.y = entity->bbMin.y; corner.z = entity->bbMax.z;
+	elfEvalEntityAabbCorner(entity, &orient, &corner, &result);
 
-	corner.x = entity->bb_max.x; corner.y = entity->bb_min.y; corner.z = entity->bb_min.z;
-	elf_eval_entity_aabb_corner(entity, &orient, &corner, &result);
+	corner.x = entity->bbMax.x; corner.y = entity->bbMin.y; corner.z = entity->bbMin.z;
+	elfEvalEntityAabbCorner(entity, &orient, &corner, &result);
 
-	corner.x = entity->bb_max.x; corner.y = entity->bb_max.y; corner.z = entity->bb_min.z;
-	elf_eval_entity_aabb_corner(entity, &orient, &corner, &result);
+	corner.x = entity->bbMax.x; corner.y = entity->bbMax.y; corner.z = entity->bbMin.z;
+	elfEvalEntityAabbCorner(entity, &orient, &corner, &result);
 
-	corner.x = entity->bb_max.x; corner.y = entity->bb_max.y; corner.z = entity->bb_max.z;
-	elf_eval_entity_aabb_corner(entity, &orient, &corner, &result);
+	corner.x = entity->bbMax.x; corner.y = entity->bbMax.y; corner.z = entity->bbMax.z;
+	elfEvalEntityAabbCorner(entity, &orient, &corner, &result);
 
-	corner.x = entity->bb_max.x; corner.y = entity->bb_min.y; corner.z = entity->bb_max.z;
-	elf_eval_entity_aabb_corner(entity, &orient, &corner, &result);
+	corner.x = entity->bbMax.x; corner.y = entity->bbMin.y; corner.z = entity->bbMax.z;
+	elfEvalEntityAabbCorner(entity, &orient, &corner, &result);
 
 	if(entity->armature)
 	{
-		corner.x = entity->arm_bb_min.x; corner.y = entity->arm_bb_min.y; corner.z = entity->arm_bb_min.z;
-		elf_eval_entity_aabb_armature_corner(entity, &orient, &corner, &result);
+		corner.x = entity->armBbMin.x; corner.y = entity->armBbMin.y; corner.z = entity->armBbMin.z;
+		elfEvalEntityAabbArmatureCorner(entity, &orient, &corner, &result);
 
-		corner.x = entity->arm_bb_min.x; corner.y = entity->arm_bb_max.y; corner.z = entity->arm_bb_min.z;
-		elf_eval_entity_aabb_armature_corner(entity, &orient, &corner, &result);
+		corner.x = entity->armBbMin.x; corner.y = entity->armBbMax.y; corner.z = entity->armBbMin.z;
+		elfEvalEntityAabbArmatureCorner(entity, &orient, &corner, &result);
 
-		corner.x = entity->arm_bb_min.x; corner.y = entity->arm_bb_max.y; corner.z = entity->arm_bb_max.z;
-		elf_eval_entity_aabb_armature_corner(entity, &orient, &corner, &result);
+		corner.x = entity->armBbMin.x; corner.y = entity->armBbMax.y; corner.z = entity->armBbMax.z;
+		elfEvalEntityAabbArmatureCorner(entity, &orient, &corner, &result);
 
-		corner.x = entity->arm_bb_min.x; corner.y = entity->arm_bb_min.y; corner.z = entity->arm_bb_max.z;
-		elf_eval_entity_aabb_armature_corner(entity, &orient, &corner, &result);
+		corner.x = entity->armBbMin.x; corner.y = entity->armBbMin.y; corner.z = entity->armBbMax.z;
+		elfEvalEntityAabbArmatureCorner(entity, &orient, &corner, &result);
 
-		corner.x = entity->arm_bb_max.x; corner.y = entity->arm_bb_min.y; corner.z = entity->arm_bb_min.z;
-		elf_eval_entity_aabb_armature_corner(entity, &orient, &corner, &result);
+		corner.x = entity->armBbMax.x; corner.y = entity->armBbMin.y; corner.z = entity->armBbMin.z;
+		elfEvalEntityAabbArmatureCorner(entity, &orient, &corner, &result);
 
-		corner.x = entity->arm_bb_max.x; corner.y = entity->arm_bb_max.y; corner.z = entity->arm_bb_min.z;
-		elf_eval_entity_aabb_armature_corner(entity, &orient, &corner, &result);
+		corner.x = entity->armBbMax.x; corner.y = entity->armBbMax.y; corner.z = entity->armBbMin.z;
+		elfEvalEntityAabbArmatureCorner(entity, &orient, &corner, &result);
 
-		corner.x = entity->arm_bb_max.x; corner.y = entity->arm_bb_max.y; corner.z = entity->arm_bb_max.z;
-		elf_eval_entity_aabb_armature_corner(entity, &orient, &corner, &result);
+		corner.x = entity->armBbMax.x; corner.y = entity->armBbMax.y; corner.z = entity->armBbMax.z;
+		elfEvalEntityAabbArmatureCorner(entity, &orient, &corner, &result);
 
-		corner.x = entity->arm_bb_max.x; corner.y = entity->arm_bb_min.y; corner.z = entity->arm_bb_max.z;
-		elf_eval_entity_aabb_armature_corner(entity, &orient, &corner, &result);
+		corner.x = entity->armBbMax.x; corner.y = entity->armBbMin.y; corner.z = entity->armBbMax.z;
+		elfEvalEntityAabbArmatureCorner(entity, &orient, &corner, &result);
 	}
 
-	entity->cull_aabb_min.x += position.x;
-	entity->cull_aabb_min.y += position.y;
-	entity->cull_aabb_min.z += position.z;
-	entity->cull_aabb_max.x += position.x;
-	entity->cull_aabb_max.y += position.y;
-	entity->cull_aabb_max.z += position.z;
+	entity->cullAabbMin.x += position.x;
+	entity->cullAabbMin.y += position.y;
+	entity->cullAabbMin.z += position.z;
+	entity->cullAabbMax.x += position.x;
+	entity->cullAabbMax.y += position.y;
+	entity->cullAabbMax.z += position.z;
 
-	tmp_vec.x = entity->bb_max.x-entity->bb_min.x;
-	tmp_vec.y = entity->bb_max.y-entity->bb_min.y;
-	tmp_vec.z = entity->bb_max.z-entity->bb_min.z;
-	entity->cull_radius = gfx_vec_length(&tmp_vec.x)/2;
+	tmpVec.x = entity->bbMax.x-entity->bbMin.x;
+	tmpVec.y = entity->bbMax.y-entity->bbMin.y;
+	tmpVec.z = entity->bbMax.z-entity->bbMin.z;
+	entity->cullRadius = gfxVecLength(&tmpVec.x)/2;
 }
 
-void elf_calc_entity_bounding_volumes(elf_entity* entity, unsigned char new_model)
+void elfCalcEntityBoundingVolumes(elfEntity* entity, unsigned char newModel)
 {
 	if(!entity->model)
 	{
-		entity->bb_min.x = entity->bb_min.y = entity->bb_min.z = -0.2;
-		entity->bb_max.x = entity->bb_max.y = entity->bb_max.z = 0.2;
-		entity->bb_offset.x = entity->bb_offset.y = entity->bb_offset.z = 0.0;
-		elf_calc_entity_aabb(entity);
-		entity->cull_radius = 0.2;
+		entity->bbMin.x = entity->bbMin.y = entity->bbMin.z = -0.2;
+		entity->bbMax.x = entity->bbMax.y = entity->bbMax.z = 0.2;
+		entity->bbOffset.x = entity->bbOffset.y = entity->bbOffset.z = 0.0;
+		elfCalcEntityAabb(entity);
+		entity->cullRadius = 0.2;
 		return;
 	}
 
-	entity->bb_min = entity->model->bb_min;
-	entity->bb_max = entity->model->bb_max;
+	entity->bbMin = entity->model->bbMin;
+	entity->bbMax = entity->model->bbMax;
 
-	entity->bb_min.x *= entity->scale.x;
-	entity->bb_min.y *= entity->scale.y;
-	entity->bb_min.z *= entity->scale.z;
-	entity->bb_max.x *= entity->scale.x;
-	entity->bb_max.y *= entity->scale.y;
-	entity->bb_max.z *= entity->scale.z;
+	entity->bbMin.x *= entity->scale.x;
+	entity->bbMin.y *= entity->scale.y;
+	entity->bbMin.z *= entity->scale.z;
+	entity->bbMax.x *= entity->scale.x;
+	entity->bbMax.y *= entity->scale.y;
+	entity->bbMax.z *= entity->scale.z;
 
 	if(entity->armature)
 	{
-		entity->arm_bb_min = entity->armature->bb_min;
-		entity->arm_bb_max = entity->armature->bb_max;
+		entity->armBbMin = entity->armature->bbMin;
+		entity->armBbMax = entity->armature->bbMax;
 
-		entity->arm_bb_min.x *= entity->scale.x;
-		entity->arm_bb_min.y *= entity->scale.y;
-		entity->arm_bb_min.z *= entity->scale.z;
-		entity->arm_bb_max.x *= entity->scale.x;
-		entity->arm_bb_max.y *= entity->scale.y;
-		entity->arm_bb_max.z *= entity->scale.z;
+		entity->armBbMin.x *= entity->scale.x;
+		entity->armBbMin.y *= entity->scale.y;
+		entity->armBbMin.z *= entity->scale.z;
+		entity->armBbMax.x *= entity->scale.x;
+		entity->armBbMax.y *= entity->scale.y;
+		entity->armBbMax.z *= entity->scale.z;
 	}
 
-	entity->bb_offset.x = (entity->bb_max.x+entity->bb_min.x)/2.0;
-	entity->bb_offset.y = (entity->bb_max.y+entity->bb_min.y)/2.0;
-	entity->bb_offset.z = (entity->bb_max.z+entity->bb_min.z)/2.0;
+	entity->bbOffset.x = (entity->bbMax.x+entity->bbMin.x)/2.0;
+	entity->bbOffset.y = (entity->bbMax.y+entity->bbMin.y)/2.0;
+	entity->bbOffset.z = (entity->bbMax.z+entity->bbMin.z)/2.0;
 
-	if(!entity->pbb_offset_set) entity->pbb_offset = entity->bb_offset;
+	if(!entity->pbbOffsetSet) entity->pbbOffset = entity->bbOffset;
 
-	entity->bb_min.x += entity->bb_offset.x;
-	entity->bb_min.y += entity->bb_offset.y;
-	entity->bb_min.z += entity->bb_offset.z;
-	entity->bb_max.x += entity->bb_offset.x;
-	entity->bb_max.y += entity->bb_offset.y;
-	entity->bb_max.z += entity->bb_offset.z;
+	entity->bbMin.x += entity->bbOffset.x;
+	entity->bbMin.y += entity->bbOffset.y;
+	entity->bbMin.z += entity->bbOffset.z;
+	entity->bbMax.x += entity->bbOffset.x;
+	entity->bbMax.y += entity->bbOffset.y;
+	entity->bbMax.z += entity->bbOffset.z;
 
-	if(new_model)
+	if(newModel)
 	{
-		entity->pbb_lengths.x = entity->model->bb_max.x-entity->model->bb_min.x;
-		entity->pbb_lengths.y = entity->model->bb_max.y-entity->model->bb_min.y;
-		entity->pbb_lengths.z = entity->model->bb_max.z-entity->model->bb_min.z;
+		entity->pbbLengths.x = entity->model->bbMax.x-entity->model->bbMin.x;
+		entity->pbbLengths.y = entity->model->bbMax.y-entity->model->bbMin.y;
+		entity->pbbLengths.z = entity->model->bbMax.z-entity->model->bbMin.z;
 	}
 
-	elf_calc_entity_aabb(entity);
+	elfCalcEntityAabb(entity);
 }
 
-void elf_set_entity_scale(elf_entity* entity, float x, float y, float z)
+void elfSetEntityScale(elfEntity* entity, float x, float y, float z)
 {
-	gfx_set_transform_scale(entity->transform, x, y, z);
-	gfx_get_transform_scale(entity->transform, &entity->scale.x);
+	gfxSetTransformScale(entity->transform, x, y, z);
+	gfxGetTransformScale(entity->transform, &entity->scale.x);
 
-	elf_calc_entity_bounding_volumes(entity, ELF_FALSE);
+	elfCalcEntityBoundingVolumes(entity, ELF_FALSE);
 
-	if(entity->object) elf_set_physics_object_scale(entity->object, x, y, z);
-	elf_reset_entity_debug_physics_object(entity);
+	if(entity->object) elfSetPhysicsObjectScale(entity->object, x, y, z);
+	elfResetEntityDebugPhysicsObject(entity);
 }
 
-elf_vec3f elf_get_entity_scale(elf_entity* entity)
+elfVec3f elfGetEntityScale(elfEntity* entity)
 {
-	elf_vec3f result;
+	elfVec3f result;
 
-	gfx_get_transform_scale(entity->transform, &result.x);
+	gfxGetTransformScale(entity->transform, &result.x);
 
 	return result;
 }
 
-void elf_get_entity_scale_(elf_entity* entity, float* scale)
+void elfGetEntityScale_(elfEntity* entity, float* scale)
 {
-	gfx_get_transform_scale(entity->transform, scale);
+	gfxGetTransformScale(entity->transform, scale);
 }
 
-void elf_set_entity_model(elf_entity* entity, elf_model* model)
+void elfSetEntityModel(elfEntity* entity, elfModel* model)
 {
-	elf_material* material;
+	elfMaterial* material;
 
-	if(entity->model) elf_dec_ref((elf_object*)entity->model);
-	if(entity->vertices) gfx_dec_ref((gfx_object*)entity->vertices);
-	if(entity->normals) gfx_dec_ref((gfx_object*)entity->normals);
+	if(entity->model) elfDecRef((elfObject*)entity->model);
+	if(entity->vertices) gfxDecRef((gfxObject*)entity->vertices);
+	if(entity->normals) gfxDecRef((gfxObject*)entity->normals);
 
 	entity->model = model;
 	entity->vertices = NULL;
@@ -310,112 +310,112 @@ void elf_set_entity_model(elf_entity* entity, elf_model* model)
 
 	if(!entity->model)
 	{
-		if(entity->object) elf_disable_entity_physics(entity);
-		elf_reset_entity_debug_physics_object(entity);
-		elf_calc_entity_bounding_volumes(entity, ELF_FALSE);
+		if(entity->object) elfDisableEntityPhysics(entity);
+		elfResetEntityDebugPhysicsObject(entity);
+		elfCalcEntityBoundingVolumes(entity, ELF_FALSE);
 		return;
 	}
 	else
 	{
-		elf_inc_ref((elf_object*)entity->model);
+		elfIncRef((elfObject*)entity->model);
 	}
 
-	while((int)entity->model->area_count > elf_get_entity_material_count(entity))
+	while((int)entity->model->areaCount > elfGetEntityMaterialCount(entity))
 	{
-		material = elf_create_material("Material");
-		elf_add_entity_material(entity, material);
+		material = elfCreateMaterial("Material");
+		elfAddEntityMaterial(entity, material);
 	}
 
-	elf_set_entity_scale(entity, 1.0, 1.0, 1.0);
-	elf_calc_entity_bounding_volumes(entity, ELF_TRUE);
+	elfSetEntityScale(entity, 1.0, 1.0, 1.0);
+	elfCalcEntityBoundingVolumes(entity, ELF_TRUE);
 
-	if(elf_is_actor_physics((elf_actor*)entity))
+	if(elfIsActorPhysics((elfActor*)entity))
 	{
-		elf_set_actor_physics((elf_actor*)entity, elf_get_actor_shape((elf_actor*)entity),
-			elf_get_actor_mass((elf_actor*)entity));
+		elfSetActorPhysics((elfActor*)entity, elfGetActorShape((elfActor*)entity),
+			elfGetActorMass((elfActor*)entity));
 	}
 
-	elf_reset_entity_debug_physics_object(entity);
+	elfResetEntityDebugPhysicsObject(entity);
 
 	entity->moved = ELF_TRUE;
 }
 
-void elf_clear_entity_model(elf_entity* entity)
+void elfClearEntityModel(elfEntity* entity)
 {
-	if(entity->model) elf_dec_ref((elf_object*)entity->model);
+	if(entity->model) elfDecRef((elfObject*)entity->model);
 	entity->model = NULL;
 
 	if(entity->object)
 	{
-		elf_dec_ref((elf_object*)entity->object);
+		elfDecRef((elfObject*)entity->object);
 		entity->object = NULL;
 	}
 
-	elf_set_entity_scale(entity, 1.0, 1.0, 1.0);
-	elf_calc_entity_bounding_volumes(entity, ELF_FALSE);
+	elfSetEntityScale(entity, 1.0, 1.0, 1.0);
+	elfCalcEntityBoundingVolumes(entity, ELF_FALSE);
 }
 
-elf_model* elf_get_entity_model(elf_entity* entity)
+elfModel* elfGetEntityModel(elfEntity* entity)
 {
 	return entity->model;
 }
 
-int elf_get_entity_material_count(elf_entity* entity)
+int elfGetEntityMaterialCount(elfEntity* entity)
 {
-	return elf_get_list_length(entity->materials);
+	return elfGetListLength(entity->materials);
 }
 
-void elf_add_entity_material(elf_entity* entity, elf_material* material)
+void elfAddEntityMaterial(elfEntity* entity, elfMaterial* material)
 {
-	elf_append_to_list(entity->materials, (elf_object*)material);
-	elf_generate_entity_tangents(entity);
+	elfAppendToList(entity->materials, (elfObject*)material);
+	elfGenerateEntityTangents(entity);
 }
 
-void elf_set_entity_material(elf_entity* entity, int idx, elf_material* material)
+void elfSetEntityMaterial(elfEntity* entity, int idx, elfMaterial* material)
 {
-	elf_object* mat;
+	elfObject* mat;
 	int i;
 
-	if(idx < 0 || idx > elf_get_list_length(entity->materials)-1) return;
+	if(idx < 0 || idx > elfGetListLength(entity->materials)-1) return;
 
-	for(i = 0, mat = elf_begin_list(entity->materials); mat;
-		mat = elf_next_in_list(entity->materials), i++)
+	for(i = 0, mat = elfBeginList(entity->materials); mat;
+		mat = elfNextInList(entity->materials), i++)
 	{
 		if(idx == i)
 		{
-			elf_set_list_cur_ptr(entity->materials, (elf_object*)material);
+			elfSetListCurPtr(entity->materials, (elfObject*)material);
 			return;
 		}
 	}
 
-	elf_generate_entity_tangents(entity);
+	elfGenerateEntityTangents(entity);
 }
 
-void elf_remove_entity_material(elf_entity* entity, int idx)
+void elfRemoveEntityMaterial(elfEntity* entity, int idx)
 {
-	elf_object* mat;
+	elfObject* mat;
 	int i;
 
-	if(idx < 0 || idx > elf_get_list_length(entity->materials)-1) return;
+	if(idx < 0 || idx > elfGetListLength(entity->materials)-1) return;
 
-	for(i = 0, mat = elf_begin_list(entity->materials); mat;
-		mat = elf_next_in_list(entity->materials), i++)
+	for(i = 0, mat = elfBeginList(entity->materials); mat;
+		mat = elfNextInList(entity->materials), i++)
 	{
 		if(idx == i)
 		{
-			elf_remove_from_list(entity->materials, (elf_object*)mat);
+			elfRemoveFromList(entity->materials, (elfObject*)mat);
 			return;
 		}
 	}
 }
 
-elf_material* elf_get_entity_material(elf_entity* entity, int idx)
+elfMaterial* elfGetEntityMaterial(elfEntity* entity, int idx)
 {
-	if(idx < 0 || idx > elf_get_list_length(entity->materials)-1) return NULL;
-	return (elf_material*)elf_get_item_from_list(entity->materials, idx);
+	if(idx < 0 || idx > elfGetListLength(entity->materials)-1) return NULL;
+	return (elfMaterial*)elfGetItemFromList(entity->materials, idx);
 }
 
-void elf_set_entity_visible(elf_entity* entity, unsigned char visible)
+void elfSetEntityVisible(elfEntity* entity, unsigned char visible)
 {
 	if(entity->visible == visible) return;
 
@@ -424,32 +424,32 @@ void elf_set_entity_visible(elf_entity* entity, unsigned char visible)
 	if(!entity->visible) entity->moved = ELF_TRUE;
 }
 
-unsigned char elf_get_entity_visible(elf_entity* entity)
+unsigned char elfGetEntityVisible(elfEntity* entity)
 {
 	return entity->visible;
 }
 
-void elf_set_entity_occluder(elf_entity* entity, unsigned char occluder)
+void elfSetEntityOccluder(elfEntity* entity, unsigned char occluder)
 {
 	entity->occluder = !occluder == ELF_FALSE;
 }
 
-unsigned char elf_get_entity_occluder(elf_entity* entity)
+unsigned char elfGetEntityOccluder(elfEntity* entity)
 {
 	return entity->occluder;
 }
 
-void elf_set_entity_physics(elf_entity* entity, int type, float mass)
+void elfSetEntityPhysics(elfEntity* entity, int type, float mass)
 {
-	elf_set_actor_physics((elf_actor*)entity, type, mass);
+	elfSetActorPhysics((elfActor*)entity, type, mass);
 }
 
-void elf_disable_entity_physics(elf_entity* entity)
+void elfDisableEntityPhysics(elfEntity* entity)
 {
-	elf_disable_actor_physics((elf_actor*)entity);
+	elfDisableActorPhysics((elfActor*)entity);
 }
 
-void elf_reset_entity_debug_physics_object(elf_entity* entity)
+void elfResetEntityDebugPhysicsObject(elfEntity* entity)
 {
 	float position[3];
 	float orient[4];
@@ -457,167 +457,167 @@ void elf_reset_entity_debug_physics_object(elf_entity* entity)
 
 	if(entity->dobject)
 	{
-		elf_set_physics_object_actor(entity->dobject, NULL);
-		elf_set_physics_object_world(entity->dobject, NULL);
-		elf_dec_ref((elf_object*)entity->dobject);
+		elfSetPhysicsObjectActor(entity->dobject, NULL);
+		elfSetPhysicsObjectWorld(entity->dobject, NULL);
+		elfDecRef((elfObject*)entity->dobject);
 	}
 
 	if(!entity->model)
 	{
-		entity->dobject = elf_create_physics_object_box(0.2, 0.2, 0.2, 0.0, 0.0, 0.0, 0.0);
+		entity->dobject = elfCreatePhysicsObjectBox(0.2, 0.2, 0.2, 0.0, 0.0, 0.0, 0.0);
 	}
 	else
 	{
-		entity->dobject = elf_create_physics_object_box(
-			(entity->model->bb_max.x-entity->model->bb_min.x)/2.0,
-			(entity->model->bb_max.y-entity->model->bb_min.y)/2.0,
-			(entity->model->bb_max.z-entity->model->bb_min.z)/2.0, 0.0,
-			entity->bb_offset.x, entity->bb_offset.y, entity->bb_offset.z);
+		entity->dobject = elfCreatePhysicsObjectBox(
+			(entity->model->bbMax.x-entity->model->bbMin.x)/2.0,
+			(entity->model->bbMax.y-entity->model->bbMin.y)/2.0,
+			(entity->model->bbMax.z-entity->model->bbMin.z)/2.0, 0.0,
+			entity->bbOffset.x, entity->bbOffset.y, entity->bbOffset.z);
 	}
 
-	elf_set_physics_object_actor(entity->dobject, (elf_actor*)entity);
-	elf_inc_ref((elf_object*)entity->dobject);
+	elfSetPhysicsObjectActor(entity->dobject, (elfActor*)entity);
+	elfIncRef((elfObject*)entity->dobject);
 
-	gfx_get_transform_position(entity->transform, position);
-	gfx_get_transform_orientation(entity->transform, orient);
-	gfx_get_transform_scale(entity->transform, scale);
+	gfxGetTransformPosition(entity->transform, position);
+	gfxGetTransformOrientation(entity->transform, orient);
+	gfxGetTransformScale(entity->transform, scale);
 
-	elf_set_physics_object_position(entity->dobject, position[0], position[1], position[2]);
-	elf_set_physics_object_orientation(entity->dobject, orient[0], orient[1], orient[2], orient[3]);
-	elf_set_physics_object_scale(entity->dobject, scale[0], scale[1], scale[2]);
+	elfSetPhysicsObjectPosition(entity->dobject, position[0], position[1], position[2]);
+	elfSetPhysicsObjectOrientation(entity->dobject, orient[0], orient[1], orient[2], orient[3]);
+	elfSetPhysicsObjectScale(entity->dobject, scale[0], scale[1], scale[2]);
 
-	if(entity->scene) elf_set_physics_object_world(entity->dobject, entity->scene->dworld);
+	if(entity->scene) elfSetPhysicsObjectWorld(entity->dobject, entity->scene->dworld);
 }
 
-void elf_set_entity_armature(elf_entity* entity, elf_armature* armature)
+void elfSetEntityArmature(elfEntity* entity, elfArmature* armature)
 {
-	if(entity->armature) elf_dec_ref((elf_object*)entity->armature);
+	if(entity->armature) elfDecRef((elfObject*)entity->armature);
 	entity->armature = armature;
-	if(entity->armature) elf_inc_ref((elf_object*)entity->armature);
-	elf_calc_entity_bounding_volumes(entity, ELF_FALSE);
+	if(entity->armature) elfIncRef((elfObject*)entity->armature);
+	elfCalcEntityBoundingVolumes(entity, ELF_FALSE);
 }
 
-void elf_set_entity_armature_frame(elf_entity* entity, float frame)
+void elfSetEntityArmatureFrame(elfEntity* entity, float frame)
 {
-	elf_set_frame_player_frame(entity->armature_player, frame);
+	elfSetFramePlayerFrame(entity->armaturePlayer, frame);
 }
 
-void elf_play_entity_armature(elf_entity* entity, float start, float end, float speed)
+void elfPlayEntityArmature(elfEntity* entity, float start, float end, float speed)
 {
-	elf_play_frame_player(entity->armature_player, start, end, speed);
-	if(entity->armature) elf_deform_entity_with_armature(entity->armature, entity, start);
+	elfPlayFramePlayer(entity->armaturePlayer, start, end, speed);
+	if(entity->armature) elfDeformEntityWithArmature(entity->armature, entity, start);
 }
 
-void elf_loop_entity_armature(elf_entity* entity, float start, float end, float speed)
+void elfLoopEntityArmature(elfEntity* entity, float start, float end, float speed)
 {
-	elf_loop_frame_player(entity->armature_player, start, end, speed);
-	if(entity->armature) elf_deform_entity_with_armature(entity->armature, entity, start);
+	elfLoopFramePlayer(entity->armaturePlayer, start, end, speed);
+	if(entity->armature) elfDeformEntityWithArmature(entity->armature, entity, start);
 }
 
-void elf_stop_entity_armature(elf_entity* entity)
+void elfStopEntityArmature(elfEntity* entity)
 {
-	elf_stop_frame_player(entity->armature_player);
+	elfStopFramePlayer(entity->armaturePlayer);
 }
 
-void elf_pause_entity_armature(elf_entity* entity)
+void elfPauseEntityArmature(elfEntity* entity)
 {
-	elf_stop_frame_player(entity->armature_player);
+	elfStopFramePlayer(entity->armaturePlayer);
 }
 
-void elf_resume_entity_armature(elf_entity* entity)
+void elfResumeEntityArmature(elfEntity* entity)
 {
-	elf_stop_frame_player(entity->armature_player);
+	elfStopFramePlayer(entity->armaturePlayer);
 }
 
-float elf_get_entity_armature_start(elf_entity* entity)
+float elfGetEntityArmatureStart(elfEntity* entity)
 {
-	return elf_get_frame_player_start(entity->armature_player);
+	return elfGetFramePlayerStart(entity->armaturePlayer);
 }
 
-float elf_get_entity_armature_end(elf_entity* entity)
+float elfGetEntityArmatureEnd(elfEntity* entity)
 {
-	return elf_get_frame_player_end(entity->armature_player);
+	return elfGetFramePlayerEnd(entity->armaturePlayer);
 }
 
-float elf_get_entity_armature_speed(elf_entity* entity)
+float elfGetEntityArmatureSpeed(elfEntity* entity)
 {
-	return elf_get_frame_player_speed(entity->armature_player);
+	return elfGetFramePlayerSpeed(entity->armaturePlayer);
 }
 
-float elf_get_entity_armature_frame(elf_entity* entity)
+float elfGetEntityArmatureFrame(elfEntity* entity)
 {
-	return elf_get_frame_player_frame(entity->armature_player);
+	return elfGetFramePlayerFrame(entity->armaturePlayer);
 }
 
-unsigned char elf_is_entity_armature_playing(elf_entity* entity)
+unsigned char elfIsEntityArmaturePlaying(elfEntity* entity)
 {
-	return elf_is_frame_player_playing(entity->armature_player);
+	return elfIsFramePlayerPlaying(entity->armaturePlayer);
 }
 
-unsigned char elf_is_entity_armature_paused(elf_entity* entity)
+unsigned char elfIsEntityArmaturePaused(elfEntity* entity)
 {
-	return elf_is_frame_player_paused(entity->armature_player);
+	return elfIsFramePlayerPaused(entity->armaturePlayer);
 }
 
-elf_armature* elf_get_entity_armature(elf_entity* entity)
+elfArmature* elfGetEntityArmature(elfEntity* entity)
 {
 	return entity->armature;
 }
 
-void elf_pre_draw_entity(elf_entity* entity)
+void elfPreDrawEntity(elfEntity* entity)
 {
 	if(entity->armature)
 	{
-		if(entity->vertices) gfx_set_vertex_array_data(entity->model->vertex_array, GFX_VERTEX, entity->vertices);
-		if(entity->normals) gfx_set_vertex_array_data(entity->model->vertex_array, GFX_NORMAL, entity->normals);
+		if(entity->vertices) gfxSetVertexArrayData(entity->model->vertexArray, GFX_VERTEX, entity->vertices);
+		if(entity->normals) gfxSetVertexArrayData(entity->model->vertexArray, GFX_NORMAL, entity->normals);
 	}
 }
 
-void elf_post_draw_entity(elf_entity* entity)
+void elfPostDrawEntity(elfEntity* entity)
 {
 	if(entity->armature)
 	{
-		if(entity->vertices) gfx_set_vertex_array_data(entity->model->vertex_array, GFX_VERTEX, entity->vertices);
-		if(entity->normals) gfx_set_vertex_array_data(entity->model->vertex_array, GFX_NORMAL, entity->model->normals);
+		if(entity->vertices) gfxSetVertexArrayData(entity->model->vertexArray, GFX_VERTEX, entity->vertices);
+		if(entity->normals) gfxSetVertexArrayData(entity->model->vertexArray, GFX_NORMAL, entity->model->normals);
 	}
 }
 
-void elf_draw_entity(elf_entity* entity, int mode, gfx_shader_params* shader_params)
+void elfDrawEntity(elfEntity* entity, int mode, gfxShaderParams* shaderParams)
 {
 	if(!entity->model || !entity->visible) return;
 
-	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(entity->transform),
-			shader_params->camera_matrix, shader_params->modelview_matrix);
+	gfxMulMatrix4Matrix4(gfxGetTransformMatrix(entity->transform),
+			shaderParams->cameraMatrix, shaderParams->modelviewMatrix);
 
-	elf_pre_draw_entity(entity);
-	elf_draw_model(entity->materials, entity->model, mode, shader_params);
-	elf_post_draw_entity(entity);
+	elfPreDrawEntity(entity);
+	elfDrawModel(entity->materials, entity->model, mode, shaderParams);
+	elfPostDrawEntity(entity);
 }
 
-void elf_draw_entity_bounding_box(elf_entity* entity, gfx_shader_params* shader_params)
+void elfDrawEntityBoundingBox(elfEntity* entity, gfxShaderParams* shaderParams)
 {
-	if(!entity->model || !entity->visible || !entity->model->vertex_array) return;
+	if(!entity->model || !entity->visible || !entity->model->vertexArray) return;
 
-	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(entity->transform),
-		shader_params->camera_matrix, shader_params->modelview_matrix);
+	gfxMulMatrix4Matrix4(gfxGetTransformMatrix(entity->transform),
+		shaderParams->cameraMatrix, shaderParams->modelviewMatrix);
 
-	gfx_set_shader_params(shader_params);
-	gfx_draw_bounding_box(&entity->model->bb_min.x, &entity->model->bb_max.x);
+	gfxSetShaderParams(shaderParams);
+	gfxDrawBoundingBox(&entity->model->bbMin.x, &entity->model->bbMax.x);
 }
 
-void elf_draw_entity_debug(elf_entity* entity, gfx_shader_params* shader_params)
+void elfDrawEntityDebug(elfEntity* entity, gfxShaderParams* shaderParams)
 {
 	float min[3];
 	float max[3];
-	float* vertex_buffer;
+	float* vertexBuffer;
 
-	gfx_mul_matrix4_matrix4(gfx_get_transform_matrix(entity->transform),
-		shader_params->camera_matrix, shader_params->modelview_matrix);
+	gfxMulMatrix4Matrix4(gfxGetTransformMatrix(entity->transform),
+		shaderParams->cameraMatrix, shaderParams->modelviewMatrix);
 
 	if(entity->model)
 	{
-		memcpy(min, &entity->model->bb_min.x, sizeof(float)*3);
-		memcpy(max, &entity->model->bb_max.x, sizeof(float)*3);
+		memcpy(min, &entity->model->bbMin.x, sizeof(float)*3);
+		memcpy(max, &entity->model->bbMax.x, sizeof(float)*3);
 	}
 	else
 	{
@@ -625,113 +625,113 @@ void elf_draw_entity_debug(elf_entity* entity, gfx_shader_params* shader_params)
 		max[0] = max[1] = max[2] = 0.2;
 	}
 
-	vertex_buffer = (float*)gfx_get_vertex_data_buffer(eng->lines);
+	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->lines);
 
-	vertex_buffer[0] = min[0];
-	vertex_buffer[1] = max[1];
-	vertex_buffer[2] = max[2];
-	vertex_buffer[3] = min[0];
-	vertex_buffer[4] = max[1];
-	vertex_buffer[5] = min[2];
+	vertexBuffer[0] = min[0];
+	vertexBuffer[1] = max[1];
+	vertexBuffer[2] = max[2];
+	vertexBuffer[3] = min[0];
+	vertexBuffer[4] = max[1];
+	vertexBuffer[5] = min[2];
 
-	vertex_buffer[6] = min[0];
-	vertex_buffer[7] = max[1];
-	vertex_buffer[8] = min[2];
-	vertex_buffer[9] = min[0];
-	vertex_buffer[10] = min[1];
-	vertex_buffer[11] = min[2];
+	vertexBuffer[6] = min[0];
+	vertexBuffer[7] = max[1];
+	vertexBuffer[8] = min[2];
+	vertexBuffer[9] = min[0];
+	vertexBuffer[10] = min[1];
+	vertexBuffer[11] = min[2];
 
-	vertex_buffer[12] = min[0];
-	vertex_buffer[13] = min[1];
-	vertex_buffer[14] = min[2];
-	vertex_buffer[15] = min[0];
-	vertex_buffer[16] = min[1];
-	vertex_buffer[17] = max[2];
+	vertexBuffer[12] = min[0];
+	vertexBuffer[13] = min[1];
+	vertexBuffer[14] = min[2];
+	vertexBuffer[15] = min[0];
+	vertexBuffer[16] = min[1];
+	vertexBuffer[17] = max[2];
 
-	vertex_buffer[18] = min[0];
-	vertex_buffer[19] = min[1];
-	vertex_buffer[20] = max[2];
-	vertex_buffer[21] = min[0];
-	vertex_buffer[22] = max[1];
-	vertex_buffer[23] = max[2];
+	vertexBuffer[18] = min[0];
+	vertexBuffer[19] = min[1];
+	vertexBuffer[20] = max[2];
+	vertexBuffer[21] = min[0];
+	vertexBuffer[22] = max[1];
+	vertexBuffer[23] = max[2];
 
-	vertex_buffer[24] = max[0];
-	vertex_buffer[25] = max[1];
-	vertex_buffer[26] = max[2];
-	vertex_buffer[27] = max[0];
-	vertex_buffer[28] = max[1];
-	vertex_buffer[29] = min[2];
+	vertexBuffer[24] = max[0];
+	vertexBuffer[25] = max[1];
+	vertexBuffer[26] = max[2];
+	vertexBuffer[27] = max[0];
+	vertexBuffer[28] = max[1];
+	vertexBuffer[29] = min[2];
 
-	vertex_buffer[30] = max[0];
-	vertex_buffer[31] = max[1];
-	vertex_buffer[32] = min[2];
-	vertex_buffer[33] = max[0];
-	vertex_buffer[34] = min[1];
-	vertex_buffer[35] = min[2];
+	vertexBuffer[30] = max[0];
+	vertexBuffer[31] = max[1];
+	vertexBuffer[32] = min[2];
+	vertexBuffer[33] = max[0];
+	vertexBuffer[34] = min[1];
+	vertexBuffer[35] = min[2];
 
-	vertex_buffer[36] = max[0];
-	vertex_buffer[37] = min[1];
-	vertex_buffer[38] = min[2];
-	vertex_buffer[39] = max[0];
-	vertex_buffer[40] = min[1];
-	vertex_buffer[41] = max[2];
+	vertexBuffer[36] = max[0];
+	vertexBuffer[37] = min[1];
+	vertexBuffer[38] = min[2];
+	vertexBuffer[39] = max[0];
+	vertexBuffer[40] = min[1];
+	vertexBuffer[41] = max[2];
 
-	vertex_buffer[42] = max[0];
-	vertex_buffer[43] = min[1];
-	vertex_buffer[44] = max[2];
-	vertex_buffer[45] = max[0];
-	vertex_buffer[46] = max[1];
-	vertex_buffer[47] = max[2];
+	vertexBuffer[42] = max[0];
+	vertexBuffer[43] = min[1];
+	vertexBuffer[44] = max[2];
+	vertexBuffer[45] = max[0];
+	vertexBuffer[46] = max[1];
+	vertexBuffer[47] = max[2];
 
-	vertex_buffer[48] = min[0];
-	vertex_buffer[49] = max[1];
-	vertex_buffer[50] = max[2];
-	vertex_buffer[51] = max[0];
-	vertex_buffer[52] = max[1];
-	vertex_buffer[53] = max[2];
+	vertexBuffer[48] = min[0];
+	vertexBuffer[49] = max[1];
+	vertexBuffer[50] = max[2];
+	vertexBuffer[51] = max[0];
+	vertexBuffer[52] = max[1];
+	vertexBuffer[53] = max[2];
 
-	vertex_buffer[54] = min[0];
-	vertex_buffer[55] = min[1];
-	vertex_buffer[56] = max[2];
-	vertex_buffer[57] = max[0];
-	vertex_buffer[58] = min[1];
-	vertex_buffer[59] = max[2];
+	vertexBuffer[54] = min[0];
+	vertexBuffer[55] = min[1];
+	vertexBuffer[56] = max[2];
+	vertexBuffer[57] = max[0];
+	vertexBuffer[58] = min[1];
+	vertexBuffer[59] = max[2];
 
-	vertex_buffer[60] = min[0];
-	vertex_buffer[61] = min[1];
-	vertex_buffer[62] = min[2];
-	vertex_buffer[63] = max[0];
-	vertex_buffer[64] = min[1];
-	vertex_buffer[65] = min[2];
+	vertexBuffer[60] = min[0];
+	vertexBuffer[61] = min[1];
+	vertexBuffer[62] = min[2];
+	vertexBuffer[63] = max[0];
+	vertexBuffer[64] = min[1];
+	vertexBuffer[65] = min[2];
 
-	vertex_buffer[66] = min[0];
-	vertex_buffer[67] = max[1];
-	vertex_buffer[68] = min[2];
-	vertex_buffer[69] = max[0];
-	vertex_buffer[70] = max[1];
-	vertex_buffer[71] = min[2];
+	vertexBuffer[66] = min[0];
+	vertexBuffer[67] = max[1];
+	vertexBuffer[68] = min[2];
+	vertexBuffer[69] = max[0];
+	vertexBuffer[70] = max[1];
+	vertexBuffer[71] = min[2];
 
-	if(!entity->selected) gfx_set_color(&shader_params->material_params.diffuse_color, 0.1, 0.1, 0.2, 1.0);
-	else gfx_set_color(&shader_params->material_params.diffuse_color, 1.0, 0.0, 0.0, 1.0);
-	gfx_set_shader_params(shader_params);
-	gfx_draw_lines(24, eng->lines);
+	if(!entity->selected) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.1, 0.1, 0.2, 1.0);
+	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 0.0, 0.0, 1.0);
+	gfxSetShaderParams(shaderParams);
+	gfxDrawLines(24, eng->lines);
 
 	if(entity->armature)
 	{
-		elf_draw_armature_debug(entity->armature, shader_params);
+		elfDrawArmatureDebug(entity->armature, shaderParams);
 	}
 
-	elf_draw_actor_debug((elf_actor*)entity, shader_params);
+	elfDrawActorDebug((elfActor*)entity, shaderParams);
 }
 
-unsigned char elf_cull_entity(elf_entity* entity, elf_camera* camera)
+unsigned char elfCullEntity(elfEntity* entity, elfCamera* camera)
 {
 	if(!entity->model || !entity->visible) return ELF_TRUE;
 
-	return !elf_aabb_inside_frustum(camera, &entity->cull_aabb_min.x, &entity->cull_aabb_max.x);
+	return !elfAabbInsideFrustum(camera, &entity->cullAabbMin.x, &entity->cullAabbMax.x);
 }
 
-unsigned char elf_get_entity_changed(elf_entity* entity)
+unsigned char elfGetEntityChanged(elfEntity* entity)
 {
 	return entity->moved;
 }
