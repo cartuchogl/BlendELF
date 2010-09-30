@@ -3,6 +3,23 @@
 #ifndef BLENDELF_H
 #define BLENDELF_H
 
+#if defined(__WIN32__) || defined(WIN32) || defined(__CYGWIN__)
+	#ifndef ELF_PLAYER
+		#define ELF_APIENTRY __stdcall
+		#ifdef ELF_DLL
+				#define ELF_API __declspec(dllexport)
+		#else
+				#define ELF_API __declspec(dllimport)
+		#endif
+	#else
+		#define ELF_API
+		#define ELF_APIENTRY
+	#endif
+#else
+	#define ELF_API
+	#define ELF_APIENTRY
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -161,17 +178,16 @@ extern "C" {
 #define ELF_IPO						0x003D
 #define ELF_FRAME_PLAYER				0x003E
 #define ELF_PROPERTY					0x003F
-#define ELF_CLIENT					0x0040
-#define ELF_SCRIPTING					0x0041
-#define ELF_PHYSICS_TRI_MESH				0x0042
-#define ELF_SPRITE					0x0043
-#define ELF_VIDEO_MODE					0x0044
-#define ELF_GENERAL					0x0045
-#define ELF_VERTICE					0x0046
-#define ELF_FACE					0x0047
-#define ELF_MESH_DATA					0x0048
-#define ELF_LIST_PTR					0x0049
-#define ELF_OBJECT_TYPE_COUNT				0x004A	// <mdoc> NUMBER OF OBJECT TYPES
+#define ELF_SCRIPTING					0x0040
+#define ELF_PHYSICS_TRI_MESH				0x0041
+#define ELF_SPRITE					0x0042
+#define ELF_VIDEO_MODE					0x0043
+#define ELF_GENERAL					0x0044
+#define ELF_VERTICE					0x0045
+#define ELF_FACE					0x0046
+#define ELF_MESH_DATA					0x0047
+#define ELF_LIST_PTR					0x0048
+#define ELF_OBJECT_TYPE_COUNT				0x0049	// <mdoc> NUMBER OF OBJECT TYPES
 
 #define ELF_PERSPECTIVE					0x0000	// <mdoc> CAMERA MODE <mdocc> The camera modes used by camera internal functions
 #define ELF_ORTHOGRAPHIC				0x0001
@@ -277,11 +293,6 @@ extern "C" {
 #define ELF_QUA_Z					0x000B
 #define ELF_QUA_W					0x000C
 
-#define ELF_NET_NONE					0x0000	// <mdoc> NETWORKING EVENTS
-#define ELF_NET_CONNECT					0x0001
-#define ELF_NET_RECEIVE					0x0002
-#define ELF_NET_DISCONNECT				0x0003
-
 #define ELF_OGG						0x0001	// <mdoc> SOUND FILE TYPES <mdocc> The sound file types returned by elf.GetSoundFileType
 #define ELF_WAV						0x0002
 
@@ -385,8 +396,6 @@ typedef struct elfParticle				elfParticle;
 typedef struct elfParticles				elfParticles;
 typedef struct elfFramePlayer				elfFramePlayer;
 typedef struct elfProperty				elfProperty;
-typedef struct elfServer				elfServer;
-typedef struct elfClient				elfClient;
 typedef struct elfScripting				elfScripting;
 typedef struct elfSprite				elfSprite;
 typedef struct elfVideoMode				elfVideoMode;
@@ -437,8 +446,6 @@ void elfDeinitGeneral();
 
 void elfSetLogFilePath(const char* filePath);
 
-void elfIncRef(elfObject* obj);
-void elfDecRef(elfObject* obj);
 void elfIncObj(int type);
 void elfDecObj(int type);
 
@@ -446,12 +453,14 @@ void elfDumpRefTable();
 void elfDumpObjTable();
 // !!>
 
-int elfGetObjectType(elfObject* obj);	// <mdoc> OBJECT FUNCTIONS <mdocc> The object functions can be performed on any generic ELF objects.
-int elfGetObjectRefCount(elfObject* obj);
-int elfGetGlobalRefCount();
-int elfGetGlobalObjCount();
-unsigned char elfIsActor(elfObject* obj);
-unsigned char elfIsGuiObject(elfObject* obj);
+ELF_API void ELF_APIENTRY elfIncRef(elfObject* obj);	// <mdoc> OBJECT FUNCTIONS <mdocc> The object functions can be performed on any generic ELF objects.
+ELF_API void ELF_APIENTRY elfDecRef(elfObject* obj);
+ELF_API int ELF_APIENTRY elfGetObjectType(elfObject* obj);
+ELF_API int ELF_APIENTRY elfGetObjectRefCount(elfObject* obj);
+ELF_API int ELF_APIENTRY elfGetGlobalRefCount();
+ELF_API int ELF_APIENTRY elfGetGlobalObjCount();
+ELF_API unsigned char ELF_APIENTRY elfIsActor(elfObject* obj);
+ELF_API unsigned char ELF_APIENTRY elfIsGuiObject(elfObject* obj);
 
 //////////////////////////////// RESOURCE ////////////////////////////////
 
@@ -483,20 +492,20 @@ int elfRfindCharsFromString(const char* str, const char* chrs);
 
 //////////////////////////////// LIST ////////////////////////////////
 
-elfList* elfCreateList();	// <mdoc> LIST FUNCTIONS
+ELF_API elfList* ELF_APIENTRY elfCreateList();	// <mdoc> LIST FUNCTIONS
 /* <!> */ void elfDestroyList(void* data);
-int elfGetListLength(elfList* list);
-void elfInsertToList(elfList* list, int idx, elfObject* obj);
-void elfAppendToList(elfList* list, elfObject* obj);
-unsigned char elfRemoveFromList(elfList* list, elfObject* obj);
-elfObject* elfGetItemFromList(elfList* list, int idx);
-elfObject* elfBeginList(elfList* list);
-elfObject* elfNextInList(elfList* list);
-elfObject* elfRbeginList(elfList* list);
-elfObject* elfRnextInList(elfList* list);
+ELF_API int ELF_APIENTRY elfGetListLength(elfList* list);
+ELF_API void ELF_APIENTRY elfInsertToList(elfList* list, int idx, elfObject* obj);
+ELF_API void ELF_APIENTRY elfAppendToList(elfList* list, elfObject* obj);
+ELF_API unsigned char ELF_APIENTRY elfRemoveFromList(elfList* list, elfObject* obj);
+ELF_API elfObject* ELF_APIENTRY elfGetItemFromList(elfList* list, int idx);
+ELF_API elfObject* ELF_APIENTRY elfBeginList(elfList* list);
+ELF_API elfObject* ELF_APIENTRY elfNextInList(elfList* list);
+ELF_API elfObject* ELF_APIENTRY elfRbeginList(elfList* list);
+ELF_API elfObject* ELF_APIENTRY elfRnextInList(elfList* list);
 /* <!> */void elfSetListCurPtr(elfList* list, elfObject* ptr);
-void elfSeekList(elfList* list, elfObject* ptr);
-void elfRseekList(elfList* list, elfObject* ptr);
+ELF_API void ELF_APIENTRY elfSeekList(elfList* list, elfObject* ptr);
+ELF_API void ELF_APIENTRY elfRseekList(elfList* list, elfObject* ptr);
 
 //////////////////////////////// CONFIGURATION ////////////////////////////////
 
@@ -505,16 +514,16 @@ elfConfig* elfCreateConfig();
 void elfDestroyConfig(void* data);
 // !!>
 
-elfConfig* elfReadConfig(const char* filePath);	// <mdoc> CONFIGURATION FUNCTIONS
-int elfGetConfigWindowWidth(elfConfig* config);
-int elfGetConfigWindowHeight(elfConfig* config);
-int elfGetConfigMultisamples(elfConfig* config);
-unsigned char elfGetConfigFullscreen(elfConfig* config);
-unsigned char elfGetConfigTextureCompress(elfConfig* config);
-float elfGetConfigTextureAnisotropy(elfConfig* config);
-int elfGetConfigShadowMapSize(elfConfig* config);
-const char* elfGetConfigStart(elfConfig* config);
-const char* elfGetConfigLog(elfConfig* config);
+ELF_API elfConfig* ELF_APIENTRY elfReadConfig(const char* filePath);	// <mdoc> CONFIG FUNCTIONS
+ELF_API int ELF_APIENTRY elfGetConfigWindowWidth(elfConfig* config);
+ELF_API int ELF_APIENTRY elfGetConfigWindowHeight(elfConfig* config);
+ELF_API int ELF_APIENTRY elfGetConfigMultisamples(elfConfig* config);
+ELF_API unsigned char ELF_APIENTRY elfGetConfigFullscreen(elfConfig* config);
+ELF_API unsigned char ELF_APIENTRY elfGetConfigTextureCompress(elfConfig* config);
+ELF_API float ELF_APIENTRY elfGetConfigTextureAnisotropy(elfConfig* config);
+ELF_API int ELF_APIENTRY elfGetConfigShadowMapSize(elfConfig* config);
+ELF_API const char* ELF_APIENTRY elfGetConfigStart(elfConfig* config);
+ELF_API const char* ELF_APIENTRY elfGetConfigLog(elfConfig* config);
 
 ///////////////////////////////// LOG /////////////////////////////////
 
@@ -547,34 +556,34 @@ void elfCloseWindow();
 unsigned char elfResizeContext(int width, int height);
 // !!>
 
-void elfSetTitle(const char* title);	// <mdoc> CONTEXT FUNCTIONS
+ELF_API void ELF_APIENTRY elfSetTitle(const char* title);	// <mdoc> CONTEXT FUNCTIONS
 
-int elfGetWindowWidth();
-int elfGetWindowHeight();
-int elfGetVideoModeCount();
-elfVec2i elfGetVideoMode(int idx);
-int elfGetMultisamples();
-unsigned char elfIsFullscreen();
-const char* elfGetTitle();
-double elfGetTime();
-void elfSleep(float time);
-unsigned char elfIsWindowOpened();
+ELF_API int ELF_APIENTRY elfGetWindowWidth();
+ELF_API int ELF_APIENTRY elfGetWindowHeight();
+ELF_API int ELF_APIENTRY elfGetVideoModeCount();
+ELF_API elfVec2i ELF_APIENTRY elfGetVideoMode(int idx);
+ELF_API int ELF_APIENTRY elfGetMultisamples();
+ELF_API unsigned char ELF_APIENTRY elfIsFullscreen();
+ELF_API const char* ELF_APIENTRY elfGetTitle();
+ELF_API double ELF_APIENTRY elfGetTime();
+ELF_API void ELF_APIENTRY elfSleep(float time);
+ELF_API unsigned char ELF_APIENTRY elfIsWindowOpened();
 /* <!> */ void elfSwapBuffers();
-elfVec2i elfGetMousePosition();
-elfVec2i elfGetMouseForce();
-void elfSetMousePosition(int x, int y);
-void elfHideMouse(unsigned char hide);
-unsigned char elfIsMouseHidden();
-int elfGetMouseWheel();
-int elfGetMouseButtonState(int button);
-int elfGetKeyState(int key);
-unsigned char elfGetJoystickPresent(int joy);
-elfVec2f elfGetJoystickAxis(int joy);
-int elfGetJoystickButtonState(int joy, int but);
-int elfGetEventCount();
-elfObject* elfGetEvent(int idx);
-int elfGetKeyEventKey(elfKeyEvent* keyEvent);
-int elfGetKeyEventState(elfKeyEvent* keyEvent);
+ELF_API elfVec2i ELF_APIENTRY elfGetMousePosition();
+ELF_API elfVec2i ELF_APIENTRY elfGetMouseForce();
+ELF_API void ELF_APIENTRY elfSetMousePosition(int x, int y);
+ELF_API void ELF_APIENTRY elfHideMouse(unsigned char hide);
+ELF_API unsigned char ELF_APIENTRY elfIsMouseHidden();
+ELF_API int ELF_APIENTRY elfGetMouseWheel();
+ELF_API int ELF_APIENTRY elfGetMouseButtonState(int button);
+ELF_API int ELF_APIENTRY elfGetKeyState(int key);
+ELF_API unsigned char ELF_APIENTRY elfGetJoystickPresent(int joy);
+ELF_API elfVec2f ELF_APIENTRY elfGetJoystickAxis(int joy);
+ELF_API int ELF_APIENTRY elfGetJoystickButtonState(int joy, int but);
+ELF_API int ELF_APIENTRY elfGetEventCount();
+ELF_API elfObject* ELF_APIENTRY elfGetEvent(int idx);
+ELF_API int ELF_APIENTRY elfGetKeyEventKey(elfKeyEvent* keyEvent);
+ELF_API int ELF_APIENTRY elfGetKeyEventState(elfKeyEvent* keyEvent);
 
 //////////////////////////////// ENGINE ///////////////////////////////
 
@@ -590,98 +599,98 @@ unsigned char elfInitEngine();
 void elfDeinitEngine();
 // !!>
 
-unsigned char elfInit(int width, int height, const char* title, int multisamples, unsigned char fullscreen, const char* log);	// <mdoc> ENGINE FUNCTIONS
-unsigned char elfInitWithConfig(const char* filePath);
-void elfDeinit();
+ELF_API unsigned char ELF_APIENTRY elfInit(int width, int height, const char* title, int multisamples, unsigned char fullscreen, const char* log);	// <mdoc> ENGINE FUNCTIONS
+ELF_API unsigned char ELF_APIENTRY elfInitWithConfig(const char* filePath);
+ELF_API void ELF_APIENTRY elfDeinit();
 
-void elfResizeWindow(int width, int height);
+ELF_API void ELF_APIENTRY elfResizeWindow(int width, int height);
 
-const char* elfGetPlatform();
+ELF_API const char* ELF_APIENTRY elfGetPlatform();
 
-int elfGetVersionMajor();
-int elfGetVersionMinor();
-const char* elfGetVersionRelease();
-const char* elfGetVersion();
+ELF_API int ELF_APIENTRY elfGetVersionMajor();
+ELF_API int ELF_APIENTRY elfGetVersionMinor();
+ELF_API const char* ELF_APIENTRY elfGetVersionRelease();
+ELF_API const char* ELF_APIENTRY elfGetVersion();
 
 /* <!> */ char* elfGetDirectoryFromPath(const char* filePath);
-const char* elfGetCurrentDirectory();
+ELF_API const char* ELF_APIENTRY elfGetCurrentDirectory();
 
-const char* elfGetErrorString();
-int elfGetError();
+ELF_API const char* ELF_APIENTRY elfGetErrorString();
+ELF_API int ELF_APIENTRY elfGetError();
 
-unsigned char elfRun();
-void elfQuit();
+ELF_API unsigned char ELF_APIENTRY elfRun();
+ELF_API void ELF_APIENTRY elfQuit();
 
-void elfSetF10Exit(unsigned char exit);
-unsigned char elfGetF10Exit();
+ELF_API void ELF_APIENTRY elfSetF10Exit(unsigned char exit);
+ELF_API unsigned char ELF_APIENTRY elfGetF10Exit();
 
-elfScene* elfLoadScene(const char* filePath);
-void elfSetScene(elfScene* scene);
-elfScene* elfGetScene();
+ELF_API elfScene* ELF_APIENTRY elfLoadScene(const char* filePath);
+ELF_API void ELF_APIENTRY elfSetScene(elfScene* scene);
+ELF_API elfScene* ELF_APIENTRY elfGetScene();
 
-void elfSetGui(elfGui* gui);
-elfGui* elfGetGui();
+ELF_API void ELF_APIENTRY elfSetGui(elfGui* gui);
+ELF_API elfGui* ELF_APIENTRY elfGetGui();
 
-float elfGetSync();
-int elfGetFps();
+ELF_API float ELF_APIENTRY elfGetSync();
+ELF_API int ELF_APIENTRY elfGetFps();
 
-unsigned char elfSaveScreenShot(const char* filePath);
+ELF_API unsigned char ELF_APIENTRY elfSaveScreenShot(const char* filePath);
 
-void elfSetFpsLimit(int fpsLimit);
-int elfGetFpsLimit();
+ELF_API void ELF_APIENTRY elfSetFpsLimit(int fpsLimit);
+ELF_API int ELF_APIENTRY elfGetFpsLimit();
 
-void elfSetTickRate(float tickRate);
-float elfGetTickRate();
+ELF_API void ELF_APIENTRY elfSetTickRate(float tickRate);
+ELF_API float ELF_APIENTRY elfGetTickRate();
 
-void elfSetSpeed(float speed);
-float elfGetSpeed();
+ELF_API void ELF_APIENTRY elfSetSpeed(float speed);
+ELF_API float ELF_APIENTRY elfGetSpeed();
 
-void elfSetTextureCompress(unsigned char compress);
-unsigned char elfGetTextureCompress();
-void elfSetTextureAnisotropy(float anisotropy);
-float elfGetTextureAnisotropy();
+ELF_API void ELF_APIENTRY elfSetTextureCompress(unsigned char compress);
+ELF_API unsigned char ELF_APIENTRY elfGetTextureCompress();
+ELF_API void ELF_APIENTRY elfSetTextureAnisotropy(float anisotropy);
+ELF_API float ELF_APIENTRY elfGetTextureAnisotropy();
 
-void elfSetShadowMapSize(int size);
-int elfGetShadowMapSize();
+ELF_API void ELF_APIENTRY elfSetShadowMapSize(int size);
+ELF_API int ELF_APIENTRY elfGetShadowMapSize();
 
-int elfGetPolygonsRendered();
+ELF_API int ELF_APIENTRY elfGetPolygonsRendered();
 
-void elfSetFog(float start, float end, float r, float g, float b);
-void elfDisableFog();
-float elfGetFogStart();
-float elfGetFogEnd();
-elfColor elfGetFogColor();
+ELF_API void ELF_APIENTRY elfSetFog(float start, float end, float r, float g, float b);
+ELF_API void ELF_APIENTRY elfDisableFog();
+ELF_API float ELF_APIENTRY elfGetFogStart();
+ELF_API float ELF_APIENTRY elfGetFogEnd();
+ELF_API elfColor ELF_APIENTRY elfGetFogColor();
 
-void elfSetBloom(float threshold);
-void elfDisableBloom();
-float elfGetBloomThreshold();
+ELF_API void ELF_APIENTRY elfSetBloom(float threshold);
+ELF_API void ELF_APIENTRY elfDisableBloom();
+ELF_API float ELF_APIENTRY elfGetBloomThreshold();
 
-void elfSetDof(float focalRange, float focalDistance);
-void elfDisableDof();
-float elfGetDofFocalRange();
-float elfGetDofFocalDistance();
+ELF_API void ELF_APIENTRY elfSetDof(float focalRange, float focalDistance);
+ELF_API void ELF_APIENTRY elfDisableDof();
+ELF_API float ELF_APIENTRY elfGetDofFocalRange();
+ELF_API float ELF_APIENTRY elfGetDofFocalDistance();
 
-void elfSetSsao(float amount);
-void elfDisableSsao();
-float elfGetSsaoAmount();
+ELF_API void ELF_APIENTRY elfSetSsao(float amount);
+ELF_API void ELF_APIENTRY elfDisableSsao();
+ELF_API float ELF_APIENTRY elfGetSsaoAmount();
 
-void elfSetLightShafts(float intensity);
-void elfDisableLightShafts();
-float elfGetLightShaftsIntensity();
+ELF_API void ELF_APIENTRY elfSetLightShafts(float intensity);
+ELF_API void ELF_APIENTRY elfDisableLightShafts();
+ELF_API float ELF_APIENTRY elfGetLightShaftsIntensity();
 
-unsigned char elfIsFog();
-unsigned char elfIsBloom();
-unsigned char elfIsSsao();
-unsigned char elfIsDof();
-unsigned char elfIsLightShafts();
+ELF_API unsigned char ELF_APIENTRY elfIsFog();
+ELF_API unsigned char ELF_APIENTRY elfIsBloom();
+ELF_API unsigned char ELF_APIENTRY elfIsSsao();
+ELF_API unsigned char ELF_APIENTRY elfIsDof();
+ELF_API unsigned char ELF_APIENTRY elfIsLightShafts();
 
-void elfSetOcclusionCulling(unsigned char cull);
-unsigned char elfIsOcclusionCulling();
+ELF_API void ELF_APIENTRY elfSetOcclusionCulling(unsigned char cull);
+ELF_API unsigned char ELF_APIENTRY elfIsOcclusionCulling();
 
-void elfSetDebugDraw(unsigned char debugDraw);
-unsigned char elfIsDebugDraw();
+ELF_API void ELF_APIENTRY elfSetDebugDraw(unsigned char debugDraw);
+ELF_API unsigned char ELF_APIENTRY elfIsDebugDraw();
 
-elfObject* elfGetActor();
+ELF_API elfObject* ELF_APIENTRY elfGetActor();
 
 // <!!
 elfDirectoryItem* elfCreateDirectoryItem();
@@ -690,54 +699,54 @@ elfDirectory* elfCreateDirectory();
 void elfDestroyDirectory(void* data);
 // !!>
 
-elfDirectory* elfReadDirectory(const char* path);
+ELF_API elfDirectory* ELF_APIENTRY elfReadDirectory(const char* path);
 
-const char* elfGetDirectoryPath(elfDirectory* directory);
-int elfGetDirectoryItemCount(elfDirectory* directory);
-elfDirectoryItem* elfGetDirectoryItem(elfDirectory* directory, int idx);
-const char* elfGetDirectoryItemName(elfDirectoryItem* dirItem);
-int elfGetDirectoryItemType(elfDirectoryItem* dirItem);
+ELF_API const char* ELF_APIENTRY elfGetDirectoryPath(elfDirectory* directory);
+ELF_API int ELF_APIENTRY elfGetDirectoryItemCount(elfDirectory* directory);
+ELF_API elfDirectoryItem* ELF_APIENTRY elfGetDirectoryItem(elfDirectory* directory, int idx);
+ELF_API const char* ELF_APIENTRY elfGetDirectoryItemName(elfDirectoryItem* dirItem);
+ELF_API int ELF_APIENTRY elfGetDirectoryItemType(elfDirectoryItem* dirItem);
 
-elfVec3f elfCreateVec3f();
-elfVec3f elfCreateVec3fFromValues(float x, float y, float z);
-elfVec4f elfCreateQua();
-elfVec4f elfCreateQuaFromEuler(float x, float y, float z);
-elfVec4f elfCreateQuaFromAngleAxis(float angle, float x, float y, float z);
-elfVec3f elfMulQuaVec3f(elfVec4f qua, elfVec3f vec);
-elfVec4f elfMulQuaQua(elfVec4f qua1, elfVec4f qua2);
-elfVec4f elfGetQuaInverted(elfVec4f qua);
-elfVec3f elfRotateVec3f(elfVec3f vec, float x, float y, float z);
-elfVec3f elfSubVec3fVec3f(elfVec3f vec1, elfVec3f vec2);
-elfVec3f elfAddVec3fVec3f(elfVec3f vec1, elfVec3f vec2);
-float elfGetVec3fLength(elfVec3f vec);
+ELF_API elfVec3f ELF_APIENTRY elfCreateVec3f();
+ELF_API elfVec3f ELF_APIENTRY elfCreateVec3fFromValues(float x, float y, float z);
+ELF_API elfVec4f ELF_APIENTRY elfCreateQua();
+ELF_API elfVec4f ELF_APIENTRY elfCreateQuaFromEuler(float x, float y, float z);
+ELF_API elfVec4f ELF_APIENTRY elfCreateQuaFromAngleAxis(float angle, float x, float y, float z);
+ELF_API elfVec3f ELF_APIENTRY elfMulQuaVec3f(elfVec4f qua, elfVec3f vec);
+ELF_API elfVec4f ELF_APIENTRY elfMulQuaQua(elfVec4f qua1, elfVec4f qua2);
+ELF_API elfVec4f ELF_APIENTRY elfGetQuaInverted(elfVec4f qua);
+ELF_API elfVec3f ELF_APIENTRY elfRotateVec3f(elfVec3f vec, float x, float y, float z);
+ELF_API elfVec3f ELF_APIENTRY elfSubVec3fVec3f(elfVec3f vec1, elfVec3f vec2);
+ELF_API elfVec3f ELF_APIENTRY elfAddVec3fVec3f(elfVec3f vec1, elfVec3f vec2);
+ELF_API float ELF_APIENTRY elfGetVec3fLength(elfVec3f vec);
 
-unsigned char elfAboutZero(float val);
-float elfFloatAbs(float val);
-float elfFloatMin(float a, float b);
-float elfFloatMax(float a, float b);
-float elfRandomFloat();
-float elfRandomFloatRange(float min, float max);
-int elfRandomInt();
-int elfRandomIntRange(int min, int max);
+ELF_API unsigned char ELF_APIENTRY elfAboutZero(float val);
+ELF_API float ELF_APIENTRY elfFloatAbs(float val);
+ELF_API float ELF_APIENTRY elfFloatMin(float a, float b);
+ELF_API float ELF_APIENTRY elfFloatMax(float a, float b);
+ELF_API float ELF_APIENTRY elfRandomFloat();
+ELF_API float ELF_APIENTRY elfRandomFloatRange(float min, float max);
+ELF_API int ELF_APIENTRY elfRandomInt();
+ELF_API int ELF_APIENTRY elfRandomIntRange(int min, int max);
 
 ///////////////////////////// FRAME PLAYER ////////////////////////////
 
 /* <!> */ void elfDestroyFramePlayer(void* data);
 
-elfFramePlayer* elfCreateFramePlayer();	// <mdoc> FRAME PLAYER FUNCTIONS
-void elfUpdateFramePlayer(elfFramePlayer* player);
-void elfSetFramePlayerFrame(elfFramePlayer* player, float frame);
-void elfPlayFramePlayer(elfFramePlayer* player, float start, float end, float speed);
-void elfLoopFramePlayer(elfFramePlayer* player, float start, float end, float speed);
-void elfStopFramePlayer(elfFramePlayer* player);
-void elfPauseFramePlayer(elfFramePlayer* player);
-void elfResumeFramePlayer(elfFramePlayer* player);
-float elfGetFramePlayerStart(elfFramePlayer* player);
-float elfGetFramePlayerEnd(elfFramePlayer* player);
-float elfGetFramePlayerSpeed(elfFramePlayer* player);
-float elfGetFramePlayerFrame(elfFramePlayer* player);
-unsigned char elfIsFramePlayerPlaying(elfFramePlayer* player);
-unsigned char elfIsFramePlayerPaused(elfFramePlayer* player);
+ELF_API elfFramePlayer* ELF_APIENTRY elfCreateFramePlayer();	// <mdoc> FRAME PLAYER FUNCTIONS
+ELF_API void ELF_APIENTRY elfUpdateFramePlayer(elfFramePlayer* player);
+ELF_API void ELF_APIENTRY elfSetFramePlayerFrame(elfFramePlayer* player, float frame);
+ELF_API void ELF_APIENTRY elfPlayFramePlayer(elfFramePlayer* player, float start, float end, float speed);
+ELF_API void ELF_APIENTRY elfLoopFramePlayer(elfFramePlayer* player, float start, float end, float speed);
+ELF_API void ELF_APIENTRY elfStopFramePlayer(elfFramePlayer* player);
+ELF_API void ELF_APIENTRY elfPauseFramePlayer(elfFramePlayer* player);
+ELF_API void ELF_APIENTRY elfResumeFramePlayer(elfFramePlayer* player);
+ELF_API float ELF_APIENTRY elfGetFramePlayerStart(elfFramePlayer* player);
+ELF_API float ELF_APIENTRY elfGetFramePlayerEnd(elfFramePlayer* player);
+ELF_API float ELF_APIENTRY elfGetFramePlayerSpeed(elfFramePlayer* player);
+ELF_API float ELF_APIENTRY elfGetFramePlayerFrame(elfFramePlayer* player);
+ELF_API unsigned char ELF_APIENTRY elfIsFramePlayerPlaying(elfFramePlayer* player);
+ELF_API unsigned char ELF_APIENTRY elfIsFramePlayerPaused(elfFramePlayer* player);
 // <!!
 void elfSetFramePlayerUserData(elfFramePlayer* player, void* userData);
 void* elfGetFramePlayerUserData(elfFramePlayer* player);
@@ -746,24 +755,24 @@ void elfSetFramePlayerCallback(elfFramePlayer* player, void (*callback)(elfFrame
 
 //////////////////////////////// TIMER ////////////////////////////////
 
-elfTimer* elfCreateTimer();	// <mdoc> TIMER FUNCTIONS
+ELF_API elfTimer* ELF_APIENTRY elfCreateTimer();	// <mdoc> TIMER FUNCTIONS
 /* <!> */ void elfDestroyTimer(void* data);
-void elfStartTimer(elfTimer* timer);
-double elfGetElapsedTime(elfTimer* timer);
+ELF_API void ELF_APIENTRY elfStartTimer(elfTimer* timer);
+ELF_API double ELF_APIENTRY elfGetElapsedTime(elfTimer* timer);
 
 //////////////////////////////// IMAGE ////////////////////////////////
 
 /* <!> */ elfImage* elfCreateImage();
-elfImage* elfCreateEmptyImage(int width, int height, int bpp);	// <mdoc> IMAGE FUNCTIONS
-elfImage* elfCreateImageFromFile(const char* filePath);
+ELF_API elfImage* ELF_APIENTRY elfCreateEmptyImage(int width, int height, int bpp);	// IMAGE FUNCTIONS
+ELF_API elfImage* ELF_APIENTRY elfCreateImageFromFile(const char* filePath);
 /* <!> */ void elfDestroyImage(void* data);
 
-void elfSetImagePixel(elfImage* image, int x, int y, float r, float g, float b, float a);
+ELF_API void ELF_APIENTRY elfSetImagePixel(elfImage* image, int x, int y, float r, float g, float b, float a);
 
-int elfGetImageWidth(elfImage* image);
-int elfGetImageHeight(elfImage* image);
-int elfGetImageBitsPerPixel(elfImage* image);
-elfColor elfGetImagePixel(elfImage* image, int x, int y);
+ELF_API int ELF_APIENTRY elfGetImageWidth(elfImage* image);
+ELF_API int ELF_APIENTRY elfGetImageHeight(elfImage* image);
+ELF_API int ELF_APIENTRY elfGetImageBitsPerPixel(elfImage* image);
+ELF_API elfColor ELF_APIENTRY elfGetImagePixel(elfImage* image, int x, int y);
 
 // <!!
 void* elfGetImageData(elfImage* image);
@@ -777,18 +786,18 @@ elfTexture* elfCreateTexture();
 void elfDestroyTexture(void* data);
 // !!>
 
-elfTexture* elfCreateTextureFromFile(const char* filePath);	// <mdoc> TEXTURE FUNCTIONS
-elfTexture* elfCreateTextureFromImage(elfImage* image);
-elfTexture* elfCreateCubeMapFromFiles(const char* xpos, const char* xneg, const char* ypos, const char* yneg, const char* zpos, const char* zneg);
+ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromFile(const char* filePath);	// <mdoc> TEXTURE FUNCTIONS
+ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromImage(elfImage* image);
+ELF_API elfTexture* ELF_APIENTRY elfCreateCubeMapFromFiles(const char* xpos, const char* xneg, const char* ypos, const char* yneg, const char* zpos, const char* zneg);
 
-void elfSetTextureName(elfTexture* texture, const char* name);
+ELF_API void ELF_APIENTRY elfSetTextureName(elfTexture* texture, const char* name);
 
-const char* elfGetTextureName(elfTexture* texture);
-const char* elfGetTextureFilePath(elfTexture* texture);
-int elfGetTextureWidth(elfTexture* texture);
-int elfGetTextureHeight(elfTexture* texture);
-int elfGetTextureFormat(elfTexture* texture);
-int elfGetTextureDataFormat(elfTexture* texture);
+ELF_API const char* ELF_APIENTRY elfGetTextureName(elfTexture* texture);
+ELF_API const char* ELF_APIENTRY elfGetTextureFilePath(elfTexture* texture);
+ELF_API int ELF_APIENTRY elfGetTextureWidth(elfTexture* texture);
+ELF_API int ELF_APIENTRY elfGetTextureHeight(elfTexture* texture);
+ELF_API int ELF_APIENTRY elfGetTextureFormat(elfTexture* texture);
+ELF_API int ELF_APIENTRY elfGetTextureDataFormat(elfTexture* texture);
 // <!!
 gfxTexture* elfGetGfxTexture(elfTexture* texture);
 void elfSetTexture(int slot, elfTexture* texture, gfxShaderParams* shaderParams);
@@ -798,53 +807,53 @@ void elfSetTexture(int slot, elfTexture* texture, gfxShaderParams* shaderParams)
 
 /* <!> */void elfDestroyMaterial(void* data);
 
-elfMaterial* elfCreateMaterial(const char* name);	// <mdoc> MATERIAL FUNCTIONS
+ELF_API elfMaterial* ELF_APIENTRY elfCreateMaterial(const char* name);	// <mdoc> MATERIAL FUNCTIONS
 
-void elfSetMaterialDiffuseColor(elfMaterial* material, float r, float g, float b, float a);
-void elfSetMaterialSpecularColor(elfMaterial* material, float r, float g, float b, float a);
-void elfSetMaterialAmbientColor(elfMaterial* material, float r, float g, float b, float a);
-void elfSetMaterialSpecularPower(elfMaterial* material, float power);
-void elfSetMaterialLighting(elfMaterial* material, unsigned char lighting);
+ELF_API void ELF_APIENTRY elfSetMaterialDiffuseColor(elfMaterial* material, float r, float g, float b, float a);
+ELF_API void ELF_APIENTRY elfSetMaterialSpecularColor(elfMaterial* material, float r, float g, float b, float a);
+ELF_API void ELF_APIENTRY elfSetMaterialAmbientColor(elfMaterial* material, float r, float g, float b, float a);
+ELF_API void ELF_APIENTRY elfSetMaterialSpecularPower(elfMaterial* material, float power);
+ELF_API void ELF_APIENTRY elfSetMaterialLighting(elfMaterial* material, unsigned char lighting);
 
-void elfSetMaterialName(elfMaterial* material, const char* name);
-const char* elfGetMaterialName(elfMaterial* material);
-const char* elfGetMaterialFilePath(elfMaterial* material);
-elfColor elfGetMaterialDiffuseColor(elfMaterial* material);
-elfColor elfGetMaterialSpecularColor(elfMaterial* material);
-elfColor elfGetMaterialAmbientColor(elfMaterial* material);
-float elfGetMaterialSpecularPower(elfMaterial* material);
-unsigned char elfGetMaterialLighting(elfMaterial* material);
+ELF_API void ELF_APIENTRY elfSetMaterialName(elfMaterial* material, const char* name);
+ELF_API const char* ELF_APIENTRY elfGetMaterialName(elfMaterial* material);
+ELF_API const char* ELF_APIENTRY elfGetMaterialFilePath(elfMaterial* material);
+ELF_API elfColor ELF_APIENTRY elfGetMaterialDiffuseColor(elfMaterial* material);
+ELF_API elfColor ELF_APIENTRY elfGetMaterialSpecularColor(elfMaterial* material);
+ELF_API elfColor ELF_APIENTRY elfGetMaterialAmbientColor(elfMaterial* material);
+ELF_API float ELF_APIENTRY elfGetMaterialSpecularPower(elfMaterial* material);
+ELF_API unsigned char ELF_APIENTRY elfGetMaterialLighting(elfMaterial* material);
 
-void elfSetMaterialDiffuseMap(elfMaterial* material, elfTexture* texture);
-void elfSetMaterialNormalMap(elfMaterial* material, elfTexture* texture);
-void elfSetMaterialHeightMap(elfMaterial* material, elfTexture* texture);
-void elfSetMaterialSpecularMap(elfMaterial* material, elfTexture* texture);
-void elfSetMaterialLightMap(elfMaterial* material, elfTexture* texture);
-void elfSetMaterialCubeMap(elfMaterial* material, elfTexture* texture);
+ELF_API void ELF_APIENTRY elfSetMaterialDiffuseMap(elfMaterial* material, elfTexture* texture);
+ELF_API void ELF_APIENTRY elfSetMaterialNormalMap(elfMaterial* material, elfTexture* texture);
+ELF_API void ELF_APIENTRY elfSetMaterialHeightMap(elfMaterial* material, elfTexture* texture);
+ELF_API void ELF_APIENTRY elfSetMaterialSpecularMap(elfMaterial* material, elfTexture* texture);
+ELF_API void ELF_APIENTRY elfSetMaterialLightMap(elfMaterial* material, elfTexture* texture);
+ELF_API void ELF_APIENTRY elfSetMaterialCubeMap(elfMaterial* material, elfTexture* texture);
 
-void elfClearMaterialDiffuseMap(elfMaterial* material);
-void elfClearMaterialNormalMap(elfMaterial* material);
-void elfClearMaterialHeightMap(elfMaterial* material);
-void elfClearMaterialSpecularMap(elfMaterial* material);
-void elfClearMaterialLightMap(elfMaterial* material);
-void elfClearMaterialCubeMap(elfMaterial* material);
+ELF_API void ELF_APIENTRY elfClearMaterialDiffuseMap(elfMaterial* material);
+ELF_API void ELF_APIENTRY elfClearMaterialNormalMap(elfMaterial* material);
+ELF_API void ELF_APIENTRY elfClearMaterialHeightMap(elfMaterial* material);
+ELF_API void ELF_APIENTRY elfClearMaterialSpecularMap(elfMaterial* material);
+ELF_API void ELF_APIENTRY elfClearMaterialLightMap(elfMaterial* material);
+ELF_API void ELF_APIENTRY elfClearMaterialCubeMap(elfMaterial* material);
 
-elfTexture* elfGetMaterialDiffuseMap(elfMaterial* material);
-elfTexture* elfGetMaterialNormalMap(elfMaterial* material);
-elfTexture* elfGetMaterialHeightMap(elfMaterial* material);
-elfTexture* elfGetMaterialSpecularMap(elfMaterial* material);
-elfTexture* elfGetMaterialLightMap(elfMaterial* material);
-elfTexture* elfGetMaterialCubeMap(elfMaterial* material);
+ELF_API elfTexture* ELF_APIENTRY elfGetMaterialDiffuseMap(elfMaterial* material);
+ELF_API elfTexture* ELF_APIENTRY elfGetMaterialNormalMap(elfMaterial* material);
+ELF_API elfTexture* ELF_APIENTRY elfGetMaterialHeightMap(elfMaterial* material);
+ELF_API elfTexture* ELF_APIENTRY elfGetMaterialSpecularMap(elfMaterial* material);
+ELF_API elfTexture* ELF_APIENTRY elfGetMaterialLightMap(elfMaterial* material);
+ELF_API elfTexture* ELF_APIENTRY elfGetMaterialCubeMap(elfMaterial* material);
 
-void elfSetMaterialParallaxScale(elfMaterial* material, float scale);
+ELF_API void ELF_APIENTRY elfSetMaterialParallaxScale(elfMaterial* material, float scale);
 
-void elfSetMaterialAlphaTest(elfMaterial* material, unsigned char alphaTest);
-void elfSetMaterialAlphaThreshold(elfMaterial* material, float threshold);
+ELF_API void ELF_APIENTRY elfSetMaterialAlphaTest(elfMaterial* material, unsigned char alphaTest);
+ELF_API void ELF_APIENTRY elfSetMaterialAlphaThreshold(elfMaterial* material, float threshold);
 
-float elfGetMaterialParallaxScale(elfMaterial* material);
+ELF_API float ELF_APIENTRY elfGetMaterialParallaxScale(elfMaterial* material);
 
-unsigned char elfGetMaterialAlphaTest(elfMaterial* material);
-float elfGetMaterialAlphaThreshold(elfMaterial* material);
+ELF_API unsigned char ELF_APIENTRY elfGetMaterialAlphaTest(elfMaterial* material);
+ELF_API float ELF_APIENTRY elfGetMaterialAlphaThreshold(elfMaterial* material);
 
 // <!!
 void elfSetMaterial(elfMaterial* material, int mode, gfxShaderParams* shaderParams);
@@ -858,47 +867,47 @@ void elfDestroyBezierCurve(void* data);
 void elfDestroyIpo(void* data);
 // !!>
 
-elfBezierPoint* elfCreateBezierPoint();	// <mdoc> IPO FUNCTIONS
-void elfSetBezierPointPosition(elfBezierPoint* point, float x, float y);
-void elfSetBezierPointControl1(elfBezierPoint* point, float x, float y);
-void elfSetBezierPointControl2(elfBezierPoint* point, float x, float y);
-elfVec2f elfGetBezierPointPosition(elfBezierPoint* point);
-elfVec2f elfGetBezierPointControl1(elfBezierPoint* point);
-elfVec2f elfGetBezierPointControl2(elfBezierPoint* point);
+ELF_API elfBezierPoint* ELF_APIENTRY elfCreateBezierPoint();	// <mdoc> IPO FUNCTIONS
+ELF_API void ELF_APIENTRY elfSetBezierPointPosition(elfBezierPoint* point, float x, float y);
+ELF_API void ELF_APIENTRY elfSetBezierPointControl1(elfBezierPoint* point, float x, float y);
+ELF_API void ELF_APIENTRY elfSetBezierPointControl2(elfBezierPoint* point, float x, float y);
+ELF_API elfVec2f ELF_APIENTRY elfGetBezierPointPosition(elfBezierPoint* point);
+ELF_API elfVec2f ELF_APIENTRY elfGetBezierPointControl1(elfBezierPoint* point);
+ELF_API elfVec2f ELF_APIENTRY elfGetBezierPointControl2(elfBezierPoint* point);
 
-elfBezierCurve* elfCreateBezierCurve();
-void elfSetBezierCurveType(elfBezierCurve* curve, int type);
-int elfGetBezierCurveType(elfBezierCurve* curve);
-void elfAddPointToBezierCurve(elfBezierCurve* curve, elfBezierPoint* point);
-elfBezierPoint* elfGetPointFromBezierCurve(elfBezierCurve* curve, int idx);
-float elfGetBezierCurveValue(elfBezierCurve* curve, float x);
+ELF_API elfBezierCurve* ELF_APIENTRY elfCreateBezierCurve();
+ELF_API void ELF_APIENTRY elfSetBezierCurveType(elfBezierCurve* curve, int type);
+ELF_API int ELF_APIENTRY elfGetBezierCurveType(elfBezierCurve* curve);
+ELF_API void ELF_APIENTRY elfAddPointToBezierCurve(elfBezierCurve* curve, elfBezierPoint* point);
+ELF_API elfBezierPoint* ELF_APIENTRY elfGetPointFromBezierCurve(elfBezierCurve* curve, int idx);
+ELF_API float ELF_APIENTRY elfGetBezierCurveValue(elfBezierCurve* curve, float x);
 
-elfIpo* elfCreateIpo();
-unsigned char elfAddCurveToIpo(elfIpo* ipo, elfBezierCurve* curve);
-int elfGetIpoCurveCount(elfIpo* ipo);
-elfBezierCurve* elfGetCurveFromIpo(elfIpo* ipo, int idx);
-elfVec3f elfGetIpoLoc(elfIpo* ipo, float x);
-elfVec3f elfGetIpoRot(elfIpo* ipo, float x);
-elfVec3f elfGetIpoScale(elfIpo* ipo, float x);
-elfVec4f elfGetIpoQua(elfIpo* ipo, float x);
+ELF_API elfIpo* ELF_APIENTRY elfCreateIpo();
+ELF_API unsigned char ELF_APIENTRY elfAddCurveToIpo(elfIpo* ipo, elfBezierCurve* curve);
+ELF_API int ELF_APIENTRY elfGetIpoCurveCount(elfIpo* ipo);
+ELF_API elfBezierCurve* ELF_APIENTRY elfGetCurveFromIpo(elfIpo* ipo, int idx);
+ELF_API elfVec3f ELF_APIENTRY elfGetIpoLoc(elfIpo* ipo, float x);
+ELF_API elfVec3f ELF_APIENTRY elfGetIpoRot(elfIpo* ipo, float x);
+ELF_API elfVec3f ELF_APIENTRY elfGetIpoScale(elfIpo* ipo, float x);
+ELF_API elfVec4f ELF_APIENTRY elfGetIpoQua(elfIpo* ipo, float x);
 
 //////////////////////////////// PROPERTY ////////////////////////////////
 
 
-elfProperty* elfCreateProperty(const char* name);	// <mdoc> PROPERTY FUNCTIONS
+ELF_API elfProperty* ELF_APIENTRY elfCreateProperty(const char* name);	// <mdoc> PROPERTY FUNCTIONS
 /* <!> */ void elfDestroyProperty(void* data);
 
-int elfGetPropertyType(elfProperty* property);
+ELF_API int ELF_APIENTRY elfGetPropertyType(elfProperty* property);
 
-int elfGetPropertyInt(elfProperty* property);
-float elfGetPropertyFloat(elfProperty* property);
-const char* elfGetPropertyString(elfProperty* property);
-unsigned char elfGetPropertyBool(elfProperty* property);
+ELF_API int ELF_APIENTRY elfGetPropertyInt(elfProperty* property);
+ELF_API float ELF_APIENTRY elfGetPropertyFloat(elfProperty* property);
+ELF_API const char* ELF_APIENTRY elfGetPropertyString(elfProperty* property);
+ELF_API unsigned char ELF_APIENTRY elfGetPropertyBool(elfProperty* property);
 
-void elfSetPropertyInt(elfProperty* property, int ival);
-void elfSetPropertyFloat(elfProperty* property, float fval);
-void elfSetPropertyString(elfProperty* property, const char* sval);
-void elfSetPropertyBool(elfProperty* property, unsigned char bval);
+ELF_API void ELF_APIENTRY elfSetPropertyInt(elfProperty* property, int ival);
+ELF_API void ELF_APIENTRY elfSetPropertyFloat(elfProperty* property, float fval);
+ELF_API void ELF_APIENTRY elfSetPropertyString(elfProperty* property, const char* sval);
+ELF_API void ELF_APIENTRY elfSetPropertyBool(elfProperty* property, unsigned char bval);
 
 //////////////////////////////// ACTOR ////////////////////////////////
 
@@ -910,29 +919,29 @@ void elfActorPostDraw(elfActor* actor);
 void elfCleanActor(elfActor* actor);
 // !!>
 
-const char* elfGetActorName(elfActor* actor);	// <mdoc> ACTOR FUNCTIONS <mdocc> Actor functions can be performed on all actor types. [Camera|Entity|Light|Armature]
-const char* elfGetActorFilePath(elfActor* actor);
-elfScript* elfGetActorScript(elfActor* actor);
+ELF_API const char* ELF_APIENTRY elfGetActorName(elfActor* actor);	// <mdoc> ACTOR FUNCTIONS
+ELF_API const char* ELF_APIENTRY elfGetActorFilePath(elfActor* actor);
+ELF_API elfScript* ELF_APIENTRY elfGetActorScript(elfActor* actor);
 
-void elfSetActorName(elfActor* actor, const char* name);
-void elfSetActorScript(elfActor* actor, elfScript* script);
-void elfClearActorScript(elfActor* actor);
+ELF_API void ELF_APIENTRY elfSetActorName(elfActor* actor, const char* name);
+ELF_API void ELF_APIENTRY elfSetActorScript(elfActor* actor, elfScript* script);
+ELF_API void ELF_APIENTRY elfClearActorScript(elfActor* actor);
 
-void elfSetActorPosition(elfActor* actor, float x, float y, float z);
-void elfSetActorRotation(elfActor* actor, float x, float y, float z);
-void elfSetActorOrientation(elfActor* actor, float x, float y, float z, float w);
-void elfRotateActor(elfActor* actor, float x, float y, float z);
-void elfRotateActorLocal(elfActor* actor, float x, float y, float z);
-void elfMoveActor(elfActor* actor, float x, float y, float z);
-void elfMoveActorLocal(elfActor* actor, float x, float y, float z);
-void elfSetActorPositionRelativeTo(elfActor* actor, elfActor* to, float x, float y, float z);
-void elfSetActorRotationRelativeTo(elfActor* actor, elfActor* to, float x, float y, float z);
-void elfSetActorOrientationRelativeTo(elfActor* actor, elfActor* to, float x, float y, float z, float w);
+ELF_API void ELF_APIENTRY elfSetActorPosition(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetActorRotation(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetActorOrientation(elfActor* actor, float x, float y, float z, float w);
+ELF_API void ELF_APIENTRY elfRotateActor(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfRotateActorLocal(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfMoveActor(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfMoveActorLocal(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetActorPositionRelativeTo(elfActor* actor, elfActor* to, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetActorRotationRelativeTo(elfActor* actor, elfActor* to, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetActorOrientationRelativeTo(elfActor* actor, elfActor* to, float x, float y, float z, float w);
 /* <!> */ void elfDirectActorAt(elfActor* actor, elfActor* at);
 /* <!> */ void elfSetActorDirection(elfActor* actor, float x, float y, float z);
-elfVec3f elfGetActorPosition(elfActor* actor);
-elfVec3f elfGetActorRotation(elfActor* actor);
-elfVec4f elfGetActorOrientation(elfActor* actor);
+ELF_API elfVec3f ELF_APIENTRY elfGetActorPosition(elfActor* actor);
+ELF_API elfVec3f ELF_APIENTRY elfGetActorRotation(elfActor* actor);
+ELF_API elfVec4f ELF_APIENTRY elfGetActorOrientation(elfActor* actor);
 
 // <!!
 void elfGetActorPosition_(elfActor* actor, float* params);
@@ -940,82 +949,82 @@ void elfGetActorRotation_(elfActor* actor, float* params);
 void elfGetActorOrientation_(elfActor* actor, float* params);
 // !!>
 
-void elfSetActorBoundingLengths(elfActor* actor, float x, float y, float z);
-void elfSetActorBoundingOffset(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetActorBoundingLengths(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetActorBoundingOffset(elfActor* actor, float x, float y, float z);
 /* <!> */ void elfResetActorBoundingOffsetSetFlag(elfActor* actor);
-void elfSetActorPhysics(elfActor* actor, int shape, float mass);
-unsigned char elfIsActorPhysics(elfActor* actor);
-void elfDisableActorPhysics(elfActor* actor);
+ELF_API void ELF_APIENTRY elfSetActorPhysics(elfActor* actor, int shape, float mass);
+ELF_API unsigned char ELF_APIENTRY elfIsActorPhysics(elfActor* actor);
+ELF_API void ELF_APIENTRY elfDisableActorPhysics(elfActor* actor);
 
-void elfSetActorDamping(elfActor* actor, float linDamp, float angDamp);
-void elfSetActorSleepThresholds(elfActor* actor, float linThrs, float angThrs);
-void elfSetActorRestitution(elfActor* actor, float restitution);
-void elfSetActorAnisotropicFriction(elfActor* actor, float x, float y, float z);
-void elfSetActorLinearFactor(elfActor* actor, float x, float y, float z);
-void elfSetActorAngularFactor(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetActorDamping(elfActor* actor, float linDamp, float angDamp);
+ELF_API void ELF_APIENTRY elfSetActorSleepThresholds(elfActor* actor, float linThrs, float angThrs);
+ELF_API void ELF_APIENTRY elfSetActorRestitution(elfActor* actor, float restitution);
+ELF_API void ELF_APIENTRY elfSetActorAnisotropicFriction(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetActorLinearFactor(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetActorAngularFactor(elfActor* actor, float x, float y, float z);
 
-void elfAddForceToActor(elfActor* actor, float x, float y, float z);
-void elfAddForceToActorLocal(elfActor* actor, float x, float y, float z);
-void elfAddTorqueToActor(elfActor* actor, float x, float y, float z);
-void elfSetActorLinearVelocity(elfActor* actor, float x, float y, float z);
-void elfSetActorLinearVelocityLocal(elfActor* actor, float x, float y, float z);
-void elfSetActorAngularVelocity(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfAddForceToActor(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfAddForceToActorLocal(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfAddTorqueToActor(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetActorLinearVelocity(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetActorLinearVelocityLocal(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetActorAngularVelocity(elfActor* actor, float x, float y, float z);
 
-elfVec3f elfGetActorBoundingLengths(elfActor* actor);
-elfVec3f elfGetActorBoundingOffset(elfActor* actor);
-int elfGetActorShape(elfActor* actor);
-float elfGetActorMass(elfActor* actor);
+ELF_API elfVec3f ELF_APIENTRY elfGetActorBoundingLengths(elfActor* actor);
+ELF_API elfVec3f ELF_APIENTRY elfGetActorBoundingOffset(elfActor* actor);
+ELF_API int ELF_APIENTRY elfGetActorShape(elfActor* actor);
+ELF_API float ELF_APIENTRY elfGetActorMass(elfActor* actor);
 
-float elfGetActorLinearDamping(elfActor* actor);
-float elfGetActorAngularDamping(elfActor* actor);
-float elfGetActorLinearSleepThreshold(elfActor* actor);
-float elfGetActorAngularSleepThreshold(elfActor* actor);
-float elfGetActorRestitution(elfActor* actor);
-elfVec3f elfGetActorAnisotropicFriction(elfActor* actor);
-elfVec3f elfGetActorLinearFactor(elfActor* actor);
-elfVec3f elfGetActorAngularFactor(elfActor* actor);
-elfVec3f elfGetActorLinearVelocity(elfActor* actor);
-elfVec3f elfGetActorAngularVelocity(elfActor* actor);
+ELF_API float ELF_APIENTRY elfGetActorLinearDamping(elfActor* actor);
+ELF_API float ELF_APIENTRY elfGetActorAngularDamping(elfActor* actor);
+ELF_API float ELF_APIENTRY elfGetActorLinearSleepThreshold(elfActor* actor);
+ELF_API float ELF_APIENTRY elfGetActorAngularSleepThreshold(elfActor* actor);
+ELF_API float ELF_APIENTRY elfGetActorRestitution(elfActor* actor);
+ELF_API elfVec3f ELF_APIENTRY elfGetActorAnisotropicFriction(elfActor* actor);
+ELF_API elfVec3f ELF_APIENTRY elfGetActorLinearFactor(elfActor* actor);
+ELF_API elfVec3f ELF_APIENTRY elfGetActorAngularFactor(elfActor* actor);
+ELF_API elfVec3f ELF_APIENTRY elfGetActorLinearVelocity(elfActor* actor);
+ELF_API elfVec3f ELF_APIENTRY elfGetActorAngularVelocity(elfActor* actor);
 
-elfJoint* elfAddHingeJointToActor(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az);
-elfJoint* elfAddBallJointToActor(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz);
-elfJoint* elfAddConeTwistJointToActor(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az);
-elfJoint* elfGetActorJointByName(elfActor* actor, const char* name);
-elfJoint* elfGetActorJointByIndex(elfActor* actor, int idx);
-unsigned char elfRemoveActorJointByName(elfActor* actor, const char* name);
-unsigned char elfRemoveActorJointByIndex(elfActor* actor, int idx);
-unsigned char elfRemoveActorJointByObject(elfActor* actor, elfJoint* joint);
+ELF_API elfJoint* ELF_APIENTRY elfAddHingeJointToActor(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az);
+ELF_API elfJoint* ELF_APIENTRY elfAddBallJointToActor(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz);
+ELF_API elfJoint* ELF_APIENTRY elfAddConeTwistJointToActor(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az);
+ELF_API elfJoint* ELF_APIENTRY elfGetActorJointByName(elfActor* actor, const char* name);
+ELF_API elfJoint* ELF_APIENTRY elfGetActorJointByIndex(elfActor* actor, int idx);
+ELF_API unsigned char ELF_APIENTRY elfRemoveActorJointByName(elfActor* actor, const char* name);
+ELF_API unsigned char ELF_APIENTRY elfRemoveActorJointByIndex(elfActor* actor, int idx);
+ELF_API unsigned char ELF_APIENTRY elfRemoveActorJointByObject(elfActor* actor, elfJoint* joint);
 
-void elfSetActorIpo(elfActor* actor, elfIpo* ipo);
-elfIpo* elfGetActorIpo(elfActor* actor);
+ELF_API void ELF_APIENTRY elfSetActorIpo(elfActor* actor, elfIpo* ipo);
+ELF_API elfIpo* ELF_APIENTRY elfGetActorIpo(elfActor* actor);
 
-void elfSetActorIpoFrame(elfActor* actor, float frame);
-void elfPlayActorIpo(elfActor* actor, float start, float end, float speed);
-void elfLoopActorIpo(elfActor* actor, float start, float end, float speed);
-void elfStopActorIpo(elfActor* actor);
-void elfPauseActorIpo(elfActor* actor);
-void elfResumeActorIpo(elfActor* actor);
-float elfGetActorIpoStart(elfActor* actor);
-float elfGetActorIpoEnd(elfActor* actor);
-float elfGetActorIpoSpeed(elfActor* actor);
-float elfGetActorIpoFrame(elfActor* actor);
-unsigned char elfIsActorIpoPlaying(elfActor* actor);
-unsigned char elfIsActorIpoPaused(elfActor* actor);
+ELF_API void ELF_APIENTRY elfSetActorIpoFrame(elfActor* actor, float frame);
+ELF_API void ELF_APIENTRY elfPlayActorIpo(elfActor* actor, float start, float end, float speed);
+ELF_API void ELF_APIENTRY elfLoopActorIpo(elfActor* actor, float start, float end, float speed);
+ELF_API void ELF_APIENTRY elfStopActorIpo(elfActor* actor);
+ELF_API void ELF_APIENTRY elfPauseActorIpo(elfActor* actor);
+ELF_API void ELF_APIENTRY elfResumeActorIpo(elfActor* actor);
+ELF_API float ELF_APIENTRY elfGetActorIpoStart(elfActor* actor);
+ELF_API float ELF_APIENTRY elfGetActorIpoEnd(elfActor* actor);
+ELF_API float ELF_APIENTRY elfGetActorIpoSpeed(elfActor* actor);
+ELF_API float ELF_APIENTRY elfGetActorIpoFrame(elfActor* actor);
+ELF_API unsigned char ELF_APIENTRY elfIsActorIpoPlaying(elfActor* actor);
+ELF_API unsigned char ELF_APIENTRY elfIsActorIpoPaused(elfActor* actor);
 
-int elfGetActorCollisionCount(elfActor* actor);
-elfCollision* elfGetActorCollision(elfActor* actor, int idx);
+ELF_API int ELF_APIENTRY elfGetActorCollisionCount(elfActor* actor);
+ELF_API elfCollision* ELF_APIENTRY elfGetActorCollision(elfActor* actor, int idx);
 
-int elfGetActorPropertyCount(elfActor* actor);
-void elfAddPropertyToActor(elfActor* actor, elfProperty* property);
-elfProperty* elfGetActorPropertyByName(elfActor* actor, const char* name);
-elfProperty* elfGetActorPropertyByIndex(elfActor* actor, int idx);
-unsigned char elfRemoveActorPropertyByName(elfActor* actor, const char* name);
-unsigned char elfRemoveActorPropertyByIndex(elfActor* actor, int idx);
-unsigned char elfRemoveActorPropertyByObject(elfActor* actor, elfProperty* property);
-void elfRemoveActorProperties(elfActor* actor);
+ELF_API int ELF_APIENTRY elfGetActorPropertyCount(elfActor* actor);
+ELF_API void ELF_APIENTRY elfAddPropertyToActor(elfActor* actor, elfProperty* property);
+ELF_API elfProperty* ELF_APIENTRY elfGetActorPropertyByName(elfActor* actor, const char* name);
+ELF_API elfProperty* ELF_APIENTRY elfGetActorPropertyByIndex(elfActor* actor, int idx);
+ELF_API unsigned char ELF_APIENTRY elfRemoveActorPropertyByName(elfActor* actor, const char* name);
+ELF_API unsigned char ELF_APIENTRY elfRemoveActorPropertyByIndex(elfActor* actor, int idx);
+ELF_API unsigned char ELF_APIENTRY elfRemoveActorPropertyByObject(elfActor* actor, elfProperty* property);
+ELF_API void ELF_APIENTRY elfRemoveActorProperties(elfActor* actor);
 
-void elfSetActorSelected(elfActor* actor, unsigned char selected);
-unsigned char elfGetActorSelected(elfActor* actor);
+ELF_API void ELF_APIENTRY elfSetActorSelected(elfActor* actor, unsigned char selected);
+ELF_API unsigned char ELF_APIENTRY elfGetActorSelected(elfActor* actor);
 
 /* <!> */ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams);
 
@@ -1028,18 +1037,18 @@ void elfCamearPostDraw(elfCamera* camera);
 void elfDestroyCamera(void* data);
 // !!>
 
-elfCamera* elfCreateCamera(const char* name);	// <mdoc> CAMERA FUNCTIONS
+ELF_API elfCamera* ELF_APIENTRY elfCreateCamera(const char* name);	// <mdoc> CAMERA FUNCTIONS
 
-void elfSetCameraViewport(elfCamera* camera, int x, int y, int width, int height);
-void elfSetCameraPerspective(elfCamera* camera, float fov, float aspect, float clipNear, float clipFar);
-void elfSetCameraOrthographic(elfCamera* camera, int x, int y, int width, int height, float clipNear, float clipFar);
+ELF_API void ELF_APIENTRY elfSetCameraViewport(elfCamera* camera, int x, int y, int width, int height);
+ELF_API void ELF_APIENTRY elfSetCameraPerspective(elfCamera* camera, float fov, float aspect, float clipNear, float clipFar);
+ELF_API void ELF_APIENTRY elfSetCameraOrthographic(elfCamera* camera, int x, int y, int width, int height, float clipNear, float clipFar);
 
-elfVec2i elfGetCameraViewportSize(elfCamera* camera);
-elfVec2i elfGetCameraViewportOffset(elfCamera* camera);
-float elfGetCameraFov(elfCamera* camera);
-float elfGetCameraAspect(elfCamera* camera);
-elfVec2f elfGetCameraClip(elfCamera* camera);
-elfVec2f elfGetCameraFarPlaneSize(elfCamera* camera);
+ELF_API elfVec2i ELF_APIENTRY elfGetCameraViewportSize(elfCamera* camera);
+ELF_API elfVec2i ELF_APIENTRY elfGetCameraViewportOffset(elfCamera* camera);
+ELF_API float ELF_APIENTRY elfGetCameraFov(elfCamera* camera);
+ELF_API float ELF_APIENTRY elfGetCameraAspect(elfCamera* camera);
+ELF_API elfVec2f ELF_APIENTRY elfGetCameraClip(elfCamera* camera);
+ELF_API elfVec2f ELF_APIENTRY elfGetCameraFarPlaneSize(elfCamera* camera);
 
 // <!!
 float* elfGetCameraProjectionMatrix(elfCamera* camera);
@@ -1052,42 +1061,42 @@ unsigned char elfCameraInsideSphere(elfCamera* camera, float* pos, float radius)
 void elfDrawCameraDebug(elfCamera* camera, gfxShaderParams* shaderParams);
 // !!>
 
-elfVec3f elfProjectCameraPoint(elfCamera* camera, float x, float y, float z);
-elfVec3f elfUnProjectCameraPoint(elfCamera* camera, float x, float y, float z);
+ELF_API elfVec3f ELF_APIENTRY elfProjectCameraPoint(elfCamera* camera, float x, float y, float z);
+ELF_API elfVec3f ELF_APIENTRY elfUnProjectCameraPoint(elfCamera* camera, float x, float y, float z);
 
-//////////////////////////////// MESH ////////////////////////////////
+//////////////////////////////// MESH DATA ////////////////////////////////
 
-elfVertice* elfCreateVertice();	// <mdoc> MESH DATA FUNCTIONS
+ELF_API elfVertice* ELF_APIENTRY elfCreateVertice();	// <mdoc> MESH DATA FUNCTIONS
 /* <!> */ void elfDestroyVertice(void* data);
 
-void elfSetVerticePosition(elfVertice* vertice, float x, float y, float z);
-void elfSetVerticeNormal(elfVertice* vertice, float x, float y, float z);
-void elfSetVerticeTexCoord(elfVertice* vertice, float u, float v);
+ELF_API void ELF_APIENTRY elfSetVerticePosition(elfVertice* vertice, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetVerticeNormal(elfVertice* vertice, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetVerticeTexCoord(elfVertice* vertice, float u, float v);
 
-elfVec3f elfGetVerticePosition(elfVertice* vertice);
-elfVec3f elfGetVerticeNormal(elfVertice* vertice);
-elfVec2f elfGetVerticeTexCoord(elfVertice* vertice);
+ELF_API elfVec3f ELF_APIENTRY elfGetVerticePosition(elfVertice* vertice);
+ELF_API elfVec3f ELF_APIENTRY elfGetVerticeNormal(elfVertice* vertice);
+ELF_API elfVec2f ELF_APIENTRY elfGetVerticeTexCoord(elfVertice* vertice);
 
 // <!!
 elfFace* elfCreateFace();
 void elfDestroyFace(void* data);
 // !!>
 
-int elfGetFaceV1(elfFace* face);
-int elfGetFaceV2(elfFace* face);
-int elfGetFaceV3(elfFace* face);
+ELF_API int ELF_APIENTRY elfGetFaceV1(elfFace* face);
+ELF_API int ELF_APIENTRY elfGetFaceV2(elfFace* face);
+ELF_API int ELF_APIENTRY elfGetFaceV3(elfFace* face);
 
-elfMeshData* elfCreateMeshData();
+ELF_API elfMeshData* ELF_APIENTRY elfCreateMeshData();
 /* <!> */ void elfDestroyMeshData(void* data);
 
-int elfGetMeshDataVerticeCount(elfMeshData* meshData);
-int elfGetMeshDataFaceCount(elfMeshData* meshData);
+ELF_API int ELF_APIENTRY elfGetMeshDataVerticeCount(elfMeshData* meshData);
+ELF_API int ELF_APIENTRY elfGetMeshDataFaceCount(elfMeshData* meshData);
 
-void elfAddVerticeToMeshData(elfMeshData* meshData, elfVertice* vertice);
-void elfAddFaceToMeshData(elfMeshData* meshData, int v1, int v2, int v3);
+ELF_API void ELF_APIENTRY elfAddVerticeToMeshData(elfMeshData* meshData, elfVertice* vertice);
+ELF_API void ELF_APIENTRY elfAddFaceToMeshData(elfMeshData* meshData, int v1, int v2, int v3);
 
-elfVertice* elfGetVerticeFromMeshData(elfMeshData* meshData, int idx);
-elfFace* elfGetFaceFromMeshData(elfMeshData* meshData, int idx);
+ELF_API elfVertice* ELF_APIENTRY elfGetVerticeFromMeshData(elfMeshData* meshData, int idx);
+ELF_API elfFace* ELF_APIENTRY elfGetFaceFromMeshData(elfMeshData* meshData, int idx);
 
 //////////////////////////////// MODEL ////////////////////////////////
 
@@ -1097,15 +1106,15 @@ void elfDestroyModel(void* data);
 void elfGenerateModelTangents(elfModel* model);
 // !!>
 
-elfModel* elfCreateModelFromMeshData(elfMeshData* data);	// <mdoc> MODEL FUNCTIONS
+ELF_API elfModel* ELF_APIENTRY elfCreateModelFromMeshData(elfMeshData* data);	// <mdoc> MODEL FUNCTIONS
 
-void elfSetModelName(elfModel* model, const char* name);
-const char* elfGetModelName(elfModel* model);
-const char* elfGetModelFilePath(elfModel* model);
-int elfGetModelVerticeCount(elfModel* model);
-int elfGetModelIndiceCount(elfModel* model);
-elfVec3f elfGetModelBoundingBoxMin(elfModel* model);
-elfVec3f elfGetModelBoundingBoxMax(elfModel* model);
+ELF_API void ELF_APIENTRY elfSetModelName(elfModel* model, const char* name);
+ELF_API const char* ELF_APIENTRY elfGetModelName(elfModel* model);
+ELF_API const char* ELF_APIENTRY elfGetModelFilePath(elfModel* model);
+ELF_API int ELF_APIENTRY elfGetModelVerticeCount(elfModel* model);
+ELF_API int ELF_APIENTRY elfGetModelIndiceCount(elfModel* model);
+ELF_API elfVec3f ELF_APIENTRY elfGetModelBoundingBoxMin(elfModel* model);
+ELF_API elfVec3f ELF_APIENTRY elfGetModelBoundingBoxMax(elfModel* model);
 
 // <!!
 float* elfGetModelVertices(elfModel* model);
@@ -1129,46 +1138,46 @@ void elfCalcEntityAabb(elfEntity* entity);
 void elfCalcEntityBoundingVolumes(elfEntity* entity, unsigned char newModel);
 // !!>
 
-elfEntity* elfCreateEntity(const char* name);	// <mdoc> ENTITY FUNCTIONS
-void elfGenerateEntityTangents(elfEntity* entity);
+ELF_API elfEntity* ELF_APIENTRY elfCreateEntity(const char* name);	// <mdoc> ENTITY FUNCTIONS
+ELF_API void ELF_APIENTRY elfGenerateEntityTangents(elfEntity* entity);
 
-void elfSetEntityScale(elfEntity* entity, float x, float y, float z);
-elfVec3f elfGetEntityScale(elfEntity* entity);
+ELF_API void ELF_APIENTRY elfSetEntityScale(elfEntity* entity, float x, float y, float z);
+ELF_API elfVec3f ELF_APIENTRY elfGetEntityScale(elfEntity* entity);
 /* <!> */ void elfGetEntityScale_(elfEntity* entity, float* scale);
 
-void elfSetEntityModel(elfEntity* entity, elfModel* model);
-void elfClearEntityModel(elfEntity* entity);
-elfModel* elfGetEntityModel(elfEntity* entity);
-int elfGetEntityMaterialCount(elfEntity* entity);
-void elfAddEntityMaterial(elfEntity* entity, elfMaterial* material);
-void elfSetEntityMaterial(elfEntity* entity, int idx, elfMaterial* material);
-void elfRemoveEntityMaterial(elfEntity* entity, int idx);
-elfMaterial* elfGetEntityMaterial(elfEntity* entity, int idx);
+ELF_API void ELF_APIENTRY elfSetEntityModel(elfEntity* entity, elfModel* model);
+ELF_API void ELF_APIENTRY elfClearEntityModel(elfEntity* entity);
+ELF_API elfModel* ELF_APIENTRY elfGetEntityModel(elfEntity* entity);
+ELF_API int ELF_APIENTRY elfGetEntityMaterialCount(elfEntity* entity);
+ELF_API void ELF_APIENTRY elfAddEntityMaterial(elfEntity* entity, elfMaterial* material);
+ELF_API void ELF_APIENTRY elfSetEntityMaterial(elfEntity* entity, int idx, elfMaterial* material);
+ELF_API void ELF_APIENTRY elfRemoveEntityMaterial(elfEntity* entity, int idx);
+ELF_API elfMaterial* ELF_APIENTRY elfGetEntityMaterial(elfEntity* entity, int idx);
 
-void elfSetEntityVisible(elfEntity* entity, unsigned char visible);
-unsigned char elfGetEntityVisible(elfEntity* entity);
+ELF_API void ELF_APIENTRY elfSetEntityVisible(elfEntity* entity, unsigned char visible);
+ELF_API unsigned char ELF_APIENTRY elfGetEntityVisible(elfEntity* entity);
 
-void elfSetEntityOccluder(elfEntity* entity, unsigned char occluder);
-unsigned char elfGetEntityOccluder(elfEntity* entity);
+ELF_API void ELF_APIENTRY elfSetEntityOccluder(elfEntity* entity, unsigned char occluder);
+ELF_API unsigned char ELF_APIENTRY elfGetEntityOccluder(elfEntity* entity);
 
-void elfSetEntityPhysics(elfEntity* entity, int type, float mass);
-void elfDisableEntityPhysics(elfEntity* entity);
+ELF_API void ELF_APIENTRY elfSetEntityPhysics(elfEntity* entity, int type, float mass);
+ELF_API void ELF_APIENTRY elfDisableEntityPhysics(elfEntity* entity);
 
-void elfSetEntityArmature(elfEntity* entity, elfArmature* armature);
-void elfSetEntityArmatureFrame(elfEntity* entity, float frame);
-void elfPlayEntityArmature(elfEntity* entity, float start, float end, float speed);
-void elfLoopEntityArmature(elfEntity* entity, float start, float end, float speed);
-void elfStopEntityArmature(elfEntity* entity);
-void elfPauseEntityArmature(elfEntity* entity);
-void elfResumeEntityArmature(elfEntity* entity);
-float elfGetEntityArmatureStart(elfEntity* entity);
-float elfGetEntityArmatureEnd(elfEntity* entity);
-float elfGetEntityArmatureSpeed(elfEntity* entity);
-float elfGetEntityArmatureFrame(elfEntity* entity);
-unsigned char elfIsEntityArmaturePlaying(elfEntity* entity);
-unsigned char elfIsEntityArmaturePaused(elfEntity* entity);
+ELF_API void ELF_APIENTRY elfSetEntityArmature(elfEntity* entity, elfArmature* armature);
+ELF_API void ELF_APIENTRY elfSetEntityArmatureFrame(elfEntity* entity, float frame);
+ELF_API void ELF_APIENTRY elfPlayEntityArmature(elfEntity* entity, float start, float end, float speed);
+ELF_API void ELF_APIENTRY elfLoopEntityArmature(elfEntity* entity, float start, float end, float speed);
+ELF_API void ELF_APIENTRY elfStopEntityArmature(elfEntity* entity);
+ELF_API void ELF_APIENTRY elfPauseEntityArmature(elfEntity* entity);
+ELF_API void ELF_APIENTRY elfResumeEntityArmature(elfEntity* entity);
+ELF_API float ELF_APIENTRY elfGetEntityArmatureStart(elfEntity* entity);
+ELF_API float ELF_APIENTRY elfGetEntityArmatureEnd(elfEntity* entity);
+ELF_API float ELF_APIENTRY elfGetEntityArmatureSpeed(elfEntity* entity);
+ELF_API float ELF_APIENTRY elfGetEntityArmatureFrame(elfEntity* entity);
+ELF_API unsigned char ELF_APIENTRY elfIsEntityArmaturePlaying(elfEntity* entity);
+ELF_API unsigned char ELF_APIENTRY elfIsEntityArmaturePaused(elfEntity* entity);
 
-elfArmature* elfGetEntityArmature(elfEntity* entity);
+ELF_API elfArmature* ELF_APIENTRY elfGetEntityArmature(elfEntity* entity);
 
 // <!!
 void elfResetEntityDebugPhysicsObject(elfEntity* entity);
@@ -1178,7 +1187,7 @@ void elfDrawEntityDebug(elfEntity* entity, gfxShaderParams* shaderParams);
 unsigned char elfCullEntity(elfEntity* entity, elfCamera* camera);
 // !!>
 
-unsigned char elfGetEntityChanged(elfEntity* entity);
+ELF_API unsigned char ELF_APIENTRY elfGetEntityChanged(elfEntity* entity);
 
 //////////////////////////////// LIGHT ////////////////////////////////
 
@@ -1189,29 +1198,29 @@ void elfLightPostDraw(elfLight* light);
 void elfDestroyLight(void* data);
 // !!>
 
-elfLight* elfCreateLight(const char* name);	// <mdoc> LIGHT FUNCTIONS
+ELF_API elfLight* ELF_APIENTRY elfCreateLight(const char* name);	// <mdoc> LIGHT FUNCTIONS
 
-int elfGetLightType(elfLight* light);
-elfColor elfGetLightColor(elfLight* light);
-float elfGetLightDistance(elfLight* light);
-float elfGetLightFadeSpeed(elfLight* light);
-unsigned char elfGetLightShadows(elfLight* light);
-unsigned char elfGetLightVisible(elfLight* light);
-elfVec2f elfGetLightCone(elfLight* light);
-unsigned char elfIsLightShaft(elfLight* light);
-float elfGetLightShaftSize(elfLight* light);
-float elfGetLightShaftIntensity(elfLight* light);
-float elfGetLightShaftFadeOff(elfLight* light);
+ELF_API int ELF_APIENTRY elfGetLightType(elfLight* light);
+ELF_API elfColor ELF_APIENTRY elfGetLightColor(elfLight* light);
+ELF_API float ELF_APIENTRY elfGetLightDistance(elfLight* light);
+ELF_API float ELF_APIENTRY elfGetLightFadeSpeed(elfLight* light);
+ELF_API unsigned char ELF_APIENTRY elfGetLightShadows(elfLight* light);
+ELF_API unsigned char ELF_APIENTRY elfGetLightVisible(elfLight* light);
+ELF_API elfVec2f ELF_APIENTRY elfGetLightCone(elfLight* light);
+ELF_API unsigned char ELF_APIENTRY elfIsLightShaft(elfLight* light);
+ELF_API float ELF_APIENTRY elfGetLightShaftSize(elfLight* light);
+ELF_API float ELF_APIENTRY elfGetLightShaftIntensity(elfLight* light);
+ELF_API float ELF_APIENTRY elfGetLightShaftFadeOff(elfLight* light);
 
-void elfSetLightType(elfLight* light, int type);
-void elfSetLightColor(elfLight* light, float r, float g, float b, float a);
-void elfSetLightDistance(elfLight* light, float distance);
-void elfSetLightFadeSpeed(elfLight* light, float fadeSpeed);
-void elfSetLightShadows(elfLight* light, unsigned char shadows);
-void elfSetLightVisible(elfLight* light, unsigned char visible);
-void elfSetLightCone(elfLight* light, float innerCone, float outerCone);
-void elfSetLightShaft(elfLight* light, float size, float intensity, float fadeOff);
-void elfDisableLightShaft(elfLight* light);
+ELF_API void ELF_APIENTRY elfSetLightType(elfLight* light, int type);
+ELF_API void ELF_APIENTRY elfSetLightColor(elfLight* light, float r, float g, float b, float a);
+ELF_API void ELF_APIENTRY elfSetLightDistance(elfLight* light, float distance);
+ELF_API void ELF_APIENTRY elfSetLightFadeSpeed(elfLight* light, float fadeSpeed);
+ELF_API void ELF_APIENTRY elfSetLightShadows(elfLight* light, unsigned char shadows);
+ELF_API void ELF_APIENTRY elfSetLightVisible(elfLight* light, unsigned char visible);
+ELF_API void ELF_APIENTRY elfSetLightCone(elfLight* light, float innerCone, float outerCone);
+ELF_API void ELF_APIENTRY elfSetLightShaft(elfLight* light, float size, float intensity, float fadeOff);
+ELF_API void ELF_APIENTRY elfDisableLightShaft(elfLight* light);
 
 // <!!
 void elfSetLight(elfLight* light, elfCamera* camera, gfxShaderParams* shaderParams);
@@ -1226,24 +1235,24 @@ elfBone* elfCreateBone(const char* name);
 void elfDestroyBone(void* data);
 // !!>
 
-elfArmature* elfGetBoneArmature(elfBone* bone);	// <mdoc> BONE FUNCTIONS
-elfBone* elfGetBoneParent(elfBone* bone);
-elfBone* elfGetBoneChildByName(elfBone* bone, const char* name);
-elfBone* elfGetBoneChildById(elfBone* bone, int id);
-elfBone* elfGetBoneChildByIndex(elfBone* bone, int idx);
-elfVec3f elfGetBonePosition(elfBone* bone);
-elfVec3f elfGetBoneRotation(elfBone* bone);
-elfVec4f elfGetBoneOrientation(elfBone* bone);
+ELF_API elfArmature* ELF_APIENTRY elfGetBoneArmature(elfBone* bone);	// <mdoc> ARMATURE FUNCTIONS
+ELF_API elfBone* ELF_APIENTRY elfGetBoneParent(elfBone* bone);
+ELF_API elfBone* ELF_APIENTRY elfGetBoneChildByName(elfBone* bone, const char* name);
+ELF_API elfBone* ELF_APIENTRY elfGetBoneChildById(elfBone* bone, int id);
+ELF_API elfBone* ELF_APIENTRY elfGetBoneChildByIndex(elfBone* bone, int idx);
+ELF_API elfVec3f ELF_APIENTRY elfGetBonePosition(elfBone* bone);
+ELF_API elfVec3f ELF_APIENTRY elfGetBoneRotation(elfBone* bone);
+ELF_API elfVec4f ELF_APIENTRY elfGetBoneOrientation(elfBone* bone);
 
 // <!!
 void elfUpdateArmature(elfArmature* armature);
 void elfDestroyArmature(void* data);
 // !!>
 
-elfArmature* elfCreateArmature(const char* name);	// <mdoc> ARMATURE FUNCTIONS
+ELF_API elfArmature* ELF_APIENTRY elfCreateArmature(const char* name);
 
-elfBone* elfGetBoneFromArmatureByName(const char* name, elfArmature* armature);
-elfBone* elfGetBoneFromArmatureById(int id, elfArmature* armature);
+ELF_API elfBone* ELF_APIENTRY elfGetBoneFromArmatureByName(const char* name, elfArmature* armature);
+ELF_API elfBone* ELF_APIENTRY elfGetBoneFromArmatureById(int id, elfArmature* armature);
 
 // <!!
 void elfAddRootBoneToArmature(elfArmature* armature, elfBone* bone);
@@ -1263,64 +1272,64 @@ void elfUpdateParticles(elfParticles* particles, float sync);
 void elfDestroyParticles(void* data);
 // !!>
 
-elfParticles* elfCreateParticles(const char* name, int maxCount);	// <mdoc> PARTICLES FUNCTIONS
+ELF_API elfParticles* ELF_APIENTRY elfCreateParticles(const char* name, int maxCount);	// <mdoc> PARTICLE FUNCTIONS
 
-const char* elfGetParticlesName(elfParticles* particles);
-const char* elfGetParticlesFilePath(elfParticles* particles);
+ELF_API const char* ELF_APIENTRY elfGetParticlesName(elfParticles* particles);
+ELF_API const char* ELF_APIENTRY elfGetParticlesFilePath(elfParticles* particles);
 
-void elfSetParticlesMaxCount(elfParticles* particles, int maxCount);
-void elfSetParticlesDrawMode(elfParticles* particles, int mode);
-void elfSetParticlesTexture(elfParticles* particles, elfTexture* texture);
-void elfClearParticlesTexture(elfParticles* particles);
-void elfSetParticlesModel(elfParticles* particles, elfModel* model);
-void elfClearParticlesModel(elfParticles* particles);
-void elfSetParticlesEntity(elfParticles* particles, elfEntity* entity);
-void elfClearParticlesEntity(elfParticles* particles);
-void elfSetParticlesGravity(elfParticles* particles, float x, float y, float z);
-void elfSetParticlesSpawnDelay(elfParticles* particles, float delay);
-void elfSetParticlesSpawn(elfParticles* particles, unsigned char spawn);
+ELF_API void ELF_APIENTRY elfSetParticlesMaxCount(elfParticles* particles, int maxCount);
+ELF_API void ELF_APIENTRY elfSetParticlesDrawMode(elfParticles* particles, int mode);
+ELF_API void ELF_APIENTRY elfSetParticlesTexture(elfParticles* particles, elfTexture* texture);
+ELF_API void ELF_APIENTRY elfClearParticlesTexture(elfParticles* particles);
+ELF_API void ELF_APIENTRY elfSetParticlesModel(elfParticles* particles, elfModel* model);
+ELF_API void ELF_APIENTRY elfClearParticlesModel(elfParticles* particles);
+ELF_API void ELF_APIENTRY elfSetParticlesEntity(elfParticles* particles, elfEntity* entity);
+ELF_API void ELF_APIENTRY elfClearParticlesEntity(elfParticles* particles);
+ELF_API void ELF_APIENTRY elfSetParticlesGravity(elfParticles* particles, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetParticlesSpawnDelay(elfParticles* particles, float delay);
+ELF_API void ELF_APIENTRY elfSetParticlesSpawn(elfParticles* particles, unsigned char spawn);
 
-void elfSetParticlesSize(elfParticles* particles, float min, float max);
-void elfSetParticlesSizeGrowth(elfParticles* particles, float min, float max);
-void elfSetParticlesRotation(elfParticles* particles, float min, float max);
-void elfSetParticlesRotationGrowth(elfParticles* particles, float min, float max);
-void elfSetParticlesLifeSpan(elfParticles* particles, float min, float max);
-void elfSetParticlesFadeSpeed(elfParticles* particles, float min, float max);
-void elfSetParticlesPositionMin(elfParticles* particles, float x, float y, float z);
-void elfSetParticlesPositionMax(elfParticles* particles, float x, float y, float z);
-void elfSetParticlesVelocityMin(elfParticles* particles, float x, float y, float z);
-void elfSetParticlesVelocityMax(elfParticles* particles, float x, float y, float z);
-void elfSetParticlesColorMin(elfParticles* particles, float r, float g, float b, float a);
-void elfSetParticlesColorMax(elfParticles* particles, float r, float g, float b, float a);
+ELF_API void ELF_APIENTRY elfSetParticlesSize(elfParticles* particles, float min, float max);
+ELF_API void ELF_APIENTRY elfSetParticlesSizeGrowth(elfParticles* particles, float min, float max);
+ELF_API void ELF_APIENTRY elfSetParticlesRotation(elfParticles* particles, float min, float max);
+ELF_API void ELF_APIENTRY elfSetParticlesRotationGrowth(elfParticles* particles, float min, float max);
+ELF_API void ELF_APIENTRY elfSetParticlesLifeSpan(elfParticles* particles, float min, float max);
+ELF_API void ELF_APIENTRY elfSetParticlesFadeSpeed(elfParticles* particles, float min, float max);
+ELF_API void ELF_APIENTRY elfSetParticlesPositionMin(elfParticles* particles, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetParticlesPositionMax(elfParticles* particles, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetParticlesVelocityMin(elfParticles* particles, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetParticlesVelocityMax(elfParticles* particles, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetParticlesColorMin(elfParticles* particles, float r, float g, float b, float a);
+ELF_API void ELF_APIENTRY elfSetParticlesColorMax(elfParticles* particles, float r, float g, float b, float a);
 
-int elfGetParticlesMaxCount(elfParticles* particles);
-int elfGetParticlesCount(elfParticles* particles);
-int elfGetParticlesDrawMode(elfParticles* particles);
-elfTexture* elfGetParticlesTexture(elfParticles* particles);
-elfModel* elfGetParticlesModel(elfParticles* particles);
-elfEntity* elfGetParticlesEntity(elfParticles* particles);
-elfVec3f elfGetParticlesGravity(elfParticles* particles);
-float elfGetParticlesSpawnDelay(elfParticles* particles);
-unsigned char elfGetParticlesSpawn(elfParticles* particles);
+ELF_API int ELF_APIENTRY elfGetParticlesMaxCount(elfParticles* particles);
+ELF_API int ELF_APIENTRY elfGetParticlesCount(elfParticles* particles);
+ELF_API int ELF_APIENTRY elfGetParticlesDrawMode(elfParticles* particles);
+ELF_API elfTexture* ELF_APIENTRY elfGetParticlesTexture(elfParticles* particles);
+ELF_API elfModel* ELF_APIENTRY elfGetParticlesModel(elfParticles* particles);
+ELF_API elfEntity* ELF_APIENTRY elfGetParticlesEntity(elfParticles* particles);
+ELF_API elfVec3f ELF_APIENTRY elfGetParticlesGravity(elfParticles* particles);
+ELF_API float ELF_APIENTRY elfGetParticlesSpawnDelay(elfParticles* particles);
+ELF_API unsigned char ELF_APIENTRY elfGetParticlesSpawn(elfParticles* particles);
 
-float elfGetParticlesSizeMin(elfParticles* particles);
-float elfGetParticlesSizeMax(elfParticles* particles);
-float elfGetParticlesSizeGrowthMin(elfParticles* particles);
-float elfGetParticlesSizeGrowthMax(elfParticles* particles);
-float elfGetParticlesRotationMin(elfParticles* particles);
-float elfGetParticlesRotationMax(elfParticles* particles);
-float elfGetParticlesRotationGrowthMin(elfParticles* particles);
-float elfGetParticlesRotationGrowthMax(elfParticles* particles);
-float elfGetParticlesLifeSpanMin(elfParticles* particles);
-float elfGetParticlesLifeSpanMax(elfParticles* particles);
-float elfGetParticlesFadeSpeedMin(elfParticles* particles);
-float elfGetParticlesFadeSpeedMax(elfParticles* particles);
-elfVec3f elfGetParticlesPositionMin(elfParticles* particles);
-elfVec3f elfGetParticlesPositionMax(elfParticles* particles);
-elfVec3f elfGetParticlesVelocityMin(elfParticles* particles);
-elfVec3f elfGetParticlesVelocityMax(elfParticles* particles);
-elfColor elfGetParticlesColorMin(elfParticles* particles);
-elfColor elfGetParticlesColorMax(elfParticles* particles);
+ELF_API float ELF_APIENTRY elfGetParticlesSizeMin(elfParticles* particles);
+ELF_API float ELF_APIENTRY elfGetParticlesSizeMax(elfParticles* particles);
+ELF_API float ELF_APIENTRY elfGetParticlesSizeGrowthMin(elfParticles* particles);
+ELF_API float ELF_APIENTRY elfGetParticlesSizeGrowthMax(elfParticles* particles);
+ELF_API float ELF_APIENTRY elfGetParticlesRotationMin(elfParticles* particles);
+ELF_API float ELF_APIENTRY elfGetParticlesRotationMax(elfParticles* particles);
+ELF_API float ELF_APIENTRY elfGetParticlesRotationGrowthMin(elfParticles* particles);
+ELF_API float ELF_APIENTRY elfGetParticlesRotationGrowthMax(elfParticles* particles);
+ELF_API float ELF_APIENTRY elfGetParticlesLifeSpanMin(elfParticles* particles);
+ELF_API float ELF_APIENTRY elfGetParticlesLifeSpanMax(elfParticles* particles);
+ELF_API float ELF_APIENTRY elfGetParticlesFadeSpeedMin(elfParticles* particles);
+ELF_API float ELF_APIENTRY elfGetParticlesFadeSpeedMax(elfParticles* particles);
+ELF_API elfVec3f ELF_APIENTRY elfGetParticlesPositionMin(elfParticles* particles);
+ELF_API elfVec3f ELF_APIENTRY elfGetParticlesPositionMax(elfParticles* particles);
+ELF_API elfVec3f ELF_APIENTRY elfGetParticlesVelocityMin(elfParticles* particles);
+ELF_API elfVec3f ELF_APIENTRY elfGetParticlesVelocityMax(elfParticles* particles);
+ELF_API elfColor ELF_APIENTRY elfGetParticlesColorMin(elfParticles* particles);
+ELF_API elfColor ELF_APIENTRY elfGetParticlesColorMax(elfParticles* particles);
 
 // <!!
 void elfDrawParticlesDebug(elfParticles* particles, gfxShaderParams* shaderParams);
@@ -1337,21 +1346,21 @@ void elfSpritePostDraw(elfSprite* sprite);
 void elfDestroySprite(void* data);
 // !!>
 
-elfSprite* elfCreateSprite(const char* name);
+ELF_API elfSprite* ELF_APIENTRY elfCreateSprite(const char* name);	// <mdoc> SPRITE FUNCTIONS
 
-void elfSetSpriteMaterial(elfSprite* sprite, elfMaterial* material);
-void elfSetSpriteScale(elfSprite* sprite, float x, float y);
-void elfSetSpriteFaceCamera(elfSprite* sprite, unsigned char faceCamera);
+ELF_API void ELF_APIENTRY elfSetSpriteMaterial(elfSprite* sprite, elfMaterial* material);
+ELF_API void ELF_APIENTRY elfSetSpriteScale(elfSprite* sprite, float x, float y);
+ELF_API void ELF_APIENTRY elfSetSpriteFaceCamera(elfSprite* sprite, unsigned char faceCamera);
 
-elfMaterial* elfGetSpriteMaterial(elfSprite* sprite);
-elfVec2f elfGetSpriteScale(elfSprite* sprite);
-unsigned char elfGetSpriteFaceCamera(elfSprite* sprite);
+ELF_API elfMaterial* ELF_APIENTRY elfGetSpriteMaterial(elfSprite* sprite);
+ELF_API elfVec2f ELF_APIENTRY elfGetSpriteScale(elfSprite* sprite);
+ELF_API unsigned char ELF_APIENTRY elfGetSpriteFaceCamera(elfSprite* sprite);
 
-void elfSetSpriteVisible(elfSprite* sprite, unsigned char visible);
-unsigned char elfGetSpriteVisible(elfSprite* sprite);
+ELF_API void ELF_APIENTRY elfSetSpriteVisible(elfSprite* sprite, unsigned char visible);
+ELF_API unsigned char ELF_APIENTRY elfGetSpriteVisible(elfSprite* sprite);
 
-void elfSetSpriteOccluder(elfSprite* sprite, unsigned char occluder);
-unsigned char elfGetSpriteOccluder(elfSprite* sprite);
+ELF_API void ELF_APIENTRY elfSetSpriteOccluder(elfSprite* sprite, unsigned char occluder);
+ELF_API unsigned char ELF_APIENTRY elfGetSpriteOccluder(elfSprite* sprite);
 
 // <!!
 unsigned char elfCullSprite(elfSprite* sprite, elfCamera* camera);
@@ -1368,63 +1377,63 @@ void elfScenePostDraw(elfScene* scene);
 void elfDestroyScene(void* data);
 // !!>
 
-elfScene* elfCreateScene(const char* name);
-elfScene* elfCreateSceneFromFile(const char* filePath);	// <mdoc> SCENE FUNCTIONS
-unsigned char elfSaveScene(elfScene* scene, const char* filePath);
+ELF_API elfScene* ELF_APIENTRY elfCreateScene(const char* name);	// <mdoc> SCENE FUNCTIONS
+ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* filePath);
+ELF_API unsigned char ELF_APIENTRY elfSaveScene(elfScene* scene, const char* filePath);
 
-void elfSetSceneAmbientColor(elfScene* scene, float r, float g, float b, float a);
-elfColor elfGetSceneAmbientColor(elfScene* scene);
+ELF_API void ELF_APIENTRY elfSetSceneAmbientColor(elfScene* scene, float r, float g, float b, float a);
+ELF_API elfColor ELF_APIENTRY elfGetSceneAmbientColor(elfScene* scene);
 
-void elfSetSceneGravity(elfScene* scene, float x, float y, float z);
-elfVec3f elfGetSceneGravity(elfScene* scene);
+ELF_API void ELF_APIENTRY elfSetSceneGravity(elfScene* scene, float x, float y, float z);
+ELF_API elfVec3f ELF_APIENTRY elfGetSceneGravity(elfScene* scene);
 
-void elfSetScenePhysics(elfScene* scene, unsigned char physics);
-unsigned char elfGetScenePhysics(elfScene* scene);
+ELF_API void ELF_APIENTRY elfSetScenePhysics(elfScene* scene, unsigned char physics);
+ELF_API unsigned char ELF_APIENTRY elfGetScenePhysics(elfScene* scene);
 
-void elfSetSceneRunScripts(elfScene* scene, unsigned char runScripts);
-unsigned char elfGetSceneRunScripts(elfScene* scene, unsigned char runScripts);
+ELF_API void ELF_APIENTRY elfSetSceneRunScripts(elfScene* scene, unsigned char runScripts);
+ELF_API unsigned char ELF_APIENTRY elfGetSceneRunScripts(elfScene* scene, unsigned char runScripts);
 
-const char* elfGetSceneName(elfScene* scene);
-const char* elfGetSceneFilePath(elfScene* scene);
+ELF_API const char* ELF_APIENTRY elfGetSceneName(elfScene* scene);
+ELF_API const char* ELF_APIENTRY elfGetSceneFilePath(elfScene* scene);
 
-int elfGetSceneCameraCount(elfScene* scene);
-int elfGetSceneEntityCount(elfScene* scene);
-int elfGetSceneLightCount(elfScene* scene);
-int elfGetSceneArmatureCount(elfScene* scene);
-int elfGetSceneParticlesCount(elfScene* scene);
-int elfGetSceneSpriteCount(elfScene* scene);
+ELF_API int ELF_APIENTRY elfGetSceneCameraCount(elfScene* scene);
+ELF_API int ELF_APIENTRY elfGetSceneEntityCount(elfScene* scene);
+ELF_API int ELF_APIENTRY elfGetSceneLightCount(elfScene* scene);
+ELF_API int ELF_APIENTRY elfGetSceneArmatureCount(elfScene* scene);
+ELF_API int ELF_APIENTRY elfGetSceneParticlesCount(elfScene* scene);
+ELF_API int ELF_APIENTRY elfGetSceneSpriteCount(elfScene* scene);
 
-void elfAddCameraToScene(elfScene* scene, elfCamera* camera);
-void elfAddEntityToScene(elfScene* scene, elfEntity* entity);
-void elfAddLightToScene(elfScene* scene, elfLight* light);
-void elfAddParticlesToScene(elfScene* scene, elfParticles* particles);
-void elfAddSpriteToScene(elfScene* scene, elfSprite* sprite);
+ELF_API void ELF_APIENTRY elfAddCameraToScene(elfScene* scene, elfCamera* camera);
+ELF_API void ELF_APIENTRY elfAddEntityToScene(elfScene* scene, elfEntity* entity);
+ELF_API void ELF_APIENTRY elfAddLightToScene(elfScene* scene, elfLight* light);
+ELF_API void ELF_APIENTRY elfAddParticlesToScene(elfScene* scene, elfParticles* particles);
+ELF_API void ELF_APIENTRY elfAddSpriteToScene(elfScene* scene, elfSprite* sprite);
 
-void elfSetSceneActiveCamera(elfScene* scene, elfCamera* camera);
-elfCamera* elfGetSceneActiveCamera(elfScene* scene);
-elfCollision* elfGetSceneRayCastResult(elfScene* scene, float x, float y, float z, float dx, float dy, float dz);
-elfList* elfGetSceneRayCastResults(elfScene* scene, float x, float y, float z, float dx, float dy, float dz);
-elfCollision* elfGetDebugSceneRayCastResult(elfScene* scene, float x, float y, float z, float dx, float dy, float dz);
-elfList* elfGetDebugSceneRayCastResults(elfScene* scene, float x, float y, float z, float dx, float dy, float dz);
+ELF_API void ELF_APIENTRY elfSetSceneActiveCamera(elfScene* scene, elfCamera* camera);
+ELF_API elfCamera* ELF_APIENTRY elfGetSceneActiveCamera(elfScene* scene);
+ELF_API elfCollision* ELF_APIENTRY elfGetSceneRayCastResult(elfScene* scene, float x, float y, float z, float dx, float dy, float dz);
+ELF_API elfList* ELF_APIENTRY elfGetSceneRayCastResults(elfScene* scene, float x, float y, float z, float dx, float dy, float dz);
+ELF_API elfCollision* ELF_APIENTRY elfGetDebugSceneRayCastResult(elfScene* scene, float x, float y, float z, float dx, float dy, float dz);
+ELF_API elfList* ELF_APIENTRY elfGetDebugSceneRayCastResults(elfScene* scene, float x, float y, float z, float dx, float dy, float dz);
 
-elfCamera* elfGetCameraByIndex(elfScene* scene, int idx);
-elfEntity* elfGetEntityByIndex(elfScene* scene, int idx);
-elfLight* elfGetLightByIndex(elfScene* scene, int idx);
-elfArmature* elfGetArmatureByIndex(elfScene* scene, int idx);
-elfParticles* elfGetParticlesByIndex(elfScene* scene, int idx);
-elfSprite* elfGetSpriteByIndex(elfScene* scene, int idx);
+ELF_API elfCamera* ELF_APIENTRY elfGetCameraByIndex(elfScene* scene, int idx);
+ELF_API elfEntity* ELF_APIENTRY elfGetEntityByIndex(elfScene* scene, int idx);
+ELF_API elfLight* ELF_APIENTRY elfGetLightByIndex(elfScene* scene, int idx);
+ELF_API elfArmature* ELF_APIENTRY elfGetArmatureByIndex(elfScene* scene, int idx);
+ELF_API elfParticles* ELF_APIENTRY elfGetParticlesByIndex(elfScene* scene, int idx);
+ELF_API elfSprite* ELF_APIENTRY elfGetSpriteByIndex(elfScene* scene, int idx);
 
-elfTexture* elfGetTextureByName(elfScene* scene, const char* name);
-elfMaterial* elfGetMaterialByName(elfScene* scene, const char* name);
-elfModel* elfGetModelByName(elfScene* scene, const char* name);
-elfScript* elfGetScriptByName(elfScene* scene, const char* name);
-elfCamera* elfGetCameraByName(elfScene* scene, const char* name);
-elfEntity* elfGetEntityByName(elfScene* scene, const char* name);
-elfLight* elfGetLightByName(elfScene* scene, const char* name);
-elfArmature* elfGetArmatureByName(elfScene* scene, const char* name);
-elfParticles* elfGetParticlesByName(elfScene* scene, const char* name);
-elfSprite* elfGetSpriteByName(elfScene* scene, const char* name);
-elfActor* elfGetActorByName(elfScene* scene, const char* name);
+ELF_API elfTexture* ELF_APIENTRY elfGetTextureByName(elfScene* scene, const char* name);
+ELF_API elfMaterial* ELF_APIENTRY elfGetMaterialByName(elfScene* scene, const char* name);
+ELF_API elfModel* ELF_APIENTRY elfGetModelByName(elfScene* scene, const char* name);
+ELF_API elfScript* ELF_APIENTRY elfGetScriptByName(elfScene* scene, const char* name);
+ELF_API elfCamera* ELF_APIENTRY elfGetCameraByName(elfScene* scene, const char* name);
+ELF_API elfEntity* ELF_APIENTRY elfGetEntityByName(elfScene* scene, const char* name);
+ELF_API elfLight* ELF_APIENTRY elfGetLightByName(elfScene* scene, const char* name);
+ELF_API elfArmature* ELF_APIENTRY elfGetArmatureByName(elfScene* scene, const char* name);
+ELF_API elfParticles* ELF_APIENTRY elfGetParticlesByName(elfScene* scene, const char* name);
+ELF_API elfSprite* ELF_APIENTRY elfGetSpriteByName(elfScene* scene, const char* name);
+ELF_API elfActor* ELF_APIENTRY elfGetActorByName(elfScene* scene, const char* name);
 
 // <!!
 elfTexture* elfGetOrLoadTextureByName(elfScene* scene, const char* name);
@@ -1441,35 +1450,35 @@ elfActor* elfGetOrLoadActorByName(elfScene* scene, const char* name);
 
 void elfRemoveActor(elfActor* actor);
 // !!>
-unsigned char elfRemoveCameraByName(elfScene* scene, const char* name);
-unsigned char elfRemoveEntityByName(elfScene* scene, const char* name);
-unsigned char elfRemoveLightByName(elfScene* scene, const char* name);
-unsigned char elfRemoveParticlesByName(elfScene* scene, const char* name);
-unsigned char elfRemoveSpriteByName(elfScene* scene, const char* name);
+ELF_API unsigned char ELF_APIENTRY elfRemoveCameraByName(elfScene* scene, const char* name);
+ELF_API unsigned char ELF_APIENTRY elfRemoveEntityByName(elfScene* scene, const char* name);
+ELF_API unsigned char ELF_APIENTRY elfRemoveLightByName(elfScene* scene, const char* name);
+ELF_API unsigned char ELF_APIENTRY elfRemoveParticlesByName(elfScene* scene, const char* name);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSpriteByName(elfScene* scene, const char* name);
 
-unsigned char elfRemoveCameraByIndex(elfScene* scene, int idx);
-unsigned char elfRemoveEntityByIndex(elfScene* scene, int idx);
-unsigned char elfRemoveLightByIndex(elfScene* scene, int idx);
-unsigned char elfRemoveParticlesByIndex(elfScene* scene, int idx);
-unsigned char elfRemoveSpriteByIndex(elfScene* scene, int idx);
+ELF_API unsigned char ELF_APIENTRY elfRemoveCameraByIndex(elfScene* scene, int idx);
+ELF_API unsigned char ELF_APIENTRY elfRemoveEntityByIndex(elfScene* scene, int idx);
+ELF_API unsigned char ELF_APIENTRY elfRemoveLightByIndex(elfScene* scene, int idx);
+ELF_API unsigned char ELF_APIENTRY elfRemoveParticlesByIndex(elfScene* scene, int idx);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSpriteByIndex(elfScene* scene, int idx);
 
-unsigned char elfRemoveCameraByObject(elfScene* scene, elfCamera* camera);
-unsigned char elfRemoveEntityByObject(elfScene* scene, elfEntity* entity);
-unsigned char elfRemoveLightByObject(elfScene* scene, elfLight* light);
-unsigned char elfRemoveParticlesByObject(elfScene* scene, elfParticles* particles);
-unsigned char elfRemoveSpriteByObject(elfScene* scene, elfSprite* sprite);
+ELF_API unsigned char ELF_APIENTRY elfRemoveCameraByObject(elfScene* scene, elfCamera* camera);
+ELF_API unsigned char ELF_APIENTRY elfRemoveEntityByObject(elfScene* scene, elfEntity* entity);
+ELF_API unsigned char ELF_APIENTRY elfRemoveLightByObject(elfScene* scene, elfLight* light);
+ELF_API unsigned char ELF_APIENTRY elfRemoveParticlesByObject(elfScene* scene, elfParticles* particles);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSpriteByObject(elfScene* scene, elfSprite* sprite);
 
-unsigned char elfRemoveActorByObject(elfScene* scene, elfActor* actor);
+ELF_API unsigned char ELF_APIENTRY elfRemoveActorByObject(elfScene* scene, elfActor* actor);
 
 // <!!
 void elfDrawScene(elfScene* scene);
 void elfDrawSceneDebug(elfScene* scene);
 // !!>
 
-elfList* elfGetSceneScripts(elfScene* scene);
-elfList* elfGetSceneTextures(elfScene* scene);
-elfList* elfGetSceneMaterials(elfScene* scene);
-elfList* elfGetSceneModels(elfScene* scene);
+ELF_API elfList* ELF_APIENTRY elfGetSceneScripts(elfScene* scene);
+ELF_API elfList* ELF_APIENTRY elfGetSceneTextures(elfScene* scene);
+ELF_API elfList* ELF_APIENTRY elfGetSceneMaterials(elfScene* scene);
+ELF_API elfList* ELF_APIENTRY elfGetSceneModels(elfScene* scene);
 
 //////////////////////////////// PAK ////////////////////////////////
 
@@ -1570,16 +1579,16 @@ unsigned char elfIsPostProcessLightShafts(elfPostProcess* postProcess);
 void elfDestroyScript(void* data);
 // !!>
 
-elfScript* elfCreateScript(const char* name);	// <mdoc> SCRIPT FUNCTIONS
-elfScript* elfCreateScriptFromFile(const char* filePath);
+ELF_API elfScript* ELF_APIENTRY elfCreateScript(const char* name);	// <mdoc> SCRIPT FUNCTIONS
+ELF_API elfScript* ELF_APIENTRY elfCreateScriptFromFile(const char* filePath);
 
-void elfSetScriptName(elfScript* script, const char* name);
+ELF_API void ELF_APIENTRY elfSetScriptName(elfScript* script, const char* name);
 
-const char* elfGetScriptName(elfScript* script);
-const char* elfGetScriptFilePath(elfScript* script);
+ELF_API const char* ELF_APIENTRY elfGetScriptName(elfScript* script);
+ELF_API const char* ELF_APIENTRY elfGetScriptFilePath(elfScript* script);
 
-void elfSetScriptText(elfScript* script, const char* text);
-unsigned char elfIsScriptError(elfScript* script);
+ELF_API void ELF_APIENTRY elfSetScriptText(elfScript* script, const char* text);
+ELF_API unsigned char ELF_APIENTRY elfIsScriptError(elfScript* script);
 
 //////////////////////////////// SCRIPTING ////////////////////////////////
 
@@ -1595,8 +1604,8 @@ elfScript* elfGetCurrentScript();
 void elfSetScriptError(int err, const char* msg);
 // !!>
 
-unsigned char elfRunString(const char* str);
-unsigned char elfRunScript(elfScript* script);
+ELF_API unsigned char ELF_APIENTRY elfRunString(const char* str);	// <mdoc> SCRIPTING FUNCTIONS
+ELF_API unsigned char ELF_APIENTRY elfRunScript(elfScript* script);
 
 //////////////////////////////// AUDIO ////////////////////////////////
 
@@ -1607,10 +1616,10 @@ unsigned char elfInitAudio();
 void elfUpdateAudio();
 void elfDeinitAudio();
 // !!>
-void elfSetAudioVolume(float volume);	// <mdoc> AUDIO FUNCTIONS
-float elfGetAudioVolume();
-void elfSetAudioRolloff(float rolloff);
-float elfGetAudioRolloff();
+ELF_API void ELF_APIENTRY elfSetAudioVolume(float volume);	// <mdoc> AUDIO FUNCTIONS
+ELF_API float ELF_APIENTRY elfGetAudioVolume();
+ELF_API void ELF_APIENTRY elfSetAudioRolloff(float rolloff);
+ELF_API float ELF_APIENTRY elfGetAudioRolloff();
 // <!!
 void elfSetAudioListenerPosition(float x, float y, float z);
 void elfSetAudioListenerOrientation(float* params);
@@ -1621,27 +1630,27 @@ elfSound* elfCreateSound();
 void elfDestroySound(void* data);
 // !!>
 
-elfSound* elfLoadSound(const char* filePath);
-elfSound* elfLoadStreamedSound(const char* filePath);
-int elfGetSoundFileType(elfSound* sound);
+ELF_API elfSound* ELF_APIENTRY elfLoadSound(const char* filePath);
+ELF_API elfSound* ELF_APIENTRY elfLoadStreamedSound(const char* filePath);
+ELF_API int ELF_APIENTRY elfGetSoundFileType(elfSound* sound);
 
-elfAudioSource* elfPlaySound(elfSound* sound, float volume);
-elfAudioSource* elfPlayEntitySound(elfEntity* entity, elfSound* sound, float volume);
-elfAudioSource* elfLoopSound(elfSound* sound, float volume);
-elfAudioSource* elfLoopEntitySound(elfEntity* entity, elfSound* sound, float volume);
+ELF_API elfAudioSource* ELF_APIENTRY elfPlaySound(elfSound* sound, float volume);
+ELF_API elfAudioSource* ELF_APIENTRY elfPlayEntitySound(elfEntity* entity, elfSound* sound, float volume);
+ELF_API elfAudioSource* ELF_APIENTRY elfLoopSound(elfSound* sound, float volume);
+ELF_API elfAudioSource* ELF_APIENTRY elfLoopEntitySound(elfEntity* entity, elfSound* sound, float volume);
 // <!!
 elfAudioSource* elfCreateAudioSource();
 void elfStreamAudioSource(elfAudioSource* source);
 void elfDestroyAudioSource(void* data);
 // !!>
-void elfSetSoundVolume(elfAudioSource* source, float volume);
-float elfGetSoundVolume(elfAudioSource* source);
-void elfPauseSound(elfAudioSource* source);
-void elfResumeSound(elfAudioSource* source);
-void elfStopSound(elfAudioSource* source);
+ELF_API void ELF_APIENTRY elfSetSoundVolume(elfAudioSource* source, float volume);
+ELF_API float ELF_APIENTRY elfGetSoundVolume(elfAudioSource* source);
+ELF_API void ELF_APIENTRY elfPauseSound(elfAudioSource* source);
+ELF_API void ELF_APIENTRY elfResumeSound(elfAudioSource* source);
+ELF_API void ELF_APIENTRY elfStopSound(elfAudioSource* source);
 
-unsigned char elfIsSoundPlaying(elfAudioSource* source);
-unsigned char elfIsSoundPaused(elfAudioSource* source);
+ELF_API unsigned char ELF_APIENTRY elfIsSoundPlaying(elfAudioSource* source);
+ELF_API unsigned char ELF_APIENTRY elfIsSoundPaused(elfAudioSource* source);
 // <!!
 void elfSetSoundPosition(elfAudioSource* source, float x, float y, float z);
 // !!>
@@ -1663,10 +1672,10 @@ elfCollision* elfGetRayCastResult(elfPhysicsWorld* world, float x, float y, floa
 elfList* elfGetRayCastResults(elfPhysicsWorld* world, float x, float y, float z, float dx, float dy, float dz);
 // !!>
 
-elfActor* elfGetCollisionActor(elfCollision* collision);	// <mdoc> COLLISION FUNCTIONS
-elfVec3f elfGetCollisionPosition(elfCollision* collision);
-elfVec3f elfGetCollisionNormal(elfCollision* collision);
-float elfGetCollisionDepth(elfCollision* collision);
+ELF_API elfActor* ELF_APIENTRY elfGetCollisionActor(elfCollision* collision);	// <mdoc> COLLISION FUNCTIONS
+ELF_API elfVec3f ELF_APIENTRY elfGetCollisionPosition(elfCollision* collision);
+ELF_API elfVec3f ELF_APIENTRY elfGetCollisionNormal(elfCollision* collision);
+ELF_API float ELF_APIENTRY elfGetCollisionDepth(elfCollision* collision);
 
 // <!!
 elfJoint* elfCreateJoint();
@@ -1678,12 +1687,12 @@ void elfClearJoint(elfJoint* joint);
 void elfDestroyJoint(void* data);
 // !!>
 
-const char* elfGetJointName(elfJoint* joint);	// <mdoc> JOINT FUNCTIONS
-int elfGetJointType(elfJoint* joint);
-elfActor* elfGetJointActorA(elfJoint* joint);
-elfActor* elfGetJointActorB(elfJoint* joint);
-elfVec3f elfGetJointPivot(elfJoint* joint);
-elfVec3f elfGetJointAxis(elfJoint* joint);
+ELF_API const char* ELF_APIENTRY elfGetJointName(elfJoint* joint);	// <mdoc> JOINT FUNCTIONS
+ELF_API int ELF_APIENTRY elfGetJointType(elfJoint* joint);
+ELF_API elfActor* ELF_APIENTRY elfGetJointActorA(elfJoint* joint);
+ELF_API elfActor* ELF_APIENTRY elfGetJointActorB(elfJoint* joint);
+ELF_API elfVec3f ELF_APIENTRY elfGetJointPivot(elfJoint* joint);
+ELF_API elfVec3f ELF_APIENTRY elfGetJointAxis(elfJoint* joint);
 
 // <!!
 elfPhysicsTriMesh* elfCreatePhysicsTriMesh(float* verts, unsigned int* idx, int indiceCount);
@@ -1746,30 +1755,30 @@ elfFont* elfCreateFont();
 void elfDestroyFont(void* data);
 // !!>
 
-elfFont* elfCreateFontFromFile(const char* filePath, int size);	// <mdoc> FONT FUNCTIONS
+ELF_API elfFont* ELF_APIENTRY elfCreateFontFromFile(const char* filePath, int size);	// <mdoc> FONT FUNCTIONS
 
-const char* elfGetFontName(elfFont* font);
-const char* elfGetFontFilePath(elfFont* font);
-int elfGetFontSize(elfFont* font);
-int elfGetStringWidth(elfFont* font, const char* str);
-int elfGetStringHeight(elfFont* font, const char* str);
+ELF_API const char* ELF_APIENTRY elfGetFontName(elfFont* font);
+ELF_API const char* ELF_APIENTRY elfGetFontFilePath(elfFont* font);
+ELF_API int ELF_APIENTRY elfGetFontSize(elfFont* font);
+ELF_API int ELF_APIENTRY elfGetStringWidth(elfFont* font, const char* str);
+ELF_API int ELF_APIENTRY elfGetStringHeight(elfFont* font, const char* str);
 
 /* <!> */ void elfDrawString(elfFont* font, const char* str, int x, int y, gfxShaderParams* shaderParams);
 
 //////////////////////////////// GUI ////////////////////////////////
 
-const char* elfGetGuiObjectName(elfGuiObject* object);	// <mdoc> GUI OBJECT FUNCTIONS <mdocc> Gui object functions can be performed on all gui object types [Labels|Buttons|Pictures|etc...]
-elfVec2i elfGetGuiObjectPosition(elfGuiObject* object);
-elfVec2i elfGetGuiObjectSize(elfGuiObject* object);
-elfColor elfGetGuiObjectColor(elfGuiObject* object);
-unsigned char elfGetGuiObjectVisible(elfGuiObject* object);
-elfScript* elfGetGuiObjectScript(elfGuiObject* object);
-int elfGetGuiObjectEvent(elfGuiObject* object);
+ELF_API const char* ELF_APIENTRY elfGetGuiObjectName(elfGuiObject* object);	// <mdoc> GUI OBJECT FUNCTIONS <mdocc> Gui object functions can be performed on any gui object.
+ELF_API elfVec2i ELF_APIENTRY elfGetGuiObjectPosition(elfGuiObject* object);
+ELF_API elfVec2i ELF_APIENTRY elfGetGuiObjectSize(elfGuiObject* object);
+ELF_API elfColor ELF_APIENTRY elfGetGuiObjectColor(elfGuiObject* object);
+ELF_API unsigned char ELF_APIENTRY elfGetGuiObjectVisible(elfGuiObject* object);
+ELF_API elfScript* ELF_APIENTRY elfGetGuiObjectScript(elfGuiObject* object);
+ELF_API int ELF_APIENTRY elfGetGuiObjectEvent(elfGuiObject* object);
 
-void elfSetGuiObjectPosition(elfGuiObject* object, float x, float y);
-void elfSetGuiObjectColor(elfGuiObject* object, float r, float g, float b, float a);
-void elfSetGuiObjectVisible(elfGuiObject* object, unsigned char visible);
-void elfSetGuiObjectScript(elfGuiObject* object, elfScript* script);
+ELF_API void ELF_APIENTRY elfSetGuiObjectPosition(elfGuiObject* object, float x, float y);
+ELF_API void ELF_APIENTRY elfSetGuiObjectColor(elfGuiObject* object, float r, float g, float b, float a);
+ELF_API void ELF_APIENTRY elfSetGuiObjectVisible(elfGuiObject* object, unsigned char visible);
+ELF_API void ELF_APIENTRY elfSetGuiObjectScript(elfGuiObject* object, elfScript* script);
 
 // <!!
 void elfDestroyLabel(void* data);
@@ -1777,13 +1786,13 @@ void elfDrawLabel(elfLabel* label, gfxShaderParams* shaderParams);
 void elfRecalcLabel(elfLabel* label);
 // !!>
 
-elfLabel* elfCreateLabel(const char* name);	// <mdoc> LABEL FUNCTIONS
+ELF_API elfLabel* ELF_APIENTRY elfCreateLabel(const char* name);	// <mdoc> LABEL FUNCTIONS
 
-elfFont* elfGetLabelFont(elfLabel* label);
-const char* elfGetLabelText(elfLabel* label);
+ELF_API elfFont* ELF_APIENTRY elfGetLabelFont(elfLabel* label);
+ELF_API const char* ELF_APIENTRY elfGetLabelText(elfLabel* label);
 
-void elfSetLabelFont(elfLabel* label, elfFont* font);
-void elfSetLabelText(elfLabel* label, const char* text);
+ELF_API void ELF_APIENTRY elfSetLabelFont(elfLabel* label, elfFont* font);
+ELF_API void ELF_APIENTRY elfSetLabelText(elfLabel* label, const char* text);
 
 // <!!
 void elfDestroyButton(void* data);
@@ -1791,16 +1800,16 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams);
 void elfRecalcButton(elfButton* button);
 // !!>
 
-elfButton* elfCreateButton(const char* name);	// <mdoc> BUTTON FUNCTIONS
+ELF_API elfButton* ELF_APIENTRY elfCreateButton(const char* name);	// <mdoc> BUTTON FUNCTION
 
-unsigned char elfGetButtonState(elfButton* button);
-elfTexture* elfGetButtonOffTexture(elfButton* button);
-elfTexture* elfGetButtonOverTexture(elfButton* button);
-elfTexture* elfGetButtonOnTexture(elfButton* button);
+ELF_API unsigned char ELF_APIENTRY elfGetButtonState(elfButton* button);
+ELF_API elfTexture* ELF_APIENTRY elfGetButtonOffTexture(elfButton* button);
+ELF_API elfTexture* ELF_APIENTRY elfGetButtonOverTexture(elfButton* button);
+ELF_API elfTexture* ELF_APIENTRY elfGetButtonOnTexture(elfButton* button);
 
-void elfSetButtonOffTexture(elfButton* button, elfTexture* off);
-void elfSetButtonOverTexture(elfButton* button, elfTexture* over);
-void elfSetButtonOnTexture(elfButton* button, elfTexture* on);
+ELF_API void ELF_APIENTRY elfSetButtonOffTexture(elfButton* button, elfTexture* off);
+ELF_API void ELF_APIENTRY elfSetButtonOverTexture(elfButton* button, elfTexture* over);
+ELF_API void ELF_APIENTRY elfSetButtonOnTexture(elfButton* button, elfTexture* on);
 
 // <!!
 void elfDestroyPicture(void* data);
@@ -1808,13 +1817,13 @@ void elfDrawPicture(elfPicture* picture, gfxShaderParams* shaderParams);
 void elfRecalcPicture(elfPicture* picture);
 // !!>
 
-elfPicture* elfCreatePicture(const char* name);	// <mdoc> PICTURE FUNCTIONS
+ELF_API elfPicture* ELF_APIENTRY elfCreatePicture(const char* name);	// <mdoc> PICTURE FUNCTIONS
 
-elfTexture* elfGetPictureTexture(elfPicture* picture);
-elfVec2f elfGetPictureScale(elfPicture* picture);
+ELF_API elfTexture* ELF_APIENTRY elfGetPictureTexture(elfPicture* picture);
+ELF_API elfVec2f ELF_APIENTRY elfGetPictureScale(elfPicture* picture);
 
-void elfSetPictureTexture(elfPicture* picture, elfTexture* texture);
-void elfSetPictureScale(elfPicture* picture, float x, float y);
+ELF_API void ELF_APIENTRY elfSetPictureTexture(elfPicture* picture, elfTexture* texture);
+ELF_API void ELF_APIENTRY elfSetPictureScale(elfPicture* picture, float x, float y);
 
 // <!!
 void elfDestroyTextField(void* data);
@@ -1822,20 +1831,20 @@ void elfDrawTextField(elfTextField* textField, elfArea* area, gfxShaderParams* s
 void elfRecalcTextField(elfTextField* textField);
 // !!>
 
-elfTextField* elfCreateTextField(const char* name);	// <mdoc> TEXT FIELD FUNCTIONS
+ELF_API elfTextField* ELF_APIENTRY elfCreateTextField(const char* name);	// <mdoc> TEXT FIELD FUNCTIONS
 
-elfTexture* elfGetTextFieldTexture(elfTextField* textField);
-elfFont* elfGetTextFieldFont(elfTextField* textField);
-elfColor elfGetTextFieldTextColor(elfTextField* textField);
-elfVec2i elfGetTextFieldOffset(elfTextField* textField);
-const char* elfGetTextFieldText(elfTextField* textField);
+ELF_API elfTexture* ELF_APIENTRY elfGetTextFieldTexture(elfTextField* textField);
+ELF_API elfFont* ELF_APIENTRY elfGetTextFieldFont(elfTextField* textField);
+ELF_API elfColor ELF_APIENTRY elfGetTextFieldTextColor(elfTextField* textField);
+ELF_API elfVec2i ELF_APIENTRY elfGetTextFieldOffset(elfTextField* textField);
+ELF_API const char* ELF_APIENTRY elfGetTextFieldText(elfTextField* textField);
 
-void elfSetTextFieldTexture(elfTextField* textField, elfTexture* texture);
-void elfSetTextFieldFont(elfTextField* textField, elfFont* font);
-void elfSetTextFieldTextColor(elfTextField* textField, float r, float g, float b, float a);
-void elfSetTextFieldOffset(elfTextField* textField, int offsetX, int offsetY);
-void elfSetTextFieldCursorPosition(elfTextField* textField, int idx);
-void elfSetTextFieldText(elfTextField* textField, const char* text);
+ELF_API void ELF_APIENTRY elfSetTextFieldTexture(elfTextField* textField, elfTexture* texture);
+ELF_API void ELF_APIENTRY elfSetTextFieldFont(elfTextField* textField, elfFont* font);
+ELF_API void ELF_APIENTRY elfSetTextFieldTextColor(elfTextField* textField, float r, float g, float b, float a);
+ELF_API void ELF_APIENTRY elfSetTextFieldOffset(elfTextField* textField, int offsetX, int offsetY);
+ELF_API void ELF_APIENTRY elfSetTextFieldCursorPosition(elfTextField* textField, int idx);
+ELF_API void ELF_APIENTRY elfSetTextFieldText(elfTextField* textField, const char* text);
 
 // <!!
 void elfDestroySlider(void* data);
@@ -1843,15 +1852,15 @@ void elfDrawSlider(elfSlider* slider, gfxShaderParams* shaderParams);
 void elfRecalcSlider(elfSlider* slider);
 // !!>
 
-elfSlider* elfCreateSlider(const char* name);	// <mdoc> SLIDER FUNCTIONS
+ELF_API elfSlider* ELF_APIENTRY elfCreateSlider(const char* name);	// <mdoc> SLIDER FUNCTIONS
 
-elfTexture* elfGetSliderBackgroundTexture(elfSlider* slider);
-elfTexture* elfGetSliderSliderTexture(elfSlider* slider);
-float elfGetSliderValue(elfSlider* slider);
+ELF_API elfTexture* ELF_APIENTRY elfGetSliderBackgroundTexture(elfSlider* slider);
+ELF_API elfTexture* ELF_APIENTRY elfGetSliderSliderTexture(elfSlider* slider);
+ELF_API float ELF_APIENTRY elfGetSliderValue(elfSlider* slider);
 
-void elfSetSliderBackgroundTexture(elfSlider* slider, elfTexture* background);
-void elfSetSliderSliderTexture(elfSlider* slider, elfTexture* sliderTexture);
-void elfSetSliderValue(elfSlider* slider, float value);
+ELF_API void ELF_APIENTRY elfSetSliderBackgroundTexture(elfSlider* slider, elfTexture* background);
+ELF_API void ELF_APIENTRY elfSetSliderSliderTexture(elfSlider* slider, elfTexture* sliderTexture);
+ELF_API void ELF_APIENTRY elfSetSliderValue(elfSlider* slider, float value);
 
 // <!!
 void elfDestroyScreen(void* data);
@@ -1859,13 +1868,13 @@ void elfDrawScreen(elfScreen* screen, elfArea* area, gfxShaderParams* shaderPara
 void elfRecalcScreen(elfScreen* screen);
 // !!>
 
-elfScreen* elfCreateScreen(const char* name);	// <mdoc> SCREEN FUNCTIONS
+ELF_API elfScreen* ELF_APIENTRY elfCreateScreen(const char* name);	// <mdoc> SCREEN FUCNTIONS
 
-elfTexture* elfGetScreenTexture(elfScreen* screen);
-void elfSetScreenTexture(elfScreen* screen, elfTexture* texture);
-void elfSetScreenToTop(elfScreen* screen);
-void elfForceFocusToScreen(elfScreen* screen);
-void elfReleaseFocusFromScreen(elfScreen* screen);
+ELF_API elfTexture* ELF_APIENTRY elfGetScreenTexture(elfScreen* screen);
+ELF_API void ELF_APIENTRY elfSetScreenTexture(elfScreen* screen, elfTexture* texture);
+ELF_API void ELF_APIENTRY elfSetScreenToTop(elfScreen* screen);
+ELF_API void ELF_APIENTRY elfForceFocusToScreen(elfScreen* screen);
+ELF_API void ELF_APIENTRY elfReleaseFocusFromScreen(elfScreen* screen);
 
 // <!!
 void elfDestroyTextList(void* data);
@@ -1873,30 +1882,30 @@ void elfDrawTextList(elfTextList* textList, elfArea* area, gfxShaderParams* shad
 void elfRecalcTextList(elfTextList* textList);
 // !!>
 
-elfTextList* elfCreateTextList(const char* name);	// <mdoc> TEXT LIST FUNCTIONS
+ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(const char* name);	// <mdoc> TEXT LIST FUNCTIONS
 
-elfFont* elfGetTextListFont(elfTextList* textList);
-elfColor elfGetTextListSelectionColor(elfTextList* textList);
-elfColor elfGetTextListLightColor(elfTextList* textList);
-elfColor elfGetTextListDarkColor(elfTextList* textList);
-int elfGetTextListRowCount(elfTextList* textList);
-int elfGetTextListItemCount(elfTextList* textList);
-int elfGetTextListSelectionIndex(elfTextList* textList);
-int elfGetTextListOffset(elfTextList* textList);
-const char* elfGetTextListItem(elfTextList* textList, int idx);
-const char* elfGetTextListSelectedItem(elfTextList* textList);
+ELF_API elfFont* ELF_APIENTRY elfGetTextListFont(elfTextList* textList);
+ELF_API elfColor ELF_APIENTRY elfGetTextListSelectionColor(elfTextList* textList);
+ELF_API elfColor ELF_APIENTRY elfGetTextListLightColor(elfTextList* textList);
+ELF_API elfColor ELF_APIENTRY elfGetTextListDarkColor(elfTextList* textList);
+ELF_API int ELF_APIENTRY elfGetTextListRowCount(elfTextList* textList);
+ELF_API int ELF_APIENTRY elfGetTextListItemCount(elfTextList* textList);
+ELF_API int ELF_APIENTRY elfGetTextListSelectionIndex(elfTextList* textList);
+ELF_API int ELF_APIENTRY elfGetTextListOffset(elfTextList* textList);
+ELF_API const char* ELF_APIENTRY elfGetTextListItem(elfTextList* textList, int idx);
+ELF_API const char* ELF_APIENTRY elfGetTextListSelectedItem(elfTextList* textList);
 
-void elfSetTextListFont(elfTextList* textList, elfFont* font);
-void elfSetTextListSelectionColor(elfTextList* textList, float r, float g, float b, float a);
-void elfSetTextListLightColor(elfTextList* textList, float r, float g, float b, float a);
-void elfSetTextListDarkColor(elfTextList* textList, float r, float g, float b, float a);
-void elfSetTextListSize(elfTextList* textList, int rows, int width);
-void elfAddTextListItem(elfTextList* textList, const char* text);
-void elfSetTextListItem(elfTextList* textList, int idx, const char* text);
-unsigned char elfRemoveTextListItem(elfTextList* textList, int idx);
-void elfRemoveTextListItems(elfTextList* textList);
-void elfSetTextListOffset(elfTextList* textList, int offset);
-void elfSetTextListSelection(elfTextList* textList, int selection);
+ELF_API void ELF_APIENTRY elfSetTextListFont(elfTextList* textList, elfFont* font);
+ELF_API void ELF_APIENTRY elfSetTextListSelectionColor(elfTextList* textList, float r, float g, float b, float a);
+ELF_API void ELF_APIENTRY elfSetTextListLightColor(elfTextList* textList, float r, float g, float b, float a);
+ELF_API void ELF_APIENTRY elfSetTextListDarkColor(elfTextList* textList, float r, float g, float b, float a);
+ELF_API void ELF_APIENTRY elfSetTextListSize(elfTextList* textList, int rows, int width);
+ELF_API void ELF_APIENTRY elfAddTextListItem(elfTextList* textList, const char* text);
+ELF_API void ELF_APIENTRY elfSetTextListItem(elfTextList* textList, int idx, const char* text);
+ELF_API unsigned char ELF_APIENTRY elfRemoveTextListItem(elfTextList* textList, int idx);
+ELF_API void ELF_APIENTRY elfRemoveTextListItems(elfTextList* textList);
+ELF_API void ELF_APIENTRY elfSetTextListOffset(elfTextList* textList, int offset);
+ELF_API void ELF_APIENTRY elfSetTextListSelection(elfTextList* textList, int selection);
 
 // <!!
 void elfDestroyCheckBox(void* data);
@@ -1904,15 +1913,15 @@ void elfDrawCheckBox(elfCheckBox* checkBox, gfxShaderParams* shaderParams);
 void elfRecalcCheckBox(elfCheckBox* checkBox);
 // !!>
 
-elfCheckBox* elfCreateCheckBox(const char* name);	// <mdoc> CHECK BOX FUNCTIONS
+ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(const char* name);	// <mdoc> CHECK BOX FUNCTIONS
 
-unsigned char elfGetCheckBoxState(elfCheckBox* checkBox);
-elfTexture* elfGetCheckBoxOffTexture(elfCheckBox* checkBox);
-elfTexture* elfGetCheckBoxOnTexture(elfCheckBox* checkBox);
+ELF_API unsigned char ELF_APIENTRY elfGetCheckBoxState(elfCheckBox* checkBox);
+ELF_API elfTexture* ELF_APIENTRY elfGetCheckBoxOffTexture(elfCheckBox* checkBox);
+ELF_API elfTexture* ELF_APIENTRY elfGetCheckBoxOnTexture(elfCheckBox* checkBox);
 
-void elfSetCheckBoxOffTexture(elfCheckBox* checkBox, elfTexture* off);
-void elfSetCheckBoxOnTexture(elfCheckBox* checkBox, elfTexture* on);
-void elfSetCheckBoxState(elfCheckBox* checkBox, unsigned char state);
+ELF_API void ELF_APIENTRY elfSetCheckBoxOffTexture(elfCheckBox* checkBox, elfTexture* off);
+ELF_API void ELF_APIENTRY elfSetCheckBoxOnTexture(elfCheckBox* checkBox, elfTexture* on);
+ELF_API void ELF_APIENTRY elfSetCheckBoxState(elfCheckBox* checkBox, unsigned char state);
 
 /* <!> */ void elfRecalcGuiObject(elfGuiObject* object);
 
@@ -1922,40 +1931,20 @@ void elfUpdateGui(elfGui* gui, float step);
 void elfDrawGui(elfGui* gui);
 // !!>
 
-elfGui* elfCreateGui();	// <mdoc> GUI FUNCTIONS
+ELF_API elfGui* ELF_APIENTRY elfCreateGui();	// <mdoc> GUI FUNCTIONS
 
-unsigned char elfAddGuiObject(elfGuiObject* parent, elfGuiObject* object);
-elfGuiObject* elfGetGuiObjectByName(elfGuiObject* parent, const char* name);
-elfGuiObject* elfGetGuiObjectByIndex(elfGuiObject* parent, int idx);
-unsigned char elfRemoveGuiObjectByName(elfGuiObject* parent, const char* name);
-unsigned char elfRemoveGuiObjectByIndex(elfGuiObject* parent, int idx);
-unsigned char elfRemoveGuiObjectByObject(elfGuiObject* parent, elfGuiObject* object);
+ELF_API unsigned char ELF_APIENTRY elfAddGuiObject(elfGuiObject* parent, elfGuiObject* object);
+ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiObjectByName(elfGuiObject* parent, const char* name);
+ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiObjectByIndex(elfGuiObject* parent, int idx);
+ELF_API unsigned char ELF_APIENTRY elfRemoveGuiObjectByName(elfGuiObject* parent, const char* name);
+ELF_API unsigned char ELF_APIENTRY elfRemoveGuiObjectByIndex(elfGuiObject* parent, int idx);
+ELF_API unsigned char ELF_APIENTRY elfRemoveGuiObjectByObject(elfGuiObject* parent, elfGuiObject* object);
 
-elfGuiObject* elfGetGuiTrace(elfGui* gui);
-elfGuiObject* elfGetGuiFocus(elfGui* gui);
-elfGuiObject* elfGetGuiActiveTextField(elfGui* gui);
+ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiTrace(elfGui* gui);
+ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiFocus(elfGui* gui);
+ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiActiveTextField(elfGui* gui);
 
-void elfEmptyGui(elfGui* gui);
-
-//////////////////////////////// NET ////////////////////////////////
-
-// <!!
-unsigned char elfInitNetworking();
-void elfDeinitNetworking();
-void elfRunNetworking();
-// !!>
-unsigned char elfCreateSession(const char* address, int port); // <mdoc> NETWORKING FUNCTIONS
-unsigned char elfConnectSession(const char* address, int port);
-unsigned char elfDisconnectSession();
-void elfSendStringToClients(const char* message);
-void elfSendStringToServer(const char* message);
-const char* elfGetServerDataAsString();
-const char* elfGetClientDataAsString();
-int elfGetServerEvent();
-int elfGetClientEvent();
-int elfGetCurrentClient();
-unsigned char elfIsServer();
-unsigned char elfIsClient();
+ELF_API void ELF_APIENTRY elfEmptyGui(elfGui* gui);
 
 //////////////////////////////// SST ////////////////////////////////
 

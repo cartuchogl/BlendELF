@@ -1,15 +1,15 @@
 
-const char* elfGetGuiObjectName(elfGuiObject* object)
+ELF_API const char* ELF_APIENTRY elfGetGuiObjectName(elfGuiObject* object)
 {
 	return object->name;
 }
 
-elfVec2i elfGetGuiObjectPosition(elfGuiObject* object)
+ELF_API elfVec2i ELF_APIENTRY elfGetGuiObjectPosition(elfGuiObject* object)
 {
 	return object->relPos;
 }
 
-elfVec2i elfGetGuiObjectSize(elfGuiObject* object)
+ELF_API elfVec2i ELF_APIENTRY elfGetGuiObjectSize(elfGuiObject* object)
 {
 	elfVec2i size;
 
@@ -19,34 +19,34 @@ elfVec2i elfGetGuiObjectSize(elfGuiObject* object)
 	return size;
 }
 
-elfColor elfGetGuiObjectColor(elfGuiObject* object)
+ELF_API elfColor ELF_APIENTRY elfGetGuiObjectColor(elfGuiObject* object)
 {
 	return object->color;
 }
 
-unsigned char elfGetGuiObjectVisible(elfGuiObject* object)
+ELF_API unsigned char ELF_APIENTRY elfGetGuiObjectVisible(elfGuiObject* object)
 {
 	return object->visible;
 }
 
-elfScript* elfGetGuiObjectScript(elfGuiObject* object)
+ELF_API elfScript* ELF_APIENTRY elfGetGuiObjectScript(elfGuiObject* object)
 {
 	return object->script;
 }
 
-int elfGetGuiObjectEvent(elfGuiObject* object)
+ELF_API int ELF_APIENTRY elfGetGuiObjectEvent(elfGuiObject* object)
 {
 	return object->event;
 }
 
-void elfSetGuiObjectPosition(elfGuiObject* object, float x, float y)
+ELF_API void ELF_APIENTRY elfSetGuiObjectPosition(elfGuiObject* object, float x, float y)
 {
 	object->relPos.x = x;
 	object->relPos.y = y;
 	elfRecalcGuiObject(object);
 }
 
-void elfSetGuiObjectColor(elfGuiObject* object, float r, float g, float b, float a)
+ELF_API void ELF_APIENTRY elfSetGuiObjectColor(elfGuiObject* object, float r, float g, float b, float a)
 {
 	object->color.r = r;
 	object->color.g = g;
@@ -54,19 +54,19 @@ void elfSetGuiObjectColor(elfGuiObject* object, float r, float g, float b, float
 	object->color.a = a;
 }
 
-void elfSetGuiObjectVisible(elfGuiObject* object, unsigned char visible)
+ELF_API void ELF_APIENTRY elfSetGuiObjectVisible(elfGuiObject* object, unsigned char visible)
 {
 	object->visible = !visible == ELF_FALSE;
 }
 
-void elfSetGuiObjectScript(elfGuiObject* object, elfScript* script)
+ELF_API void ELF_APIENTRY elfSetGuiObjectScript(elfGuiObject* object, elfScript* script)
 {
 	if(object->script) elfDecRef((elfObject*)object->script);
 	object->script = script;
 	if(object->script) elfIncRef((elfObject*)object->script);
 }
 
-elfLabel* elfCreateLabel(const char* name)
+ELF_API elfLabel* ELF_APIENTRY elfCreateLabel(const char* name)
 {
 	elfLabel* label;
 
@@ -108,12 +108,12 @@ void elfDrawLabel(elfLabel* label, gfxShaderParams* shaderParams)
 	shaderParams->textureParams[0].texture = NULL;
 }
 
-elfFont* elfGetLabelFont(elfLabel* label)
+ELF_API elfFont* ELF_APIENTRY elfGetLabelFont(elfLabel* label)
 {
 	return label->font;
 }
 
-const char* elfGetLabelText(elfLabel* label)
+ELF_API const char* ELF_APIENTRY elfGetLabelText(elfLabel* label)
 {
 	return label->text;
 }
@@ -135,7 +135,7 @@ void elfRecalcLabel(elfLabel* label)
 	}
 }
 
-void elfSetLabelFont(elfLabel* label, elfFont* font)
+ELF_API void ELF_APIENTRY elfSetLabelFont(elfLabel* label, elfFont* font)
 {
 	if(label->font) elfDecRef((elfObject*)label->font);
 	label->font = font;
@@ -143,14 +143,14 @@ void elfSetLabelFont(elfLabel* label, elfFont* font)
 	elfRecalcGuiObject((elfGuiObject*)label);
 }
 
-void elfSetLabelText(elfLabel* label, const char* text)
+ELF_API void ELF_APIENTRY elfSetLabelText(elfLabel* label, const char* text)
 {
 	if(label->text) elfDestroyString(label->text);
 	label->text = elfCreateString(text);
 	elfRecalcGuiObject((elfGuiObject*)label);
 }
 
-elfButton* elfCreateButton(const char* name)
+ELF_API elfButton* ELF_APIENTRY elfCreateButton(const char* name)
 {
 	elfButton* button;
 
@@ -213,22 +213,22 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams)
 	}
 }
 
-unsigned char elfGetButtonState(elfButton* button)
+ELF_API unsigned char ELF_APIENTRY elfGetButtonState(elfButton* button)
 {
 	return button->state;
 }
 
-elfTexture* elfGetButtonOffTexture(elfButton* button)
+ELF_API elfTexture* ELF_APIENTRY elfGetButtonOffTexture(elfButton* button)
 {
 	return button->off;
 }
 
-elfTexture* elfGetButtonOverTexture(elfButton* button)
+ELF_API elfTexture* ELF_APIENTRY elfGetButtonOverTexture(elfButton* button)
 {
 	return button->over;
 }
 
-elfTexture* elfGetButtonOnTexture(elfButton* button)
+ELF_API elfTexture* ELF_APIENTRY elfGetButtonOnTexture(elfButton* button)
 {
 	return button->on;
 }
@@ -254,7 +254,7 @@ void elfSetButtonPosition(elfButton* button, int x, int y)
 	elfRecalcGuiObject((elfGuiObject*)button);
 }
 
-void elfSetButtonOffTexture(elfButton* button, elfTexture* off)
+ELF_API void ELF_APIENTRY elfSetButtonOffTexture(elfButton* button, elfTexture* off)
 {
 	if(button->off) elfDecRef((elfObject*)button->off);
 	button->off = off;
@@ -262,21 +262,21 @@ void elfSetButtonOffTexture(elfButton* button, elfTexture* off)
 	elfRecalcGuiObject((elfGuiObject*)button);
 }
 
-void elfSetButtonOverTexture(elfButton* button, elfTexture* over)
+ELF_API void ELF_APIENTRY elfSetButtonOverTexture(elfButton* button, elfTexture* over)
 {
 	if(button->over) elfDecRef((elfObject*)button->over);
 	button->over = over;
 	if(button->over) elfIncRef((elfObject*)button->over);
 }
 
-void elfSetButtonOnTexture(elfButton* button, elfTexture* on)
+ELF_API void ELF_APIENTRY elfSetButtonOnTexture(elfButton* button, elfTexture* on)
 {
 	if(button->on) elfDecRef((elfObject*)button->on);
 	button->on = on;
 	if(button->on) elfIncRef((elfObject*)button->on);
 }
 
-elfPicture* elfCreatePicture(const char* name)
+ELF_API elfPicture* ELF_APIENTRY elfCreatePicture(const char* name)
 {
 	elfPicture* picture;
 
@@ -335,17 +335,17 @@ void elfRecalcPicture(elfPicture* picture)
 	}
 }
 
-elfTexture* elfGetPictureTexture(elfPicture* picture)
+ELF_API elfTexture* ELF_APIENTRY elfGetPictureTexture(elfPicture* picture)
 {
 	return picture->texture;
 }
 
-elfVec2f elfGetPictureScale(elfPicture* picture)
+ELF_API elfVec2f ELF_APIENTRY elfGetPictureScale(elfPicture* picture)
 {
 	return picture->scale;
 }
 
-void elfSetPictureTexture(elfPicture* picture, elfTexture* texture)
+ELF_API void ELF_APIENTRY elfSetPictureTexture(elfPicture* picture, elfTexture* texture)
 {
 	if(picture->texture) elfDecRef((elfObject*)picture->texture);
 	picture->texture = texture;
@@ -353,14 +353,14 @@ void elfSetPictureTexture(elfPicture* picture, elfTexture* texture)
 	elfRecalcGuiObject((elfGuiObject*)picture);
 }
 
-void elfSetPictureScale(elfPicture* picture, float x, float y)
+ELF_API void ELF_APIENTRY elfSetPictureScale(elfPicture* picture, float x, float y)
 {
 	picture->scale.x = x;
 	picture->scale.y = y;
 	elfRecalcGuiObject((elfGuiObject*)picture);
 }
 
-elfTextField* elfCreateTextField(const char* name)
+ELF_API elfTextField* ELF_APIENTRY elfCreateTextField(const char* name)
 {
 	elfTextField* textField;
 
@@ -469,22 +469,22 @@ void elfDrawTextField(elfTextField* textField, elfArea* area, gfxShaderParams* s
 	}
 }
 
-elfTexture* elfGetTextFieldTexture(elfTextField* textField)
+ELF_API elfTexture* ELF_APIENTRY elfGetTextFieldTexture(elfTextField* textField)
 {
 	return textField->texture;
 }
 
-elfFont* elfGetTextFieldFont(elfTextField* textField)
+ELF_API elfFont* ELF_APIENTRY elfGetTextFieldFont(elfTextField* textField)
 {
 	return textField->font;
 }
 
-elfColor elfGetTextFieldTextColor(elfTextField* textField)
+ELF_API elfColor ELF_APIENTRY elfGetTextFieldTextColor(elfTextField* textField)
 {
 	return textField->textColor;
 }
 
-elfVec2i elfGetTextFieldOffset(elfTextField* textField)
+ELF_API elfVec2i ELF_APIENTRY elfGetTextFieldOffset(elfTextField* textField)
 {
 	elfVec2i offset;
 
@@ -494,7 +494,7 @@ elfVec2i elfGetTextFieldOffset(elfTextField* textField)
 	return offset;
 }
 
-const char* elfGetTextFieldText(elfTextField* textField)
+ELF_API const char* ELF_APIENTRY elfGetTextFieldText(elfTextField* textField)
 {
 	return textField->text;
 }
@@ -513,7 +513,7 @@ void elfRecalcTextField(elfTextField* textField)
 	}
 }
 
-void elfSetTextFieldTexture(elfTextField* textField, elfTexture* texture)
+ELF_API void ELF_APIENTRY elfSetTextFieldTexture(elfTextField* textField, elfTexture* texture)
 {
 	if(textField->texture) elfDecRef((elfObject*)textField->texture);
 	textField->texture = texture;
@@ -521,14 +521,14 @@ void elfSetTextFieldTexture(elfTextField* textField, elfTexture* texture)
 	elfRecalcGuiObject((elfGuiObject*)textField);
 }
 
-void elfSetTextFieldFont(elfTextField* textField, elfFont* font)
+ELF_API void ELF_APIENTRY elfSetTextFieldFont(elfTextField* textField, elfFont* font)
 {
 	if(textField->font) elfDecRef((elfObject*)textField->font);
 	textField->font = font;
 	if(textField->font) elfIncRef((elfObject*)textField->font);
 }
 
-void elfSetTextFieldTextColor(elfTextField* textField, float r, float g, float b, float a)
+ELF_API void ELF_APIENTRY elfSetTextFieldTextColor(elfTextField* textField, float r, float g, float b, float a)
 {
 	textField->textColor.r = r;
 	textField->textColor.g = g;
@@ -536,7 +536,7 @@ void elfSetTextFieldTextColor(elfTextField* textField, float r, float g, float b
 	textField->textColor.a = a;
 }
 
-void elfSetTextFieldOffset(elfTextField* textField, int offsetX, int offsetY)
+ELF_API void ELF_APIENTRY elfSetTextFieldOffset(elfTextField* textField, int offsetX, int offsetY)
 {
 	textField->offsetX = offsetX;
 	textField->offsetY = offsetY;
@@ -577,7 +577,7 @@ void elfMoveTextFieldCursorRight(elfTextField* textField)
 	elfDestroyString(str);
 }
 
-void elfSetTextFieldCursorPosition(elfTextField* textField, int idx)
+ELF_API void ELF_APIENTRY elfSetTextFieldCursorPosition(elfTextField* textField, int idx)
 {
 	if(idx < 0) return;
 	if(idx > (int)strlen(textField->text)) idx = strlen(textField->text);
@@ -589,7 +589,7 @@ void elfSetTextFieldCursorPosition(elfTextField* textField, int idx)
 		elfMoveTextFieldCursorRight(textField);
 }
 
-void elfSetTextFieldText(elfTextField* textField, const char* text)
+ELF_API void ELF_APIENTRY elfSetTextFieldText(elfTextField* textField, const char* text)
 {
 	if(textField->text) elfDestroyString(textField->text);
 	textField->text = elfCreateString(text);
@@ -600,7 +600,7 @@ void elfSetTextFieldText(elfTextField* textField, const char* text)
 		elfMoveTextFieldCursorRight(textField);
 }
 
-elfSlider* elfCreateSlider(const char* name)
+ELF_API elfSlider* ELF_APIENTRY elfCreateSlider(const char* name)
 {
 	elfSlider* slider;
 
@@ -666,17 +666,17 @@ void elfDrawSlider(elfSlider* slider, gfxShaderParams* shaderParams)
 	}
 }
 
-elfTexture* elfGetSliderBackgroundTexture(elfSlider* slider)
+ELF_API elfTexture* ELF_APIENTRY elfGetSliderBackgroundTexture(elfSlider* slider)
 {
 	return slider->background;
 }
 
-elfTexture* elfGetSliderSliderTexture(elfSlider* slider)
+ELF_API elfTexture* ELF_APIENTRY elfGetSliderSliderTexture(elfSlider* slider)
 {
 	return slider->slider;
 }
 
-float elfGetSliderValue(elfSlider* slider)
+ELF_API float ELF_APIENTRY elfGetSliderValue(elfSlider* slider)
 {
 	return slider->value;
 }
@@ -695,7 +695,7 @@ void elfRecalcSlider(elfSlider* slider)
 	}
 }
 
-void elfSetSliderBackgroundTexture(elfSlider* slider, elfTexture* background)
+ELF_API void ELF_APIENTRY elfSetSliderBackgroundTexture(elfSlider* slider, elfTexture* background)
 {
 	if(slider->background) elfDecRef((elfObject*)slider->background);
 	slider->background = background;
@@ -703,21 +703,21 @@ void elfSetSliderBackgroundTexture(elfSlider* slider, elfTexture* background)
 	elfRecalcGuiObject((elfGuiObject*)slider);
 }
 
-void elfSetSliderSliderTexture(elfSlider* slider, elfTexture* sliderTexture)
+ELF_API void ELF_APIENTRY elfSetSliderSliderTexture(elfSlider* slider, elfTexture* sliderTexture)
 {
 	if(slider->slider) elfDecRef((elfObject*)slider->slider);
 	slider->slider = sliderTexture;
 	if(slider->slider) elfIncRef((elfObject*)slider->slider);
 }
 
-void elfSetSliderValue(elfSlider* slider, float value)
+ELF_API void ELF_APIENTRY elfSetSliderValue(elfSlider* slider, float value)
 {
 	slider->value = value;
 	if(slider->value < 0.0) slider->value = 0.0;
 	if(slider->value > 1.0) slider->value = 1.0;
 }
 
-elfScreen* elfCreateScreen(const char* name)
+ELF_API elfScreen* ELF_APIENTRY elfCreateScreen(const char* name)
 {
 	elfScreen* screen;
 
@@ -832,7 +832,7 @@ void elfDrawScreen(elfScreen* screen, elfArea* area, gfxShaderParams* shaderPara
 	}
 }
 
-elfTexture* elfGetScreenTexture(elfScreen* screen)
+ELF_API elfTexture* ELF_APIENTRY elfGetScreenTexture(elfScreen* screen)
 {
 	return screen->texture;
 }
@@ -851,7 +851,7 @@ void elfRecalcScreen(elfScreen* screen)
 	}
 }
 
-void elfSetScreenTexture(elfScreen* screen, elfTexture* texture)
+ELF_API void ELF_APIENTRY elfSetScreenTexture(elfScreen* screen, elfTexture* texture)
 {
 	if(screen->texture) elfDecRef((elfObject*)screen->texture);
 	screen->texture = texture;
@@ -859,7 +859,7 @@ void elfSetScreenTexture(elfScreen* screen, elfTexture* texture)
 	elfRecalcGuiObject((elfGuiObject*)screen);
 }
 
-void elfSetScreenToTop(elfScreen* screen)
+ELF_API void ELF_APIENTRY elfSetScreenToTop(elfScreen* screen)
 {
 	if(!screen->parent) return;
 
@@ -869,7 +869,7 @@ void elfSetScreenToTop(elfScreen* screen)
 	elfDecRef((elfObject*)screen);
 }
 
-void elfForceFocusToScreen(elfScreen* screen)
+ELF_API void ELF_APIENTRY elfForceFocusToScreen(elfScreen* screen)
 {
 	elfButton* button;
 
@@ -888,14 +888,14 @@ void elfForceFocusToScreen(elfScreen* screen)
 	screen->root->focusScreen = screen;
 }
 
-void elfReleaseFocusFromScreen(elfScreen* screen)
+ELF_API void ELF_APIENTRY elfReleaseFocusFromScreen(elfScreen* screen)
 {
 	if(!screen->root) return;
 
 	screen->root->focusScreen = NULL;
 }
 
-elfTextList* elfCreateTextList(const char* name)
+ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(const char* name)
 {
 	elfTextList* textList;
 
@@ -1016,47 +1016,47 @@ void elfDrawTextList(elfTextList* textList, elfArea* area, gfxShaderParams* shad
 	shaderParams->textureParams[0].texture = NULL;
 }
 
-elfFont* elfGetTextListFont(elfTextList* textList)
+ELF_API elfFont* ELF_APIENTRY elfGetTextListFont(elfTextList* textList)
 {
 	return textList->font;
 }
 
-elfColor elfGetTextListSelectionColor(elfTextList* textList)
+ELF_API elfColor ELF_APIENTRY elfGetTextListSelectionColor(elfTextList* textList)
 {
 	return textList->selectionColor;
 }
 
-elfColor elfGetTextListLightColor(elfTextList* textList)
+ELF_API elfColor ELF_APIENTRY elfGetTextListLightColor(elfTextList* textList)
 {
 	return textList->lightColor;
 }
 
-elfColor elfGetTextListDarkColor(elfTextList* textList)
+ELF_API elfColor ELF_APIENTRY elfGetTextListDarkColor(elfTextList* textList)
 {
 	return textList->darkColor;
 }
 
-int elfGetTextListRowCount(elfTextList* textList)
+ELF_API int ELF_APIENTRY elfGetTextListRowCount(elfTextList* textList)
 {
 	return textList->rows;
 }
 
-int elfGetTextListItemCount(elfTextList* textList)
+ELF_API int ELF_APIENTRY elfGetTextListItemCount(elfTextList* textList)
 {
 	return elfGetListLength(textList->items);
 }
 
-int elfGetTextListSelectionIndex(elfTextList* textList)
+ELF_API int ELF_APIENTRY elfGetTextListSelectionIndex(elfTextList* textList)
 {
 	return textList->selection;
 }
 
-int elfGetTextListOffset(elfTextList* textList)
+ELF_API int ELF_APIENTRY elfGetTextListOffset(elfTextList* textList)
 {
 	return textList->offset;
 }
 
-const char* elfGetTextListItem(elfTextList* textList, int idx)
+ELF_API const char* ELF_APIENTRY elfGetTextListItem(elfTextList* textList, int idx)
 {
 	int i;
 	elfString* strObj;
@@ -1072,7 +1072,7 @@ const char* elfGetTextListItem(elfTextList* textList, int idx)
 	return "";
 }
 
-const char* elfGetTextListSelectedItem(elfTextList* textList)
+ELF_API const char* ELF_APIENTRY elfGetTextListSelectedItem(elfTextList* textList)
 {
 	int i;
 	elfString* strObj;
@@ -1102,7 +1102,7 @@ void elfRecalcTextList(elfTextList* textList)
 	}
 }
 
-void elfSetTextListFont(elfTextList* textList, elfFont* font)
+ELF_API void ELF_APIENTRY elfSetTextListFont(elfTextList* textList, elfFont* font)
 {
 	if(textList->font) elfDecRef((elfObject*)textList->font);
 	textList->font = font;
@@ -1110,7 +1110,7 @@ void elfSetTextListFont(elfTextList* textList, elfFont* font)
 	elfRecalcGuiObject((elfGuiObject*)textList);
 }
 
-void elfSetTextListSelectionColor(elfTextList* textList, float r, float g, float b, float a)
+ELF_API void ELF_APIENTRY elfSetTextListSelectionColor(elfTextList* textList, float r, float g, float b, float a)
 {
 	textList->selectionColor.r = r;
 	textList->selectionColor.g = g;
@@ -1118,7 +1118,7 @@ void elfSetTextListSelectionColor(elfTextList* textList, float r, float g, float
 	textList->selectionColor.a = a;
 }
 
-void elfSetTextListLightColor(elfTextList* textList, float r, float g, float b, float a)
+ELF_API void ELF_APIENTRY elfSetTextListLightColor(elfTextList* textList, float r, float g, float b, float a)
 {
 	textList->lightColor.r = r;
 	textList->lightColor.g = g;
@@ -1126,7 +1126,7 @@ void elfSetTextListLightColor(elfTextList* textList, float r, float g, float b, 
 	textList->lightColor.a = a;
 }
 
-void elfSetTextListDarkColor(elfTextList* textList, float r, float g, float b, float a)
+ELF_API void ELF_APIENTRY elfSetTextListDarkColor(elfTextList* textList, float r, float g, float b, float a)
 {
 	textList->darkColor.r = r;
 	textList->darkColor.g = g;
@@ -1134,7 +1134,7 @@ void elfSetTextListDarkColor(elfTextList* textList, float r, float g, float b, f
 	textList->darkColor.a = a;
 }
 
-void elfSetTextListSize(elfTextList* textList, int rows, int width)
+ELF_API void ELF_APIENTRY elfSetTextListSize(elfTextList* textList, int rows, int width)
 {
 	textList->rows = rows;
 	textList->listWidth = width;
@@ -1143,7 +1143,7 @@ void elfSetTextListSize(elfTextList* textList, int rows, int width)
 	elfRecalcGuiObject((elfGuiObject*)textList);
 }
 
-void elfAddTextListItem(elfTextList* textList, const char* text)
+ELF_API void ELF_APIENTRY elfAddTextListItem(elfTextList* textList, const char* text)
 {
 	elfString* strObj;
 
@@ -1155,7 +1155,7 @@ void elfAddTextListItem(elfTextList* textList, const char* text)
 	elfAppendToList(textList->items, (elfObject*)strObj);
 }
 
-void elfSetTextListItem(elfTextList* textList, int idx, const char* text)
+ELF_API void ELF_APIENTRY elfSetTextListItem(elfTextList* textList, int idx, const char* text)
 {
 	elfString* strObj;
 
@@ -1167,7 +1167,7 @@ void elfSetTextListItem(elfTextList* textList, int idx, const char* text)
 	}
 }
 
-unsigned char elfRemoveTextListItem(elfTextList* textList, int idx)
+ELF_API unsigned char ELF_APIENTRY elfRemoveTextListItem(elfTextList* textList, int idx)
 {
 	int i;
 	elfString* strObj;
@@ -1188,7 +1188,7 @@ unsigned char elfRemoveTextListItem(elfTextList* textList, int idx)
 	return ELF_FALSE;
 }
 
-void elfRemoveTextListItems(elfTextList* textList)
+ELF_API void ELF_APIENTRY elfRemoveTextListItems(elfTextList* textList)
 {
 	elfDecRef((elfObject*)textList->items);
 	textList->items = elfCreateList();
@@ -1197,13 +1197,13 @@ void elfRemoveTextListItems(elfTextList* textList)
 	textList->selection = 0;
 }
 
-void elfSetTextListOffset(elfTextList* textList, int offset)
+ELF_API void ELF_APIENTRY elfSetTextListOffset(elfTextList* textList, int offset)
 {
 	textList->offset = offset;
 	if(textList->offset < 0) textList->offset = 0;
 }
 
-void elfSetTextListSelection(elfTextList* textList, int selection)
+ELF_API void ELF_APIENTRY elfSetTextListSelection(elfTextList* textList, int selection)
 {
 	textList->selection = selection;
 	if(textList->selection < 0) textList->selection = -1;
@@ -1212,7 +1212,7 @@ void elfSetTextListSelection(elfTextList* textList, int selection)
 	if(elfGetListLength(textList->items) == 0) textList->selection = -1;
 }
 
-elfCheckBox* elfCreateCheckBox(const char* name)
+ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(const char* name)
 {
 	elfCheckBox* checkBox;
 
@@ -1271,17 +1271,17 @@ void elfDrawCheckBox(elfCheckBox* checkBox, gfxShaderParams* shaderParams)
 	}
 }
 
-unsigned char elfGetCheckBoxState(elfCheckBox* checkBox)
+ELF_API unsigned char ELF_APIENTRY elfGetCheckBoxState(elfCheckBox* checkBox)
 {
 	return checkBox->state;
 }
 
-elfTexture* elfGetCheckBoxOffTexture(elfCheckBox* checkBox)
+ELF_API elfTexture* ELF_APIENTRY elfGetCheckBoxOffTexture(elfCheckBox* checkBox)
 {
 	return checkBox->off;
 }
 
-elfTexture* elfGetCheckBoxOnTexture(elfCheckBox* checkBox)
+ELF_API elfTexture* ELF_APIENTRY elfGetCheckBoxOnTexture(elfCheckBox* checkBox)
 {
 	return checkBox->on;
 }
@@ -1300,7 +1300,7 @@ void elfRecalcCheckBox(elfCheckBox* checkBox)
 	}
 }
 
-void elfSetCheckBoxOffTexture(elfCheckBox* checkBox, elfTexture* off)
+ELF_API void ELF_APIENTRY elfSetCheckBoxOffTexture(elfCheckBox* checkBox, elfTexture* off)
 {
 	if(checkBox->off) elfDecRef((elfObject*)checkBox->off);
 	checkBox->off = off;
@@ -1308,14 +1308,14 @@ void elfSetCheckBoxOffTexture(elfCheckBox* checkBox, elfTexture* off)
 	elfRecalcGuiObject((elfGuiObject*)checkBox);
 }
 
-void elfSetCheckBoxOnTexture(elfCheckBox* checkBox, elfTexture* on)
+ELF_API void ELF_APIENTRY elfSetCheckBoxOnTexture(elfCheckBox* checkBox, elfTexture* on)
 {
 	if(checkBox->on) elfDecRef((elfObject*)checkBox->on);
 	checkBox->on = on;
 	if(checkBox->on) elfIncRef((elfObject*)checkBox->on);
 }
 
-void elfSetCheckBoxState(elfCheckBox* checkBox, unsigned char state)
+ELF_API void ELF_APIENTRY elfSetCheckBoxState(elfCheckBox* checkBox, unsigned char state)
 {
 	checkBox->state = !state == ELF_OFF;
 }
@@ -1395,7 +1395,7 @@ void elfSetGuiObjectRoot(elfGuiObject* object, elfGui* root)
 	object->root = root;
 }
 
-elfGui* elfCreateGui()
+ELF_API elfGui* ELF_APIENTRY elfCreateGui()
 {
 	elfGui* gui;
 
@@ -2011,7 +2011,7 @@ void elfDrawGui(elfGui* gui)
 	gfxSetShaderParams(&gui->shaderParams);
 }
 
-unsigned char elfAddGuiObject(elfGuiObject* parent, elfGuiObject* object)
+ELF_API unsigned char ELF_APIENTRY elfAddGuiObject(elfGuiObject* parent, elfGuiObject* object)
 {
 	if(parent->objType != ELF_GUI && parent->objType != ELF_SCREEN) return ELF_FALSE;
 	if(object->parent) elfRemoveGuiObjectByObject(object->parent, object);
@@ -2023,7 +2023,7 @@ unsigned char elfAddGuiObject(elfGuiObject* parent, elfGuiObject* object)
 	return ELF_TRUE;
 }
 
-elfGuiObject* elfGetGuiObjectByName(elfGuiObject* parent, const char* name)
+ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiObjectByName(elfGuiObject* parent, const char* name)
 {
 	elfGuiObject* object;
 
@@ -2050,7 +2050,7 @@ elfGuiObject* elfGetGuiObjectByName(elfGuiObject* parent, const char* name)
 	return NULL;
 }
 
-elfGuiObject* elfGetGuiObjectByIndex(elfGuiObject* parent, int idx)
+ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiObjectByIndex(elfGuiObject* parent, int idx)
 {
 	elfGuiObject* object;
 	int i;
@@ -2080,7 +2080,7 @@ elfGuiObject* elfGetGuiObjectByIndex(elfGuiObject* parent, int idx)
 	return ELF_FALSE;
 }
 
-unsigned char elfRemoveGuiObjectByName(elfGuiObject* parent, const char* name)
+ELF_API unsigned char ELF_APIENTRY elfRemoveGuiObjectByName(elfGuiObject* parent, const char* name)
 {
 	elfGuiObject* object;
 
@@ -2127,7 +2127,7 @@ unsigned char elfRemoveGuiObjectByName(elfGuiObject* parent, const char* name)
 	return ELF_FALSE;
 }
 
-unsigned char elfRemoveGuiObjectByIndex(elfGuiObject* parent, int idx)
+ELF_API unsigned char ELF_APIENTRY elfRemoveGuiObjectByIndex(elfGuiObject* parent, int idx)
 {
 	elfGuiObject* object;
 	int i;
@@ -2183,7 +2183,7 @@ unsigned char elfRemoveGuiObjectByIndex(elfGuiObject* parent, int idx)
 	return ELF_FALSE;
 }
 
-unsigned char elfRemoveGuiObjectByObject(elfGuiObject* parent, elfGuiObject* object)
+ELF_API unsigned char ELF_APIENTRY elfRemoveGuiObjectByObject(elfGuiObject* parent, elfGuiObject* object)
 {
 	if(parent->objType != ELF_GUI && parent->objType != ELF_SCREEN) return ELF_FALSE;
 	
@@ -2202,23 +2202,23 @@ unsigned char elfRemoveGuiObjectByObject(elfGuiObject* parent, elfGuiObject* obj
 	else return elfRemoveFromList(parent->screens, (elfObject*)object);
 }
 
-elfGuiObject* elfGetGuiTrace(elfGui* gui)
+ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiTrace(elfGui* gui)
 {
 	if(!gui->trace || gui->trace->objType == ELF_GUI) return NULL;
 	return gui->trace;
 }
 
-elfGuiObject* elfGetGuiFocus(elfGui* gui)
+ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiFocus(elfGui* gui)
 {
 	return (elfGuiObject*)gui->focusScreen;
 }
 
-elfGuiObject* elfGetGuiActiveTextField(elfGui* gui)
+ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiActiveTextField(elfGui* gui)
 {
 	return (elfGuiObject*)gui->activeTextField;
 }
 
-void elfEmptyGui(elfGui* gui)
+ELF_API void ELF_APIENTRY elfEmptyGui(elfGui* gui)
 {
 	elfDecRef((elfObject*)gui->children);
 	elfDecRef((elfObject*)gui->screens);

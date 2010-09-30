@@ -17,7 +17,7 @@ elfModel* elfCreateModel(const char* name)
 	return model;
 }
 
-elfModel* elfCreateModelFromMeshData(elfMeshData* meshData)
+ELF_API elfModel* ELF_APIENTRY elfCreateModelFromMeshData(elfMeshData* data)
 {
 	elfModel* model;
 	float* vertexBuffer;
@@ -28,15 +28,15 @@ elfModel* elfCreateModelFromMeshData(elfMeshData* meshData)
 	elfFace* face;
 	elfVertice* vertice;
 
-	if(elfGetMeshDataVerticeCount(meshData) < 3) return NULL;
-	if(elfGetMeshDataFaceCount(meshData) < 1) return NULL;
+	if(elfGetMeshDataVerticeCount(data) < 3) return NULL;
+	if(elfGetMeshDataFaceCount(data) < 1) return NULL;
 
 	model = elfCreateModel(NULL);
 
-	model->verticeCount = elfGetListLength(meshData->vertices);
+	model->verticeCount = elfGetListLength(data->vertices);
 	model->frameCount = 1;
 	model->areaCount = 1;
-	model->indiceCount = elfGetListLength(meshData->faces)*3;
+	model->indiceCount = elfGetListLength(data->faces)*3;
 
 	model->vertices = gfxCreateVertexData(3*model->verticeCount, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
 	model->normals = gfxCreateVertexData(3*model->verticeCount, GFX_FLOAT, GFX_VERTEX_DATA_STATIC);
@@ -63,16 +63,16 @@ elfModel* elfCreateModelFromMeshData(elfMeshData* meshData)
 
 	indexBuffer = (unsigned int*)gfxGetVertexDataBuffer(model->areas[0].index);
 
-	for(i = 0, face = (elfFace*)elfBeginList(meshData->faces); face;
-		face = (elfFace*)elfNextInList(meshData->faces), i+=3)
+	for(i = 0, face = (elfFace*)elfBeginList(data->faces); face;
+		face = (elfFace*)elfNextInList(data->faces), i+=3)
 	{
 		indexBuffer[i] = face->v1;
 		indexBuffer[i+1] = face->v2;
 		indexBuffer[i+2] = face->v3;
 	}
 
-	for(i = 0, j = 0, vertice = (elfVertice*)elfBeginList(meshData->vertices); vertice;
-		vertice = (elfVertice*)elfNextInList(meshData->vertices), i += 3, j += 2)
+	for(i = 0, j = 0, vertice = (elfVertice*)elfBeginList(data->vertices); vertice;
+		vertice = (elfVertice*)elfNextInList(data->vertices), i += 3, j += 2)
 	{
 		vertexBuffer[i] = vertice->position.x;
 		vertexBuffer[i+1] = vertice->position.y;
@@ -279,38 +279,38 @@ void elfDestroyModel(void* data)
 	elfDecObj(ELF_MODEL);
 }
 
-void elfSetModelName(elfModel* model, const char* name)
+ELF_API void ELF_APIENTRY elfSetModelName(elfModel* model, const char* name)
 {
 	if(model->name) elfDestroyString(model->name);
 	model->name = elfCreateString(name);
 }
 
-const char* elfGetModelName(elfModel* model)
+ELF_API const char* ELF_APIENTRY elfGetModelName(elfModel* model)
 {
 	return model->name;
 }
 
-const char* elfGetModelFilePath(elfModel* model)
+ELF_API const char* ELF_APIENTRY elfGetModelFilePath(elfModel* model)
 {
 	return model->filePath;
 }
 
-int elfGetModelVerticeCount(elfModel* model)
+ELF_API int ELF_APIENTRY elfGetModelVerticeCount(elfModel* model)
 {
 	return model->verticeCount;
 }
 
-int elfGetModelIndiceCount(elfModel* model)
+ELF_API int ELF_APIENTRY elfGetModelIndiceCount(elfModel* model)
 {
 	return model->indiceCount;
 }
 
-elfVec3f elfGetModelBoundingBoxMin(elfModel* model)
+ELF_API elfVec3f ELF_APIENTRY elfGetModelBoundingBoxMin(elfModel* model)
 {
 	return model->bbMin;
 }
 
-elfVec3f elfGetModelBoundingBoxMax(elfModel* model)
+ELF_API elfVec3f ELF_APIENTRY elfGetModelBoundingBoxMax(elfModel* model)
 {
 	return model->bbMax;
 }

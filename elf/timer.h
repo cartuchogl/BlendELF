@@ -1,5 +1,5 @@
 
-elfTimer* elfCreateTimer()
+ELF_API elfTimer* ELF_APIENTRY elfCreateTimer()
 {
 	elfTimer* timer;
 
@@ -22,12 +22,12 @@ void elfDestroyTimer(void* data)
 	elfDecObj(ELF_TIMER);
 }
 
-void elfStartTimer(elfTimer* timer)
+ELF_API void ELF_APIENTRY elfStartTimer(elfTimer* timer)
 {
 	timer->start = elfGetTime();
 }
 
-double elfGetElapsedTime(elfTimer* timer)
+ELF_API double ELF_APIENTRY elfGetElapsedTime(elfTimer* timer)
 {
 	if(!timer->start) return 0.0;
 	return elfGetTime()-timer->start;

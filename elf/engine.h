@@ -219,8 +219,7 @@ void elfDeinitEngine()
 	eng = NULL;
 }
 
-unsigned char elfInit(int width, int height,
-	const char* title, int multisamples, unsigned char fullscreen, const char* log)
+ELF_API unsigned char ELF_APIENTRY elfInit(int width, int height, const char* title, int multisamples, unsigned char fullscreen, const char* log)
 {
 	elfInitGeneral();
 	elfSetLogFilePath(log);
@@ -236,12 +235,11 @@ unsigned char elfInit(int width, int height,
 	elfInitAudio();
 	elfInitEngine();
 	elfInitScripting();
-	elfInitNetworking();
 
 	return ELF_TRUE;
 }
 
-unsigned char elfInitWithConfig(const char* filePath)
+ELF_API unsigned char ELF_APIENTRY elfInitWithConfig(const char* filePath)
 {
 	elfConfig* config;
 
@@ -333,7 +331,7 @@ void elfCountEngineFps()
 	}
 }
 
-unsigned char elfRun()
+ELF_API unsigned char ELF_APIENTRY elfRun()
 {
 	if(!eng || !eng->freeRun) return ELF_FALSE;
 
@@ -394,9 +392,8 @@ unsigned char elfRun()
 	return ELF_TRUE;
 }
 
-void elfDeinit()
+ELF_API void ELF_APIENTRY elfDeinit()
 {
-	elfDeinitNetworking();
 	elfDeinitScripting();
 	elfDeinitEngine();
 	elfDeinitAudio();
@@ -405,7 +402,7 @@ void elfDeinit()
 	elfDeinitGeneral();
 }
 
-void elfResizeWindow(int width, int height)
+ELF_API void ELF_APIENTRY elfResizeWindow(int width, int height)
 {
 	elfSetError(ELF_MISSING_FEATURE, "error: resizing not yet in a usable state\n");
 
@@ -416,7 +413,7 @@ void elfResizeWindow(int width, int height)
 	elfInitPostProcessBuffers(eng->postProcess);*/
 }
 
-const char* elfGetPlatform()
+ELF_API const char* ELF_APIENTRY elfGetPlatform()
 {
 #if defined(ELF_WINDOWS)
 	return "windows";
@@ -427,22 +424,22 @@ const char* elfGetPlatform()
 #endif
 }
 
-int elfGetVersionMajor()
+ELF_API int ELF_APIENTRY elfGetVersionMajor()
 {
 	return 0;
 }
 
-int elfGetVersionMinor()
+ELF_API int ELF_APIENTRY elfGetVersionMinor()
 {
 	return 9;
 }
 
-const char* elfGetVersionRelease()
+ELF_API const char* ELF_APIENTRY elfGetVersionRelease()
 {
 	return "Beta 2";
 }
 
-const char* elfGetVersion()
+ELF_API const char* ELF_APIENTRY elfGetVersion()
 {
 	return "BlendELF 0.9 Beta 2";
 }
@@ -464,37 +461,37 @@ char* elfGetDirectoryFromPath(const char* filePath)
 	}
 }
 
-const char* elfGetCurrentDirectory()
+ELF_API const char* ELF_APIENTRY elfGetCurrentDirectory()
 {
 	return eng->cwd;
 }
 
-const char* elfGetErrorString()
+ELF_API const char* ELF_APIENTRY elfGetErrorString()
 {
 	return gen->errStr;
 }
 
-int elfGetError()
+ELF_API int ELF_APIENTRY elfGetError()
 {
 	return gen->errCode;
 }
 
-void elfQuit()
+ELF_API void ELF_APIENTRY elfQuit()
 {
 	eng->quit = ELF_TRUE;
 }
 
-void elfSetF10Exit(unsigned char exit)
+ELF_API void ELF_APIENTRY elfSetF10Exit(unsigned char exit)
 {
 	eng->f10Exit = !(exit == ELF_FALSE);
 }
 
-unsigned char elfGetF10Exit()
+ELF_API unsigned char ELF_APIENTRY elfGetF10Exit()
 {
 	return eng->f10Exit;
 }
 
-elfScene* elfLoadScene(const char* filePath)
+ELF_API elfScene* ELF_APIENTRY elfLoadScene(const char* filePath)
 {
 	elfScene* scene;
 
@@ -509,74 +506,74 @@ elfScene* elfLoadScene(const char* filePath)
 	return scene;
 }
 
-void elfSetScene(elfScene* scene)
+ELF_API void ELF_APIENTRY elfSetScene(elfScene* scene)
 {
 	if(eng->scene) elfDecRef((elfObject*)eng->scene);
 	eng->scene = scene;
 	if(eng->scene) elfIncRef((elfObject*)eng->scene);
 }
 
-elfScene* elfGetScene()
+ELF_API elfScene* ELF_APIENTRY elfGetScene()
 {
 	return eng->scene;
 }
 
-void elfSetGui(elfGui* gui)
+ELF_API void ELF_APIENTRY elfSetGui(elfGui* gui)
 {
 	if(eng->gui) elfDecRef((elfObject*)eng->gui);
 	eng->gui = gui;
 	if(eng->gui) elfIncRef((elfObject*)eng->gui);
 }
 
-elfGui* elfGetGui()
+ELF_API elfGui* ELF_APIENTRY elfGetGui()
 {
 	return eng->gui;
 }
 
-float elfGetSync()
+ELF_API float ELF_APIENTRY elfGetSync()
 {
 	return eng->sync;
 }
 
-int elfGetFps()
+ELF_API int ELF_APIENTRY elfGetFps()
 {
 	return eng->fps;
 }
 
-void elfSetFpsLimit(int fpsLimit)
+ELF_API void ELF_APIENTRY elfSetFpsLimit(int fpsLimit)
 {
 	eng->fpsLimit = fpsLimit;
 	if(eng->fpsLimit < 0) eng->fpsLimit = 0;
 }
 
-int elfGetFpsLimit()
+ELF_API int ELF_APIENTRY elfGetFpsLimit()
 {
 	return eng->fpsLimit;
 }
 
-void elfSetTickRate(float tickRate)
+ELF_API void ELF_APIENTRY elfSetTickRate(float tickRate)
 {
 	eng->tickRate = tickRate;
 	if(eng->tickRate < 0.0) eng->tickRate = 0.0;
 }
 
-float elfGetTickRate()
+ELF_API float ELF_APIENTRY elfGetTickRate()
 {
 	return eng->tickRate;
 }
 
-void elfSetSpeed(float speed)
+ELF_API void ELF_APIENTRY elfSetSpeed(float speed)
 {
 	eng->speed = speed;
 	if(eng->speed < 0.0001) eng->speed = 0.0001;
 }
 
-float elfGetSpeed()
+ELF_API float ELF_APIENTRY elfGetSpeed()
 {
 	return eng->speed;
 }
 
-unsigned char elfSaveScreenShot(const char* filePath)
+ELF_API unsigned char ELF_APIENTRY elfSaveScreenShot(const char* filePath)
 {
 	unsigned char* data;
 
@@ -595,27 +592,27 @@ unsigned char elfSaveScreenShot(const char* filePath)
 	return ELF_TRUE;
 }
 
-void elfSetTextureCompress(unsigned char compress)
+ELF_API void ELF_APIENTRY elfSetTextureCompress(unsigned char compress)
 {
 	eng->textureCompress = !compress == ELF_FALSE;
 }
 
-unsigned char elfGetTextureCompress()
+ELF_API unsigned char ELF_APIENTRY elfGetTextureCompress()
 {
 	return eng->textureCompress;
 }
 
-void elfSetTextureAnisotropy(float anisotropy)
+ELF_API void ELF_APIENTRY elfSetTextureAnisotropy(float anisotropy)
 {
 	eng->textureAnisotropy = anisotropy;
 }
 
-float elfGetTextureAnisotropy()
+ELF_API float ELF_APIENTRY elfGetTextureAnisotropy()
 {
 	return eng->textureAnisotropy;
 }
 
-void elfSetShadowMapSize(int size)
+ELF_API void ELF_APIENTRY elfSetShadowMapSize(int size)
 {
 	// why would someone want a shadow map of 1 pixel?...
 	if(size < 1) return;
@@ -629,17 +626,17 @@ void elfSetShadowMapSize(int size)
 	gfxSetRenderTargetDepthTexture(eng->shadowTarget, eng->shadowMap);
 }
 
-int elfGetShadowMapSize()
+ELF_API int ELF_APIENTRY elfGetShadowMapSize()
 {
 	return eng->shadowMapSize;
 }
 
-int elfGetPolygonsRendered()
+ELF_API int ELF_APIENTRY elfGetPolygonsRendered()
 {
 	return gfxGetVerticesDrawn(GFX_TRIANGLES)/3+gfxGetVerticesDrawn(GFX_TRIANGLE_STRIP)/3;
 }
 
-void elfSetFog(float start, float end, float r, float g, float b)
+ELF_API void ELF_APIENTRY elfSetFog(float start, float end, float r, float g, float b)
 {
 	eng->fog = ELF_TRUE;
 	eng->fogStart = start;
@@ -649,27 +646,27 @@ void elfSetFog(float start, float end, float r, float g, float b)
 	eng->fogColor.b = b;
 }
 
-void elfDisableFog()
+ELF_API void ELF_APIENTRY elfDisableFog()
 {
 	eng->fog = ELF_FALSE;
 }
 
-float elfGetFogStart()
+ELF_API float ELF_APIENTRY elfGetFogStart()
 {
 	return eng->fogStart;
 }
 
-float elfGetFogEnd()
+ELF_API float ELF_APIENTRY elfGetFogEnd()
 {
 	return eng->fogEnd;
 }
 
-elfColor elfGetFogColor()
+ELF_API elfColor ELF_APIENTRY elfGetFogColor()
 {
 	return eng->fogColor;
 }
 
-void elfSetBloom(float threshold)
+ELF_API void ELF_APIENTRY elfSetBloom(float threshold)
 {
 	if(gfxGetVersion() < 200) return;
 
@@ -677,7 +674,7 @@ void elfSetBloom(float threshold)
 	elfSetPostProcessBloom(eng->postProcess, threshold);
 }
 
-void elfDisableBloom()
+ELF_API void ELF_APIENTRY elfDisableBloom()
 {
 	if(eng->postProcess)
 	{
@@ -693,13 +690,13 @@ void elfDisableBloom()
 	}
 }
 
-float elfGetBloomThreshold()
+ELF_API float ELF_APIENTRY elfGetBloomThreshold()
 {
 	if(!eng->postProcess) return ELF_FALSE;
 	return elfGetPostProcessBloomThreshold(eng->postProcess);
 }
 
-void elfSetDof(float focalRange, float focalDistance)
+ELF_API void ELF_APIENTRY elfSetDof(float focalRange, float focalDistance)
 {
 	if(gfxGetVersion() < 200) return;
 
@@ -707,7 +704,7 @@ void elfSetDof(float focalRange, float focalDistance)
 	elfSetPostProcessDof(eng->postProcess, focalRange, focalDistance);
 }
 
-void elfDisableDof()
+ELF_API void ELF_APIENTRY elfDisableDof()
 {
 	if(eng->postProcess)
 	{
@@ -723,19 +720,19 @@ void elfDisableDof()
 	}
 }
 
-float elfGetDofFocalRange()
+ELF_API float ELF_APIENTRY elfGetDofFocalRange()
 {
 	if(!eng->postProcess) return ELF_FALSE;
 	return elfGetPostProcessDofFocalRange(eng->postProcess);
 }
 
-float elfGetDofFocalDistance()
+ELF_API float ELF_APIENTRY elfGetDofFocalDistance()
 {
 	if(!eng->postProcess) return ELF_FALSE;
 	return elfGetPostProcessDofFocalDistance(eng->postProcess);
 }
 
-void elfSetSsao(float amount)
+ELF_API void ELF_APIENTRY elfSetSsao(float amount)
 {
 	if(gfxGetVersion() < 200) return;
 
@@ -743,7 +740,7 @@ void elfSetSsao(float amount)
 	elfSetPostProcessSsao(eng->postProcess, amount);
 }
 
-void elfDisableSsao()
+ELF_API void ELF_APIENTRY elfDisableSsao()
 {
 	if(eng->postProcess)
 	{
@@ -759,13 +756,13 @@ void elfDisableSsao()
 	}
 }
 
-float elfGetSsaoAmount()
+ELF_API float ELF_APIENTRY elfGetSsaoAmount()
 {
 	if(eng->postProcess) return elfGetPostProcessSsaoAmount(eng->postProcess);
 	return 0.0;
 }
 
-void elfSetLightShafts(float intensity)
+ELF_API void ELF_APIENTRY elfSetLightShafts(float intensity)
 {
 	if(gfxGetVersion() < 200) return;
 
@@ -773,7 +770,7 @@ void elfSetLightShafts(float intensity)
 	elfSetPostProcessLightShafts(eng->postProcess, intensity);
 }
 
-void elfDisableLightShafts()
+ELF_API void ELF_APIENTRY elfDisableLightShafts()
 {
 	if(eng->postProcess)
 	{
@@ -789,62 +786,62 @@ void elfDisableLightShafts()
 	}
 }
 
-float elfGetLightShaftsIntensity()
+ELF_API float ELF_APIENTRY elfGetLightShaftsIntensity()
 {
 	if(eng->postProcess) return elfGetPostProcessLightShaftsIntensity(eng->postProcess);
 	return 0.0;
 }
 
-unsigned char elfIsFog()
+ELF_API unsigned char ELF_APIENTRY elfIsFog()
 {
 	return eng->fog;
 }
 
-unsigned char elfIsBloom()
+ELF_API unsigned char ELF_APIENTRY elfIsBloom()
 {
 	if(eng->postProcess) return elfIsPostProcessBloom(eng->postProcess);
 	return ELF_FALSE;
 }
 
-unsigned char elfIsSsao()
+ELF_API unsigned char ELF_APIENTRY elfIsSsao()
 {
 	if(eng->postProcess) return elfIsPostProcessSsao(eng->postProcess);
 	return ELF_FALSE;
 }
 
-unsigned char elfIsDof()
+ELF_API unsigned char ELF_APIENTRY elfIsDof()
 {
 	if(eng->postProcess) return elfIsPostProcessDof(eng->postProcess);
 	return ELF_FALSE;
 }
 
-unsigned char elfIsLightShafts()
+ELF_API unsigned char ELF_APIENTRY elfIsLightShafts()
 {
 	if(eng->postProcess) return elfIsPostProcessLightShafts(eng->postProcess);
 	return ELF_FALSE;
 }
 
-void elfSetOcclusionCulling(unsigned char cull)
+ELF_API void ELF_APIENTRY elfSetOcclusionCulling(unsigned char cull)
 {
 	eng->occlusionCulling = !cull == ELF_FALSE;
 }
 
-unsigned char elfIsOcclusionCulling()
+ELF_API unsigned char ELF_APIENTRY elfIsOcclusionCulling()
 {
 	return eng->occlusionCulling;
 }
 
-void elfSetDebugDraw(unsigned char debugDraw)
+ELF_API void ELF_APIENTRY elfSetDebugDraw(unsigned char debugDraw)
 {
 	eng->debugDraw = !debugDraw == ELF_FALSE;
 }
 
-unsigned char elfIsDebugDraw()
+ELF_API unsigned char ELF_APIENTRY elfIsDebugDraw()
 {
 	return eng->debugDraw;
 }
 
-elfObject* elfGetActor()
+ELF_API elfObject* ELF_APIENTRY elfGetActor()
 {
 	return eng->actor;
 }
@@ -931,7 +928,7 @@ static int alphacmp(const void* a, const void* b)
 	return strcmp((*((elfDirItemEmul*)a)).str, (*((elfDirItemEmul*)b)).str);
 }
 
-elfDirectory* elfReadDirectory(const char* path)
+ELF_API elfDirectory* ELF_APIENTRY elfReadDirectory(const char* path)
 {
 	elfDirectory* directory;
 	elfDirectoryItem* dirItem;
@@ -1006,17 +1003,17 @@ elfDirectory* elfReadDirectory(const char* path)
 	}
 }
 
-const char* elfGetDirectoryPath(elfDirectory* directory)
+ELF_API const char* ELF_APIENTRY elfGetDirectoryPath(elfDirectory* directory)
 {
 	return directory->path;
 }
 
-int elfGetDirectoryItemCount(elfDirectory* directory)
+ELF_API int ELF_APIENTRY elfGetDirectoryItemCount(elfDirectory* directory)
 {
 	return elfGetListLength(directory->items);
 }
 
-elfDirectoryItem* elfGetDirectoryItem(elfDirectory* directory, int idx)
+ELF_API elfDirectoryItem* ELF_APIENTRY elfGetDirectoryItem(elfDirectory* directory, int idx)
 {
 	int i;
 	elfDirectoryItem* dirItem;
@@ -1032,24 +1029,24 @@ elfDirectoryItem* elfGetDirectoryItem(elfDirectory* directory, int idx)
 	return NULL;
 }
 
-const char* elfGetDirectoryItemName(elfDirectoryItem* dirItem)
+ELF_API const char* ELF_APIENTRY elfGetDirectoryItemName(elfDirectoryItem* dirItem)
 {
 	return dirItem->name;
 }
 
-int elfGetDirectoryItemType(elfDirectoryItem* dirItem)
+ELF_API int ELF_APIENTRY elfGetDirectoryItemType(elfDirectoryItem* dirItem)
 {
 	return dirItem->itemType;
 }
 
-elfVec3f elfCreateVec3f()
+ELF_API elfVec3f ELF_APIENTRY elfCreateVec3f()
 {
 	elfVec3f result;
 	memset(&result, 0x0, sizeof(elfVec3f));
 	return result;
 }
 
-elfVec3f elfCreateVec3fFromValues(float x, float y, float z)
+ELF_API elfVec3f ELF_APIENTRY elfCreateVec3fFromValues(float x, float y, float z)
 {
 	elfVec3f result;
 	memset(&result, 0x0, sizeof(elfVec3f));
@@ -1061,14 +1058,14 @@ elfVec3f elfCreateVec3fFromValues(float x, float y, float z)
 	return result;
 }
 
-elfVec4f elfCreateQua()
+ELF_API elfVec4f ELF_APIENTRY elfCreateQua()
 {
 	elfVec4f result;
 	memset(&result, 0x0, sizeof(elfVec4f));
 	return result;
 }
 
-elfVec4f elfCreateQuaFromEuler(float x, float y, float z)
+ELF_API elfVec4f ELF_APIENTRY elfCreateQuaFromEuler(float x, float y, float z)
 {
 	elfVec4f result;
 	memset(&result, 0x0, sizeof(elfVec4f));
@@ -1078,7 +1075,7 @@ elfVec4f elfCreateQuaFromEuler(float x, float y, float z)
 	return result;
 }
 
-elfVec4f elfCreateQuaFromAngleAxis(float angle, float x, float y, float z)
+ELF_API elfVec4f ELF_APIENTRY elfCreateQuaFromAngleAxis(float angle, float x, float y, float z)
 {
 	elfVec4f qua;
 	float axis[3];
@@ -1089,7 +1086,7 @@ elfVec4f elfCreateQuaFromAngleAxis(float angle, float x, float y, float z)
 	return qua;
 }
 
-elfVec3f elfMulQuaVec3f(elfVec4f qua, elfVec3f vec)
+ELF_API elfVec3f ELF_APIENTRY elfMulQuaVec3f(elfVec4f qua, elfVec3f vec)
 {
 	elfVec3f result;
 
@@ -1098,7 +1095,7 @@ elfVec3f elfMulQuaVec3f(elfVec4f qua, elfVec3f vec)
 	return result;
 }
 
-elfVec4f elfMulQuaQua(elfVec4f qua1, elfVec4f qua2)
+ELF_API elfVec4f ELF_APIENTRY elfMulQuaQua(elfVec4f qua1, elfVec4f qua2)
 {
 	elfVec4f result;
 
@@ -1107,7 +1104,7 @@ elfVec4f elfMulQuaQua(elfVec4f qua1, elfVec4f qua2)
 	return result;
 }
 
-elfVec4f elfGetQuaInverted(elfVec4f qua)
+ELF_API elfVec4f ELF_APIENTRY elfGetQuaInverted(elfVec4f qua)
 {
 	elfVec4f result;
 
@@ -1116,7 +1113,7 @@ elfVec4f elfGetQuaInverted(elfVec4f qua)
 	return result;
 }
 
-elfVec3f elfRotateVec3f(elfVec3f vec, float x, float y, float z)
+ELF_API elfVec3f ELF_APIENTRY elfRotateVec3f(elfVec3f vec, float x, float y, float z)
 {
 	elfVec4f qua;
 	elfVec3f result;
@@ -1128,7 +1125,7 @@ elfVec3f elfRotateVec3f(elfVec3f vec, float x, float y, float z)
 	return result;
 }
 
-elfVec3f elfSubVec3fVec3f(elfVec3f vec1, elfVec3f vec2)
+ELF_API elfVec3f ELF_APIENTRY elfSubVec3fVec3f(elfVec3f vec1, elfVec3f vec2)
 {
 	elfVec3f result;
 	result.x = vec1.x-vec2.x;
@@ -1137,7 +1134,7 @@ elfVec3f elfSubVec3fVec3f(elfVec3f vec1, elfVec3f vec2)
 	return result;
 }
 
-elfVec3f elfAddVec3fVec3f(elfVec3f vec1, elfVec3f vec2)
+ELF_API elfVec3f ELF_APIENTRY elfAddVec3fVec3f(elfVec3f vec1, elfVec3f vec2)
 {
 	elfVec3f result;
 	result.x = vec1.x+vec2.x;
@@ -1146,51 +1143,51 @@ elfVec3f elfAddVec3fVec3f(elfVec3f vec1, elfVec3f vec2)
 	return result;
 }
 
-float elfGetVec3fLength(elfVec3f vec)
+ELF_API float ELF_APIENTRY elfGetVec3fLength(elfVec3f vec)
 {
 	return gfxVecLength(&vec.x);
 }
 
-unsigned char elfAboutZero(float val)
+ELF_API unsigned char ELF_APIENTRY elfAboutZero(float val)
 {
 	if(val < 0.0001 && val > -0.0001) return ELF_TRUE;
 	return ELF_FALSE;
 }
 
-float elfFloatAbs(float val)
+ELF_API float ELF_APIENTRY elfFloatAbs(float val)
 {
 	if(val < 0.0) return -val;
 	return val;
 }
 
-float elfFloatMin(float a, float b)
+ELF_API float ELF_APIENTRY elfFloatMin(float a, float b)
 {
 	if(a < b) return a;
 	return b;
 }
 
-float elfFloatMax(float a, float b)
+ELF_API float ELF_APIENTRY elfFloatMax(float a, float b)
 {
 	if(a > b) return a;
 	return b;
 }
 
-float elfRandomFloat()
+ELF_API float ELF_APIENTRY elfRandomFloat()
 {
 	return (float)rand()/(float)RAND_MAX;
 }
 
-float elfRandomFloatRange(float min, float max)
+ELF_API float ELF_APIENTRY elfRandomFloatRange(float min, float max)
 {
 	return min+(max-min)*elfRandomFloat();
 }
 
-int elfRandomInt()
+ELF_API int ELF_APIENTRY elfRandomInt()
 {
 	return rand();
 }
 
-int elfRandomIntRange(int min, int max)
+ELF_API int ELF_APIENTRY elfRandomIntRange(int min, int max)
 {
 	return (int)(((float)(min+(max-min)))*elfRandomFloat());
 }

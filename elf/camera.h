@@ -1,5 +1,5 @@
 
-elfCamera* elfCreateCamera(const char* name)
+ELF_API elfCamera* ELF_APIENTRY elfCreateCamera(const char* name)
 {
 	elfCamera* camera;
 
@@ -76,7 +76,7 @@ void elfDestroyCamera(void* data)
 	elfDecObj(ELF_CAMERA);
 }
 
-void elfSetCameraViewport(elfCamera* camera, int x, int y, int width, int height)
+ELF_API void ELF_APIENTRY elfSetCameraViewport(elfCamera* camera, int x, int y, int width, int height)
 {
 	camera->viewpX = x;
 	camera->viewpY = y;
@@ -84,7 +84,7 @@ void elfSetCameraViewport(elfCamera* camera, int x, int y, int width, int height
 	camera->viewpHeight = height;
 }
 
-void elfSetCameraPerspective(elfCamera* camera, float fov, float aspect, float clipNear, float clipFar)
+ELF_API void ELF_APIENTRY elfSetCameraPerspective(elfCamera* camera, float fov, float aspect, float clipNear, float clipFar)
 {
 	camera->mode = ELF_PERSPECTIVE;
 
@@ -107,7 +107,7 @@ void elfSetCameraPerspective(elfCamera* camera, float fov, float aspect, float c
 		camera->clipNear, camera->clipFar, camera->projectionMatrix);
 }
 
-void elfSetCameraOrthographic(elfCamera* camera, int x, int y, int width, int height, float clipNear, float clipFar)
+ELF_API void ELF_APIENTRY elfSetCameraOrthographic(elfCamera* camera, int x, int y, int width, int height, float clipNear, float clipFar)
 {
 	camera->mode = ELF_ORTHOGRAPHIC;
 
@@ -130,12 +130,12 @@ void elfSetCameraOrthographic(elfCamera* camera, int x, int y, int width, int he
 		(float)camera->clipNear, camera->clipFar, camera->projectionMatrix);
 }
 
-float elfGetCameraFov(elfCamera* camera)
+ELF_API float ELF_APIENTRY elfGetCameraFov(elfCamera* camera)
 {
 	return camera->fov;
 }
 
-float elfGetCameraAspect(elfCamera* camera)
+ELF_API float ELF_APIENTRY elfGetCameraAspect(elfCamera* camera)
 {
 	float aspect = camera->aspect;
 
@@ -149,7 +149,7 @@ float elfGetCameraAspect(elfCamera* camera)
 	return aspect;
 }
 
-elfVec2i elfGetCameraViewportSize(elfCamera* camera)
+ELF_API elfVec2i ELF_APIENTRY elfGetCameraViewportSize(elfCamera* camera)
 {
 	elfVec2i size;
 
@@ -161,7 +161,7 @@ elfVec2i elfGetCameraViewportSize(elfCamera* camera)
 	return size;
 }
 
-elfVec2i elfGetCameraViewportOffset(elfCamera* camera)
+ELF_API elfVec2i ELF_APIENTRY elfGetCameraViewportOffset(elfCamera* camera)
 {
 	elfVec2i offset;
 
@@ -171,7 +171,7 @@ elfVec2i elfGetCameraViewportOffset(elfCamera* camera)
 	return offset;
 }
 
-elfVec2f elfGetCameraClip(elfCamera* camera)
+ELF_API elfVec2f ELF_APIENTRY elfGetCameraClip(elfCamera* camera)
 {
 	elfVec2f clip;
 
@@ -181,7 +181,7 @@ elfVec2f elfGetCameraClip(elfCamera* camera)
 	return clip;
 }
 
-elfVec2f elfGetCameraFarPlaneSize(elfCamera* camera)
+ELF_API elfVec2f ELF_APIENTRY elfGetCameraFarPlaneSize(elfCamera* camera)
 {
 	elfVec2f size;
 
@@ -308,7 +308,7 @@ void elfDrawCameraDebug(elfCamera* camera, gfxShaderParams* shaderParams)
 	gfxDrawLines(6, eng->lines);
 }
 
-elfVec3f elfProjectCameraPoint(elfCamera* camera, float x, float y, float z)
+ELF_API elfVec3f ELF_APIENTRY elfProjectCameraPoint(elfCamera* camera, float x, float y, float z)
 {
 	elfVec3f result;
 	int viewp[4];
@@ -327,7 +327,7 @@ elfVec3f elfProjectCameraPoint(elfCamera* camera, float x, float y, float z)
 	return result;
 }
 
-elfVec3f elfUnProjectCameraPoint(elfCamera* camera, float x, float y, float z)
+ELF_API elfVec3f ELF_APIENTRY elfUnProjectCameraPoint(elfCamera* camera, float x, float y, float z)
 {
 	elfVec3f result;
 	int viewp[4];

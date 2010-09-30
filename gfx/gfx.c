@@ -121,6 +121,8 @@ unsigned char gfxInit()
 
 	if(glewIsSupported("GL_VERSION_1_0")) driver->version = 100;
 	if(glewIsSupported("GL_VERSION_1_1")) driver->version = 110;
+	if(glewIsSupported("GL_VERSION_1_2")) driver->version = 120;
+	if(glewIsSupported("GL_VERSION_1_3")) driver->version = 130;
 	if(glewIsSupported("GL_VERSION_1_4")) driver->version = 140;
 	if(glewIsSupported("GL_VERSION_1_5")) driver->version = 150;
 	if(glewIsSupported("GL_VERSION_2_0")) driver->version = 200;

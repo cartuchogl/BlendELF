@@ -32,17 +32,17 @@ void elfDestroyBone(void* data)
 	elfDecObj(ELF_BONE);
 }
 
-elfArmature* elfGetBoneArmature(elfBone* bone)
+ELF_API elfArmature* ELF_APIENTRY elfGetBoneArmature(elfBone* bone)
 {
 	return bone->armature;
 }
 
-elfBone* elfGetBoneParent(elfBone* bone)
+ELF_API elfBone* ELF_APIENTRY elfGetBoneParent(elfBone* bone)
 {
 	return bone->parent;
 }
 
-elfBone* elfGetBoneChildByName(elfBone* bone, const char* name)
+ELF_API elfBone* ELF_APIENTRY elfGetBoneChildByName(elfBone* bone, const char* name)
 {
 	elfBone* cbone;
 
@@ -58,7 +58,7 @@ elfBone* elfGetBoneChildByName(elfBone* bone, const char* name)
 	return NULL;
 }
 
-elfBone* elfGetBoneChildById(elfBone* bone, int id)
+ELF_API elfBone* ELF_APIENTRY elfGetBoneChildById(elfBone* bone, int id)
 {
 	elfBone* cbone;
 
@@ -74,17 +74,17 @@ elfBone* elfGetBoneChildById(elfBone* bone, int id)
 	return NULL;
 }
 
-elfBone* elfGetBoneChildByIndex(elfBone* bone, int idx)
+ELF_API elfBone* ELF_APIENTRY elfGetBoneChildByIndex(elfBone* bone, int idx)
 {
 	return (elfBone*)elfGetItemFromList(bone->children, idx);
 }
 
-elfVec3f elfGetBonePosition(elfBone* bone)
+ELF_API elfVec3f ELF_APIENTRY elfGetBonePosition(elfBone* bone)
 {
 	return bone->curPos;
 }
 
-elfVec3f elfGetBoneRotation(elfBone* bone)
+ELF_API elfVec3f ELF_APIENTRY elfGetBoneRotation(elfBone* bone)
 {
 	elfVec3f result;
 
@@ -93,7 +93,7 @@ elfVec3f elfGetBoneRotation(elfBone* bone)
 	return result;
 }
 
-elfVec4f elfGetBoneOrientation(elfBone* bone)
+ELF_API elfVec4f ELF_APIENTRY elfGetBoneOrientation(elfBone* bone)
 {
 	return bone->qua;
 }
@@ -169,7 +169,7 @@ void elfUpdateArmatureBones(elfArmature* armature)
 	}
 }
 
-elfArmature* elfCreateArmature(const char* name)
+ELF_API elfArmature* ELF_APIENTRY elfCreateArmature(const char* name)
 {
 	elfArmature* armature;
 
@@ -309,7 +309,7 @@ void elfDestroyArmature(void* data)
 	elfDecObj(ELF_ARMATURE);
 }
 
-elfBone* elfGetBoneFromArmatureByName(const char* name, elfArmature* armature)
+ELF_API elfBone* ELF_APIENTRY elfGetBoneFromArmatureByName(const char* name, elfArmature* armature)
 {
 	int i;
 
@@ -324,7 +324,7 @@ elfBone* elfGetBoneFromArmatureByName(const char* name, elfArmature* armature)
 	return NULL;
 }
 
-elfBone* elfGetBoneFromArmatureById(int id, elfArmature* armature)
+ELF_API elfBone* ELF_APIENTRY elfGetBoneFromArmatureById(int id, elfArmature* armature)
 {
 	if(id < 0 || id > armature->boneCount-1) return NULL;
 

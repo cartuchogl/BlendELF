@@ -11,7 +11,7 @@ INCS = -Iphy -Igfx -Ielf -I/usr/include/lua5.1 -I/usr/include/freetype2 -I$(BULL
 	-I/usr/include/malloc
 
 BLENDELF_LIBS = -L/opt/local/lib $(GLFW_PATH)/lib/cocoa/libglfw.a -lGLEW -pthread \
-	-lfreeimage -lvorbisfile -lvorbis -logg -llua -lfreetype -lenet -lz -lassimp \
+	-lfreeimage -lvorbisfile -lvorbis -logg -llua -lfreetype -lz -lassimp \
 	-framework OpenGL -framework OpenAL -lstdc++ -framework Cocoa \
 	$(BULLET_PATH)/BulletDynamics/Release/libBulletDynamics.a \
 	$(BULLET_PATH)/LinearMath/Release/libLinearMath.a \
@@ -25,8 +25,7 @@ all:
 	gcc -c elf/scripting.c $(DEV_CFLAGS) $(INCS)
 	gcc -c elf/network.c $(DEV_CFLAGS) $(INCS)
 	g++ -c elf/physics.cpp $(DEV_CFLAGS) $(INCS)
-	g++ -c elf/binds.cpp $(DEV_CFLAGS) $(INCS)
-	g++ -c elf/blendelf_wrap.cxx $(DEV_CFLAGS) $(INCS)
+	g++ -c elf/binds.c $(DEV_CFLAGS) $(INCS)
 	gcc -Wl -o blendelf *.o $(DEV_CFLAGS) $(BLENDELF_LIBS)
 	rm *.o
 

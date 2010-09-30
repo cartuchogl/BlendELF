@@ -22,7 +22,7 @@ void elfDestroyParticle(void* data)
 	elfDecObj(ELF_PARTICLE);
 }
 
-elfParticles* elfCreateParticles(const char* name, int maxCount)
+ELF_API elfParticles* ELF_APIENTRY elfCreateParticles(const char* name, int maxCount)
 {
 	elfParticles* particles;
 	float* texCoordBuffer;
@@ -614,17 +614,17 @@ void elfDestroyParticles(void* data)
 	elfDecObj(ELF_PARTICLES);
 }
 
-const char* elfGetParticlesName(elfParticles* particles)
+ELF_API const char* ELF_APIENTRY elfGetParticlesName(elfParticles* particles)
 {
 	return particles->name;
 }
 
-const char* elfGetParticlesFilePath(elfParticles* particles)
+ELF_API const char* ELF_APIENTRY elfGetParticlesFilePath(elfParticles* particles)
 {
 	return particles->filePath;
 }
 
-void elfSetParticlesMaxCount(elfParticles* particles, int maxCount)
+ELF_API void ELF_APIENTRY elfSetParticlesMaxCount(elfParticles* particles, int maxCount)
 {
 	int i, j, k;
 	float* texCoordBuffer;
@@ -705,26 +705,26 @@ void elfSetParticlesMaxCount(elfParticles* particles, int maxCount)
 	}
 }
 
-void elfSetParticlesDrawMode(elfParticles* particles, int mode)
+ELF_API void ELF_APIENTRY elfSetParticlesDrawMode(elfParticles* particles, int mode)
 {
 	if(particles->drawMode < 1 || particles->drawMode > 4) return;
 	particles->drawMode = mode;
 }
 
-void elfSetParticlesTexture(elfParticles* particles, elfTexture* texture)
+ELF_API void ELF_APIENTRY elfSetParticlesTexture(elfParticles* particles, elfTexture* texture)
 {
 	if(particles->texture) elfDecRef((elfObject*)particles->texture);
 	particles->texture = texture;
 	if(particles->texture) elfIncRef((elfObject*)particles->texture);
 }
 
-void elfClearParticlesTexture(elfParticles* particles)
+ELF_API void ELF_APIENTRY elfClearParticlesTexture(elfParticles* particles)
 {
 	if(particles->texture) elfDecRef((elfObject*)particles->texture);
 	particles->texture = NULL;
 }
 
-void elfSetParticlesModel(elfParticles* particles, elfModel* model)
+ELF_API void ELF_APIENTRY elfSetParticlesModel(elfParticles* particles, elfModel* model)
 {
 	if(particles->entity) elfDecRef((elfObject*)particles->entity);
 	particles->entity = NULL;
@@ -736,7 +736,7 @@ void elfSetParticlesModel(elfParticles* particles, elfModel* model)
 	elfCalcParticlesAabb(particles);
 }
 
-void elfClearParticlesModel(elfParticles* particles)
+ELF_API void ELF_APIENTRY elfClearParticlesModel(elfParticles* particles)
 {
 	if(particles->model) elfDecRef((elfObject*)particles->model);
 	particles->model = NULL;
@@ -744,7 +744,7 @@ void elfClearParticlesModel(elfParticles* particles)
 	elfCalcParticlesAabb(particles);
 }
 
-void elfSetParticlesEntity(elfParticles* particles, elfEntity* entity)
+ELF_API void ELF_APIENTRY elfSetParticlesEntity(elfParticles* particles, elfEntity* entity)
 {
 	if(particles->model) elfDecRef((elfObject*)particles->model);
 	particles->model = NULL;
@@ -756,7 +756,7 @@ void elfSetParticlesEntity(elfParticles* particles, elfEntity* entity)
 	elfCalcParticlesAabb(particles);
 }
 
-void elfClearParticlesEntity(elfParticles* particles)
+ELF_API void ELF_APIENTRY elfClearParticlesEntity(elfParticles* particles)
 {
 	if(particles->entity) elfDecRef((elfObject*)particles->entity);
 	particles->entity = NULL;
@@ -764,7 +764,7 @@ void elfClearParticlesEntity(elfParticles* particles)
 	elfCalcParticlesAabb(particles);
 }
 
-void elfSetParticlesGravity(elfParticles* particles, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetParticlesGravity(elfParticles* particles, float x, float y, float z)
 {
 	particles->gravity.x = x;
 	particles->gravity.y = y;
@@ -773,54 +773,54 @@ void elfSetParticlesGravity(elfParticles* particles, float x, float y, float z)
 	elfCalcParticlesAabb(particles);
 }
 
-void elfSetParticlesSpawnDelay(elfParticles* particles, float delay)
+ELF_API void ELF_APIENTRY elfSetParticlesSpawnDelay(elfParticles* particles, float delay)
 {
 	particles->spawnDelay = delay;
 	if(particles->spawnDelay < 0.00001) particles->spawnDelay = 0.00001;
 }
 
-void elfSetParticlesSpawn(elfParticles* particles, unsigned char spawn)
+ELF_API void ELF_APIENTRY elfSetParticlesSpawn(elfParticles* particles, unsigned char spawn)
 {
 	particles->spawn = !spawn == ELF_FALSE;
 }
 
-void elfSetParticlesSize(elfParticles* particles, float min, float max)
+ELF_API void ELF_APIENTRY elfSetParticlesSize(elfParticles* particles, float min, float max)
 {
 	particles->sizeMin = min;
 	particles->sizeMax = max;
 }
 
-void elfSetParticlesSizeGrowth(elfParticles* particles, float min, float max)
+ELF_API void ELF_APIENTRY elfSetParticlesSizeGrowth(elfParticles* particles, float min, float max)
 {
 	particles->sizeGrowthMin = min;
 	particles->sizeGrowthMax = max;
 }
 
-void elfSetParticlesRotation(elfParticles* particles, float min, float max)
+ELF_API void ELF_APIENTRY elfSetParticlesRotation(elfParticles* particles, float min, float max)
 {
 	particles->rotationMin = min;
 	particles->rotationMax = max;
 }
 
-void elfSetParticlesRotationGrowth(elfParticles* particles, float min, float max)
+ELF_API void ELF_APIENTRY elfSetParticlesRotationGrowth(elfParticles* particles, float min, float max)
 {
 	particles->rotationGrowthMin = min;
 	particles->rotationGrowthMax = max;
 }
 
-void elfSetParticlesLifeSpan(elfParticles* particles, float min, float max)
+ELF_API void ELF_APIENTRY elfSetParticlesLifeSpan(elfParticles* particles, float min, float max)
 {
 	particles->lifeSpanMin = min;
 	particles->lifeSpanMax = max;
 }
 
-void elfSetParticlesFadeSpeed(elfParticles* particles, float min, float max)
+ELF_API void ELF_APIENTRY elfSetParticlesFadeSpeed(elfParticles* particles, float min, float max)
 {
 	particles->fadeSpeedMin = min;
 	particles->fadeSpeedMax = max;
 }
 
-void elfSetParticlesVelocityMin(elfParticles* particles, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetParticlesVelocityMin(elfParticles* particles, float x, float y, float z)
 {
 	particles->velocityMin.x = x;
 	particles->velocityMin.y = y;
@@ -829,7 +829,7 @@ void elfSetParticlesVelocityMin(elfParticles* particles, float x, float y, float
 	elfCalcParticlesAabb(particles);
 }
 
-void elfSetParticlesPositionMin(elfParticles* particles, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetParticlesPositionMin(elfParticles* particles, float x, float y, float z)
 {
 	particles->positionMin.x = x;
 	particles->positionMin.y = y;
@@ -838,7 +838,7 @@ void elfSetParticlesPositionMin(elfParticles* particles, float x, float y, float
 	elfCalcParticlesAabb(particles);
 }
 
-void elfSetParticlesPositionMax(elfParticles* particles, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetParticlesPositionMax(elfParticles* particles, float x, float y, float z)
 {
 	particles->positionMax.x = x;
 	particles->positionMax.y = y;
@@ -847,7 +847,7 @@ void elfSetParticlesPositionMax(elfParticles* particles, float x, float y, float
 	elfCalcParticlesAabb(particles);
 }
 
-void elfSetParticlesVelocityMax(elfParticles* particles, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetParticlesVelocityMax(elfParticles* particles, float x, float y, float z)
 {
 	particles->velocityMax.x = x;
 	particles->velocityMax.y = y;
@@ -856,7 +856,7 @@ void elfSetParticlesVelocityMax(elfParticles* particles, float x, float y, float
 	elfCalcParticlesAabb(particles);
 }
 
-void elfSetParticlesColorMin(elfParticles* particles, float r, float g, float b, float a)
+ELF_API void ELF_APIENTRY elfSetParticlesColorMin(elfParticles* particles, float r, float g, float b, float a)
 {
 	particles->colorMin.r = r;
 	particles->colorMin.g = g;
@@ -864,7 +864,7 @@ void elfSetParticlesColorMin(elfParticles* particles, float r, float g, float b,
 	particles->colorMin.a = a;
 }
 
-void elfSetParticlesColorMax(elfParticles* particles, float r, float g, float b, float a)
+ELF_API void ELF_APIENTRY elfSetParticlesColorMax(elfParticles* particles, float r, float g, float b, float a)
 {
 	particles->colorMax.r = r;
 	particles->colorMax.g = g;
@@ -872,137 +872,137 @@ void elfSetParticlesColorMax(elfParticles* particles, float r, float g, float b,
 	particles->colorMax.a = a;
 }
 
-int elfGetParticlesMaxCount(elfParticles* particles)
+ELF_API int ELF_APIENTRY elfGetParticlesMaxCount(elfParticles* particles)
 {
 	return particles->maxCount;
 }
 
-int elfGetParticlesCount(elfParticles* particles)
+ELF_API int ELF_APIENTRY elfGetParticlesCount(elfParticles* particles)
 {
 	return elfGetListLength(particles->particles);
 }
 
-int elfGetParticlesDrawMode(elfParticles* particles)
+ELF_API int ELF_APIENTRY elfGetParticlesDrawMode(elfParticles* particles)
 {
 	return particles->drawMode;
 }
 
-elfTexture* elfGetParticlesTexture(elfParticles* particles)
+ELF_API elfTexture* ELF_APIENTRY elfGetParticlesTexture(elfParticles* particles)
 {
 	return particles->texture;
 }
 
-elfModel* elfGetParticlesModel(elfParticles* particles)
+ELF_API elfModel* ELF_APIENTRY elfGetParticlesModel(elfParticles* particles)
 {
 	return particles->model;
 }
 
-elfEntity* elfGetParticlesEntity(elfParticles* particles)
+ELF_API elfEntity* ELF_APIENTRY elfGetParticlesEntity(elfParticles* particles)
 {
 	return particles->entity;
 }
 
-elfVec3f elfGetParticlesGravity(elfParticles* particles)
+ELF_API elfVec3f ELF_APIENTRY elfGetParticlesGravity(elfParticles* particles)
 {
 	return particles->gravity;
 }
 
-float elfGetParticlesSpawnDelay(elfParticles* particles)
+ELF_API float ELF_APIENTRY elfGetParticlesSpawnDelay(elfParticles* particles)
 {
 	return particles->spawnDelay;
 }
 
-unsigned char elfGetParticlesSpawn(elfParticles* particles)
+ELF_API unsigned char ELF_APIENTRY elfGetParticlesSpawn(elfParticles* particles)
 {
 	return particles->spawn;
 }
 
-float elfGetParticlesSizeMin(elfParticles* particles)
+ELF_API float ELF_APIENTRY elfGetParticlesSizeMin(elfParticles* particles)
 {
 	return particles->sizeMin;
 }
 
-float elfGetParticlesSizeMax(elfParticles* particles)
+ELF_API float ELF_APIENTRY elfGetParticlesSizeMax(elfParticles* particles)
 {
 	return particles->sizeMax;
 }
 
-float elfGetParticlesRotationMin(elfParticles* particles)
+ELF_API float ELF_APIENTRY elfGetParticlesRotationMin(elfParticles* particles)
 {
 	return particles->rotationMin;
 }
 
-float elfGetParticlesRotationMax(elfParticles* particles)
+ELF_API float ELF_APIENTRY elfGetParticlesRotationMax(elfParticles* particles)
 {
 	return particles->rotationMax;
 }
 
-float elfGetParticlesRotationGrowthMin(elfParticles* particles)
+ELF_API float ELF_APIENTRY elfGetParticlesRotationGrowthMin(elfParticles* particles)
 {
 	return particles->rotationGrowthMin;
 }
 
-float elfGetParticlesRotationGrowthMax(elfParticles* particles)
+ELF_API float ELF_APIENTRY elfGetParticlesRotationGrowthMax(elfParticles* particles)
 {
 	return particles->rotationGrowthMax;
 }
 
-float elfGetParticlesSizeGrowthMin(elfParticles* particles)
+ELF_API float ELF_APIENTRY elfGetParticlesSizeGrowthMin(elfParticles* particles)
 {
 	return particles->sizeGrowthMin;
 }
 
-float elfGetParticlesSizeGrowthMax(elfParticles* particles)
+ELF_API float ELF_APIENTRY elfGetParticlesSizeGrowthMax(elfParticles* particles)
 {
 	return particles->sizeGrowthMax;
 }
 
-float elfGetParticlesLifeSpanMin(elfParticles* particles)
+ELF_API float ELF_APIENTRY elfGetParticlesLifeSpanMin(elfParticles* particles)
 {
 	return particles->lifeSpanMin;
 }
 
-float elfGetParticlesLifeSpanMax(elfParticles* particles)
+ELF_API float ELF_APIENTRY elfGetParticlesLifeSpanMax(elfParticles* particles)
 {
 	return particles->lifeSpanMax;
 }
 
-float elfGetParticlesFadeSpeedMin(elfParticles* particles)
+ELF_API float ELF_APIENTRY elfGetParticlesFadeSpeedMin(elfParticles* particles)
 {
 	return particles->fadeSpeedMin;
 }
 
-float elfGetParticlesFadeSpeedMax(elfParticles* particles)
+ELF_API float ELF_APIENTRY elfGetParticlesFadeSpeedMax(elfParticles* particles)
 {
 	return particles->fadeSpeedMax;
 }
 
-elfVec3f elfGetParticlesPositionMin(elfParticles* particles)
+ELF_API elfVec3f ELF_APIENTRY elfGetParticlesPositionMin(elfParticles* particles)
 {
 	return particles->positionMin;
 }
 
-elfVec3f elfGetParticlesPositionMax(elfParticles* particles)
+ELF_API elfVec3f ELF_APIENTRY elfGetParticlesPositionMax(elfParticles* particles)
 {
 	return particles->positionMax;
 }
 
-elfVec3f elfGetParticlesVelocityMin(elfParticles* particles)
+ELF_API elfVec3f ELF_APIENTRY elfGetParticlesVelocityMin(elfParticles* particles)
 {
 	return particles->velocityMin;
 }
 
-elfVec3f elfGetParticlesVelocityMax(elfParticles* particles)
+ELF_API elfVec3f ELF_APIENTRY elfGetParticlesVelocityMax(elfParticles* particles)
 {
 	return particles->velocityMax;
 }
 
-elfColor elfGetParticlesColorMin(elfParticles* particles)
+ELF_API elfColor ELF_APIENTRY elfGetParticlesColorMin(elfParticles* particles)
 {
 	return particles->colorMin;
 }
 
-elfColor elfGetParticlesColorMax(elfParticles* particles)
+ELF_API elfColor ELF_APIENTRY elfGetParticlesColorMax(elfParticles* particles)
 {
 	return particles->colorMax;
 }

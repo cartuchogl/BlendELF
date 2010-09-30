@@ -1,5 +1,5 @@
 
-elfScript* elfCreateScript(const char* name)
+ELF_API elfScript* ELF_APIENTRY elfCreateScript(const char* name)
 {
 	elfScript* script;
 
@@ -17,7 +17,7 @@ elfScript* elfCreateScript(const char* name)
 	return script;
 }
 
-elfScript* elfCreateScriptFromFile(const char* filePath)
+ELF_API elfScript* ELF_APIENTRY elfCreateScriptFromFile(const char* filePath)
 {
 	elfScript* script = NULL;
 	FILE* file;
@@ -68,23 +68,23 @@ void elfDestroyScript(void* data)
 	free(script);
 }
 
-void elfSetScriptName(elfScript* script, const char* name)
+ELF_API void ELF_APIENTRY elfSetScriptName(elfScript* script, const char* name)
 {
 	if(script->name) elfDestroyString(script->name);
 	script->name = elfCreateString(name);
 }
 
-const char* elfGetScriptName(elfScript* script)
+ELF_API const char* ELF_APIENTRY elfGetScriptName(elfScript* script)
 {
 	return script->name;
 }
 
-const char* elfGetScriptFilePath(elfScript* script)
+ELF_API const char* ELF_APIENTRY elfGetScriptFilePath(elfScript* script)
 {
 	return script->filePath;
 }
 
-void elfSetScriptText(elfScript* script, const char* text)
+ELF_API void ELF_APIENTRY elfSetScriptText(elfScript* script, const char* text)
 {
 	if(script->text) elfDestroyString(script->text);
 	script->text = NULL;
@@ -92,7 +92,7 @@ void elfSetScriptText(elfScript* script, const char* text)
 	script->error = ELF_FALSE;
 }
 
-unsigned char elfIsScriptError(elfScript* script)
+ELF_API unsigned char ELF_APIENTRY elfIsScriptError(elfScript* script)
 {
 	return script->error;
 }

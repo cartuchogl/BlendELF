@@ -1,5 +1,5 @@
 
-elfMaterial* elfCreateMaterial(const char* name)
+ELF_API elfMaterial* ELF_APIENTRY elfCreateMaterial(const char* name)
 {
 	elfMaterial* material;
 
@@ -46,7 +46,7 @@ void elfDestroyMaterial(void* data)
 	elfDecObj(ELF_MATERIAL);
 }
 
-void elfSetMaterialDiffuseColor(elfMaterial* material, float r, float g, float b, float a)
+ELF_API void ELF_APIENTRY elfSetMaterialDiffuseColor(elfMaterial* material, float r, float g, float b, float a)
 {
 	material->diffuseColor.r = r;
 	material->diffuseColor.g = g;
@@ -54,7 +54,7 @@ void elfSetMaterialDiffuseColor(elfMaterial* material, float r, float g, float b
 	material->diffuseColor.a = a;
 }
 
-void elfSetMaterialAmbientColor(elfMaterial* material, float r, float g, float b, float a)
+ELF_API void ELF_APIENTRY elfSetMaterialAmbientColor(elfMaterial* material, float r, float g, float b, float a)
 {
 	material->ambientColor.r = r;
 	material->ambientColor.g = g;
@@ -62,7 +62,7 @@ void elfSetMaterialAmbientColor(elfMaterial* material, float r, float g, float b
 	material->ambientColor.a = a;
 }
 
-void elfSetMaterialSpecularColor(elfMaterial* material, float r, float g, float b, float a)
+ELF_API void ELF_APIENTRY elfSetMaterialSpecularColor(elfMaterial* material, float r, float g, float b, float a)
 {
 	material->specularColor.r = r;
 	material->specularColor.g = g;
@@ -70,58 +70,58 @@ void elfSetMaterialSpecularColor(elfMaterial* material, float r, float g, float 
 	material->specularColor.a = a;
 }
 
-void elfSetMaterialSpecularPower(elfMaterial* material, float power)
+ELF_API void ELF_APIENTRY elfSetMaterialSpecularPower(elfMaterial* material, float power)
 {
 	material->specPower = power;
 }
 
-void elfSetMaterialLighting(elfMaterial* material, unsigned char lighting)
+ELF_API void ELF_APIENTRY elfSetMaterialLighting(elfMaterial* material, unsigned char lighting)
 {
 	material->lighting = !lighting == ELF_FALSE;
 }
 
-void elfSetMaterialName(elfMaterial* material, const char* name)
+ELF_API void ELF_APIENTRY elfSetMaterialName(elfMaterial* material, const char* name)
 {
 	if(material->name) elfDestroyString(material->name);
 	material->name = elfCreateString(name);
 }
 
-const char* elfGetMaterialName(elfMaterial* material)
+ELF_API const char* ELF_APIENTRY elfGetMaterialName(elfMaterial* material)
 {
 	return material->name;
 }
 
-const char* elfGetMaterialFilePath(elfMaterial* material)
+ELF_API const char* ELF_APIENTRY elfGetMaterialFilePath(elfMaterial* material)
 {
 	return material->filePath;
 }
 
-elfColor elfGetMaterialDiffuseColor(elfMaterial* material)
+ELF_API elfColor ELF_APIENTRY elfGetMaterialDiffuseColor(elfMaterial* material)
 {
 	return material->diffuseColor;
 }
 
-elfColor elfGetMaterialAmbientColor(elfMaterial* material)
+ELF_API elfColor ELF_APIENTRY elfGetMaterialAmbientColor(elfMaterial* material)
 {
 	return material->ambientColor;
 }
 
-elfColor elfGetMaterialSpecularColor(elfMaterial* material)
+ELF_API elfColor ELF_APIENTRY elfGetMaterialSpecularColor(elfMaterial* material)
 {
 	return material->specularColor;
 }
 
-float elfGetMaterialSpecularPower(elfMaterial* material)
+ELF_API float ELF_APIENTRY elfGetMaterialSpecularPower(elfMaterial* material)
 {
 	return material->specPower;
 }
 
-unsigned char elfGetMaterialLighting(elfMaterial* material)
+ELF_API unsigned char ELF_APIENTRY elfGetMaterialLighting(elfMaterial* material)
 {
 	return material->lighting;
 }
 
-void elfSetMaterialDiffuseMap(elfMaterial* material, elfTexture* texture)
+ELF_API void ELF_APIENTRY elfSetMaterialDiffuseMap(elfMaterial* material, elfTexture* texture)
 {
 	int format;
 
@@ -138,35 +138,35 @@ void elfSetMaterialDiffuseMap(elfMaterial* material, elfTexture* texture)
 	}
 }
 
-void elfSetMaterialNormalMap(elfMaterial* material, elfTexture* texture)
+ELF_API void ELF_APIENTRY elfSetMaterialNormalMap(elfMaterial* material, elfTexture* texture)
 {
 	if(material->normalMap) elfDecRef((elfObject*)material->normalMap);
 	material->normalMap = texture;
 	if(material->normalMap) elfIncRef((elfObject*)material->normalMap);
 }
 
-void elfSetMaterialHeightMap(elfMaterial* material, elfTexture* texture)
+ELF_API void ELF_APIENTRY elfSetMaterialHeightMap(elfMaterial* material, elfTexture* texture)
 {
 	if(material->heightMap) elfDecRef((elfObject*)material->heightMap);
 	material->heightMap = texture;
 	if(material->heightMap) elfIncRef((elfObject*)material->heightMap);
 }
 
-void elfSetMaterialSpecularMap(elfMaterial* material, elfTexture* texture)
+ELF_API void ELF_APIENTRY elfSetMaterialSpecularMap(elfMaterial* material, elfTexture* texture)
 {
 	if(material->specularMap) elfDecRef((elfObject*)material->specularMap);
 	material->specularMap = texture;
 	if(material->specularMap) elfIncRef((elfObject*)material->specularMap);
 }
 
-void elfSetMaterialLightMap(elfMaterial* material, elfTexture* texture)
+ELF_API void ELF_APIENTRY elfSetMaterialLightMap(elfMaterial* material, elfTexture* texture)
 {
 	if(material->lightMap) elfDecRef((elfObject*)material->lightMap);
 	material->lightMap = texture;
 	if(material->lightMap) elfIncRef((elfObject*)material->lightMap);
 }
 
-void elfSetMaterialCubeMap(elfMaterial* material, elfTexture* texture)
+ELF_API void ELF_APIENTRY elfSetMaterialCubeMap(elfMaterial* material, elfTexture* texture)
 {
 	if(gfxGetTextureType(texture->texture) != GFX_CUBE_MAP_TEXTURE) return;
 	if(material->cubeMap) elfDecRef((elfObject*)material->cubeMap);
@@ -174,101 +174,101 @@ void elfSetMaterialCubeMap(elfMaterial* material, elfTexture* texture)
 	if(material->cubeMap) elfIncRef((elfObject*)material->cubeMap);
 }
 
-void elfClearMaterialDiffuseMap(elfMaterial* material)
+ELF_API void ELF_APIENTRY elfClearMaterialDiffuseMap(elfMaterial* material)
 {
 	if(material->diffuseMap) elfDecRef((elfObject*)material->diffuseMap);
 	material->diffuseMap = NULL;
 }
 
-void elfClearMaterialNormalMap(elfMaterial* material)
+ELF_API void ELF_APIENTRY elfClearMaterialNormalMap(elfMaterial* material)
 {
 	if(material->normalMap) elfDecRef((elfObject*)material->normalMap);
 	material->normalMap = NULL;
 }
 
-void elfClearMaterialHeightMap(elfMaterial* material)
+ELF_API void ELF_APIENTRY elfClearMaterialHeightMap(elfMaterial* material)
 {
 	if(material->heightMap) elfDecRef((elfObject*)material->heightMap);
 	material->heightMap = NULL;
 }
 
-void elfClearMaterialSpecularMap(elfMaterial* material)
+ELF_API void ELF_APIENTRY elfClearMaterialSpecularMap(elfMaterial* material)
 {
 	if(material->specularMap) elfDecRef((elfObject*)material->specularMap);
 	material->specularMap = NULL;
 }
 
-void elfClearMaterialLightMap(elfMaterial* material)
+ELF_API void ELF_APIENTRY elfClearMaterialLightMap(elfMaterial* material)
 {
 	if(material->lightMap) elfDecRef((elfObject*)material->lightMap);
 	material->lightMap = NULL;
 }
 
-void elfClearMaterialCubeMap(elfMaterial* material)
+ELF_API void ELF_APIENTRY elfClearMaterialCubeMap(elfMaterial* material)
 {
 	if(material->cubeMap) elfDecRef((elfObject*)material->cubeMap);
 	material->cubeMap = NULL;
 }
 
-elfTexture* elfGetMaterialDiffuseMap(elfMaterial* material)
+ELF_API elfTexture* ELF_APIENTRY elfGetMaterialDiffuseMap(elfMaterial* material)
 {
 	return material->diffuseMap;
 }
 
-elfTexture* elfGetMaterialNormalMap(elfMaterial* material)
+ELF_API elfTexture* ELF_APIENTRY elfGetMaterialNormalMap(elfMaterial* material)
 {
 	return material->normalMap;
 }
 
-elfTexture* elfGetMaterialHeightMap(elfMaterial* material)
+ELF_API elfTexture* ELF_APIENTRY elfGetMaterialHeightMap(elfMaterial* material)
 {
 	return material->heightMap;
 }
 
-elfTexture* elfGetMaterialSpecularMap(elfMaterial* material)
+ELF_API elfTexture* ELF_APIENTRY elfGetMaterialSpecularMap(elfMaterial* material)
 {
 	return material->specularMap;
 }
 
-elfTexture* elfGetMaterialLightMap(elfMaterial* material)
+ELF_API elfTexture* ELF_APIENTRY elfGetMaterialLightMap(elfMaterial* material)
 {
 	return material->lightMap;
 }
 
-elfTexture* elfGetMaterialCubeMap(elfMaterial* material)
+ELF_API elfTexture* ELF_APIENTRY elfGetMaterialCubeMap(elfMaterial* material)
 {
 	return material->cubeMap;
 }
 
-void elfSetMaterialParallaxScale(elfMaterial* material, float scale)
+ELF_API void ELF_APIENTRY elfSetMaterialParallaxScale(elfMaterial* material, float scale)
 {
 	material->parallaxScale = scale;
 	if(material->parallaxScale < 0.0) material->parallaxScale = 0.0;
 }
 
-void elfSetMaterialAlphaTest(elfMaterial* material, unsigned char alphaTest)
+ELF_API void ELF_APIENTRY elfSetMaterialAlphaTest(elfMaterial* material, unsigned char alphaTest)
 {
 	material->alphaTest = !alphaTest == ELF_FALSE;
 }
 
-void elfSetMaterialAlphaThreshold(elfMaterial* material, float threshold)
+ELF_API void ELF_APIENTRY elfSetMaterialAlphaThreshold(elfMaterial* material, float threshold)
 {
 	material->alphaThreshold = threshold;
 	if(material->alphaThreshold < 0.0) material->alphaThreshold = 0.0;
 	if(material->alphaThreshold > 1.0) material->alphaThreshold = 1.0;
 }
 
-float elfGetMaterialParallaxScale(elfMaterial* material)
+ELF_API float ELF_APIENTRY elfGetMaterialParallaxScale(elfMaterial* material)
 {
 	return material->parallaxScale;
 }
 
-unsigned char elfGetMaterialAlphaTest(elfMaterial* material)
+ELF_API unsigned char ELF_APIENTRY elfGetMaterialAlphaTest(elfMaterial* material)
 {
 	return material->alphaTest;
 }
 
-float elfGetMaterialAlphaThreshold(elfMaterial* material)
+ELF_API float ELF_APIENTRY elfGetMaterialAlphaThreshold(elfMaterial* material)
 {
 	return material->alphaThreshold;
 }

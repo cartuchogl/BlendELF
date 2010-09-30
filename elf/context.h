@@ -217,7 +217,7 @@ unsigned char elfResizeContext(int width, int height)
 	return ELF_FALSE;
 }
 
-void elfSetTitle(const char* title)
+ELF_API void ELF_APIENTRY elfSetTitle(const char* title)
 {
 	if(!title || !strlen(title)) return;
 
@@ -229,22 +229,22 @@ void elfSetTitle(const char* title)
 	glfwPollEvents();
 }
 
-int elfGetWindowWidth()
+ELF_API int ELF_APIENTRY elfGetWindowWidth()
 {
 	return ctx->width;
 }
 
-int elfGetWindowHeight()
+ELF_API int ELF_APIENTRY elfGetWindowHeight()
 {
 	return ctx->height;
 }
 
-int elfGetVideoModeCount()
+ELF_API int ELF_APIENTRY elfGetVideoModeCount()
 {
 	return elfGetListLength(ctx->videoModes);
 }
 
-elfVec2i elfGetVideoMode(int idx)
+ELF_API elfVec2i ELF_APIENTRY elfGetVideoMode(int idx)
 {
 	elfVideoMode* mode;
 	elfVec2i reso;
@@ -261,32 +261,32 @@ elfVec2i elfGetVideoMode(int idx)
 	return reso;
 }
 
-int elfGetMultisamples()
+ELF_API int ELF_APIENTRY elfGetMultisamples()
 {
 	return ctx->multisamples;
 }
 
-unsigned char elfIsFullscreen()
+ELF_API unsigned char ELF_APIENTRY elfIsFullscreen()
 {
 	return ctx->fullscreen;
 }
 
-const char* elfGetTitle()
+ELF_API const char* ELF_APIENTRY elfGetTitle()
 {
 	return ctx->title;
 }
 
-double elfGetTime()
+ELF_API double ELF_APIENTRY elfGetTime()
 {
 	return glfwGetTime();
 }
 
-void elfSleep(float time)
+ELF_API void ELF_APIENTRY elfSleep(float time)
 {
 	glfwSleep(time);
 }
 
-unsigned char elfIsWindowOpened()
+ELF_API unsigned char ELF_APIENTRY elfIsWindowOpened()
 {
 	return glfwGetWindowParam(GLFW_OPENED);
 }
@@ -436,7 +436,7 @@ void charCallback(int code, int state)
 	elfAppendToList(ctx->events, (elfObject*)charEvent);
 }
 
-elfVec2i elfGetMousePosition()
+ELF_API elfVec2i ELF_APIENTRY elfGetMousePosition()
 {
 	elfVec2i pos;
 
@@ -446,7 +446,7 @@ elfVec2i elfGetMousePosition()
 	return pos;
 }
 
-elfVec2i elfGetMouseForce()
+ELF_API elfVec2i ELF_APIENTRY elfGetMouseForce()
 {
 	elfVec2i force;
 
@@ -456,7 +456,7 @@ elfVec2i elfGetMouseForce()
 	return force;
 }
 
-void elfSetMousePosition(int x, int y)
+ELF_API void ELF_APIENTRY elfSetMousePosition(int x, int y)
 {
 	glfwSetMousePos(x, y);
 
@@ -469,7 +469,7 @@ void elfSetMousePosition(int x, int y)
 	else if(ctx->mousePosition[1] > elfGetWindowWidth()) ctx->mousePosition[1] = elfGetWindowHeight();
 }
 
-void elfHideMouse(unsigned char hide)
+ELF_API void ELF_APIENTRY elfHideMouse(unsigned char hide)
 {
 	if(hide)
 	{
@@ -483,17 +483,17 @@ void elfHideMouse(unsigned char hide)
 	}
 }
 
-unsigned char elfIsMouseHidden()
+ELF_API unsigned char ELF_APIENTRY elfIsMouseHidden()
 {
 	return ctx->hideMouse;
 }
 
-int elfGetMouseWheel()
+ELF_API int ELF_APIENTRY elfGetMouseWheel()
 {
 	return ctx->mouseWheel;
 }
 
-int elfGetMouseButtonState(int button)
+ELF_API int ELF_APIENTRY elfGetMouseButtonState(int button)
 {
 	if(button < 0 || button > 2) return 0;
 	if(ctx->prvMbuts[button])
@@ -508,7 +508,7 @@ int elfGetMouseButtonState(int button)
 	}
 }
 
-int elfGetKeyState(int key)
+ELF_API int ELF_APIENTRY elfGetKeyState(int key)
 {
 	if(key < 0 || key > 256) return 0;
 	if(ctx->prvKeys[key])
@@ -523,13 +523,13 @@ int elfGetKeyState(int key)
 	}
 }
 
-unsigned char elfGetJoystickPresent(int joy)
+ELF_API unsigned char ELF_APIENTRY elfGetJoystickPresent(int joy)
 {
 	if(joy < 0 || joy > 15) return ELF_FALSE;
 	return ctx->joysticks[joy].present;
 }
 
-elfVec2f elfGetJoystickAxis(int joy)
+ELF_API elfVec2f ELF_APIENTRY elfGetJoystickAxis(int joy)
 {
 	elfVec2f pos;
 	memset(&pos, 0x0, sizeof(elfVec2f));
@@ -539,7 +539,7 @@ elfVec2f elfGetJoystickAxis(int joy)
 	return pos;
 }
 
-int elfGetJoystickButtonState(int joy, int but)
+ELF_API int ELF_APIENTRY elfGetJoystickButtonState(int joy, int but)
 {
 	if(joy < 0 || joy > 15) return ELF_UP;
 	if(but < 0 || but > 15) return ELF_UP;
@@ -555,12 +555,12 @@ int elfGetJoystickButtonState(int joy, int but)
 	}
 }
 
-int elfGetEventCount()
+ELF_API int ELF_APIENTRY elfGetEventCount()
 {
 	return elfGetListLength(ctx->events);
 }
 
-elfObject* elfGetEvent(int idx)
+ELF_API elfObject* ELF_APIENTRY elfGetEvent(int idx)
 {
 	elfObject* obj;
 	int i;
@@ -575,12 +575,12 @@ elfObject* elfGetEvent(int idx)
 	return NULL;
 }
 
-int elfGetKeyEventKey(elfKeyEvent* keyEvent)
+ELF_API int ELF_APIENTRY elfGetKeyEventKey(elfKeyEvent* keyEvent)
 {
 	return keyEvent->key;
 }
 
-int elfGetKeyEventState(elfKeyEvent* keyEvent)
+ELF_API int ELF_APIENTRY elfGetKeyEventState(elfKeyEvent* keyEvent)
 {
 	return keyEvent->state;
 }

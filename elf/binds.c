@@ -331,6 +331,26 @@ int lua_fail_arg(lua_State *L, const char* func_name, int idx, const char* etype
 {
 	return luaL_error(L, "%s: Argument %d should be type %s", func_name, idx, etype);
 }
+static int lua_IncRef(lua_State *L)
+{
+	elfObject* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "IncRef", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT)
+		{return lua_fail_arg(L, "IncRef", 1, "elfObject");}
+	arg0 = (elfObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	elfIncRef(arg0);
+	return 0;
+}
+static int lua_DecRef(lua_State *L)
+{
+	elfObject* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "DecRef", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT)
+		{return lua_fail_arg(L, "DecRef", 1, "elfObject");}
+	arg0 = (elfObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	elfDecRef(arg0);
+	return 0;
+}
 static int lua_GetObjectType(lua_State *L)
 {
 	int result;
@@ -10211,117 +10231,9 @@ static int lua_EmptyGui(lua_State *L)
 	elfEmptyGui(arg0);
 	return 0;
 }
-static int lua_CreateSession(lua_State *L)
-{
-	unsigned char result;
-	const char* arg0;
-	int arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "CreateSession", lua_gettop(L), 2);}
-	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateSession", 1, "string");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "CreateSession", 2, "number");}
-	arg0 = lua_tostring(L, 1);
-	arg1 = (int)lua_tonumber(L, 2);
-	result = elfCreateSession(arg0, arg1);
-	lua_pushboolean(L, result);
-	return 1;
-}
-static int lua_ConnectSession(lua_State *L)
-{
-	unsigned char result;
-	const char* arg0;
-	int arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "ConnectSession", lua_gettop(L), 2);}
-	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "ConnectSession", 1, "string");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "ConnectSession", 2, "number");}
-	arg0 = lua_tostring(L, 1);
-	arg1 = (int)lua_tonumber(L, 2);
-	result = elfConnectSession(arg0, arg1);
-	lua_pushboolean(L, result);
-	return 1;
-}
-static int lua_DisconnectSession(lua_State *L)
-{
-	unsigned char result;
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "DisconnectSession", lua_gettop(L), 0);}
-	result = elfDisconnectSession();
-	lua_pushboolean(L, result);
-	return 1;
-}
-static int lua_SendStringToClients(lua_State *L)
-{
-	const char* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "SendStringToClients", lua_gettop(L), 1);}
-	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "SendStringToClients", 1, "string");}
-	arg0 = lua_tostring(L, 1);
-	elfSendStringToClients(arg0);
-	return 0;
-}
-static int lua_SendStringToServer(lua_State *L)
-{
-	const char* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "SendStringToServer", lua_gettop(L), 1);}
-	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "SendStringToServer", 1, "string");}
-	arg0 = lua_tostring(L, 1);
-	elfSendStringToServer(arg0);
-	return 0;
-}
-static int lua_GetServerDataAsString(lua_State *L)
-{
-	const char* result;
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "GetServerDataAsString", lua_gettop(L), 0);}
-	result = elfGetServerDataAsString();
-	lua_pushstring(L, result);
-	return 1;
-}
-static int lua_GetClientDataAsString(lua_State *L)
-{
-	const char* result;
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "GetClientDataAsString", lua_gettop(L), 0);}
-	result = elfGetClientDataAsString();
-	lua_pushstring(L, result);
-	return 1;
-}
-static int lua_GetServerEvent(lua_State *L)
-{
-	int result;
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "GetServerEvent", lua_gettop(L), 0);}
-	result = elfGetServerEvent();
-	lua_pushnumber(L, (lua_Number)result);
-	return 1;
-}
-static int lua_GetClientEvent(lua_State *L)
-{
-	int result;
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "GetClientEvent", lua_gettop(L), 0);}
-	result = elfGetClientEvent();
-	lua_pushnumber(L, (lua_Number)result);
-	return 1;
-}
-static int lua_GetCurrentClient(lua_State *L)
-{
-	int result;
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "GetCurrentClient", lua_gettop(L), 0);}
-	result = elfGetCurrentClient();
-	lua_pushnumber(L, (lua_Number)result);
-	return 1;
-}
-static int lua_IsServer(lua_State *L)
-{
-	unsigned char result;
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "IsServer", lua_gettop(L), 0);}
-	result = elfIsServer();
-	lua_pushboolean(L, result);
-	return 1;
-}
-static int lua_IsClient(lua_State *L)
-{
-	unsigned char result;
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "IsClient", lua_gettop(L), 0);}
-	result = elfIsClient();
-	lua_pushboolean(L, result);
-	return 1;
-}
 static const struct luaL_reg lua_elf_functions[] = {
+	{"IncRef", lua_IncRef},
+	{"DecRef", lua_DecRef},
 	{"GetObjectType", lua_GetObjectType},
 	{"GetObjectRefCount", lua_GetObjectRefCount},
 	{"GetGlobalRefCount", lua_GetGlobalRefCount},
@@ -11024,18 +10936,6 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetGuiFocus", lua_GetGuiFocus},
 	{"GetGuiActiveTextField", lua_GetGuiActiveTextField},
 	{"EmptyGui", lua_EmptyGui},
-	{"CreateSession", lua_CreateSession},
-	{"ConnectSession", lua_ConnectSession},
-	{"DisconnectSession", lua_DisconnectSession},
-	{"SendStringToClients", lua_SendStringToClients},
-	{"SendStringToServer", lua_SendStringToServer},
-	{"GetServerDataAsString", lua_GetServerDataAsString},
-	{"GetClientDataAsString", lua_GetClientDataAsString},
-	{"GetServerEvent", lua_GetServerEvent},
-	{"GetClientEvent", lua_GetClientEvent},
-	{"GetCurrentClient", lua_GetCurrentClient},
-	{"IsServer", lua_IsServer},
-	{"IsClient", lua_IsClient},
 	{NULL, NULL}
 };
 int luaopen_elf(lua_State* L)
@@ -11483,38 +11383,35 @@ int luaopen_elf(lua_State* L)
 	lua_pushstring(L, "PROPERTY");
 	lua_pushnumber(L, 0x003F);
 	lua_settable(L, -3);
-	lua_pushstring(L, "CLIENT");
+	lua_pushstring(L, "SCRIPTING");
 	lua_pushnumber(L, 0x0040);
 	lua_settable(L, -3);
-	lua_pushstring(L, "SCRIPTING");
+	lua_pushstring(L, "PHYSICS_TRI_MESH");
 	lua_pushnumber(L, 0x0041);
 	lua_settable(L, -3);
-	lua_pushstring(L, "PHYSICS_TRI_MESH");
+	lua_pushstring(L, "SPRITE");
 	lua_pushnumber(L, 0x0042);
 	lua_settable(L, -3);
-	lua_pushstring(L, "SPRITE");
+	lua_pushstring(L, "VIDEO_MODE");
 	lua_pushnumber(L, 0x0043);
 	lua_settable(L, -3);
-	lua_pushstring(L, "VIDEO_MODE");
+	lua_pushstring(L, "GENERAL");
 	lua_pushnumber(L, 0x0044);
 	lua_settable(L, -3);
-	lua_pushstring(L, "GENERAL");
+	lua_pushstring(L, "VERTICE");
 	lua_pushnumber(L, 0x0045);
 	lua_settable(L, -3);
-	lua_pushstring(L, "VERTICE");
+	lua_pushstring(L, "FACE");
 	lua_pushnumber(L, 0x0046);
 	lua_settable(L, -3);
-	lua_pushstring(L, "FACE");
+	lua_pushstring(L, "MESH_DATA");
 	lua_pushnumber(L, 0x0047);
 	lua_settable(L, -3);
-	lua_pushstring(L, "MESH_DATA");
+	lua_pushstring(L, "LIST_PTR");
 	lua_pushnumber(L, 0x0048);
 	lua_settable(L, -3);
-	lua_pushstring(L, "LIST_PTR");
-	lua_pushnumber(L, 0x0049);
-	lua_settable(L, -3);
 	lua_pushstring(L, "OBJECT_TYPE_COUNT");
-	lua_pushnumber(L, 0x004A);
+	lua_pushnumber(L, 0x0049);
 	lua_settable(L, -3);
 	lua_pushstring(L, "PERSPECTIVE");
 	lua_pushnumber(L, 0x0000);
@@ -11788,18 +11685,6 @@ int luaopen_elf(lua_State* L)
 	lua_settable(L, -3);
 	lua_pushstring(L, "QUA_W");
 	lua_pushnumber(L, 0x000C);
-	lua_settable(L, -3);
-	lua_pushstring(L, "NET_NONE");
-	lua_pushnumber(L, 0x0000);
-	lua_settable(L, -3);
-	lua_pushstring(L, "NET_CONNECT");
-	lua_pushnumber(L, 0x0001);
-	lua_settable(L, -3);
-	lua_pushstring(L, "NET_RECEIVE");
-	lua_pushnumber(L, 0x0002);
-	lua_settable(L, -3);
-	lua_pushstring(L, "NET_DISCONNECT");
-	lua_pushnumber(L, 0x0003);
 	lua_settable(L, -3);
 	lua_pushstring(L, "OGG");
 	lua_pushnumber(L, 0x0001);

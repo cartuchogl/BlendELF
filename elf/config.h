@@ -35,7 +35,7 @@ void elfDestroyConfig(void* data)
 	elfDecObj(ELF_CONFIG);
 }
 
-elfConfig* elfReadConfig(const char* filePath)
+ELF_API elfConfig* ELF_APIENTRY elfReadConfig(const char* filePath)
 {
 	elfConfig* config;
 	FILE* file;
@@ -144,47 +144,47 @@ elfConfig* elfReadConfig(const char* filePath)
 	return config;
 }
 
-int elfGetConfigWindowWidth(elfConfig* config)
+ELF_API int ELF_APIENTRY elfGetConfigWindowWidth(elfConfig* config)
 {
 	return config->windowSize[0];
 }
 
-int elfGetConfigWindowHeight(elfConfig* config)
+ELF_API int ELF_APIENTRY elfGetConfigWindowHeight(elfConfig* config)
 {
 	return config->windowSize[1];
 }
 
-int elfGetConfigMultisamples(elfConfig* config)
+ELF_API int ELF_APIENTRY elfGetConfigMultisamples(elfConfig* config)
 {
 	return config->multisamples;
 }
 
-unsigned char elfGetConfigFullscreen(elfConfig* config)
+ELF_API unsigned char ELF_APIENTRY elfGetConfigFullscreen(elfConfig* config)
 {
 	return !config->fullscreen == ELF_FALSE;
 }
 
-unsigned char elfGetConfigTextureCompress(elfConfig* config)
+ELF_API unsigned char ELF_APIENTRY elfGetConfigTextureCompress(elfConfig* config)
 {
 	return config->textureCompress;
 }
 
-float elfGetConfigTextureAnisotropy(elfConfig* config)
+ELF_API float ELF_APIENTRY elfGetConfigTextureAnisotropy(elfConfig* config)
 {
 	return config->textureAnisotropy;
 }
 
-int elfGetConfigShadowMapSize(elfConfig* config)
+ELF_API int ELF_APIENTRY elfGetConfigShadowMapSize(elfConfig* config)
 {
 	return config->shadowMapSize;
 }
 
-const char* elfGetConfigStart(elfConfig* config)
+ELF_API const char* ELF_APIENTRY elfGetConfigStart(elfConfig* config)
 {
 	return config->start;
 }
 
-const char* elfGetConfigLog(elfConfig* config)
+ELF_API const char* ELF_APIENTRY elfGetConfigLog(elfConfig* config)
 {
 	return config->start;
 }

@@ -1,5 +1,5 @@
 
-elfEntity* elfCreateEntity(const char* name)
+ELF_API elfEntity* ELF_APIENTRY elfCreateEntity(const char* name)
 {
 	elfEntity* entity;
 
@@ -37,7 +37,7 @@ elfEntity* elfCreateEntity(const char* name)
 	return entity;
 }
 
-void elfGenerateEntityTangents(elfEntity* entity)
+ELF_API void ELF_APIENTRY elfGenerateEntityTangents(elfEntity* entity)
 {
 	elfMaterial* material;
 
@@ -271,7 +271,7 @@ void elfCalcEntityBoundingVolumes(elfEntity* entity, unsigned char newModel)
 	elfCalcEntityAabb(entity);
 }
 
-void elfSetEntityScale(elfEntity* entity, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetEntityScale(elfEntity* entity, float x, float y, float z)
 {
 	gfxSetTransformScale(entity->transform, x, y, z);
 	gfxGetTransformScale(entity->transform, &entity->scale.x);
@@ -282,7 +282,7 @@ void elfSetEntityScale(elfEntity* entity, float x, float y, float z)
 	elfResetEntityDebugPhysicsObject(entity);
 }
 
-elfVec3f elfGetEntityScale(elfEntity* entity)
+ELF_API elfVec3f ELF_APIENTRY elfGetEntityScale(elfEntity* entity)
 {
 	elfVec3f result;
 
@@ -296,7 +296,7 @@ void elfGetEntityScale_(elfEntity* entity, float* scale)
 	gfxGetTransformScale(entity->transform, scale);
 }
 
-void elfSetEntityModel(elfEntity* entity, elfModel* model)
+ELF_API void ELF_APIENTRY elfSetEntityModel(elfEntity* entity, elfModel* model)
 {
 	elfMaterial* material;
 
@@ -340,7 +340,7 @@ void elfSetEntityModel(elfEntity* entity, elfModel* model)
 	entity->moved = ELF_TRUE;
 }
 
-void elfClearEntityModel(elfEntity* entity)
+ELF_API void ELF_APIENTRY elfClearEntityModel(elfEntity* entity)
 {
 	if(entity->model) elfDecRef((elfObject*)entity->model);
 	entity->model = NULL;
@@ -355,23 +355,23 @@ void elfClearEntityModel(elfEntity* entity)
 	elfCalcEntityBoundingVolumes(entity, ELF_FALSE);
 }
 
-elfModel* elfGetEntityModel(elfEntity* entity)
+ELF_API elfModel* ELF_APIENTRY elfGetEntityModel(elfEntity* entity)
 {
 	return entity->model;
 }
 
-int elfGetEntityMaterialCount(elfEntity* entity)
+ELF_API int ELF_APIENTRY elfGetEntityMaterialCount(elfEntity* entity)
 {
 	return elfGetListLength(entity->materials);
 }
 
-void elfAddEntityMaterial(elfEntity* entity, elfMaterial* material)
+ELF_API void ELF_APIENTRY elfAddEntityMaterial(elfEntity* entity, elfMaterial* material)
 {
 	elfAppendToList(entity->materials, (elfObject*)material);
 	elfGenerateEntityTangents(entity);
 }
 
-void elfSetEntityMaterial(elfEntity* entity, int idx, elfMaterial* material)
+ELF_API void ELF_APIENTRY elfSetEntityMaterial(elfEntity* entity, int idx, elfMaterial* material)
 {
 	elfObject* mat;
 	int i;
@@ -391,7 +391,7 @@ void elfSetEntityMaterial(elfEntity* entity, int idx, elfMaterial* material)
 	elfGenerateEntityTangents(entity);
 }
 
-void elfRemoveEntityMaterial(elfEntity* entity, int idx)
+ELF_API void ELF_APIENTRY elfRemoveEntityMaterial(elfEntity* entity, int idx)
 {
 	elfObject* mat;
 	int i;
@@ -409,13 +409,13 @@ void elfRemoveEntityMaterial(elfEntity* entity, int idx)
 	}
 }
 
-elfMaterial* elfGetEntityMaterial(elfEntity* entity, int idx)
+ELF_API elfMaterial* ELF_APIENTRY elfGetEntityMaterial(elfEntity* entity, int idx)
 {
 	if(idx < 0 || idx > elfGetListLength(entity->materials)-1) return NULL;
 	return (elfMaterial*)elfGetItemFromList(entity->materials, idx);
 }
 
-void elfSetEntityVisible(elfEntity* entity, unsigned char visible)
+ELF_API void ELF_APIENTRY elfSetEntityVisible(elfEntity* entity, unsigned char visible)
 {
 	if(entity->visible == visible) return;
 
@@ -424,27 +424,27 @@ void elfSetEntityVisible(elfEntity* entity, unsigned char visible)
 	if(!entity->visible) entity->moved = ELF_TRUE;
 }
 
-unsigned char elfGetEntityVisible(elfEntity* entity)
+ELF_API unsigned char ELF_APIENTRY elfGetEntityVisible(elfEntity* entity)
 {
 	return entity->visible;
 }
 
-void elfSetEntityOccluder(elfEntity* entity, unsigned char occluder)
+ELF_API void ELF_APIENTRY elfSetEntityOccluder(elfEntity* entity, unsigned char occluder)
 {
 	entity->occluder = !occluder == ELF_FALSE;
 }
 
-unsigned char elfGetEntityOccluder(elfEntity* entity)
+ELF_API unsigned char ELF_APIENTRY elfGetEntityOccluder(elfEntity* entity)
 {
 	return entity->occluder;
 }
 
-void elfSetEntityPhysics(elfEntity* entity, int type, float mass)
+ELF_API void ELF_APIENTRY elfSetEntityPhysics(elfEntity* entity, int type, float mass)
 {
 	elfSetActorPhysics((elfActor*)entity, type, mass);
 }
 
-void elfDisableEntityPhysics(elfEntity* entity)
+ELF_API void ELF_APIENTRY elfDisableEntityPhysics(elfEntity* entity)
 {
 	elfDisableActorPhysics((elfActor*)entity);
 }
@@ -489,7 +489,7 @@ void elfResetEntityDebugPhysicsObject(elfEntity* entity)
 	if(entity->scene) elfSetPhysicsObjectWorld(entity->dobject, entity->scene->dworld);
 }
 
-void elfSetEntityArmature(elfEntity* entity, elfArmature* armature)
+ELF_API void ELF_APIENTRY elfSetEntityArmature(elfEntity* entity, elfArmature* armature)
 {
 	if(entity->armature) elfDecRef((elfObject*)entity->armature);
 	entity->armature = armature;
@@ -497,69 +497,69 @@ void elfSetEntityArmature(elfEntity* entity, elfArmature* armature)
 	elfCalcEntityBoundingVolumes(entity, ELF_FALSE);
 }
 
-void elfSetEntityArmatureFrame(elfEntity* entity, float frame)
+ELF_API void ELF_APIENTRY elfSetEntityArmatureFrame(elfEntity* entity, float frame)
 {
 	elfSetFramePlayerFrame(entity->armaturePlayer, frame);
 }
 
-void elfPlayEntityArmature(elfEntity* entity, float start, float end, float speed)
+ELF_API void ELF_APIENTRY elfPlayEntityArmature(elfEntity* entity, float start, float end, float speed)
 {
 	elfPlayFramePlayer(entity->armaturePlayer, start, end, speed);
 	if(entity->armature) elfDeformEntityWithArmature(entity->armature, entity, start);
 }
 
-void elfLoopEntityArmature(elfEntity* entity, float start, float end, float speed)
+ELF_API void ELF_APIENTRY elfLoopEntityArmature(elfEntity* entity, float start, float end, float speed)
 {
 	elfLoopFramePlayer(entity->armaturePlayer, start, end, speed);
 	if(entity->armature) elfDeformEntityWithArmature(entity->armature, entity, start);
 }
 
-void elfStopEntityArmature(elfEntity* entity)
+ELF_API void ELF_APIENTRY elfStopEntityArmature(elfEntity* entity)
 {
 	elfStopFramePlayer(entity->armaturePlayer);
 }
 
-void elfPauseEntityArmature(elfEntity* entity)
+ELF_API void ELF_APIENTRY elfPauseEntityArmature(elfEntity* entity)
 {
 	elfStopFramePlayer(entity->armaturePlayer);
 }
 
-void elfResumeEntityArmature(elfEntity* entity)
+ELF_API void ELF_APIENTRY elfResumeEntityArmature(elfEntity* entity)
 {
 	elfStopFramePlayer(entity->armaturePlayer);
 }
 
-float elfGetEntityArmatureStart(elfEntity* entity)
+ELF_API float ELF_APIENTRY elfGetEntityArmatureStart(elfEntity* entity)
 {
 	return elfGetFramePlayerStart(entity->armaturePlayer);
 }
 
-float elfGetEntityArmatureEnd(elfEntity* entity)
+ELF_API float ELF_APIENTRY elfGetEntityArmatureEnd(elfEntity* entity)
 {
 	return elfGetFramePlayerEnd(entity->armaturePlayer);
 }
 
-float elfGetEntityArmatureSpeed(elfEntity* entity)
+ELF_API float ELF_APIENTRY elfGetEntityArmatureSpeed(elfEntity* entity)
 {
 	return elfGetFramePlayerSpeed(entity->armaturePlayer);
 }
 
-float elfGetEntityArmatureFrame(elfEntity* entity)
+ELF_API float ELF_APIENTRY elfGetEntityArmatureFrame(elfEntity* entity)
 {
 	return elfGetFramePlayerFrame(entity->armaturePlayer);
 }
 
-unsigned char elfIsEntityArmaturePlaying(elfEntity* entity)
+ELF_API unsigned char ELF_APIENTRY elfIsEntityArmaturePlaying(elfEntity* entity)
 {
 	return elfIsFramePlayerPlaying(entity->armaturePlayer);
 }
 
-unsigned char elfIsEntityArmaturePaused(elfEntity* entity)
+ELF_API unsigned char ELF_APIENTRY elfIsEntityArmaturePaused(elfEntity* entity)
 {
 	return elfIsFramePlayerPaused(entity->armaturePlayer);
 }
 
-elfArmature* elfGetEntityArmature(elfEntity* entity)
+ELF_API elfArmature* ELF_APIENTRY elfGetEntityArmature(elfEntity* entity)
 {
 	return entity->armature;
 }
@@ -731,7 +731,7 @@ unsigned char elfCullEntity(elfEntity* entity, elfCamera* camera)
 	return !elfAabbInsideFrustum(camera, &entity->cullAabbMin.x, &entity->cullAabbMax.x);
 }
 
-unsigned char elfGetEntityChanged(elfEntity* entity)
+ELF_API unsigned char ELF_APIENTRY elfGetEntityChanged(elfEntity* entity)
 {
 	return entity->moved;
 }

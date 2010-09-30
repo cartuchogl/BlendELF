@@ -1,5 +1,5 @@
 
-elfVertice* elfCreateVertice()
+ELF_API elfVertice* ELF_APIENTRY elfCreateVertice()
 {
 	elfVertice* vertice;
 
@@ -22,37 +22,37 @@ void elfDestroyVertice(void* data)
 	elfDecObj(ELF_VERTICE);
 }
 
-void elfSetVerticePosition(elfVertice* vertice, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetVerticePosition(elfVertice* vertice, float x, float y, float z)
 {
 	vertice->position.x = x;
 	vertice->position.y = y;
 	vertice->position.z = z;
 }
 
-void elfSetVerticeNormal(elfVertice* vertice, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetVerticeNormal(elfVertice* vertice, float x, float y, float z)
 {
 	vertice->normal.x = x;
 	vertice->normal.y = y;
 	vertice->normal.z = z;
 }
 
-void elfSetVerticeTexCoord(elfVertice* vertice, float u, float v)
+ELF_API void ELF_APIENTRY elfSetVerticeTexCoord(elfVertice* vertice, float u, float v)
 {
 	vertice->texCoord.x = u;
 	vertice->texCoord.y = v;
 }
 
-elfVec3f elfGetVerticePosition(elfVertice* vertice)
+ELF_API elfVec3f ELF_APIENTRY elfGetVerticePosition(elfVertice* vertice)
 {
 	return vertice->position;
 }
 
-elfVec3f elfGetVerticeNormal(elfVertice* vertice)
+ELF_API elfVec3f ELF_APIENTRY elfGetVerticeNormal(elfVertice* vertice)
 {
 	return vertice->normal;
 }
 
-elfVec2f elfGetVerticeTexCoord(elfVertice* vertice)
+ELF_API elfVec2f ELF_APIENTRY elfGetVerticeTexCoord(elfVertice* vertice)
 {
 	return vertice->texCoord;
 }
@@ -80,22 +80,22 @@ void elfDestroyFace(void* data)
 	elfDecObj(ELF_FACE);
 }
 
-int elfGetFaceV1(elfFace* face)
+ELF_API int ELF_APIENTRY elfGetFaceV1(elfFace* face)
 {
 	return face->v1;
 }
 
-int elfGetFaceV2(elfFace* face)
+ELF_API int ELF_APIENTRY elfGetFaceV2(elfFace* face)
 {
 	return face->v2;
 }
 
-int elfGetFaceV3(elfFace* face)
+ELF_API int ELF_APIENTRY elfGetFaceV3(elfFace* face)
 {
 	return face->v3;
 }
 
-elfMeshData* elfCreateMeshData()
+ELF_API elfMeshData* ELF_APIENTRY elfCreateMeshData()
 {
 	elfMeshData* meshData;
 
@@ -127,22 +127,22 @@ void elfDestroyMeshData(void* data)
 	elfDecObj(ELF_MESH_DATA);
 }
 
-int elfGetMeshDataVerticeCount(elfMeshData* meshData)
+ELF_API int ELF_APIENTRY elfGetMeshDataVerticeCount(elfMeshData* meshData)
 {
 	return elfGetListLength(meshData->vertices);
 }
 
-int elfGetMeshDataFaceCount(elfMeshData* meshData)
+ELF_API int ELF_APIENTRY elfGetMeshDataFaceCount(elfMeshData* meshData)
 {
 	return elfGetListLength(meshData->faces);
 }
 
-void elfAddVerticeToMeshData(elfMeshData* meshData, elfVertice* vertice)
+ELF_API void ELF_APIENTRY elfAddVerticeToMeshData(elfMeshData* meshData, elfVertice* vertice)
 {
 	elfAppendToList(meshData->vertices, (elfObject*)vertice);
 }
 
-void elfAddFaceToMeshData(elfMeshData* meshData, int v1, int v2, int v3)
+ELF_API void ELF_APIENTRY elfAddFaceToMeshData(elfMeshData* meshData, int v1, int v2, int v3)
 {
 	elfFace* face;
 
@@ -160,12 +160,12 @@ void elfAddFaceToMeshData(elfMeshData* meshData, int v1, int v2, int v3)
 	elfAppendToList(meshData->faces, (elfObject*)face);
 }
 
-elfVertice* elfGetVerticeFromMeshData(elfMeshData* meshData, int idx)
+ELF_API elfVertice* ELF_APIENTRY elfGetVerticeFromMeshData(elfMeshData* meshData, int idx)
 {
 	return (elfVertice*)elfGetItemFromList(meshData->vertices, idx);
 }
 
-elfFace* elfGetFaceFromMeshData(elfMeshData* meshData, int idx)
+ELF_API elfFace* ELF_APIENTRY elfGetFaceFromMeshData(elfMeshData* meshData, int idx)
 {
 	return (elfFace*)elfGetItemFromList(meshData->faces, idx);
 }

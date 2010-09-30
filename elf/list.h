@@ -27,7 +27,7 @@ void elfDestroyListPtrs(elfListPtr* ptr)
 	elfDestroyListPtr(ptr);
 }
 
-elfList* elfCreateList()
+ELF_API elfList* ELF_APIENTRY elfCreateList()
 {
 	elfList* list;
 
@@ -52,12 +52,12 @@ void elfDestroyList(void* data)
 	elfDecObj(ELF_LIST);
 }
 
-int elfGetListLength(elfList* list)
+ELF_API int ELF_APIENTRY elfGetListLength(elfList* list)
 {
 	return list->length;
 }
 
-void elfInsertToList(elfList* list, int idx, elfObject* obj)
+ELF_API void ELF_APIENTRY elfInsertToList(elfList* list, int idx, elfObject* obj)
 {
 	elfListPtr* ptr;
 	elfListPtr* tptr;
@@ -110,7 +110,7 @@ void elfInsertToList(elfList* list, int idx, elfObject* obj)
 	elfIncRef(obj);
 }
 
-void elfAppendToList(elfList* list, elfObject* obj)
+ELF_API void ELF_APIENTRY elfAppendToList(elfList* list, elfObject* obj)
 {
 	if(!obj) return;
 
@@ -133,7 +133,7 @@ void elfAppendToList(elfList* list, elfObject* obj)
 	elfIncRef(obj);
 }
 
-elfObject* elfGetItemFromList(elfList* list, int idx)
+ELF_API elfObject* ELF_APIENTRY elfGetItemFromList(elfList* list, int idx)
 {
 	elfListPtr* ptr;
 	int i;
@@ -156,7 +156,7 @@ elfObject* elfGetItemFromList(elfList* list, int idx)
 	return NULL;
 }
 
-unsigned char elfRemoveFromList(elfList* list, elfObject* obj)
+ELF_API unsigned char ELF_APIENTRY elfRemoveFromList(elfList* list, elfObject* obj)
 {
 	elfListPtr* ptr;
 	elfListPtr* prevPtr;
@@ -198,7 +198,7 @@ unsigned char elfRemoveFromList(elfList* list, elfObject* obj)
 	return ELF_FALSE;
 }
 
-elfObject* elfBeginList(elfList* list)
+ELF_API elfObject* ELF_APIENTRY elfBeginList(elfList* list)
 {
 	list->cur = list->first;
 	if(list->cur)
@@ -209,7 +209,7 @@ elfObject* elfBeginList(elfList* list)
 	return NULL;
 }
 
-elfObject* elfNextInList(elfList* list)
+ELF_API elfObject* ELF_APIENTRY elfNextInList(elfList* list)
 {
 	list->cur = list->next;
 	if(list->cur)
@@ -220,7 +220,7 @@ elfObject* elfNextInList(elfList* list)
 	return NULL;
 }
 
-elfObject* elfRbeginList(elfList* list)
+ELF_API elfObject* ELF_APIENTRY elfRbeginList(elfList* list)
 {
 	list->cur = list->last;
 	if(list->cur)
@@ -231,7 +231,7 @@ elfObject* elfRbeginList(elfList* list)
 	return NULL;
 }
 
-elfObject* elfRnextInList(elfList* list)
+ELF_API elfObject* ELF_APIENTRY elfRnextInList(elfList* list)
 {
 	list->cur = list->next;
 	if(list->cur)
@@ -252,7 +252,7 @@ void elfSetListCurPtr(elfList* list, elfObject* ptr)
 	}
 }
 
-void elfSeekList(elfList* list, elfObject* ptr)
+ELF_API void ELF_APIENTRY elfSeekList(elfList* list, elfObject* ptr)
 {
 	elfObject* obj;
 
@@ -263,7 +263,7 @@ void elfSeekList(elfList* list, elfObject* ptr)
 	}
 }
 
-void elfRseekList(elfList* list, elfObject* ptr)
+ELF_API void ELF_APIENTRY elfRseekList(elfList* list, elfObject* ptr)
 {
 	elfObject* obj;
 

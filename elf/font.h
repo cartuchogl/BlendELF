@@ -13,7 +13,7 @@ elfFont* elfCreateFont()
 	return font;
 }
 
-elfFont* elfCreateFontFromFile(const char* filePath, int size)
+ELF_API elfFont* ELF_APIENTRY elfCreateFontFromFile(const char* filePath, int size)
 {
 	FT_Library library;
 	FT_Face face;
@@ -125,22 +125,22 @@ void elfDestroyFont(void* data)
 	elfDecObj(ELF_FONT);
 }
 
-const char* elfGetFontName(elfFont* font)
+ELF_API const char* ELF_APIENTRY elfGetFontName(elfFont* font)
 {
 	return font->name;
 }
 
-const char* elfGetFontFilePath(elfFont* font)
+ELF_API const char* ELF_APIENTRY elfGetFontFilePath(elfFont* font)
 {
 	return font->filePath;
 }
 
-int elfGetFontSize(elfFont* font)
+ELF_API int ELF_APIENTRY elfGetFontSize(elfFont* font)
 {
 	return font->size;
 }
 
-int elfGetStringWidth(elfFont* font, const char* str)
+ELF_API int ELF_APIENTRY elfGetStringWidth(elfFont* font, const char* str)
 {
 	int x = 0;
 	int ox = 0;
@@ -170,7 +170,7 @@ int elfGetStringWidth(elfFont* font, const char* str)
 	return x;
 }
 
-int elfGetStringHeight(elfFont* font, const char* str)
+ELF_API int ELF_APIENTRY elfGetStringHeight(elfFont* font, const char* str)
 {
 	int ox = 0;
 	int y = font->size;

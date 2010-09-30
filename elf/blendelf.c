@@ -1,5 +1,35 @@
 
-#include "default.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdarg.h>
+#include <math.h>
+#include <malloc.h>
+#include <sys/types.h>
+
+#include <dirent.h>
+
+#include <GL/glfw.h>
+#ifdef ELF_MACOSX
+	#include <OpenGL/gl.h>
+#else
+	#include <GL/gl.h>
+#endif
+
+#ifdef ELF_WINDOWS
+	#include <windows.h>
+#else
+	#include <unistd.h>
+#endif
+
+#include <FreeImage.h>
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
+#include <assimp/assimp.h>
+#include <assimp/aiPostProcess.h>
+#include <assimp/aiScene.h>
 
 #include "gfx.h"
 #include "blendelf.h"

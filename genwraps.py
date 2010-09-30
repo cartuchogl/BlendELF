@@ -735,6 +735,8 @@ src = open('elf/blendelf.h')
 skip = False
 for line in src:
 	parts = get_parts(line)
+	if 'ELF_API' in parts: parts.remove('ELF_API')
+	if 'ELF_APIENTRY' in parts: parts.remove('ELF_APIENTRY')
 	if '<!>' in parts: continue
 	if '<!!' in parts: skip = True
 	if '!!>' in parts: skip = False

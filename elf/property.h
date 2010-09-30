@@ -1,5 +1,5 @@
 
-elfProperty* elfCreateProperty(const char* name)
+ELF_API elfProperty* ELF_APIENTRY elfCreateProperty(const char* name)
 {
 	elfProperty* property;
 
@@ -29,32 +29,32 @@ void elfDestroyProperty(void* data)
 	elfDecObj(ELF_PROPERTY);
 }
 
-int elfGetPropertyType(elfProperty* property)
+ELF_API int ELF_APIENTRY elfGetPropertyType(elfProperty* property)
 {
 	return property->propertyType;
 }
 
-int elfGetPropertyInt(elfProperty* property)
+ELF_API int ELF_APIENTRY elfGetPropertyInt(elfProperty* property)
 {
 	return property->ival;
 }
 
-float elfGetPropertyFloat(elfProperty* property)
+ELF_API float ELF_APIENTRY elfGetPropertyFloat(elfProperty* property)
 {
 	return property->fval;
 }
 
-const char* elfGetPropertyString(elfProperty* property)
+ELF_API const char* ELF_APIENTRY elfGetPropertyString(elfProperty* property)
 {
 	return property->sval;
 }
 
-unsigned char elfGetPropertyBool(elfProperty* property)
+ELF_API unsigned char ELF_APIENTRY elfGetPropertyBool(elfProperty* property)
 {
 	return property->bval;
 }
 
-void elfSetPropertyInt(elfProperty* property, int ival)
+ELF_API void ELF_APIENTRY elfSetPropertyInt(elfProperty* property, int ival)
 {
 	property->propertyType = ELF_PROPERTY_INT;
 	property->ival = ival;
@@ -64,7 +64,7 @@ void elfSetPropertyInt(elfProperty* property, int ival)
 	property->bval = ELF_FALSE;
 }
 
-void elfSetPropertyFloat(elfProperty* property, float fval)
+ELF_API void ELF_APIENTRY elfSetPropertyFloat(elfProperty* property, float fval)
 {
 	property->propertyType = ELF_PROPERTY_FLOAT;
 	property->ival = 0;
@@ -74,7 +74,7 @@ void elfSetPropertyFloat(elfProperty* property, float fval)
 	property->bval = ELF_FALSE;
 }
 
-void elfSetPropertyString(elfProperty* property, const char* sval)
+ELF_API void ELF_APIENTRY elfSetPropertyString(elfProperty* property, const char* sval)
 {
 	property->propertyType = ELF_PROPERTY_STRING;
 	property->ival = 0;
@@ -84,7 +84,7 @@ void elfSetPropertyString(elfProperty* property, const char* sval)
 	property->bval = ELF_FALSE;
 }
 
-void elfSetPropertyBool(elfProperty* property, unsigned char bval)
+ELF_API void ELF_APIENTRY elfSetPropertyBool(elfProperty* property, unsigned char bval)
 {
 	property->propertyType = ELF_PROPERTY_BOOL;
 	property->ival = 0;

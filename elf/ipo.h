@@ -1,5 +1,5 @@
 
-elfBezierPoint* elfCreateBezierPoint()
+ELF_API elfBezierPoint* ELF_APIENTRY elfCreateBezierPoint()
 {
 	elfBezierPoint* point;
 
@@ -22,40 +22,40 @@ void elfDestroyBezierPoint(void* data)
 	elfDecObj(ELF_BEZIER_POINT);
 }
 
-void elfSetBezierPointPosition(elfBezierPoint* point, float x, float y)
+ELF_API void ELF_APIENTRY elfSetBezierPointPosition(elfBezierPoint* point, float x, float y)
 {
 	point->p.x = x;
 	point->p.y = y;
 }
 
-void elfSetBezierPointControl1(elfBezierPoint* point, float x, float y)
+ELF_API void ELF_APIENTRY elfSetBezierPointControl1(elfBezierPoint* point, float x, float y)
 {
 	point->c1.x = x;
 	point->c1.y = y;
 }
 
-void elfSetBezierPointControl2(elfBezierPoint* point, float x, float y)
+ELF_API void ELF_APIENTRY elfSetBezierPointControl2(elfBezierPoint* point, float x, float y)
 {
 	point->c2.x = x;
 	point->c2.y = y;
 }
 
-elfVec2f elfGetBezierPointPosition(elfBezierPoint* point)
+ELF_API elfVec2f ELF_APIENTRY elfGetBezierPointPosition(elfBezierPoint* point)
 {
 	return point->p;
 }
 
-elfVec2f elfGetBezierPointControl1(elfBezierPoint* point)
+ELF_API elfVec2f ELF_APIENTRY elfGetBezierPointControl1(elfBezierPoint* point)
 {
 	return point->c1;
 }
 
-elfVec2f elfGetBezierPointControl2(elfBezierPoint* point)
+ELF_API elfVec2f ELF_APIENTRY elfGetBezierPointControl2(elfBezierPoint* point)
 {
 	return point->c2;
 }
 
-elfBezierCurve* elfCreateBezierCurve()
+ELF_API elfBezierCurve* ELF_APIENTRY elfCreateBezierCurve()
 {
 	elfBezierCurve* curve;
 
@@ -83,7 +83,7 @@ void elfDestroyBezierCurve(void* data)
 	elfDecObj(ELF_BEZIER_CURVE);
 }
 
-void elfSetBezierCurveType(elfBezierCurve* curve, int type)
+ELF_API void ELF_APIENTRY elfSetBezierCurveType(elfBezierCurve* curve, int type)
 {
 	if(type >= ELF_LOC_X && type <= ELF_QUA_W)
 	{
@@ -91,12 +91,12 @@ void elfSetBezierCurveType(elfBezierCurve* curve, int type)
 	}
 }
 
-int elfGetBezierCurveType(elfBezierCurve* curve)
+ELF_API int ELF_APIENTRY elfGetBezierCurveType(elfBezierCurve* curve)
 {
 	return curve->curveType;
 }
 
-void elfAddPointToBezierCurve(elfBezierCurve* curve, elfBezierPoint* point)
+ELF_API void ELF_APIENTRY elfAddPointToBezierCurve(elfBezierCurve* curve, elfBezierPoint* point)
 {
 	int i;
 	elfBezierPoint* pnt;
@@ -119,12 +119,12 @@ int elfGetCurvePointCount(elfBezierCurve* curve)
 	return elfGetListLength(curve->points);
 }
 
-elfBezierPoint* elfGetPointFromBezierCurve(elfBezierCurve* curve, int idx)
+ELF_API elfBezierPoint* ELF_APIENTRY elfGetPointFromBezierCurve(elfBezierCurve* curve, int idx)
 {
 	return (elfBezierPoint*)elfGetItemFromList(curve->points, idx);
 }
 
-float elfGetBezierCurveValue(elfBezierCurve* curve, float x)
+ELF_API float ELF_APIENTRY elfGetBezierCurveValue(elfBezierCurve* curve, float x)
 {
 	elfBezierPoint* pnt;
 	elfBezierPoint* point1 = NULL;
@@ -149,7 +149,7 @@ float elfGetBezierCurveValue(elfBezierCurve* curve, float x)
 	return point1->p.y+(point2->p.y-point1->p.y)*t;
 }
 
-elfIpo* elfCreateIpo()
+ELF_API elfIpo* ELF_APIENTRY elfCreateIpo()
 {
 	elfIpo* ipo;
 
@@ -177,7 +177,7 @@ void elfDestroyIpo(void* data)
 	elfDecObj(ELF_IPO);
 }
 
-unsigned char elfAddCurveToIpo(elfIpo* ipo, elfBezierCurve* curve)
+ELF_API unsigned char ELF_APIENTRY elfAddCurveToIpo(elfIpo* ipo, elfBezierCurve* curve)
 {
 	elfBezierCurve* cur;
 
@@ -197,17 +197,17 @@ unsigned char elfAddCurveToIpo(elfIpo* ipo, elfBezierCurve* curve)
 	return ELF_TRUE;
 }
 
-int elfGetIpoCurveCount(elfIpo* ipo)
+ELF_API int ELF_APIENTRY elfGetIpoCurveCount(elfIpo* ipo)
 {
 	return elfGetListLength(ipo->curves);
 }
 
-elfBezierCurve* elfGetCurveFromIpo(elfIpo* ipo, int idx)
+ELF_API elfBezierCurve* ELF_APIENTRY elfGetCurveFromIpo(elfIpo* ipo, int idx)
 {
 	return (elfBezierCurve*)elfGetItemFromList(ipo->curves, idx);
 }
 
-elfVec3f elfGetIpoLoc(elfIpo* ipo, float x)
+ELF_API elfVec3f ELF_APIENTRY elfGetIpoLoc(elfIpo* ipo, float x)
 {
 	elfBezierCurve* curve;
 	elfVec3f result;
@@ -225,7 +225,7 @@ elfVec3f elfGetIpoLoc(elfIpo* ipo, float x)
 	return result;
 }
 
-elfVec3f elfGetIpoRot(elfIpo* ipo, float x)
+ELF_API elfVec3f ELF_APIENTRY elfGetIpoRot(elfIpo* ipo, float x)
 {
 	elfBezierCurve* curve;
 	elfVec3f result;
@@ -243,7 +243,7 @@ elfVec3f elfGetIpoRot(elfIpo* ipo, float x)
 	return result;
 }
 
-elfVec3f elfGetIpoScale(elfIpo* ipo, float x)
+ELF_API elfVec3f ELF_APIENTRY elfGetIpoScale(elfIpo* ipo, float x)
 {
 	elfBezierCurve* curve;
 	elfVec3f result;
@@ -261,7 +261,7 @@ elfVec3f elfGetIpoScale(elfIpo* ipo, float x)
 	return result;
 }
 
-elfVec4f elfGetIpoQua(elfIpo* ipo, float x)
+ELF_API elfVec4f ELF_APIENTRY elfGetIpoQua(elfIpo* ipo, float x)
 {
 	elfBezierCurve* curve;
 	elfVec4f result;

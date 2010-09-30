@@ -15,7 +15,7 @@ elfTexture* elfCreateTexture()
 	return texture;
 }
 
-elfTexture* elfCreateTextureFromFile(const char* filePath)
+ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromFile(const char* filePath)
 {
 	elfImage* image;
 	elfTexture* texture;
@@ -68,7 +68,7 @@ elfTexture* elfCreateTextureFromFile(const char* filePath)
 	return texture;
 }
 
-elfTexture* elfCreateTextureFromImage(elfImage* image)
+ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromImage(elfImage* image)
 {
 	elfTexture* texture;
 	int format;
@@ -110,7 +110,7 @@ elfTexture* elfCreateTextureFromImage(elfImage* image)
 	return texture;
 }
 
-elfTexture* elfCreateCubeMapFromFiles(const char* xpos, const char* xneg, const char* ypos, const char* yneg, const char* zpos, const char* zneg)
+ELF_API elfTexture* ELF_APIENTRY elfCreateCubeMapFromFiles(const char* xpos, const char* xneg, const char* ypos, const char* yneg, const char* zpos, const char* zneg)
 {
 	elfImage* xposi;
 	elfImage* xnegi;
@@ -255,38 +255,38 @@ void elfDestroyTexture(void* data)
 	free(texture);
 }
 
-void elfSetTextureName(elfTexture* texture, const char* name)
+ELF_API void ELF_APIENTRY elfSetTextureName(elfTexture* texture, const char* name)
 {
 	if(texture->name) elfDestroyString(texture->name);
 	texture->name = elfCreateString(name);
 }
 
-const char* elfGetTextureName(elfTexture* texture)
+ELF_API const char* ELF_APIENTRY elfGetTextureName(elfTexture* texture)
 {
 	return texture->name;
 }
 
-const char* elfGetTextureFilePath(elfTexture* texture)
+ELF_API const char* ELF_APIENTRY elfGetTextureFilePath(elfTexture* texture)
 {
 	return texture->filePath;
 }
 
-int elfGetTextureWidth(elfTexture* texture)
+ELF_API int ELF_APIENTRY elfGetTextureWidth(elfTexture* texture)
 {
 	return gfxGetTextureWidth(texture->texture);
 }
 
-int elfGetTextureHeight(elfTexture* texture)
+ELF_API int ELF_APIENTRY elfGetTextureHeight(elfTexture* texture)
 {
 	return gfxGetTextureHeight(texture->texture);
 }
 
-int elfGetTextureFormat(elfTexture* texture)
+ELF_API int ELF_APIENTRY elfGetTextureFormat(elfTexture* texture)
 {
 	return gfxGetTextureFormat(texture->texture);
 }
 
-int elfGetTextureDataFormat(elfTexture* texture)
+ELF_API int ELF_APIENTRY elfGetTextureDataFormat(elfTexture* texture)
 {
 	return gfxGetTextureDataFormat(texture->texture);
 }

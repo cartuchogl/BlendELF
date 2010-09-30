@@ -763,20 +763,3 @@ struct elfGui {
 	unsigned char charRepeat;
 };
 
-struct elfServer {
-	ENetHost* host;
-	ENetAddress address;
-	ENetEvent event;
-	GLFWthread thread;
-};
-
-struct elfClient {
-	ELF_OBJECT_HEADER;
-};
-
-struct elfNetworkingEvent {
-	ELF_OBJECT_HEADER;
-	int eventType;
-	elfClient* client;
-};
-

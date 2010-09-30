@@ -1,5 +1,5 @@
 
-elfLight* elfCreateLight(const char* name)
+ELF_API elfLight* ELF_APIENTRY elfCreateLight(const char* name)
 {
 	elfLight* light;
 
@@ -72,7 +72,7 @@ void elfDestroyLight(void* data)
 	elfDecObj(ELF_LIGHT);
 }
 
-void elfSetLightType(elfLight* light, int type)
+ELF_API void ELF_APIENTRY elfSetLightType(elfLight* light, int type)
 {
 	if(type != ELF_POINT_LIGHT &&
 		type != ELF_SPOT_LIGHT &&
@@ -80,7 +80,7 @@ void elfSetLightType(elfLight* light, int type)
 	light->lightType = type;
 }
 
-void elfSetLightColor(elfLight* light, float r, float g, float b, float a)
+ELF_API void ELF_APIENTRY elfSetLightColor(elfLight* light, float r, float g, float b, float a)
 {
 	light->color.r = r;
 	light->color.g = g;
@@ -88,14 +88,14 @@ void elfSetLightColor(elfLight* light, float r, float g, float b, float a)
 	light->color.a = a;
 }
 
-void elfSetLightDistance(elfLight* light, float distance)
+ELF_API void ELF_APIENTRY elfSetLightDistance(elfLight* light, float distance)
 {
 	light->distance = distance;
 	if(light->distance < 0.0) light->distance = 0.0;
 	elfSetCameraPerspective(light->shadowCamera, (light->innerCone+light->outerCone)*2, 1.0, 1.0, light->distance+(1.0/(light->fadeSpeed)));
 }
 
-void elfSetLightFadeSpeed(elfLight* light, float fadeSpeed)
+ELF_API void ELF_APIENTRY elfSetLightFadeSpeed(elfLight* light, float fadeSpeed)
 {
 	light->fadeSpeed = fadeSpeed;
 	if(light->fadeSpeed < 0.0001) light->fadeSpeed = 0.0001;
@@ -103,7 +103,7 @@ void elfSetLightFadeSpeed(elfLight* light, float fadeSpeed)
 	elfSetCameraPerspective(light->shadowCamera, (light->innerCone+light->outerCone)*2, 1.0, 1.0, light->distance+(1.0/(light->fadeSpeed)));
 }
 
-void elfSetLightShadows(elfLight* light, unsigned char shadows)
+ELF_API void ELF_APIENTRY elfSetLightShadows(elfLight* light, unsigned char shadows)
 {
 	if(light->shadows == shadows) return;
 
@@ -112,57 +112,57 @@ void elfSetLightShadows(elfLight* light, unsigned char shadows)
 	light->moved = ELF_TRUE;
 }
 
-int elfGetLightType(elfLight* light)
+ELF_API int ELF_APIENTRY elfGetLightType(elfLight* light)
 {
 	return light->lightType;
 }
 
-elfColor elfGetLightColor(elfLight* light)
+ELF_API elfColor ELF_APIENTRY elfGetLightColor(elfLight* light)
 {
 	return light->color;
 }
 
-float elfGetLightDistance(elfLight* light)
+ELF_API float ELF_APIENTRY elfGetLightDistance(elfLight* light)
 {
 	return light->distance;
 }
 
-float elfGetLightFadeSpeed(elfLight* light)
+ELF_API float ELF_APIENTRY elfGetLightFadeSpeed(elfLight* light)
 {
 	return light->fadeSpeed;
 }
 
-unsigned char elfGetLightShadows(elfLight* light)
+ELF_API unsigned char ELF_APIENTRY elfGetLightShadows(elfLight* light)
 {
 	return light->shadows;
 }
 
-unsigned char elfGetLightVisible(elfLight* light)
+ELF_API unsigned char ELF_APIENTRY elfGetLightVisible(elfLight* light)
 {
 	return light->visible;
 }
 
-unsigned char elfIsLightShaft(elfLight* light)
+ELF_API unsigned char ELF_APIENTRY elfIsLightShaft(elfLight* light)
 {
 	return light->shaft;
 }
 
-float elfGetLightShaftSize(elfLight* light)
+ELF_API float ELF_APIENTRY elfGetLightShaftSize(elfLight* light)
 {
 	return light->shaftSize;
 }
 
-float elfGetLightShaftIntensity(elfLight* light)
+ELF_API float ELF_APIENTRY elfGetLightShaftIntensity(elfLight* light)
 {
 	return light->shaftIntensity;
 }
 
-float elfGetLightShaftFadeOff(elfLight* light)
+ELF_API float ELF_APIENTRY elfGetLightShaftFadeOff(elfLight* light)
 {
 	return light->shaftFadeOff;
 }
 
-elfVec2f elfGetLightCone(elfLight* light)
+ELF_API elfVec2f ELF_APIENTRY elfGetLightCone(elfLight* light)
 {
 	elfVec2f cone;
 
@@ -172,12 +172,12 @@ elfVec2f elfGetLightCone(elfLight* light)
 	return cone;
 }
 
-void elfSetLightVisible(elfLight* light, unsigned char visible)
+ELF_API void ELF_APIENTRY elfSetLightVisible(elfLight* light, unsigned char visible)
 {
 	light->visible = !(visible == ELF_FALSE);
 }
 
-void elfSetLightCone(elfLight* light, float innerCone, float outerCone)
+ELF_API void ELF_APIENTRY elfSetLightCone(elfLight* light, float innerCone, float outerCone)
 {
 	light->innerCone = innerCone;
 	light->outerCone = outerCone;
@@ -186,7 +186,7 @@ void elfSetLightCone(elfLight* light, float innerCone, float outerCone)
 	elfSetCameraPerspective(light->shadowCamera, (light->innerCone+light->outerCone)*2, 1.0, 1.0, light->distance+(1.0/(light->fadeSpeed)));
 }
 
-void elfSetLightShaft(elfLight* light, float size, float intensity, float fadeOff)
+ELF_API void ELF_APIENTRY elfSetLightShaft(elfLight* light, float size, float intensity, float fadeOff)
 {
 	light->shaft = ELF_TRUE;
 	light->shaftSize = size;
@@ -197,7 +197,7 @@ void elfSetLightShaft(elfLight* light, float size, float intensity, float fadeOf
 	if(light->shaftFadeOff > 1.0) light->shaftFadeOff = 1.0;
 }
 
-void elfDisableLightShaft(elfLight* light)
+ELF_API void ELF_APIENTRY elfDisableLightShaft(elfLight* light)
 {
 	light->shaft = ELF_FALSE;
 }

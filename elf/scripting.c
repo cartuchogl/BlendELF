@@ -1,5 +1,7 @@
 
-#include "default.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 #include "lua.h"
 #include "lualib.h"
@@ -94,7 +96,7 @@ elfScript* elfGetCurrentScript()
 	return (elfScript*)elfRbeginList(scr->curScripts);
 }
 
-unsigned char elfRunString(const char* str)
+ELF_API unsigned char ELF_APIENTRY elfRunString(const char* str)
 {
 	int err;
 
@@ -111,7 +113,7 @@ unsigned char elfRunString(const char* str)
 	return ELF_TRUE;
 }
 
-unsigned char elfRunScript(elfScript* script)
+ELF_API unsigned char ELF_APIENTRY elfRunScript(elfScript* script)
 {
 	int err;
 	

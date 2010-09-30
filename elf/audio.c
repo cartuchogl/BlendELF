@@ -1,5 +1,17 @@
 
-#include "default.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+#ifdef ELF_MACOSX
+	#include <OpenAL/alc.h>
+	#include <OpenAL/al.h>
+#else
+	#include <AL/alc.h>
+	#include <AL/al.h>
+#endif
+
+#include <vorbis/vorbisfile.h>
 
 #include "gfx.h"
 #include "blendelf.h"
@@ -262,25 +274,25 @@ void elfUpdateAudio()
 	}
 }
 
-void elfSetAudioVolume(float volume)
+ELF_API void ELF_APIENTRY elfSetAudioVolume(float volume)
 {
 	if(!audioDevice) return;
 	alListenerf(AL_GAIN, volume);
 }
 
-float elfGetAudioVolume()
+ELF_API float ELF_APIENTRY elfGetAudioVolume()
 {
 	if(!audioDevice) return 0.0;
 	return audioDevice->volume;
 }
 
-void elfSetAudioRolloff(float rolloff)
+ELF_API void ELF_APIENTRY elfSetAudioRolloff(float rolloff)
 {
 	if(!audioDevice) return;
 	audioDevice->rolloff = rolloff;
 }
 
-float elfGetAudioRolloff()
+ELF_API float ELF_APIENTRY elfGetAudioRolloff()
 {
 	if(!audioDevice) return 0.0;
 	return audioDevice->rolloff;
@@ -486,7 +498,7 @@ unsigned char elfInitSoundWithWav(elfSound* snd, const char* filePath)
 	return ELF_TRUE;
 }
 
-elfSound* elfLoadSound(const char* filePath)
+ELF_API elfSound* ELF_APIENTRY elfLoadSound(const char* filePath)
 {
 	elfSound* snd = NULL;
 
@@ -560,7 +572,7 @@ elfSound* elfLoadSound(const char* filePath)
 	return snd;
 }
 
-elfSound* elfLoadStreamedSound(const char* filePath)
+ELF_API elfSound* ELF_APIENTRY elfLoadStreamedSound(const char* filePath)
 {
 	elfSound* snd = NULL;
 
@@ -603,12 +615,12 @@ elfSound* elfLoadStreamedSound(const char* filePath)
 	return snd;
 }
 
-int elfGetSoundFileType(elfSound* sound)
+ELF_API int ELF_APIENTRY elfGetSoundFileType(elfSound* sound)
 {
 	return sound->fileType;
 }
 
-elfAudioSource* elfPlaySound(elfSound* sound, float volume)
+ELF_API elfAudioSource* ELF_APIENTRY elfPlaySound(elfSound* sound, float volume)
 {
 	elfAudioSource* source;
 
@@ -648,7 +660,7 @@ elfAudioSource* elfPlaySound(elfSound* sound, float volume)
 	return source;
 }
 
-elfAudioSource* elfPlayEntitySound(elfEntity* entity, elfSound* sound, float volume)
+ELF_API elfAudioSource* ELF_APIENTRY elfPlayEntitySound(elfEntity* entity, elfSound* sound, float volume)
 {
 	elfAudioSource* source;
 	float position[3];
@@ -693,7 +705,7 @@ elfAudioSource* elfPlayEntitySound(elfEntity* entity, elfSound* sound, float vol
 	return source;
 }
 
-elfAudioSource* elfLoopSound(elfSound* sound, float volume)
+ELF_API elfAudioSource* ELF_APIENTRY elfLoopSound(elfSound* sound, float volume)
 {
 	elfAudioSource* source;
 
@@ -738,7 +750,7 @@ elfAudioSource* elfLoopSound(elfSound* sound, float volume)
 	return source;
 }
 
-elfAudioSource* elfLoopEntitySound(elfEntity* entity, elfSound* sound, float volume)
+ELF_API elfAudioSource* ELF_APIENTRY elfLoopEntitySound(elfEntity* entity, elfSound* sound, float volume)
 {
 	elfAudioSource* source;
 	float position[3];
@@ -902,25 +914,25 @@ void elfDestroyAudioSource(void* data)
 	elfDecObj(ELF_AUDIO_SOURCE);
 }
 
-void elfSetSoundVolume(elfAudioSource* source, float volume)
+ELF_API void ELF_APIENTRY elfSetSoundVolume(elfAudioSource* source, float volume)
 {
 	alSourcef(source->source, AL_GAIN, volume);
 }
 
-float elfGetSoundVolume(elfAudioSource* source)
+ELF_API float ELF_APIENTRY elfGetSoundVolume(elfAudioSource* source)
 {
 	float volume = 0.0;
 	alGetSourcef(source->source, AL_GAIN, &volume);
 	return volume;
 }
 
-void elfPauseSound(elfAudioSource* audioSource)
+ELF_API void ELF_APIENTRY elfPauseSound(elfAudioSource* source)
 {
-	alSourcePause(audioSource->source);
-	audioSource->paused = ELF_TRUE;
+	alSourcePause(source->source);
+	source->paused = ELF_TRUE;
 }
 
-void elfResumeSound(elfAudioSource* source)
+ELF_API void ELF_APIENTRY elfResumeSound(elfAudioSource* source)
 {
 	if(elfIsSoundPlaying(source)) return;
 
@@ -943,7 +955,7 @@ void elfResumeSound(elfAudioSource* source)
 	source->paused = ELF_FALSE;
 }
 
-void elfStopSound(elfAudioSource* source)
+ELF_API void ELF_APIENTRY elfStopSound(elfAudioSource* source)
 {
 	int queued;
 	unsigned int buffer;
@@ -962,7 +974,7 @@ void elfStopSound(elfAudioSource* source)
 	}
 }
 
-unsigned char elfIsSoundPlaying(elfAudioSource* source)
+ELF_API unsigned char ELF_APIENTRY elfIsSoundPlaying(elfAudioSource* source)
 {
 	int state = 0;
 	alGetSourcei(source->source, AL_SOURCE_STATE, &state);
@@ -970,7 +982,7 @@ unsigned char elfIsSoundPlaying(elfAudioSource* source)
 	return ELF_FALSE;
 }
 
-unsigned char elfIsSoundPaused(elfAudioSource* source)
+ELF_API unsigned char ELF_APIENTRY elfIsSoundPaused(elfAudioSource* source)
 {
 	return source->paused;
 }

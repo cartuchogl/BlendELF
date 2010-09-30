@@ -182,41 +182,41 @@ void elfCleanActor(elfActor* actor)
 	elfDecRef((elfObject*)actor->ipoPlayer);
 }
 
-const char* elfGetActorName(elfActor* actor)
+ELF_API const char* ELF_APIENTRY elfGetActorName(elfActor* actor)
 {
 	return actor->name;
 }
 
-const char* elfGetActorFilePath(elfActor* actor)
+ELF_API const char* ELF_APIENTRY elfGetActorFilePath(elfActor* actor)
 {
 	return actor->filePath;
 }
 
-elfScript* elfGetActorScript(elfActor* actor)
+ELF_API elfScript* ELF_APIENTRY elfGetActorScript(elfActor* actor)
 {
 	return actor->script;
 }
 
-void elfSetActorName(elfActor* actor, const char* name)
+ELF_API void ELF_APIENTRY elfSetActorName(elfActor* actor, const char* name)
 {
 	if(actor->name) elfDestroyString(actor->name);
 	actor->name = elfCreateString(name);
 }
 
-void elfSetActorScript(elfActor* actor, elfScript* script)
+ELF_API void ELF_APIENTRY elfSetActorScript(elfActor* actor, elfScript* script)
 {
 	if(actor->script) elfDecRef((elfObject*)actor->script);
 	actor->script = script;
 	if(actor->script) elfIncRef((elfObject*)actor->script);
 }
 
-void elfClearActorScript(elfActor* actor)
+ELF_API void ELF_APIENTRY elfClearActorScript(elfActor* actor)
 {
 	if(actor->script) elfDecRef((elfObject*)actor->script);
 	actor->script = NULL;
 }
 
-void elfSetActorPosition(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetActorPosition(elfActor* actor, float x, float y, float z)
 {
 	actor->moved = ELF_TRUE;
 
@@ -228,7 +228,7 @@ void elfSetActorPosition(elfActor* actor, float x, float y, float z)
 	if(actor->objType == ELF_LIGHT) elfSetActorPosition((elfActor*)((elfLight*)actor)->shadowCamera, x, y, z);
 }
 
-void elfSetActorRotation(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetActorRotation(elfActor* actor, float x, float y, float z)
 {
 	float orient[4];
 
@@ -243,7 +243,7 @@ void elfSetActorRotation(elfActor* actor, float x, float y, float z)
 	if(actor->objType == ELF_LIGHT) elfSetActorRotation((elfActor*)((elfLight*)actor)->shadowCamera, x, y, z);
 }
 
-void elfSetActorOrientation(elfActor* actor, float x, float y, float z, float w)
+ELF_API void ELF_APIENTRY elfSetActorOrientation(elfActor* actor, float x, float y, float z, float w)
 {
 	actor->moved = ELF_TRUE;
 
@@ -255,7 +255,7 @@ void elfSetActorOrientation(elfActor* actor, float x, float y, float z, float w)
 	if(actor->objType == ELF_LIGHT) elfSetActorOrientation((elfActor*)((elfLight*)actor)->shadowCamera, x, y, z, w);
 }
 
-void elfRotateActor(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfRotateActor(elfActor* actor, float x, float y, float z)
 {
 	float orient[4];
 
@@ -270,7 +270,7 @@ void elfRotateActor(elfActor* actor, float x, float y, float z)
 	if(actor->objType == ELF_LIGHT) elfRotateActor((elfActor*)((elfLight*)actor)->shadowCamera, x, y, z);
 }
 
-void elfRotateActorLocal(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfRotateActorLocal(elfActor* actor, float x, float y, float z)
 {
 	float orient[4];
 
@@ -285,7 +285,7 @@ void elfRotateActorLocal(elfActor* actor, float x, float y, float z)
 	if(actor->objType == ELF_LIGHT) elfRotateActorLocal((elfActor*)((elfLight*)actor)->shadowCamera, x, y, z);
 }
 
-void elfMoveActor(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfMoveActor(elfActor* actor, float x, float y, float z)
 {
 	float position[3];
 
@@ -300,7 +300,7 @@ void elfMoveActor(elfActor* actor, float x, float y, float z)
 	if(actor->objType == ELF_LIGHT) elfMoveActor((elfActor*)((elfLight*)actor)->shadowCamera, x, y, z);
 }
 
-void elfMoveActorLocal(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfMoveActorLocal(elfActor* actor, float x, float y, float z)
 {
 	float position[3];
 
@@ -315,7 +315,7 @@ void elfMoveActorLocal(elfActor* actor, float x, float y, float z)
 	if(actor->objType == ELF_LIGHT) elfMoveActorLocal((elfActor*)((elfLight*)actor)->shadowCamera, x, y, z);
 }
 
-void elfSetActorPositionRelativeTo(elfActor* actor, elfActor* to, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetActorPositionRelativeTo(elfActor* actor, elfActor* to, float x, float y, float z)
 {
 	elfVec3f vec;
 	elfVec3f pos;
@@ -340,7 +340,7 @@ void elfSetActorPositionRelativeTo(elfActor* actor, elfActor* to, float x, float
 	if(actor->objType == ELF_LIGHT) elfSetActorPositionRelativeTo((elfActor*)((elfLight*)actor)->shadowCamera, to, x, y, z);
 }
 
-void elfSetActorRotationRelativeTo(elfActor* actor, elfActor* to, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetActorRotationRelativeTo(elfActor* actor, elfActor* to, float x, float y, float z)
 {
 	elfVec4f lorient;
 	elfVec4f orient;
@@ -389,7 +389,7 @@ void elfSetActorDirection(elfActor* actor, float x, float y, float z)
 	elfSetActorOrientation(actor, orient.x, orient.y, orient.z, orient.w);
 }
 
-void elfSetActorOrientationRelativeTo(elfActor* actor, elfActor* to, float x, float y, float z, float w)
+ELF_API void ELF_APIENTRY elfSetActorOrientationRelativeTo(elfActor* actor, elfActor* to, float x, float y, float z, float w)
 {
 	elfVec4f lorient;
 	elfVec4f orient;
@@ -407,21 +407,21 @@ void elfSetActorOrientationRelativeTo(elfActor* actor, elfActor* to, float x, fl
 	elfSetActorOrientation(actor, result.x, result.y, result.z, result.w);
 }
 
-elfVec3f elfGetActorPosition(elfActor* actor)
+ELF_API elfVec3f ELF_APIENTRY elfGetActorPosition(elfActor* actor)
 {
 	elfVec3f pos;
 	gfxGetTransformPosition(actor->transform, &pos.x);
 	return pos;
 }
 
-elfVec3f elfGetActorRotation(elfActor* actor)
+ELF_API elfVec3f ELF_APIENTRY elfGetActorRotation(elfActor* actor)
 {
 	elfVec3f rot;
 	gfxGetTransformRotation(actor->transform, &rot.x);
 	return rot;
 }
 
-elfVec4f elfGetActorOrientation(elfActor* actor)
+ELF_API elfVec4f ELF_APIENTRY elfGetActorOrientation(elfActor* actor)
 {
 	elfVec4f orient;
 	gfxGetTransformOrientation(actor->transform, &orient.x);
@@ -443,7 +443,7 @@ void elfGetActorOrientation_(elfActor* actor, float* params)
 	gfxGetTransformOrientation(actor->transform, params);
 }
 
-void elfSetActorBoundingLengths(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetActorBoundingLengths(elfActor* actor, float x, float y, float z)
 {
 	actor->pbbLengths.x = x;
 	actor->pbbLengths.y = y;
@@ -456,7 +456,7 @@ void elfSetActorBoundingLengths(elfActor* actor, float x, float y, float z)
 	}
 }
 
-void elfSetActorBoundingOffset(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetActorBoundingOffset(elfActor* actor, float x, float y, float z)
 {
 	actor->pbbOffsetSet = ELF_TRUE;
 
@@ -476,7 +476,7 @@ void elfResetActorBoundingOffsetSetFlag(elfActor* actor)
 	actor->pbbOffsetSet = ELF_FALSE;
 }
 
-void elfSetActorPhysics(elfActor* actor, int shape, float mass)
+ELF_API void ELF_APIENTRY elfSetActorPhysics(elfActor* actor, int shape, float mass)
 {
 	float position[3];
 	float orient[4];
@@ -615,12 +615,12 @@ void elfSetActorPhysics(elfActor* actor, int shape, float mass)
 	}
 }
 
-unsigned char elfIsActorPhysics(elfActor* actor)
+ELF_API unsigned char ELF_APIENTRY elfIsActorPhysics(elfActor* actor)
 {
 	return actor->physics;
 }
 
-void elfDisableActorPhysics(elfActor* actor)
+ELF_API void ELF_APIENTRY elfDisableActorPhysics(elfActor* actor)
 {
 	if(actor->object)
 	{
@@ -633,50 +633,50 @@ void elfDisableActorPhysics(elfActor* actor)
 	actor->physics = ELF_FALSE;
 }
 
-void elfSetActorDamping(elfActor* actor, float linDamp, float angDamp)
+ELF_API void ELF_APIENTRY elfSetActorDamping(elfActor* actor, float linDamp, float angDamp)
 {
 	actor->linDamp = linDamp;
 	actor->angDamp = angDamp;
 	if(actor->object) elfSetPhysicsObjectDamping(actor->object, linDamp, angDamp);
 }
 
-void elfSetActorSleepThresholds(elfActor* actor, float linThrs, float angThrs)
+ELF_API void ELF_APIENTRY elfSetActorSleepThresholds(elfActor* actor, float linThrs, float angThrs)
 {
 	actor->linSleep = linThrs;
 	actor->angSleep = angThrs;
 	if(actor->object) elfSetPhysicsObjectSleepThresholds(actor->object, linThrs, angThrs);
 }
 
-void elfSetActorRestitution(elfActor* actor, float restitution)
+ELF_API void ELF_APIENTRY elfSetActorRestitution(elfActor* actor, float restitution)
 {
 	actor->restitution = restitution;
 	if(actor->object) elfSetPhysicsObjectRestitution(actor->object, restitution);
 }
 
-void elfSetActorAnisotropicFriction(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetActorAnisotropicFriction(elfActor* actor, float x, float y, float z)
 {
 	actor->anisFric.x = x; actor->anisFric.y = y; actor->anisFric.z = z;
 	if(actor->object) elfSetPhysicsObjectAnisotropicFriction(actor->object, x, y, z);
 }
 
-void elfSetActorLinearFactor(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetActorLinearFactor(elfActor* actor, float x, float y, float z)
 {
 	actor->linFactor.x = x; actor->linFactor.y = y; actor->linFactor.z = z;
 	if(actor->object) elfSetPhysicsObjectLinearFactor(actor->object, x, y, z);
 }
 
-void elfSetActorAngularFactor(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetActorAngularFactor(elfActor* actor, float x, float y, float z)
 {
 	actor->angFactor.x = x; actor->angFactor.y = y; actor->angFactor.z = z;
 	if(actor->object) elfSetPhysicsObjectAngularFactor(actor->object, x, y, z);
 }
 
-void elfAddForceToActor(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfAddForceToActor(elfActor* actor, float x, float y, float z)
 {
 	if(actor->object) elfAddForceToPhysicsObject(actor->object, x, y, z);
 }
 
-void elfAddForceToActorLocal(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfAddForceToActorLocal(elfActor* actor, float x, float y, float z)
 {
 	elfVec3f vec;
 	elfVec3f result;
@@ -693,17 +693,17 @@ void elfAddForceToActorLocal(elfActor* actor, float x, float y, float z)
 	}
 }
 
-void elfAddTorqueToActor(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfAddTorqueToActor(elfActor* actor, float x, float y, float z)
 {
 	if(actor->object) elfAddTorqueToPhysicsObject(actor->object, x, y, z);
 }
 
-void elfSetActorLinearVelocity(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetActorLinearVelocity(elfActor* actor, float x, float y, float z)
 {
 	if(actor->object) elfSetPhysicsObjectLinearVelocity(actor->object, x, y, z);
 }
 
-void elfSetActorLinearVelocityLocal(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetActorLinearVelocityLocal(elfActor* actor, float x, float y, float z)
 {
 	elfVec3f vec;
 	elfVec3f result;
@@ -720,72 +720,72 @@ void elfSetActorLinearVelocityLocal(elfActor* actor, float x, float y, float z)
 	}
 }
 
-void elfSetActorAngularVelocity(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfSetActorAngularVelocity(elfActor* actor, float x, float y, float z)
 {
 	if(actor->object) elfSetPhysicsObjectAngularVelocity(actor->object, x, y, z);
 }
 
-elfVec3f elfGetActorBoundingLengths(elfActor* actor)
+ELF_API elfVec3f ELF_APIENTRY elfGetActorBoundingLengths(elfActor* actor)
 {
 	return actor->pbbLengths;
 }
 
-elfVec3f elfGetActorBoundingOffset(elfActor* actor)
+ELF_API elfVec3f ELF_APIENTRY elfGetActorBoundingOffset(elfActor* actor)
 {
 	return actor->pbbOffset;
 }
 
-int elfGetActorShape(elfActor* actor)
+ELF_API int ELF_APIENTRY elfGetActorShape(elfActor* actor)
 {
 	return actor->shape;
 }
 
-float elfGetActorMass(elfActor* actor)
+ELF_API float ELF_APIENTRY elfGetActorMass(elfActor* actor)
 {
 	return actor->mass;
 }
 
-float elfGetActorLinearDamping(elfActor* actor)
+ELF_API float ELF_APIENTRY elfGetActorLinearDamping(elfActor* actor)
 {
 	return actor->linDamp;
 }
 
-float elfGetActorAngularDamping(elfActor* actor)
+ELF_API float ELF_APIENTRY elfGetActorAngularDamping(elfActor* actor)
 {
 	return actor->angDamp;
 }
 
-float elfGetActorLinearSleepThreshold(elfActor* actor)
+ELF_API float ELF_APIENTRY elfGetActorLinearSleepThreshold(elfActor* actor)
 {
 	return actor->linSleep;
 }
 
-float elfGetActorAngularSleepThreshold(elfActor* actor)
+ELF_API float ELF_APIENTRY elfGetActorAngularSleepThreshold(elfActor* actor)
 {
 	return actor->angSleep;
 }
 
-float elfGetActorRestitution(elfActor* actor)
+ELF_API float ELF_APIENTRY elfGetActorRestitution(elfActor* actor)
 {
 	return actor->restitution;
 }
 
-elfVec3f elfGetActorAnisotropicFriction(elfActor* actor)
+ELF_API elfVec3f ELF_APIENTRY elfGetActorAnisotropicFriction(elfActor* actor)
 {
 	return actor->anisFric;
 }
 
-elfVec3f elfGetActorLinearFactor(elfActor* actor)
+ELF_API elfVec3f ELF_APIENTRY elfGetActorLinearFactor(elfActor* actor)
 {
 	return actor->linFactor;
 }
 
-elfVec3f elfGetActorAngularFactor(elfActor* actor)
+ELF_API elfVec3f ELF_APIENTRY elfGetActorAngularFactor(elfActor* actor)
 {
 	return actor->angFactor;
 }
 
-elfVec3f elfGetActorLinearVelocity(elfActor* actor)
+ELF_API elfVec3f ELF_APIENTRY elfGetActorLinearVelocity(elfActor* actor)
 {
 	elfVec3f result;
 	memset(&result, 0x0, sizeof(elfVec3f));
@@ -795,7 +795,7 @@ elfVec3f elfGetActorLinearVelocity(elfActor* actor)
 	return result;
 }
 
-elfVec3f elfGetActorAngularVelocity(elfActor* actor)
+ELF_API elfVec3f ELF_APIENTRY elfGetActorAngularVelocity(elfActor* actor)
 {
 	elfVec3f result;
 	memset(&result, 0x0, sizeof(elfVec3f));
@@ -805,7 +805,7 @@ elfVec3f elfGetActorAngularVelocity(elfActor* actor)
 	return result;
 }
 
-elfJoint* elfAddHingeJointToActor(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az)
+ELF_API elfJoint* ELF_APIENTRY elfAddHingeJointToActor(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az)
 {
 	elfJoint* joint;
 
@@ -819,7 +819,7 @@ elfJoint* elfAddHingeJointToActor(elfActor* actor, elfActor* actor2, const char*
 	return joint;
 }
 
-elfJoint* elfAddBallJointToActor(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz)
+ELF_API elfJoint* ELF_APIENTRY elfAddBallJointToActor(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz)
 {
 	elfJoint* joint;
 
@@ -833,7 +833,7 @@ elfJoint* elfAddBallJointToActor(elfActor* actor, elfActor* actor2, const char* 
 	return joint;
 }
 
-elfJoint* elfAddConeTwistJointToActor(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az)
+ELF_API elfJoint* ELF_APIENTRY elfAddConeTwistJointToActor(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az)
 {
 	elfJoint* joint;
 
@@ -847,7 +847,7 @@ elfJoint* elfAddConeTwistJointToActor(elfActor* actor, elfActor* actor2, const c
 	return joint;
 }
 
-elfJoint* elfGetActorJointByName(elfActor* actor, const char* name)
+ELF_API elfJoint* ELF_APIENTRY elfGetActorJointByName(elfActor* actor, const char* name)
 {
 	elfJoint* joint;
 
@@ -860,12 +860,12 @@ elfJoint* elfGetActorJointByName(elfActor* actor, const char* name)
 	return NULL;
 }
 
-elfJoint* elfGetActorJointByIndex(elfActor* actor, int idx)
+ELF_API elfJoint* ELF_APIENTRY elfGetActorJointByIndex(elfActor* actor, int idx)
 {
 	return (elfJoint*)elfGetItemFromList(actor->joints, idx);
 }
 
-unsigned char elfRemoveActorJointByName(elfActor* actor, const char* name)
+ELF_API unsigned char ELF_APIENTRY elfRemoveActorJointByName(elfActor* actor, const char* name)
 {
 	elfJoint* joint;
 
@@ -885,7 +885,7 @@ unsigned char elfRemoveActorJointByName(elfActor* actor, const char* name)
 	return ELF_FALSE;
 }
 
-unsigned char elfRemoveActorJointByIndex(elfActor* actor, int idx)
+ELF_API unsigned char ELF_APIENTRY elfRemoveActorJointByIndex(elfActor* actor, int idx)
 {
 	elfJoint* joint;
 	int i;
@@ -906,7 +906,7 @@ unsigned char elfRemoveActorJointByIndex(elfActor* actor, int idx)
 	return ELF_FALSE;
 }
 
-unsigned char elfRemoveActorJointByObject(elfActor* actor, elfJoint* joint)
+ELF_API unsigned char ELF_APIENTRY elfRemoveActorJointByObject(elfActor* actor, elfJoint* joint)
 {
 	if(elfGetJointActorA(joint) == actor)
 		elfRemoveFromList(elfGetJointActorB(joint)->joints, (elfObject*)joint);
@@ -915,7 +915,7 @@ unsigned char elfRemoveActorJointByObject(elfActor* actor, elfJoint* joint)
 	return elfRemoveFromList(actor->joints, (elfObject*)joint);
 }
 
-void elfSetActorIpo(elfActor* actor, elfIpo* ipo)
+ELF_API void ELF_APIENTRY elfSetActorIpo(elfActor* actor, elfIpo* ipo)
 {
 	if(!ipo) return;
 	if(actor->ipo) elfDecRef((elfObject*)actor->ipo);
@@ -923,93 +923,93 @@ void elfSetActorIpo(elfActor* actor, elfIpo* ipo)
 	if(actor->ipo) elfIncRef((elfObject*)actor->ipo);
 }
 
-elfIpo* elfGetActorIpo(elfActor* actor)
+ELF_API elfIpo* ELF_APIENTRY elfGetActorIpo(elfActor* actor)
 {
 	return actor->ipo;
 }
 
-void elfSetActorIpoFrame(elfActor* actor, float frame)
+ELF_API void ELF_APIENTRY elfSetActorIpoFrame(elfActor* actor, float frame)
 {
 	elfSetFramePlayerFrame(actor->ipoPlayer, frame);
 }
 
-void elfPlayActorIpo(elfActor* actor, float start, float end, float speed)
+ELF_API void ELF_APIENTRY elfPlayActorIpo(elfActor* actor, float start, float end, float speed)
 {
 	elfPlayFramePlayer(actor->ipoPlayer, start, end, speed);
 }
 
-void elfLoopActorIpo(elfActor* actor, float start, float end, float speed)
+ELF_API void ELF_APIENTRY elfLoopActorIpo(elfActor* actor, float start, float end, float speed)
 {
 	elfLoopFramePlayer(actor->ipoPlayer, start, end, speed);
 }
 
-void elfStopActorIpo(elfActor* actor)
+ELF_API void ELF_APIENTRY elfStopActorIpo(elfActor* actor)
 {
 	elfStopFramePlayer(actor->ipoPlayer);
 }
 
-void elfPauseActorIpo(elfActor* actor)
+ELF_API void ELF_APIENTRY elfPauseActorIpo(elfActor* actor)
 {
 	elfStopFramePlayer(actor->ipoPlayer);
 }
 
-void elfResumeActorIpo(elfActor* actor)
+ELF_API void ELF_APIENTRY elfResumeActorIpo(elfActor* actor)
 {
 	elfStopFramePlayer(actor->ipoPlayer);
 }
 
-float elfGetActorIpoStart(elfActor* actor)
+ELF_API float ELF_APIENTRY elfGetActorIpoStart(elfActor* actor)
 {
 	return elfGetFramePlayerStart(actor->ipoPlayer);
 }
 
-float elfGetActorIpoEnd(elfActor* actor)
+ELF_API float ELF_APIENTRY elfGetActorIpoEnd(elfActor* actor)
 {
 	return elfGetFramePlayerEnd(actor->ipoPlayer);
 }
 
-float elfGetActorIpoSpeed(elfActor* actor)
+ELF_API float ELF_APIENTRY elfGetActorIpoSpeed(elfActor* actor)
 {
 	return elfGetFramePlayerSpeed(actor->ipoPlayer);
 }
 
-float elfGetActorIpoFrame(elfActor* actor)
+ELF_API float ELF_APIENTRY elfGetActorIpoFrame(elfActor* actor)
 {
 	return elfGetFramePlayerFrame(actor->ipoPlayer);
 }
 
-unsigned char elfIsActorIpoPlaying(elfActor* actor)
+ELF_API unsigned char ELF_APIENTRY elfIsActorIpoPlaying(elfActor* actor)
 {
 	return elfIsFramePlayerPlaying(actor->ipoPlayer);
 }
 
-unsigned char elfIsActorIpoPaused(elfActor* actor)
+ELF_API unsigned char ELF_APIENTRY elfIsActorIpoPaused(elfActor* actor)
 {
 	return elfIsFramePlayerPaused(actor->ipoPlayer);
 }
 
-int elfGetActorCollisionCount(elfActor* actor)
+ELF_API int ELF_APIENTRY elfGetActorCollisionCount(elfActor* actor)
 {
 	if(actor->object) return elfGetPhysicsObjectCollisionCount(actor->object);
 	return 0;
 }
 
-elfCollision* elfGetActorCollision(elfActor* actor, int idx)
+ELF_API elfCollision* ELF_APIENTRY elfGetActorCollision(elfActor* actor, int idx)
 {
 	return elfGetPhysicsObjectCollision(actor->object, idx);
 }
 
-int elfGetActorPropertyCount(elfActor* actor)
+ELF_API int ELF_APIENTRY elfGetActorPropertyCount(elfActor* actor)
 {
 	return elfGetListLength(actor->properties);
 }
 
-void elfAddPropertyToActor(elfActor* actor, elfProperty* property)
+ELF_API void ELF_APIENTRY elfAddPropertyToActor(elfActor* actor, elfProperty* property)
 {
 	elfAppendToList(actor->properties, (elfObject*)property);
 }
 
-elfProperty* elfGetActorPropertyByName(elfActor* actor, const char* name)
+ELF_API elfProperty* ELF_APIENTRY elfGetActorPropertyByName(elfActor* actor, const char* name)
 {
 	elfProperty* prop;
 
@@ -1027,12 +1027,12 @@ elfProperty* elfGetActorPropertyByName(elfActor* actor, const char* name)
 	return NULL;
 }
 
-elfProperty* elfGetActorPropertyByIndex(elfActor* actor, int idx)
+ELF_API elfProperty* ELF_APIENTRY elfGetActorPropertyByIndex(elfActor* actor, int idx)
 {
 	return (elfProperty*)elfGetItemFromList(actor->properties, idx);
 }
 
-unsigned char elfRemoveActorPropertyByName(elfActor* actor, const char* name)
+ELF_API unsigned char ELF_APIENTRY elfRemoveActorPropertyByName(elfActor* actor, const char* name)
 {
 	elfProperty* prop;
 
@@ -1051,7 +1051,7 @@ unsigned char elfRemoveActorPropertyByName(elfActor* actor, const char* name)
 	return ELF_FALSE;
 }
 
-unsigned char elfRemoveActorPropertyByIndex(elfActor* actor, int idx)
+ELF_API unsigned char ELF_APIENTRY elfRemoveActorPropertyByIndex(elfActor* actor, int idx)
 {
 	elfProperty* prop;
 	int i;
@@ -1071,24 +1071,24 @@ unsigned char elfRemoveActorPropertyByIndex(elfActor* actor, int idx)
 	return ELF_FALSE;
 }
 
-unsigned char elfRemoveActorPropertyByObject(elfActor* actor, elfProperty* property)
+ELF_API unsigned char ELF_APIENTRY elfRemoveActorPropertyByObject(elfActor* actor, elfProperty* property)
 {
 	return elfRemoveFromList(actor->properties, (elfObject*)property);
 }
 
-void elfRemoveActorProperties(elfActor* actor)
+ELF_API void ELF_APIENTRY elfRemoveActorProperties(elfActor* actor)
 {
 	elfDecRef((elfObject*)actor->properties);
 	actor->properties = elfCreateList();
 	elfIncRef((elfObject*)actor->properties);
 }
 
-void elfSetActorSelected(elfActor* actor, unsigned char selected)
+ELF_API void ELF_APIENTRY elfSetActorSelected(elfActor* actor, unsigned char selected)
 {
 	actor->selected = !selected == ELF_FALSE;
 }
 
-unsigned char elfGetActorSelected(elfActor* actor)
+ELF_API unsigned char ELF_APIENTRY elfGetActorSelected(elfActor* actor)
 {
 	return actor->selected;
 }

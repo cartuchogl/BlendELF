@@ -1,5 +1,5 @@
 
-elfSprite* elfCreateSprite(const char* name)
+ELF_API elfSprite* ELF_APIENTRY elfCreateSprite(const char* name)
 {
 	elfSprite* sprite;
 
@@ -136,7 +136,7 @@ void elfResetSpriteDebugPhysicsObject(elfSprite* sprite)
 	if(sprite->scene) elfSetPhysicsObjectWorld(sprite->dobject, sprite->scene->dworld);
 }
 
-void elfSetSpriteMaterial(elfSprite* sprite, elfMaterial* material)
+ELF_API void ELF_APIENTRY elfSetSpriteMaterial(elfSprite* sprite, elfMaterial* material)
 {
 	if(sprite->material) elfDecRef((elfObject*)sprite->material);
 	sprite->material = material;
@@ -155,7 +155,7 @@ void elfSetSpriteMaterial(elfSprite* sprite, elfMaterial* material)
 	elfResetSpriteDebugPhysicsObject(sprite);
 }
 
-void elfSetSpriteScale(elfSprite* sprite, float x, float y)
+ELF_API void ELF_APIENTRY elfSetSpriteScale(elfSprite* sprite, float x, float y)
 {
 	sprite->scale.x = x; sprite->scale.y = y;
 
@@ -167,27 +167,27 @@ void elfSetSpriteScale(elfSprite* sprite, float x, float y)
 	if(sprite->dobject) elfSetPhysicsObjectScale(sprite->dobject, sprite->scale.x, sprite->scale.y, 1.0);
 }
 
-void elfSetSpriteFaceCamera(elfSprite* sprite, unsigned char faceCamera)
+ELF_API void ELF_APIENTRY elfSetSpriteFaceCamera(elfSprite* sprite, unsigned char faceCamera)
 {
 	sprite->faceCamera = !faceCamera == ELF_FALSE;
 }
 
-elfMaterial* elfGetSpriteMaterial(elfSprite* sprite)
+ELF_API elfMaterial* ELF_APIENTRY elfGetSpriteMaterial(elfSprite* sprite)
 {
 	return sprite->material;
 }
 
-elfVec2f elfGetSpriteScale(elfSprite* sprite)
+ELF_API elfVec2f ELF_APIENTRY elfGetSpriteScale(elfSprite* sprite)
 {
 	return sprite->scale;
 }
 
-unsigned char elfGetSpriteFaceCamera(elfSprite* sprite)
+ELF_API unsigned char ELF_APIENTRY elfGetSpriteFaceCamera(elfSprite* sprite)
 {
 	return sprite->faceCamera;
 }
 
-void elfSetSpriteVisible(elfSprite* sprite, unsigned char visible)
+ELF_API void ELF_APIENTRY elfSetSpriteVisible(elfSprite* sprite, unsigned char visible)
 {
 	if(sprite->visible == visible) return;
 
@@ -196,17 +196,17 @@ void elfSetSpriteVisible(elfSprite* sprite, unsigned char visible)
 	sprite->moved = ELF_TRUE;
 }
 
-unsigned char elfGetSpriteVisible(elfSprite* sprite)
+ELF_API unsigned char ELF_APIENTRY elfGetSpriteVisible(elfSprite* sprite)
 {
 	return sprite->visible;
 }
 
-void elfSetSpriteOccluder(elfSprite* sprite, unsigned char occluder)
+ELF_API void ELF_APIENTRY elfSetSpriteOccluder(elfSprite* sprite, unsigned char occluder)
 {
 	sprite->occluder = !occluder == ELF_FALSE;
 }
 
-unsigned char elfGetSpriteOccluder(elfSprite* sprite)
+ELF_API unsigned char ELF_APIENTRY elfGetSpriteOccluder(elfSprite* sprite)
 {
 	return sprite->occluder;
 }

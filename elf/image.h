@@ -13,7 +13,7 @@ elfImage* elfCreateImage()
 	return image;
 }
 
-elfImage* elfCreateEmptyImage(int width, int height, int bpp)
+ELF_API elfImage* ELF_APIENTRY elfCreateEmptyImage(int width, int height, int bpp)
 {
 	elfImage* image;
 
@@ -31,7 +31,7 @@ elfImage* elfCreateEmptyImage(int width, int height, int bpp)
 	return image;
 }
 
-elfImage* elfCreateImageFromFile(const char* filePath)
+ELF_API elfImage* ELF_APIENTRY elfCreateImageFromFile(const char* filePath)
 {
 	elfImage* image;
 	FIBITMAP* in;
@@ -106,7 +106,7 @@ void elfDestroyImage(void* data)
 	elfDecObj(ELF_IMAGE);
 }
 
-void elfSetImagePixel(elfImage* image, int x, int y, float r, float g, float b, float a)
+ELF_API void ELF_APIENTRY elfSetImagePixel(elfImage* image, int x, int y, float r, float g, float b, float a)
 {
 	int offset;
 
@@ -120,22 +120,22 @@ void elfSetImagePixel(elfImage* image, int x, int y, float r, float g, float b, 
 	if(image->bpp == 32) image->data[offset+3] = (unsigned char)(a*255);
 }
 
-int elfGetImageWidth(elfImage* image)
+ELF_API int ELF_APIENTRY elfGetImageWidth(elfImage* image)
 {
 	return image->width;
 }
 
-int elfGetImageHeight(elfImage* image)
+ELF_API int ELF_APIENTRY elfGetImageHeight(elfImage* image)
 {
 	return image->height;
 }
 
-int elfGetImageBitsPerPixel(elfImage* image)
+ELF_API int ELF_APIENTRY elfGetImageBitsPerPixel(elfImage* image)
 {
 	return image->bpp;
 }
 
-elfColor elfGetImagePixel(elfImage* image, int x, int y)
+ELF_API elfColor ELF_APIENTRY elfGetImagePixel(elfImage* image, int x, int y)
 {
 	int offset;
 	elfColor color;

@@ -1,5 +1,6 @@
 
-#include "default.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 #include <btBulletDynamicsCommon.h>
 
@@ -304,22 +305,22 @@ void elfDestroyCollision(void* data)
 	elfDecObj(ELF_COLLISION);
 }
 
-elfActor* elfGetCollisionActor(elfCollision* collision)
+ELF_API elfActor* ELF_APIENTRY elfGetCollisionActor(elfCollision* collision)
 {
 	return collision->actor;
 }
 
-elfVec3f elfGetCollisionPosition(elfCollision* collision)
+ELF_API elfVec3f ELF_APIENTRY elfGetCollisionPosition(elfCollision* collision)
 {
 	return collision->position;
 }
 
-elfVec3f elfGetCollisionNormal(elfCollision* collision)
+ELF_API elfVec3f ELF_APIENTRY elfGetCollisionNormal(elfCollision* collision)
 {
 	return collision->normal;
 }
 
-float elfGetCollisionDepth(elfCollision* collision)
+ELF_API float ELF_APIENTRY elfGetCollisionDepth(elfCollision* collision)
 {
 	return collision->depth;
 }
@@ -527,27 +528,27 @@ void elfDestroyJoint(void* data)
 	elfDecObj(ELF_JOINT);
 }
 
-const char* elfGetJointName(elfJoint* joint)
+ELF_API const char* ELF_APIENTRY elfGetJointName(elfJoint* joint)
 {
 	return joint->name;
 }
 
-int elfGetJointType(elfJoint* joint)
+ELF_API int ELF_APIENTRY elfGetJointType(elfJoint* joint)
 {
 	return joint->jointType;
 }
 
-elfActor* elfGetJointActorA(elfJoint* joint)
+ELF_API elfActor* ELF_APIENTRY elfGetJointActorA(elfJoint* joint)
 {
 	return joint->actor1;
 }
 
-elfActor* elfGetJointActorB(elfJoint* joint)
+ELF_API elfActor* ELF_APIENTRY elfGetJointActorB(elfJoint* joint)
 {
 	return joint->actor2;
 }
 
-elfVec3f elfGetJointPivot(elfJoint* joint)
+ELF_API elfVec3f ELF_APIENTRY elfGetJointPivot(elfJoint* joint)
 {
 	elfVec3f result;
 
@@ -558,7 +559,7 @@ elfVec3f elfGetJointPivot(elfJoint* joint)
 	return result;
 }
 
-elfVec3f elfGetJointAxis(elfJoint* joint)
+ELF_API elfVec3f ELF_APIENTRY elfGetJointAxis(elfJoint* joint)
 {
 	elfVec3f result;
 

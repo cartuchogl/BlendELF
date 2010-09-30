@@ -50,14 +50,14 @@ void elfDeinitGeneral()
 	free(gen);
 }
 
-void elfIncRef(elfObject* obj)
+ELF_API void ELF_APIENTRY elfIncRef(elfObject* obj)
 {
 	gen->refCount++;
 	gen->refTable[obj->objType]++;
 	obj->objRefCount++;
 }
 
-void elfDecRef(elfObject* obj)
+ELF_API void ELF_APIENTRY elfDecRef(elfObject* obj)
 {
 	gen->refCount--;
 	gen->refTable[obj->objType]--;
@@ -116,27 +116,27 @@ void elfDumpObjTable()
 	elfWriteToLog("-------------------------------------\n");
 }
 
-int elfGetObjectType(elfObject* obj)
+ELF_API int ELF_APIENTRY elfGetObjectType(elfObject* obj)
 {
 	return obj->objType;
 }
 
-int elfGetObjectRefCount(elfObject* obj)
+ELF_API int ELF_APIENTRY elfGetObjectRefCount(elfObject* obj)
 {
 	return obj->objRefCount;
 }
 
-int elfGetGlobalRefCount()
+ELF_API int ELF_APIENTRY elfGetGlobalRefCount()
 {
 	return gen->refCount;
 }
 
-int elfGetGlobalObjCount()
+ELF_API int ELF_APIENTRY elfGetGlobalObjCount()
 {
 	return gen->objCount;
 }
 
-unsigned char elfIsActor(elfObject* obj)
+ELF_API unsigned char ELF_APIENTRY elfIsActor(elfObject* obj)
 {
 	if(obj->objType == ELF_CAMERA || obj->objType == ELF_ENTITY ||
 		obj->objType == ELF_LIGHT || obj->objType == ELF_PARTICLES ||
@@ -144,7 +144,7 @@ unsigned char elfIsActor(elfObject* obj)
 	return ELF_FALSE;
 }
 
-unsigned char elfIsGuiObject(elfObject* obj)
+ELF_API unsigned char ELF_APIENTRY elfIsGuiObject(elfObject* obj)
 {
 	if(obj->objType == ELF_GUI || obj->objType == ELF_LABEL || obj->objType == ELF_BUTTON ||
 		obj->objType == ELF_PICTURE || obj->objType == ELF_TEXT_FIELD ||
