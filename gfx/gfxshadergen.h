@@ -206,18 +206,18 @@ void gfxAddVertexTextureCalcs(gfxDocument* document, gfxShaderConfig* config)
 void gfxAddVertexLightingCalcs(gfxDocument* document, gfxShaderConfig* config)
 {
 	if(config->light || config->textures & GFX_HEIGHT_MAP) gfxAddLineToDocument(document, "\telf_EyeVector = -vertex.xyz;");
+	if((config->light && config->textures & GFX_NORMAL_MAP) || config->textures & GFX_HEIGHT_MAP)
+	{
+		gfxAddLineToDocument(document, "\tvec3 elf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
+		gfxAddLineToDocument(document, "\tvec3 elf_Tangent = vec3(elf_ModelviewMatrix*vec4(elf_TangentAttr, 0.0));");
+		gfxAddLineToDocument(document, "\tvec3 elf_BiNormal = cross(elf_Normal, elf_Tangent);");
+		gfxAddLineToDocument(document, "\tvec3 tmpvec = -vertex.xyz;");
+		gfxAddLineToDocument(document, "\telf_EyeVector.x = dot(tmpvec, elf_Tangent);");
+		gfxAddLineToDocument(document, "\telf_EyeVector.y = dot(tmpvec, elf_BiNormal);");
+		gfxAddLineToDocument(document, "\telf_EyeVector.z = dot(tmpvec, elf_Normal);");
+	}
 	if(config->light)
 	{
-		if(config->textures & GFX_NORMAL_MAP || config->textures & GFX_HEIGHT_MAP)
-		{
-			gfxAddLineToDocument(document, "\tvec3 elf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
-			gfxAddLineToDocument(document, "\tvec3 elf_Tangent = vec3(elf_ModelviewMatrix*vec4(elf_TangentAttr, 0.0));");
-			gfxAddLineToDocument(document, "\tvec3 elf_BiNormal = cross(elf_Normal, elf_Tangent);");
-			gfxAddLineToDocument(document, "\tvec3 tmpvec = -vertex.xyz;");
-			gfxAddLineToDocument(document, "\telf_EyeVector.x = dot(tmpvec, elf_Tangent);");
-			gfxAddLineToDocument(document, "\telf_EyeVector.y = dot(tmpvec, elf_BiNormal);");
-			gfxAddLineToDocument(document, "\telf_EyeVector.z = dot(tmpvec, elf_Normal);");
-		}
 		if(config->textures & GFX_NORMAL_MAP)
 		{
 			if(config->light != GFX_SUN_LIGHT) gfxAddLineToDocument(document, "\ttmpvec = elf_LightPosition-vertex.xyz;");
