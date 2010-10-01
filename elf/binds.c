@@ -325,7 +325,7 @@ void lua_create_elfObject(lua_State* L, elfObject* obj)
 }
 int lua_fail_arg_count(lua_State* L, const char* func_name, int a, int b)
 {
-	return luaL_error(L, "%s: Got %d arguments instead of %d", a, b);
+	return luaL_error(L, "%s: Got %d arguments instead of %d", func_name, a, b);
 }
 int lua_fail_arg(lua_State *L, const char* func_name, int idx, const char* etype)
 {
