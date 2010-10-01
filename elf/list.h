@@ -220,7 +220,7 @@ ELF_API elfObject* ELF_APIENTRY elfNextInList(elfList* list)
 	return NULL;
 }
 
-ELF_API elfObject* ELF_APIENTRY elfRbeginList(elfList* list)
+ELF_API elfObject* ELF_APIENTRY elfRBeginList(elfList* list)
 {
 	list->cur = list->last;
 	if(list->cur)
@@ -231,7 +231,7 @@ ELF_API elfObject* ELF_APIENTRY elfRbeginList(elfList* list)
 	return NULL;
 }
 
-ELF_API elfObject* ELF_APIENTRY elfRnextInList(elfList* list)
+ELF_API elfObject* ELF_APIENTRY elfRNextInList(elfList* list)
 {
 	list->cur = list->next;
 	if(list->cur)
@@ -263,12 +263,12 @@ ELF_API void ELF_APIENTRY elfSeekList(elfList* list, elfObject* ptr)
 	}
 }
 
-ELF_API void ELF_APIENTRY elfRseekList(elfList* list, elfObject* ptr)
+ELF_API void ELF_APIENTRY elfRSeekList(elfList* list, elfObject* ptr)
 {
 	elfObject* obj;
 
-	for(obj = elfRbeginList(list); obj;
-		obj = elfRnextInList(list))
+	for(obj = elfRBeginList(list); obj;
+		obj = elfRNextInList(list))
 	{
 		if(obj == ptr) return;
 	}

@@ -532,30 +532,30 @@ static int lua_NextInList(lua_State *L)
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_RbeginList(lua_State *L)
+static int lua_RBeginList(lua_State *L)
 {
 	elfObject* result;
 	elfList* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "RbeginList", lua_gettop(L), 1);}
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "RBeginList", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_LIST)
-		{return lua_fail_arg(L, "RbeginList", 1, "elfList");}
+		{return lua_fail_arg(L, "RBeginList", 1, "elfList");}
 	arg0 = (elfList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfRbeginList(arg0);
+	result = elfRBeginList(arg0);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_RnextInList(lua_State *L)
+static int lua_RNextInList(lua_State *L)
 {
 	elfObject* result;
 	elfList* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "RnextInList", lua_gettop(L), 1);}
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "RNextInList", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_LIST)
-		{return lua_fail_arg(L, "RnextInList", 1, "elfList");}
+		{return lua_fail_arg(L, "RNextInList", 1, "elfList");}
 	arg0 = (elfList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfRnextInList(arg0);
+	result = elfRNextInList(arg0);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -575,19 +575,19 @@ static int lua_SeekList(lua_State *L)
 	elfSeekList(arg0, arg1);
 	return 0;
 }
-static int lua_RseekList(lua_State *L)
+static int lua_RSeekList(lua_State *L)
 {
 	elfList* arg0;
 	elfObject* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RseekList", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RSeekList", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_LIST)
-		{return lua_fail_arg(L, "RseekList", 1, "elfList");}
+		{return lua_fail_arg(L, "RSeekList", 1, "elfList");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT)
-		{return lua_fail_arg(L, "RseekList", 2, "elfObject");}
+		{return lua_fail_arg(L, "RSeekList", 2, "elfObject");}
 	arg0 = (elfList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfObject*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	elfRseekList(arg0, arg1);
+	elfRSeekList(arg0, arg1);
 	return 0;
 }
 static int lua_ReadConfig(lua_State *L)
@@ -1629,33 +1629,37 @@ static int lua_GetDirectoryItemType(lua_State *L)
 static int lua_CreateVec3f(lua_State *L)
 {
 	elfVec3f result;
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "CreateVec3f", lua_gettop(L), 0);}
-	result = elfCreateVec3f();
-	lua_create_elfVec3f(L, result);
-	return 1;
-}
-static int lua_CreateVec3fFromValues(lua_State *L)
-{
-	elfVec3f result;
 	float arg0;
 	float arg1;
 	float arg2;
-	if(lua_gettop(L) != 3) {return lua_fail_arg_count(L, "CreateVec3fFromValues", lua_gettop(L), 3);}
-	if(!lua_isnumber(L, 1)) {return lua_fail_arg(L, "CreateVec3fFromValues", 1, "number");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "CreateVec3fFromValues", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateVec3fFromValues", 3, "number");}
+	if(lua_gettop(L) != 3) {return lua_fail_arg_count(L, "CreateVec3f", lua_gettop(L), 3);}
+	if(!lua_isnumber(L, 1)) {return lua_fail_arg(L, "CreateVec3f", 1, "number");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "CreateVec3f", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateVec3f", 3, "number");}
 	arg0 = (float)lua_tonumber(L, 1);
 	arg1 = (float)lua_tonumber(L, 2);
 	arg2 = (float)lua_tonumber(L, 3);
-	result = elfCreateVec3fFromValues(arg0, arg1, arg2);
+	result = elfCreateVec3f(arg0, arg1, arg2);
 	lua_create_elfVec3f(L, result);
 	return 1;
 }
 static int lua_CreateQua(lua_State *L)
 {
 	elfVec4f result;
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "CreateQua", lua_gettop(L), 0);}
-	result = elfCreateQua();
+	float arg0;
+	float arg1;
+	float arg2;
+	float arg3;
+	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "CreateQua", lua_gettop(L), 4);}
+	if(!lua_isnumber(L, 1)) {return lua_fail_arg(L, "CreateQua", 1, "number");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "CreateQua", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateQua", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreateQua", 4, "number");}
+	arg0 = (float)lua_tonumber(L, 1);
+	arg1 = (float)lua_tonumber(L, 2);
+	arg2 = (float)lua_tonumber(L, 3);
+	arg3 = (float)lua_tonumber(L, 4);
+	result = elfCreateQua(arg0, arg1, arg2, arg3);
 	lua_create_elfVec4f(L, result);
 	return 1;
 }
@@ -4959,108 +4963,108 @@ static int lua_UnProjectCameraPoint(lua_State *L)
 	lua_create_elfVec3f(L, result);
 	return 1;
 }
-static int lua_CreateVertice(lua_State *L)
+static int lua_CreateVertex(lua_State *L)
 {
-	elfVertice* result;
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "CreateVertice", lua_gettop(L), 0);}
-	result = elfCreateVertice();
+	elfVertex* result;
+	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "CreateVertex", lua_gettop(L), 0);}
+	result = elfCreateVertex();
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_SetVerticePosition(lua_State *L)
+static int lua_SetVertexPosition(lua_State *L)
 {
-	elfVertice* arg0;
+	elfVertex* arg0;
 	float arg1;
 	float arg2;
 	float arg3;
-	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "SetVerticePosition", lua_gettop(L), 4);}
+	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "SetVertexPosition", lua_gettop(L), 4);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_VERTICE)
-		{return lua_fail_arg(L, "SetVerticePosition", 1, "elfVertice");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetVerticePosition", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetVerticePosition", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "SetVerticePosition", 4, "number");}
-	arg0 = (elfVertice*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_VERTEX)
+		{return lua_fail_arg(L, "SetVertexPosition", 1, "elfVertex");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetVertexPosition", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetVertexPosition", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "SetVertexPosition", 4, "number");}
+	arg0 = (elfVertex*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (float)lua_tonumber(L, 2);
 	arg2 = (float)lua_tonumber(L, 3);
 	arg3 = (float)lua_tonumber(L, 4);
-	elfSetVerticePosition(arg0, arg1, arg2, arg3);
+	elfSetVertexPosition(arg0, arg1, arg2, arg3);
 	return 0;
 }
-static int lua_SetVerticeNormal(lua_State *L)
+static int lua_SetVertexNormal(lua_State *L)
 {
-	elfVertice* arg0;
+	elfVertex* arg0;
 	float arg1;
 	float arg2;
 	float arg3;
-	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "SetVerticeNormal", lua_gettop(L), 4);}
+	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "SetVertexNormal", lua_gettop(L), 4);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_VERTICE)
-		{return lua_fail_arg(L, "SetVerticeNormal", 1, "elfVertice");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetVerticeNormal", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetVerticeNormal", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "SetVerticeNormal", 4, "number");}
-	arg0 = (elfVertice*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_VERTEX)
+		{return lua_fail_arg(L, "SetVertexNormal", 1, "elfVertex");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetVertexNormal", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetVertexNormal", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "SetVertexNormal", 4, "number");}
+	arg0 = (elfVertex*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (float)lua_tonumber(L, 2);
 	arg2 = (float)lua_tonumber(L, 3);
 	arg3 = (float)lua_tonumber(L, 4);
-	elfSetVerticeNormal(arg0, arg1, arg2, arg3);
+	elfSetVertexNormal(arg0, arg1, arg2, arg3);
 	return 0;
 }
-static int lua_SetVerticeTexCoord(lua_State *L)
+static int lua_SetVertexTexCoord(lua_State *L)
 {
-	elfVertice* arg0;
+	elfVertex* arg0;
 	float arg1;
 	float arg2;
-	if(lua_gettop(L) != 3) {return lua_fail_arg_count(L, "SetVerticeTexCoord", lua_gettop(L), 3);}
+	if(lua_gettop(L) != 3) {return lua_fail_arg_count(L, "SetVertexTexCoord", lua_gettop(L), 3);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_VERTICE)
-		{return lua_fail_arg(L, "SetVerticeTexCoord", 1, "elfVertice");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetVerticeTexCoord", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetVerticeTexCoord", 3, "number");}
-	arg0 = (elfVertice*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_VERTEX)
+		{return lua_fail_arg(L, "SetVertexTexCoord", 1, "elfVertex");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetVertexTexCoord", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetVertexTexCoord", 3, "number");}
+	arg0 = (elfVertex*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (float)lua_tonumber(L, 2);
 	arg2 = (float)lua_tonumber(L, 3);
-	elfSetVerticeTexCoord(arg0, arg1, arg2);
+	elfSetVertexTexCoord(arg0, arg1, arg2);
 	return 0;
 }
-static int lua_GetVerticePosition(lua_State *L)
+static int lua_GetVertexPosition(lua_State *L)
 {
 	elfVec3f result;
-	elfVertice* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetVerticePosition", lua_gettop(L), 1);}
+	elfVertex* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetVertexPosition", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_VERTICE)
-		{return lua_fail_arg(L, "GetVerticePosition", 1, "elfVertice");}
-	arg0 = (elfVertice*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetVerticePosition(arg0);
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_VERTEX)
+		{return lua_fail_arg(L, "GetVertexPosition", 1, "elfVertex");}
+	arg0 = (elfVertex*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetVertexPosition(arg0);
 	lua_create_elfVec3f(L, result);
 	return 1;
 }
-static int lua_GetVerticeNormal(lua_State *L)
+static int lua_GetVertexNormal(lua_State *L)
 {
 	elfVec3f result;
-	elfVertice* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetVerticeNormal", lua_gettop(L), 1);}
+	elfVertex* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetVertexNormal", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_VERTICE)
-		{return lua_fail_arg(L, "GetVerticeNormal", 1, "elfVertice");}
-	arg0 = (elfVertice*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetVerticeNormal(arg0);
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_VERTEX)
+		{return lua_fail_arg(L, "GetVertexNormal", 1, "elfVertex");}
+	arg0 = (elfVertex*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetVertexNormal(arg0);
 	lua_create_elfVec3f(L, result);
 	return 1;
 }
-static int lua_GetVerticeTexCoord(lua_State *L)
+static int lua_GetVertexTexCoord(lua_State *L)
 {
 	elfVec2f result;
-	elfVertice* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetVerticeTexCoord", lua_gettop(L), 1);}
+	elfVertex* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetVertexTexCoord", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_VERTICE)
-		{return lua_fail_arg(L, "GetVerticeTexCoord", 1, "elfVertice");}
-	arg0 = (elfVertice*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetVerticeTexCoord(arg0);
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_VERTEX)
+		{return lua_fail_arg(L, "GetVertexTexCoord", 1, "elfVertex");}
+	arg0 = (elfVertex*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetVertexTexCoord(arg0);
 	lua_create_elfVec2f(L, result);
 	return 1;
 }
@@ -5112,16 +5116,16 @@ static int lua_CreateMeshData(lua_State *L)
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetMeshDataVerticeCount(lua_State *L)
+static int lua_GetMeshDataVertexCount(lua_State *L)
 {
 	int result;
 	elfMeshData* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetMeshDataVerticeCount", lua_gettop(L), 1);}
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetMeshDataVertexCount", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_MESH_DATA)
-		{return lua_fail_arg(L, "GetMeshDataVerticeCount", 1, "elfMeshData");}
+		{return lua_fail_arg(L, "GetMeshDataVertexCount", 1, "elfMeshData");}
 	arg0 = (elfMeshData*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetMeshDataVerticeCount(arg0);
+	result = elfGetMeshDataVertexCount(arg0);
 	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
@@ -5138,20 +5142,20 @@ static int lua_GetMeshDataFaceCount(lua_State *L)
 	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
-static int lua_AddVerticeToMeshData(lua_State *L)
+static int lua_AddVertexToMeshData(lua_State *L)
 {
 	elfMeshData* arg0;
-	elfVertice* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddVerticeToMeshData", lua_gettop(L), 2);}
+	elfVertex* arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddVertexToMeshData", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_MESH_DATA)
-		{return lua_fail_arg(L, "AddVerticeToMeshData", 1, "elfMeshData");}
+		{return lua_fail_arg(L, "AddVertexToMeshData", 1, "elfMeshData");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_VERTICE)
-		{return lua_fail_arg(L, "AddVerticeToMeshData", 2, "elfVertice");}
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_VERTEX)
+		{return lua_fail_arg(L, "AddVertexToMeshData", 2, "elfVertex");}
 	arg0 = (elfMeshData*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = (elfVertice*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	elfAddVerticeToMeshData(arg0, arg1);
+	arg1 = (elfVertex*)((lua_elfObject*)lua_touserdata(L, 2))->object;
+	elfAddVertexToMeshData(arg0, arg1);
 	return 0;
 }
 static int lua_AddFaceToMeshData(lua_State *L)
@@ -5174,19 +5178,19 @@ static int lua_AddFaceToMeshData(lua_State *L)
 	elfAddFaceToMeshData(arg0, arg1, arg2, arg3);
 	return 0;
 }
-static int lua_GetVerticeFromMeshData(lua_State *L)
+static int lua_GetVertexFromMeshData(lua_State *L)
 {
-	elfVertice* result;
+	elfVertex* result;
 	elfMeshData* arg0;
 	int arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetVerticeFromMeshData", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetVertexFromMeshData", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_MESH_DATA)
-		{return lua_fail_arg(L, "GetVerticeFromMeshData", 1, "elfMeshData");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "GetVerticeFromMeshData", 2, "number");}
+		{return lua_fail_arg(L, "GetVertexFromMeshData", 1, "elfMeshData");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "GetVertexFromMeshData", 2, "number");}
 	arg0 = (elfMeshData*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (int)lua_tonumber(L, 2);
-	result = elfGetVerticeFromMeshData(arg0, arg1);
+	result = elfGetVertexFromMeshData(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -5262,16 +5266,16 @@ static int lua_GetModelFilePath(lua_State *L)
 	lua_pushstring(L, result);
 	return 1;
 }
-static int lua_GetModelVerticeCount(lua_State *L)
+static int lua_GetModelVertexCount(lua_State *L)
 {
 	int result;
 	elfModel* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetModelVerticeCount", lua_gettop(L), 1);}
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetModelVertexCount", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_MODEL)
-		{return lua_fail_arg(L, "GetModelVerticeCount", 1, "elfModel");}
+		{return lua_fail_arg(L, "GetModelVertexCount", 1, "elfModel");}
 	arg0 = (elfModel*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetModelVerticeCount(arg0);
+	result = elfGetModelVertexCount(arg0);
 	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
@@ -10248,10 +10252,10 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetItemFromList", lua_GetItemFromList},
 	{"BeginList", lua_BeginList},
 	{"NextInList", lua_NextInList},
-	{"RbeginList", lua_RbeginList},
-	{"RnextInList", lua_RnextInList},
+	{"RBeginList", lua_RBeginList},
+	{"RNextInList", lua_RNextInList},
 	{"SeekList", lua_SeekList},
-	{"RseekList", lua_RseekList},
+	{"RSeekList", lua_RSeekList},
 	{"ReadConfig", lua_ReadConfig},
 	{"GetConfigWindowWidth", lua_GetConfigWindowWidth},
 	{"GetConfigWindowHeight", lua_GetConfigWindowHeight},
@@ -10360,7 +10364,6 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetDirectoryItemName", lua_GetDirectoryItemName},
 	{"GetDirectoryItemType", lua_GetDirectoryItemType},
 	{"CreateVec3f", lua_CreateVec3f},
-	{"CreateVec3fFromValues", lua_CreateVec3fFromValues},
 	{"CreateQua", lua_CreateQua},
 	{"CreateQuaFromEuler", lua_CreateQuaFromEuler},
 	{"CreateQuaFromAngleAxis", lua_CreateQuaFromAngleAxis},
@@ -10578,28 +10581,28 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetCameraFarPlaneSize", lua_GetCameraFarPlaneSize},
 	{"ProjectCameraPoint", lua_ProjectCameraPoint},
 	{"UnProjectCameraPoint", lua_UnProjectCameraPoint},
-	{"CreateVertice", lua_CreateVertice},
-	{"SetVerticePosition", lua_SetVerticePosition},
-	{"SetVerticeNormal", lua_SetVerticeNormal},
-	{"SetVerticeTexCoord", lua_SetVerticeTexCoord},
-	{"GetVerticePosition", lua_GetVerticePosition},
-	{"GetVerticeNormal", lua_GetVerticeNormal},
-	{"GetVerticeTexCoord", lua_GetVerticeTexCoord},
+	{"CreateVertex", lua_CreateVertex},
+	{"SetVertexPosition", lua_SetVertexPosition},
+	{"SetVertexNormal", lua_SetVertexNormal},
+	{"SetVertexTexCoord", lua_SetVertexTexCoord},
+	{"GetVertexPosition", lua_GetVertexPosition},
+	{"GetVertexNormal", lua_GetVertexNormal},
+	{"GetVertexTexCoord", lua_GetVertexTexCoord},
 	{"GetFaceV1", lua_GetFaceV1},
 	{"GetFaceV2", lua_GetFaceV2},
 	{"GetFaceV3", lua_GetFaceV3},
 	{"CreateMeshData", lua_CreateMeshData},
-	{"GetMeshDataVerticeCount", lua_GetMeshDataVerticeCount},
+	{"GetMeshDataVertexCount", lua_GetMeshDataVertexCount},
 	{"GetMeshDataFaceCount", lua_GetMeshDataFaceCount},
-	{"AddVerticeToMeshData", lua_AddVerticeToMeshData},
+	{"AddVertexToMeshData", lua_AddVertexToMeshData},
 	{"AddFaceToMeshData", lua_AddFaceToMeshData},
-	{"GetVerticeFromMeshData", lua_GetVerticeFromMeshData},
+	{"GetVertexFromMeshData", lua_GetVertexFromMeshData},
 	{"GetFaceFromMeshData", lua_GetFaceFromMeshData},
 	{"CreateModelFromMeshData", lua_CreateModelFromMeshData},
 	{"SetModelName", lua_SetModelName},
 	{"GetModelName", lua_GetModelName},
 	{"GetModelFilePath", lua_GetModelFilePath},
-	{"GetModelVerticeCount", lua_GetModelVerticeCount},
+	{"GetModelVertexCount", lua_GetModelVertexCount},
 	{"GetModelIndiceCount", lua_GetModelIndiceCount},
 	{"GetModelBoundingBoxMin", lua_GetModelBoundingBoxMin},
 	{"GetModelBoundingBoxMax", lua_GetModelBoundingBoxMax},
@@ -11398,7 +11401,7 @@ int luaopen_elf(lua_State* L)
 	lua_pushstring(L, "GENERAL");
 	lua_pushnumber(L, 0x0044);
 	lua_settable(L, -3);
-	lua_pushstring(L, "VERTICE");
+	lua_pushstring(L, "VERTEX");
 	lua_pushnumber(L, 0x0045);
 	lua_settable(L, -3);
 	lua_pushstring(L, "FACE");

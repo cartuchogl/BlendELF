@@ -16,7 +16,6 @@ int luaopen_elf(lua_State* L);
 struct elfScripting {
 	ELF_OBJECT_HEADER;
 	struct lua_State* L;
-	elfList* curScripts;
 };
 
 elfScripting* scr = NULL;
@@ -40,9 +39,6 @@ elfScripting* elfCreateScripting()
 	luaL_openlibs(scripting->L);
 	luaopen_elf(scripting->L);
 
-	scripting->curScripts = elfCreateList();
-	elfIncRef((elfObject*)scripting->curScripts);
-
 	elfIncObj(ELF_SCRIPTING);
 
 	return scripting;
@@ -53,8 +49,6 @@ void elfDestroyScripting(void* data)
 	elfScripting* scripting = (elfScripting*)data;
 
 	if(scripting->L) lua_close(scripting->L);
-
-	elfDecRef((elfObject*)scripting->curScripts);
 
 	free(scripting);
 
@@ -90,19 +84,12 @@ void elfDeinitScripting()
 	scr = NULL;
 }
 
-elfScript* elfGetCurrentScript()
-{
-	if(!scr) return NULL;
-	return (elfScript*)elfRbeginList(scr->curScripts);
-}
-
 ELF_API unsigned char ELF_APIENTRY elfRunString(const char* str)
 {
 	int err;
 
 	if(!scr || !str) return ELF_FALSE;
 
-	err = 0;
 	err = luaL_dostring(scr->L, str);
 	if(err)
 	{
@@ -119,22 +106,15 @@ ELF_API unsigned char ELF_APIENTRY elfRunScript(elfScript* script)
 	
 	if(!scr || !script->text || script->error) return ELF_FALSE;
 
-	elfAppendToList(scr->curScripts, (elfObject*)script);
-
-	err = 0;
 	err = luaL_dostring(scr->L, script->text);
 	if(err)
 	{
 		elfSetError(ELF_CANT_RUN_SCRIPT, "error: can't run script \"%s\"\n%s\n", script->name, lua_tostring(scr->L, -1));
 
 		script->error = ELF_TRUE;
-		elfRbeginList(scr->curScripts);
-		elfRemoveFromList(scr->curScripts, (elfObject*)script);
 		return ELF_FALSE;
 	}
 
-	elfRbeginList(scr->curScripts);
-	elfRemoveFromList(scr->curScripts, (elfObject*)script);
 	return ELF_TRUE;
 }
 

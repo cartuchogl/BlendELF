@@ -2060,13 +2060,13 @@ void elfDrawScene(elfScene* scene)
 
 	if(elfGetListLength(scene->entityQueue) > scene->entityQueueCount)
 	{
-		ent = (elfEntity*)elfRbeginList(scene->entityQueue);
+		ent = (elfEntity*)elfRBeginList(scene->entityQueue);
 		if(ent) elfRemoveFromList(scene->entityQueue, (elfObject*)ent);
 	}
 
 	if(elfGetListLength(scene->spriteQueue) > scene->spriteQueueCount)
 	{
-		spr = (elfSprite*)elfRbeginList(scene->spriteQueue);
+		spr = (elfSprite*)elfRBeginList(scene->spriteQueue);
 		if(spr) elfRemoveFromList(scene->spriteQueue, (elfObject*)spr);
 	}
 }

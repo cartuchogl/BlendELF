@@ -183,7 +183,7 @@ extern "C" {
 #define ELF_SPRITE					0x0042
 #define ELF_VIDEO_MODE					0x0043
 #define ELF_GENERAL					0x0044
-#define ELF_VERTICE					0x0045
+#define ELF_VERTEX					0x0045
 #define ELF_FACE					0x0046
 #define ELF_MESH_DATA					0x0047
 #define ELF_LIST_PTR					0x0048
@@ -399,7 +399,7 @@ typedef struct elfProperty				elfProperty;
 typedef struct elfScripting				elfScripting;
 typedef struct elfSprite				elfSprite;
 typedef struct elfVideoMode				elfVideoMode;
-typedef struct elfVertice				elfVertice;
+typedef struct elfVertex				elfVertex;
 typedef struct elfFace					elfFace;
 typedef struct elfMeshData				elfMeshData;
 
@@ -501,11 +501,11 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveFromList(elfList* list, elfObject* o
 ELF_API elfObject* ELF_APIENTRY elfGetItemFromList(elfList* list, int idx);
 ELF_API elfObject* ELF_APIENTRY elfBeginList(elfList* list);
 ELF_API elfObject* ELF_APIENTRY elfNextInList(elfList* list);
-ELF_API elfObject* ELF_APIENTRY elfRbeginList(elfList* list);
-ELF_API elfObject* ELF_APIENTRY elfRnextInList(elfList* list);
+ELF_API elfObject* ELF_APIENTRY elfRBeginList(elfList* list);
+ELF_API elfObject* ELF_APIENTRY elfRNextInList(elfList* list);
 /* <!> */void elfSetListCurPtr(elfList* list, elfObject* ptr);
 ELF_API void ELF_APIENTRY elfSeekList(elfList* list, elfObject* ptr);
-ELF_API void ELF_APIENTRY elfRseekList(elfList* list, elfObject* ptr);
+ELF_API void ELF_APIENTRY elfRSeekList(elfList* list, elfObject* ptr);
 
 //////////////////////////////// CONFIGURATION ////////////////////////////////
 
@@ -707,9 +707,8 @@ ELF_API elfDirectoryItem* ELF_APIENTRY elfGetDirectoryItem(elfDirectory* directo
 ELF_API const char* ELF_APIENTRY elfGetDirectoryItemName(elfDirectoryItem* dirItem);
 ELF_API int ELF_APIENTRY elfGetDirectoryItemType(elfDirectoryItem* dirItem);
 
-ELF_API elfVec3f ELF_APIENTRY elfCreateVec3f();
-ELF_API elfVec3f ELF_APIENTRY elfCreateVec3fFromValues(float x, float y, float z);
-ELF_API elfVec4f ELF_APIENTRY elfCreateQua();
+ELF_API elfVec3f ELF_APIENTRY elfCreateVec3f(float x, float y, float z);
+ELF_API elfVec4f ELF_APIENTRY elfCreateQua(float x, float y, float z, float w);
 ELF_API elfVec4f ELF_APIENTRY elfCreateQuaFromEuler(float x, float y, float z);
 ELF_API elfVec4f ELF_APIENTRY elfCreateQuaFromAngleAxis(float angle, float x, float y, float z);
 ELF_API elfVec3f ELF_APIENTRY elfMulQuaVec3f(elfVec4f qua, elfVec3f vec);
@@ -1066,16 +1065,16 @@ ELF_API elfVec3f ELF_APIENTRY elfUnProjectCameraPoint(elfCamera* camera, float x
 
 //////////////////////////////// MESH DATA ////////////////////////////////
 
-ELF_API elfVertice* ELF_APIENTRY elfCreateVertice();	// <mdoc> MESH DATA FUNCTIONS
-/* <!> */ void elfDestroyVertice(void* data);
+ELF_API elfVertex* ELF_APIENTRY elfCreateVertex();	// <mdoc> MESH DATA FUNCTIONS
+/* <!> */ void elfDestroyVertex(void* data);
 
-ELF_API void ELF_APIENTRY elfSetVerticePosition(elfVertice* vertice, float x, float y, float z);
-ELF_API void ELF_APIENTRY elfSetVerticeNormal(elfVertice* vertice, float x, float y, float z);
-ELF_API void ELF_APIENTRY elfSetVerticeTexCoord(elfVertice* vertice, float u, float v);
+ELF_API void ELF_APIENTRY elfSetVertexPosition(elfVertex* vertice, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetVertexNormal(elfVertex* vertice, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfSetVertexTexCoord(elfVertex* vertice, float u, float v);
 
-ELF_API elfVec3f ELF_APIENTRY elfGetVerticePosition(elfVertice* vertice);
-ELF_API elfVec3f ELF_APIENTRY elfGetVerticeNormal(elfVertice* vertice);
-ELF_API elfVec2f ELF_APIENTRY elfGetVerticeTexCoord(elfVertice* vertice);
+ELF_API elfVec3f ELF_APIENTRY elfGetVertexPosition(elfVertex* vertice);
+ELF_API elfVec3f ELF_APIENTRY elfGetVertexNormal(elfVertex* vertice);
+ELF_API elfVec2f ELF_APIENTRY elfGetVertexTexCoord(elfVertex* vertice);
 
 // <!!
 elfFace* elfCreateFace();
@@ -1089,13 +1088,13 @@ ELF_API int ELF_APIENTRY elfGetFaceV3(elfFace* face);
 ELF_API elfMeshData* ELF_APIENTRY elfCreateMeshData();
 /* <!> */ void elfDestroyMeshData(void* data);
 
-ELF_API int ELF_APIENTRY elfGetMeshDataVerticeCount(elfMeshData* meshData);
+ELF_API int ELF_APIENTRY elfGetMeshDataVertexCount(elfMeshData* meshData);
 ELF_API int ELF_APIENTRY elfGetMeshDataFaceCount(elfMeshData* meshData);
 
-ELF_API void ELF_APIENTRY elfAddVerticeToMeshData(elfMeshData* meshData, elfVertice* vertice);
+ELF_API void ELF_APIENTRY elfAddVertexToMeshData(elfMeshData* meshData, elfVertex* vertice);
 ELF_API void ELF_APIENTRY elfAddFaceToMeshData(elfMeshData* meshData, int v1, int v2, int v3);
 
-ELF_API elfVertice* ELF_APIENTRY elfGetVerticeFromMeshData(elfMeshData* meshData, int idx);
+ELF_API elfVertex* ELF_APIENTRY elfGetVertexFromMeshData(elfMeshData* meshData, int idx);
 ELF_API elfFace* ELF_APIENTRY elfGetFaceFromMeshData(elfMeshData* meshData, int idx);
 
 //////////////////////////////// MODEL ////////////////////////////////
@@ -1111,13 +1110,13 @@ ELF_API elfModel* ELF_APIENTRY elfCreateModelFromMeshData(elfMeshData* data);	//
 ELF_API void ELF_APIENTRY elfSetModelName(elfModel* model, const char* name);
 ELF_API const char* ELF_APIENTRY elfGetModelName(elfModel* model);
 ELF_API const char* ELF_APIENTRY elfGetModelFilePath(elfModel* model);
-ELF_API int ELF_APIENTRY elfGetModelVerticeCount(elfModel* model);
+ELF_API int ELF_APIENTRY elfGetModelVertexCount(elfModel* model);
 ELF_API int ELF_APIENTRY elfGetModelIndiceCount(elfModel* model);
 ELF_API elfVec3f ELF_APIENTRY elfGetModelBoundingBoxMin(elfModel* model);
 ELF_API elfVec3f ELF_APIENTRY elfGetModelBoundingBoxMax(elfModel* model);
 
 // <!!
-float* elfGetModelVertices(elfModel* model);
+float* elfGetModelVertexs(elfModel* model);
 float* elfGetModelNormals(elfModel* model);
 float* elfGetModelTexCoords(elfModel* model);
 float* elfGetModelTangents(elfModel* model);
@@ -1600,7 +1599,6 @@ unsigned char elfInitScripting();
 void elfUpdateScripting();
 void elfDeinitScripting();
 
-elfScript* elfGetCurrentScript();
 void elfSetScriptError(int err, const char* msg);
 // !!>
 

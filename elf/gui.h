@@ -1465,8 +1465,8 @@ elfGuiObject* elfTraceTopObject(elfGuiObject* object, unsigned char click)
 	result = NULL;
 	if(object->screens)
 	{
-		for(cobject = (elfGuiObject*)elfRbeginList(object->screens); cobject;
-			cobject = (elfGuiObject*)elfRnextInList(object->screens))
+		for(cobject = (elfGuiObject*)elfRBeginList(object->screens); cobject;
+			cobject = (elfGuiObject*)elfRNextInList(object->screens))
 		{
 			if(mousePos.x >= cobject->pos.x && mousePos.x <= cobject->pos.x+cobject->width &&
 				mousePos.y >= cobject->pos.y && mousePos.y <= cobject->pos.y+cobject->height &&
@@ -1489,8 +1489,8 @@ elfGuiObject* elfTraceTopObject(elfGuiObject* object, unsigned char click)
 	result = NULL;
 	if(object->children)
 	{
-		for(cobject = (elfGuiObject*)elfRbeginList(object->children); cobject;
-			cobject = (elfGuiObject*)elfRnextInList(object->children))
+		for(cobject = (elfGuiObject*)elfRBeginList(object->children); cobject;
+			cobject = (elfGuiObject*)elfRNextInList(object->children))
 		{
 			if(mousePos.x >= cobject->pos.x && mousePos.x <= cobject->pos.x+cobject->width &&
 				mousePos.y >= cobject->pos.y && mousePos.y <= cobject->pos.y+cobject->height &&

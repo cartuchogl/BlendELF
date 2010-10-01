@@ -152,20 +152,20 @@ void elfInitNewParticle(elfParticles* particles, elfParticle* particle)
 	particle->sizeGrowth = elfRandomFloatRange(particles->sizeGrowthMin, particles->sizeGrowthMax);
 	particle->rotation = elfRandomFloatRange(particles->rotationMin, particles->rotationMax);
 	particle->rotationGrowth = elfRandomFloatRange(particles->rotationGrowthMin, particles->rotationGrowthMax);
-	if(particles->model && elfGetModelVerticeCount(particles->model) > 0)
+	if(particles->model && elfGetModelVertexCount(particles->model) > 0)
 	{
 		elfGetActorPosition_((elfActor*)particles, &particle->position.x);
-		num = elfRandomIntRange(0, elfGetModelVerticeCount(particles->model));
+		num = elfRandomIntRange(0, elfGetModelVertexCount(particles->model));
 		vertices = elfGetModelVertices(particles->model);
 		particle->position.x += vertices[3*num];
 		particle->position.y += vertices[3*num+1];
 		particle->position.z += vertices[3*num+2];
 	}
 	else if(particles->entity && particles->entity->model &&
-		elfGetModelVerticeCount(particles->entity->model) > 0)
+		elfGetModelVertexCount(particles->entity->model) > 0)
 	{
 		elfGetActorPosition_((elfActor*)particles->entity, &particle->position.x);
-		num = elfRandomIntRange(0, elfGetModelVerticeCount(particles->entity->model));
+		num = elfRandomIntRange(0, elfGetModelVertexCount(particles->entity->model));
 		if(!particles->entity->vertices)  vertices = (float*)gfxGetVertexDataBuffer(particles->entity->model->vertices);
 		else vertices = (float*)gfxGetVertexDataBuffer(particles->entity->vertices);
 		localPos.x = vertices[3*num];

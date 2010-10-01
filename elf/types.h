@@ -334,7 +334,7 @@ struct elfCamera {
 	float modelviewMatrix[16];
 };
 
-struct elfVertice {
+struct elfVertex {
 	ELF_OBJECT_HEADER;
 	elfVec3f position;
 	elfVec3f normal;

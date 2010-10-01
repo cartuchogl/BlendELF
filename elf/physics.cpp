@@ -371,10 +371,10 @@ void elfRecalcJoint(elfJoint* joint)
 	btVector3 pivotInB(localCoordPivot2.x, localCoordPivot2.y, localCoordPivot2.z);
 
 	aqua1 = elfCreateQuaFromEuler(joint->axis[0], joint->axis[1], joint->axis[2]);
-	localAxis1 = elfMulQuaVec3f(aqua1, elfCreateVec3fFromValues(0.0, 0.0, 1.0));
+	localAxis1 = elfMulQuaVec3f(aqua1, elfCreateVec3f(0.0, 0.0, 1.0));
 
 	aqua2 = elfMulQuaQua(aqua1, elfMulQuaQua(qua1, elfGetQuaInverted(qua2)));
-	localAxis2 = elfMulQuaVec3f(aqua2, elfCreateVec3fFromValues(0.0, 0.0, 1.0));
+	localAxis2 = elfMulQuaVec3f(aqua2, elfCreateVec3f(0.0, 0.0, 1.0));
 
 	btVector3 axisInA(localAxis1.x, localAxis1.y, localAxis1.z);
 	btVector3 axisInB(localAxis2.x, localAxis2.y, localAxis2.z);

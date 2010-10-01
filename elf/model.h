@@ -26,9 +26,9 @@ ELF_API elfModel* ELF_APIENTRY elfCreateModelFromMeshData(elfMeshData* data)
 	unsigned int* indexBuffer;
 	int i, j;
 	elfFace* face;
-	elfVertice* vertice;
+	elfVertex* vertex;
 
-	if(elfGetMeshDataVerticeCount(data) < 3) return NULL;
+	if(elfGetMeshDataVertexCount(data) < 3) return NULL;
 	if(elfGetMeshDataFaceCount(data) < 1) return NULL;
 
 	model = elfCreateModel(NULL);
@@ -71,19 +71,19 @@ ELF_API elfModel* ELF_APIENTRY elfCreateModelFromMeshData(elfMeshData* data)
 		indexBuffer[i+2] = face->v3;
 	}
 
-	for(i = 0, j = 0, vertice = (elfVertice*)elfBeginList(data->vertices); vertice;
-		vertice = (elfVertice*)elfNextInList(data->vertices), i += 3, j += 2)
+	for(i = 0, j = 0, vertex = (elfVertex*)elfBeginList(data->vertices); vertex;
+		vertex = (elfVertex*)elfNextInList(data->vertices), i += 3, j += 2)
 	{
-		vertexBuffer[i] = vertice->position.x;
-		vertexBuffer[i+1] = vertice->position.y;
-		vertexBuffer[i+2] = vertice->position.z;
+		vertexBuffer[i] = vertex->position.x;
+		vertexBuffer[i+1] = vertex->position.y;
+		vertexBuffer[i+2] = vertex->position.z;
 
-		normalBuffer[i] = vertice->normal.x;
-		normalBuffer[i+1] = vertice->normal.y;
-		normalBuffer[i+2] = vertice->normal.z;
+		normalBuffer[i] = vertex->normal.x;
+		normalBuffer[i+1] = vertex->normal.y;
+		normalBuffer[i+2] = vertex->normal.z;
 
-		texcoordBuffer[j] = vertice->texCoord.x;
-		texcoordBuffer[j+1] = vertice->texCoord.y;
+		texcoordBuffer[j] = vertex->texCoord.x;
+		texcoordBuffer[j+1] = vertex->texCoord.y;
 	}
 
 	// get bounding box values
@@ -295,7 +295,7 @@ ELF_API const char* ELF_APIENTRY elfGetModelFilePath(elfModel* model)
 	return model->filePath;
 }
 
-ELF_API int ELF_APIENTRY elfGetModelVerticeCount(elfModel* model)
+ELF_API int ELF_APIENTRY elfGetModelVertexCount(elfModel* model)
 {
 	return model->verticeCount;
 }

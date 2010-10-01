@@ -1039,17 +1039,9 @@ ELF_API int ELF_APIENTRY elfGetDirectoryItemType(elfDirectoryItem* dirItem)
 	return dirItem->itemType;
 }
 
-ELF_API elfVec3f ELF_APIENTRY elfCreateVec3f()
+ELF_API elfVec3f ELF_APIENTRY elfCreateVec3f(float x, float y, float z)
 {
 	elfVec3f result;
-	memset(&result, 0x0, sizeof(elfVec3f));
-	return result;
-}
-
-ELF_API elfVec3f ELF_APIENTRY elfCreateVec3fFromValues(float x, float y, float z)
-{
-	elfVec3f result;
-	memset(&result, 0x0, sizeof(elfVec3f));
 
 	result.x = x;
 	result.y = y;
@@ -1058,10 +1050,15 @@ ELF_API elfVec3f ELF_APIENTRY elfCreateVec3fFromValues(float x, float y, float z
 	return result;
 }
 
-ELF_API elfVec4f ELF_APIENTRY elfCreateQua()
+ELF_API elfVec4f ELF_APIENTRY elfCreateQua(float x, float y, float z, float w)
 {
 	elfVec4f result;
-	memset(&result, 0x0, sizeof(elfVec4f));
+
+	result.x = x;
+	result.y = y;
+	result.z = z;
+	result.w = w;
+
 	return result;
 }
 
