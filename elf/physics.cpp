@@ -987,13 +987,13 @@ void elfSetPhysicsObjectRestitution(elfPhysicsObject* object, float restitution)
 	object->body->setRestitution(restitution);
 }
 
-void elfAddForceToPhysicsObject(elfPhysicsObject* object, float x, float y, float z)
+void elfAddPhysicsObjectForce(elfPhysicsObject* object, float x, float y, float z)
 {
 	object->body->activate(true);
 	object->body->applyCentralForce(btVector3(x, y, z));
 }
 
-void elfAddTorqueToPhysicsObject(elfPhysicsObject* object, float x, float y, float z)
+void elfAddPhysicsObjectTorque(elfPhysicsObject* object, float x, float y, float z)
 {
 	object->body->activate(true);
 	object->body->applyTorque(btVector3(x, y, z));

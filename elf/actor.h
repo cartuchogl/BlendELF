@@ -671,12 +671,12 @@ ELF_API void ELF_APIENTRY elfSetActorAngularFactor(elfActor* actor, float x, flo
 	if(actor->object) elfSetPhysicsObjectAngularFactor(actor->object, x, y, z);
 }
 
-ELF_API void ELF_APIENTRY elfAddForceToActor(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfAddActorForce(elfActor* actor, float x, float y, float z)
 {
-	if(actor->object) elfAddForceToPhysicsObject(actor->object, x, y, z);
+	if(actor->object) elfAddPhysicsObjectForce(actor->object, x, y, z);
 }
 
-ELF_API void ELF_APIENTRY elfAddForceToActorLocal(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfAddActorForceLocal(elfActor* actor, float x, float y, float z)
 {
 	elfVec3f vec;
 	elfVec3f result;
@@ -689,13 +689,13 @@ ELF_API void ELF_APIENTRY elfAddForceToActorLocal(elfActor* actor, float x, floa
 		vec.z = z;
 		elfGetActorOrientation_(actor, &orient.x);
 		gfxMulQuaVec(&orient.x, &vec.x, &result.x);
-		elfAddForceToPhysicsObject(actor->object, result.x, result.y, result.z);
+		elfAddPhysicsObjectForce(actor->object, result.x, result.y, result.z);
 	}
 }
 
-ELF_API void ELF_APIENTRY elfAddTorqueToActor(elfActor* actor, float x, float y, float z)
+ELF_API void ELF_APIENTRY elfAddActorTorque(elfActor* actor, float x, float y, float z)
 {
-	if(actor->object) elfAddTorqueToPhysicsObject(actor->object, x, y, z);
+	if(actor->object) elfAddPhysicsObjectTorque(actor->object, x, y, z);
 }
 
 ELF_API void ELF_APIENTRY elfSetActorLinearVelocity(elfActor* actor, float x, float y, float z)
@@ -805,7 +805,7 @@ ELF_API elfVec3f ELF_APIENTRY elfGetActorAngularVelocity(elfActor* actor)
 	return result;
 }
 
-ELF_API elfJoint* ELF_APIENTRY elfAddHingeJointToActor(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az)
+ELF_API elfJoint* ELF_APIENTRY elfAddActorHingeJoint(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az)
 {
 	elfJoint* joint;
 
@@ -819,7 +819,7 @@ ELF_API elfJoint* ELF_APIENTRY elfAddHingeJointToActor(elfActor* actor, elfActor
 	return joint;
 }
 
-ELF_API elfJoint* ELF_APIENTRY elfAddBallJointToActor(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz)
+ELF_API elfJoint* ELF_APIENTRY elfAddActorBallJoint(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz)
 {
 	elfJoint* joint;
 
@@ -833,7 +833,7 @@ ELF_API elfJoint* ELF_APIENTRY elfAddBallJointToActor(elfActor* actor, elfActor*
 	return joint;
 }
 
-ELF_API elfJoint* ELF_APIENTRY elfAddConeTwistJointToActor(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az)
+ELF_API elfJoint* ELF_APIENTRY elfAddActorConeTwistJoint(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az)
 {
 	elfJoint* joint;
 
@@ -847,7 +847,7 @@ ELF_API elfJoint* ELF_APIENTRY elfAddConeTwistJointToActor(elfActor* actor, elfA
 	return joint;
 }
 
-ELF_API elfJoint* ELF_APIENTRY elfGetActorJointByName(elfActor* actor, const char* name)
+ELF_API elfJoint* ELF_APIENTRY elfGetActorJoint(elfActor* actor, const char* name)
 {
 	elfJoint* joint;
 
@@ -865,7 +865,7 @@ ELF_API elfJoint* ELF_APIENTRY elfGetActorJointByIndex(elfActor* actor, int idx)
 	return (elfJoint*)elfGetItemFromList(actor->joints, idx);
 }
 
-ELF_API unsigned char ELF_APIENTRY elfRemoveActorJointByName(elfActor* actor, const char* name)
+ELF_API unsigned char ELF_APIENTRY elfRemoveActorJoint(elfActor* actor, const char* name)
 {
 	elfJoint* joint;
 

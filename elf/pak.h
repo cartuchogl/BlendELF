@@ -517,10 +517,10 @@ void elfReadActorHeader(elfActor* actor, FILE* file, elfScene* scene)
 			fread((char*)&point->p.x, sizeof(float), 2, file);
 			fread((char*)&point->c2.x, sizeof(float), 2, file);
 
-			elfAddPointToBezierCurve(curve, point);
+			elfAddBezierCurvePoint(curve, point);
 		}
 
-		elfAddCurveToIpo(actor->ipo, curve);
+		elfAddIpoCurve(actor->ipo, curve);
 	}
 
 	fread((char*)boundingLengths, sizeof(float), 3, file);

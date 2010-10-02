@@ -3048,20 +3048,20 @@ static int lua_GetBezierCurveType(lua_State *L)
 	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
-static int lua_AddPointToBezierCurve(lua_State *L)
+static int lua_AddBezierCurvePoint(lua_State *L)
 {
 	elfBezierCurve* arg0;
 	elfBezierPoint* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddPointToBezierCurve", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddBezierCurvePoint", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_BEZIER_CURVE)
-		{return lua_fail_arg(L, "AddPointToBezierCurve", 1, "elfBezierCurve");}
+		{return lua_fail_arg(L, "AddBezierCurvePoint", 1, "elfBezierCurve");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_BEZIER_POINT)
-		{return lua_fail_arg(L, "AddPointToBezierCurve", 2, "elfBezierPoint");}
+		{return lua_fail_arg(L, "AddBezierCurvePoint", 2, "elfBezierPoint");}
 	arg0 = (elfBezierCurve*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfBezierPoint*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	elfAddPointToBezierCurve(arg0, arg1);
+	elfAddBezierCurvePoint(arg0, arg1);
 	return 0;
 }
 static int lua_GetPointFromBezierCurve(lua_State *L)
@@ -3106,21 +3106,21 @@ static int lua_CreateIpo(lua_State *L)
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_AddCurveToIpo(lua_State *L)
+static int lua_AddIpoCurve(lua_State *L)
 {
 	unsigned char result;
 	elfIpo* arg0;
 	elfBezierCurve* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddCurveToIpo", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddIpoCurve", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_IPO)
-		{return lua_fail_arg(L, "AddCurveToIpo", 1, "elfIpo");}
+		{return lua_fail_arg(L, "AddIpoCurve", 1, "elfIpo");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_BEZIER_CURVE)
-		{return lua_fail_arg(L, "AddCurveToIpo", 2, "elfBezierCurve");}
+		{return lua_fail_arg(L, "AddIpoCurve", 2, "elfBezierCurve");}
 	arg0 = (elfIpo*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfBezierCurve*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	result = elfAddCurveToIpo(arg0, arg1);
+	result = elfAddIpoCurve(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
@@ -3881,64 +3881,64 @@ static int lua_SetActorAngularFactor(lua_State *L)
 	elfSetActorAngularFactor(arg0, arg1, arg2, arg3);
 	return 0;
 }
-static int lua_AddForceToActor(lua_State *L)
+static int lua_AddActorForce(lua_State *L)
 {
 	elfActor* arg0;
 	float arg1;
 	float arg2;
 	float arg3;
-	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "AddForceToActor", lua_gettop(L), 4);}
+	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "AddActorForce", lua_gettop(L), 4);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "AddForceToActor", 1, "elfActor");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "AddForceToActor", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "AddForceToActor", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "AddForceToActor", 4, "number");}
+		{return lua_fail_arg(L, "AddActorForce", 1, "elfActor");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "AddActorForce", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "AddActorForce", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "AddActorForce", 4, "number");}
 	arg0 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (float)lua_tonumber(L, 2);
 	arg2 = (float)lua_tonumber(L, 3);
 	arg3 = (float)lua_tonumber(L, 4);
-	elfAddForceToActor(arg0, arg1, arg2, arg3);
+	elfAddActorForce(arg0, arg1, arg2, arg3);
 	return 0;
 }
-static int lua_AddForceToActorLocal(lua_State *L)
+static int lua_AddActorForceLocal(lua_State *L)
 {
 	elfActor* arg0;
 	float arg1;
 	float arg2;
 	float arg3;
-	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "AddForceToActorLocal", lua_gettop(L), 4);}
+	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "AddActorForceLocal", lua_gettop(L), 4);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "AddForceToActorLocal", 1, "elfActor");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "AddForceToActorLocal", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "AddForceToActorLocal", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "AddForceToActorLocal", 4, "number");}
+		{return lua_fail_arg(L, "AddActorForceLocal", 1, "elfActor");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "AddActorForceLocal", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "AddActorForceLocal", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "AddActorForceLocal", 4, "number");}
 	arg0 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (float)lua_tonumber(L, 2);
 	arg2 = (float)lua_tonumber(L, 3);
 	arg3 = (float)lua_tonumber(L, 4);
-	elfAddForceToActorLocal(arg0, arg1, arg2, arg3);
+	elfAddActorForceLocal(arg0, arg1, arg2, arg3);
 	return 0;
 }
-static int lua_AddTorqueToActor(lua_State *L)
+static int lua_AddActorTorque(lua_State *L)
 {
 	elfActor* arg0;
 	float arg1;
 	float arg2;
 	float arg3;
-	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "AddTorqueToActor", lua_gettop(L), 4);}
+	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "AddActorTorque", lua_gettop(L), 4);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "AddTorqueToActor", 1, "elfActor");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "AddTorqueToActor", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "AddTorqueToActor", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "AddTorqueToActor", 4, "number");}
+		{return lua_fail_arg(L, "AddActorTorque", 1, "elfActor");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "AddActorTorque", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "AddActorTorque", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "AddActorTorque", 4, "number");}
 	arg0 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (float)lua_tonumber(L, 2);
 	arg2 = (float)lua_tonumber(L, 3);
 	arg3 = (float)lua_tonumber(L, 4);
-	elfAddTorqueToActor(arg0, arg1, arg2, arg3);
+	elfAddActorTorque(arg0, arg1, arg2, arg3);
 	return 0;
 }
 static int lua_SetActorLinearVelocity(lua_State *L)
@@ -4183,7 +4183,7 @@ static int lua_GetActorAngularVelocity(lua_State *L)
 	lua_create_elfVec3f(L, result);
 	return 1;
 }
-static int lua_AddHingeJointToActor(lua_State *L)
+static int lua_AddActorHingeJoint(lua_State *L)
 {
 	elfJoint* result;
 	elfActor* arg0;
@@ -4195,20 +4195,20 @@ static int lua_AddHingeJointToActor(lua_State *L)
 	float arg6;
 	float arg7;
 	float arg8;
-	if(lua_gettop(L) != 9) {return lua_fail_arg_count(L, "AddHingeJointToActor", lua_gettop(L), 9);}
+	if(lua_gettop(L) != 9) {return lua_fail_arg_count(L, "AddActorHingeJoint", lua_gettop(L), 9);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "AddHingeJointToActor", 1, "elfActor");}
+		{return lua_fail_arg(L, "AddActorHingeJoint", 1, "elfActor");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
 		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 2))->object))
-		{return lua_fail_arg(L, "AddHingeJointToActor", 2, "elfActor");}
-	if(!lua_isstring(L, 3)) {return lua_fail_arg(L, "AddHingeJointToActor", 3, "string");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "AddHingeJointToActor", 4, "number");}
-	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "AddHingeJointToActor", 5, "number");}
-	if(!lua_isnumber(L, 6)) {return lua_fail_arg(L, "AddHingeJointToActor", 6, "number");}
-	if(!lua_isnumber(L, 7)) {return lua_fail_arg(L, "AddHingeJointToActor", 7, "number");}
-	if(!lua_isnumber(L, 8)) {return lua_fail_arg(L, "AddHingeJointToActor", 8, "number");}
-	if(!lua_isnumber(L, 9)) {return lua_fail_arg(L, "AddHingeJointToActor", 9, "number");}
+		{return lua_fail_arg(L, "AddActorHingeJoint", 2, "elfActor");}
+	if(!lua_isstring(L, 3)) {return lua_fail_arg(L, "AddActorHingeJoint", 3, "string");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "AddActorHingeJoint", 4, "number");}
+	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "AddActorHingeJoint", 5, "number");}
+	if(!lua_isnumber(L, 6)) {return lua_fail_arg(L, "AddActorHingeJoint", 6, "number");}
+	if(!lua_isnumber(L, 7)) {return lua_fail_arg(L, "AddActorHingeJoint", 7, "number");}
+	if(!lua_isnumber(L, 8)) {return lua_fail_arg(L, "AddActorHingeJoint", 8, "number");}
+	if(!lua_isnumber(L, 9)) {return lua_fail_arg(L, "AddActorHingeJoint", 9, "number");}
 	arg0 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 2))->object;
 	arg2 = lua_tostring(L, 3);
@@ -4218,12 +4218,12 @@ static int lua_AddHingeJointToActor(lua_State *L)
 	arg6 = (float)lua_tonumber(L, 7);
 	arg7 = (float)lua_tonumber(L, 8);
 	arg8 = (float)lua_tonumber(L, 9);
-	result = elfAddHingeJointToActor(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+	result = elfAddActorHingeJoint(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_AddBallJointToActor(lua_State *L)
+static int lua_AddActorBallJoint(lua_State *L)
 {
 	elfJoint* result;
 	elfActor* arg0;
@@ -4232,29 +4232,29 @@ static int lua_AddBallJointToActor(lua_State *L)
 	float arg3;
 	float arg4;
 	float arg5;
-	if(lua_gettop(L) != 6) {return lua_fail_arg_count(L, "AddBallJointToActor", lua_gettop(L), 6);}
+	if(lua_gettop(L) != 6) {return lua_fail_arg_count(L, "AddActorBallJoint", lua_gettop(L), 6);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "AddBallJointToActor", 1, "elfActor");}
+		{return lua_fail_arg(L, "AddActorBallJoint", 1, "elfActor");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
 		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 2))->object))
-		{return lua_fail_arg(L, "AddBallJointToActor", 2, "elfActor");}
-	if(!lua_isstring(L, 3)) {return lua_fail_arg(L, "AddBallJointToActor", 3, "string");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "AddBallJointToActor", 4, "number");}
-	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "AddBallJointToActor", 5, "number");}
-	if(!lua_isnumber(L, 6)) {return lua_fail_arg(L, "AddBallJointToActor", 6, "number");}
+		{return lua_fail_arg(L, "AddActorBallJoint", 2, "elfActor");}
+	if(!lua_isstring(L, 3)) {return lua_fail_arg(L, "AddActorBallJoint", 3, "string");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "AddActorBallJoint", 4, "number");}
+	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "AddActorBallJoint", 5, "number");}
+	if(!lua_isnumber(L, 6)) {return lua_fail_arg(L, "AddActorBallJoint", 6, "number");}
 	arg0 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 2))->object;
 	arg2 = lua_tostring(L, 3);
 	arg3 = (float)lua_tonumber(L, 4);
 	arg4 = (float)lua_tonumber(L, 5);
 	arg5 = (float)lua_tonumber(L, 6);
-	result = elfAddBallJointToActor(arg0, arg1, arg2, arg3, arg4, arg5);
+	result = elfAddActorBallJoint(arg0, arg1, arg2, arg3, arg4, arg5);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_AddConeTwistJointToActor(lua_State *L)
+static int lua_AddActorConeTwistJoint(lua_State *L)
 {
 	elfJoint* result;
 	elfActor* arg0;
@@ -4266,20 +4266,20 @@ static int lua_AddConeTwistJointToActor(lua_State *L)
 	float arg6;
 	float arg7;
 	float arg8;
-	if(lua_gettop(L) != 9) {return lua_fail_arg_count(L, "AddConeTwistJointToActor", lua_gettop(L), 9);}
+	if(lua_gettop(L) != 9) {return lua_fail_arg_count(L, "AddActorConeTwistJoint", lua_gettop(L), 9);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "AddConeTwistJointToActor", 1, "elfActor");}
+		{return lua_fail_arg(L, "AddActorConeTwistJoint", 1, "elfActor");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
 		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 2))->object))
-		{return lua_fail_arg(L, "AddConeTwistJointToActor", 2, "elfActor");}
-	if(!lua_isstring(L, 3)) {return lua_fail_arg(L, "AddConeTwistJointToActor", 3, "string");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "AddConeTwistJointToActor", 4, "number");}
-	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "AddConeTwistJointToActor", 5, "number");}
-	if(!lua_isnumber(L, 6)) {return lua_fail_arg(L, "AddConeTwistJointToActor", 6, "number");}
-	if(!lua_isnumber(L, 7)) {return lua_fail_arg(L, "AddConeTwistJointToActor", 7, "number");}
-	if(!lua_isnumber(L, 8)) {return lua_fail_arg(L, "AddConeTwistJointToActor", 8, "number");}
-	if(!lua_isnumber(L, 9)) {return lua_fail_arg(L, "AddConeTwistJointToActor", 9, "number");}
+		{return lua_fail_arg(L, "AddActorConeTwistJoint", 2, "elfActor");}
+	if(!lua_isstring(L, 3)) {return lua_fail_arg(L, "AddActorConeTwistJoint", 3, "string");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "AddActorConeTwistJoint", 4, "number");}
+	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "AddActorConeTwistJoint", 5, "number");}
+	if(!lua_isnumber(L, 6)) {return lua_fail_arg(L, "AddActorConeTwistJoint", 6, "number");}
+	if(!lua_isnumber(L, 7)) {return lua_fail_arg(L, "AddActorConeTwistJoint", 7, "number");}
+	if(!lua_isnumber(L, 8)) {return lua_fail_arg(L, "AddActorConeTwistJoint", 8, "number");}
+	if(!lua_isnumber(L, 9)) {return lua_fail_arg(L, "AddActorConeTwistJoint", 9, "number");}
 	arg0 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 2))->object;
 	arg2 = lua_tostring(L, 3);
@@ -4289,24 +4289,24 @@ static int lua_AddConeTwistJointToActor(lua_State *L)
 	arg6 = (float)lua_tonumber(L, 7);
 	arg7 = (float)lua_tonumber(L, 8);
 	arg8 = (float)lua_tonumber(L, 9);
-	result = elfAddConeTwistJointToActor(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+	result = elfAddActorConeTwistJoint(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetActorJointByName(lua_State *L)
+static int lua_GetActorJoint(lua_State *L)
 {
 	elfJoint* result;
 	elfActor* arg0;
 	const char* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetActorJointByName", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetActorJoint", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "GetActorJointByName", 1, "elfActor");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetActorJointByName", 2, "string");}
+		{return lua_fail_arg(L, "GetActorJoint", 1, "elfActor");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetActorJoint", 2, "string");}
 	arg0 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
-	result = elfGetActorJointByName(arg0, arg1);
+	result = elfGetActorJoint(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -4328,19 +4328,19 @@ static int lua_GetActorJointByIndex(lua_State *L)
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_RemoveActorJointByName(lua_State *L)
+static int lua_RemoveActorJoint(lua_State *L)
 {
 	unsigned char result;
 	elfActor* arg0;
 	const char* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveActorJointByName", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveActorJoint", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "RemoveActorJointByName", 1, "elfActor");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "RemoveActorJointByName", 2, "string");}
+		{return lua_fail_arg(L, "RemoveActorJoint", 1, "elfActor");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "RemoveActorJoint", 2, "string");}
 	arg0 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
-	result = elfRemoveActorJointByName(arg0, arg1);
+	result = elfRemoveActorJoint(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
@@ -5142,40 +5142,40 @@ static int lua_GetMeshDataFaceCount(lua_State *L)
 	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
-static int lua_AddVertexToMeshData(lua_State *L)
+static int lua_AddMeshDataVertex(lua_State *L)
 {
 	elfMeshData* arg0;
 	elfVertex* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddVertexToMeshData", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddMeshDataVertex", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_MESH_DATA)
-		{return lua_fail_arg(L, "AddVertexToMeshData", 1, "elfMeshData");}
+		{return lua_fail_arg(L, "AddMeshDataVertex", 1, "elfMeshData");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_VERTEX)
-		{return lua_fail_arg(L, "AddVertexToMeshData", 2, "elfVertex");}
+		{return lua_fail_arg(L, "AddMeshDataVertex", 2, "elfVertex");}
 	arg0 = (elfMeshData*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfVertex*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	elfAddVertexToMeshData(arg0, arg1);
+	elfAddMeshDataVertex(arg0, arg1);
 	return 0;
 }
-static int lua_AddFaceToMeshData(lua_State *L)
+static int lua_AddMeshDataFace(lua_State *L)
 {
 	elfMeshData* arg0;
 	int arg1;
 	int arg2;
 	int arg3;
-	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "AddFaceToMeshData", lua_gettop(L), 4);}
+	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "AddMeshDataFace", lua_gettop(L), 4);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_MESH_DATA)
-		{return lua_fail_arg(L, "AddFaceToMeshData", 1, "elfMeshData");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "AddFaceToMeshData", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "AddFaceToMeshData", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "AddFaceToMeshData", 4, "number");}
+		{return lua_fail_arg(L, "AddMeshDataFace", 1, "elfMeshData");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "AddMeshDataFace", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "AddMeshDataFace", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "AddMeshDataFace", 4, "number");}
 	arg0 = (elfMeshData*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (int)lua_tonumber(L, 2);
 	arg2 = (int)lua_tonumber(L, 3);
 	arg3 = (int)lua_tonumber(L, 4);
-	elfAddFaceToMeshData(arg0, arg1, arg2, arg3);
+	elfAddMeshDataFace(arg0, arg1, arg2, arg3);
 	return 0;
 }
 static int lua_GetVertexFromMeshData(lua_State *L)
@@ -7447,84 +7447,84 @@ static int lua_GetSceneSpriteCount(lua_State *L)
 	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
-static int lua_AddCameraToScene(lua_State *L)
+static int lua_AddSceneCamera(lua_State *L)
 {
 	elfScene* arg0;
 	elfCamera* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddCameraToScene", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddSceneCamera", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "AddCameraToScene", 1, "elfScene");}
+		{return lua_fail_arg(L, "AddSceneCamera", 1, "elfScene");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_CAMERA)
-		{return lua_fail_arg(L, "AddCameraToScene", 2, "elfCamera");}
+		{return lua_fail_arg(L, "AddSceneCamera", 2, "elfCamera");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfCamera*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	elfAddCameraToScene(arg0, arg1);
+	elfAddSceneCamera(arg0, arg1);
 	return 0;
 }
-static int lua_AddEntityToScene(lua_State *L)
+static int lua_AddSceneEntity(lua_State *L)
 {
 	elfScene* arg0;
 	elfEntity* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddEntityToScene", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddSceneEntity", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "AddEntityToScene", 1, "elfScene");}
+		{return lua_fail_arg(L, "AddSceneEntity", 1, "elfScene");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_ENTITY)
-		{return lua_fail_arg(L, "AddEntityToScene", 2, "elfEntity");}
+		{return lua_fail_arg(L, "AddSceneEntity", 2, "elfEntity");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfEntity*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	elfAddEntityToScene(arg0, arg1);
+	elfAddSceneEntity(arg0, arg1);
 	return 0;
 }
-static int lua_AddLightToScene(lua_State *L)
+static int lua_AddSceneLight(lua_State *L)
 {
 	elfScene* arg0;
 	elfLight* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddLightToScene", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddSceneLight", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "AddLightToScene", 1, "elfScene");}
+		{return lua_fail_arg(L, "AddSceneLight", 1, "elfScene");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_LIGHT)
-		{return lua_fail_arg(L, "AddLightToScene", 2, "elfLight");}
+		{return lua_fail_arg(L, "AddSceneLight", 2, "elfLight");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfLight*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	elfAddLightToScene(arg0, arg1);
+	elfAddSceneLight(arg0, arg1);
 	return 0;
 }
-static int lua_AddParticlesToScene(lua_State *L)
+static int lua_AddSceneParticles(lua_State *L)
 {
 	elfScene* arg0;
 	elfParticles* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddParticlesToScene", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddSceneParticles", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "AddParticlesToScene", 1, "elfScene");}
+		{return lua_fail_arg(L, "AddSceneParticles", 1, "elfScene");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_PARTICLES)
-		{return lua_fail_arg(L, "AddParticlesToScene", 2, "elfParticles");}
+		{return lua_fail_arg(L, "AddSceneParticles", 2, "elfParticles");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfParticles*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	elfAddParticlesToScene(arg0, arg1);
+	elfAddSceneParticles(arg0, arg1);
 	return 0;
 }
-static int lua_AddSpriteToScene(lua_State *L)
+static int lua_AddSceneSprite(lua_State *L)
 {
 	elfScene* arg0;
 	elfSprite* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddSpriteToScene", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddSceneSprite", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "AddSpriteToScene", 1, "elfScene");}
+		{return lua_fail_arg(L, "AddSceneSprite", 1, "elfScene");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_SPRITE)
-		{return lua_fail_arg(L, "AddSpriteToScene", 2, "elfSprite");}
+		{return lua_fail_arg(L, "AddSceneSprite", 2, "elfSprite");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfSprite*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	elfAddSpriteToScene(arg0, arg1);
+	elfAddSceneSprite(arg0, arg1);
 	return 0;
 }
 static int lua_SetSceneActiveCamera(lua_State *L)
@@ -7685,560 +7685,560 @@ static int lua_GetDebugSceneRayCastResults(lua_State *L)
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetCameraByIndex(lua_State *L)
+static int lua_GetSceneCameraByIndex(lua_State *L)
 {
 	elfCamera* result;
 	elfScene* arg0;
 	int arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetCameraByIndex", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSceneCameraByIndex", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetCameraByIndex", 1, "elfScene");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "GetCameraByIndex", 2, "number");}
+		{return lua_fail_arg(L, "GetSceneCameraByIndex", 1, "elfScene");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "GetSceneCameraByIndex", 2, "number");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (int)lua_tonumber(L, 2);
-	result = elfGetCameraByIndex(arg0, arg1);
+	result = elfGetSceneCameraByIndex(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetEntityByIndex(lua_State *L)
+static int lua_GetSceneEntityByIndex(lua_State *L)
 {
 	elfEntity* result;
 	elfScene* arg0;
 	int arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetEntityByIndex", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSceneEntityByIndex", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetEntityByIndex", 1, "elfScene");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "GetEntityByIndex", 2, "number");}
+		{return lua_fail_arg(L, "GetSceneEntityByIndex", 1, "elfScene");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "GetSceneEntityByIndex", 2, "number");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (int)lua_tonumber(L, 2);
-	result = elfGetEntityByIndex(arg0, arg1);
+	result = elfGetSceneEntityByIndex(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetLightByIndex(lua_State *L)
+static int lua_GetSceneLightByIndex(lua_State *L)
 {
 	elfLight* result;
 	elfScene* arg0;
 	int arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetLightByIndex", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSceneLightByIndex", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetLightByIndex", 1, "elfScene");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "GetLightByIndex", 2, "number");}
+		{return lua_fail_arg(L, "GetSceneLightByIndex", 1, "elfScene");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "GetSceneLightByIndex", 2, "number");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (int)lua_tonumber(L, 2);
-	result = elfGetLightByIndex(arg0, arg1);
+	result = elfGetSceneLightByIndex(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetArmatureByIndex(lua_State *L)
+static int lua_GetSceneArmatureByIndex(lua_State *L)
 {
 	elfArmature* result;
 	elfScene* arg0;
 	int arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetArmatureByIndex", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSceneArmatureByIndex", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetArmatureByIndex", 1, "elfScene");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "GetArmatureByIndex", 2, "number");}
+		{return lua_fail_arg(L, "GetSceneArmatureByIndex", 1, "elfScene");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "GetSceneArmatureByIndex", 2, "number");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (int)lua_tonumber(L, 2);
-	result = elfGetArmatureByIndex(arg0, arg1);
+	result = elfGetSceneArmatureByIndex(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetParticlesByIndex(lua_State *L)
+static int lua_GetSceneParticlesByIndex(lua_State *L)
 {
 	elfParticles* result;
 	elfScene* arg0;
 	int arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetParticlesByIndex", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSceneParticlesByIndex", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetParticlesByIndex", 1, "elfScene");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "GetParticlesByIndex", 2, "number");}
+		{return lua_fail_arg(L, "GetSceneParticlesByIndex", 1, "elfScene");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "GetSceneParticlesByIndex", 2, "number");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (int)lua_tonumber(L, 2);
-	result = elfGetParticlesByIndex(arg0, arg1);
+	result = elfGetSceneParticlesByIndex(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetSpriteByIndex(lua_State *L)
+static int lua_GetSceneSpriteByIndex(lua_State *L)
 {
 	elfSprite* result;
 	elfScene* arg0;
 	int arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSpriteByIndex", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSceneSpriteByIndex", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetSpriteByIndex", 1, "elfScene");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "GetSpriteByIndex", 2, "number");}
+		{return lua_fail_arg(L, "GetSceneSpriteByIndex", 1, "elfScene");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "GetSceneSpriteByIndex", 2, "number");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (int)lua_tonumber(L, 2);
-	result = elfGetSpriteByIndex(arg0, arg1);
+	result = elfGetSceneSpriteByIndex(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetTextureByName(lua_State *L)
+static int lua_GetSceneTexture(lua_State *L)
 {
 	elfTexture* result;
 	elfScene* arg0;
 	const char* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetTextureByName", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSceneTexture", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetTextureByName", 1, "elfScene");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetTextureByName", 2, "string");}
+		{return lua_fail_arg(L, "GetSceneTexture", 1, "elfScene");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetSceneTexture", 2, "string");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
-	result = elfGetTextureByName(arg0, arg1);
+	result = elfGetSceneTexture(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetMaterialByName(lua_State *L)
+static int lua_GetSceneMaterial(lua_State *L)
 {
 	elfMaterial* result;
 	elfScene* arg0;
 	const char* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetMaterialByName", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSceneMaterial", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetMaterialByName", 1, "elfScene");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetMaterialByName", 2, "string");}
+		{return lua_fail_arg(L, "GetSceneMaterial", 1, "elfScene");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetSceneMaterial", 2, "string");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
-	result = elfGetMaterialByName(arg0, arg1);
+	result = elfGetSceneMaterial(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetModelByName(lua_State *L)
+static int lua_GetSceneModel(lua_State *L)
 {
 	elfModel* result;
 	elfScene* arg0;
 	const char* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetModelByName", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSceneModel", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetModelByName", 1, "elfScene");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetModelByName", 2, "string");}
+		{return lua_fail_arg(L, "GetSceneModel", 1, "elfScene");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetSceneModel", 2, "string");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
-	result = elfGetModelByName(arg0, arg1);
+	result = elfGetSceneModel(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetScriptByName(lua_State *L)
+static int lua_GetSceneScript(lua_State *L)
 {
 	elfScript* result;
 	elfScene* arg0;
 	const char* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetScriptByName", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSceneScript", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetScriptByName", 1, "elfScene");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetScriptByName", 2, "string");}
+		{return lua_fail_arg(L, "GetSceneScript", 1, "elfScene");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetSceneScript", 2, "string");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
-	result = elfGetScriptByName(arg0, arg1);
+	result = elfGetSceneScript(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetCameraByName(lua_State *L)
+static int lua_GetSceneCamera(lua_State *L)
 {
 	elfCamera* result;
 	elfScene* arg0;
 	const char* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetCameraByName", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSceneCamera", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetCameraByName", 1, "elfScene");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetCameraByName", 2, "string");}
+		{return lua_fail_arg(L, "GetSceneCamera", 1, "elfScene");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetSceneCamera", 2, "string");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
-	result = elfGetCameraByName(arg0, arg1);
+	result = elfGetSceneCamera(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetEntityByName(lua_State *L)
+static int lua_GetSceneEntity(lua_State *L)
 {
 	elfEntity* result;
 	elfScene* arg0;
 	const char* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetEntityByName", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSceneEntity", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetEntityByName", 1, "elfScene");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetEntityByName", 2, "string");}
+		{return lua_fail_arg(L, "GetSceneEntity", 1, "elfScene");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetSceneEntity", 2, "string");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
-	result = elfGetEntityByName(arg0, arg1);
+	result = elfGetSceneEntity(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetLightByName(lua_State *L)
+static int lua_GetSceneLight(lua_State *L)
 {
 	elfLight* result;
 	elfScene* arg0;
 	const char* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetLightByName", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSceneLight", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetLightByName", 1, "elfScene");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetLightByName", 2, "string");}
+		{return lua_fail_arg(L, "GetSceneLight", 1, "elfScene");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetSceneLight", 2, "string");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
-	result = elfGetLightByName(arg0, arg1);
+	result = elfGetSceneLight(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetArmatureByName(lua_State *L)
+static int lua_GetSceneArmature(lua_State *L)
 {
 	elfArmature* result;
 	elfScene* arg0;
 	const char* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetArmatureByName", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSceneArmature", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetArmatureByName", 1, "elfScene");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetArmatureByName", 2, "string");}
+		{return lua_fail_arg(L, "GetSceneArmature", 1, "elfScene");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetSceneArmature", 2, "string");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
-	result = elfGetArmatureByName(arg0, arg1);
+	result = elfGetSceneArmature(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetParticlesByName(lua_State *L)
+static int lua_GetSceneParticles(lua_State *L)
 {
 	elfParticles* result;
 	elfScene* arg0;
 	const char* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetParticlesByName", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSceneParticles", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetParticlesByName", 1, "elfScene");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetParticlesByName", 2, "string");}
+		{return lua_fail_arg(L, "GetSceneParticles", 1, "elfScene");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetSceneParticles", 2, "string");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
-	result = elfGetParticlesByName(arg0, arg1);
+	result = elfGetSceneParticles(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetSpriteByName(lua_State *L)
+static int lua_GetSceneSprite(lua_State *L)
 {
 	elfSprite* result;
 	elfScene* arg0;
 	const char* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSpriteByName", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSceneSprite", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetSpriteByName", 1, "elfScene");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetSpriteByName", 2, "string");}
+		{return lua_fail_arg(L, "GetSceneSprite", 1, "elfScene");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetSceneSprite", 2, "string");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
-	result = elfGetSpriteByName(arg0, arg1);
+	result = elfGetSceneSprite(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetActorByName(lua_State *L)
+static int lua_GetSceneActor(lua_State *L)
 {
 	elfActor* result;
 	elfScene* arg0;
 	const char* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetActorByName", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSceneActor", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetActorByName", 1, "elfScene");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetActorByName", 2, "string");}
+		{return lua_fail_arg(L, "GetSceneActor", 1, "elfScene");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetSceneActor", 2, "string");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
-	result = elfGetActorByName(arg0, arg1);
+	result = elfGetSceneActor(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_RemoveCameraByName(lua_State *L)
+static int lua_RemoveSceneCamera(lua_State *L)
 {
 	unsigned char result;
 	elfScene* arg0;
 	const char* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveCameraByName", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSceneCamera", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "RemoveCameraByName", 1, "elfScene");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "RemoveCameraByName", 2, "string");}
+		{return lua_fail_arg(L, "RemoveSceneCamera", 1, "elfScene");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "RemoveSceneCamera", 2, "string");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
-	result = elfRemoveCameraByName(arg0, arg1);
+	result = elfRemoveSceneCamera(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_RemoveEntityByName(lua_State *L)
+static int lua_RemoveSceneEntity(lua_State *L)
 {
 	unsigned char result;
 	elfScene* arg0;
 	const char* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveEntityByName", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSceneEntity", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "RemoveEntityByName", 1, "elfScene");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "RemoveEntityByName", 2, "string");}
+		{return lua_fail_arg(L, "RemoveSceneEntity", 1, "elfScene");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "RemoveSceneEntity", 2, "string");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
-	result = elfRemoveEntityByName(arg0, arg1);
+	result = elfRemoveSceneEntity(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_RemoveLightByName(lua_State *L)
+static int lua_RemoveSceneLight(lua_State *L)
 {
 	unsigned char result;
 	elfScene* arg0;
 	const char* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveLightByName", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSceneLight", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "RemoveLightByName", 1, "elfScene");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "RemoveLightByName", 2, "string");}
+		{return lua_fail_arg(L, "RemoveSceneLight", 1, "elfScene");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "RemoveSceneLight", 2, "string");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
-	result = elfRemoveLightByName(arg0, arg1);
+	result = elfRemoveSceneLight(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_RemoveParticlesByName(lua_State *L)
+static int lua_RemoveSceneParticles(lua_State *L)
 {
 	unsigned char result;
 	elfScene* arg0;
 	const char* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveParticlesByName", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSceneParticles", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "RemoveParticlesByName", 1, "elfScene");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "RemoveParticlesByName", 2, "string");}
+		{return lua_fail_arg(L, "RemoveSceneParticles", 1, "elfScene");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "RemoveSceneParticles", 2, "string");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
-	result = elfRemoveParticlesByName(arg0, arg1);
+	result = elfRemoveSceneParticles(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_RemoveSpriteByName(lua_State *L)
+static int lua_RemoveSceneSprite(lua_State *L)
 {
 	unsigned char result;
 	elfScene* arg0;
 	const char* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSpriteByName", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSceneSprite", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "RemoveSpriteByName", 1, "elfScene");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "RemoveSpriteByName", 2, "string");}
+		{return lua_fail_arg(L, "RemoveSceneSprite", 1, "elfScene");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "RemoveSceneSprite", 2, "string");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
-	result = elfRemoveSpriteByName(arg0, arg1);
+	result = elfRemoveSceneSprite(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_RemoveCameraByIndex(lua_State *L)
+static int lua_RemoveSceneCameraByIndex(lua_State *L)
 {
 	unsigned char result;
 	elfScene* arg0;
 	int arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveCameraByIndex", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSceneCameraByIndex", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "RemoveCameraByIndex", 1, "elfScene");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "RemoveCameraByIndex", 2, "number");}
+		{return lua_fail_arg(L, "RemoveSceneCameraByIndex", 1, "elfScene");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "RemoveSceneCameraByIndex", 2, "number");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (int)lua_tonumber(L, 2);
-	result = elfRemoveCameraByIndex(arg0, arg1);
+	result = elfRemoveSceneCameraByIndex(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_RemoveEntityByIndex(lua_State *L)
+static int lua_RemoveSceneEntityByIndex(lua_State *L)
 {
 	unsigned char result;
 	elfScene* arg0;
 	int arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveEntityByIndex", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSceneEntityByIndex", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "RemoveEntityByIndex", 1, "elfScene");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "RemoveEntityByIndex", 2, "number");}
+		{return lua_fail_arg(L, "RemoveSceneEntityByIndex", 1, "elfScene");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "RemoveSceneEntityByIndex", 2, "number");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (int)lua_tonumber(L, 2);
-	result = elfRemoveEntityByIndex(arg0, arg1);
+	result = elfRemoveSceneEntityByIndex(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_RemoveLightByIndex(lua_State *L)
+static int lua_RemoveSceneLightByIndex(lua_State *L)
 {
 	unsigned char result;
 	elfScene* arg0;
 	int arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveLightByIndex", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSceneLightByIndex", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "RemoveLightByIndex", 1, "elfScene");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "RemoveLightByIndex", 2, "number");}
+		{return lua_fail_arg(L, "RemoveSceneLightByIndex", 1, "elfScene");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "RemoveSceneLightByIndex", 2, "number");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (int)lua_tonumber(L, 2);
-	result = elfRemoveLightByIndex(arg0, arg1);
+	result = elfRemoveSceneLightByIndex(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_RemoveParticlesByIndex(lua_State *L)
+static int lua_RemoveSceneParticlesByIndex(lua_State *L)
 {
 	unsigned char result;
 	elfScene* arg0;
 	int arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveParticlesByIndex", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSceneParticlesByIndex", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "RemoveParticlesByIndex", 1, "elfScene");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "RemoveParticlesByIndex", 2, "number");}
+		{return lua_fail_arg(L, "RemoveSceneParticlesByIndex", 1, "elfScene");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "RemoveSceneParticlesByIndex", 2, "number");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (int)lua_tonumber(L, 2);
-	result = elfRemoveParticlesByIndex(arg0, arg1);
+	result = elfRemoveSceneParticlesByIndex(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_RemoveSpriteByIndex(lua_State *L)
+static int lua_RemoveSceneSpriteByIndex(lua_State *L)
 {
 	unsigned char result;
 	elfScene* arg0;
 	int arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSpriteByIndex", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSceneSpriteByIndex", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "RemoveSpriteByIndex", 1, "elfScene");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "RemoveSpriteByIndex", 2, "number");}
+		{return lua_fail_arg(L, "RemoveSceneSpriteByIndex", 1, "elfScene");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "RemoveSceneSpriteByIndex", 2, "number");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (int)lua_tonumber(L, 2);
-	result = elfRemoveSpriteByIndex(arg0, arg1);
+	result = elfRemoveSceneSpriteByIndex(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_RemoveCameraByObject(lua_State *L)
+static int lua_RemoveSceneCameraByObject(lua_State *L)
 {
 	unsigned char result;
 	elfScene* arg0;
 	elfCamera* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveCameraByObject", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSceneCameraByObject", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "RemoveCameraByObject", 1, "elfScene");}
+		{return lua_fail_arg(L, "RemoveSceneCameraByObject", 1, "elfScene");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_CAMERA)
-		{return lua_fail_arg(L, "RemoveCameraByObject", 2, "elfCamera");}
+		{return lua_fail_arg(L, "RemoveSceneCameraByObject", 2, "elfCamera");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfCamera*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	result = elfRemoveCameraByObject(arg0, arg1);
+	result = elfRemoveSceneCameraByObject(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_RemoveEntityByObject(lua_State *L)
+static int lua_RemoveSceneEntityByObject(lua_State *L)
 {
 	unsigned char result;
 	elfScene* arg0;
 	elfEntity* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveEntityByObject", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSceneEntityByObject", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "RemoveEntityByObject", 1, "elfScene");}
+		{return lua_fail_arg(L, "RemoveSceneEntityByObject", 1, "elfScene");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_ENTITY)
-		{return lua_fail_arg(L, "RemoveEntityByObject", 2, "elfEntity");}
+		{return lua_fail_arg(L, "RemoveSceneEntityByObject", 2, "elfEntity");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfEntity*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	result = elfRemoveEntityByObject(arg0, arg1);
+	result = elfRemoveSceneEntityByObject(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_RemoveLightByObject(lua_State *L)
+static int lua_RemoveSceneLightByObject(lua_State *L)
 {
 	unsigned char result;
 	elfScene* arg0;
 	elfLight* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveLightByObject", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSceneLightByObject", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "RemoveLightByObject", 1, "elfScene");}
+		{return lua_fail_arg(L, "RemoveSceneLightByObject", 1, "elfScene");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_LIGHT)
-		{return lua_fail_arg(L, "RemoveLightByObject", 2, "elfLight");}
+		{return lua_fail_arg(L, "RemoveSceneLightByObject", 2, "elfLight");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfLight*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	result = elfRemoveLightByObject(arg0, arg1);
+	result = elfRemoveSceneLightByObject(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_RemoveParticlesByObject(lua_State *L)
+static int lua_RemoveSceneParticlesByObject(lua_State *L)
 {
 	unsigned char result;
 	elfScene* arg0;
 	elfParticles* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveParticlesByObject", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSceneParticlesByObject", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "RemoveParticlesByObject", 1, "elfScene");}
+		{return lua_fail_arg(L, "RemoveSceneParticlesByObject", 1, "elfScene");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_PARTICLES)
-		{return lua_fail_arg(L, "RemoveParticlesByObject", 2, "elfParticles");}
+		{return lua_fail_arg(L, "RemoveSceneParticlesByObject", 2, "elfParticles");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfParticles*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	result = elfRemoveParticlesByObject(arg0, arg1);
+	result = elfRemoveSceneParticlesByObject(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_RemoveSpriteByObject(lua_State *L)
+static int lua_RemoveSceneSpriteByObject(lua_State *L)
 {
 	unsigned char result;
 	elfScene* arg0;
 	elfSprite* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSpriteByObject", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSceneSpriteByObject", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "RemoveSpriteByObject", 1, "elfScene");}
+		{return lua_fail_arg(L, "RemoveSceneSpriteByObject", 1, "elfScene");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_SPRITE)
-		{return lua_fail_arg(L, "RemoveSpriteByObject", 2, "elfSprite");}
+		{return lua_fail_arg(L, "RemoveSceneSpriteByObject", 2, "elfSprite");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfSprite*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	result = elfRemoveSpriteByObject(arg0, arg1);
+	result = elfRemoveSceneSpriteByObject(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_RemoveActorByObject(lua_State *L)
+static int lua_RemoveSceneActorByObject(lua_State *L)
 {
 	unsigned char result;
 	elfScene* arg0;
 	elfActor* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveActorByObject", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveSceneActorByObject", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "RemoveActorByObject", 1, "elfScene");}
+		{return lua_fail_arg(L, "RemoveSceneActorByObject", 1, "elfScene");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
 		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 2))->object))
-		{return lua_fail_arg(L, "RemoveActorByObject", 2, "elfActor");}
+		{return lua_fail_arg(L, "RemoveSceneActorByObject", 2, "elfActor");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	result = elfRemoveActorByObject(arg0, arg1);
+	result = elfRemoveSceneActorByObject(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
@@ -9616,15 +9616,15 @@ static int lua_SetScreenToTop(lua_State *L)
 	elfSetScreenToTop(arg0);
 	return 0;
 }
-static int lua_ForceFocusToScreen(lua_State *L)
+static int lua_ForceScreenFocus(lua_State *L)
 {
 	elfScreen* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "ForceFocusToScreen", lua_gettop(L), 1);}
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "ForceScreenFocus", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCREEN)
-		{return lua_fail_arg(L, "ForceFocusToScreen", 1, "elfScreen");}
+		{return lua_fail_arg(L, "ForceScreenFocus", 1, "elfScreen");}
 	arg0 = (elfScreen*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	elfForceFocusToScreen(arg0);
+	elfForceScreenFocus(arg0);
 	return 0;
 }
 static int lua_ReleaseFocusFromScreen(lua_State *L)
@@ -10464,11 +10464,11 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"CreateBezierCurve", lua_CreateBezierCurve},
 	{"SetBezierCurveType", lua_SetBezierCurveType},
 	{"GetBezierCurveType", lua_GetBezierCurveType},
-	{"AddPointToBezierCurve", lua_AddPointToBezierCurve},
+	{"AddBezierCurvePoint", lua_AddBezierCurvePoint},
 	{"GetPointFromBezierCurve", lua_GetPointFromBezierCurve},
 	{"GetBezierCurveValue", lua_GetBezierCurveValue},
 	{"CreateIpo", lua_CreateIpo},
-	{"AddCurveToIpo", lua_AddCurveToIpo},
+	{"AddIpoCurve", lua_AddIpoCurve},
 	{"GetIpoCurveCount", lua_GetIpoCurveCount},
 	{"GetCurveFromIpo", lua_GetCurveFromIpo},
 	{"GetIpoLoc", lua_GetIpoLoc},
@@ -10515,9 +10515,9 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"SetActorAnisotropicFriction", lua_SetActorAnisotropicFriction},
 	{"SetActorLinearFactor", lua_SetActorLinearFactor},
 	{"SetActorAngularFactor", lua_SetActorAngularFactor},
-	{"AddForceToActor", lua_AddForceToActor},
-	{"AddForceToActorLocal", lua_AddForceToActorLocal},
-	{"AddTorqueToActor", lua_AddTorqueToActor},
+	{"AddActorForce", lua_AddActorForce},
+	{"AddActorForceLocal", lua_AddActorForceLocal},
+	{"AddActorTorque", lua_AddActorTorque},
 	{"SetActorLinearVelocity", lua_SetActorLinearVelocity},
 	{"SetActorLinearVelocityLocal", lua_SetActorLinearVelocityLocal},
 	{"SetActorAngularVelocity", lua_SetActorAngularVelocity},
@@ -10535,12 +10535,12 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetActorAngularFactor", lua_GetActorAngularFactor},
 	{"GetActorLinearVelocity", lua_GetActorLinearVelocity},
 	{"GetActorAngularVelocity", lua_GetActorAngularVelocity},
-	{"AddHingeJointToActor", lua_AddHingeJointToActor},
-	{"AddBallJointToActor", lua_AddBallJointToActor},
-	{"AddConeTwistJointToActor", lua_AddConeTwistJointToActor},
-	{"GetActorJointByName", lua_GetActorJointByName},
+	{"AddActorHingeJoint", lua_AddActorHingeJoint},
+	{"AddActorBallJoint", lua_AddActorBallJoint},
+	{"AddActorConeTwistJoint", lua_AddActorConeTwistJoint},
+	{"GetActorJoint", lua_GetActorJoint},
 	{"GetActorJointByIndex", lua_GetActorJointByIndex},
-	{"RemoveActorJointByName", lua_RemoveActorJointByName},
+	{"RemoveActorJoint", lua_RemoveActorJoint},
 	{"RemoveActorJointByIndex", lua_RemoveActorJointByIndex},
 	{"RemoveActorJointByObject", lua_RemoveActorJointByObject},
 	{"SetActorIpo", lua_SetActorIpo},
@@ -10594,8 +10594,8 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"CreateMeshData", lua_CreateMeshData},
 	{"GetMeshDataVertexCount", lua_GetMeshDataVertexCount},
 	{"GetMeshDataFaceCount", lua_GetMeshDataFaceCount},
-	{"AddVertexToMeshData", lua_AddVertexToMeshData},
-	{"AddFaceToMeshData", lua_AddFaceToMeshData},
+	{"AddMeshDataVertex", lua_AddMeshDataVertex},
+	{"AddMeshDataFace", lua_AddMeshDataFace},
 	{"GetVertexFromMeshData", lua_GetVertexFromMeshData},
 	{"GetFaceFromMeshData", lua_GetFaceFromMeshData},
 	{"CreateModelFromMeshData", lua_CreateModelFromMeshData},
@@ -10754,50 +10754,50 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetSceneArmatureCount", lua_GetSceneArmatureCount},
 	{"GetSceneParticlesCount", lua_GetSceneParticlesCount},
 	{"GetSceneSpriteCount", lua_GetSceneSpriteCount},
-	{"AddCameraToScene", lua_AddCameraToScene},
-	{"AddEntityToScene", lua_AddEntityToScene},
-	{"AddLightToScene", lua_AddLightToScene},
-	{"AddParticlesToScene", lua_AddParticlesToScene},
-	{"AddSpriteToScene", lua_AddSpriteToScene},
+	{"AddSceneCamera", lua_AddSceneCamera},
+	{"AddSceneEntity", lua_AddSceneEntity},
+	{"AddSceneLight", lua_AddSceneLight},
+	{"AddSceneParticles", lua_AddSceneParticles},
+	{"AddSceneSprite", lua_AddSceneSprite},
 	{"SetSceneActiveCamera", lua_SetSceneActiveCamera},
 	{"GetSceneActiveCamera", lua_GetSceneActiveCamera},
 	{"GetSceneRayCastResult", lua_GetSceneRayCastResult},
 	{"GetSceneRayCastResults", lua_GetSceneRayCastResults},
 	{"GetDebugSceneRayCastResult", lua_GetDebugSceneRayCastResult},
 	{"GetDebugSceneRayCastResults", lua_GetDebugSceneRayCastResults},
-	{"GetCameraByIndex", lua_GetCameraByIndex},
-	{"GetEntityByIndex", lua_GetEntityByIndex},
-	{"GetLightByIndex", lua_GetLightByIndex},
-	{"GetArmatureByIndex", lua_GetArmatureByIndex},
-	{"GetParticlesByIndex", lua_GetParticlesByIndex},
-	{"GetSpriteByIndex", lua_GetSpriteByIndex},
-	{"GetTextureByName", lua_GetTextureByName},
-	{"GetMaterialByName", lua_GetMaterialByName},
-	{"GetModelByName", lua_GetModelByName},
-	{"GetScriptByName", lua_GetScriptByName},
-	{"GetCameraByName", lua_GetCameraByName},
-	{"GetEntityByName", lua_GetEntityByName},
-	{"GetLightByName", lua_GetLightByName},
-	{"GetArmatureByName", lua_GetArmatureByName},
-	{"GetParticlesByName", lua_GetParticlesByName},
-	{"GetSpriteByName", lua_GetSpriteByName},
-	{"GetActorByName", lua_GetActorByName},
-	{"RemoveCameraByName", lua_RemoveCameraByName},
-	{"RemoveEntityByName", lua_RemoveEntityByName},
-	{"RemoveLightByName", lua_RemoveLightByName},
-	{"RemoveParticlesByName", lua_RemoveParticlesByName},
-	{"RemoveSpriteByName", lua_RemoveSpriteByName},
-	{"RemoveCameraByIndex", lua_RemoveCameraByIndex},
-	{"RemoveEntityByIndex", lua_RemoveEntityByIndex},
-	{"RemoveLightByIndex", lua_RemoveLightByIndex},
-	{"RemoveParticlesByIndex", lua_RemoveParticlesByIndex},
-	{"RemoveSpriteByIndex", lua_RemoveSpriteByIndex},
-	{"RemoveCameraByObject", lua_RemoveCameraByObject},
-	{"RemoveEntityByObject", lua_RemoveEntityByObject},
-	{"RemoveLightByObject", lua_RemoveLightByObject},
-	{"RemoveParticlesByObject", lua_RemoveParticlesByObject},
-	{"RemoveSpriteByObject", lua_RemoveSpriteByObject},
-	{"RemoveActorByObject", lua_RemoveActorByObject},
+	{"GetSceneCameraByIndex", lua_GetSceneCameraByIndex},
+	{"GetSceneEntityByIndex", lua_GetSceneEntityByIndex},
+	{"GetSceneLightByIndex", lua_GetSceneLightByIndex},
+	{"GetSceneArmatureByIndex", lua_GetSceneArmatureByIndex},
+	{"GetSceneParticlesByIndex", lua_GetSceneParticlesByIndex},
+	{"GetSceneSpriteByIndex", lua_GetSceneSpriteByIndex},
+	{"GetSceneTexture", lua_GetSceneTexture},
+	{"GetSceneMaterial", lua_GetSceneMaterial},
+	{"GetSceneModel", lua_GetSceneModel},
+	{"GetSceneScript", lua_GetSceneScript},
+	{"GetSceneCamera", lua_GetSceneCamera},
+	{"GetSceneEntity", lua_GetSceneEntity},
+	{"GetSceneLight", lua_GetSceneLight},
+	{"GetSceneArmature", lua_GetSceneArmature},
+	{"GetSceneParticles", lua_GetSceneParticles},
+	{"GetSceneSprite", lua_GetSceneSprite},
+	{"GetSceneActor", lua_GetSceneActor},
+	{"RemoveSceneCamera", lua_RemoveSceneCamera},
+	{"RemoveSceneEntity", lua_RemoveSceneEntity},
+	{"RemoveSceneLight", lua_RemoveSceneLight},
+	{"RemoveSceneParticles", lua_RemoveSceneParticles},
+	{"RemoveSceneSprite", lua_RemoveSceneSprite},
+	{"RemoveSceneCameraByIndex", lua_RemoveSceneCameraByIndex},
+	{"RemoveSceneEntityByIndex", lua_RemoveSceneEntityByIndex},
+	{"RemoveSceneLightByIndex", lua_RemoveSceneLightByIndex},
+	{"RemoveSceneParticlesByIndex", lua_RemoveSceneParticlesByIndex},
+	{"RemoveSceneSpriteByIndex", lua_RemoveSceneSpriteByIndex},
+	{"RemoveSceneCameraByObject", lua_RemoveSceneCameraByObject},
+	{"RemoveSceneEntityByObject", lua_RemoveSceneEntityByObject},
+	{"RemoveSceneLightByObject", lua_RemoveSceneLightByObject},
+	{"RemoveSceneParticlesByObject", lua_RemoveSceneParticlesByObject},
+	{"RemoveSceneSpriteByObject", lua_RemoveSceneSpriteByObject},
+	{"RemoveSceneActorByObject", lua_RemoveSceneActorByObject},
 	{"GetSceneScripts", lua_GetSceneScripts},
 	{"GetSceneTextures", lua_GetSceneTextures},
 	{"GetSceneMaterials", lua_GetSceneMaterials},
@@ -10897,7 +10897,7 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetScreenTexture", lua_GetScreenTexture},
 	{"SetScreenTexture", lua_SetScreenTexture},
 	{"SetScreenToTop", lua_SetScreenToTop},
-	{"ForceFocusToScreen", lua_ForceFocusToScreen},
+	{"ForceScreenFocus", lua_ForceScreenFocus},
 	{"ReleaseFocusFromScreen", lua_ReleaseFocusFromScreen},
 	{"CreateTextList", lua_CreateTextList},
 	{"GetTextListFont", lua_GetTextListFont},

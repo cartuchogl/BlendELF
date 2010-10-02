@@ -289,7 +289,7 @@ void elfUpdateEngine()
 	if(elfGetElapsedTime(eng->timeSyncTimer) > 0.0)
 	{
 		if(elfAboutZero(eng->tickRate))
-			eng->sync = (eng->sync*4.0+((float)elfGetElapsedTime(eng->timeSyncTimer)*eng->speed))/5.0;
+			eng->sync = (eng->sync*2.0+((float)elfGetElapsedTime(eng->timeSyncTimer)*eng->speed))/3.0;
 		else eng->sync = eng->tickRate;
 
 		elfStartTimer(eng->timeSyncTimer);

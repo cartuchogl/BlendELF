@@ -869,7 +869,7 @@ ELF_API void ELF_APIENTRY elfSetScreenToTop(elfScreen* screen)
 	elfDecRef((elfObject*)screen);
 }
 
-ELF_API void ELF_APIENTRY elfForceFocusToScreen(elfScreen* screen)
+ELF_API void ELF_APIENTRY elfForceScreenFocus(elfScreen* screen)
 {
 	elfButton* button;
 

@@ -96,7 +96,7 @@ ELF_API int ELF_APIENTRY elfGetBezierCurveType(elfBezierCurve* curve)
 	return curve->curveType;
 }
 
-ELF_API void ELF_APIENTRY elfAddPointToBezierCurve(elfBezierCurve* curve, elfBezierPoint* point)
+ELF_API void ELF_APIENTRY elfAddBezierCurvePoint(elfBezierCurve* curve, elfBezierPoint* point)
 {
 	int i;
 	elfBezierPoint* pnt;
@@ -177,7 +177,7 @@ void elfDestroyIpo(void* data)
 	elfDecObj(ELF_IPO);
 }
 
-ELF_API unsigned char ELF_APIENTRY elfAddCurveToIpo(elfIpo* ipo, elfBezierCurve* curve)
+ELF_API unsigned char ELF_APIENTRY elfAddIpoCurve(elfIpo* ipo, elfBezierCurve* curve)
 {
 	elfBezierCurve* cur;
 

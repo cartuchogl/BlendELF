@@ -877,12 +877,12 @@ ELF_API elfVec2f ELF_APIENTRY elfGetBezierPointControl2(elfBezierPoint* point);
 ELF_API elfBezierCurve* ELF_APIENTRY elfCreateBezierCurve();
 ELF_API void ELF_APIENTRY elfSetBezierCurveType(elfBezierCurve* curve, int type);
 ELF_API int ELF_APIENTRY elfGetBezierCurveType(elfBezierCurve* curve);
-ELF_API void ELF_APIENTRY elfAddPointToBezierCurve(elfBezierCurve* curve, elfBezierPoint* point);
+ELF_API void ELF_APIENTRY elfAddBezierCurvePoint(elfBezierCurve* curve, elfBezierPoint* point);
 ELF_API elfBezierPoint* ELF_APIENTRY elfGetPointFromBezierCurve(elfBezierCurve* curve, int idx);
 ELF_API float ELF_APIENTRY elfGetBezierCurveValue(elfBezierCurve* curve, float x);
 
 ELF_API elfIpo* ELF_APIENTRY elfCreateIpo();
-ELF_API unsigned char ELF_APIENTRY elfAddCurveToIpo(elfIpo* ipo, elfBezierCurve* curve);
+ELF_API unsigned char ELF_APIENTRY elfAddIpoCurve(elfIpo* ipo, elfBezierCurve* curve);
 ELF_API int ELF_APIENTRY elfGetIpoCurveCount(elfIpo* ipo);
 ELF_API elfBezierCurve* ELF_APIENTRY elfGetCurveFromIpo(elfIpo* ipo, int idx);
 ELF_API elfVec3f ELF_APIENTRY elfGetIpoLoc(elfIpo* ipo, float x);
@@ -962,9 +962,9 @@ ELF_API void ELF_APIENTRY elfSetActorAnisotropicFriction(elfActor* actor, float 
 ELF_API void ELF_APIENTRY elfSetActorLinearFactor(elfActor* actor, float x, float y, float z);
 ELF_API void ELF_APIENTRY elfSetActorAngularFactor(elfActor* actor, float x, float y, float z);
 
-ELF_API void ELF_APIENTRY elfAddForceToActor(elfActor* actor, float x, float y, float z);
-ELF_API void ELF_APIENTRY elfAddForceToActorLocal(elfActor* actor, float x, float y, float z);
-ELF_API void ELF_APIENTRY elfAddTorqueToActor(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfAddActorForce(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfAddActorForceLocal(elfActor* actor, float x, float y, float z);
+ELF_API void ELF_APIENTRY elfAddActorTorque(elfActor* actor, float x, float y, float z);
 ELF_API void ELF_APIENTRY elfSetActorLinearVelocity(elfActor* actor, float x, float y, float z);
 ELF_API void ELF_APIENTRY elfSetActorLinearVelocityLocal(elfActor* actor, float x, float y, float z);
 ELF_API void ELF_APIENTRY elfSetActorAngularVelocity(elfActor* actor, float x, float y, float z);
@@ -985,12 +985,12 @@ ELF_API elfVec3f ELF_APIENTRY elfGetActorAngularFactor(elfActor* actor);
 ELF_API elfVec3f ELF_APIENTRY elfGetActorLinearVelocity(elfActor* actor);
 ELF_API elfVec3f ELF_APIENTRY elfGetActorAngularVelocity(elfActor* actor);
 
-ELF_API elfJoint* ELF_APIENTRY elfAddHingeJointToActor(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az);
-ELF_API elfJoint* ELF_APIENTRY elfAddBallJointToActor(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz);
-ELF_API elfJoint* ELF_APIENTRY elfAddConeTwistJointToActor(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az);
-ELF_API elfJoint* ELF_APIENTRY elfGetActorJointByName(elfActor* actor, const char* name);
+ELF_API elfJoint* ELF_APIENTRY elfAddActorHingeJoint(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az);
+ELF_API elfJoint* ELF_APIENTRY elfAddActorBallJoint(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz);
+ELF_API elfJoint* ELF_APIENTRY elfAddActorConeTwistJoint(elfActor* actor, elfActor* actor2, const char* name, float px, float py, float pz, float ax, float ay, float az);
+ELF_API elfJoint* ELF_APIENTRY elfGetActorJoint(elfActor* actor, const char* name);
 ELF_API elfJoint* ELF_APIENTRY elfGetActorJointByIndex(elfActor* actor, int idx);
-ELF_API unsigned char ELF_APIENTRY elfRemoveActorJointByName(elfActor* actor, const char* name);
+ELF_API unsigned char ELF_APIENTRY elfRemoveActorJoint(elfActor* actor, const char* name);
 ELF_API unsigned char ELF_APIENTRY elfRemoveActorJointByIndex(elfActor* actor, int idx);
 ELF_API unsigned char ELF_APIENTRY elfRemoveActorJointByObject(elfActor* actor, elfJoint* joint);
 
@@ -1091,8 +1091,8 @@ ELF_API elfMeshData* ELF_APIENTRY elfCreateMeshData();
 ELF_API int ELF_APIENTRY elfGetMeshDataVertexCount(elfMeshData* meshData);
 ELF_API int ELF_APIENTRY elfGetMeshDataFaceCount(elfMeshData* meshData);
 
-ELF_API void ELF_APIENTRY elfAddVertexToMeshData(elfMeshData* meshData, elfVertex* vertice);
-ELF_API void ELF_APIENTRY elfAddFaceToMeshData(elfMeshData* meshData, int v1, int v2, int v3);
+ELF_API void ELF_APIENTRY elfAddMeshDataVertex(elfMeshData* meshData, elfVertex* vertice);
+ELF_API void ELF_APIENTRY elfAddMeshDataFace(elfMeshData* meshData, int v1, int v2, int v3);
 
 ELF_API elfVertex* ELF_APIENTRY elfGetVertexFromMeshData(elfMeshData* meshData, int idx);
 ELF_API elfFace* ELF_APIENTRY elfGetFaceFromMeshData(elfMeshData* meshData, int idx);
@@ -1402,11 +1402,11 @@ ELF_API int ELF_APIENTRY elfGetSceneArmatureCount(elfScene* scene);
 ELF_API int ELF_APIENTRY elfGetSceneParticlesCount(elfScene* scene);
 ELF_API int ELF_APIENTRY elfGetSceneSpriteCount(elfScene* scene);
 
-ELF_API void ELF_APIENTRY elfAddCameraToScene(elfScene* scene, elfCamera* camera);
-ELF_API void ELF_APIENTRY elfAddEntityToScene(elfScene* scene, elfEntity* entity);
-ELF_API void ELF_APIENTRY elfAddLightToScene(elfScene* scene, elfLight* light);
-ELF_API void ELF_APIENTRY elfAddParticlesToScene(elfScene* scene, elfParticles* particles);
-ELF_API void ELF_APIENTRY elfAddSpriteToScene(elfScene* scene, elfSprite* sprite);
+ELF_API void ELF_APIENTRY elfAddSceneCamera(elfScene* scene, elfCamera* camera);
+ELF_API void ELF_APIENTRY elfAddSceneEntity(elfScene* scene, elfEntity* entity);
+ELF_API void ELF_APIENTRY elfAddSceneLight(elfScene* scene, elfLight* light);
+ELF_API void ELF_APIENTRY elfAddSceneParticles(elfScene* scene, elfParticles* particles);
+ELF_API void ELF_APIENTRY elfAddSceneSprite(elfScene* scene, elfSprite* sprite);
 
 ELF_API void ELF_APIENTRY elfSetSceneActiveCamera(elfScene* scene, elfCamera* camera);
 ELF_API elfCamera* ELF_APIENTRY elfGetSceneActiveCamera(elfScene* scene);
@@ -1415,24 +1415,24 @@ ELF_API elfList* ELF_APIENTRY elfGetSceneRayCastResults(elfScene* scene, float x
 ELF_API elfCollision* ELF_APIENTRY elfGetDebugSceneRayCastResult(elfScene* scene, float x, float y, float z, float dx, float dy, float dz);
 ELF_API elfList* ELF_APIENTRY elfGetDebugSceneRayCastResults(elfScene* scene, float x, float y, float z, float dx, float dy, float dz);
 
-ELF_API elfCamera* ELF_APIENTRY elfGetCameraByIndex(elfScene* scene, int idx);
-ELF_API elfEntity* ELF_APIENTRY elfGetEntityByIndex(elfScene* scene, int idx);
-ELF_API elfLight* ELF_APIENTRY elfGetLightByIndex(elfScene* scene, int idx);
-ELF_API elfArmature* ELF_APIENTRY elfGetArmatureByIndex(elfScene* scene, int idx);
-ELF_API elfParticles* ELF_APIENTRY elfGetParticlesByIndex(elfScene* scene, int idx);
-ELF_API elfSprite* ELF_APIENTRY elfGetSpriteByIndex(elfScene* scene, int idx);
+ELF_API elfCamera* ELF_APIENTRY elfGetSceneCameraByIndex(elfScene* scene, int idx);
+ELF_API elfEntity* ELF_APIENTRY elfGetSceneEntityByIndex(elfScene* scene, int idx);
+ELF_API elfLight* ELF_APIENTRY elfGetSceneLightByIndex(elfScene* scene, int idx);
+ELF_API elfArmature* ELF_APIENTRY elfGetSceneArmatureByIndex(elfScene* scene, int idx);
+ELF_API elfParticles* ELF_APIENTRY elfGetSceneParticlesByIndex(elfScene* scene, int idx);
+ELF_API elfSprite* ELF_APIENTRY elfGetSceneSpriteByIndex(elfScene* scene, int idx);
 
-ELF_API elfTexture* ELF_APIENTRY elfGetTextureByName(elfScene* scene, const char* name);
-ELF_API elfMaterial* ELF_APIENTRY elfGetMaterialByName(elfScene* scene, const char* name);
-ELF_API elfModel* ELF_APIENTRY elfGetModelByName(elfScene* scene, const char* name);
-ELF_API elfScript* ELF_APIENTRY elfGetScriptByName(elfScene* scene, const char* name);
-ELF_API elfCamera* ELF_APIENTRY elfGetCameraByName(elfScene* scene, const char* name);
-ELF_API elfEntity* ELF_APIENTRY elfGetEntityByName(elfScene* scene, const char* name);
-ELF_API elfLight* ELF_APIENTRY elfGetLightByName(elfScene* scene, const char* name);
-ELF_API elfArmature* ELF_APIENTRY elfGetArmatureByName(elfScene* scene, const char* name);
-ELF_API elfParticles* ELF_APIENTRY elfGetParticlesByName(elfScene* scene, const char* name);
-ELF_API elfSprite* ELF_APIENTRY elfGetSpriteByName(elfScene* scene, const char* name);
-ELF_API elfActor* ELF_APIENTRY elfGetActorByName(elfScene* scene, const char* name);
+ELF_API elfTexture* ELF_APIENTRY elfGetSceneTexture(elfScene* scene, const char* name);
+ELF_API elfMaterial* ELF_APIENTRY elfGetSceneMaterial(elfScene* scene, const char* name);
+ELF_API elfModel* ELF_APIENTRY elfGetSceneModel(elfScene* scene, const char* name);
+ELF_API elfScript* ELF_APIENTRY elfGetSceneScript(elfScene* scene, const char* name);
+ELF_API elfCamera* ELF_APIENTRY elfGetSceneCamera(elfScene* scene, const char* name);
+ELF_API elfEntity* ELF_APIENTRY elfGetSceneEntity(elfScene* scene, const char* name);
+ELF_API elfLight* ELF_APIENTRY elfGetSceneLight(elfScene* scene, const char* name);
+ELF_API elfArmature* ELF_APIENTRY elfGetSceneArmature(elfScene* scene, const char* name);
+ELF_API elfParticles* ELF_APIENTRY elfGetSceneParticles(elfScene* scene, const char* name);
+ELF_API elfSprite* ELF_APIENTRY elfGetSceneSprite(elfScene* scene, const char* name);
+ELF_API elfActor* ELF_APIENTRY elfGetSceneActor(elfScene* scene, const char* name);
 
 // <!!
 elfTexture* elfGetOrLoadTextureByName(elfScene* scene, const char* name);
@@ -1449,25 +1449,25 @@ elfActor* elfGetOrLoadActorByName(elfScene* scene, const char* name);
 
 void elfRemoveActor(elfActor* actor);
 // !!>
-ELF_API unsigned char ELF_APIENTRY elfRemoveCameraByName(elfScene* scene, const char* name);
-ELF_API unsigned char ELF_APIENTRY elfRemoveEntityByName(elfScene* scene, const char* name);
-ELF_API unsigned char ELF_APIENTRY elfRemoveLightByName(elfScene* scene, const char* name);
-ELF_API unsigned char ELF_APIENTRY elfRemoveParticlesByName(elfScene* scene, const char* name);
-ELF_API unsigned char ELF_APIENTRY elfRemoveSpriteByName(elfScene* scene, const char* name);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSceneCamera(elfScene* scene, const char* name);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSceneEntity(elfScene* scene, const char* name);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSceneLight(elfScene* scene, const char* name);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSceneParticles(elfScene* scene, const char* name);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSceneSprite(elfScene* scene, const char* name);
 
-ELF_API unsigned char ELF_APIENTRY elfRemoveCameraByIndex(elfScene* scene, int idx);
-ELF_API unsigned char ELF_APIENTRY elfRemoveEntityByIndex(elfScene* scene, int idx);
-ELF_API unsigned char ELF_APIENTRY elfRemoveLightByIndex(elfScene* scene, int idx);
-ELF_API unsigned char ELF_APIENTRY elfRemoveParticlesByIndex(elfScene* scene, int idx);
-ELF_API unsigned char ELF_APIENTRY elfRemoveSpriteByIndex(elfScene* scene, int idx);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSceneCameraByIndex(elfScene* scene, int idx);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSceneEntityByIndex(elfScene* scene, int idx);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSceneLightByIndex(elfScene* scene, int idx);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSceneParticlesByIndex(elfScene* scene, int idx);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSceneSpriteByIndex(elfScene* scene, int idx);
 
-ELF_API unsigned char ELF_APIENTRY elfRemoveCameraByObject(elfScene* scene, elfCamera* camera);
-ELF_API unsigned char ELF_APIENTRY elfRemoveEntityByObject(elfScene* scene, elfEntity* entity);
-ELF_API unsigned char ELF_APIENTRY elfRemoveLightByObject(elfScene* scene, elfLight* light);
-ELF_API unsigned char ELF_APIENTRY elfRemoveParticlesByObject(elfScene* scene, elfParticles* particles);
-ELF_API unsigned char ELF_APIENTRY elfRemoveSpriteByObject(elfScene* scene, elfSprite* sprite);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSceneCameraByObject(elfScene* scene, elfCamera* camera);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSceneEntityByObject(elfScene* scene, elfEntity* entity);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSceneLightByObject(elfScene* scene, elfLight* light);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSceneParticlesByObject(elfScene* scene, elfParticles* particles);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSceneSpriteByObject(elfScene* scene, elfSprite* sprite);
 
-ELF_API unsigned char ELF_APIENTRY elfRemoveActorByObject(elfScene* scene, elfActor* actor);
+ELF_API unsigned char ELF_APIENTRY elfRemoveSceneActorByObject(elfScene* scene, elfActor* actor);
 
 // <!!
 void elfDrawScene(elfScene* scene);
@@ -1727,8 +1727,8 @@ void elfSetPhysicsObjectDamping(elfPhysicsObject* object, float linDamp, float a
 void elfSetPhysicsObjectAnisotropicFriction(elfPhysicsObject* object, float x, float y, float z);
 void elfSetPhysicsObjectSleepThresholds(elfPhysicsObject* object, float linThrs, float angThrs);
 void elfSetPhysicsObjectRestitution(elfPhysicsObject* object, float restitution);
-void elfAddForceToPhysicsObject(elfPhysicsObject* object, float x, float y, float z);
-void elfAddTorqueToPhysicsObject(elfPhysicsObject* object, float x, float y, float z);
+void elfAddPhysicsObjectForce(elfPhysicsObject* object, float x, float y, float z);
+void elfAddPhysicsObjectTorque(elfPhysicsObject* object, float x, float y, float z);
 void elfSetPhysicsObjectLinearVelocity(elfPhysicsObject* object, float x, float y, float z);
 void elfSetPhysicsObjectAngularVelocity(elfPhysicsObject* object, float x, float y, float z);
 void elfSetPhysicsObjectLinearFactor(elfPhysicsObject* object, float x, float y, float z);
@@ -1871,7 +1871,7 @@ ELF_API elfScreen* ELF_APIENTRY elfCreateScreen(const char* name);	// <mdoc> SCR
 ELF_API elfTexture* ELF_APIENTRY elfGetScreenTexture(elfScreen* screen);
 ELF_API void ELF_APIENTRY elfSetScreenTexture(elfScreen* screen, elfTexture* texture);
 ELF_API void ELF_APIENTRY elfSetScreenToTop(elfScreen* screen);
-ELF_API void ELF_APIENTRY elfForceFocusToScreen(elfScreen* screen);
+ELF_API void ELF_APIENTRY elfForceScreenFocus(elfScreen* screen);
 ELF_API void ELF_APIENTRY elfReleaseFocusFromScreen(elfScreen* screen);
 
 // <!!
