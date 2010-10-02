@@ -64,7 +64,7 @@ ELF_API elfModel* ELF_APIENTRY elfCreateModelFromMeshData(elfMeshData* data)
 	indexBuffer = (unsigned int*)gfxGetVertexDataBuffer(model->areas[0].index);
 
 	for(i = 0, face = (elfFace*)elfBeginList(data->faces); face;
-		face = (elfFace*)elfNextInList(data->faces), i+=3)
+		face = (elfFace*)elfGetListNext(data->faces), i+=3)
 	{
 		indexBuffer[i] = face->v1;
 		indexBuffer[i+1] = face->v2;
@@ -72,7 +72,7 @@ ELF_API elfModel* ELF_APIENTRY elfCreateModelFromMeshData(elfMeshData* data)
 	}
 
 	for(i = 0, j = 0, vertex = (elfVertex*)elfBeginList(data->vertices); vertex;
-		vertex = (elfVertex*)elfNextInList(data->vertices), i += 3, j += 2)
+		vertex = (elfVertex*)elfGetListNext(data->vertices), i += 3, j += 2)
 	{
 		vertexBuffer[i] = vertex->position.x;
 		vertexBuffer[i+1] = vertex->position.y;
@@ -356,7 +356,7 @@ void elfDrawModel(elfList* materials, elfModel* model, int mode, gfxShaderParams
 		found = ELF_FALSE;
 
 		for(material = (elfMaterial*)elfBeginList(materials); material;
-			material = (elfMaterial*)elfNextInList(materials))
+			material = (elfMaterial*)elfGetListNext(materials))
 		{
 			if(!material->lighting)
 			{
@@ -371,7 +371,7 @@ void elfDrawModel(elfList* materials, elfModel* model, int mode, gfxShaderParams
 	gfxSetVertexArray(model->vertexArray);
 
 	for(i = 0, material = (elfMaterial*)elfBeginList(materials); i < (int)model->areaCount;
-		i++, material = (elfMaterial*)elfNextInList(materials))
+		i++, material = (elfMaterial*)elfGetListNext(materials))
 	{
 		if(model->areas[i].vertexIndex)
 		{

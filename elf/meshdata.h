@@ -139,7 +139,7 @@ ELF_API int ELF_APIENTRY elfGetMeshDataFaceCount(elfMeshData* meshData)
 
 ELF_API void ELF_APIENTRY elfAddMeshDataVertex(elfMeshData* meshData, elfVertex* vertice)
 {
-	elfAppendToList(meshData->vertices, (elfObject*)vertice);
+	elfAppendListObject(meshData->vertices, (elfObject*)vertice);
 }
 
 ELF_API void ELF_APIENTRY elfAddMeshDataFace(elfMeshData* meshData, int v1, int v2, int v3)
@@ -157,16 +157,16 @@ ELF_API void ELF_APIENTRY elfAddMeshDataFace(elfMeshData* meshData, int v1, int 
 	face->v2 = v2;
 	face->v3 = v3;
 
-	elfAppendToList(meshData->faces, (elfObject*)face);
+	elfAppendListObject(meshData->faces, (elfObject*)face);
 }
 
 ELF_API elfVertex* ELF_APIENTRY elfGetVertexFromMeshData(elfMeshData* meshData, int idx)
 {
-	return (elfVertex*)elfGetItemFromList(meshData->vertices, idx);
+	return (elfVertex*)elfGetListObject(meshData->vertices, idx);
 }
 
 ELF_API elfFace* ELF_APIENTRY elfGetFaceFromMeshData(elfMeshData* meshData, int idx)
 {
-	return (elfFace*)elfGetItemFromList(meshData->faces, idx);
+	return (elfFace*)elfGetListObject(meshData->faces, idx);
 }
 

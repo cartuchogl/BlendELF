@@ -1,23 +1,10 @@
 
-elfResource* elfGetResourceById(elfList* resources, int id)
+elfResource* elfGetResource(elfList* resources, const char* name)
 {
 	elfResource* obj;
 
 	for(obj = (elfResource*)elfBeginList(resources); obj;
-		obj = (elfResource*)elfNextInList(resources))
-	{
-		if(obj->id == id) return obj;
-	}
-
-	return NULL;
-}
-
-elfResource* elfGetResourceByName(elfList* resources, const char* name)
-{
-	elfResource* obj;
-
-	for(obj = (elfResource*)elfBeginList(resources); obj;
-		obj = (elfResource*)elfNextInList(resources))
+		obj = (elfResource*)elfGetListNext(resources))
 	{
 		if(!strcmp(obj->name, name)) return obj;
 	}
@@ -25,7 +12,20 @@ elfResource* elfGetResourceByName(elfList* resources, const char* name)
 	return NULL;
 }
 
-void elfSetUniqueNameForResource(elfList* namedObjects, elfResource* object)
+elfResource* elfGetResourceById(elfList* resources, int id)
+{
+	elfResource* obj;
+
+	for(obj = (elfResource*)elfBeginList(resources); obj;
+		obj = (elfResource*)elfGetListNext(resources))
+	{
+		if(obj->id == id) return obj;
+	}
+
+	return NULL;
+}
+
+void elfSetResourceUniqueName(elfList* namedObjects, elfResource* object)
 {
 	char* tname;
 	char* nname;
@@ -34,7 +34,7 @@ void elfSetUniqueNameForResource(elfList* namedObjects, elfResource* object)
 
 	if(object->name && strlen(object->name))
 	{
-		if(!elfGetResourceByName(namedObjects, object->name))
+		if(!elfGetResource(namedObjects, object->name))
 		{
 			return;
 		}
@@ -73,7 +73,7 @@ void elfSetUniqueNameForResource(elfList* namedObjects, elfResource* object)
 	num = 1;
 	sprintf(nname, "%s%d", tname, num);
 
-	while(elfGetResourceByName(namedObjects, nname))
+	while(elfGetResource(namedObjects, nname))
 	{
 		memset(nname, 0x0, sizeof(char)*(strlen(tname)+12));
 		num++;

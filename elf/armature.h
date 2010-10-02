@@ -47,7 +47,7 @@ ELF_API elfBone* ELF_APIENTRY elfGetBoneChildByName(elfBone* bone, const char* n
 	elfBone* cbone;
 
 	for(cbone = (elfBone*)elfBeginList(bone->children); cbone;
-		cbone = (elfBone*)elfNextInList(bone->children))
+		cbone = (elfBone*)elfGetListNext(bone->children))
 	{
 		if(!strcmp(cbone->name, name))
 		{
@@ -63,7 +63,7 @@ ELF_API elfBone* ELF_APIENTRY elfGetBoneChildById(elfBone* bone, int id)
 	elfBone* cbone;
 
 	for(cbone = (elfBone*)elfBeginList(bone->children); cbone;
-		cbone = (elfBone*)elfNextInList(bone->children))
+		cbone = (elfBone*)elfGetListNext(bone->children))
 	{
 		if(cbone->id == id)
 		{
@@ -76,7 +76,7 @@ ELF_API elfBone* ELF_APIENTRY elfGetBoneChildById(elfBone* bone, int id)
 
 ELF_API elfBone* ELF_APIENTRY elfGetBoneChildByIndex(elfBone* bone, int idx)
 {
-	return (elfBone*)elfGetItemFromList(bone->children, idx);
+	return (elfBone*)elfGetListObject(bone->children, idx);
 }
 
 ELF_API elfVec3f ELF_APIENTRY elfGetBonePosition(elfBone* bone)
@@ -105,7 +105,7 @@ void elfSetBoneArmature(elfBone* bone, elfArmature* armature)
 	bone->armature = armature;
 
 	for(cbone = (elfBone*)elfBeginList(bone->children); cbone;
-		cbone = (elfBone*)elfNextInList(bone->children))
+		cbone = (elfBone*)elfGetListNext(bone->children))
 	{
 		elfSetBoneArmature(cbone, armature);
 	}
@@ -120,7 +120,7 @@ int elfGetBoneMaxId(elfBone* bone)
 	maxId = bone->id;
 
 	for(cbone = (elfBone*)elfBeginList(bone->children); cbone;
-		cbone = (elfBone*)elfNextInList(bone->children))
+		cbone = (elfBone*)elfGetListNext(bone->children))
 	{
 		curMaxId = elfGetBoneMaxId(cbone);
 		if(curMaxId > maxId) maxId = curMaxId;
@@ -136,7 +136,7 @@ void elfPopulateBoneArray(elfBone* bone, elfBone* *bones)
 	bones[bone->id] = bone;
 
 	for(cbone = (elfBone*)elfBeginList(bone->children); cbone;
-		cbone = (elfBone*)elfNextInList(bone->children))
+		cbone = (elfBone*)elfGetListNext(bone->children))
 	{
 		elfPopulateBoneArray(cbone, bones);
 	}
@@ -150,7 +150,7 @@ void elfUpdateArmatureBones(elfArmature* armature)
 
 	maxId = 0;
 	for(cbone = (elfBone*)elfBeginList(armature->rootBones); cbone;
-		cbone = (elfBone*)elfNextInList(armature->rootBones))
+		cbone = (elfBone*)elfGetListNext(armature->rootBones))
 	{
 		curMaxId = elfGetBoneMaxId(cbone);
 		if(curMaxId > maxId) maxId = curMaxId;
@@ -163,7 +163,7 @@ void elfUpdateArmatureBones(elfArmature* armature)
 	armature->boneCount = maxId+1;
 
 	for(cbone = (elfBone*)elfBeginList(armature->rootBones); cbone;
-		cbone = (elfBone*)elfNextInList(armature->rootBones))
+		cbone = (elfBone*)elfGetListNext(armature->rootBones))
 	{
 		elfPopulateBoneArray(cbone, armature->bones);
 	}
@@ -334,7 +334,7 @@ ELF_API elfBone* ELF_APIENTRY elfGetBoneFromArmatureById(int id, elfArmature* ar
 void elfAddRootBoneToArmature(elfArmature* armature, elfBone* bone)
 {
 	if(bone->parent) return;
-	elfAppendToList(armature->rootBones, (elfObject*)bone);
+	elfAppendListObject(armature->rootBones, (elfObject*)bone);
 	elfSetBoneArmature(bone, armature);
 	elfUpdateArmatureBones(armature);
 }
@@ -407,7 +407,7 @@ void elfDrawBoneHierarchy(elfBone* bone, gfxShaderParams* shaderParams)
 	gfxDrawBoundingBox(min, max);
 
 	for(cbone = (elfBone*)elfBeginList(bone->children); cbone;
-		cbone = (elfBone*)elfNextInList(bone->children))
+		cbone = (elfBone*)elfGetListNext(bone->children))
 	{
 		vertexBuffer[3] = cbone->curPos.x;
 		vertexBuffer[4] = cbone->curPos.y;
@@ -424,7 +424,7 @@ void elfDrawArmatureDebug(elfArmature* armature, gfxShaderParams* shaderParams)
 	elfBone* bone;
 
 	for(bone = (elfBone*)elfBeginList(armature->rootBones); bone;
-		bone = (elfBone*)elfNextInList(armature->rootBones))
+		bone = (elfBone*)elfGetListNext(armature->rootBones))
 	{
 		elfDrawBoneHierarchy(bone, shaderParams);
 	}

@@ -102,16 +102,16 @@ ELF_API void ELF_APIENTRY elfAddBezierCurvePoint(elfBezierCurve* curve, elfBezie
 	elfBezierPoint* pnt;
 
 	for(i = 0, pnt = (elfBezierPoint*)elfBeginList(curve->points); pnt;
-		pnt = (elfBezierPoint*)elfNextInList(curve->points), i++)
+		pnt = (elfBezierPoint*)elfGetListNext(curve->points), i++)
 	{
 		if(pnt->p.x > point->p.x)
 		{
-			elfInsertToList(curve->points, i, (elfObject*)point);
+			elfInsertListObject(curve->points, i, (elfObject*)point);
 			return;
 		}
 	}
 
-	elfAppendToList(curve->points, (elfObject*)point);
+	elfAppendListObject(curve->points, (elfObject*)point);
 }
 
 int elfGetCurvePointCount(elfBezierCurve* curve)
@@ -121,7 +121,7 @@ int elfGetCurvePointCount(elfBezierCurve* curve)
 
 ELF_API elfBezierPoint* ELF_APIENTRY elfGetPointFromBezierCurve(elfBezierCurve* curve, int idx)
 {
-	return (elfBezierPoint*)elfGetItemFromList(curve->points, idx);
+	return (elfBezierPoint*)elfGetListObject(curve->points, idx);
 }
 
 ELF_API float ELF_APIENTRY elfGetBezierCurveValue(elfBezierCurve* curve, float x)
@@ -132,7 +132,7 @@ ELF_API float ELF_APIENTRY elfGetBezierCurveValue(elfBezierCurve* curve, float x
 	float t;
 
 	for(pnt = (elfBezierPoint*)elfBeginList(curve->points); pnt;
-		pnt = (elfBezierPoint*)elfNextInList(curve->points))
+		pnt = (elfBezierPoint*)elfGetListNext(curve->points))
 	{
 		if(pnt->p.x > x)
 		{
@@ -182,12 +182,12 @@ ELF_API unsigned char ELF_APIENTRY elfAddIpoCurve(elfIpo* ipo, elfBezierCurve* c
 	elfBezierCurve* cur;
 
 	for(cur = (elfBezierCurve*)elfBeginList(ipo->curves); cur;
-		cur = (elfBezierCurve*)elfNextInList(ipo->curves))
+		cur = (elfBezierCurve*)elfGetListNext(ipo->curves))
 	{
 		if(cur->curveType == curve->curveType) return ELF_FALSE;
 	}
 
-	elfAppendToList(ipo->curves, (elfObject*)curve);
+	elfAppendListObject(ipo->curves, (elfObject*)curve);
 
 	if(curve->curveType >= ELF_LOC_X && curve->curveType <= ELF_LOC_Z) ipo->loc = ELF_TRUE;
 	if(curve->curveType >= ELF_ROT_X && curve->curveType <= ELF_ROT_Z) ipo->rot = ELF_TRUE;
@@ -204,7 +204,7 @@ ELF_API int ELF_APIENTRY elfGetIpoCurveCount(elfIpo* ipo)
 
 ELF_API elfBezierCurve* ELF_APIENTRY elfGetCurveFromIpo(elfIpo* ipo, int idx)
 {
-	return (elfBezierCurve*)elfGetItemFromList(ipo->curves, idx);
+	return (elfBezierCurve*)elfGetListObject(ipo->curves, idx);
 }
 
 ELF_API elfVec3f ELF_APIENTRY elfGetIpoLoc(elfIpo* ipo, float x)
@@ -215,7 +215,7 @@ ELF_API elfVec3f ELF_APIENTRY elfGetIpoLoc(elfIpo* ipo, float x)
 	memset(&result, 0x0, sizeof(elfVec3f));
 
 	for(curve = (elfBezierCurve*)elfBeginList(ipo->curves); curve;
-		curve = (elfBezierCurve*)elfNextInList(ipo->curves))
+		curve = (elfBezierCurve*)elfGetListNext(ipo->curves))
 	{
 		if(curve->curveType == ELF_LOC_X) result.x = elfGetBezierCurveValue(curve, x);
 		else if(curve->curveType == ELF_LOC_Y) result.y = elfGetBezierCurveValue(curve, x);
@@ -233,7 +233,7 @@ ELF_API elfVec3f ELF_APIENTRY elfGetIpoRot(elfIpo* ipo, float x)
 	memset(&result, 0x0, sizeof(elfVec3f));
 
 	for(curve = (elfBezierCurve*)elfBeginList(ipo->curves); curve;
-		curve = (elfBezierCurve*)elfNextInList(ipo->curves))
+		curve = (elfBezierCurve*)elfGetListNext(ipo->curves))
 	{
 		if(curve->curveType == ELF_ROT_X) result.x = elfGetBezierCurveValue(curve, x);
 		else if(curve->curveType == ELF_ROT_Y) result.y = elfGetBezierCurveValue(curve, x);
@@ -251,7 +251,7 @@ ELF_API elfVec3f ELF_APIENTRY elfGetIpoScale(elfIpo* ipo, float x)
 	memset(&result, 0x0, sizeof(elfVec3f));
 
 	for(curve = (elfBezierCurve*)elfBeginList(ipo->curves); curve;
-		curve = (elfBezierCurve*)elfNextInList(ipo->curves))
+		curve = (elfBezierCurve*)elfGetListNext(ipo->curves))
 	{
 		if(curve->curveType == ELF_SCALE_X) result.x = elfGetBezierCurveValue(curve, x);
 		else if(curve->curveType == ELF_SCALE_Y) result.y = elfGetBezierCurveValue(curve, x);
@@ -269,7 +269,7 @@ ELF_API elfVec4f ELF_APIENTRY elfGetIpoQua(elfIpo* ipo, float x)
 	memset(&result, 0x0, sizeof(elfVec4f));
 
 	for(curve = (elfBezierCurve*)elfBeginList(ipo->curves); curve;
-		curve = (elfBezierCurve*)elfNextInList(ipo->curves))
+		curve = (elfBezierCurve*)elfGetListNext(ipo->curves))
 	{
 		if(curve->curveType == ELF_QUA_X) result.x = elfGetBezierCurveValue(curve, x);
 		else if(curve->curveType == ELF_QUA_Y) result.y = elfGetBezierCurveValue(curve, x);

@@ -96,7 +96,7 @@ elfPak* elfCreatePakFromFile(const char* filePath)
 		index->name = elfCreateString(name);
 		index->offset = offset;
 
-		elfAppendToList(pak->indexes, (elfObject*)index);
+		elfAppendListObject(pak->indexes, (elfObject*)index);
 	}
 
 	fclose(file);
@@ -132,7 +132,7 @@ elfPakIndex* elfGetPakIndexByName(elfPak* pak, const char* name, unsigned char t
 	elfPakIndex* index;
 
 	for(index = (elfPakIndex*)elfBeginList(pak->indexes); index;
-		index = (elfPakIndex*)elfNextInList(pak->indexes))
+		index = (elfPakIndex*)elfGetListNext(pak->indexes))
 	{
 		if(!strcmp(index->name, name) && index->indexType == type) return index;
 	}
@@ -143,7 +143,7 @@ elfPakIndex* elfGetPakIndexByName(elfPak* pak, const char* name, unsigned char t
 elfPakIndex* elfGetPakIndexByIndex(elfPak* pak, int idx)
 {
 	if(idx < 0 || idx > elfGetListLength(pak->indexes)-1) return NULL;
-	return (elfPakIndex*)elfGetItemFromList(pak->indexes, idx);
+	return (elfPakIndex*)elfGetListObject(pak->indexes, idx);
 }
 
 unsigned char elfGetPakIndexType(elfPakIndex* index)
@@ -177,7 +177,7 @@ int elfGetActorHeaderSizeBytes(elfActor* actor)
 
 	sizeBytes += sizeof(unsigned char);	// curve count
 	for(curve = (elfBezierCurve*)elfBeginList(actor->ipo->curves); curve;
-		curve = (elfBezierCurve*)elfNextInList(actor->ipo->curves))
+		curve = (elfBezierCurve*)elfGetListNext(actor->ipo->curves))
 	{
 		sizeBytes += sizeof(unsigned char);	// type
 		sizeBytes += sizeof(unsigned char);	// interpolation
@@ -200,7 +200,7 @@ int elfGetActorHeaderSizeBytes(elfActor* actor)
 
 	sizeBytes += sizeof(int);	// property count
 	for(property = (elfProperty*)elfBeginList(actor->properties); property;
-		property = (elfProperty*)elfNextInList(actor->properties))
+		property = (elfProperty*)elfGetListNext(actor->properties))
 	{
 		sizeBytes += sizeof(unsigned char);	// prop type
 		sizeBytes += sizeof(char)*ELF_NAME_LENGTH;	// prop name
@@ -579,7 +579,7 @@ void elfReadActorHeader(elfActor* actor, FILE* file, elfScene* scene)
 		else if(property->propertyType == ELF_PROPERTY_INT) fread((char*)&property->fval, sizeof(int), 1, file);
 		else if(property->propertyType == ELF_PROPERTY_BOOL) fread((char*)&property->fval, sizeof(unsigned char), 1, file);
 
-		elfAppendToList(actor->properties, (elfObject*)property);
+		elfAppendListObject(actor->properties, (elfObject*)property);
 	}
 }
 
@@ -659,27 +659,27 @@ elfArmature* elfCreateArmatureFromPak(FILE* file, const char* name, elfScene* sc
 
 			strObj = elfCreateStringObject();
 			if(strlen(parent) > 0) strObj->str = elfCreateString(parent);
-			elfAppendToList(boneParents, (elfObject*)strObj);
-			elfAppendToList(bones, (elfObject*)bone);
+			elfAppendListObject(boneParents, (elfObject*)strObj);
+			elfAppendListObject(bones, (elfObject*)bone);
 		}
 
 		for(bone = (elfBone*)elfBeginList(bones), strObj = (elfString*)elfBeginList(boneParents); bone && strObj;
-			bone = (elfBone*)elfNextInList(bones), strObj = (elfString*)elfNextInList(boneParents))
+			bone = (elfBone*)elfGetListNext(bones), strObj = (elfString*)elfGetListNext(boneParents))
 		{
 			if(strObj->str)
 			{
-				parentBone = (elfBone*)elfGetResourceByName(bones, strObj->str);
+				parentBone = (elfBone*)elfGetResource(bones, strObj->str);
 				if(parentBone)
 				{
 					bone->parent = parentBone;
-					elfAppendToList(bone->parent->children, (elfObject*)bone);
+					elfAppendListObject(bone->parent->children, (elfObject*)bone);
 				}
 				elfSeekList(bones, (elfObject*)bone);
 			}
 		}
 
 		for(bone = (elfBone*)elfBeginList(bones); bone;
-			bone = (elfBone*)elfNextInList(bones))
+			bone = (elfBone*)elfGetListNext(bones))
 		{
 			if(!bone->parent)
 			{
@@ -1371,7 +1371,7 @@ elfScene* elfCreateSceneFromPak(elfPak* pak)
 
 	sceneRead = ELF_FALSE;
 	for(index = (elfPakIndex*)elfBeginList(pak->indexes); index;
-		index = (elfPakIndex*)elfNextInList(pak->indexes))
+		index = (elfPakIndex*)elfGetListNext(pak->indexes))
 	{
 		if(index->indexType == ELF_CAMERA) camera = elfGetOrLoadCameraByName(scene, index->name);
 		else if(index->indexType == ELF_ENTITY) entity = elfGetOrLoadEntityByName(scene, index->name);
@@ -1466,7 +1466,7 @@ void elfWriteActorHeader(elfActor* actor, FILE* file)
 	fwrite((char*)&curveCount, sizeof(unsigned char), 1, file);
 
 	for(curve = (elfBezierCurve*)elfBeginList(actor->ipo->curves); curve;
-		curve = (elfBezierCurve*)elfNextInList(actor->ipo->curves))
+		curve = (elfBezierCurve*)elfGetListNext(actor->ipo->curves))
 	{
 		fwrite((char*)&curve->curveType, sizeof(unsigned char), 1, file);
 		fwrite((char*)&curve->interpolation, sizeof(unsigned char), 1, file);
@@ -1474,7 +1474,7 @@ void elfWriteActorHeader(elfActor* actor, FILE* file)
 		pointCount = elfGetListLength(curve->points);
 		fwrite((char*)&pointCount, sizeof(int), 1, file);
 		for(point = (elfBezierPoint*)elfBeginList(curve->points); point;
-			point = (elfBezierPoint*)elfNextInList(curve->points))
+			point = (elfBezierPoint*)elfGetListNext(curve->points))
 		{
 			fwrite((char*)&point->c1.x, sizeof(float), 2, file);
 			fwrite((char*)&point->p.x, sizeof(float), 2, file);
@@ -1513,7 +1513,7 @@ void elfWriteActorHeader(elfActor* actor, FILE* file)
 	propertyCount = elfGetListLength(actor->properties);
 	fwrite((char*)&propertyCount, sizeof(int), 1, file);
 	for(property = (elfProperty*)elfBeginList(actor->properties); property;
-		property = (elfProperty*)elfNextInList(actor->properties))
+		property = (elfProperty*)elfGetListNext(actor->properties))
 	{
 		fwrite((char*)&property->propertyType, sizeof(unsigned char), 1, file);
 		elfWriteNameToFile(property->name, file);
@@ -1603,7 +1603,7 @@ void elfWriteEntityToFile(elfEntity* entity, FILE* file)
 	fwrite((char*)&materialCount, sizeof(unsigned int), 1, file);
 
 	for(mat = (elfMaterial*)elfBeginList(entity->materials); mat;
-		mat = (elfMaterial*)elfNextInList(entity->materials))
+		mat = (elfMaterial*)elfGetListNext(entity->materials))
 	{
 		elfWriteNameToFile(mat->name, file);
 	}
@@ -1872,7 +1872,7 @@ void elfWriteResourceIndexesToFile(elfList* resources, unsigned int* offset, FIL
 	elfResource* res;
 
 	for(res = (elfResource*)elfBeginList(resources); res;
-		res = (elfResource*)elfNextInList(resources))
+		res = (elfResource*)elfGetListNext(resources))
 	{
 		elfWriteResourceIndexToFile(res, offset, file);
 	}
@@ -1883,7 +1883,7 @@ void elfWriteResourcesToFile(elfList* resources, FILE* file)
 	elfResource* res;
 
 	for(res = (elfResource*)elfBeginList(resources); res;
-		res = (elfResource*)elfNextInList(resources))
+		res = (elfResource*)elfGetListNext(resources))
 	{
 		switch(res->objType)
 		{
@@ -1908,8 +1908,8 @@ void elfAddTextureForSaving(elfList* textures, elfTexture* texture)
 	{
 		if(elfLoadTextureData(texture))
 		{
-			elfSetUniqueNameForResource(textures, (elfResource*)texture);
-			elfAppendToList(textures, (elfObject*)texture);
+			elfSetResourceUniqueName(textures, (elfResource*)texture);
+			elfAppendListObject(textures, (elfObject*)texture);
 		}
 	}
 	else
@@ -1968,49 +1968,49 @@ unsigned char elfSaveSceneToPak(elfScene* scene, const char* filePath)
 	elfIncRef((elfObject*)particles);
 	elfIncRef((elfObject*)sprites);
 
-	elfAppendToList(scenes, (elfObject*)scene);
+	elfAppendListObject(scenes, (elfObject*)scene);
 
 	for(cam = (elfCamera*)elfBeginList(scene->cameras); cam;
-		cam = (elfCamera*)elfNextInList(scene->cameras))
+		cam = (elfCamera*)elfGetListNext(scene->cameras))
 	{
 		if(cam->script && !elfGetResourceById(scripts, cam->script->id))
 		{
-			elfSetUniqueNameForResource(scripts, (elfResource*)cam->script);
-			elfAppendToList(scripts, (elfObject*)cam->script);
+			elfSetResourceUniqueName(scripts, (elfResource*)cam->script);
+			elfAppendListObject(scripts, (elfObject*)cam->script);
 		}
 
-		elfSetUniqueNameForResource(cameras, (elfResource*)cam);
-		elfAppendToList(cameras, (elfObject*)cam);
+		elfSetResourceUniqueName(cameras, (elfResource*)cam);
+		elfAppendListObject(cameras, (elfObject*)cam);
 	}
 
 	for(ent = (elfEntity*)elfBeginList(scene->entities); ent;
-		ent = (elfEntity*)elfNextInList(scene->entities))
+		ent = (elfEntity*)elfGetListNext(scene->entities))
 	{
 		if(ent->script && !elfGetResourceById(scripts, ent->script->id))
 		{
-			elfSetUniqueNameForResource(scripts, (elfResource*)ent->script);
-			elfAppendToList(scripts, (elfObject*)ent->script);
+			elfSetResourceUniqueName(scripts, (elfResource*)ent->script);
+			elfAppendListObject(scripts, (elfObject*)ent->script);
 		}
 
 		if(ent->model && !elfGetResourceById(models, ent->model->id))
 		{
-			elfSetUniqueNameForResource(models, (elfResource*)ent->model);
-			elfAppendToList(models, (elfObject*)ent->model);
+			elfSetResourceUniqueName(models, (elfResource*)ent->model);
+			elfAppendListObject(models, (elfObject*)ent->model);
 		}
 
 		if(ent->armature && !elfGetResourceById(armatures, ent->armature->id))
 		{
-			elfSetUniqueNameForResource(armatures, (elfResource*)ent->armature);
-			elfAppendToList(armatures, (elfObject*)ent->armature);
+			elfSetResourceUniqueName(armatures, (elfResource*)ent->armature);
+			elfAppendListObject(armatures, (elfObject*)ent->armature);
 		}
 
 		for(mat = (elfMaterial*)elfBeginList(ent->materials); mat;
-			mat = (elfMaterial*)elfNextInList(ent->materials))
+			mat = (elfMaterial*)elfGetListNext(ent->materials))
 		{
 			if(!elfGetResourceById(materials, mat->id))
 			{
-				elfSetUniqueNameForResource(materials, (elfResource*)mat);
-				elfAppendToList(materials, (elfObject*)mat);
+				elfSetResourceUniqueName(materials, (elfResource*)mat);
+				elfAppendListObject(materials, (elfObject*)mat);
 
 				elfAddTextureForSaving(textures, mat->diffuseMap);
 				elfAddTextureForSaving(textures, mat->normalMap);
@@ -2020,72 +2020,72 @@ unsigned char elfSaveSceneToPak(elfScene* scene, const char* filePath)
 			}
 		}
 
-		elfSetUniqueNameForResource(entities, (elfResource*)ent);
-		elfAppendToList(entities, (elfObject*)ent);
+		elfSetResourceUniqueName(entities, (elfResource*)ent);
+		elfAppendListObject(entities, (elfObject*)ent);
 	}
 
 	for(lig = (elfLight*)elfBeginList(scene->lights); lig;
-		lig = (elfLight*)elfNextInList(scene->lights))
+		lig = (elfLight*)elfGetListNext(scene->lights))
 	{
 		if(lig->script && !elfGetResourceById(scripts, lig->script->id))
 		{
-			elfSetUniqueNameForResource(scripts, (elfResource*)lig->script);
-			elfAppendToList(scripts, (elfObject*)lig->script);
+			elfSetResourceUniqueName(scripts, (elfResource*)lig->script);
+			elfAppendListObject(scripts, (elfObject*)lig->script);
 		}
 
-		elfSetUniqueNameForResource(lights, (elfResource*)lig);
-		elfAppendToList(lights, (elfObject*)lig);
+		elfSetResourceUniqueName(lights, (elfResource*)lig);
+		elfAppendListObject(lights, (elfObject*)lig);
 	}
 
 	for(par = (elfParticles*)elfBeginList(scene->particles); par;
-		par = (elfParticles*)elfNextInList(scene->particles))
+		par = (elfParticles*)elfGetListNext(scene->particles))
 	{
 		if(par->script && !elfGetResourceById(scripts, par->script->id))
 		{
-			elfSetUniqueNameForResource(scripts, (elfResource*)par->script);
-			elfAppendToList(scripts, (elfObject*)par->script);
+			elfSetResourceUniqueName(scripts, (elfResource*)par->script);
+			elfAppendListObject(scripts, (elfObject*)par->script);
 		}
 
 		if(par->texture && !elfGetResourceById(textures, par->texture->id))
 		{
 			if(elfLoadTextureData(par->texture))
 			{
-				elfSetUniqueNameForResource(textures, (elfResource*)par->texture);
-				elfAppendToList(textures, (elfObject*)par->texture);
+				elfSetResourceUniqueName(textures, (elfResource*)par->texture);
+				elfAppendListObject(textures, (elfObject*)par->texture);
 			}
 		}
 
 		if(par->model && !elfGetResourceById(models, par->model->id))
 		{
-			elfSetUniqueNameForResource(models, (elfResource*)par->model);
-			elfAppendToList(models, (elfObject*)par->model);
+			elfSetResourceUniqueName(models, (elfResource*)par->model);
+			elfAppendListObject(models, (elfObject*)par->model);
 		}
 
 		if(par->entity && !elfGetResourceById(entities, par->entity->id))
 		{
-			elfSetUniqueNameForResource(entities, (elfResource*)par->entity);
-			elfAppendToList(entities, (elfObject*)par->entity);
+			elfSetResourceUniqueName(entities, (elfResource*)par->entity);
+			elfAppendListObject(entities, (elfObject*)par->entity);
 		}
 
-		elfSetUniqueNameForResource(particles, (elfResource*)par);
-		elfAppendToList(particles, (elfObject*)par);
+		elfSetResourceUniqueName(particles, (elfResource*)par);
+		elfAppendListObject(particles, (elfObject*)par);
 	}
 
 	for(spr = (elfSprite*)elfBeginList(scene->sprites); spr;
-		spr = (elfSprite*)elfNextInList(scene->sprites))
+		spr = (elfSprite*)elfGetListNext(scene->sprites))
 	{
 		if(spr->script && !elfGetResourceById(scripts, spr->script->id))
 		{
-			elfSetUniqueNameForResource(scripts, (elfResource*)spr->script);
-			elfAppendToList(scripts, (elfObject*)spr->script);
+			elfSetResourceUniqueName(scripts, (elfResource*)spr->script);
+			elfAppendListObject(scripts, (elfObject*)spr->script);
 		}
 
 		mat = spr->material;
 
 		if(mat && !elfGetResourceById(materials, mat->id))
 		{
-			elfSetUniqueNameForResource(materials, (elfResource*)mat);
-			elfAppendToList(materials, (elfObject*)mat);
+			elfSetResourceUniqueName(materials, (elfResource*)mat);
+			elfAppendListObject(materials, (elfObject*)mat);
 
 			elfAddTextureForSaving(textures, mat->diffuseMap);
 			elfAddTextureForSaving(textures, mat->normalMap);
@@ -2094,8 +2094,8 @@ unsigned char elfSaveSceneToPak(elfScene* scene, const char* filePath)
 			elfAddTextureForSaving(textures, mat->lightMap);
 		}
 
-		elfSetUniqueNameForResource(sprites, (elfResource*)spr);
-		elfAppendToList(sprites, (elfObject*)spr);
+		elfSetResourceUniqueName(sprites, (elfResource*)spr);
+		elfAppendListObject(sprites, (elfObject*)spr);
 	}
 
 	file = fopen(filePath, "wb");

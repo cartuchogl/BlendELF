@@ -798,7 +798,7 @@ void elfDrawScreen(elfScreen* screen, elfArea* area, gfxShaderParams* shaderPara
 		-1.0, 1.0, shaderParams->projectionMatrix);
 
 	for(object = (elfGuiObject*)elfBeginList(screen->children); object;
-		object = (elfGuiObject*)elfNextInList(screen->children))
+		object = (elfGuiObject*)elfGetListNext(screen->children))
 	{
 		if(object->objType == ELF_LABEL) elfDrawLabel((elfLabel*)object, shaderParams);
 		else if(object->objType == ELF_BUTTON) elfDrawButton((elfButton*)object, shaderParams);
@@ -822,7 +822,7 @@ void elfDrawScreen(elfScreen* screen, elfArea* area, gfxShaderParams* shaderPara
 	}
 
 	for(object = (elfGuiObject*)elfBeginList(screen->screens); object;
-		object = (elfGuiObject*)elfNextInList(screen->screens))
+		object = (elfGuiObject*)elfGetListNext(screen->screens))
 	{
 		area->pos.x = x; area->pos.y = y; area->size.x = width; area->size.y = height;
 		elfDrawScreen((elfScreen*)object, area, shaderParams);
@@ -864,8 +864,8 @@ ELF_API void ELF_APIENTRY elfSetScreenToTop(elfScreen* screen)
 	if(!screen->parent) return;
 
 	elfIncRef((elfObject*)screen);
-	elfRemoveFromList(screen->parent->screens, (elfObject*)screen);
-	elfAppendToList(screen->parent->screens, (elfObject*)screen);
+	elfRemoveListObject(screen->parent->screens, (elfObject*)screen);
+	elfAppendListObject(screen->parent->screens, (elfObject*)screen);
 	elfDecRef((elfObject*)screen);
 }
 
@@ -978,7 +978,7 @@ void elfDrawTextList(elfTextList* textList, elfArea* area, gfxShaderParams* shad
 	light = ELF_TRUE;
 	offset = textList->font->size+textList->font->offsetY;
 	for(i = 0, strObj = (elfString*)elfBeginList(textList->items); strObj;
-		strObj = (elfString*)elfNextInList(textList->items), i++)
+		strObj = (elfString*)elfGetListNext(textList->items), i++)
 	{
 		if(i < textList->offset) continue;
 		if(i-textList->offset > textList->rows-1) break;
@@ -1064,7 +1064,7 @@ ELF_API const char* ELF_APIENTRY elfGetTextListItem(elfTextList* textList, int i
 	if(idx < 0 || idx > elfGetListLength(textList->items)-1) return "";
 
 	for(i = 0, strObj = (elfString*)elfBeginList(textList->items); strObj;
-		strObj = (elfString*)elfNextInList(textList->items), i++)
+		strObj = (elfString*)elfGetListNext(textList->items), i++)
 	{
 		if(idx == i) return strObj->str;
 	}
@@ -1080,7 +1080,7 @@ ELF_API const char* ELF_APIENTRY elfGetTextListSelectedItem(elfTextList* textLis
 	if(textList->selection < 0 || textList->selection > elfGetListLength(textList->items)-1) return "";
 
 	for(i = 0, strObj = (elfString*)elfBeginList(textList->items); strObj;
-		strObj = (elfString*)elfNextInList(textList->items), i++)
+		strObj = (elfString*)elfGetListNext(textList->items), i++)
 	{
 		if(textList->selection == i) return strObj->str;
 	}
@@ -1152,14 +1152,14 @@ ELF_API void ELF_APIENTRY elfAddTextListItem(elfTextList* textList, const char* 
 	strObj = elfCreateStringObject();
 	strObj->str = elfCreateString(text);
 
-	elfAppendToList(textList->items, (elfObject*)strObj);
+	elfAppendListObject(textList->items, (elfObject*)strObj);
 }
 
 ELF_API void ELF_APIENTRY elfSetTextListItem(elfTextList* textList, int idx, const char* text)
 {
 	elfString* strObj;
 
-	strObj = (elfString*)elfGetItemFromList(textList->items, idx);
+	strObj = (elfString*)elfGetListObject(textList->items, idx);
 	if(strObj)
 	{
 		if(strObj->str) elfDestroyString(strObj->str);
@@ -1175,12 +1175,12 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveTextListItem(elfTextList* textList, 
 	if(idx < 0 || idx > elfGetListLength(textList->items)-1) return ELF_FALSE;
 
 	for(i = 0, strObj = (elfString*)elfBeginList(textList->items); strObj;
-		strObj = (elfString*)elfNextInList(textList->items), i++)
+		strObj = (elfString*)elfGetListNext(textList->items), i++)
 	{
 		if(idx == i)
 		{
 			if(idx == textList->selection) textList->selection = -1;
-			elfRemoveFromList(textList->items, (elfObject*)strObj);
+			elfRemoveListObject(textList->items, (elfObject*)strObj);
 			return ELF_TRUE;
 		}
 	}
@@ -1347,7 +1347,7 @@ void elfRecalcGuiObject(elfGuiObject* object)
 	if(object->children)
 	{
 		for(obj = (elfGuiObject*)elfBeginList(object->children); obj;
-			obj = (elfGuiObject*)elfNextInList(object->children))
+			obj = (elfGuiObject*)elfGetListNext(object->children))
 		{
 			elfRecalcGuiObject(obj);
 		}
@@ -1356,7 +1356,7 @@ void elfRecalcGuiObject(elfGuiObject* object)
 	if(object->screens)
 	{
 		for(obj = (elfGuiObject*)elfBeginList(object->screens); obj;
-			obj = (elfGuiObject*)elfNextInList(object->screens))
+			obj = (elfGuiObject*)elfGetListNext(object->screens))
 		{
 			elfRecalcGuiObject(obj);
 		}
@@ -1370,7 +1370,7 @@ void elfClearGuiObjectRoot(elfGuiObject* object)
 	if(object->children)
 	{
 		for(cobject = (elfGuiObject*)elfBeginList(object->children); cobject;
-			cobject = (elfGuiObject*)elfNextInList(object->children))
+			cobject = (elfGuiObject*)elfGetListNext(object->children))
 		{
 			elfClearGuiObjectRoot(cobject);
 		}
@@ -1386,7 +1386,7 @@ void elfSetGuiObjectRoot(elfGuiObject* object, elfGui* root)
 	if(object->children)
 	{
 		for(cobject = (elfGuiObject*)elfBeginList(object->children); cobject;
-			cobject = (elfGuiObject*)elfNextInList(object->children))
+			cobject = (elfGuiObject*)elfGetListNext(object->children))
 		{
 			elfSetGuiObjectRoot(cobject, root);
 		}
@@ -1432,7 +1432,7 @@ void elfDestroyGui(void* data)
 	if(gui->name) elfDestroyString(gui->name);
 
 	for(object = (elfGuiObject*)elfBeginList(gui->children); object;
-		object = (elfGuiObject*)elfNextInList(gui->children))
+		object = (elfGuiObject*)elfGetListNext(gui->children))
 	{
 		elfClearGuiObjectRoot(object);
 		object->parent = NULL;
@@ -1466,7 +1466,7 @@ elfGuiObject* elfTraceTopObject(elfGuiObject* object, unsigned char click)
 	if(object->screens)
 	{
 		for(cobject = (elfGuiObject*)elfRBeginList(object->screens); cobject;
-			cobject = (elfGuiObject*)elfRNextInList(object->screens))
+			cobject = (elfGuiObject*)elfGetListRNext(object->screens))
 		{
 			if(mousePos.x >= cobject->pos.x && mousePos.x <= cobject->pos.x+cobject->width &&
 				mousePos.y >= cobject->pos.y && mousePos.y <= cobject->pos.y+cobject->height &&
@@ -1475,8 +1475,8 @@ elfGuiObject* elfTraceTopObject(elfGuiObject* object, unsigned char click)
 				if(click)
 				{
 					elfIncRef((elfObject*)cobject);
-					elfRemoveFromList(object->screens, (elfObject*)cobject);
-					elfAppendToList(object->screens, (elfObject*)cobject);
+					elfRemoveListObject(object->screens, (elfObject*)cobject);
+					elfAppendListObject(object->screens, (elfObject*)cobject);
 					elfDecRef((elfObject*)cobject);
 				}
 				result = elfTraceTopObject(cobject, click);
@@ -1490,7 +1490,7 @@ elfGuiObject* elfTraceTopObject(elfGuiObject* object, unsigned char click)
 	if(object->children)
 	{
 		for(cobject = (elfGuiObject*)elfRBeginList(object->children); cobject;
-			cobject = (elfGuiObject*)elfRNextInList(object->children))
+			cobject = (elfGuiObject*)elfGetListRNext(object->children))
 		{
 			if(mousePos.x >= cobject->pos.x && mousePos.x <= cobject->pos.x+cobject->width &&
 				mousePos.y >= cobject->pos.y && mousePos.y <= cobject->pos.y+cobject->height &&
@@ -1608,7 +1608,7 @@ void elfResetGuiObjectEvents(elfGuiObject* object)
 	if(object->children)
 	{
 		for(obj = (elfGuiObject*)elfBeginList(object->children); obj;
-			obj = (elfGuiObject*)elfNextInList(object->children))
+			obj = (elfGuiObject*)elfGetListNext(object->children))
 		{
 			elfResetGuiObjectEvents(obj);
 		}
@@ -1617,7 +1617,7 @@ void elfResetGuiObjectEvents(elfGuiObject* object)
 	if(object->screens)
 	{
 		for(obj = (elfGuiObject*)elfBeginList(object->screens); obj;
-			obj = (elfGuiObject*)elfNextInList(object->screens))
+			obj = (elfGuiObject*)elfGetListNext(object->screens))
 		{
 			elfResetGuiObjectEvents(obj);
 		}
@@ -1973,7 +1973,7 @@ void elfDrawGui(elfGui* gui)
 		-1.0, 1.0, gui->shaderParams.projectionMatrix);
 
 	for(object = (elfGuiObject*)elfBeginList(gui->children); object;
-		object = (elfGuiObject*)elfNextInList(gui->children))
+		object = (elfGuiObject*)elfGetListNext(gui->children))
 	{
 		if(object->objType == ELF_LABEL) elfDrawLabel((elfLabel*)object, &gui->shaderParams);
 		else if(object->objType == ELF_BUTTON) elfDrawButton((elfButton*)object, &gui->shaderParams);
@@ -1997,7 +1997,7 @@ void elfDrawGui(elfGui* gui)
 	}
 
 	for(object = (elfGuiObject*)elfBeginList(gui->screens); object;
-		object = (elfGuiObject*)elfNextInList(gui->screens))
+		object = (elfGuiObject*)elfGetListNext(gui->screens))
 	{
 		area.pos.x = gui->pos.x; area.pos.y = gui->pos.y; area.size.x = gui->width; area.size.y = gui->height;
 		elfDrawScreen((elfScreen*)object, &area, &gui->shaderParams);
@@ -2018,8 +2018,8 @@ ELF_API unsigned char ELF_APIENTRY elfAddGuiObject(elfGuiObject* parent, elfGuiO
 	elfSetGuiObjectRoot(object, parent->root);
 	object->parent = parent;
 	elfRecalcGuiObject(object);
-	if(object->objType != ELF_SCREEN) elfAppendToList(parent->children, (elfObject*)object);
-	else elfAppendToList(parent->screens, (elfObject*)object);
+	if(object->objType != ELF_SCREEN) elfAppendListObject(parent->children, (elfObject*)object);
+	else elfAppendListObject(parent->screens, (elfObject*)object);
 	return ELF_TRUE;
 }
 
@@ -2032,7 +2032,7 @@ ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiObjectByName(elfGuiObject* parent, c
 	if(parent->children)
 	{
 		for(object = (elfGuiObject*)elfBeginList(parent->children); object;
-			object = (elfGuiObject*)elfNextInList(parent->children))
+			object = (elfGuiObject*)elfGetListNext(parent->children))
 		{
 			elfGetGuiObjectByName(object, name);
 		}
@@ -2041,7 +2041,7 @@ ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiObjectByName(elfGuiObject* parent, c
 	if(parent->screens)
 	{
 		for(object = (elfGuiObject*)elfBeginList(parent->screens); object;
-			object = (elfGuiObject*)elfNextInList(parent->screens))
+			object = (elfGuiObject*)elfGetListNext(parent->screens))
 		{
 			elfGetGuiObjectByName(object, name);
 		}
@@ -2062,7 +2062,7 @@ ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiObjectByIndex(elfGuiObject* parent, 
 	if(idx < elfGetListLength(parent->children))
 	{
 		for(i = 0, object = (elfGuiObject*)elfBeginList(parent->children); object;
-			i++, object = (elfGuiObject*)elfNextInList(parent->children))
+			i++, object = (elfGuiObject*)elfGetListNext(parent->children))
 		{
 			if(i == idx) return object;
 		}
@@ -2071,7 +2071,7 @@ ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiObjectByIndex(elfGuiObject* parent, 
 	{
 		idx -= elfGetListLength(parent->children);
 		for(i = 0, object = (elfGuiObject*)elfBeginList(parent->screens); object;
-			i++, object = (elfGuiObject*)elfNextInList(parent->screens))
+			i++, object = (elfGuiObject*)elfGetListNext(parent->screens))
 		{
 			if(i == idx) return object;
 		}
@@ -2087,7 +2087,7 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveGuiObjectByName(elfGuiObject* parent
 	if(parent->objType != ELF_GUI && parent->objType != ELF_SCREEN) return ELF_FALSE;
 
 	for(object = (elfGuiObject*)elfBeginList(parent->children); object;
-		object = (elfGuiObject*)elfNextInList(parent->children))
+		object = (elfGuiObject*)elfGetListNext(parent->children))
 	{
 		if(!strcmp(object->name, name))
 		{
@@ -2100,13 +2100,13 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveGuiObjectByName(elfGuiObject* parent
 			}
 			object->parent = NULL;
 			elfClearGuiObjectRoot(object);
-			elfRemoveFromList(parent->children, (elfObject*)object);
+			elfRemoveListObject(parent->children, (elfObject*)object);
 			return ELF_TRUE;
 		}
 	}
 
 	for(object = (elfGuiObject*)elfBeginList(parent->screens); object;
-		object = (elfGuiObject*)elfNextInList(parent->screens))
+		object = (elfGuiObject*)elfGetListNext(parent->screens))
 	{
 		if(!strcmp(object->name, name))
 		{
@@ -2119,7 +2119,7 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveGuiObjectByName(elfGuiObject* parent
 			}
 			object->parent = NULL;
 			elfClearGuiObjectRoot(object);
-			elfRemoveFromList(parent->children, (elfObject*)object);
+			elfRemoveListObject(parent->children, (elfObject*)object);
 			return ELF_TRUE;
 		}
 	}
@@ -2139,7 +2139,7 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveGuiObjectByIndex(elfGuiObject* paren
 	if(idx < elfGetListLength(parent->children))
 	{
 		for(i = 0, object = (elfGuiObject*)elfBeginList(parent->children); object;
-			i++, object = (elfGuiObject*)elfNextInList(parent->children))
+			i++, object = (elfGuiObject*)elfGetListNext(parent->children))
 		{
 			if(i == idx)
 			{
@@ -2152,7 +2152,7 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveGuiObjectByIndex(elfGuiObject* paren
 				}
 				object->parent = NULL;
 				elfClearGuiObjectRoot(object);
-				elfRemoveFromList(parent->children, (elfObject*)object);
+				elfRemoveListObject(parent->children, (elfObject*)object);
 				return ELF_TRUE;
 			}
 		}
@@ -2161,7 +2161,7 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveGuiObjectByIndex(elfGuiObject* paren
 	{
 		idx -= elfGetListLength(parent->children);
 		for(i = 0, object = (elfGuiObject*)elfBeginList(parent->screens); object;
-			i++, object = (elfGuiObject*)elfNextInList(parent->screens))
+			i++, object = (elfGuiObject*)elfGetListNext(parent->screens))
 		{
 			if(i == idx)
 			{
@@ -2174,7 +2174,7 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveGuiObjectByIndex(elfGuiObject* paren
 				}
 				object->parent = NULL;
 				elfClearGuiObjectRoot(object);
-				elfRemoveFromList(parent->children, (elfObject*)object);
+				elfRemoveListObject(parent->children, (elfObject*)object);
 				return ELF_TRUE;
 			}
 		}
@@ -2198,8 +2198,8 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveGuiObjectByObject(elfGuiObject* pare
 	}
 	object->parent = NULL;
 	elfClearGuiObjectRoot(object);
-	if(object->objType != ELF_SCREEN) return elfRemoveFromList(parent->children, (elfObject*)object);
-	else return elfRemoveFromList(parent->screens, (elfObject*)object);
+	if(object->objType != ELF_SCREEN) return elfRemoveListObject(parent->children, (elfObject*)object);
+	else return elfRemoveListObject(parent->screens, (elfObject*)object);
 }
 
 ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiTrace(elfGui* gui)

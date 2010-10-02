@@ -100,7 +100,7 @@ public:
 		collision->actor = ((elfPhysicsObject*)((btRigidBody*)m_collisionObject)->getUserPointer())->actor;
 		elfIncRef((elfObject*)collision->actor);
 
-		elfAppendToList(m_list, (elfObject*)collision);
+		elfAppendListObject(m_list, (elfObject*)collision);
 
 		return rayResult.m_hitFraction;
 	}
@@ -175,12 +175,12 @@ void elfUpdatePhysicsWorld(elfPhysicsWorld* world, float time)
 		while(elfGetListLength(obj0->collisions) < obj0->collisionCount+contactCount)
 		{
 			col0 = elfCreateCollision();
-			elfAppendToList(obj0->collisions, (elfObject*)col0);
+			elfAppendListObject(obj0->collisions, (elfObject*)col0);
 		}
 		while(elfGetListLength(obj1->collisions) < obj1->collisionCount+contactCount)
 		{
 			col1 = elfCreateCollision();
-			elfAppendToList(obj1->collisions, (elfObject*)col1);
+			elfAppendListObject(obj1->collisions, (elfObject*)col1);
 		}
 
 		obj0->collisionCount += contactCount;
@@ -188,8 +188,8 @@ void elfUpdatePhysicsWorld(elfPhysicsWorld* world, float time)
 
 		for(j = 0, col0 = (elfCollision*)elfBeginList(obj0->collisions),
 			col1 = (elfCollision*)elfBeginList(obj1->collisions); j < contactCount;
-			col0 = (elfCollision*)elfNextInList(obj0->collisions),
-			col1 = (elfCollision*)elfNextInList(obj1->collisions), j++)
+			col0 = (elfCollision*)elfGetListNext(obj0->collisions),
+			col1 = (elfCollision*)elfGetListNext(obj1->collisions), j++)
 		{
 			point = &manifold->getContactPoint(j);
 
@@ -835,7 +835,7 @@ void elfRemovePhysicsObjectCollisions(elfPhysicsObject* object)
 
 void elfClearPhysicsObjectCollisions(elfPhysicsObject* object)
 {
-	if(elfGetListLength(object->collisions) > 0) elfRemoveFromList(object->collisions, elfBeginList(object->collisions));
+	if(elfGetListLength(object->collisions) > 0) elfRemoveListObject(object->collisions, elfBeginList(object->collisions));
 	object->collisionCount = 0;
 }
 
@@ -848,7 +848,7 @@ elfCollision* elfGetPhysicsObjectCollision(elfPhysicsObject* object, int idx)
 {
 	if(idx < 0 || idx > elfGetListLength(object->collisions)-1) return NULL;
 
-	return (elfCollision*)elfGetItemFromList(object->collisions, idx);
+	return (elfCollision*)elfGetListObject(object->collisions, idx);
 }
 
 void elfSetPhysicsObjectPosition(elfPhysicsObject* object, float x, float y, float z)

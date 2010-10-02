@@ -434,31 +434,31 @@ void elfUpdateScene(elfScene* scene, float sync)
 
 	// logics update pass
 	for(cam = (elfCamera*)elfBeginList(scene->cameras); cam != NULL;
-		cam = (elfCamera*)elfNextInList(scene->cameras))
+		cam = (elfCamera*)elfGetListNext(scene->cameras))
 	{
 		elfUpdateCamera(cam);
 	}
 
 	for(ent = (elfEntity*)elfBeginList(scene->entities); ent != NULL;
-		ent = (elfEntity*)elfNextInList(scene->entities))
+		ent = (elfEntity*)elfGetListNext(scene->entities))
 	{
 		elfUpdateEntity(ent);
 	}
 
 	for(light = (elfLight*)elfBeginList(scene->lights); light != NULL;
-		light = (elfLight*)elfNextInList(scene->lights))
+		light = (elfLight*)elfGetListNext(scene->lights))
 	{
 		elfUpdateLight(light);
 	}
 
 	for(par = (elfParticles*)elfBeginList(scene->particles); par != NULL;
-		par = (elfParticles*)elfNextInList(scene->particles))
+		par = (elfParticles*)elfGetListNext(scene->particles))
 	{
 		elfUpdateParticles(par, sync);
 	}
 
 	for(spr = (elfSprite*)elfBeginList(scene->sprites); spr != NULL;
-		spr = (elfSprite*)elfNextInList(scene->sprites))
+		spr = (elfSprite*)elfGetListNext(scene->sprites))
 	{
 		elfUpdateSprite(spr);
 	}
@@ -473,31 +473,31 @@ void elfScenePreDraw(elfScene* scene)
 	elfParticles* par;
 
 	for(cam = (elfCamera*)elfBeginList(scene->cameras); cam != NULL;
-		cam = (elfCamera*)elfNextInList(scene->cameras))
+		cam = (elfCamera*)elfGetListNext(scene->cameras))
 	{
 		elfCameraPreDraw(cam);
 	}
 
 	for(ent = (elfEntity*)elfBeginList(scene->entities); ent != NULL;
-		ent = (elfEntity*)elfNextInList(scene->entities))
+		ent = (elfEntity*)elfGetListNext(scene->entities))
 	{
 		elfEntityPreDraw(ent);
 	}
 
 	for(light = (elfLight*)elfBeginList(scene->lights); light != NULL;
-		light = (elfLight*)elfNextInList(scene->lights))
+		light = (elfLight*)elfGetListNext(scene->lights))
 	{
 		elfLightPreDraw(light);
 	}
 
 	for(spr = (elfSprite*)elfBeginList(scene->sprites); spr != NULL;
-		spr = (elfSprite*)elfNextInList(scene->sprites))
+		spr = (elfSprite*)elfGetListNext(scene->sprites))
 	{
 		elfSpritePreDraw(spr, scene->curCamera);
 	}
 
 	for(par = (elfParticles*)elfBeginList(scene->particles); par != NULL;
-		par = (elfParticles*)elfNextInList(scene->particles))
+		par = (elfParticles*)elfGetListNext(scene->particles))
 	{
 		elfParticlesPreDraw(par);
 	}
@@ -512,31 +512,31 @@ void elfScenePostDraw(elfScene* scene)
 	elfParticles* par;
 
 	for(cam = (elfCamera*)elfBeginList(scene->cameras); cam != NULL;
-		cam = (elfCamera*)elfNextInList(scene->cameras))
+		cam = (elfCamera*)elfGetListNext(scene->cameras))
 	{
 		elfCameraPostDraw(cam);
 	}
 
 	for(ent = (elfEntity*)elfBeginList(scene->entities); ent != NULL;
-		ent = (elfEntity*)elfNextInList(scene->entities))
+		ent = (elfEntity*)elfGetListNext(scene->entities))
 	{
 		elfEntityPostDraw(ent);
 	}
 
 	for(light = (elfLight*)elfBeginList(scene->lights); light != NULL;
-		light = (elfLight*)elfNextInList(scene->lights))
+		light = (elfLight*)elfGetListNext(scene->lights))
 	{
 		elfLightPostDraw(light);
 	}
 
 	for(spr = (elfSprite*)elfBeginList(scene->sprites); spr != NULL;
-		spr = (elfSprite*)elfNextInList(scene->sprites))
+		spr = (elfSprite*)elfGetListNext(scene->sprites))
 	{
 		elfSpritePostDraw(spr);
 	}
 
 	for(par = (elfParticles*)elfBeginList(scene->particles); par != NULL;
-		par = (elfParticles*)elfNextInList(scene->particles))
+		par = (elfParticles*)elfGetListNext(scene->particles))
 	{
 		elfParticlesPostDraw(par);
 	}
@@ -555,15 +555,15 @@ void elfDestroyScene(void* data)
 	if(scene->spriteQueue) elfDecRef((elfObject*)scene->spriteQueue);
 
 	for(actor = (elfActor*)elfBeginList(scene->cameras); actor;
-		actor = (elfActor*)elfNextInList(scene->cameras)) elfRemoveActor(actor);
+		actor = (elfActor*)elfGetListNext(scene->cameras)) elfRemoveActor(actor);
 	for(actor = (elfActor*)elfBeginList(scene->entities); actor;
-		actor = (elfActor*)elfNextInList(scene->entities)) elfRemoveActor(actor);
+		actor = (elfActor*)elfGetListNext(scene->entities)) elfRemoveActor(actor);
 	for(actor = (elfActor*)elfBeginList(scene->lights); actor;
-		actor = (elfActor*)elfNextInList(scene->lights)) elfRemoveActor(actor);
+		actor = (elfActor*)elfGetListNext(scene->lights)) elfRemoveActor(actor);
 	for(actor = (elfActor*)elfBeginList(scene->particles); actor;
-		actor = (elfActor*)elfNextInList(scene->particles)) elfRemoveActor(actor);
+		actor = (elfActor*)elfGetListNext(scene->particles)) elfRemoveActor(actor);
 	for(actor = (elfActor*)elfBeginList(scene->sprites); actor;
-		actor = (elfActor*)elfNextInList(scene->sprites)) elfRemoveActor(actor);
+		actor = (elfActor*)elfGetListNext(scene->sprites)) elfRemoveActor(actor);
 
 	if(scene->models) elfDecRef((elfObject*)scene->models);
 	if(scene->scripts) elfDecRef((elfObject*)scene->scripts);
@@ -683,7 +683,7 @@ void elfSetActorScene(elfScene* scene, elfActor* actor)
 	if(actor->dobject) elfSetPhysicsObjectWorld(actor->dobject, scene->dworld);
 
 	for(joint = (elfJoint*)elfBeginList(actor->joints); joint;
-		joint = (elfJoint*)elfNextInList(actor->joints))
+		joint = (elfJoint*)elfGetListNext(actor->joints))
 	{
 		elfSetJointWorld(joint, scene->world);
 	}
@@ -693,7 +693,7 @@ ELF_API void ELF_APIENTRY elfAddSceneCamera(elfScene* scene, elfCamera* camera)
 {
 	if(!camera) return;
 	elfSetActorScene(scene, (elfActor*)camera);
-	elfAppendToList(scene->cameras, (elfObject*)camera);
+	elfAppendListObject(scene->cameras, (elfObject*)camera);
 	if(elfGetListLength(scene->cameras) == 1) scene->curCamera = camera;
 }
 
@@ -701,28 +701,28 @@ ELF_API void ELF_APIENTRY elfAddSceneEntity(elfScene* scene, elfEntity* entity)
 {
 	if(!entity) return;
 	elfSetActorScene(scene, (elfActor*)entity);
-	elfAppendToList(scene->entities, (elfObject*)entity);
+	elfAppendListObject(scene->entities, (elfObject*)entity);
 }
 
 ELF_API void ELF_APIENTRY elfAddSceneLight(elfScene* scene, elfLight* light)
 {
 	if(!light) return;
 	elfSetActorScene(scene, (elfActor*)light);
-	elfAppendToList(scene->lights, (elfObject*)light);
+	elfAppendListObject(scene->lights, (elfObject*)light);
 }
 
 ELF_API void ELF_APIENTRY elfAddSceneParticles(elfScene* scene, elfParticles* particles)
 {
 	if(!particles) return;
 	elfSetActorScene(scene, (elfActor*)particles);
-	elfAppendToList(scene->particles, (elfObject*)particles);
+	elfAppendListObject(scene->particles, (elfObject*)particles);
 }
 
 ELF_API void ELF_APIENTRY elfAddSceneSprite(elfScene* scene, elfSprite* sprite)
 {
 	if(!sprite) return;
 	elfSetActorScene(scene, (elfActor*)sprite);
-	elfAppendToList(scene->sprites, (elfObject*)sprite);
+	elfAppendListObject(scene->sprites, (elfObject*)sprite);
 }
 
 ELF_API void ELF_APIENTRY elfSetSceneActiveCamera(elfScene* scene, elfCamera* camera)
@@ -757,32 +757,32 @@ ELF_API elfList* ELF_APIENTRY elfGetDebugSceneRayCastResults(elfScene* scene, fl
 
 ELF_API elfCamera* ELF_APIENTRY elfGetSceneCameraByIndex(elfScene* scene, int idx)
 {
-	return (elfCamera*)elfGetItemFromList(scene->cameras, idx);
+	return (elfCamera*)elfGetListObject(scene->cameras, idx);
 }
 
 ELF_API elfEntity* ELF_APIENTRY elfGetSceneEntityByIndex(elfScene* scene, int idx)
 {
-	return (elfEntity*)elfGetItemFromList(scene->entities, idx);
+	return (elfEntity*)elfGetListObject(scene->entities, idx);
 }
 
 ELF_API elfLight* ELF_APIENTRY elfGetSceneLightByIndex(elfScene* scene, int idx)
 {
-	return (elfLight*)elfGetItemFromList(scene->lights, idx);
+	return (elfLight*)elfGetListObject(scene->lights, idx);
 }
 
 ELF_API elfArmature* ELF_APIENTRY elfGetSceneArmatureByIndex(elfScene* scene, int idx)
 {
-	return (elfArmature*)elfGetItemFromList(scene->armatures, idx);
+	return (elfArmature*)elfGetListObject(scene->armatures, idx);
 }
 
 ELF_API elfParticles* ELF_APIENTRY elfGetSceneParticlesByIndex(elfScene* scene, int idx)
 {
-	return (elfParticles*)elfGetItemFromList(scene->particles, idx);
+	return (elfParticles*)elfGetListObject(scene->particles, idx);
 }
 
 ELF_API elfSprite* ELF_APIENTRY elfGetSceneSpriteByIndex(elfScene* scene, int idx)
 {
-	return (elfSprite*)elfGetItemFromList(scene->sprites, idx);
+	return (elfSprite*)elfGetListObject(scene->sprites, idx);
 }
 
 ELF_API elfTexture* ELF_APIENTRY elfGetSceneTexture(elfScene* scene, const char* name)
@@ -790,7 +790,7 @@ ELF_API elfTexture* ELF_APIENTRY elfGetSceneTexture(elfScene* scene, const char*
 	elfTexture* texture;
 
 	for(texture = (elfTexture*)elfBeginList(scene->textures); texture;
-		texture = (elfTexture*)elfNextInList(scene->textures))
+		texture = (elfTexture*)elfGetListNext(scene->textures))
 	{
 		if(!strcmp(texture->name, name)) return texture;
 	}
@@ -803,7 +803,7 @@ ELF_API elfModel* ELF_APIENTRY elfGetSceneModel(elfScene* scene, const char* nam
 	elfModel* model;
 
 	for(model = (elfModel*)elfBeginList(scene->models); model;
-		model = (elfModel*)elfNextInList(scene->models))
+		model = (elfModel*)elfGetListNext(scene->models))
 	{
 		if(!strcmp(model->name, name)) return model;
 	}
@@ -816,7 +816,7 @@ ELF_API elfScript* ELF_APIENTRY elfGetSceneScript(elfScene* scene, const char* n
 	elfScript* script;
 
 	for(script = (elfScript*)elfBeginList(scene->scripts); script;
-		script = (elfScript*)elfNextInList(scene->scripts))
+		script = (elfScript*)elfGetListNext(scene->scripts))
 	{
 		if(!strcmp(script->name, name)) return script;
 	}
@@ -829,7 +829,7 @@ ELF_API elfMaterial* ELF_APIENTRY elfGetSceneMaterial(elfScene* scene, const cha
 	elfMaterial* material;
 
 	for(material = (elfMaterial*)elfBeginList(scene->materials); material;
-		material = (elfMaterial*)elfNextInList(scene->materials))
+		material = (elfMaterial*)elfGetListNext(scene->materials))
 	{
 		if(!strcmp(material->name, name)) return material;
 	}
@@ -860,7 +860,7 @@ ELF_API elfCamera* ELF_APIENTRY elfGetSceneCamera(elfScene* scene, const char* n
 	elfCamera* camera;
 
 	for(camera = (elfCamera*)elfBeginList(scene->cameras); camera;
-		camera = (elfCamera*)elfNextInList(scene->cameras))
+		camera = (elfCamera*)elfGetListNext(scene->cameras))
 	{
 		if(!strcmp(camera->name, name)) return camera;
 	}
@@ -873,7 +873,7 @@ ELF_API elfEntity* ELF_APIENTRY elfGetSceneEntity(elfScene* scene, const char* n
 	elfEntity* entity;
 
 	for(entity = (elfEntity*)elfBeginList(scene->entities); entity;
-		entity = (elfEntity*)elfNextInList(scene->entities))
+		entity = (elfEntity*)elfGetListNext(scene->entities))
 	{
 		if(!strcmp(entity->name, name)) return entity;
 	}
@@ -886,7 +886,7 @@ ELF_API elfLight* ELF_APIENTRY elfGetSceneLight(elfScene* scene, const char* nam
 	elfLight* light;
 
 	for(light = (elfLight*)elfBeginList(scene->lights); light;
-		light = (elfLight*)elfNextInList(scene->lights))
+		light = (elfLight*)elfGetListNext(scene->lights))
 	{
 		if(!strcmp(light->name, name)) return light;
 	}
@@ -899,7 +899,7 @@ ELF_API elfArmature* ELF_APIENTRY elfGetSceneArmature(elfScene* scene, const cha
 	elfArmature* armature;
 
 	for(armature = (elfArmature*)elfBeginList(scene->armatures); armature;
-		armature = (elfArmature*)elfNextInList(scene->armatures))
+		armature = (elfArmature*)elfGetListNext(scene->armatures))
 	{
 		if(!strcmp(armature->name, name)) return armature;
 	}
@@ -912,7 +912,7 @@ ELF_API elfParticles* ELF_APIENTRY elfGetSceneParticles(elfScene* scene, const c
 	elfParticles* particles;
 
 	for(particles = (elfParticles*)elfBeginList(scene->particles); particles;
-		particles = (elfParticles*)elfNextInList(scene->particles))
+		particles = (elfParticles*)elfGetListNext(scene->particles))
 	{
 		if(!strcmp(particles->name, name)) return particles;
 	}
@@ -925,7 +925,7 @@ ELF_API elfSprite* ELF_APIENTRY elfGetSceneSprite(elfScene* scene, const char* n
 	elfSprite* sprite;
 
 	for(sprite = (elfSprite*)elfBeginList(scene->sprites); sprite;
-		sprite = (elfSprite*)elfNextInList(scene->sprites))
+		sprite = (elfSprite*)elfGetListNext(scene->sprites))
 	{
 		if(!strcmp(sprite->name, name)) return sprite;
 	}
@@ -940,7 +940,7 @@ elfTexture* elfGetOrLoadTextureByName(elfScene* scene, const char* name)
 	FILE* file;
 
 	for(texture = (elfTexture*)elfBeginList(scene->textures); texture;
-		texture = (elfTexture*)elfNextInList(scene->textures))
+		texture = (elfTexture*)elfGetListNext(scene->textures))
 	{
 		if(!strcmp(texture->name, name)) return texture;
 	}
@@ -955,7 +955,7 @@ elfTexture* elfGetOrLoadTextureByName(elfScene* scene, const char* name)
 			if(feof(file)) return NULL;
 
 			texture = elfCreateTextureFromPak(file, name, scene);
-			if(texture) elfAppendToList(scene->textures, (elfObject*)texture);
+			if(texture) elfAppendListObject(scene->textures, (elfObject*)texture);
 			fclose(file);
 			return texture;
 		}
@@ -971,7 +971,7 @@ elfModel* elfGetOrLoadModelByName(elfScene* scene, const char* name)
 	FILE* file;
 
 	for(model = (elfModel*)elfBeginList(scene->models); model;
-		model = (elfModel*)elfNextInList(scene->models))
+		model = (elfModel*)elfGetListNext(scene->models))
 	{
 		if(!strcmp(model->name, name)) return model;
 	}
@@ -986,7 +986,7 @@ elfModel* elfGetOrLoadModelByName(elfScene* scene, const char* name)
 			if(feof(file)) return NULL;
 
 			model = elfCreateModelFromPak(file, name, scene);
-			if(model) elfAppendToList(scene->models, (elfObject*)model);
+			if(model) elfAppendListObject(scene->models, (elfObject*)model);
 			fclose(file);
 			return model;
 		}
@@ -1002,7 +1002,7 @@ elfScript* elfGetOrLoadScriptByName(elfScene* scene, const char* name)
 	FILE* file;
 
 	for(script = (elfScript*)elfBeginList(scene->scripts); script;
-		script = (elfScript*)elfNextInList(scene->scripts))
+		script = (elfScript*)elfGetListNext(scene->scripts))
 	{
 		if(!strcmp(script->name, name)) return script;
 	}
@@ -1017,7 +1017,7 @@ elfScript* elfGetOrLoadScriptByName(elfScene* scene, const char* name)
 			if(feof(file)) return NULL;
 
 			script = elfCreateScriptFromPak(file, name, scene);
-			if(script) elfAppendToList(scene->scripts, (elfObject*)script);
+			if(script) elfAppendListObject(scene->scripts, (elfObject*)script);
 			fclose(file);
 			return script;
 		}
@@ -1033,7 +1033,7 @@ elfMaterial* elfGetOrLoadMaterialByName(elfScene* scene, const char* name)
 	FILE* file;
 
 	for(material = (elfMaterial*)elfBeginList(scene->materials); material;
-		material = (elfMaterial*)elfNextInList(scene->materials))
+		material = (elfMaterial*)elfGetListNext(scene->materials))
 	{
 		if(!strcmp(material->name, name)) return material;
 	}
@@ -1048,7 +1048,7 @@ elfMaterial* elfGetOrLoadMaterialByName(elfScene* scene, const char* name)
 			if(feof(file)) return NULL;
 
 			material = elfCreateMaterialFromPak(file, name, scene);
-			if(material) elfAppendToList(scene->materials, (elfObject*)material);
+			if(material) elfAppendListObject(scene->materials, (elfObject*)material);
 			fclose(file);
 			return material;
 		}
@@ -1064,7 +1064,7 @@ elfCamera* elfGetOrLoadCameraByName(elfScene* scene, const char* name)
 	FILE* file;
 
 	for(camera = (elfCamera*)elfBeginList(scene->cameras); camera;
-		camera = (elfCamera*)elfNextInList(scene->cameras))
+		camera = (elfCamera*)elfGetListNext(scene->cameras))
 	{
 		if(!strcmp(camera->name, name)) return camera;
 	}
@@ -1094,7 +1094,7 @@ elfEntity* elfGetOrLoadEntityByName(elfScene* scene, const char* name)
 	FILE* file;
 
 	for(entity = (elfEntity*)elfBeginList(scene->entities); entity;
-		entity = (elfEntity*)elfNextInList(scene->entities))
+		entity = (elfEntity*)elfGetListNext(scene->entities))
 	{
 		if(!strcmp(entity->name, name)) return entity;
 	}
@@ -1125,7 +1125,7 @@ elfLight* elfGetOrLoadLightByName(elfScene* scene, const char* name)
 	FILE* file;
 
 	for(light = (elfLight*)elfBeginList(scene->lights); light;
-		light = (elfLight*)elfNextInList(scene->lights))
+		light = (elfLight*)elfGetListNext(scene->lights))
 	{
 		if(!strcmp(light->name, name)) return light;
 	}
@@ -1156,7 +1156,7 @@ elfArmature* elfGetOrLoadArmatureByName(elfScene* scene, const char* name)
 	FILE* file;
 
 	for(armature = (elfArmature*)elfBeginList(scene->armatures); armature;
-		armature = (elfArmature*)elfNextInList(scene->armatures))
+		armature = (elfArmature*)elfGetListNext(scene->armatures))
 	{
 		if(!strcmp(armature->name, name)) return armature;
 	}
@@ -1171,7 +1171,7 @@ elfArmature* elfGetOrLoadArmatureByName(elfScene* scene, const char* name)
 			if(feof(file)) return NULL;
 
 			armature = elfCreateArmatureFromPak(file, name, scene);
-			elfAppendToList(scene->armatures, (elfObject*)armature);
+			elfAppendListObject(scene->armatures, (elfObject*)armature);
 			fclose(file);
 			return armature;
 		}
@@ -1187,7 +1187,7 @@ elfParticles* elfGetOrLoadParticlesByName(elfScene* scene, const char* name)
 	FILE* file;
 
 	for(particles = (elfParticles*)elfBeginList(scene->particles); particles;
-		particles = (elfParticles*)elfNextInList(scene->particles))
+		particles = (elfParticles*)elfGetListNext(scene->particles))
 	{
 		if(!strcmp(particles->name, name)) return particles;
 	}
@@ -1218,7 +1218,7 @@ elfSprite* elfGetOrLoadSpriteByName(elfScene* scene, const char* name)
 	FILE* file;
 
 	for(sprite = (elfSprite*)elfBeginList(scene->sprites); sprite;
-		sprite = (elfSprite*)elfNextInList(scene->sprites))
+		sprite = (elfSprite*)elfGetListNext(scene->sprites))
 	{
 		if(!strcmp(sprite->name, name)) return sprite;
 	}
@@ -1276,7 +1276,7 @@ void elfRemoveActor(elfActor* actor)
 	}
 
 	for(joint = (elfJoint*)elfBeginList(actor->joints); joint;
-		joint = (elfJoint*)elfNextInList(actor->joints))
+		joint = (elfJoint*)elfGetListNext(actor->joints))
 	{
 		elfSetJointWorld(joint, NULL);
 	}
@@ -1291,12 +1291,12 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveSceneCamera(elfScene* scene, const c
 	elfCamera* cam;
 
 	for(cam = (elfCamera*)elfBeginList(scene->cameras); cam != NULL;
-		cam = (elfCamera*)elfNextInList(scene->cameras))
+		cam = (elfCamera*)elfGetListNext(scene->cameras))
 	{
 		if(!strcmp(cam->name, name))
 		{
 			elfRemoveActor((elfActor*)cam);
-			elfRemoveFromList(scene->cameras, (elfObject*)cam);
+			elfRemoveListObject(scene->cameras, (elfObject*)cam);
 			if(scene->curCamera == cam) scene->curCamera = elfGetSceneCameraByIndex(scene, 0);
 			return ELF_TRUE;
 		}
@@ -1310,12 +1310,12 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveSceneEntity(elfScene* scene, const c
 	elfEntity* ent;
 
 	for(ent = (elfEntity*)elfBeginList(scene->entities); ent != NULL;
-		ent = (elfEntity*)elfNextInList(scene->entities))
+		ent = (elfEntity*)elfGetListNext(scene->entities))
 	{
 		if(!strcmp(ent->name, name))
 		{
 			elfRemoveActor((elfActor*)ent);
-			elfRemoveFromList(scene->entities, (elfObject*)ent);
+			elfRemoveListObject(scene->entities, (elfObject*)ent);
 			return ELF_TRUE;
 		}
 	}
@@ -1328,12 +1328,12 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveSceneLight(elfScene* scene, const ch
 	elfLight* lig;
 
 	for(lig = (elfLight*)elfBeginList(scene->lights); lig != NULL;
-		lig = (elfLight*)elfNextInList(scene->lights))
+		lig = (elfLight*)elfGetListNext(scene->lights))
 	{
 		if(!strcmp(lig->name, name))
 		{
 			elfRemoveActor((elfActor*)lig);
-			elfRemoveFromList(scene->lights, (elfObject*)lig);
+			elfRemoveListObject(scene->lights, (elfObject*)lig);
 			return ELF_TRUE;
 		}
 	}
@@ -1346,12 +1346,12 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveSceneParticles(elfScene* scene, cons
 	elfParticles* par;
 
 	for(par = (elfParticles*)elfBeginList(scene->particles); par != NULL;
-		par = (elfParticles*)elfNextInList(scene->particles))
+		par = (elfParticles*)elfGetListNext(scene->particles))
 	{
 		if(!strcmp(par->name, name))
 		{
 			elfRemoveActor((elfActor*)par);
-			elfRemoveFromList(scene->particles, (elfObject*)par);
+			elfRemoveListObject(scene->particles, (elfObject*)par);
 			return ELF_TRUE;
 		}
 	}
@@ -1364,12 +1364,12 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveSceneSprite(elfScene* scene, const c
 	elfSprite* spr;
 
 	for(spr = (elfSprite*)elfBeginList(scene->sprites); spr != NULL;
-		spr = (elfSprite*)elfNextInList(scene->sprites))
+		spr = (elfSprite*)elfGetListNext(scene->sprites))
 	{
 		if(!strcmp(spr->name, name))
 		{
 			elfRemoveActor((elfActor*)spr);
-			elfRemoveFromList(scene->sprites, (elfObject*)spr);
+			elfRemoveListObject(scene->sprites, (elfObject*)spr);
 			return ELF_TRUE;
 		}
 	}
@@ -1385,12 +1385,12 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveSceneCameraByIndex(elfScene* scene, 
 	if(idx < 0 || idx > elfGetListLength(scene->cameras)-1) return ELF_FALSE;
 
 	for(i = 0, cam = (elfCamera*)elfBeginList(scene->cameras); cam != NULL;
-		cam = (elfCamera*)elfNextInList(scene->cameras), i++)
+		cam = (elfCamera*)elfGetListNext(scene->cameras), i++)
 	{
 		if(i == idx)
 		{
 			elfRemoveActor((elfActor*)cam);
-			elfRemoveFromList(scene->cameras, (elfObject*)cam);
+			elfRemoveListObject(scene->cameras, (elfObject*)cam);
 			if(scene->curCamera == cam)
 			{
 				scene->curCamera = elfGetSceneCameraByIndex(scene, 0);
@@ -1410,12 +1410,12 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveSceneEntityByIndex(elfScene* scene, 
 	if(idx < 0 || idx > elfGetListLength(scene->entities)-1) return ELF_FALSE;
 
 	for(i = 0, ent = (elfEntity*)elfBeginList(scene->entities); ent != NULL;
-		ent = (elfEntity*)elfNextInList(scene->entities), i++)
+		ent = (elfEntity*)elfGetListNext(scene->entities), i++)
 	{
 		if(i == idx)
 		{
 			elfRemoveActor((elfActor*)ent);
-			elfRemoveFromList(scene->entities, (elfObject*)ent);
+			elfRemoveListObject(scene->entities, (elfObject*)ent);
 			return ELF_TRUE;
 		}
 	}
@@ -1431,12 +1431,12 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveSceneLightByIndex(elfScene* scene, i
 	if(idx < 0 || idx > elfGetListLength(scene->lights)-1) return ELF_FALSE;
 
 	for(i = 0, lig = (elfLight*)elfBeginList(scene->lights); lig != NULL;
-		lig = (elfLight*)elfNextInList(scene->lights), i++)
+		lig = (elfLight*)elfGetListNext(scene->lights), i++)
 	{
 		if(i == idx)
 		{
 			elfRemoveActor((elfActor*)lig);
-			elfRemoveFromList(scene->lights, (elfObject*)lig);
+			elfRemoveListObject(scene->lights, (elfObject*)lig);
 			return ELF_TRUE;
 		}
 	}
@@ -1452,12 +1452,12 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveSceneParticlesByIndex(elfScene* scen
 	if(idx < 0 || idx > elfGetListLength(scene->particles)-1) return ELF_FALSE;
 
 	for(i = 0, par = (elfParticles*)elfBeginList(scene->particles); par != NULL;
-		par = (elfParticles*)elfNextInList(scene->particles), i++)
+		par = (elfParticles*)elfGetListNext(scene->particles), i++)
 	{
 		if(i == idx)
 		{
 			elfRemoveActor((elfActor*)par);
-			elfRemoveFromList(scene->particles, (elfObject*)par);
+			elfRemoveListObject(scene->particles, (elfObject*)par);
 			return ELF_TRUE;
 		}
 	}
@@ -1473,12 +1473,12 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveSceneSpriteByIndex(elfScene* scene, 
 	if(idx < 0 || idx > elfGetListLength(scene->sprites)-1) return ELF_FALSE;
 
 	for(i = 0, spr = (elfSprite*)elfBeginList(scene->sprites); spr != NULL;
-		spr = (elfSprite*)elfNextInList(scene->sprites), i++)
+		spr = (elfSprite*)elfGetListNext(scene->sprites), i++)
 	{
 		if(i == idx)
 		{
 			elfRemoveActor((elfActor*)spr);
-			elfRemoveFromList(scene->sprites, (elfObject*)spr);
+			elfRemoveListObject(scene->sprites, (elfObject*)spr);
 			return ELF_TRUE;
 		}
 	}
@@ -1490,31 +1490,31 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveSceneCameraByObject(elfScene* scene,
 {
 	elfRemoveActor((elfActor*)camera);
 	if(scene->curCamera == camera) scene->curCamera = elfGetSceneCameraByIndex(scene, 0);
-	return elfRemoveFromList(scene->cameras, (elfObject*)camera);
+	return elfRemoveListObject(scene->cameras, (elfObject*)camera);
 }
 
 ELF_API unsigned char ELF_APIENTRY elfRemoveSceneEntityByObject(elfScene* scene, elfEntity* entity)
 {
 	elfRemoveActor((elfActor*)entity);
-	return elfRemoveFromList(scene->entities, (elfObject*)entity);
+	return elfRemoveListObject(scene->entities, (elfObject*)entity);
 }
 
 ELF_API unsigned char ELF_APIENTRY elfRemoveSceneLightByObject(elfScene* scene, elfLight* light)
 {
 	elfRemoveActor((elfActor*)light);
-	return elfRemoveFromList(scene->lights, (elfObject*)light);
+	return elfRemoveListObject(scene->lights, (elfObject*)light);
 }
 
 ELF_API unsigned char ELF_APIENTRY elfRemoveSceneParticlesByObject(elfScene* scene, elfParticles* particles)
 {
 	elfRemoveActor((elfActor*)particles);
-	return elfRemoveFromList(scene->particles, (elfObject*)particles);
+	return elfRemoveListObject(scene->particles, (elfObject*)particles);
 }
 
 ELF_API unsigned char ELF_APIENTRY elfRemoveSceneSpriteByObject(elfScene* scene, elfSprite* sprite)
 {
 	elfRemoveActor((elfActor*)sprite);
-	return elfRemoveFromList(scene->sprites, (elfObject*)sprite);
+	return elfRemoveListObject(scene->sprites, (elfObject*)sprite);
 }
 
 ELF_API unsigned char ELF_APIENTRY elfRemoveSceneActorByObject(elfScene* scene, elfActor* actor)
@@ -1573,18 +1573,18 @@ void elfDrawScene(elfScene* scene)
 		elfBeginList(scene->entityQueue);
 
 		for(ent = (elfEntity*)elfBeginList(scene->entities); ent != NULL;
-			ent = (elfEntity*)elfNextInList(scene->entities))
+			ent = (elfEntity*)elfGetListNext(scene->entities))
 		{
 			if(!elfCullEntity(ent, scene->curCamera))
 			{
 				if(scene->entityQueueCount < elfGetListLength(scene->entityQueue))
 				{
 					elfSetListCurPtr(scene->entityQueue, (elfObject*)ent);
-					elfNextInList(scene->entityQueue);
+					elfGetListNext(scene->entityQueue);
 				}
 				else
 				{
-					elfAppendToList(scene->entityQueue, (elfObject*)ent);
+					elfAppendListObject(scene->entityQueue, (elfObject*)ent);
 				}
 				scene->entityQueueCount++;
 				if(ent->occluder)
@@ -1604,18 +1604,18 @@ void elfDrawScene(elfScene* scene)
 		elfBeginList(scene->spriteQueue);
 
 		for(spr = (elfSprite*)elfBeginList(scene->sprites); spr != NULL;
-			spr = (elfSprite*)elfNextInList(scene->sprites))
+			spr = (elfSprite*)elfGetListNext(scene->sprites))
 		{
 			if(!elfCullSprite(spr, scene->curCamera))
 			{
 				if(scene->spriteQueueCount < elfGetListLength(scene->spriteQueue))
 				{
 					elfSetListCurPtr(scene->spriteQueue, (elfObject*)spr);
-					elfNextInList(scene->spriteQueue);
+					elfGetListNext(scene->spriteQueue);
 				}
 				else
 				{
-					elfAppendToList(scene->spriteQueue, (elfObject*)spr);
+					elfAppendListObject(scene->spriteQueue, (elfObject*)spr);
 				}
 				scene->spriteQueueCount++;
 				if(spr->occluder)
@@ -1644,7 +1644,7 @@ void elfDrawScene(elfScene* scene)
 
 			for(i = 0, ent = (elfEntity*)elfBeginList(scene->entityQueue);
 				i < scene->entityQueueCount && ent != NULL;
-				i++, ent = (elfEntity*)elfNextInList(scene->entityQueue))
+				i++, ent = (elfEntity*)elfGetListNext(scene->entityQueue))
 			{
 				gfxBeginQuery(ent->query);
 				elfDrawEntityBoundingBox(ent, &scene->shaderParams);
@@ -1659,13 +1659,13 @@ void elfDrawScene(elfScene* scene)
 
 			for(i = 0, ent = (elfEntity*)elfBeginList(scene->entityQueue);
 				i < scene->entityQueueCount && ent != NULL;
-				i++, ent = (elfEntity*)elfNextInList(scene->entityQueue))
+				i++, ent = (elfEntity*)elfGetListNext(scene->entityQueue))
 			{
 				if(ent->occluder) continue;
 
 				if(gfxGetQueryResult(ent->query) < 1)
 				{
-					elfRemoveFromList(scene->entityQueue, (elfObject*)ent);
+					elfRemoveListObject(scene->entityQueue, (elfObject*)ent);
 					scene->entityQueueCount--; i--;
 				}
 				else
@@ -1676,7 +1676,7 @@ void elfDrawScene(elfScene* scene)
 
 			for(i = 0, spr = (elfSprite*)elfBeginList(scene->spriteQueue);
 				i < scene->spriteQueueCount && spr != NULL;
-				i++, spr = (elfSprite*)elfNextInList(scene->spriteQueue))
+				i++, spr = (elfSprite*)elfGetListNext(scene->spriteQueue))
 			{
 				if(spr->occluder) continue;
 
@@ -1693,14 +1693,14 @@ void elfDrawScene(elfScene* scene)
 
 			for(i = 0, ent = (elfEntity*)elfBeginList(scene->entityQueue);
 				i < scene->entityQueueCount && ent != NULL;
-				i++, ent = (elfEntity*)elfNextInList(scene->entityQueue))
+				i++, ent = (elfEntity*)elfGetListNext(scene->entityQueue))
 			{
 				elfDrawEntity(ent, ELF_DRAW_DEPTH, &scene->shaderParams);
 			}
 
 			for(i = 0, spr = (elfSprite*)elfBeginList(scene->spriteQueue);
 				i < scene->spriteQueueCount && spr != NULL;
-				i++, spr = (elfSprite*)elfNextInList(scene->spriteQueue))
+				i++, spr = (elfSprite*)elfGetListNext(scene->spriteQueue))
 			{
 				elfDrawSprite(spr, ELF_DRAW_DEPTH, &scene->shaderParams);
 			}
@@ -1718,18 +1718,18 @@ void elfDrawScene(elfScene* scene)
 		elfBeginList(scene->entityQueue);
 
 		for(ent = (elfEntity*)elfBeginList(scene->entities); ent != NULL;
-			ent = (elfEntity*)elfNextInList(scene->entities))
+			ent = (elfEntity*)elfGetListNext(scene->entities))
 		{
 			if(!elfCullEntity(ent, scene->curCamera))
 			{
 				if(scene->entityQueueCount < elfGetListLength(scene->entityQueue))
 				{
 					elfSetListCurPtr(scene->entityQueue, (elfObject*)ent);
-					elfNextInList(scene->entityQueue);
+					elfGetListNext(scene->entityQueue);
 				}
 				else
 				{
-					elfAppendToList(scene->entityQueue, (elfObject*)ent);
+					elfAppendListObject(scene->entityQueue, (elfObject*)ent);
 				}
 				scene->entityQueueCount++;
 				elfDrawEntity(ent, ELF_DRAW_DEPTH, &scene->shaderParams);
@@ -1745,18 +1745,18 @@ void elfDrawScene(elfScene* scene)
 		elfBeginList(scene->spriteQueue);
 
 		for(spr = (elfSprite*)elfBeginList(scene->sprites); spr != NULL;
-			spr = (elfSprite*)elfNextInList(scene->sprites))
+			spr = (elfSprite*)elfGetListNext(scene->sprites))
 		{
 			if(!elfCullSprite(spr, scene->curCamera))
 			{
 				if(scene->spriteQueueCount < elfGetListLength(scene->spriteQueue))
 				{
 					elfSetListCurPtr(scene->spriteQueue, (elfObject*)spr);
-					elfNextInList(scene->spriteQueue);
+					elfGetListNext(scene->spriteQueue);
 				}
 				else
 				{
-					elfAppendToList(scene->spriteQueue, (elfObject*)spr);
+					elfAppendListObject(scene->spriteQueue, (elfObject*)spr);
 				}
 				scene->spriteQueueCount++;
 				elfDrawSprite(spr, ELF_DRAW_DEPTH, &scene->shaderParams);
@@ -1785,14 +1785,14 @@ void elfDrawScene(elfScene* scene)
 
 		for(i = 0, ent = (elfEntity*)elfBeginList(scene->entityQueue);
 			i < scene->entityQueueCount && ent != NULL;
-			i++, ent = (elfEntity*)elfNextInList(scene->entityQueue))
+			i++, ent = (elfEntity*)elfGetListNext(scene->entityQueue))
 		{
 			elfDrawEntity(ent, ELF_DRAW_AMBIENT, &scene->shaderParams);
 		}
 
 		for(i = 0, spr = (elfSprite*)elfBeginList(scene->spriteQueue);
 			i < scene->spriteQueueCount && spr != NULL;
-			i++, spr = (elfSprite*)elfNextInList(scene->spriteQueue))
+			i++, spr = (elfSprite*)elfGetListNext(scene->spriteQueue))
 		{
 			elfDrawSprite(spr, ELF_DRAW_AMBIENT, &scene->shaderParams);
 		}
@@ -1808,21 +1808,21 @@ void elfDrawScene(elfScene* scene)
 
 	for(i = 0, ent = (elfEntity*)elfBeginList(scene->entityQueue);
 		i < scene->entityQueueCount && ent != NULL;
-		i++, ent = (elfEntity*)elfNextInList(scene->entityQueue))
+		i++, ent = (elfEntity*)elfGetListNext(scene->entityQueue))
 	{
 		elfDrawEntity(ent, ELF_DRAW_WITHOUT_LIGHTING, &scene->shaderParams);
 	}
 
 	for(i = 0, spr = (elfSprite*)elfBeginList(scene->spriteQueue);
 		i < scene->spriteQueueCount && spr != NULL;
-		i++, spr = (elfSprite*)elfNextInList(scene->spriteQueue))
+		i++, spr = (elfSprite*)elfGetListNext(scene->spriteQueue))
 	{
 		elfDrawSprite(spr, ELF_DRAW_WITHOUT_LIGHTING, &scene->shaderParams);
 	}
 
 	// render lighting
 	for(light = (elfLight*)elfBeginList(scene->lights); light != NULL;
-		light = (elfLight*)elfNextInList(scene->lights))
+		light = (elfLight*)elfGetListNext(scene->lights))
 	{
 		if(!light->visible) continue;
 
@@ -1836,7 +1836,7 @@ void elfDrawScene(elfScene* scene)
 			found = ELF_FALSE;
 			for(i = 0, ent = (elfEntity*)elfBeginList(scene->entityQueue);
 				i < scene->entityQueueCount && ent != NULL;
-				i++, ent = (elfEntity*)elfNextInList(scene->entityQueue))
+				i++, ent = (elfEntity*)elfGetListNext(scene->entityQueue))
 			{
 				if(!elfCullEntity(ent, light->shadowCamera))
 				{
@@ -1847,7 +1847,7 @@ void elfDrawScene(elfScene* scene)
 
 			for(i = 0, spr = (elfSprite*)elfBeginList(scene->spriteQueue);
 				i < scene->spriteQueueCount && spr != NULL;
-				i++, spr = (elfSprite*)elfNextInList(scene->spriteQueue))
+				i++, spr = (elfSprite*)elfGetListNext(scene->spriteQueue))
 			{
 				if(!elfCullSprite(spr, light->shadowCamera))
 				{
@@ -1874,7 +1874,7 @@ void elfDrawScene(elfScene* scene)
 			gfxClearDepthBuffer(1.0);
 
 			for(ent = (elfEntity*)elfBeginList(scene->entities); ent != NULL;
-				ent = (elfEntity*)elfNextInList(scene->entities))
+				ent = (elfEntity*)elfGetListNext(scene->entities))
 			{
 				if(!elfCullEntity(ent, light->shadowCamera))
 				{
@@ -1883,7 +1883,7 @@ void elfDrawScene(elfScene* scene)
 			}
 
 			for(spr = (elfSprite*)elfBeginList(scene->sprites); spr != NULL;
-				spr = (elfSprite*)elfNextInList(scene->sprites))
+				spr = (elfSprite*)elfGetListNext(scene->sprites))
 			{
 				if(!elfCullSprite(spr, light->shadowCamera))
 				{
@@ -1942,7 +1942,7 @@ void elfDrawScene(elfScene* scene)
 		lpos = elfGetActorPosition((elfActor*)light);
 		for(i = 0, ent = (elfEntity*)elfBeginList(scene->entityQueue);
 			i < scene->entityQueueCount && ent != NULL;
-			i++, ent = (elfEntity*)elfNextInList(scene->entityQueue))
+			i++, ent = (elfEntity*)elfGetListNext(scene->entityQueue))
 		{
 			if(light->lightType == ELF_SPOT_LIGHT)
 			{
@@ -1967,7 +1967,7 @@ void elfDrawScene(elfScene* scene)
 
 		for(i = 0, spr = (elfSprite*)elfBeginList(scene->spriteQueue);
 			i < scene->spriteQueueCount && spr != NULL;
-			i++, spr = (elfSprite*)elfNextInList(scene->spriteQueue))
+			i++, spr = (elfSprite*)elfGetListNext(scene->spriteQueue))
 		{
 			spos = elfGetActorPosition((elfActor*)spr);
 			if(light->lightType == ELF_SPOT_LIGHT)
@@ -2015,14 +2015,14 @@ void elfDrawScene(elfScene* scene)
 
 		for(i = 0, ent = (elfEntity*)elfBeginList(scene->entityQueue);
 			i < scene->entityQueueCount && ent != NULL;
-			i++, ent = (elfEntity*)elfNextInList(scene->entityQueue))
+			i++, ent = (elfEntity*)elfGetListNext(scene->entityQueue))
 		{
 			elfDrawEntity(ent, ELF_DRAW_AMBIENT, &scene->shaderParams);
 		}
 
 		for(i = 0, spr = (elfSprite*)elfBeginList(scene->spriteQueue);
 			i < scene->spriteQueueCount && spr != NULL;
-			i++, spr = (elfSprite*)elfNextInList(scene->spriteQueue))
+			i++, spr = (elfSprite*)elfGetListNext(scene->spriteQueue))
 		{
 			elfDrawSprite(spr, ELF_DRAW_AMBIENT, &scene->shaderParams);
 		}
@@ -2044,7 +2044,7 @@ void elfDrawScene(elfScene* scene)
 	elfSetCamera(scene->curCamera, &scene->shaderParams);
 	
 	for(par = (elfParticles*)elfBeginList(scene->particles); par;
-		par = (elfParticles*)elfNextInList(scene->particles))
+		par = (elfParticles*)elfGetListNext(scene->particles))
 	{
 		if(!elfCullParticles(par, scene->curCamera))
 		{
@@ -2061,13 +2061,13 @@ void elfDrawScene(elfScene* scene)
 	if(elfGetListLength(scene->entityQueue) > scene->entityQueueCount)
 	{
 		ent = (elfEntity*)elfRBeginList(scene->entityQueue);
-		if(ent) elfRemoveFromList(scene->entityQueue, (elfObject*)ent);
+		if(ent) elfRemoveListObject(scene->entityQueue, (elfObject*)ent);
 	}
 
 	if(elfGetListLength(scene->spriteQueue) > scene->spriteQueueCount)
 	{
 		spr = (elfSprite*)elfRBeginList(scene->spriteQueue);
-		if(spr) elfRemoveFromList(scene->spriteQueue, (elfObject*)spr);
+		if(spr) elfRemoveListObject(scene->spriteQueue, (elfObject*)spr);
 	}
 }
 
@@ -2117,18 +2117,18 @@ void elfDrawScene(elfScene* scene)
 		elfBeginList(scene->entityQueue);
 
 		for(ent = (elfEntity*)elfBeginList(scene->entities); ent != NULL;
-			ent = (elfEntity*)elfNextInList(scene->entities))
+			ent = (elfEntity*)elfGetListNext(scene->entities))
 		{
 			if(!elfCullEntity(ent, scene->curCamera))
 			{
 				if(scene->entityQueueCount < elfGetListLength(scene->entityQueue))
 				{
 					elfSetListCurPtr(scene->entityQueue, (elfObject*)ent);
-					elfNextInList(scene->entityQueue);
+					elfGetListNext(scene->entityQueue);
 				}
 				else
 				{
-					elfAppendToList(scene->entityQueue, (elfObject*)ent);
+					elfAppendListObject(scene->entityQueue, (elfObject*)ent);
 				}
 				scene->entityQueueCount++;
 				if(ent->occluder)
@@ -2148,18 +2148,18 @@ void elfDrawScene(elfScene* scene)
 		elfBeginList(scene->spriteQueue);
 
 		for(spr = (elfSprite*)elfBeginList(scene->sprites); spr != NULL;
-			spr = (elfSprite*)elfNextInList(scene->sprites))
+			spr = (elfSprite*)elfGetListNext(scene->sprites))
 		{
 			if(!elfCullSprite(spr, scene->curCamera))
 			{
 				if(scene->spriteQueueCount < elfGetListLength(scene->spriteQueue))
 				{
 					elfSetListCurPtr(scene->spriteQueue, (elfObject*)spr);
-					elfNextInList(scene->spriteQueue);
+					elfGetListNext(scene->spriteQueue);
 				}
 				else
 				{
-					elfAppendToList(scene->spriteQueue, (elfObject*)spr);
+					elfAppendListObject(scene->spriteQueue, (elfObject*)spr);
 				}
 				scene->spriteQueueCount++;
 				if(spr->occluder)
@@ -2188,7 +2188,7 @@ void elfDrawScene(elfScene* scene)
 
 			for(i = 0, ent = (elfEntity*)elfBeginList(scene->entityQueue);
 				i < scene->entityQueueCount && ent != NULL;
-				i++, ent = (elfEntity*)elfNextInList(scene->entityQueue))
+				i++, ent = (elfEntity*)elfGetListNext(scene->entityQueue))
 			{
 				gfxBeginQuery(ent->query);
 				elfDrawEntityBoundingBox(ent, &scene->shaderParams);
@@ -2205,13 +2205,13 @@ void elfDrawScene(elfScene* scene)
 
 			for(i = 0, ent = (elfEntity*)elfBeginList(scene->entityQueue);
 				i < scene->entityQueueCount && ent != NULL;
-				i++, ent = (elfEntity*)elfNextInList(scene->entityQueue))
+				i++, ent = (elfEntity*)elfGetListNext(scene->entityQueue))
 			{
 				if(ent->occluder) continue;
 
 				if(gfxGetQueryResult(ent->query) < 1)
 				{
-					elfRemoveFromList(scene->entityQueue, (elfObject*)ent);
+					elfRemoveListObject(scene->entityQueue, (elfObject*)ent);
 					scene->entityQueueCount--; i--;
 				}
 				else
@@ -2222,7 +2222,7 @@ void elfDrawScene(elfScene* scene)
 
 			for(i = 0, spr = (elfSprite*)elfBeginList(scene->spriteQueue);
 				i < scene->spriteQueueCount && spr != NULL;
-				i++, spr = (elfSprite*)elfNextInList(scene->spriteQueue))
+				i++, spr = (elfSprite*)elfGetListNext(scene->spriteQueue))
 			{
 				if(spr->occluder) continue;
 
@@ -2241,14 +2241,14 @@ void elfDrawScene(elfScene* scene)
 
 			for(i = 0, ent = (elfEntity*)elfBeginList(scene->entityQueue);
 				i < scene->entityQueueCount && ent != NULL;
-				i++, ent = (elfEntity*)elfNextInList(scene->entityQueue))
+				i++, ent = (elfEntity*)elfGetListNext(scene->entityQueue))
 			{
 				elfDrawEntity(ent, ELF_DRAW_DEPTH, &scene->shaderParams);
 			}
 
 			for(i = 0, spr = (elfSprite*)elfBeginList(scene->spriteQueue);
 				i < scene->spriteQueueCount && spr != NULL;
-				i++, spr = (elfSprite*)elfNextInList(scene->spriteQueue))
+				i++, spr = (elfSprite*)elfGetListNext(scene->spriteQueue))
 			{
 				elfDrawSprite(spr, ELF_DRAW_DEPTH, &scene->shaderParams);
 			}
@@ -2268,18 +2268,18 @@ void elfDrawScene(elfScene* scene)
 		elfBeginList(scene->entityQueue);
 
 		for(ent = (elfEntity*)elfBeginList(scene->entities); ent != NULL;
-			ent = (elfEntity*)elfNextInList(scene->entities))
+			ent = (elfEntity*)elfGetListNext(scene->entities))
 		{
 			if(!elfCullEntity(ent, scene->curCamera))
 			{
 				if(scene->entityQueueCount < elfGetListLength(scene->entityQueue))
 				{
 					elfSetListCurPtr(scene->entityQueue, (elfObject*)ent);
-					elfNextInList(scene->entityQueue);
+					elfGetListNext(scene->entityQueue);
 				}
 				else
 				{
-					elfAppendToList(scene->entityQueue, (elfObject*)ent);
+					elfAppendListObject(scene->entityQueue, (elfObject*)ent);
 				}
 				scene->entityQueueCount++;
 				elfDrawEntity(ent, ELF_DRAW_DEPTH, &scene->shaderParams);
@@ -2295,18 +2295,18 @@ void elfDrawScene(elfScene* scene)
 		elfBeginList(scene->spriteQueue);
 
 		for(spr = (elfSprite*)elfBeginList(scene->sprites); spr != NULL;
-			spr = (elfSprite*)elfNextInList(scene->sprites))
+			spr = (elfSprite*)elfGetListNext(scene->sprites))
 		{
 			if(!elfCullSprite(spr, scene->curCamera))
 			{
 				if(scene->spriteQueueCount < elfGetListLength(scene->spriteQueue))
 				{
 					elfSetListCurPtr(scene->spriteQueue, (elfObject*)spr);
-					elfNextInList(scene->spriteQueue);
+					elfGetListNext(scene->spriteQueue);
 				}
 				else
 				{
-					elfAppendToList(scene->spriteQueue, (elfObject*)spr);
+					elfAppendListObject(scene->spriteQueue, (elfObject*)spr);
 				}
 				scene->spriteQueueCount++;
 				elfDrawSprite(spr, ELF_DRAW_DEPTH, &scene->shaderParams);
@@ -2329,14 +2329,14 @@ void elfDrawScene(elfScene* scene)
 
 	for(i = 0, ent = (elfEntity*)elfBeginList(scene->entityQueue);
 		i < scene->entityQueueCount && ent != NULL;
-		i++, ent = (elfEntity*)elfNextInList(scene->entityQueue))
+		i++, ent = (elfEntity*)elfGetListNext(scene->entityQueue))
 	{
 		elfDrawEntity(ent, ELF_DRAW_WITH_LIGHTING, &scene->shaderParams);
 	}
 
 	for(i = 0, spr = (elfSprite*)elfBeginList(scene->spriteQueue);
 		i < scene->spriteQueueCount && spr != NULL;
-		i++, spr = (elfSprite*)elfNextInList(scene->spriteQueue))
+		i++, spr = (elfSprite*)elfGetListNext(scene->spriteQueue))
 	{
 		elfDrawSprite(spr, ELF_DRAW_WITH_LIGHTING, &scene->shaderParams);
 	}
@@ -2353,7 +2353,7 @@ void elfDrawScene(elfScene* scene)
 	wheight = elfGetWindowHeight();
 
 	for(lig = (elfLight*)elfBeginList(scene->lights); lig;
-		lig = (elfLight*)elfNextInList(scene->lights))
+		lig = (elfLight*)elfGetListNext(scene->lights))
 	{
 		if(!lig->visible) continue;
 
@@ -2398,7 +2398,7 @@ void elfDrawScene(elfScene* scene)
 			found = ELF_FALSE;
 			for(i = 0, ent = (elfEntity*)elfBeginList(scene->entityQueue);
 				i < scene->entityQueueCount && ent != NULL;
-				i++, ent = (elfEntity*)elfNextInList(scene->entityQueue))
+				i++, ent = (elfEntity*)elfGetListNext(scene->entityQueue))
 			{
 				if(!elfCullEntity(ent, lig->shadowCamera))
 				{
@@ -2409,7 +2409,7 @@ void elfDrawScene(elfScene* scene)
 
 			for(i = 0, spr = (elfSprite*)elfBeginList(scene->spriteQueue);
 				i < scene->spriteQueueCount && spr != NULL;
-				i++, spr = (elfSprite*)elfNextInList(scene->spriteQueue))
+				i++, spr = (elfSprite*)elfGetListNext(scene->spriteQueue))
 			{
 				if(!elfCullSprite(spr, lig->shadowCamera))
 				{
@@ -2437,7 +2437,7 @@ void elfDrawScene(elfScene* scene)
 				gfxClearDepthBuffer(1.0);
 
 				for(ent = (elfEntity*)elfBeginList(scene->entities); ent != NULL;
-					ent = (elfEntity*)elfNextInList(scene->entities))
+					ent = (elfEntity*)elfGetListNext(scene->entities))
 				{
 					if(!elfCullEntity(ent, lig->shadowCamera))
 					{
@@ -2446,7 +2446,7 @@ void elfDrawScene(elfScene* scene)
 				}
 
 				for(spr = (elfSprite*)elfBeginList(scene->sprites); spr != NULL;
-					spr = (elfSprite*)elfNextInList(scene->sprites))
+					spr = (elfSprite*)elfGetListNext(scene->sprites))
 				{
 					if(!elfCullSprite(spr, lig->shadowCamera))
 					{
@@ -2543,14 +2543,14 @@ void elfDrawScene(elfScene* scene)
 
 	for(i = 0, ent = (elfEntity*)elfBeginList(scene->entityQueue);
 		i < scene->entityQueueCount && ent != NULL;
-		i++, ent = (elfEntity*)elfNextInList(scene->entityQueue))
+		i++, ent = (elfEntity*)elfGetListNext(scene->entityQueue))
 	{
 		elfDrawEntity(ent, ELF_DRAW_WITHOUT_LIGHTING, &scene->shaderParams);
 	}
 
 	for(i = 0, spr = (elfSprite*)elfBeginList(scene->spriteQueue);
 		i < scene->spriteQueueCount && spr != NULL;
-		i++, spr = (elfSprite*)elfNextInList(scene->spriteQueue))
+		i++, spr = (elfSprite*)elfGetListNext(scene->spriteQueue))
 	{
 		elfDrawSprite(spr, ELF_DRAW_WITHOUT_LIGHTING, &scene->shaderParams);
 	}
@@ -2564,7 +2564,7 @@ void elfDrawScene(elfScene* scene)
 	elfSetCamera(scene->curCamera, &scene->shaderParams);
 	
 	for(par = (elfParticles*)elfBeginList(scene->particles); par;
-		par = (elfParticles*)elfNextInList(scene->particles))
+		par = (elfParticles*)elfGetListNext(scene->particles))
 	{
 		if(!elfCullParticles(par, scene->curCamera))
 		{
@@ -2601,13 +2601,13 @@ void elfDrawScene(elfScene* scene)
 	if(elfGetListLength(scene->entityQueue) > scene->entityQueueCount)
 	{
 		ent = (elfEntity*)elfRbeginList(scene->entityQueue);
-		if(ent) elfRemoveFromList(scene->entityQueue, (elfObject*)ent);
+		if(ent) elfRemoveListObject(scene->entityQueue, (elfObject*)ent);
 	}
 
 	if(elfGetListLength(scene->spriteQueue) > scene->spriteQueueCount)
 	{
 		spr = (elfSprite*)elfRbeginList(scene->spriteQueue);
-		if(spr) elfRemoveFromList(scene->spriteQueue, (elfObject*)spr);
+		if(spr) elfRemoveListObject(scene->spriteQueue, (elfObject*)spr);
 	}
 }*/
 
@@ -2628,7 +2628,7 @@ void elfDrawSceneDebug(elfScene* scene)
 	elfSetCamera(scene->curCamera, &scene->shaderParams);
 
 	for(ent = (elfEntity*)elfBeginList(scene->entities); ent != NULL;
-		ent = (elfEntity*)elfNextInList(scene->entities))
+		ent = (elfEntity*)elfGetListNext(scene->entities))
 	{
 		elfDrawEntityDebug(ent, &scene->shaderParams);
 	}
@@ -2640,7 +2640,7 @@ void elfDrawSceneDebug(elfScene* scene)
 	elfSetCamera(scene->curCamera, &scene->shaderParams);
 
 	for(par = (elfParticles*)elfBeginList(scene->particles); par != NULL;
-		par = (elfParticles*)elfNextInList(scene->particles))
+		par = (elfParticles*)elfGetListNext(scene->particles))
 	{
 		elfDrawParticlesDebug(par, &scene->shaderParams);
 	}
@@ -2652,7 +2652,7 @@ void elfDrawSceneDebug(elfScene* scene)
 	elfSetCamera(scene->curCamera, &scene->shaderParams);
 
 	for(spr = (elfSprite*)elfBeginList(scene->sprites); spr != NULL;
-		spr = (elfSprite*)elfNextInList(scene->sprites))
+		spr = (elfSprite*)elfGetListNext(scene->sprites))
 	{
 		elfDrawSpriteDebug(spr, &scene->shaderParams);
 	}
@@ -2664,7 +2664,7 @@ void elfDrawSceneDebug(elfScene* scene)
 	elfSetCamera(scene->curCamera, &scene->shaderParams);
 
 	for(lig = (elfLight*)elfBeginList(scene->lights); lig != NULL;
-		lig = (elfLight*)elfNextInList(scene->lights))
+		lig = (elfLight*)elfGetListNext(scene->lights))
 	{
 		elfDrawLightDebug(lig, &scene->shaderParams);
 	}
@@ -2676,7 +2676,7 @@ void elfDrawSceneDebug(elfScene* scene)
 	elfSetCamera(scene->curCamera, &scene->shaderParams);
 
 	for(cam = (elfCamera*)elfBeginList(scene->cameras); cam != NULL;
-		cam = (elfCamera*)elfNextInList(scene->cameras))
+		cam = (elfCamera*)elfGetListNext(scene->cameras))
 	{
 		if(cam == scene->curCamera) continue;
 		elfDrawCameraDebug(cam, &scene->shaderParams);
@@ -2700,47 +2700,47 @@ ELF_API elfList* ELF_APIENTRY elfGetSceneScripts(elfScene* scene)
 	scripts = elfCreateList();
 
 	for(cam = (elfCamera*)elfBeginList(scene->cameras); cam;
-		cam = (elfCamera*)elfNextInList(scene->cameras))
+		cam = (elfCamera*)elfGetListNext(scene->cameras))
 	{
 		if(cam->script && !elfGetResourceById(scripts, cam->script->id))
 		{
-			elfAppendToList(scripts, (elfObject*)cam->script);
+			elfAppendListObject(scripts, (elfObject*)cam->script);
 		}
 	}
 
 	for(ent = (elfEntity*)elfBeginList(scene->entities); ent;
-		ent = (elfEntity*)elfNextInList(scene->entities))
+		ent = (elfEntity*)elfGetListNext(scene->entities))
 	{
 		if(ent->script && !elfGetResourceById(scripts, ent->script->id))
 		{
-			elfAppendToList(scripts, (elfObject*)ent->script);
+			elfAppendListObject(scripts, (elfObject*)ent->script);
 		}
 	}
 
 	for(lig = (elfLight*)elfBeginList(scene->lights); lig;
-		lig = (elfLight*)elfNextInList(scene->lights))
+		lig = (elfLight*)elfGetListNext(scene->lights))
 	{
 		if(lig->script && !elfGetResourceById(scripts, lig->script->id))
 		{
-			elfAppendToList(scripts, (elfObject*)lig->script);
+			elfAppendListObject(scripts, (elfObject*)lig->script);
 		}
 	}
 
 	for(par = (elfParticles*)elfBeginList(scene->particles); par;
-		par = (elfParticles*)elfNextInList(scene->particles))
+		par = (elfParticles*)elfGetListNext(scene->particles))
 	{
 		if(par->script && !elfGetResourceById(scripts, par->script->id))
 		{
-			elfAppendToList(scripts, (elfObject*)par->script);
+			elfAppendListObject(scripts, (elfObject*)par->script);
 		}
 	}
 
 	for(spr = (elfSprite*)elfBeginList(scene->sprites); spr;
-		spr = (elfSprite*)elfNextInList(scene->sprites))
+		spr = (elfSprite*)elfGetListNext(scene->sprites))
 	{
 		if(spr->script && !elfGetResourceById(scripts, spr->script->id))
 		{
-			elfAppendToList(scripts, (elfObject*)spr->script);
+			elfAppendListObject(scripts, (elfObject*)spr->script);
 		}
 	}
 
@@ -2759,47 +2759,47 @@ ELF_API elfList* ELF_APIENTRY elfGetSceneTextures(elfScene* scene)
 	textures = elfCreateList();
 
 	for(ent = (elfEntity*)elfBeginList(scene->entities); ent;
-		ent = (elfEntity*)elfNextInList(scene->entities))
+		ent = (elfEntity*)elfGetListNext(scene->entities))
 	{
 		for(mat = (elfMaterial*)elfBeginList(ent->materials); mat;
-			mat = (elfMaterial*)elfNextInList(ent->materials))
+			mat = (elfMaterial*)elfGetListNext(ent->materials))
 		{
 			if(mat->diffuseMap && !elfGetResourceById(textures, mat->diffuseMap->id))
-				elfAppendToList(textures, (elfObject*)mat->diffuseMap);
+				elfAppendListObject(textures, (elfObject*)mat->diffuseMap);
 			if(mat->normalMap && !elfGetResourceById(textures, mat->normalMap->id))
-				elfAppendToList(textures, (elfObject*)mat->normalMap);
+				elfAppendListObject(textures, (elfObject*)mat->normalMap);
 			if(mat->heightMap && !elfGetResourceById(textures, mat->heightMap->id))
-				elfAppendToList(textures, (elfObject*)mat->heightMap);
+				elfAppendListObject(textures, (elfObject*)mat->heightMap);
 			if(mat->specularMap && !elfGetResourceById(textures, mat->specularMap->id))
-				elfAppendToList(textures, (elfObject*)mat->specularMap);
+				elfAppendListObject(textures, (elfObject*)mat->specularMap);
 			if(mat->lightMap && !elfGetResourceById(textures, mat->lightMap->id))
-				elfAppendToList(textures, (elfObject*)mat->lightMap);
+				elfAppendListObject(textures, (elfObject*)mat->lightMap);
 		}
 	}
 
 	for(par = (elfParticles*)elfBeginList(scene->particles); par;
-		par = (elfParticles*)elfNextInList(scene->particles))
+		par = (elfParticles*)elfGetListNext(scene->particles))
 	{
 		if(par->texture && !elfGetResourceById(textures, par->texture->id))
-			elfAppendToList(textures, (elfObject*)par->texture);
+			elfAppendListObject(textures, (elfObject*)par->texture);
 	}
 
 	for(spr = (elfSprite*)elfBeginList(scene->sprites); spr;
-		spr = (elfSprite*)elfNextInList(scene->sprites))
+		spr = (elfSprite*)elfGetListNext(scene->sprites))
 	{
 		mat = spr->material;
 		if(!mat) continue;
 
 		if(mat->diffuseMap && !elfGetResourceById(textures, mat->diffuseMap->id))
-			elfAppendToList(textures, (elfObject*)mat->diffuseMap);
+			elfAppendListObject(textures, (elfObject*)mat->diffuseMap);
 		if(mat->normalMap && !elfGetResourceById(textures, mat->normalMap->id))
-			elfAppendToList(textures, (elfObject*)mat->normalMap);
+			elfAppendListObject(textures, (elfObject*)mat->normalMap);
 		if(mat->heightMap && !elfGetResourceById(textures, mat->heightMap->id))
-			elfAppendToList(textures, (elfObject*)mat->heightMap);
+			elfAppendListObject(textures, (elfObject*)mat->heightMap);
 		if(mat->specularMap && !elfGetResourceById(textures, mat->specularMap->id))
-			elfAppendToList(textures, (elfObject*)mat->specularMap);
+			elfAppendListObject(textures, (elfObject*)mat->specularMap);
 		if(mat->lightMap && !elfGetResourceById(textures, mat->lightMap->id))
-			elfAppendToList(textures, (elfObject*)mat->lightMap);
+			elfAppendListObject(textures, (elfObject*)mat->lightMap);
 	}
 
 	return textures;
@@ -2816,24 +2816,24 @@ ELF_API elfList* ELF_APIENTRY elfGetSceneMaterials(elfScene* scene)
 	materials = elfCreateList();
 
 	for(ent = (elfEntity*)elfBeginList(scene->entities); ent;
-		ent = (elfEntity*)elfNextInList(scene->entities))
+		ent = (elfEntity*)elfGetListNext(scene->entities))
 	{
 		for(mat = (elfMaterial*)elfBeginList(ent->materials); mat;
-			mat = (elfMaterial*)elfNextInList(ent->materials))
+			mat = (elfMaterial*)elfGetListNext(ent->materials))
 		{
 			if(!elfGetResourceById(materials, mat->id))
 			{
-				elfAppendToList(materials, (elfObject*)mat);
+				elfAppendListObject(materials, (elfObject*)mat);
 			}
 		}
 	}
 
 	for(spr = (elfSprite*)elfBeginList(scene->sprites); spr;
-		spr = (elfSprite*)elfNextInList(scene->sprites))
+		spr = (elfSprite*)elfGetListNext(scene->sprites))
 	{
 		if(spr->material && !elfGetResourceById(materials, spr->material->id))
 		{
-			elfAppendToList(materials, (elfObject*)spr->material);
+			elfAppendListObject(materials, (elfObject*)spr->material);
 		}
 	}
 
@@ -2852,20 +2852,20 @@ ELF_API elfList* ELF_APIENTRY elfGetSceneModels(elfScene* scene)
 	models = elfCreateList();
 
 	for(ent = (elfEntity*)elfBeginList(scene->entities); ent;
-		ent = (elfEntity*)elfNextInList(scene->entities))
+		ent = (elfEntity*)elfGetListNext(scene->entities))
 	{
 		if(ent->model && !elfGetResourceById(models, ent->model->id))
 		{
-			elfAppendToList(models, (elfObject*)ent->model);
+			elfAppendListObject(models, (elfObject*)ent->model);
 		}
 	}
 
 	for(par = (elfParticles*)elfBeginList(scene->particles); par;
-		par = (elfParticles*)elfNextInList(scene->particles))
+		par = (elfParticles*)elfGetListNext(scene->particles))
 	{
 		if(par->model && !elfGetResourceById(models, par->model->id))
 		{
-			elfAppendToList(models, (elfObject*)par->model);
+			elfAppendListObject(models, (elfObject*)par->model);
 		}
 	}
 

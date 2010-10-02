@@ -465,9 +465,9 @@ ELF_API unsigned char ELF_APIENTRY elfIsGuiObject(elfObject* obj);
 //////////////////////////////// RESOURCE ////////////////////////////////
 
 // <!!
+elfResource* elfGetResource(elfList* resources, const char* name);
 elfResource* elfGetResourceById(elfList* resources, int id);
-elfResource* elfGetResourceByName(elfList* resources, const char* name);
-void elfSetUniqueNameForResource(elfList* namedObjects, elfResource* object);
+void elfSetResourceUniqueName(elfList* namedObjects, elfResource* object);
 // !!>
 
 //////////////////////////////// STRING ////////////////////////////////
@@ -495,14 +495,14 @@ int elfRfindCharsFromString(const char* str, const char* chrs);
 ELF_API elfList* ELF_APIENTRY elfCreateList();	// <mdoc> LIST FUNCTIONS
 /* <!> */ void elfDestroyList(void* data);
 ELF_API int ELF_APIENTRY elfGetListLength(elfList* list);
-ELF_API void ELF_APIENTRY elfInsertToList(elfList* list, int idx, elfObject* obj);
-ELF_API void ELF_APIENTRY elfAppendToList(elfList* list, elfObject* obj);
-ELF_API unsigned char ELF_APIENTRY elfRemoveFromList(elfList* list, elfObject* obj);
-ELF_API elfObject* ELF_APIENTRY elfGetItemFromList(elfList* list, int idx);
+ELF_API void ELF_APIENTRY elfInsertListObject(elfList* list, int idx, elfObject* obj);
+ELF_API void ELF_APIENTRY elfAppendListObject(elfList* list, elfObject* obj);
+ELF_API unsigned char ELF_APIENTRY elfRemoveListObject(elfList* list, elfObject* obj);
+ELF_API elfObject* ELF_APIENTRY elfGetListObject(elfList* list, int idx);
 ELF_API elfObject* ELF_APIENTRY elfBeginList(elfList* list);
-ELF_API elfObject* ELF_APIENTRY elfNextInList(elfList* list);
+ELF_API elfObject* ELF_APIENTRY elfGetListNext(elfList* list);
 ELF_API elfObject* ELF_APIENTRY elfRBeginList(elfList* list);
-ELF_API elfObject* ELF_APIENTRY elfRNextInList(elfList* list);
+ELF_API elfObject* ELF_APIENTRY elfGetListRNext(elfList* list);
 /* <!> */void elfSetListCurPtr(elfList* list, elfObject* ptr);
 ELF_API void ELF_APIENTRY elfSeekList(elfList* list, elfObject* ptr);
 ELF_API void ELF_APIENTRY elfRSeekList(elfList* list, elfObject* ptr);

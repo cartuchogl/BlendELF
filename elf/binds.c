@@ -437,69 +437,69 @@ static int lua_GetListLength(lua_State *L)
 	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
-static int lua_InsertToList(lua_State *L)
+static int lua_InsertListObject(lua_State *L)
 {
 	elfList* arg0;
 	int arg1;
 	elfObject* arg2;
-	if(lua_gettop(L) != 3) {return lua_fail_arg_count(L, "InsertToList", lua_gettop(L), 3);}
+	if(lua_gettop(L) != 3) {return lua_fail_arg_count(L, "InsertListObject", lua_gettop(L), 3);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_LIST)
-		{return lua_fail_arg(L, "InsertToList", 1, "elfList");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "InsertToList", 2, "number");}
+		{return lua_fail_arg(L, "InsertListObject", 1, "elfList");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "InsertListObject", 2, "number");}
 	if(!lua_isuserdata(L, 3) || ((lua_elf_userdata*)lua_touserdata(L,3))->type != LUA_ELF_OBJECT)
-		{return lua_fail_arg(L, "InsertToList", 3, "elfObject");}
+		{return lua_fail_arg(L, "InsertListObject", 3, "elfObject");}
 	arg0 = (elfList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (int)lua_tonumber(L, 2);
 	arg2 = (elfObject*)((lua_elfObject*)lua_touserdata(L, 3))->object;
-	elfInsertToList(arg0, arg1, arg2);
+	elfInsertListObject(arg0, arg1, arg2);
 	return 0;
 }
-static int lua_AppendToList(lua_State *L)
+static int lua_AppendListObject(lua_State *L)
 {
 	elfList* arg0;
 	elfObject* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AppendToList", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AppendListObject", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_LIST)
-		{return lua_fail_arg(L, "AppendToList", 1, "elfList");}
+		{return lua_fail_arg(L, "AppendListObject", 1, "elfList");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT)
-		{return lua_fail_arg(L, "AppendToList", 2, "elfObject");}
+		{return lua_fail_arg(L, "AppendListObject", 2, "elfObject");}
 	arg0 = (elfList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfObject*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	elfAppendToList(arg0, arg1);
+	elfAppendListObject(arg0, arg1);
 	return 0;
 }
-static int lua_RemoveFromList(lua_State *L)
+static int lua_RemoveListObject(lua_State *L)
 {
 	unsigned char result;
 	elfList* arg0;
 	elfObject* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveFromList", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "RemoveListObject", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_LIST)
-		{return lua_fail_arg(L, "RemoveFromList", 1, "elfList");}
+		{return lua_fail_arg(L, "RemoveListObject", 1, "elfList");}
 	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT)
-		{return lua_fail_arg(L, "RemoveFromList", 2, "elfObject");}
+		{return lua_fail_arg(L, "RemoveListObject", 2, "elfObject");}
 	arg0 = (elfList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfObject*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	result = elfRemoveFromList(arg0, arg1);
+	result = elfRemoveListObject(arg0, arg1);
 	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_GetItemFromList(lua_State *L)
+static int lua_GetListObject(lua_State *L)
 {
 	elfObject* result;
 	elfList* arg0;
 	int arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetItemFromList", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetListObject", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_LIST)
-		{return lua_fail_arg(L, "GetItemFromList", 1, "elfList");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "GetItemFromList", 2, "number");}
+		{return lua_fail_arg(L, "GetListObject", 1, "elfList");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "GetListObject", 2, "number");}
 	arg0 = (elfList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (int)lua_tonumber(L, 2);
-	result = elfGetItemFromList(arg0, arg1);
+	result = elfGetListObject(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -518,16 +518,16 @@ static int lua_BeginList(lua_State *L)
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_NextInList(lua_State *L)
+static int lua_GetListNext(lua_State *L)
 {
 	elfObject* result;
 	elfList* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "NextInList", lua_gettop(L), 1);}
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetListNext", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_LIST)
-		{return lua_fail_arg(L, "NextInList", 1, "elfList");}
+		{return lua_fail_arg(L, "GetListNext", 1, "elfList");}
 	arg0 = (elfList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfNextInList(arg0);
+	result = elfGetListNext(arg0);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -546,16 +546,16 @@ static int lua_RBeginList(lua_State *L)
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_RNextInList(lua_State *L)
+static int lua_GetListRNext(lua_State *L)
 {
 	elfObject* result;
 	elfList* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "RNextInList", lua_gettop(L), 1);}
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetListRNext", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_LIST)
-		{return lua_fail_arg(L, "RNextInList", 1, "elfList");}
+		{return lua_fail_arg(L, "GetListRNext", 1, "elfList");}
 	arg0 = (elfList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfRNextInList(arg0);
+	result = elfGetListRNext(arg0);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -10246,14 +10246,14 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"IsGuiObject", lua_IsGuiObject},
 	{"CreateList", lua_CreateList},
 	{"GetListLength", lua_GetListLength},
-	{"InsertToList", lua_InsertToList},
-	{"AppendToList", lua_AppendToList},
-	{"RemoveFromList", lua_RemoveFromList},
-	{"GetItemFromList", lua_GetItemFromList},
+	{"InsertListObject", lua_InsertListObject},
+	{"AppendListObject", lua_AppendListObject},
+	{"RemoveListObject", lua_RemoveListObject},
+	{"GetListObject", lua_GetListObject},
 	{"BeginList", lua_BeginList},
-	{"NextInList", lua_NextInList},
+	{"GetListNext", lua_GetListNext},
 	{"RBeginList", lua_RBeginList},
-	{"RNextInList", lua_RNextInList},
+	{"GetListRNext", lua_GetListRNext},
 	{"SeekList", lua_SeekList},
 	{"RSeekList", lua_RSeekList},
 	{"ReadConfig", lua_ReadConfig},

@@ -602,7 +602,7 @@ void elfRunPostProcess(elfPostProcess* postProcess, elfScene* scene)
 	if(postProcess->lightShafts && scene->curCamera)
 	{
 		for(light = (elfLight*)elfBeginList(scene->lights); light;
-			light = (elfLight*)elfNextInList(scene->lights))
+			light = (elfLight*)elfGetListNext(scene->lights))
 		{
 			lightPos = elfGetActorPosition((elfActor*)light);
 			if(elfIsLightShaft(light) && elfSphereInsideFrustum(scene->curCamera, &lightPos.x, light->shaftSize))
@@ -623,14 +623,14 @@ void elfRunPostProcess(elfPostProcess* postProcess, elfScene* scene)
 
 					for(i = 0, ent = (elfEntity*)elfBeginList(scene->entityQueue);
 						i < scene->entityQueueCount && ent != NULL;
-						i++, ent = (elfEntity*)elfNextInList(scene->entityQueue))
+						i++, ent = (elfEntity*)elfGetListNext(scene->entityQueue))
 					{
 						elfDrawEntity(ent, ELF_DRAW_DEPTH, &scene->shaderParams);
 					}
 
 					for(i = 0, spr = (elfSprite*)elfBeginList(scene->spriteQueue);
 						i < scene->spriteQueueCount && spr != NULL;
-						i++, spr = (elfSprite*)elfNextInList(scene->spriteQueue))
+						i++, spr = (elfSprite*)elfGetListNext(scene->spriteQueue))
 					{
 						elfDrawSprite(spr, ELF_DRAW_DEPTH, &scene->shaderParams);
 					}

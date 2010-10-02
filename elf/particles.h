@@ -282,7 +282,7 @@ void elfUpdateParticles(elfParticles* particles, float sync)
 	if(spawnCount > 0) particles->curTime -= particles->spawnDelay*spawnCount;
 
 	for(particle = (elfParticle*)elfBeginList(particles->particles); particle;
-		particle = (elfParticle*)elfNextInList(particles->particles))
+		particle = (elfParticle*)elfGetListNext(particles->particles))
 	{
 		if(particle->lifeSpan < 0.0 || particle->color.a < 0.0)
 		{
@@ -293,7 +293,7 @@ void elfUpdateParticles(elfParticles* particles, float sync)
 			}
 			else
 			{
-				elfRemoveFromList(particles->particles, (elfObject*)particle);
+				elfRemoveListObject(particles->particles, (elfObject*)particle);
 			}
 			continue;
 		}
@@ -318,7 +318,7 @@ void elfUpdateParticles(elfParticles* particles, float sync)
 
 			elfInitNewParticle(particles, particle);
 
-			elfAppendToList(particles->particles, (elfObject*)particle);
+			elfAppendListObject(particles->particles, (elfObject*)particle);
 		}
 	}
 }
@@ -362,7 +362,7 @@ void elfDrawParticles(elfParticles* particles, elfCamera* camera, gfxShaderParam
 		elfAboutZero(particles->rotationGrowthMin) && elfAboutZero(particles->rotationGrowthMax))
 	{
 		for(i = 0, j = 0, particle = (elfParticle*)elfBeginList(particles->particles); particle;
-			particle = (elfParticle*)elfNextInList(particles->particles), i++)
+			particle = (elfParticle*)elfGetListNext(particles->particles), i++)
 		{
 			particleOffset[0] = invCameraPos[0]+particle->position.x;
 			particleOffset[1] = invCameraPos[1]+particle->position.y;
@@ -432,7 +432,7 @@ void elfDrawParticles(elfParticles* particles, elfCamera* camera, gfxShaderParam
 	else
 	{
 		for(i = 0, j = 0, particle = (elfParticle*)elfBeginList(particles->particles); particle;
-			particle = (elfParticle*)elfNextInList(particles->particles), i++)
+			particle = (elfParticle*)elfGetListNext(particles->particles), i++)
 		{
 
 			particleOffset[0] = invCameraPos[0]+particle->position.x;

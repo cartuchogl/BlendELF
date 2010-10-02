@@ -57,7 +57,7 @@ ELF_API int ELF_APIENTRY elfGetListLength(elfList* list)
 	return list->length;
 }
 
-ELF_API void ELF_APIENTRY elfInsertToList(elfList* list, int idx, elfObject* obj)
+ELF_API void ELF_APIENTRY elfInsertListObject(elfList* list, int idx, elfObject* obj)
 {
 	elfListPtr* ptr;
 	elfListPtr* tptr;
@@ -110,7 +110,7 @@ ELF_API void ELF_APIENTRY elfInsertToList(elfList* list, int idx, elfObject* obj
 	elfIncRef(obj);
 }
 
-ELF_API void ELF_APIENTRY elfAppendToList(elfList* list, elfObject* obj)
+ELF_API void ELF_APIENTRY elfAppendListObject(elfList* list, elfObject* obj)
 {
 	if(!obj) return;
 
@@ -133,7 +133,7 @@ ELF_API void ELF_APIENTRY elfAppendToList(elfList* list, elfObject* obj)
 	elfIncRef(obj);
 }
 
-ELF_API elfObject* ELF_APIENTRY elfGetItemFromList(elfList* list, int idx)
+ELF_API elfObject* ELF_APIENTRY elfGetListObject(elfList* list, int idx)
 {
 	elfListPtr* ptr;
 	int i;
@@ -156,7 +156,7 @@ ELF_API elfObject* ELF_APIENTRY elfGetItemFromList(elfList* list, int idx)
 	return NULL;
 }
 
-ELF_API unsigned char ELF_APIENTRY elfRemoveFromList(elfList* list, elfObject* obj)
+ELF_API unsigned char ELF_APIENTRY elfRemoveListObject(elfList* list, elfObject* obj)
 {
 	elfListPtr* ptr;
 	elfListPtr* prevPtr;
@@ -209,7 +209,7 @@ ELF_API elfObject* ELF_APIENTRY elfBeginList(elfList* list)
 	return NULL;
 }
 
-ELF_API elfObject* ELF_APIENTRY elfNextInList(elfList* list)
+ELF_API elfObject* ELF_APIENTRY elfGetListNext(elfList* list)
 {
 	list->cur = list->next;
 	if(list->cur)
@@ -231,7 +231,7 @@ ELF_API elfObject* ELF_APIENTRY elfRBeginList(elfList* list)
 	return NULL;
 }
 
-ELF_API elfObject* ELF_APIENTRY elfRNextInList(elfList* list)
+ELF_API elfObject* ELF_APIENTRY elfGetListRNext(elfList* list)
 {
 	list->cur = list->next;
 	if(list->cur)
@@ -257,7 +257,7 @@ ELF_API void ELF_APIENTRY elfSeekList(elfList* list, elfObject* ptr)
 	elfObject* obj;
 
 	for(obj = elfBeginList(list); obj;
-		obj = elfNextInList(list))
+		obj = elfGetListNext(list))
 	{
 		if(obj == ptr) return;
 	}
@@ -268,7 +268,7 @@ ELF_API void ELF_APIENTRY elfRSeekList(elfList* list, elfObject* ptr)
 	elfObject* obj;
 
 	for(obj = elfRBeginList(list); obj;
-		obj = elfRNextInList(list))
+		obj = elfGetListRNext(list))
 	{
 		if(obj == ptr) return;
 	}

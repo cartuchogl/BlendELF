@@ -118,13 +118,13 @@ void elfUpdateActor(elfActor* actor)
 	if(actor->object) elfClearPhysicsObjectCollisions(actor->object);
 
 	for(source = (elfAudioSource*)elfBeginList(actor->sources); source;
-		source = (elfAudioSource*)elfNextInList(actor->sources))
+		source = (elfAudioSource*)elfGetListNext(actor->sources))
 	{
 		if(elfGetObjectRefCount((elfObject*)source) < 2 &&
 			!elfIsSoundPlaying(source) &&
 			!elfIsSoundPaused(source))
 		{
-			elfRemoveFromList(actor->sources, (elfObject*)source);
+			elfRemoveListObject(actor->sources, (elfObject*)source);
 		}
 		else
 		{
@@ -166,11 +166,11 @@ void elfCleanActor(elfActor* actor)
 	if(actor->script) elfDecRef((elfObject*)actor->script);
 
 	for(joint = (elfJoint*)elfBeginList(actor->joints); joint;
-		joint = (elfJoint*)elfNextInList(actor->joints))
+		joint = (elfJoint*)elfGetListNext(actor->joints))
 	{
 		if(elfGetJointActorA(joint) == actor)
-			elfRemoveFromList(elfGetJointActorB(joint)->joints, (elfObject*)joint);
-		else elfRemoveFromList(elfGetJointActorA(joint)->joints, (elfObject*)joint);
+			elfRemoveListObject(elfGetJointActorB(joint)->joints, (elfObject*)joint);
+		else elfRemoveListObject(elfGetJointActorA(joint)->joints, (elfObject*)joint);
 		elfClearJoint(joint);
 	}
 
@@ -608,7 +608,7 @@ ELF_API void ELF_APIENTRY elfSetActorPhysics(elfActor* actor, int shape, float m
 	// things are seriously going to blow up if we don't update the joints
 	// when a new physics object has been created
 	for(joint = (elfJoint*)elfBeginList(actor->joints); joint;
-		joint = (elfJoint*)elfNextInList(actor->joints))
+		joint = (elfJoint*)elfGetListNext(actor->joints))
 	{
 		elfSetJointWorld(joint, NULL);
 		if(actor->scene) elfSetJointWorld(joint, actor->scene->world);
@@ -813,8 +813,8 @@ ELF_API elfJoint* ELF_APIENTRY elfAddActorHingeJoint(elfActor* actor, elfActor* 
 
 	joint = elfCreateHingeJoint(actor, actor2, name, px, py, pz, ax, ay, az);
 
-	elfAppendToList(actor->joints, (elfObject*)joint);
-	elfAppendToList(actor2->joints, (elfObject*)joint);
+	elfAppendListObject(actor->joints, (elfObject*)joint);
+	elfAppendListObject(actor2->joints, (elfObject*)joint);
 
 	return joint;
 }
@@ -827,8 +827,8 @@ ELF_API elfJoint* ELF_APIENTRY elfAddActorBallJoint(elfActor* actor, elfActor* a
 
 	joint = elfCreateBallJoint(actor, actor2, name, px, py, pz);
 
-	elfAppendToList(actor->joints, (elfObject*)joint);
-	elfAppendToList(actor2->joints, (elfObject*)joint);
+	elfAppendListObject(actor->joints, (elfObject*)joint);
+	elfAppendListObject(actor2->joints, (elfObject*)joint);
 
 	return joint;
 }
@@ -841,8 +841,8 @@ ELF_API elfJoint* ELF_APIENTRY elfAddActorConeTwistJoint(elfActor* actor, elfAct
 
 	joint = elfCreateConeTwistJoint(actor, actor2, name, px, py, pz, ax, ay, az);
 
-	elfAppendToList(actor->joints, (elfObject*)joint);
-	elfAppendToList(actor2->joints, (elfObject*)joint);
+	elfAppendListObject(actor->joints, (elfObject*)joint);
+	elfAppendListObject(actor2->joints, (elfObject*)joint);
 
 	return joint;
 }
@@ -852,7 +852,7 @@ ELF_API elfJoint* ELF_APIENTRY elfGetActorJoint(elfActor* actor, const char* nam
 	elfJoint* joint;
 
 	for(joint = (elfJoint*)elfBeginList(actor->joints); joint;
-		joint = (elfJoint*)elfNextInList(actor->joints))
+		joint = (elfJoint*)elfGetListNext(actor->joints))
 	{
 		if(!strcmp(elfGetJointName(joint), name)) return joint;
 	}
@@ -862,7 +862,7 @@ ELF_API elfJoint* ELF_APIENTRY elfGetActorJoint(elfActor* actor, const char* nam
 
 ELF_API elfJoint* ELF_APIENTRY elfGetActorJointByIndex(elfActor* actor, int idx)
 {
-	return (elfJoint*)elfGetItemFromList(actor->joints, idx);
+	return (elfJoint*)elfGetListObject(actor->joints, idx);
 }
 
 ELF_API unsigned char ELF_APIENTRY elfRemoveActorJoint(elfActor* actor, const char* name)
@@ -870,15 +870,15 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveActorJoint(elfActor* actor, const ch
 	elfJoint* joint;
 
 	for(joint = (elfJoint*)elfBeginList(actor->joints); joint;
-		joint = (elfJoint*)elfNextInList(actor->joints))
+		joint = (elfJoint*)elfGetListNext(actor->joints))
 	{
 		if(!strcmp(elfGetJointName(joint), name))
 		{
 			if(elfGetJointActorA(joint) == actor)
-				elfRemoveFromList(elfGetJointActorB(joint)->joints, (elfObject*)joint);
-			else elfRemoveFromList(elfGetJointActorA(joint)->joints, (elfObject*)joint);
+				elfRemoveListObject(elfGetJointActorB(joint)->joints, (elfObject*)joint);
+			else elfRemoveListObject(elfGetJointActorA(joint)->joints, (elfObject*)joint);
 			elfClearJoint(joint);
-			return elfRemoveFromList(actor->joints, (elfObject*)joint);
+			return elfRemoveListObject(actor->joints, (elfObject*)joint);
 		}
 	}
 
@@ -891,15 +891,15 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveActorJointByIndex(elfActor* actor, i
 	int i;
 
 	for(i = 0, joint = (elfJoint*)elfBeginList(actor->joints); joint;
-		joint = (elfJoint*)elfNextInList(actor->joints), i++)
+		joint = (elfJoint*)elfGetListNext(actor->joints), i++)
 	{
 		if(i == idx)
 		{
 			if(elfGetJointActorA(joint) == actor)
-				elfRemoveFromList(elfGetJointActorB(joint)->joints, (elfObject*)joint);
-			else elfRemoveFromList(elfGetJointActorA(joint)->joints, (elfObject*)joint);
+				elfRemoveListObject(elfGetJointActorB(joint)->joints, (elfObject*)joint);
+			else elfRemoveListObject(elfGetJointActorA(joint)->joints, (elfObject*)joint);
 			elfClearJoint(joint);
-			return elfRemoveFromList(actor->joints, (elfObject*)joint);
+			return elfRemoveListObject(actor->joints, (elfObject*)joint);
 		}
 	}
 
@@ -909,10 +909,10 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveActorJointByIndex(elfActor* actor, i
 ELF_API unsigned char ELF_APIENTRY elfRemoveActorJointByObject(elfActor* actor, elfJoint* joint)
 {
 	if(elfGetJointActorA(joint) == actor)
-		elfRemoveFromList(elfGetJointActorB(joint)->joints, (elfObject*)joint);
-	else elfRemoveFromList(elfGetJointActorA(joint)->joints, (elfObject*)joint);
+		elfRemoveListObject(elfGetJointActorB(joint)->joints, (elfObject*)joint);
+	else elfRemoveListObject(elfGetJointActorA(joint)->joints, (elfObject*)joint);
 	elfClearJoint(joint);
-	return elfRemoveFromList(actor->joints, (elfObject*)joint);
+	return elfRemoveListObject(actor->joints, (elfObject*)joint);
 }
 
 ELF_API void ELF_APIENTRY elfSetActorIpo(elfActor* actor, elfIpo* ipo)
@@ -1006,7 +1006,7 @@ ELF_API int ELF_APIENTRY elfGetActorPropertyCount(elfActor* actor)
 
 ELF_API void ELF_APIENTRY elfAddPropertyToActor(elfActor* actor, elfProperty* property)
 {
-	elfAppendToList(actor->properties, (elfObject*)property);
+	elfAppendListObject(actor->properties, (elfObject*)property);
 }
 
 ELF_API elfProperty* ELF_APIENTRY elfGetActorPropertyByName(elfActor* actor, const char* name)
@@ -1016,7 +1016,7 @@ ELF_API elfProperty* ELF_APIENTRY elfGetActorPropertyByName(elfActor* actor, con
 	if(!name || strlen(name) < 1) return ELF_FALSE;
 
 	for(prop = (elfProperty*)elfBeginList(actor->properties); prop;
-		prop = (elfProperty*)elfNextInList(actor->properties))
+		prop = (elfProperty*)elfGetListNext(actor->properties))
 	{
 		if(!strcmp(prop->name, name))
 		{
@@ -1029,7 +1029,7 @@ ELF_API elfProperty* ELF_APIENTRY elfGetActorPropertyByName(elfActor* actor, con
 
 ELF_API elfProperty* ELF_APIENTRY elfGetActorPropertyByIndex(elfActor* actor, int idx)
 {
-	return (elfProperty*)elfGetItemFromList(actor->properties, idx);
+	return (elfProperty*)elfGetListObject(actor->properties, idx);
 }
 
 ELF_API unsigned char ELF_APIENTRY elfRemoveActorPropertyByName(elfActor* actor, const char* name)
@@ -1039,11 +1039,11 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveActorPropertyByName(elfActor* actor,
 	if(!name || strlen(name) < 1) return ELF_FALSE;
 
 	for(prop = (elfProperty*)elfBeginList(actor->properties); prop;
-		prop = (elfProperty*)elfNextInList(actor->properties))
+		prop = (elfProperty*)elfGetListNext(actor->properties))
 	{
 		if(!strcmp(prop->name, name))
 		{
-			elfRemoveFromList(actor->properties, (elfObject*)prop);
+			elfRemoveListObject(actor->properties, (elfObject*)prop);
 			return ELF_TRUE;
 		}
 	}
@@ -1059,11 +1059,11 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveActorPropertyByIndex(elfActor* actor
 	if(idx < 0 && idx >= elfGetListLength(actor->properties)) return ELF_FALSE;
 
 	for(i = 0, prop = (elfProperty*)elfBeginList(actor->properties); prop;
-		prop = (elfProperty*)elfNextInList(actor->properties), i++)
+		prop = (elfProperty*)elfGetListNext(actor->properties), i++)
 	{
 		if(i == idx)
 		{
-			elfRemoveFromList(actor->properties, (elfObject*)prop);
+			elfRemoveListObject(actor->properties, (elfObject*)prop);
 			return ELF_TRUE;
 		}
 	}
@@ -1073,7 +1073,7 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveActorPropertyByIndex(elfActor* actor
 
 ELF_API unsigned char ELF_APIENTRY elfRemoveActorPropertyByObject(elfActor* actor, elfProperty* property)
 {
-	return elfRemoveFromList(actor->properties, (elfObject*)property);
+	return elfRemoveListObject(actor->properties, (elfObject*)property);
 }
 
 ELF_API void ELF_APIENTRY elfRemoveActorProperties(elfActor* actor)

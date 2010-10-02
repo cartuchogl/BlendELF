@@ -44,7 +44,7 @@ ELF_API void ELF_APIENTRY elfGenerateEntityTangents(elfEntity* entity)
 	if(!entity->model || elfGetModelTangents(entity->model)) return;
 
 	for(material = (elfMaterial*)elfBeginList(entity->materials); material;
-		material = (elfMaterial*)elfNextInList(entity->materials))
+		material = (elfMaterial*)elfGetListNext(entity->materials))
 	{
 		if(elfGetMaterialNormalMap(material))
 		{
@@ -367,7 +367,7 @@ ELF_API int ELF_APIENTRY elfGetEntityMaterialCount(elfEntity* entity)
 
 ELF_API void ELF_APIENTRY elfAddEntityMaterial(elfEntity* entity, elfMaterial* material)
 {
-	elfAppendToList(entity->materials, (elfObject*)material);
+	elfAppendListObject(entity->materials, (elfObject*)material);
 	elfGenerateEntityTangents(entity);
 }
 
@@ -379,7 +379,7 @@ ELF_API void ELF_APIENTRY elfSetEntityMaterial(elfEntity* entity, int idx, elfMa
 	if(idx < 0 || idx > elfGetListLength(entity->materials)-1) return;
 
 	for(i = 0, mat = elfBeginList(entity->materials); mat;
-		mat = elfNextInList(entity->materials), i++)
+		mat = elfGetListNext(entity->materials), i++)
 	{
 		if(idx == i)
 		{
@@ -399,11 +399,11 @@ ELF_API void ELF_APIENTRY elfRemoveEntityMaterial(elfEntity* entity, int idx)
 	if(idx < 0 || idx > elfGetListLength(entity->materials)-1) return;
 
 	for(i = 0, mat = elfBeginList(entity->materials); mat;
-		mat = elfNextInList(entity->materials), i++)
+		mat = elfGetListNext(entity->materials), i++)
 	{
 		if(idx == i)
 		{
-			elfRemoveFromList(entity->materials, (elfObject*)mat);
+			elfRemoveListObject(entity->materials, (elfObject*)mat);
 			return;
 		}
 	}
@@ -412,7 +412,7 @@ ELF_API void ELF_APIENTRY elfRemoveEntityMaterial(elfEntity* entity, int idx)
 ELF_API elfMaterial* ELF_APIENTRY elfGetEntityMaterial(elfEntity* entity, int idx)
 {
 	if(idx < 0 || idx > elfGetListLength(entity->materials)-1) return NULL;
-	return (elfMaterial*)elfGetItemFromList(entity->materials, idx);
+	return (elfMaterial*)elfGetListObject(entity->materials, idx);
 }
 
 ELF_API void ELF_APIENTRY elfSetEntityVisible(elfEntity* entity, unsigned char visible)

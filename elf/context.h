@@ -173,7 +173,7 @@ unsigned char elfInitContext(int width, int height,
 			videoMode = elfCreateVideoMode();
 			videoMode->reso.x = vidmodes[i].Width;
 			videoMode->reso.y = vidmodes[i].Height;
-			elfAppendToList(ctx->videoModes, (elfObject*)videoMode);
+			elfAppendListObject(ctx->videoModes, (elfObject*)videoMode);
 		}
 	}
 
@@ -186,7 +186,7 @@ unsigned char elfInitContext(int width, int height,
 			videoMode = elfCreateVideoMode();
 			videoMode->reso.x = vidmodes[i].Width;
 			videoMode->reso.y = vidmodes[i].Height;
-			elfAppendToList(ctx->videoModes, (elfObject*)videoMode);
+			elfAppendListObject(ctx->videoModes, (elfObject*)videoMode);
 		}
 	}
 
@@ -251,7 +251,7 @@ ELF_API elfVec2i ELF_APIENTRY elfGetVideoMode(int idx)
 
 	memset(&reso.x, 0x0, sizeof(elfVec2i));
 
-	mode = (elfVideoMode*)elfGetItemFromList(ctx->videoModes, idx);
+	mode = (elfVideoMode*)elfGetListObject(ctx->videoModes, idx);
 
 	if(mode)
 	{
@@ -422,7 +422,7 @@ void keyCallback(int key, int state)
 	keyEvent->key = elfKey;
 	keyEvent->state = (state == GLFW_PRESS) ? ELF_TRUE : ELF_FALSE;
 
-	elfAppendToList(ctx->events, (elfObject*)keyEvent);
+	elfAppendListObject(ctx->events, (elfObject*)keyEvent);
 }
 
 void charCallback(int code, int state)
@@ -433,7 +433,7 @@ void charCallback(int code, int state)
 	charEvent->code = code;
 	charEvent->state = (state == GLFW_PRESS) ? ELF_TRUE : ELF_FALSE;
 
-	elfAppendToList(ctx->events, (elfObject*)charEvent);
+	elfAppendListObject(ctx->events, (elfObject*)charEvent);
 }
 
 ELF_API elfVec2i ELF_APIENTRY elfGetMousePosition()
@@ -567,7 +567,8 @@ ELF_API elfObject* ELF_APIENTRY elfGetEvent(int idx)
 
 	if(idx < 0 || idx > elfGetListLength(ctx->events)-1) return NULL;
 
-	for(i = 0, obj = elfBeginList(ctx->events); obj; obj = elfNextInList(ctx->events), i++)
+	for(i = 0, obj = elfBeginList(ctx->events); obj;
+		obj = elfGetListNext(ctx->events), i++)
 	{
 		if(i == idx) return obj;
 	}

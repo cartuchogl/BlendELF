@@ -899,23 +899,23 @@ void elfDestroyDirectory(void* data)
 	elfDecObj(ELF_DIRECTORY);
 }
 
-void elfAppendFolderToDirectoryItemList(elfList* items, elfDirectoryItem* nitem)
+void elfAppendDirectoryItemListFolder(elfList* items, elfDirectoryItem* nitem)
 {
 	elfDirectoryItem* dirItem;
 	int i;
 
 	for(i = 0, dirItem = (elfDirectoryItem*)elfBeginList(items); dirItem;
-		dirItem = (elfDirectoryItem*)elfNextInList(items), i++)
+		dirItem = (elfDirectoryItem*)elfGetListNext(items), i++)
 	{
 		if(dirItem->itemType == ELF_FILE)
 		{
-			elfInsertToList(items, i, (elfObject*)nitem);
+			elfInsertListObject(items, i, (elfObject*)nitem);
 			return;
 		}
 		else continue;
 	}
 
-	elfAppendToList(items, (elfObject*)nitem);
+	elfAppendListObject(items, (elfObject*)nitem);
 }
 
 typedef struct elfDirItemEmul {
@@ -961,7 +961,7 @@ ELF_API elfDirectory* ELF_APIENTRY elfReadDirectory(const char* path)
 			else dirItem->itemType = ELF_FILE;
 #endif
 
-			elfAppendToList(directory->items, (elfObject*)dirItem);
+			elfAppendListObject(directory->items, (elfObject*)dirItem);
 		}
 
 		itemCount = elfGetListLength(directory->items);
@@ -970,7 +970,7 @@ ELF_API elfDirectory* ELF_APIENTRY elfReadDirectory(const char* path)
 		memset(names, 0x0, sizeof(elfDirItemEmul)*itemCount);
 
 		for(i = 0, dirItem = (elfDirectoryItem*)elfBeginList(directory->items); dirItem;
-			dirItem = (elfDirectoryItem*)elfNextInList(directory->items), i++)
+			dirItem = (elfDirectoryItem*)elfGetListNext(directory->items), i++)
 		{
 			names[i].str = (char*)malloc(sizeof(char)*(strlen(dirItem->name)+1));
 			memcpy(names[i].str, dirItem->name, sizeof(char)*(strlen(dirItem->name)+1));
@@ -991,8 +991,8 @@ ELF_API elfDirectory* ELF_APIENTRY elfReadDirectory(const char* path)
 			dirItem->itemType = names[i].type;
 
 			if(dirItem->itemType == ELF_DIR)
-				elfAppendFolderToDirectoryItemList(directory->items, dirItem);
-			else elfAppendToList(directory->items, (elfObject*)dirItem);
+				elfAppendDirectoryItemListFolder(directory->items, dirItem);
+			else elfAppendListObject(directory->items, (elfObject*)dirItem);
 
 			free(names[i].str);
 		}
@@ -1021,7 +1021,7 @@ ELF_API elfDirectoryItem* ELF_APIENTRY elfGetDirectoryItem(elfDirectory* directo
 	if(idx < 0 || idx > elfGetListLength(directory->items)-1) return NULL;
 
 	for(i = 0, dirItem = (elfDirectoryItem*)elfBeginList(directory->items); dirItem;
-		dirItem = (elfDirectoryItem*)elfNextInList(directory->items), i++)
+		dirItem = (elfDirectoryItem*)elfGetListNext(directory->items), i++)
 	{
 		if(i == idx) return dirItem;
 	}

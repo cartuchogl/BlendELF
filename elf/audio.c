@@ -251,7 +251,7 @@ void elfUpdateAudio()
 	elfAudioSource* source;
 
 	for(source = (elfAudioSource*)elfBeginList(audioDevice->sources); source;
-		source = (elfAudioSource*)elfNextInList(audioDevice->sources))
+		source = (elfAudioSource*)elfGetListNext(audioDevice->sources))
 	{
 		if(source->sound->streamed && !source->paused)
 		{
@@ -264,11 +264,11 @@ void elfUpdateAudio()
 		{
 			if(source->sound->streamed)
 			{
-				if(source->sound->eof && !source->loop) elfRemoveFromList(audioDevice->sources, (elfObject*)source);
+				if(source->sound->eof && !source->loop) elfRemoveListObject(audioDevice->sources, (elfObject*)source);
 			}
 			else
 			{
-				elfRemoveFromList(audioDevice->sources, (elfObject*)source);
+				elfRemoveListObject(audioDevice->sources, (elfObject*)source);
 			}
 		}
 	}
@@ -655,7 +655,7 @@ ELF_API elfAudioSource* ELF_APIENTRY elfPlaySound(elfSound* sound, float volume)
 	}
 	alSourcePlay(source->source);
 
-	elfAppendToList(audioDevice->sources, (elfObject*)source);
+	elfAppendListObject(audioDevice->sources, (elfObject*)source);
 
 	return source;
 }
@@ -699,8 +699,8 @@ ELF_API elfAudioSource* ELF_APIENTRY elfPlayEntitySound(elfEntity* entity, elfSo
 	}
 	alSourcePlay(source->source);
 
-	elfAppendToList(audioDevice->sources, (elfObject*)source);
-	elfAppendToList(entity->sources, (elfObject*)source);
+	elfAppendListObject(audioDevice->sources, (elfObject*)source);
+	elfAppendListObject(entity->sources, (elfObject*)source);
 
 	return source;
 }
@@ -745,7 +745,7 @@ ELF_API elfAudioSource* ELF_APIENTRY elfLoopSound(elfSound* sound, float volume)
 	}
 	alSourcePlay(source->source);
 
-	elfAppendToList(audioDevice->sources, (elfObject*)source);
+	elfAppendListObject(audioDevice->sources, (elfObject*)source);
 
 	return source;
 }
@@ -794,8 +794,8 @@ ELF_API elfAudioSource* ELF_APIENTRY elfLoopEntitySound(elfEntity* entity, elfSo
 	}
 	alSourcePlay(source->source);
 
-	elfAppendToList(audioDevice->sources, (elfObject*)source);
-	elfAppendToList(entity->sources, (elfObject*)source);
+	elfAppendListObject(audioDevice->sources, (elfObject*)source);
+	elfAppendListObject(entity->sources, (elfObject*)source);
 
 	return source;
 }
