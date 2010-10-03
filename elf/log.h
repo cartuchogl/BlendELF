@@ -10,7 +10,7 @@ void elfStartLog(const char* text)
 	fclose(file);
 }
 
-void elfWriteToLog(const char* fmt, ...)
+void elfLogWrite(const char* fmt, ...)
 {
 	va_list list;
 	const char* p,* s;
@@ -204,5 +204,19 @@ void elfSetErrorNoSave(int code, const char* fmt, ...)
 	if(gen->errStr) elfDestroyString(gen->errStr);
 	gen->errStr = elfCreateString(errStr);
 	elfDestroyString(errStr);
+}
+
+ELF_API void ELF_APIENTRY elfLogWriteLine(const char* str)
+{
+	FILE* file;
+
+	file = fopen(gen->log, "a");
+	if(!file) fopen(gen->log, "w");
+
+	if(file)
+	{
+		fprintf(file, "%s\n", (char*)str);
+		fclose(file);
+	}
 }
 

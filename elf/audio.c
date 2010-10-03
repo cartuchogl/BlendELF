@@ -200,7 +200,7 @@ unsigned char elfInitAudio()
 {
 	if(audioDevice)
 	{
-		elfWriteToLog("warning: cannot initialize audio twice\n");
+		elfLogWrite("warning: cannot initialize audio twice\n");
 		return ELF_TRUE;
 	}
 
@@ -210,7 +210,7 @@ unsigned char elfInitAudio()
 	audioDevice->device = alcOpenDevice(NULL);
 	if(!audioDevice->device)
 	{
-		elfWriteToLog("warning: could not create audio device\n");
+		elfLogWrite("warning: could not create audio device\n");
 		elfDeinitAudio();
 		return ELF_FALSE;
 	}
@@ -218,7 +218,7 @@ unsigned char elfInitAudio()
 	audioDevice->context = alcCreateContext(audioDevice->device, NULL);
 	if(!audioDevice->context)
 	{
-		elfWriteToLog("warning: could not create audio context\n");
+		elfLogWrite("warning: could not create audio context\n");
 		alcCloseDevice(audioDevice->device);
 		audioDevice->device = NULL;
 		elfDeinitAudio();

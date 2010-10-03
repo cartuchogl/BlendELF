@@ -52,7 +52,7 @@ ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromFile(const char* filePath)
 	texture->name = elfCreateString(filePath);
 	texture->filePath = elfCreateString(filePath);
 
-	texture->texture = gfxCreate_2dTexture(elfGetImageWidth(image), elfGetImageHeight(image),
+	texture->texture = gfxCreate2dTexture(elfGetImageWidth(image), elfGetImageHeight(image),
 		eng->textureAnisotropy, GFX_REPEAT, GFX_LINEAR, format, internalFormat, GFX_UBYTE, elfGetImageData(image));
 
 	if(!texture->texture)
@@ -97,7 +97,7 @@ ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromImage(elfImage* image)
 
 	texture = elfCreateTexture();
 
-	texture->texture = gfxCreate_2dTexture(elfGetImageWidth(image), elfGetImageHeight(image),
+	texture->texture = gfxCreate2dTexture(elfGetImageWidth(image), elfGetImageHeight(image),
 		eng->textureAnisotropy, GFX_REPEAT, GFX_LINEAR, format, internalFormat, GFX_UBYTE, elfGetImageData(image));
 
 	if(!texture->texture)

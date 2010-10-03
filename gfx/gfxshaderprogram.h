@@ -32,7 +32,7 @@ gfxShaderProgram* gfxCreateShaderProgram(const char* vertex, const char* fragmen
 			memset(infoLog, '\0', sizeof(char)*(infoLogLength+1));
 
 			glGetShaderInfoLog(myVertexShader, infoLogLength, 0, infoLog);
-			elfWriteToLog("error: could not compile vertex shader, log message:\n%s", infoLog);
+			elfLogWrite("error: could not compile vertex shader, log message:\n%s", infoLog);
 			glDeleteShader(myVertexShader);
 
 			free(infoLog);
@@ -61,7 +61,7 @@ gfxShaderProgram* gfxCreateShaderProgram(const char* vertex, const char* fragmen
 			memset(infoLog, '\0', sizeof(char)*(infoLogLength+1));
 
 			glGetShaderInfoLog(myFragmentShader, infoLogLength, 0, infoLog);
-			elfWriteToLog("error: could not compile fragment shader, log message:\n%s", infoLog);
+			elfLogWrite("error: could not compile fragment shader, log message:\n%s", infoLog);
 
 			if(vertex) glDeleteShader(myVertexShader);
 			glDeleteShader(myFragmentShader);
@@ -102,7 +102,7 @@ gfxShaderProgram* gfxCreateShaderProgram(const char* vertex, const char* fragmen
 		memset(infoLog, '\0', sizeof(char)*(infoLogLength+1));
 
 		glGetProgramInfoLog(shaderProgram->id, infoLogLength, 0, infoLog);
-		elfWriteToLog("error: validating shader program failed, log message:\n%s", infoLog);
+		elfLogWrite("error: validating shader program failed, log message:\n%s", infoLog);
 
 		gfxDestroyShaderProgram(shaderProgram);
 

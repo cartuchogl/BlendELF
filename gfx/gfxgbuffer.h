@@ -11,13 +11,13 @@ gfxGbuffer* gfxCreateGbuffer(int width, int height)
 	gbuffer->width = width;
 	gbuffer->height = height;
 
-	gbuffer->depthTex = gfxCreate_2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
-	gbuffer->buf1Tex = gfxCreate_2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RG, GFX_RG16F, GFX_FLOAT, NULL);
-	gbuffer->buf2Tex = gfxCreate_2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RGBA, GFX_RGBA, GFX_FLOAT, NULL);
-	gbuffer->buf3Tex = gfxCreate_2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RGBA, GFX_RGBA, GFX_FLOAT, NULL);
-	gbuffer->diffuseTex = gfxCreate_2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RGBA, GFX_RGBA16F, GFX_FLOAT, NULL);
-	gbuffer->specularTex = gfxCreate_2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RGBA, GFX_RGBA16F, GFX_FLOAT, NULL);
-	gbuffer->mainTex = gfxCreate_2dTexture(width, height, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
+	gbuffer->depthTex = gfxCreate2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
+	gbuffer->buf1Tex = gfxCreate2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RG, GFX_RG16F, GFX_FLOAT, NULL);
+	gbuffer->buf2Tex = gfxCreate2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RGBA, GFX_RGBA, GFX_FLOAT, NULL);
+	gbuffer->buf3Tex = gfxCreate2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RGBA, GFX_RGBA, GFX_FLOAT, NULL);
+	gbuffer->diffuseTex = gfxCreate2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RGBA, GFX_RGBA16F, GFX_FLOAT, NULL);
+	gbuffer->specularTex = gfxCreate2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_RGBA, GFX_RGBA16F, GFX_FLOAT, NULL);
+	gbuffer->mainTex = gfxCreate2dTexture(width, height, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
 
 	gbuffer->bufRt = gfxCreateRenderTarget(width, height);
 	gbuffer->lightRt = gfxCreateRenderTarget(width, height);

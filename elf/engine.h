@@ -24,7 +24,7 @@ elfEngine* elfCreateEngine()
 	engine->f10Exit = ELF_TRUE;
 
 	engine->shadowMapSize = 1024;
-	engine->shadowMap = gfxCreate_2dTexture(1024, 1024, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
+	engine->shadowMap = gfxCreate2dTexture(1024, 1024, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
 	engine->shadowTarget = gfxCreateRenderTarget(1024, 1024);
 	gfxSetRenderTargetDepthTexture(engine->shadowTarget, engine->shadowMap);
 	engine->textureAnisotropy = 1.0;
@@ -621,7 +621,7 @@ ELF_API void ELF_APIENTRY elfSetShadowMapSize(int size)
 	gfxDestroyTexture(eng->shadowMap);
 
 	eng->shadowMapSize = size;
-	eng->shadowMap = gfxCreate_2dTexture(size, size, 0.0f, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
+	eng->shadowMap = gfxCreate2dTexture(size, size, 0.0f, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
 	eng->shadowTarget = gfxCreateRenderTarget(size, size);
 	gfxSetRenderTargetDepthTexture(eng->shadowTarget, eng->shadowMap);
 }

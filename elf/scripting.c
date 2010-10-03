@@ -59,7 +59,7 @@ unsigned char elfInitScripting()
 {
 	if(scr)
 	{
-		elfWriteToLog("warning: cannot initialize scripting twice\n");
+		elfLogWrite("warning: cannot initialize scripting twice\n");
 		return ELF_TRUE;
 	}
 

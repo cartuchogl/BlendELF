@@ -18,28 +18,28 @@ void gfxDumpRefTable()
 {
 	int i;
 
-	elfWriteToLog("---------- REF COUNT TABLE ----------\n");
+	elfLogWrite("---------- REF COUNT TABLE ----------\n");
 
 	for(i = 0; i < GFX_OBJECT_TYPE_COUNT; i++)
 	{
-		elfWriteToLog("%d : %d\n", i, gfxGen->refTable[i]);
+		elfLogWrite("%d : %d\n", i, gfxGen->refTable[i]);
 	}
 
-	elfWriteToLog("-------------------------------------\n");
+	elfLogWrite("-------------------------------------\n");
 }
 
 void gfxDumpObjTable()
 {
 	int i;
 
-	elfWriteToLog("---------- OBJ COUNT TABLE ----------\n");
+	elfLogWrite("---------- OBJ COUNT TABLE ----------\n");
 
 	for(i = 0; i < GFX_OBJECT_TYPE_COUNT; i++)
 	{
-		elfWriteToLog("%d : %d\n", i, gfxGen->objTable[i]);
+		elfLogWrite("%d : %d\n", i, gfxGen->objTable[i]);
 	}
 
-	elfWriteToLog("-------------------------------------\n");
+	elfLogWrite("-------------------------------------\n");
 }
 
 void gfxIncRef(gfxObject* obj)
@@ -63,7 +63,7 @@ void gfxDecRef(gfxObject* obj)
 		}
 		else
 		{
-			elfWriteToLog("error: no destructor specified for object\n");
+			elfLogWrite("error: no destructor specified for object\n");
 		}
 	}
 }

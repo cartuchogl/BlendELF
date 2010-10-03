@@ -304,24 +304,24 @@ void elfInitPostProcessBuffers(elfPostProcess* postProcess)
 	postProcess->bufferWidth = elfGetWindowWidth()/4;
 	postProcess->bufferHeight = elfGetWindowHeight()/4;
 
-	postProcess->mainRtColor[0] = gfxCreate_2dTexture(elfGetWindowWidth(), elfGetWindowHeight(), 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
-	postProcess->mainRtDepth = gfxCreate_2dTexture(elfGetWindowWidth(), elfGetWindowHeight(), 0.0, GFX_CLAMP, GFX_NEAREST, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
+	postProcess->mainRtColor[0] = gfxCreate2dTexture(elfGetWindowWidth(), elfGetWindowHeight(), 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
+	postProcess->mainRtDepth = gfxCreate2dTexture(elfGetWindowWidth(), elfGetWindowHeight(), 0.0, GFX_CLAMP, GFX_NEAREST, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
 
 	postProcess->mainRt = gfxCreateRenderTarget(elfGetWindowWidth(), elfGetWindowHeight());
 
 	gfxSetRenderTargetColorTexture(postProcess->mainRt, 0, postProcess->mainRtColor[0]);
 	gfxSetRenderTargetDepthTexture(postProcess->mainRt, postProcess->mainRtDepth);
 
-	postProcess->rtTexHigh_1 = gfxCreate_2dTexture(postProcess->bufferWidth*2, postProcess->bufferHeight*2, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGB, GFX_RGB, GFX_UBYTE, NULL);
-	postProcess->rtTexHigh_2 = gfxCreate_2dTexture(postProcess->bufferWidth*2, postProcess->bufferHeight*2, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGB, GFX_RGB, GFX_UBYTE, NULL);
-	postProcess->rtTexHighDepth = gfxCreate_2dTexture(postProcess->bufferWidth*2, postProcess->bufferHeight*2, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
-	postProcess->rtTexMed_1 = gfxCreate_2dTexture(postProcess->bufferWidth, postProcess->bufferHeight, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGB, GFX_RGB, GFX_UBYTE, NULL);
-	postProcess->rtTexMed_2 = gfxCreate_2dTexture(postProcess->bufferWidth, postProcess->bufferHeight, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGB, GFX_RGB, GFX_UBYTE, NULL);
-	postProcess->rtTexMed_3 = gfxCreate_2dTexture(postProcess->bufferWidth, postProcess->bufferHeight, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGB, GFX_RGB, GFX_UBYTE, NULL);
-	postProcess->rtTexLow_1 = gfxCreate_2dTexture(postProcess->bufferWidth/2, postProcess->bufferHeight/2, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGB, GFX_RGB, GFX_UBYTE, NULL);
-	postProcess->rtTexLow_2 = gfxCreate_2dTexture(postProcess->bufferWidth/2, postProcess->bufferHeight/2, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGB, GFX_RGB, GFX_UBYTE, NULL);
-	postProcess->rtTexTiny_1 = gfxCreate_2dTexture(postProcess->bufferWidth/4, postProcess->bufferHeight/4, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGB, GFX_RGB, GFX_UBYTE, NULL);
-	postProcess->rtTexTiny_2 = gfxCreate_2dTexture(postProcess->bufferWidth/4, postProcess->bufferHeight/4, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGB, GFX_RGB, GFX_UBYTE, NULL);
+	postProcess->rtTexHigh_1 = gfxCreate2dTexture(postProcess->bufferWidth*2, postProcess->bufferHeight*2, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGB, GFX_RGB, GFX_UBYTE, NULL);
+	postProcess->rtTexHigh_2 = gfxCreate2dTexture(postProcess->bufferWidth*2, postProcess->bufferHeight*2, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGB, GFX_RGB, GFX_UBYTE, NULL);
+	postProcess->rtTexHighDepth = gfxCreate2dTexture(postProcess->bufferWidth*2, postProcess->bufferHeight*2, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
+	postProcess->rtTexMed_1 = gfxCreate2dTexture(postProcess->bufferWidth, postProcess->bufferHeight, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGB, GFX_RGB, GFX_UBYTE, NULL);
+	postProcess->rtTexMed_2 = gfxCreate2dTexture(postProcess->bufferWidth, postProcess->bufferHeight, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGB, GFX_RGB, GFX_UBYTE, NULL);
+	postProcess->rtTexMed_3 = gfxCreate2dTexture(postProcess->bufferWidth, postProcess->bufferHeight, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGB, GFX_RGB, GFX_UBYTE, NULL);
+	postProcess->rtTexLow_1 = gfxCreate2dTexture(postProcess->bufferWidth/2, postProcess->bufferHeight/2, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGB, GFX_RGB, GFX_UBYTE, NULL);
+	postProcess->rtTexLow_2 = gfxCreate2dTexture(postProcess->bufferWidth/2, postProcess->bufferHeight/2, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGB, GFX_RGB, GFX_UBYTE, NULL);
+	postProcess->rtTexTiny_1 = gfxCreate2dTexture(postProcess->bufferWidth/4, postProcess->bufferHeight/4, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGB, GFX_RGB, GFX_UBYTE, NULL);
+	postProcess->rtTexTiny_2 = gfxCreate2dTexture(postProcess->bufferWidth/4, postProcess->bufferHeight/4, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGB, GFX_RGB, GFX_UBYTE, NULL);
 
 	postProcess->rtHigh = gfxCreateRenderTarget(postProcess->bufferWidth*2, postProcess->bufferHeight*2);
 	postProcess->rtMed = gfxCreateRenderTarget(postProcess->bufferWidth, postProcess->bufferHeight);
@@ -356,7 +356,7 @@ void elfInitPostProcessBuffers(elfPostProcess* postProcess)
 
 	if(!postProcess->mainRtColor[1] && (int)postProcess->bloom+(int)postProcess->dof+(int)postProcess->ssao > 1)
 	{
-		postProcess->mainRtColor[1] = gfxCreate_2dTexture(elfGetWindowWidth(), elfGetWindowHeight(), 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
+		postProcess->mainRtColor[1] = gfxCreate2dTexture(elfGetWindowWidth(), elfGetWindowHeight(), 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
 		gfxIncRef((gfxObject*)postProcess->mainRtColor[1]);
 	}
 }
@@ -740,7 +740,7 @@ void elfSetPostProcessBloom(elfPostProcess* postProcess, float threshold)
 	if(postProcess->bloomThreshold > 0.9999) postProcess->bloomThreshold = 0.9999;
 	if(!postProcess->mainRtColor[1] && (int)postProcess->bloom+(int)postProcess->dof+(int)postProcess->ssao > 1)
 	{
-		postProcess->mainRtColor[1] = gfxCreate_2dTexture(
+		postProcess->mainRtColor[1] = gfxCreate2dTexture(
 			elfGetWindowWidth(), elfGetWindowHeight(), 0.0,
 			GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
 		gfxIncRef((gfxObject*)postProcess->mainRtColor[1]);
@@ -766,7 +766,7 @@ void elfSetPostProcessDof(elfPostProcess* postProcess, float focalRange, float f
 	if(postProcess->dofFocalDistance < 0.0) postProcess->dofFocalDistance = 0.0;
 	if(!postProcess->mainRtColor[1] && (int)postProcess->bloom+(int)postProcess->dof+(int)postProcess->ssao > 1)
 	{
-		postProcess->mainRtColor[1] = gfxCreate_2dTexture(elfGetWindowWidth(), elfGetWindowHeight(), 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
+		postProcess->mainRtColor[1] = gfxCreate2dTexture(elfGetWindowWidth(), elfGetWindowHeight(), 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
 		gfxIncRef((gfxObject*)postProcess->mainRtColor[1]);
 	}
 }
@@ -793,7 +793,7 @@ void elfSetPostProcessSsao(elfPostProcess* postProcess, float amount)
 
 	if(!postProcess->mainRtColor[1] && (int)postProcess->bloom+(int)postProcess->dof+(int)postProcess->ssao > 1)
 	{
-		postProcess->mainRtColor[1] = gfxCreate_2dTexture(elfGetWindowWidth(), elfGetWindowHeight(), 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
+		postProcess->mainRtColor[1] = gfxCreate2dTexture(elfGetWindowWidth(), elfGetWindowHeight(), 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
 		gfxIncRef((gfxObject*)postProcess->mainRtColor[1]);
 	}
 }
@@ -816,7 +816,7 @@ void elfSetPostProcessLightShafts(elfPostProcess* postProcess, float intensity)
 
 	if(!postProcess->mainRtColor[1] && (int)postProcess->bloom+(int)postProcess->dof+(int)postProcess->ssao > 1)
 	{
-		postProcess->mainRtColor[1] = gfxCreate_2dTexture(elfGetWindowWidth(), elfGetWindowHeight(), 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
+		postProcess->mainRtColor[1] = gfxCreate2dTexture(elfGetWindowWidth(), elfGetWindowHeight(), 0.0, GFX_CLAMP, GFX_LINEAR, GFX_RGBA, GFX_RGBA, GFX_UBYTE, NULL);
 		gfxIncRef((gfxObject*)postProcess->mainRtColor[1]);
 	}
 }

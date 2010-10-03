@@ -18,7 +18,7 @@ gfxTexture* gfxCreateTexture()
 	return texture;
 }
 
-gfxTexture* gfxCreate_2dTexture(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internalFormat, int dataFormat, void* data)
+gfxTexture* gfxCreate2dTexture(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internalFormat, int dataFormat, void* data)
 {
 	gfxTexture* texture;
 

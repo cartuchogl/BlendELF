@@ -19,28 +19,28 @@ void elfDeinitGeneral()
 
 	if(gen->refCount > 0)
 	{
-		elfWriteToLog("error: possible memory leak in ELF, [%d] references not dereferenced\n",
+		elfLogWrite("error: possible memory leak in ELF, [%d] references not dereferenced\n",
 			elfGetGlobalRefCount());
 		elfDumpRefTable();
 	}
 
 	if(gen->refCount < 0)
 	{
-		elfWriteToLog("error: possible double free in ELF, [%d] negative reference count\n",
+		elfLogWrite("error: possible double free in ELF, [%d] negative reference count\n",
 			elfGetGlobalRefCount());
 		elfDumpRefTable();
 	}
 
 	if(gen->objCount > 1)
 	{
-		elfWriteToLog("error: possible memory leak in ELF, [%d] objects not destroyed\n",
+		elfLogWrite("error: possible memory leak in ELF, [%d] objects not destroyed\n",
 			elfGetGlobalObjCount()-1);
 		elfDumpObjTable();
 	}
 
 	if(gen->objCount < 1)
 	{
-		elfWriteToLog("error: possible double free in ELF, [%d] negative object count\n",
+		elfLogWrite("error: possible double free in ELF, [%d] negative object count\n",
 			elfGetGlobalObjCount()-1);
 		elfDumpObjTable();
 	}
@@ -71,7 +71,7 @@ ELF_API void ELF_APIENTRY elfDecRef(elfObject* obj)
 		}
 		else
 		{
-			elfWriteToLog("error: no destructor specified for object\n");
+			elfLogWrite("error: no destructor specified for object\n");
 		}
 	}
 }
@@ -92,28 +92,28 @@ void elfDumpRefTable()
 {
 	int i;
 
-	elfWriteToLog("---------- REF COUNT TABLE ----------\n");
+	elfLogWrite("---------- REF COUNT TABLE ----------\n");
 
 	for(i = 0; i < ELF_OBJECT_TYPE_COUNT; i++)
 	{
-		elfWriteToLog("%d : %d\n", i, gen->refTable[i]);
+		elfLogWrite("%d : %d\n", i, gen->refTable[i]);
 	}
 
-	elfWriteToLog("-------------------------------------\n");
+	elfLogWrite("-------------------------------------\n");
 }
 
 void elfDumpObjTable()
 {
 	int i;
 
-	elfWriteToLog("---------- OBJ COUNT TABLE ----------\n");
+	elfLogWrite("---------- OBJ COUNT TABLE ----------\n");
 
 	for(i = 0; i < ELF_OBJECT_TYPE_COUNT; i++)
 	{
-		elfWriteToLog("%d : %d\n", i, gen->objTable[i]);
+		elfLogWrite("%d : %d\n", i, gen->objTable[i]);
 	}
 
-	elfWriteToLog("-------------------------------------\n");
+	elfLogWrite("-------------------------------------\n");
 }
 
 ELF_API int ELF_APIENTRY elfGetObjectType(elfObject* obj)

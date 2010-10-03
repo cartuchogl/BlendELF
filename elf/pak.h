@@ -1348,7 +1348,7 @@ elfTexture* elfCreateTextureFromPak(FILE* file, const char* name, elfScene* scen
 
 	texture->name = elfCreateString(rname);
 	texture->filePath = elfCreateString(elfGetSceneFilePath(scene));
-	texture->texture = gfxCreate_2dTexture(width, height, eng->textureAnisotropy, GFX_REPEAT, GFX_LINEAR, format, internalFormat, dataFormat, data);
+	texture->texture = gfxCreate2dTexture(width, height, eng->textureAnisotropy, GFX_REPEAT, GFX_LINEAR, format, internalFormat, dataFormat, data);
 
 	free(data);
 

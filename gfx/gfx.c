@@ -19,7 +19,7 @@
 gfxGeneral* gfxGen = NULL;
 gfxDriver* driver = NULL;
 
-extern void elfWriteToLog(const char* fmt, ...);
+extern void elfLogWrite(const char* fmt, ...);
 
 #include "gfxtypes.h"
 #include "gfxgeneral.h"
@@ -136,7 +136,7 @@ unsigned char gfxInit()
 
 	if(driver->version < 110)
 	{
-		elfWriteToLog("OpenGL version 1.1 not supported\n");
+		elfLogWrite("OpenGL version 1.1 not supported\n");
 		return GFX_FALSE;
 	}
 
@@ -144,13 +144,13 @@ unsigned char gfxInit()
 
 	/*if(!glewIsSupported("GL_ARB_texture_float"))
 	{
-		elfWriteToLog("GL_ARB_texture_float not supported!\n");
+		elfLogWrite("GL_ARB_texture_float not supported!\n");
 		return GFX_FALSE;
 	}
 
 	if(!glewIsSupported("GL_ARB_texture_rg"))
 	{
-		elfWriteToLog("GL_ARB_texture_rg not supported!\n");
+		elfLogWrite("GL_ARB_texture_rg not supported!\n");
 		return GFX_FALSE;
 	}*/
 
@@ -160,7 +160,7 @@ unsigned char gfxInit()
 	glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS_EXT, &driver->maxColorAttachments);
 	glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &driver->maxAnisotropy);
 
-	elfWriteToLog("OpenGL %s; %s; %s\n", glGetString(GL_VERSION), glGetString(GL_VENDOR), glGetString(GL_RENDERER));
+	elfLogWrite("OpenGL %s; %s; %s\n", glGetString(GL_VERSION), glGetString(GL_VENDOR), glGetString(GL_RENDERER));
 
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClearDepth(1.0);
@@ -280,28 +280,28 @@ void gfxDeinit()
 
 	if(gfxGetGlobalRefCount() > 0)
 	{
-		elfWriteToLog("error: possible memory leak in GFX, [%d] references not dereferenced\n",
+		elfLogWrite("error: possible memory leak in GFX, [%d] references not dereferenced\n",
 			gfxGetGlobalRefCount());
 		gfxDumpRefTable();
 	}
 
 	if(gfxGetGlobalRefCount() < 0)
 	{
-		elfWriteToLog("error: possible double free in GFX, [%d] negative reference count\n",
+		elfLogWrite("error: possible double free in GFX, [%d] negative reference count\n",
 			gfxGetGlobalRefCount());
 		gfxDumpRefTable();
 	}
 
 	if(gfxGetGlobalObjCount() > 0)
 	{
-		elfWriteToLog("error: possible memory leak in GFX, [%d] objects not destroyed\n",
+		elfLogWrite("error: possible memory leak in GFX, [%d] objects not destroyed\n",
 			gfxGetGlobalObjCount());
 		gfxDumpObjTable();
 	}
 
 	if(gfxGetGlobalObjCount() < 0)
 	{
-		elfWriteToLog("error: possible double free in GFX, [%d] negative object count\n",
+		elfLogWrite("error: possible double free in GFX, [%d] negative object count\n",
 			gfxGetGlobalObjCount());
 		gfxDumpObjTable();
 	}

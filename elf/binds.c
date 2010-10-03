@@ -719,6 +719,15 @@ static int lua_GetConfigLog(lua_State *L)
 	lua_pushstring(L, result);
 	return 1;
 }
+static int lua_LogWriteLine(lua_State *L)
+{
+	const char* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "LogWriteLine", lua_gettop(L), 1);}
+	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "LogWriteLine", 1, "string");}
+	arg0 = lua_tostring(L, 1);
+	elfLogWriteLine(arg0);
+	return 0;
+}
 static int lua_SetTitle(lua_State *L)
 {
 	const char* arg0;
@@ -10266,6 +10275,7 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetConfigShadowMapSize", lua_GetConfigShadowMapSize},
 	{"GetConfigStart", lua_GetConfigStart},
 	{"GetConfigLog", lua_GetConfigLog},
+	{"LogWriteLine", lua_LogWriteLine},
 	{"SetTitle", lua_SetTitle},
 	{"GetWindowWidth", lua_GetWindowWidth},
 	{"GetWindowHeight", lua_GetWindowHeight},

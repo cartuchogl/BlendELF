@@ -118,7 +118,7 @@ unsigned char elfInitContext(int width, int height,
 
 	if(ctx)
 	{
-		elfWriteToLog("warning: can not open window twice\n");
+		elfLogWrite("warning: can not open window twice\n");
 		return ELF_FALSE;
 	}
 

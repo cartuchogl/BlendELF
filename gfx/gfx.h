@@ -378,7 +378,7 @@ void gfxDrawVertexIndex(gfxVertexIndex* vertexIndex, unsigned int drawMode);
 int gfxGetMaxTextureSize();
 
 gfxTexture* gfxCreateTexture();
-gfxTexture* gfxCreate_2dTexture(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internalFormat, int dataFormat, void* data);
+gfxTexture* gfxCreate2dTexture(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internalFormat, int dataFormat, void* data);
 gfxTexture* gfxCreateCubeMap(unsigned int width, unsigned int height, float anisotropy, int mode, int filter, int format, int internalFormat, int dataFormat, void* xpos, void* xneg, void* ypos, void* yneg, void* zpos, void* zneg);
 void gfxDestroyTexture(void* data);
 
