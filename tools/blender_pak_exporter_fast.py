@@ -19,6 +19,7 @@ import struct
 import math
 
 ELF_NAME_LENGTH = 128
+ELF_PAK_VERSION = 100
 
 def write_name_to_file(name, f):
 	if len(name) > ELF_NAME_LENGTH-1: name = name[0:ELF_NAME_LENGTH-1]
@@ -1011,7 +1012,8 @@ def export(path):
 	offset += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')
 	offset += struct.calcsize('<i')
 	offset *= len(scenes)+len(scripts)+len(textures)+len(materials)+len(models)+len(cameras)+len(entities)+len(lights)+len(armatures)
-	# magic and number of indexes
+	# magic, version and number of indexes
+	offset += struct.calcsize('<i')
 	offset += struct.calcsize('<i')
 	offset += struct.calcsize('<i')
 
@@ -1019,6 +1021,8 @@ def export(path):
 
 	# magic
 	f.write(struct.pack('<i', 179532100))
+	# version
+	f.write(struct.pakk('<i', ELF_PAK_VERSION))
 
 	# index count
 	f.write(struct.pack('<i', len(scenes)+len(scripts)+len(textures)+len(materials)+len(models)+len(cameras)+len(entities)+len(lights)+len(armatures)))

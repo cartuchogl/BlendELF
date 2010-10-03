@@ -331,6 +331,8 @@ extern "C" {
 #define ELF_DRAW_AMBIENT				0x0001
 #define ELF_DRAW_WITHOUT_LIGHTING			0x0002
 #define ELF_DRAW_WITH_LIGHTING				0x0003
+
+#define ELF_PAK_VERSION					100
 // !!>
 
 typedef struct elfVec2i					elfVec2i;

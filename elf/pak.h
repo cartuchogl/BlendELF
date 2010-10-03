@@ -30,6 +30,7 @@ elfPak* elfCreatePakFromFile(const char* filePath)
 	elfPakIndex* index;
 	FILE* file;
 	int magic;
+	int version;
 	int indexCount;
 	int i;
 
@@ -49,8 +50,23 @@ elfPak* elfCreatePakFromFile(const char* filePath)
 
 	if(magic != 179532100)
 	{
-		elfSetError(ELF_CANT_OPEN_FILE, "error: \"%s\" is not a elf pak file\n", filePath);
+		elfSetError(ELF_INVALID_FILE, "error: \"%s\" is not a elf pak file\n", filePath);
 		fclose(file);
+		return NULL;
+	}
+
+	fread((char*)&version, sizeof(int), 1, file);
+
+	if(version < ELF_PAK_VERSION)
+	{
+		elfSetError(ELF_INVALID_FILE, "error: can't load \"%s\", too old .pak version\n", filePath);
+		fclose(file);
+		return NULL;
+	}
+
+	if(version > ELF_PAK_VERSION)
+	{
+		elfSetError(ELF_INVALID_FILE, "error: can't load \"%s\", too new .pak version\n", filePath);
 		return NULL;
 	}
 

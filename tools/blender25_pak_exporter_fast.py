@@ -35,6 +35,7 @@ import math
 import os
 
 ELF_NAME_LENGTH = 128
+ELF_PAK_VERSION = 100
 
 def write_name_to_file(name, f):
 	if len(name) > ELF_NAME_LENGTH-1: name = name[0:ELF_NAME_LENGTH-1]
@@ -143,14 +144,15 @@ class Material:
 	def load(self, mat):
 		self.name = mat.name
 
-		rgb = mat.diffuse_color
-		amb = mat.ambient
+		diffuse = mat.diffuse_color
+		dif_int = mat.diffuse_intensity
+		ambient = mat.ambient
 		specCol = mat.specular_color
 		spec = mat.specular_intensity
 		hardness = mat.specular_hardness
 
-		self.diffuse = [rgb[0], rgb[1], rgb[2], 1.0]
-		self.ambient = [amb, amb, amb, 1.0]
+		self.diffuse = [diffuse[0]*dif_int, diffuse[1]*dif_int, diffuse[2]*dif_int, 1.0]
+		self.ambient = [ambient, ambient, ambient, 1.0]
 		self.specular = [specCol[0]*spec, specCol[1]*spec, specCol[2]*spec, 1.0]
 		self.shininess = float(hardness)/4.0
 
@@ -509,6 +511,7 @@ def get_actor_header_size(eobj):
 	# name, parent, script
 	size_bytes += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')*3
 	# transformations
+
 	size_bytes += struct.calcsize('<fff')*2
 	# ipo
 	size_bytes += struct.calcsize('<B')
@@ -986,7 +989,8 @@ def export(path, sce):
 	offset += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')
 	offset += struct.calcsize('<i')
 	offset *= len(scenes)+len(scripts)+len(textures)+len(materials)+len(models)+len(cameras)+len(entities)+len(lights)+len(armatures)
-	# magic and number of indexes
+	# magic, version and number of indexes
+	offset += struct.calcsize('<i')
 	offset += struct.calcsize('<i')
 	offset += struct.calcsize('<i')
 
@@ -994,6 +998,8 @@ def export(path, sce):
 
 	# magic
 	f.write(struct.pack('<i', 179532100))
+	# version
+	f.write(struct.pack('<i', ELF_PAK_VERSION))
 
 	# index count
 	f.write(struct.pack('<i', len(scenes)+len(scripts)+len(textures)+len(materials)+len(models)+len(cameras)+len(entities)+len(lights)+len(armatures)))
@@ -1092,6 +1098,7 @@ class ExportPAK(bpy.types.Operator):
 		return {'RUNNING_MODAL'}
 
 def menu_func(self, context):
+
     default_path = os.path.splitext(bpy.data.filepath)[0] + ".pak"
     self.layout.operator(ExportPAK.bl_idname, text="BlendELF (.pak)").filepath = default_path
 
