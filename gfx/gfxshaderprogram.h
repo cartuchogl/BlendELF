@@ -165,13 +165,25 @@ void gfxDestroyShaderPrograms(gfxShaderProgram* shaderProgram)
 	gfxDestroyShaderProgram(shaderProgram);
 }
 
-void gfxSetShaderProgramUniform_1i(const char* name, int i)
+void gfxSetShaderProgram(gfxShaderProgram* shaderProgram)
+{
+	if(shaderProgram != driver->shaderParams.shaderProgram)
+		glUseProgram(shaderProgram->id);
+
+	driver->shaderParams.shaderProgram = shaderProgram;
+
+	// just inputting with values that do not make sense
+	driver->shaderConfig.textures = 255;
+	driver->shaderConfig.light = 255;
+}
+
+void gfxSetShaderProgramUniform1i(const char* name, int i)
 {
 	if(!driver->shaderParams.shaderProgram) return;
 	glUniform1i(glGetUniformLocation(driver->shaderParams.shaderProgram->id, name), i);
 }
 
-void gfxSetShaderProgramUniform_1f(const char* name, float f)
+void gfxSetShaderProgramUniform1f(const char* name, float f)
 {
 	if(!driver->shaderParams.shaderProgram) return;
 	glUniform1f(glGetUniformLocation(driver->shaderParams.shaderProgram->id, name), f);

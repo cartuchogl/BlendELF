@@ -1802,13 +1802,17 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams);
 void elfRecalcButton(elfButton* button);
 // !!>
 
-ELF_API elfButton* ELF_APIENTRY elfCreateButton(const char* name);	// <mdoc> BUTTON FUNCTION
+ELF_API elfButton* ELF_APIENTRY elfCreateButton(elfGuiObject* parent, const char* name, int x, int y, int sizeX, int sizeY, const char* text);	// <mdoc> BUTTON FUNCTION
 
 ELF_API unsigned char ELF_APIENTRY elfGetButtonState(elfButton* button);
+ELF_API const char* ELF_APIENTRY elfGetButtonText(elfButton* button);
+ELF_API elfFont* ELF_APIENTRY elfGetButtonFont(elfButton* button);
 ELF_API elfTexture* ELF_APIENTRY elfGetButtonOffTexture(elfButton* button);
 ELF_API elfTexture* ELF_APIENTRY elfGetButtonOverTexture(elfButton* button);
 ELF_API elfTexture* ELF_APIENTRY elfGetButtonOnTexture(elfButton* button);
 
+ELF_API void ELF_APIENTRY elfSetButtonText(elfButton* button, const char* text);
+ELF_API void ELF_APIENTRY elfSetButtonFont(elfButton* button, elfFont* font);
 ELF_API void ELF_APIENTRY elfSetButtonOffTexture(elfButton* button, elfTexture* off);
 ELF_API void ELF_APIENTRY elfSetButtonOverTexture(elfButton* button, elfTexture* over);
 ELF_API void ELF_APIENTRY elfSetButtonOnTexture(elfButton* button, elfTexture* on);

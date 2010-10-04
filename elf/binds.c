@@ -9124,11 +9124,31 @@ static int lua_SetLabelText(lua_State *L)
 static int lua_CreateButton(lua_State *L)
 {
 	elfButton* result;
-	const char* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateButton", lua_gettop(L), 1);}
-	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateButton", 1, "string");}
-	arg0 = lua_tostring(L, 1);
-	result = elfCreateButton(arg0);
+	elfGuiObject* arg0;
+	const char* arg1;
+	int arg2;
+	int arg3;
+	int arg4;
+	int arg5;
+	const char* arg6;
+	if(lua_gettop(L) != 7) {return lua_fail_arg_count(L, "CreateButton", lua_gettop(L), 7);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
+		{return lua_fail_arg(L, "CreateButton", 1, "elfGuiObject");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateButton", 2, "string");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateButton", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreateButton", 4, "number");}
+	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "CreateButton", 5, "number");}
+	if(!lua_isnumber(L, 6)) {return lua_fail_arg(L, "CreateButton", 6, "number");}
+	if(!lua_isstring(L, 7)) {return lua_fail_arg(L, "CreateButton", 7, "string");}
+	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = lua_tostring(L, 2);
+	arg2 = (int)lua_tonumber(L, 3);
+	arg3 = (int)lua_tonumber(L, 4);
+	arg4 = (int)lua_tonumber(L, 5);
+	arg5 = (int)lua_tonumber(L, 6);
+	arg6 = lua_tostring(L, 7);
+	result = elfCreateButton(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -9144,6 +9164,33 @@ static int lua_GetButtonState(lua_State *L)
 	arg0 = (elfButton*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	result = elfGetButtonState(arg0);
 	lua_pushboolean(L, result);
+	return 1;
+}
+static int lua_GetButtonText(lua_State *L)
+{
+	const char* result;
+	elfButton* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetButtonText", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_BUTTON)
+		{return lua_fail_arg(L, "GetButtonText", 1, "elfButton");}
+	arg0 = (elfButton*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetButtonText(arg0);
+	lua_pushstring(L, result);
+	return 1;
+}
+static int lua_GetButtonFont(lua_State *L)
+{
+	elfFont* result;
+	elfButton* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetButtonFont", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_BUTTON)
+		{return lua_fail_arg(L, "GetButtonFont", 1, "elfButton");}
+	arg0 = (elfButton*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetButtonFont(arg0);
+	if(result) lua_create_elfObject(L, (elfObject*)result);
+	else lua_pushnil(L);
 	return 1;
 }
 static int lua_GetButtonOffTexture(lua_State *L)
@@ -9187,6 +9234,36 @@ static int lua_GetButtonOnTexture(lua_State *L)
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
+}
+static int lua_SetButtonText(lua_State *L)
+{
+	elfButton* arg0;
+	const char* arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetButtonText", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_BUTTON)
+		{return lua_fail_arg(L, "SetButtonText", 1, "elfButton");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "SetButtonText", 2, "string");}
+	arg0 = (elfButton*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = lua_tostring(L, 2);
+	elfSetButtonText(arg0, arg1);
+	return 0;
+}
+static int lua_SetButtonFont(lua_State *L)
+{
+	elfButton* arg0;
+	elfFont* arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetButtonFont", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_BUTTON)
+		{return lua_fail_arg(L, "SetButtonFont", 1, "elfButton");}
+	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_FONT)
+		{return lua_fail_arg(L, "SetButtonFont", 2, "elfFont");}
+	arg0 = (elfButton*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (elfFont*)((lua_elfObject*)lua_touserdata(L, 2))->object;
+	elfSetButtonFont(arg0, arg1);
+	return 0;
 }
 static int lua_SetButtonOffTexture(lua_State *L)
 {
@@ -10887,9 +10964,13 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"SetLabelText", lua_SetLabelText},
 	{"CreateButton", lua_CreateButton},
 	{"GetButtonState", lua_GetButtonState},
+	{"GetButtonText", lua_GetButtonText},
+	{"GetButtonFont", lua_GetButtonFont},
 	{"GetButtonOffTexture", lua_GetButtonOffTexture},
 	{"GetButtonOverTexture", lua_GetButtonOverTexture},
 	{"GetButtonOnTexture", lua_GetButtonOnTexture},
+	{"SetButtonText", lua_SetButtonText},
+	{"SetButtonFont", lua_SetButtonFont},
 	{"SetButtonOffTexture", lua_SetButtonOffTexture},
 	{"SetButtonOverTexture", lua_SetButtonOverTexture},
 	{"SetButtonOnTexture", lua_SetButtonOnTexture},

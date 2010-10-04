@@ -688,6 +688,8 @@ struct elfLabel {
 
 struct elfButton {
 	ELF_GUI_OBJECT_HEADER;
+	char *text;
+	elfFont* font;
 	unsigned char state;
 	elfTexture* off;
 	elfTexture* over;

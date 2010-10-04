@@ -205,13 +205,30 @@ int gfxGetTextureDataFormat(gfxTexture* texture)
 	return texture->dataFormat;
 }
 
-void gfxCopyFramebufferToTexture(gfxTexture* texture)
+void gfxSetTexture(gfxTexture* texture, int slot)
 {
-	glActiveTexture(GL_TEXTURE0);
-	glClientActiveTexture(GL_TEXTURE0);
-	if(!glIsEnabled(GL_TEXTURE_2D)) glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture->id);
+	glActiveTexture(GL_TEXTURE0+slot);
+	glClientActiveTexture(GL_TEXTURE0+slot);
 
-	glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, texture->width, texture->height);
+	if(driver->version < 200) glEnable(GL_TEXTURE_2D);
+
+	if(texture->type == GFX_2D_MAP_TEXTURE)
+		glBindTexture(GL_TEXTURE_2D, texture->id);
+	else if(texture->type == GFX_CUBE_MAP_TEXTURE)
+		glBindTexture(GL_TEXTURE_CUBE_MAP, texture->id);
+
+	driver->shaderParams.textureParams[slot].texture = texture;
+}
+
+void elfDisableTexture(int slot)
+{
+	glActiveTexture(GL_TEXTURE0+slot);
+	glClientActiveTexture(GL_TEXTURE0+slot);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	if(driver->version < 200) glDisable(GL_TEXTURE_2D);
+
+	driver->shaderParams.textureParams[slot].texture = NULL;
 }
 

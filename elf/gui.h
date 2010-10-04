@@ -155,7 +155,7 @@ ELF_API void ELF_APIENTRY elfSetLabelText(elfLabel* label, const char* text)
 	elfRecalcGuiObject((elfGuiObject*)label);
 }
 
-ELF_API elfButton* ELF_APIENTRY elfCreateButton(const char* name)
+ELF_API elfButton* ELF_APIENTRY elfCreateButton(elfGuiObject* parent, const char* name, int x, int y, int sizeX, int sizeY, const char* text)
 {
 	elfButton* button;
 
@@ -169,6 +169,9 @@ ELF_API elfButton* ELF_APIENTRY elfCreateButton(const char* name)
 
 	if(name) button->name = elfCreateString(name);
 
+	elfSetGuiObjectPosition((elfGuiObject*)button, x, y);
+	elfAddGuiObject(parent, (elfGuiObject*)button);
+
 	elfIncObj(ELF_BUTTON);
 
 	return button;
@@ -180,6 +183,8 @@ void elfDestroyButton(void* data)
 
 	if(button->name) elfDestroyString(button->name);
 
+	if(button->text) elfDestroyString(button->text);
+	if(button->font) elfDecRef((elfObject*)button->font);
 	if(button->off) elfDecRef((elfObject*)button->off);
 	if(button->over) elfDecRef((elfObject*)button->over);
 	if(button->on) elfDecRef((elfObject*)button->on);
@@ -223,6 +228,16 @@ ELF_API unsigned char ELF_APIENTRY elfGetButtonState(elfButton* button)
 	return button->state;
 }
 
+ELF_API const char* ELF_APIENTRY elfGetButtonText(elfButton* button)
+{
+	return button->text;
+}
+
+ELF_API elfFont* ELF_APIENTRY elfGetButtonFont(elfButton* button)
+{
+	return button->font;
+}
+
 ELF_API elfTexture* ELF_APIENTRY elfGetButtonOffTexture(elfButton* button)
 {
 	return button->off;
@@ -252,10 +267,18 @@ void elfRecalcButton(elfButton* button)
 	}
 }
 
-void elfSetButtonPosition(elfButton* button, int x, int y)
+ELF_API void ELF_APIENTRY elfSetButtonText(elfButton* button, const char* text)
 {
-	button->relPos.x = x;
-	button->relPos.y = y;
+	if(button->text) elfDestroyString(button->text);
+	button->text = elfCreateString(text);
+	elfRecalcGuiObject((elfGuiObject*)button);
+}
+
+ELF_API void ELF_APIENTRY elfSetButtonFont(elfButton* button, elfFont* font)
+{
+	if(button->font) elfDecRef((elfObject*)button->font);
+	button->font = font;
+	if(button->font) elfIncRef((elfObject*)button->font);
 	elfRecalcGuiObject((elfGuiObject*)button);
 }
 

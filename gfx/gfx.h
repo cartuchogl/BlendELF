@@ -387,7 +387,9 @@ int gfxGetTextureWidth(gfxTexture* texture);
 int gfxGetTextureHeight(gfxTexture* texture);
 int gfxGetTextureFormat(gfxTexture* texture);
 int gfxGetTextureDataFormat(gfxTexture* texture);
-void gfxCopyFramebufferToTexture(gfxTexture* texture);
+
+void gfxSetTexture(gfxTexture* texture, int slot);
+void elfDisableTexture(int slot);
 
 //////////////////////////////// SHADER PROGRAM ////////////////////////////////
 
@@ -395,8 +397,10 @@ gfxShaderProgram* gfxCreateShaderProgram(const char* vertex, const char* fragmen
 void gfxDestroyShaderProgram(gfxShaderProgram* shaderProgram);
 void gfxDestroyShaderPrograms(gfxShaderProgram* shaderProgram);
 
-void gfxSetShaderProgramUniform_1i(const char* name, int i);
-void gfxSetShaderProgramUniform_1f(const char* name, float f);
+void gfxSetShaderProgram(gfxShaderProgram* shaderProgram);
+
+void gfxSetShaderProgramUniform1i(const char* name, int i);
+void gfxSetShaderProgramUniform1f(const char* name, float f);
 void gfxSetShaderProgramUniformVec2(const char* name, float x, float y);
 void gfxSetShaderProgramUniformVec3(const char* name, float x, float y, float z);
 void gfxSetShaderProgramUniformVec4(const char* name, float x, float y, float z, float w);

@@ -413,7 +413,7 @@ void elfRunPostProcess(elfPostProcess* postProcess, elfScene* scene)
 
 		postProcess->shaderParams.textureParams[0].texture = postProcess->mainRtColor[sourceRt];
 		gfxSetShaderParams(&postProcess->shaderParams);
-		gfxSetShaderProgramUniform_1f("amount", postProcess->ssaoAmount);
+		gfxSetShaderProgramUniform1f("amount", postProcess->ssaoAmount);
 
 		gfxDrawTextured_2dQuad(0.0, 0.0, (float)elfGetWindowWidth(), (float)elfGetWindowHeight());
 
@@ -476,8 +476,8 @@ void elfRunPostProcess(elfPostProcess* postProcess, elfScene* scene)
 
 		gfxSetShaderParams(&postProcess->shaderParams);
 
-		gfxSetShaderProgramUniform_1f("elf_FocalRange", postProcess->dofFocalRange);
-		gfxSetShaderProgramUniform_1f("elf_FocalDistance", postProcess->dofFocalDistance);
+		gfxSetShaderProgramUniform1f("elf_FocalRange", postProcess->dofFocalRange);
+		gfxSetShaderProgramUniform1f("elf_FocalDistance", postProcess->dofFocalDistance);
 
 		gfxDrawTextured_2dQuad(0.0, 0.0, (float)elfGetWindowWidth(), (float)elfGetWindowHeight());
 
@@ -501,7 +501,7 @@ void elfRunPostProcess(elfPostProcess* postProcess, elfScene* scene)
 		postProcess->shaderParams.shaderProgram = postProcess->hipassShdr;
 		postProcess->shaderParams.textureParams[0].texture = postProcess->mainRtColor[sourceRt];
 		gfxSetShaderParams(&postProcess->shaderParams);
-		gfxSetShaderProgramUniform_1f("threshold", postProcess->bloomThreshold);
+		gfxSetShaderProgramUniform1f("threshold", postProcess->bloomThreshold);
 		gfxDrawTextured_2dQuad(0.0, 0.0, postProcess->bufferWidth, postProcess->bufferHeight);
 
 		gfxSetRenderTargetColorTexture(postProcess->rtMed, 0, postProcess->rtTexMed_2);
@@ -684,10 +684,10 @@ void elfRunPostProcess(elfPostProcess* postProcess, elfScene* scene)
 				scene->shaderParams.textureParams[0].texture = postProcess->rtTexHigh_1;
 
 				gfxSetShaderParams(&scene->shaderParams);
-				gfxSetShaderProgramUniform_1f("exposure", 0.0034);
-				gfxSetShaderProgramUniform_1f("decay", 1.0);
-				gfxSetShaderProgramUniform_1f("density", 1.0-light->shaftFadeOff);
-				gfxSetShaderProgramUniform_1f("weight", light->shaftIntensity*5.0*postProcess->lightShaftsIntensity);
+				gfxSetShaderProgramUniform1f("exposure", 0.0034);
+				gfxSetShaderProgramUniform1f("decay", 1.0);
+				gfxSetShaderProgramUniform1f("density", 1.0-light->shaftFadeOff);
+				gfxSetShaderProgramUniform1f("weight", light->shaftIntensity*5.0*postProcess->lightShaftsIntensity);
 				gfxSetShaderProgramUniformVec2("lightPosition",
 					lightScreenPos.x/(float)elfGetWindowWidth(),
 					lightScreenPos.y/(float)elfGetWindowHeight());
