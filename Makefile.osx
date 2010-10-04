@@ -23,9 +23,8 @@ all:
 	gcc -c gfx/gfx.c $(DEV_CFLAGS) $(INCS)
 	gcc -c elf/audio.c $(DEV_CFLAGS) $(INCS)
 	gcc -c elf/scripting.c $(DEV_CFLAGS) $(INCS)
-	gcc -c elf/network.c $(DEV_CFLAGS) $(INCS)
 	g++ -c elf/physics.cpp $(DEV_CFLAGS) $(INCS)
-	g++ -c elf/binds.c $(DEV_CFLAGS) $(INCS)
+	gcc -c elf/binds.c $(DEV_CFLAGS) $(INCS)
 	gcc -Wl -o blendelf *.o $(DEV_CFLAGS) $(BLENDELF_LIBS)
 	rm *.o
 
