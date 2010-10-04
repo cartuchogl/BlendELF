@@ -1022,7 +1022,7 @@ def export(path):
 	# magic
 	f.write(struct.pack('<i', 179532100))
 	# version
-	f.write(struct.pakk('<i', ELF_PAK_VERSION))
+	f.write(struct.pack('<i', ELF_PAK_VERSION))
 
 	# index count
 	f.write(struct.pack('<i', len(scenes)+len(scripts)+len(textures)+len(materials)+len(models)+len(cameras)+len(entities)+len(lights)+len(armatures)))
