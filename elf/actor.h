@@ -107,7 +107,7 @@ void elfUpdateActor(elfActor* actor)
 		eng->actor = (elfObject*)actor;
 		elfIncRef((elfObject*)actor);
 
-		elfRunString("me = elf.GetActor()");
+		elfRunString("me = GetActor()");
 		elfRunScript(actor->script);
 		elfRunString("me = nil");
 

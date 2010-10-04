@@ -66,7 +66,7 @@ ELF_API void ELF_APIENTRY elfSetGuiObjectScript(elfGuiObject* object, elfScript*
 	if(object->script) elfIncRef((elfObject*)object->script);
 }
 
-ELF_API elfLabel* ELF_APIENTRY elfCreateLabel(const char* name)
+ELF_API elfLabel* ELF_APIENTRY elfCreateLabel(elfGuiObject* parent, const char *name, int x, int y, const char *text)
 {
 	elfLabel* label;
 
@@ -79,6 +79,11 @@ ELF_API elfLabel* ELF_APIENTRY elfCreateLabel(const char* name)
 	label->visible = ELF_TRUE;
 
 	if(name) label->name = elfCreateString(name);
+
+	elfSetGuiObjectPosition((elfGuiObject*)label, x, y);
+	elfSetLabelFont(label, eng->guiFont);
+	elfSetLabelText(label, text);
+	elfAddGuiObject(parent, (elfGuiObject*)label);
 
 	elfIncObj(ELF_LABEL);
 
@@ -139,7 +144,7 @@ ELF_API void ELF_APIENTRY elfSetLabelFont(elfLabel* label, elfFont* font)
 {
 	if(label->font) elfDecRef((elfObject*)label->font);
 	label->font = font;
-	elfIncRef((elfObject*)label->font);
+	if(label->font) elfIncRef((elfObject*)label->font);
 	elfRecalcGuiObject((elfGuiObject*)label);
 }
 
@@ -1532,7 +1537,7 @@ void elfSendGuiCharEvent(elfGui* gui, char chr)
 			eng->actor = (elfObject*)gui->activeTextField;
 			elfIncRef((elfObject*)gui->activeTextField);
 
-			elfRunString("me = elf.GetActor(); event = elf.CHAR_INPUT");
+			elfRunString("me = GetActor(); event = CHAR_INPUT");
 			elfRunScript(gui->activeTextField->script);
 			elfRunString("me = nil; event = 0");
 
@@ -1586,7 +1591,7 @@ void elfSendGuiKeyEvent(elfGui* gui, int key)
 				eng->actor = (elfObject*)gui->activeTextField;
 				elfIncRef((elfObject*)gui->activeTextField);
 
-				elfRunString("me = elf.GetActor(); event = elf.LOSE_FOCUS");
+				elfRunString("me = GetActor(); event = LOSE_FOCUS");
 				elfRunScript(gui->activeTextField->script);
 				elfRunString("me = nil; event = 0");
 
@@ -1686,7 +1691,7 @@ void elfUpdateGui(elfGui* gui, float step)
 				eng->actor = (elfObject*)gui->activeTextField;
 				elfIncRef((elfObject*)gui->activeTextField);
 
-				elfRunString("me = elf.GetActor(); event = elf.LOSE_FOCUS");
+				elfRunString("me = GetActor(); event = LOSE_FOCUS");
 				elfRunScript(gui->activeTextField->script);
 				elfRunString("me = nil; event = 0");
 
@@ -1715,7 +1720,7 @@ void elfUpdateGui(elfGui* gui, float step)
 					eng->actor = (elfObject*)gui->activeTextField;
 					elfIncRef((elfObject*)gui->activeTextField);
 
-					elfRunString("me = elf.GetActor(); event = elf.GAIN_FOCUS");
+					elfRunString("me = GetActor(); event = GAIN_FOCUS");
 					elfRunScript(gui->activeTextField->script);
 					elfRunString("me = nil; event = 0");
 
@@ -1745,7 +1750,7 @@ void elfUpdateGui(elfGui* gui, float step)
 					eng->actor = (elfObject*)gui->target;
 					elfIncRef((elfObject*)gui->target);
 
-					elfRunString("me = elf.GetActor(); event = elf.VALUE_CHANGED");
+					elfRunString("me = GetActor(); event = VALUE_CHANGED");
 					elfRunScript(slider->script);
 					elfRunString("me = nil; event = 0");
 
@@ -1770,7 +1775,7 @@ void elfUpdateGui(elfGui* gui, float step)
 						eng->actor = (elfObject*)gui->target;
 						elfIncRef((elfObject*)gui->target);
 
-						elfRunString("me = elf.GetActor(); event = elf.SELECTION_CHANGED");
+						elfRunString("me = GetActor(); event = SELECTION_CHANGED");
 						elfRunScript(textList->script);
 						elfRunString("me = nil; event = 0");
 
@@ -1789,7 +1794,7 @@ void elfUpdateGui(elfGui* gui, float step)
 					eng->actor = (elfObject*)gui->target;
 					elfIncRef((elfObject*)gui->target);
 
-					elfRunString("me = elf.GetActor(); event = elf.STATE_CHANGED");
+					elfRunString("me = GetActor(); event = STATE_CHANGED");
 					elfRunScript(((elfCheckBox*)gui->target)->script);
 					elfRunString("me = nil; event = 0");
 
@@ -1815,7 +1820,7 @@ void elfUpdateGui(elfGui* gui, float step)
 
 						((elfButton*)gui->target)->state = ELF_OFF;
 
-						elfRunString("me = elf.GetActor(); event = elf.CLICKED");
+						elfRunString("me = GetActor(); event = CLICKED");
 						elfRunScript(((elfButton*)gui->target)->script);
 						elfRunString("me = nil; event = 0");
 
@@ -1853,7 +1858,7 @@ void elfUpdateGui(elfGui* gui, float step)
 					eng->actor = (elfObject*)gui->target;
 					elfIncRef((elfObject*)gui->target);
 
-					elfRunString("me = elf.GetActor(); event = elf.VALUE_CHANGED");
+					elfRunString("me = GetActor(); event = VALUE_CHANGED");
 					elfRunScript(slider->script);
 					elfRunString("me = nil; event = 0");
 

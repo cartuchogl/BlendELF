@@ -536,7 +536,7 @@ void elfSetError(int code, const char* fmt, ...);
 void elfSetErrorNoSave(int code, const char* fmt, ...);
 // !!>
 
-ELF_API void ELF_APIENTRY elfLogWriteLine(const char* str);	// <mdoc> LOG FUNCTIONS
+ELF_API void ELF_APIENTRY elfWriteLogLine(const char* str);	// <mdoc> LOG FUNCTIONS
 
 /////////////////////////////// CONTEXT ///////////////////////////////
 
@@ -1788,7 +1788,7 @@ void elfDrawLabel(elfLabel* label, gfxShaderParams* shaderParams);
 void elfRecalcLabel(elfLabel* label);
 // !!>
 
-ELF_API elfLabel* ELF_APIENTRY elfCreateLabel(const char* name);	// <mdoc> LABEL FUNCTIONS
+ELF_API elfLabel* ELF_APIENTRY elfCreateLabel(elfGuiObject* parent, const char* name, int x, int y, const char* text);	// <mdoc> LABEL FUNCTIONS
 
 ELF_API elfFont* ELF_APIENTRY elfGetLabelFont(elfLabel* label);
 ELF_API const char* ELF_APIENTRY elfGetLabelText(elfLabel* label);

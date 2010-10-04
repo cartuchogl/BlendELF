@@ -192,6 +192,8 @@ void elfDestroyEngine(void* data)
 
 unsigned char elfInitEngine()
 {
+	FILE* file;
+
 	if(eng)
 	{
 		elfSetError(ELF_CANT_INITIALIZE, "error: can't initialize the engine twice!\n");
@@ -208,12 +210,23 @@ unsigned char elfInitEngine()
 	getcwd(eng->cwd, 255);
 #endif
 
+	file = fopen("deffont.ttf", "r");
+	if(!file) elfLogWrite("warning: can't open default font \"deffont.ttf\"\n");
+	else
+	{
+		fclose(file);
+		eng->guiFont = elfCreateFontFromFile("deffont.ttf", 12);
+		if(eng->guiFont) elfIncRef((elfObject*)eng->guiFont);
+	}
+
 	return ELF_TRUE;
 }
 
 void elfDeinitEngine()
 {
 	if(!eng) return;
+
+	if(eng->guiFont) elfDecRef((elfObject*)eng->guiFont);
 
 	elfDecRef((elfObject*)eng);
 	eng = NULL;

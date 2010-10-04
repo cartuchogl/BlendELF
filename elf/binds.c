@@ -719,13 +719,13 @@ static int lua_GetConfigLog(lua_State *L)
 	lua_pushstring(L, result);
 	return 1;
 }
-static int lua_LogWriteLine(lua_State *L)
+static int lua_WriteLogLine(lua_State *L)
 {
 	const char* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "LogWriteLine", lua_gettop(L), 1);}
-	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "LogWriteLine", 1, "string");}
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "WriteLogLine", lua_gettop(L), 1);}
+	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "WriteLogLine", 1, "string");}
 	arg0 = lua_tostring(L, 1);
-	elfLogWriteLine(arg0);
+	elfWriteLogLine(arg0);
 	return 0;
 }
 static int lua_SetTitle(lua_State *L)
@@ -9041,11 +9041,25 @@ static int lua_SetGuiObjectScript(lua_State *L)
 static int lua_CreateLabel(lua_State *L)
 {
 	elfLabel* result;
-	const char* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateLabel", lua_gettop(L), 1);}
-	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateLabel", 1, "string");}
-	arg0 = lua_tostring(L, 1);
-	result = elfCreateLabel(arg0);
+	elfGuiObject* arg0;
+	const char* arg1;
+	int arg2;
+	int arg3;
+	const char* arg4;
+	if(lua_gettop(L) != 5) {return lua_fail_arg_count(L, "CreateLabel", lua_gettop(L), 5);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
+		{return lua_fail_arg(L, "CreateLabel", 1, "elfGuiObject");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateLabel", 2, "string");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateLabel", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreateLabel", 4, "number");}
+	if(!lua_isstring(L, 5)) {return lua_fail_arg(L, "CreateLabel", 5, "string");}
+	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = lua_tostring(L, 2);
+	arg2 = (int)lua_tonumber(L, 3);
+	arg3 = (int)lua_tonumber(L, 4);
+	arg4 = lua_tostring(L, 5);
+	result = elfCreateLabel(arg0, arg1, arg2, arg3, arg4);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -10275,7 +10289,7 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetConfigShadowMapSize", lua_GetConfigShadowMapSize},
 	{"GetConfigStart", lua_GetConfigStart},
 	{"GetConfigLog", lua_GetConfigLog},
-	{"LogWriteLine", lua_LogWriteLine},
+	{"WriteLogLine", lua_WriteLogLine},
 	{"SetTitle", lua_SetTitle},
 	{"GetWindowWidth", lua_GetWindowWidth},
 	{"GetWindowHeight", lua_GetWindowHeight},

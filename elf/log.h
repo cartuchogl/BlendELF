@@ -206,7 +206,7 @@ void elfSetErrorNoSave(int code, const char* fmt, ...)
 	elfDestroyString(errStr);
 }
 
-ELF_API void ELF_APIENTRY elfLogWriteLine(const char* str)
+ELF_API void ELF_APIENTRY elfWriteLogLine(const char* str)
 {
 	FILE* file;
 

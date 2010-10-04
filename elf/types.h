@@ -206,9 +206,10 @@ struct elfEngine {
 	gfxVertexData* lines;
 	gfxVertexArray* spriteVertexArray;
 
+	elfFont* guiFont;
+
 	elfScene* scene;
 	elfGui* gui;
-
 	elfObject* actor;
 };
 
