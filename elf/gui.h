@@ -357,13 +357,10 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams)
 		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 1.0, 1.0, 1.0);
 		gfxSetShaderParams(shaderParams);
 
-		col1.r = 0.1; col1.g = 0.1; col1.b = 0.1; col1.a = 1.0;
-		elfDrawBorder(button->pos.x, button->pos.y, button->width, button->height, col1);
-
 		if(button->state == ELF_OFF) {col1.r = col1.g = col1.b = 0.40; col1.a = 1.0; col2.r = col2.g = col2.b = 0.20; col2.a = 1.0;}
 		else if(button->state == ELF_OVER) {col1.r = col1.g = col1.b = 0.50; col1.a = 1.0; col2.r = col2.g = col2.b = 0.30; col2.a = 1.0;}
 		else if(button->state == ELF_ON) {col1.r = col1.g = col1.b = 0.35; col1.a = 1.0; col2.r = col2.g = col2.b = 0.15; col2.a = 1.0;}
-		elfDrawHorGradientBorder(button->pos.x+1, button->pos.y+1, button->width-2, button->height-2, col1, col2);
+		elfDrawHorGradientBorder(button->pos.x, button->pos.y, button->width, button->height, col1, col2);
 
 		shaderParams->renderParams.vertexColor = ELF_FALSE;
 	}
