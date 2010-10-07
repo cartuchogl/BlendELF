@@ -1,4 +1,127 @@
 
+void elfDrawHorGradient(int x, int y, int width, int height, elfColor col1, elfColor col2)
+{
+	float *vertexBuffer;
+
+	vertexBuffer = gfxGetVertexDataBuffer(eng->gradientVertexData);
+
+	vertexBuffer[0] = x;
+	vertexBuffer[1] = y+height;
+	vertexBuffer[2] = 0.0;
+	vertexBuffer[3] = x;
+	vertexBuffer[4] = y;
+	vertexBuffer[5] = 0.0;
+	vertexBuffer[6] = x+width;
+	vertexBuffer[7] = y+height;
+	vertexBuffer[8] = 0.0;
+	vertexBuffer[9] = x+width;
+	vertexBuffer[10] = y;
+	vertexBuffer[11] = 0.0;
+
+	vertexBuffer = gfxGetVertexDataBuffer(eng->gradientColorData);
+
+	vertexBuffer[0] = col1.r;
+	vertexBuffer[1] = col1.g;
+	vertexBuffer[2] = col1.b;
+	vertexBuffer[3] = col1.a;
+	vertexBuffer[4] = col2.r;
+	vertexBuffer[5] = col2.g;
+	vertexBuffer[6] = col2.b;
+	vertexBuffer[7] = col2.a;
+	vertexBuffer[8] = col1.r;
+	vertexBuffer[9] = col1.g;
+	vertexBuffer[10] = col1.b;
+	vertexBuffer[11] = col1.a;
+	vertexBuffer[12] = col2.r;
+	vertexBuffer[13] = col2.g;
+	vertexBuffer[14] = col2.b;
+	vertexBuffer[15] = col2.a;
+
+	gfxDrawVertexArray(eng->gradientVertexArray, 4, GFX_TRIANGLE_STRIP);
+}
+
+void elfDrawBorder(int x, int y, int width, int height, elfColor col)
+{
+	float *vertexBuffer;
+
+	vertexBuffer = gfxGetVertexDataBuffer(eng->gradientVertexData);
+
+	vertexBuffer[0] = x;
+	vertexBuffer[1] = y+height;
+	vertexBuffer[2] = 0.0;
+	vertexBuffer[3] = x;
+	vertexBuffer[4] = y;
+	vertexBuffer[5] = 0.0;
+	vertexBuffer[6] = x+width;
+	vertexBuffer[7] = y;
+	vertexBuffer[8] = 0.0;
+	vertexBuffer[9] = x+width;
+	vertexBuffer[10] = y+height;
+	vertexBuffer[11] = 0.0;
+
+	vertexBuffer = gfxGetVertexDataBuffer(eng->gradientColorData);
+
+	vertexBuffer[0] = col.r;
+	vertexBuffer[1] = col.g;
+	vertexBuffer[2] = col.b;
+	vertexBuffer[3] = col.a;
+	vertexBuffer[4] = col.r;
+	vertexBuffer[5] = col.g;
+	vertexBuffer[6] = col.b;
+	vertexBuffer[7] = col.a;
+	vertexBuffer[8] = col.r;
+	vertexBuffer[9] = col.g;
+	vertexBuffer[10] = col.b;
+	vertexBuffer[11] = col.a;
+	vertexBuffer[12] = col.r;
+	vertexBuffer[13] = col.g;
+	vertexBuffer[14] = col.b;
+	vertexBuffer[15] = col.a;
+
+	gfxDrawVertexArray(eng->gradientVertexArray, 4, GFX_LINE_LOOP);
+}
+
+void elfDrawHorGradientBorder(int x, int y, int width, int height, elfColor col1, elfColor col2)
+{
+	float *vertexBuffer;
+
+	vertexBuffer = gfxGetVertexDataBuffer(eng->gradientVertexData);
+
+	vertexBuffer[0] = x;
+	vertexBuffer[1] = y+height;
+	vertexBuffer[2] = 0.0;
+	vertexBuffer[3] = x;
+	vertexBuffer[4] = y;
+	vertexBuffer[5] = 0.0;
+	vertexBuffer[6] = x+width;
+	vertexBuffer[7] = y;
+	vertexBuffer[8] = 0.0;
+	vertexBuffer[9] = x+width;
+	vertexBuffer[10] = y+height;
+	vertexBuffer[11] = 0.0;
+
+	vertexBuffer = gfxGetVertexDataBuffer(eng->gradientColorData);
+
+	vertexBuffer[0] = col1.r;
+	vertexBuffer[1] = col1.g;
+	vertexBuffer[2] = col1.b;
+	vertexBuffer[3] = col1.a;
+	vertexBuffer[4] = col2.r;
+	vertexBuffer[5] = col2.g;
+	vertexBuffer[6] = col2.b;
+	vertexBuffer[7] = col2.a;
+	vertexBuffer[8] = col2.r;
+	vertexBuffer[9] = col2.g;
+	vertexBuffer[10] = col2.b;
+	vertexBuffer[11] = col2.a;
+	vertexBuffer[12] = col1.r;
+	vertexBuffer[13] = col1.g;
+	vertexBuffer[14] = col1.b;
+	vertexBuffer[15] = col1.a;
+
+	gfxDrawVertexArray(eng->gradientVertexArray, 4, GFX_LINE_LOOP);
+}
+
 ELF_API const char* ELF_APIENTRY elfGetGuiObjectName(elfGuiObject* object)
 {
 	return object->name;
@@ -155,7 +278,7 @@ ELF_API void ELF_APIENTRY elfSetLabelText(elfLabel* label, const char* text)
 	elfRecalcGuiObject((elfGuiObject*)label);
 }
 
-ELF_API elfButton* ELF_APIENTRY elfCreateButton(elfGuiObject* parent, const char* name, int x, int y, int sizeX, int sizeY, const char* text)
+ELF_API elfButton* ELF_APIENTRY elfCreateButton(elfGuiObject* parent, const char* name, int x, int y, int width, int height, const char* text)
 {
 	elfButton* button;
 
@@ -170,6 +293,10 @@ ELF_API elfButton* ELF_APIENTRY elfCreateButton(elfGuiObject* parent, const char
 	if(name) button->name = elfCreateString(name);
 
 	elfSetGuiObjectPosition((elfGuiObject*)button, x, y);
+	elfSetButtonFont(button, eng->guiFont);
+	button->width = width;
+	button->height = height;
+	elfSetButtonText(button, text);
 	elfAddGuiObject(parent, (elfGuiObject*)button);
 
 	elfIncObj(ELF_BUTTON);
@@ -202,24 +329,63 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams)
 
 	gfxSetColor(&shaderParams->materialParams.diffuseColor, button->color.r, button->color.g, button->color.b, button->color.a);
 
-	if(button->state == ELF_OFF)
+	if(!button->off)
 	{
-		if(button->off) shaderParams->textureParams[0].texture = button->off->texture;
-	}
-	else if(button->state == ELF_OVER)
-	{
-		if(button->over) shaderParams->textureParams[0].texture = button->over->texture;
-	}
-	else if(button->state == ELF_ON)
-	{
-		if(button->on) shaderParams->textureParams[0].texture = button->on->texture;
-	}
+		elfColor col1, col2;
 
-	if(shaderParams->textureParams[0].texture)
-	{
+		shaderParams->renderParams.vertexColor = ELF_TRUE;
 		gfxSetShaderParams(shaderParams);
-		gfxDrawTextured_2dQuad((float)button->pos.x, (float)button->pos.y, (float)button->width, (float)button->height);
-		shaderParams->textureParams[0].texture = NULL;
+
+		if(button->state == ELF_OFF) {col1.r = col1.g = col1.b = 0.40; col1.a = 1.0; col2.r = col2.g = col2.b = 0.25; col2.a = 1.0;}
+		else if(button->state == ELF_OVER) {col1.r = col1.g = col1.b = 0.50; col1.a = 1.0; col2.r = col2.g = col2.b = 0.35; col2.a = 1.0;}
+		else if(button->state == ELF_ON) {col1.r = col1.g = col1.b = 0.35; col1.a = 1.0; col2.r = col2.g = col2.b = 0.20; col2.a = 1.0;}
+		elfDrawHorGradient(button->pos.x, button->pos.y+button->height/2, button->width, button->height/2, col1, col2);
+
+		if(button->state == ELF_OFF) {col1.r = col1.g = col1.b = 0.20; col1.a = 1.0; col2.r = col2.g = col2.b = 0.10; col2.a = 1.0;}
+		else if(button->state == ELF_OVER) {col1.r = col1.g = col1.b = 0.30; col1.a = 1.0; col2.r = col2.g = col2.b = 0.20; col2.a = 1.0;}
+		else if(button->state == ELF_ON) {col1.r = col1.g = col1.b = 0.15; col1.a = 1.0; col2.r = col2.g = col2.b = 0.05; col2.a = 1.0;}
+		elfDrawHorGradient(button->pos.x, button->pos.y, button->width, button->height/2, col1, col2);
+
+		shaderParams->renderParams.vertexColor = ELF_FALSE;
+		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 1.0, 1.0, 0.6);
+		gfxSetShaderParams(shaderParams);
+
+		elfDrawString(button->font, button->text, button->pos.x+(button->width-elfGetStringWidth(button->font, button->text))/2,
+			button->pos.y+(button->height-elfGetStringHeight(button->font, button->text))/2-button->font->offsetY/2, shaderParams);
+
+		shaderParams->renderParams.vertexColor = ELF_TRUE;
+		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 1.0, 1.0, 1.0);
+		gfxSetShaderParams(shaderParams);
+
+		col1.r = 0.1; col1.g = 0.1; col1.b = 0.1; col1.a = 1.0;
+		elfDrawBorder(button->pos.x, button->pos.y, button->width, button->height, col1);
+
+		if(button->state == ELF_OFF) {col1.r = col1.g = col1.b = 0.40; col1.a = 1.0; col2.r = col2.g = col2.b = 0.20; col2.a = 1.0;}
+		else if(button->state == ELF_OVER) {col1.r = col1.g = col1.b = 0.50; col1.a = 1.0; col2.r = col2.g = col2.b = 0.30; col2.a = 1.0;}
+		else if(button->state == ELF_ON) {col1.r = col1.g = col1.b = 0.35; col1.a = 1.0; col2.r = col2.g = col2.b = 0.15; col2.a = 1.0;}
+		elfDrawHorGradientBorder(button->pos.x+1, button->pos.y+1, button->width-2, button->height-2, col1, col2);
+
+		shaderParams->renderParams.vertexColor = ELF_FALSE;
+	}
+	else
+	{
+		shaderParams->textureParams[0].texture = button->off->texture;
+
+		if(button->state == ELF_OVER)
+		{
+			if(button->over) shaderParams->textureParams[0].texture = button->over->texture;
+		}
+		else if(button->state == ELF_ON)
+		{
+			if(button->on) shaderParams->textureParams[0].texture = button->on->texture;
+		}
+
+		if(shaderParams->textureParams[0].texture)
+		{
+			gfxSetShaderParams(shaderParams);
+			gfxDrawTextured2dQuad((float)button->pos.x, (float)button->pos.y, (float)button->width, (float)button->height);
+			shaderParams->textureParams[0].texture = NULL;
+		}
 	}
 }
 
@@ -259,11 +425,6 @@ void elfRecalcButton(elfButton* button)
 	{
 		button->width = elfGetTextureWidth(button->off);
 		button->height = elfGetTextureHeight(button->off);
-	}
-	else
-	{
-		button->height = 0;
-		button->width = 0;
 	}
 }
 
@@ -345,7 +506,7 @@ void elfDrawPicture(elfPicture* picture, gfxShaderParams* shaderParams)
 
 	shaderParams->textureParams[0].texture = picture->texture->texture;
 	gfxSetShaderParams(shaderParams);
-	gfxDrawTextured_2dQuad((float)picture->pos.x, (float)picture->pos.y, (float)picture->width, (float)picture->height);
+	gfxDrawTextured2dQuad((float)picture->pos.x, (float)picture->pos.y, (float)picture->width, (float)picture->height);
 	shaderParams->textureParams[0].texture = NULL;
 }
 
@@ -462,7 +623,7 @@ void elfDrawTextField(elfTextField* textField, elfArea* area, gfxShaderParams* s
 	if(shaderParams->textureParams[0].texture)
 	{
 		gfxSetShaderParams(shaderParams);
-		gfxDrawTextured_2dQuad((float)textField->pos.x, (float)textField->pos.y, (float)textField->width, (float)textField->height);
+		gfxDrawTextured2dQuad((float)textField->pos.x, (float)textField->pos.y, (float)textField->width, (float)textField->height);
 		shaderParams->textureParams[0].texture = NULL;
 	}
 
@@ -491,7 +652,7 @@ void elfDrawTextField(elfTextField* textField, elfArea* area, gfxShaderParams* s
 
 		str = elfSubString(textField->text, textField->drawPos,
 			textField->cursorPos-textField->drawPos);
-		gfxDraw_2dQuad(textField->pos.x+textField->offsetX+elfGetStringWidth(textField->font, str),
+		gfxDraw2dQuad(textField->pos.x+textField->offsetX+elfGetStringWidth(textField->font, str),
 			textField->pos.y+textField->offsetY, 1, textField->height-textField->offsetY*2);
 		elfDestroyString(str);
 	}
@@ -673,7 +834,7 @@ void elfDrawSlider(elfSlider* slider, gfxShaderParams* shaderParams)
 		gfxSetColor(&shaderParams->materialParams.diffuseColor, slider->color.r, slider->color.g, slider->color.b, slider->color.a);
 		shaderParams->textureParams[0].texture = slider->background->texture;
 		gfxSetShaderParams(shaderParams);
-		gfxDrawTextured_2dQuad((float)slider->pos.x, (float)slider->pos.y, (float)slider->width, (float)slider->height);
+		gfxDrawTextured2dQuad((float)slider->pos.x, (float)slider->pos.y, (float)slider->width, (float)slider->height);
 		shaderParams->textureParams[0].texture = NULL;
 	}
 
@@ -684,11 +845,11 @@ void elfDrawSlider(elfSlider* slider, gfxShaderParams* shaderParams)
 		gfxSetShaderParams(shaderParams);
 		if(slider->width > slider->height)
 		{
-			gfxDrawTextured_2dQuadRegion((float)slider->pos.x, (float)slider->pos.y, (float)slider->width*slider->value, (float)slider->height, 0.0, 0.0, slider->value, 1.0);
+			gfxDrawTextured2dQuadRegion((float)slider->pos.x, (float)slider->pos.y, (float)slider->width*slider->value, (float)slider->height, 0.0, 0.0, slider->value, 1.0);
 		}
 		else
 		{
-			gfxDrawTextured_2dQuadRegion((float)slider->pos.x, (float)slider->pos.y, (float)slider->width, (float)slider->height*slider->value, 0.0, 0.0, 1.0, slider->value);	
+			gfxDrawTextured2dQuadRegion((float)slider->pos.x, (float)slider->pos.y, (float)slider->width, (float)slider->height*slider->value, 0.0, 0.0, 1.0, slider->value);	
 		}
 		shaderParams->textureParams[0].texture = NULL;
 	}
@@ -818,7 +979,7 @@ void elfDrawScreen(elfScreen* screen, elfArea* area, gfxShaderParams* shaderPara
 
 	shaderParams->textureParams[0].texture = screen->texture->texture;
 	gfxSetShaderParams(shaderParams);
-	gfxDrawTextured_2dQuad((float)screen->pos.x, (float)screen->pos.y, (float)screen->width, (float)screen->height);
+	gfxDrawTextured2dQuad((float)screen->pos.x, (float)screen->pos.y, (float)screen->width, (float)screen->height);
 	shaderParams->textureParams[0].texture = NULL;
 
 	gfxSetViewport(x, y, width, height);
@@ -1017,7 +1178,7 @@ void elfDrawTextList(elfTextList* textList, elfArea* area, gfxShaderParams* shad
 			gfxSetColor(&shaderParams->materialParams.diffuseColor, textList->selectionColor.r,
 				textList->selectionColor.g, textList->selectionColor.b, textList->selectionColor.a);
 			gfxSetShaderParams(shaderParams);	
-			gfxDraw_2dQuad((float)textList->pos.x, (float)textList->pos.y+textList->height-offset,
+			gfxDraw2dQuad((float)textList->pos.x, (float)textList->pos.y+textList->height-offset,
 				(float)textList->listWidth, (float)textList->font->size+textList->font->offsetY);
 		}
 		else
@@ -1028,7 +1189,7 @@ void elfDrawTextList(elfTextList* textList, elfArea* area, gfxShaderParams* shad
 			else gfxSetColor(&shaderParams->materialParams.diffuseColor, textList->darkColor.r,
 				textList->darkColor.g, textList->darkColor.b, textList->darkColor.a);
 			gfxSetShaderParams(shaderParams);	
-			gfxDraw_2dQuad((float)textList->pos.x, (float)textList->pos.y+textList->height-offset,
+			gfxDraw2dQuad((float)textList->pos.x, (float)textList->pos.y+textList->height-offset,
 				(float)textList->listWidth, (float)textList->font->size+textList->font->offsetY);
 		}
 
@@ -1294,7 +1455,7 @@ void elfDrawCheckBox(elfCheckBox* checkBox, gfxShaderParams* shaderParams)
 	if(shaderParams->textureParams[0].texture)
 	{
 		gfxSetShaderParams(shaderParams);
-		gfxDrawTextured_2dQuad((float)checkBox->pos.x, (float)checkBox->pos.y, (float)checkBox->width, (float)checkBox->height);
+		gfxDrawTextured2dQuad((float)checkBox->pos.x, (float)checkBox->pos.y, (float)checkBox->width, (float)checkBox->height);
 		shaderParams->textureParams[0].texture = NULL;
 	}
 }

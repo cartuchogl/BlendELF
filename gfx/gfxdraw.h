@@ -1,5 +1,5 @@
 
-void gfxDraw_2dQuad(float x, float y, float width, float height)
+void gfxDraw2dQuad(float x, float y, float width, float height)
 {
 	float* vertexBuffer;
 
@@ -22,7 +22,7 @@ void gfxDraw_2dQuad(float x, float y, float width, float height)
 	gfxDrawVertexArray(driver->quadVertexArray, 4, GFX_TRIANGLE_STRIP);
 }
 
-void gfxDrawTextured_2dQuad(float x, float y, float width, float height)
+void gfxDrawTextured2dQuad(float x, float y, float width, float height)
 {
 	float* vertexBuffer;
 	float* texCoordBuffer;
@@ -56,7 +56,7 @@ void gfxDrawTextured_2dQuad(float x, float y, float width, float height)
 	gfxDrawVertexArray(driver->quadVertexArray, 4, GFX_TRIANGLE_STRIP);
 }
 
-void gfxDrawTextured_2dQuadRegion(float x, float y, float width, float height, float tx, float ty, float twidth, float theight)
+void gfxDrawTextured2dQuadRegion(float x, float y, float width, float height, float tx, float ty, float twidth, float theight)
 {
 	float* vertexBuffer;
 	float* texCoordBuffer;

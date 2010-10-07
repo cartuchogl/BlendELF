@@ -162,6 +162,17 @@ elfEngine* elfCreateEngine()
 
 	gfxSetVertexArrayData(engine->spriteVertexArray, GFX_NORMAL, vertexData);
 
+	engine->gradientVertexData = gfxCreateVertexData(18, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
+	engine->gradientColorData = gfxCreateVertexData(24, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
+	engine->gradientVertexArray = gfxCreateVertexArray(GFX_FALSE);
+
+	gfxSetVertexArrayData(engine->gradientVertexArray, GFX_VERTEX, engine->gradientVertexData);
+	gfxSetVertexArrayData(engine->gradientVertexArray, GFX_COLOR, engine->gradientColorData);
+
+	gfxIncRef((gfxObject*)engine->gradientVertexData);
+	gfxIncRef((gfxObject*)engine->gradientColorData);
+	gfxIncRef((gfxObject*)engine->gradientVertexArray);
+
 	elfIncObj(ELF_ENGINE);
 
 	return engine;
@@ -173,6 +184,10 @@ void elfDestroyEngine(void* data)
 
 	gfxDecRef((gfxObject*)engine->lines);
 	gfxDecRef((gfxObject*)engine->spriteVertexArray);
+
+	gfxDecRef((gfxObject*)engine->gradientVertexData);
+	gfxDecRef((gfxObject*)engine->gradientColorData);
+	gfxDecRef((gfxObject*)engine->gradientVertexArray);
 
 	if(engine->scene) elfDecRef((elfObject*)engine->scene);
 	if(engine->gui) elfDecRef((elfObject*)engine->gui);

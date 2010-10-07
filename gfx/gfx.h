@@ -427,9 +427,9 @@ void gfxSetShaderParams(gfxShaderParams* shaderParams);
 
 //////////////////////////////// DRAW ////////////////////////////////
 
-void gfxDraw_2dQuad(float x, float y, float width, float height);
-void gfxDrawTextured_2dQuad(float x, float y, float width, float height);
-void gfxDrawTextured_2dQuadRegion(float x, float y, float width, float height, float tx, float ty, float twidth, float theight);
+void gfxDraw2dQuad(float x, float y, float width, float height);
+void gfxDrawTextured2dQuad(float x, float y, float width, float height);
+void gfxDrawTextured2dQuadRegion(float x, float y, float width, float height, float tx, float ty, float twidth, float theight);
 
 void gfxDrawBoundingBox(float min[3], float max[3]);
 void gfxDrawLines(int count, gfxVertexData* vertices);

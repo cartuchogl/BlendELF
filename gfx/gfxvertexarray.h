@@ -159,24 +159,34 @@ void gfxSetVertexArrayData(gfxVertexArray* vertexArray, int target, gfxVertexDat
 		default: printf("error: invalid target for vertex array data\n"); return;
 	}
 
-	varr->vertexCount = data->count/varr->elementCount;
-	varr->vertexSizeBytes = driver->formatSizes[data->format]*varr->elementCount;
+	if(data)
+	{
+		varr->vertexCount = data->count/varr->elementCount;
+		varr->vertexSizeBytes = driver->formatSizes[data->format]*varr->elementCount;
 
-	if(vertexArray->vertexCount == 0) vertexArray->vertexCount = varr->vertexCount;
-	else if(varr->vertexCount < vertexArray->vertexCount) vertexArray->vertexCount = varr->vertexCount;
+		if(vertexArray->vertexCount == 0) vertexArray->vertexCount = varr->vertexCount;
+		else if(varr->vertexCount < vertexArray->vertexCount) vertexArray->vertexCount = varr->vertexCount;
+		else
+		{
+			varrCount = 0;
+			for(i = 0; i < GFX_MAX_VERTEX_ARRAYS; i++)
+				if(vertexArray->varrs[i].data) varrCount++;
+			if(varrCount < 2) vertexArray->vertexCount = varr->vertexCount;
+		}
+
+		if(varr->data) gfxDecRef((gfxObject*)varr->data);
+		varr->data = data;
+		gfxIncRef((gfxObject*)varr->data);
+
+		if(vertexArray->gpuData && driver->version >= 200) gfxInitVertexDataVbo(varr->data);
+	}
 	else
 	{
-		varrCount = 0;
-		for(i = 0; i < GFX_MAX_VERTEX_ARRAYS; i++)
-			if(vertexArray->varrs[i].data) varrCount++;
-		if(varrCount < 2) vertexArray->vertexCount = varr->vertexCount;
+		varr->vertexCount = 0;
+		varr->vertexSizeBytes = 0;
+		if(varr->data) gfxDecRef((gfxObject*)varr->data);
+		varr->data = NULL;
 	}
-
-	if(varr->data) gfxDecRef((gfxObject*)varr->data);
-	varr->data = data;
-	gfxIncRef((gfxObject*)varr->data);
-
-	if(vertexArray->gpuData && driver->version >= 200) gfxInitVertexDataVbo(varr->data);
 }
 
 void gfxSetVertexArray(gfxVertexArray* vertexArray)

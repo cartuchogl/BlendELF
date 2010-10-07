@@ -206,6 +206,10 @@ struct elfEngine {
 	gfxVertexData* lines;
 	gfxVertexArray* spriteVertexArray;
 
+	gfxVertexData* gradientVertexData;
+	gfxVertexData* gradientColorData;
+	gfxVertexArray* gradientVertexArray;
+
 	elfFont* guiFont;
 
 	elfScene* scene;

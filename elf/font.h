@@ -225,7 +225,7 @@ void elfDrawString(elfFont* font, const char* str, int x, int y, gfxShaderParams
 			shaderParams->textureParams[0].texture = chr->texture;
 			shaderParams->textureParams[0].type = GFX_COLOR_MAP;
 			gfxSetShaderParams(shaderParams);
-			gfxDrawTextured_2dQuad((float)ox, (float)(oy+chr->offsetY+font->offsetY),
+			gfxDrawTextured2dQuad((float)ox, (float)(oy+chr->offsetY+font->offsetY),
 				(float)gfxGetTextureWidth(chr->texture), (float)gfxGetTextureHeight(chr->texture));
 			ox += chr->offsetX;
 		}

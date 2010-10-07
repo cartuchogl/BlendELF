@@ -119,6 +119,8 @@ unsigned char gfxInit()
 
 	glewInit();
 
+	elfLogWrite("OpenGL %s; %s; %s\n", glGetString(GL_VERSION), glGetString(GL_VENDOR), glGetString(GL_RENDERER));
+
 	if(glewIsSupported("GL_VERSION_1_0")) driver->version = 100;
 	if(glewIsSupported("GL_VERSION_1_1")) driver->version = 110;
 	if(glewIsSupported("GL_VERSION_1_2")) driver->version = 120;
@@ -159,8 +161,6 @@ unsigned char gfxInit()
 	glGetIntegerv(GL_MAX_DRAW_BUFFERS, &driver->maxDrawBuffers);
 	glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS_EXT, &driver->maxColorAttachments);
 	glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &driver->maxAnisotropy);
-
-	elfLogWrite("OpenGL %s; %s; %s\n", glGetString(GL_VERSION), glGetString(GL_VENDOR), glGetString(GL_RENDERER));
 
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClearDepth(1.0);

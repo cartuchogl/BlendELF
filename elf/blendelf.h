@@ -1802,7 +1802,7 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams);
 void elfRecalcButton(elfButton* button);
 // !!>
 
-ELF_API elfButton* ELF_APIENTRY elfCreateButton(elfGuiObject* parent, const char* name, int x, int y, int sizeX, int sizeY, const char* text);	// <mdoc> BUTTON FUNCTION
+ELF_API elfButton* ELF_APIENTRY elfCreateButton(elfGuiObject* parent, const char* name, int x, int y, int width, int height, const char* text);	// <mdoc> BUTTON FUNCTION
 
 ELF_API unsigned char ELF_APIENTRY elfGetButtonState(elfButton* button);
 ELF_API const char* ELF_APIENTRY elfGetButtonText(elfButton* button);
