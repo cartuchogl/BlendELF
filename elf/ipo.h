@@ -142,7 +142,7 @@ ELF_API float ELF_APIENTRY elfGetBezierCurveValue(elfBezierCurve* curve, float x
 		point1 = pnt;
 	}
 
-	if(!point1 && !point2) return 0.0;
+	if(!point1 && !point2) return 0.0f;
 	if(!point2) return point1->p.y;
 
 	t = (x-point1->p.x)/(point2->p.x-point1->p.x);

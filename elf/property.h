@@ -58,7 +58,7 @@ ELF_API void ELF_APIENTRY elfSetPropertyInt(elfProperty* property, int ival)
 {
 	property->propertyType = ELF_PROPERTY_INT;
 	property->ival = ival;
-	property->fval = 0.0;
+	property->fval = 0.0f;
 	if(property->sval) elfDestroyString(property->sval);
 	property->sval = NULL;
 	property->bval = ELF_FALSE;
@@ -78,7 +78,7 @@ ELF_API void ELF_APIENTRY elfSetPropertyString(elfProperty* property, const char
 {
 	property->propertyType = ELF_PROPERTY_STRING;
 	property->ival = 0;
-	property->fval = 0.0;
+	property->fval = 0.0f;
 	if(property->sval) elfDestroyString(property->sval);
 	property->sval = elfCreateString(sval);
 	property->bval = ELF_FALSE;
@@ -88,7 +88,7 @@ ELF_API void ELF_APIENTRY elfSetPropertyBool(elfProperty* property, unsigned cha
 {
 	property->propertyType = ELF_PROPERTY_BOOL;
 	property->ival = 0;
-	property->fval = 0.0;
+	property->fval = 0.0f;
 	if(property->sval) elfDestroyString(property->sval);
 	property->sval = NULL;
 	property->bval = !bval == ELF_FALSE;

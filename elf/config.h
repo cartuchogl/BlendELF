@@ -13,7 +13,7 @@ elfConfig* elfCreateConfig()
 	config->multisamples = 0;
 	config->fullscreen = ELF_FALSE;
 	config->textureCompress = ELF_FALSE;
-	config->textureAnisotropy = 1.0;
+	config->textureAnisotropy = 1.0f;
 	config->shadowMapSize = 1024;
 	config->start = elfCreateString("");
 	config->log = elfCreateString("elf.log");

@@ -20,14 +20,14 @@ elfEngine* elfCreateEngine()
 
 	engine->freeRun = ELF_TRUE;
 	engine->fpsLimit = 0;
-	engine->speed = 1.0;
+	engine->speed = 1.0f;
 	engine->f10Exit = ELF_TRUE;
 
 	engine->shadowMapSize = 1024;
-	engine->shadowMap = gfxCreate2dTexture(1024, 1024, 0.0, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
+	engine->shadowMap = gfxCreate2dTexture(1024, 1024, 0.0f, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
 	engine->shadowTarget = gfxCreateRenderTarget(1024, 1024);
 	gfxSetRenderTargetDepthTexture(engine->shadowTarget, engine->shadowMap);
-	engine->textureAnisotropy = 1.0;
+	engine->textureAnisotropy = 1.0f;
 	engine->occlusionCulling = ELF_FALSE;
 
 	engine->lines = gfxCreateVertexData(512, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
@@ -40,45 +40,45 @@ elfEngine* elfCreateEngine()
 
 	vertexBuffer = (float*)gfxGetVertexDataBuffer(vertexData);
 
-	vertexBuffer[0] = -0.5;
-	vertexBuffer[1] = 0.5;
-	vertexBuffer[2] = 0.0;
-	vertexBuffer[3] = -0.5;
-	vertexBuffer[4] = -0.5;
-	vertexBuffer[5] = 0.0;
-	vertexBuffer[6] = 0.5;
-	vertexBuffer[7] = -0.5;
-	vertexBuffer[8] = 0.0;
+	vertexBuffer[0] = -0.5f;
+	vertexBuffer[1] = 0.5f;
+	vertexBuffer[2] = 0.0f;
+	vertexBuffer[3] = -0.5f;
+	vertexBuffer[4] = -0.5f;
+	vertexBuffer[5] = 0.0f;
+	vertexBuffer[6] = 0.5f;
+	vertexBuffer[7] = -0.5f;
+	vertexBuffer[8] = 0.0f;
 
-	vertexBuffer[9] = -0.5;
-	vertexBuffer[10] = 0.5;
-	vertexBuffer[11] = 0.0;
-	vertexBuffer[12] = 0.5;
-	vertexBuffer[13] = -0.5;
-	vertexBuffer[14] = 0.0;
-	vertexBuffer[15] = 0.5;
-	vertexBuffer[16] = 0.5;
-	vertexBuffer[17] = 0.0;
+	vertexBuffer[9] = -0.5f;
+	vertexBuffer[10] = 0.5f;
+	vertexBuffer[11] = 0.0f;
+	vertexBuffer[12] = 0.5f;
+	vertexBuffer[13] = -0.5f;
+	vertexBuffer[14] = 0.0f;
+	vertexBuffer[15] = 0.5f;
+	vertexBuffer[16] = 0.5f;
+	vertexBuffer[17] = 0.0f;
 
-	vertexBuffer[18] = 0.5;
-	vertexBuffer[19] = 0.5;
-	vertexBuffer[20] = 0.0;
-	vertexBuffer[21] = 0.5;
-	vertexBuffer[22] = -0.5;
-	vertexBuffer[23] = 0.0;
-	vertexBuffer[24] = -0.5;
-	vertexBuffer[25] = -0.5;
-	vertexBuffer[26] = 0.0;
+	vertexBuffer[18] = 0.5f;
+	vertexBuffer[19] = 0.5f;
+	vertexBuffer[20] = 0.0f;
+	vertexBuffer[21] = 0.5f;
+	vertexBuffer[22] = -0.5f;
+	vertexBuffer[23] = 0.0f;
+	vertexBuffer[24] = -0.5f;
+	vertexBuffer[25] = -0.5f;
+	vertexBuffer[26] = 0.0f;
 
-	vertexBuffer[27] = 0.5;
-	vertexBuffer[28] = 0.5;
-	vertexBuffer[29] = 0.0;
-	vertexBuffer[30] = -0.5;
-	vertexBuffer[31] = -0.5;
-	vertexBuffer[32] = 0.0;
-	vertexBuffer[33] = -0.5;
-	vertexBuffer[34] = 0.5;
-	vertexBuffer[35] = 0.0;
+	vertexBuffer[27] = 0.5f;
+	vertexBuffer[28] = 0.5f;
+	vertexBuffer[29] = 0.0f;
+	vertexBuffer[30] = -0.5f;
+	vertexBuffer[31] = -0.5f;
+	vertexBuffer[32] = 0.0f;
+	vertexBuffer[33] = -0.5f;
+	vertexBuffer[34] = 0.5f;
+	vertexBuffer[35] = 0.0f;
 
 	gfxSetVertexArrayData(engine->spriteVertexArray, GFX_VERTEX, vertexData);
 
@@ -86,33 +86,33 @@ elfEngine* elfCreateEngine()
 
 	vertexBuffer = (float*)gfxGetVertexDataBuffer(vertexData);
 
-	vertexBuffer[0] = 0.0;
-	vertexBuffer[1] = 1.0;
-	vertexBuffer[2] = 0.0;
-	vertexBuffer[3] = 0.0;
-	vertexBuffer[4] = 1.0;
-	vertexBuffer[5] = 0.0;
+	vertexBuffer[0] = 0.0f;
+	vertexBuffer[1] = 1.0f;
+	vertexBuffer[2] = 0.0f;
+	vertexBuffer[3] = 0.0f;
+	vertexBuffer[4] = 1.0f;
+	vertexBuffer[5] = 0.0f;
 
-	vertexBuffer[6] = 0.0;
-	vertexBuffer[7] = 1.0;
-	vertexBuffer[8] = 1.0;
-	vertexBuffer[9] = 0.0;
-	vertexBuffer[10] = 1.0;
-	vertexBuffer[11] = 1.0;
+	vertexBuffer[6] = 0.0f;
+	vertexBuffer[7] = 1.0f;
+	vertexBuffer[8] = 1.0f;
+	vertexBuffer[9] = 0.0f;
+	vertexBuffer[10] = 1.0f;
+	vertexBuffer[11] = 1.0f;
 
-	vertexBuffer[12] = 0.0;
-	vertexBuffer[13] = 1.0;
-	vertexBuffer[14] = 0.0;
-	vertexBuffer[15] = 0.0;
-	vertexBuffer[16] = 1.0;
-	vertexBuffer[17] = 0.0;
+	vertexBuffer[12] = 0.0f;
+	vertexBuffer[13] = 1.0f;
+	vertexBuffer[14] = 0.0f;
+	vertexBuffer[15] = 0.0f;
+	vertexBuffer[16] = 1.0f;
+	vertexBuffer[17] = 0.0f;
 
-	vertexBuffer[18] = 0.0;
-	vertexBuffer[19] = 1.0;
-	vertexBuffer[20] = 1.0;
-	vertexBuffer[21] = 0.0;
-	vertexBuffer[22] = 1.0;
-	vertexBuffer[23] = 1.0;
+	vertexBuffer[18] = 0.0f;
+	vertexBuffer[19] = 1.0f;
+	vertexBuffer[20] = 1.0f;
+	vertexBuffer[21] = 0.0f;
+	vertexBuffer[22] = 1.0f;
+	vertexBuffer[23] = 1.0f;
 
 	gfxSetVertexArrayData(engine->spriteVertexArray, GFX_TEX_COORD, vertexData);
 
@@ -120,45 +120,45 @@ elfEngine* elfCreateEngine()
 
 	vertexBuffer = (float*)gfxGetVertexDataBuffer(vertexData);
 
-	vertexBuffer[0] = 0.0;
-	vertexBuffer[1] = 0.0;
-	vertexBuffer[2] = 1.0;
-	vertexBuffer[3] = 0.0;
-	vertexBuffer[4] = 0.0;
-	vertexBuffer[5] = 1.0;
-	vertexBuffer[6] = 0.0;
-	vertexBuffer[7] = 0.0;
-	vertexBuffer[8] = 1.0;
+	vertexBuffer[0] = 0.0f;
+	vertexBuffer[1] = 0.0f;
+	vertexBuffer[2] = 1.0f;
+	vertexBuffer[3] = 0.0f;
+	vertexBuffer[4] = 0.0f;
+	vertexBuffer[5] = 1.0f;
+	vertexBuffer[6] = 0.0f;
+	vertexBuffer[7] = 0.0f;
+	vertexBuffer[8] = 1.0f;
 
-	vertexBuffer[9] = 0.0;
-	vertexBuffer[10] = 0.0;
-	vertexBuffer[11] = 1.0;
-	vertexBuffer[12] = 0.0;
-	vertexBuffer[13] = 0.0;
-	vertexBuffer[14] = 1.0;
-	vertexBuffer[15] = 0.0;
-	vertexBuffer[16] = 0.0;
-	vertexBuffer[17] = 1.0;
+	vertexBuffer[9] = 0.0f;
+	vertexBuffer[10] = 0.0f;
+	vertexBuffer[11] = 1.0f;
+	vertexBuffer[12] = 0.0f;
+	vertexBuffer[13] = 0.0f;
+	vertexBuffer[14] = 1.0f;
+	vertexBuffer[15] = 0.0f;
+	vertexBuffer[16] = 0.0f;
+	vertexBuffer[17] = 1.0f;
 
-	vertexBuffer[18] = 0.0;
-	vertexBuffer[19] = 0.0;
-	vertexBuffer[20] = -1.0;
-	vertexBuffer[21] = 0.0;
-	vertexBuffer[22] = 0.0;
-	vertexBuffer[23] = -1.0;
-	vertexBuffer[24] = 0.0;
-	vertexBuffer[25] = 0.0;
-	vertexBuffer[26] = -1.0;
+	vertexBuffer[18] = 0.0f;
+	vertexBuffer[19] = 0.0f;
+	vertexBuffer[20] = -1.0f;
+	vertexBuffer[21] = 0.0f;
+	vertexBuffer[22] = 0.0f;
+	vertexBuffer[23] = -1.0f;
+	vertexBuffer[24] = 0.0f;
+	vertexBuffer[25] = 0.0f;
+	vertexBuffer[26] = -1.0f;
 
-	vertexBuffer[27] = 0.0;
-	vertexBuffer[28] = 0.0;
-	vertexBuffer[29] = -1.0;
-	vertexBuffer[30] = 0.0;
-	vertexBuffer[31] = 0.0;
-	vertexBuffer[32] = -1.0;
-	vertexBuffer[33] = 0.0;
-	vertexBuffer[34] = 0.0;
-	vertexBuffer[35] = -1.0;
+	vertexBuffer[27] = 0.0f;
+	vertexBuffer[28] = 0.0f;
+	vertexBuffer[29] = -1.0f;
+	vertexBuffer[30] = 0.0f;
+	vertexBuffer[31] = 0.0f;
+	vertexBuffer[32] = -1.0f;
+	vertexBuffer[33] = 0.0f;
+	vertexBuffer[34] = 0.0f;
+	vertexBuffer[35] = -1.0f;
 
 	gfxSetVertexArrayData(engine->spriteVertexArray, GFX_NORMAL, vertexData);
 
@@ -299,9 +299,9 @@ void elfLimitEngineFps()
 {
 	if(eng->fpsLimit > 0)
 	{
-		if(elfGetElapsedTime(eng->fpsLimitTimer) > 0.0)
+		if(elfGetElapsedTime(eng->fpsLimitTimer) > 0.0f)
 		{
-			while(elfGetElapsedTime(eng->fpsLimitTimer) < 1.0/(float)eng->fpsLimit);
+			while(elfGetElapsedTime(eng->fpsLimitTimer) < 1.0f/(float)eng->fpsLimit);
 			elfStartTimer(eng->fpsLimitTimer);
 		}
 		else
@@ -315,15 +315,15 @@ void elfUpdateEngine()
 {
 	elfUpdateAudio();
 
-	if(elfGetElapsedTime(eng->timeSyncTimer) > 0.0)
+	if(elfGetElapsedTime(eng->timeSyncTimer) > 0.0f)
 	{
 		if(elfAboutZero(eng->tickRate))
-			eng->sync = (eng->sync*2.0+((float)elfGetElapsedTime(eng->timeSyncTimer)*eng->speed))/3.0;
+			eng->sync = (eng->sync*2.0f+((float)elfGetElapsedTime(eng->timeSyncTimer)*eng->speed))/3.0f;
 		else eng->sync = eng->tickRate;
 
 		elfStartTimer(eng->timeSyncTimer);
 
-		if(eng->sync > 0.0)
+		if(eng->sync > 0.0f)
 		{
 			if(eng->gui) elfUpdateGui(eng->gui, eng->sync);
 
@@ -345,9 +345,9 @@ void elfCountEngineFps()
 {
 	eng->frames++;
 
-	if(elfGetElapsedTime(eng->fpsTimer) > 0.0)
+	if(elfGetElapsedTime(eng->fpsTimer) > 0.0f)
 	{
-		if(elfGetElapsedTime(eng->fpsTimer) >= 1.0)
+		if(elfGetElapsedTime(eng->fpsTimer) >= 1.0f)
 		{
 			eng->fps = eng->frames;
 			eng->frames = 0;
@@ -381,11 +381,11 @@ ELF_API unsigned char ELF_APIENTRY elfRun()
 			gfxSetRenderTarget(eng->postProcess->mainRt);
 			gfxSetRenderTargetColorTexture(eng->postProcess->mainRt, 0, eng->postProcess->mainRtColor[0]);
 		}
-		gfxClearBuffers(0.0, 0.0, 0.0, 1.0, 1.0);
+		gfxClearBuffers(0.0f, 0.0f, 0.0f, 1.0f, 1.0f);
 	}
 	else
 	{
-		gfxClearBuffers(0.0, 0.0, 0.0, 1.0, 1.0);
+		gfxClearBuffers(0.0f, 0.0f, 0.0f, 1.0f, 1.0f);
 	}
 
 	if(eng->scene)
@@ -416,7 +416,7 @@ ELF_API unsigned char ELF_APIENTRY elfRun()
 
 	eng->freeRun = ELF_TRUE;
 
-	elfSleep(0.001);
+	elfSleep(0.001f);
 
 	return ELF_TRUE;
 }
@@ -584,7 +584,7 @@ ELF_API int ELF_APIENTRY elfGetFpsLimit()
 ELF_API void ELF_APIENTRY elfSetTickRate(float tickRate)
 {
 	eng->tickRate = tickRate;
-	if(eng->tickRate < 0.0) eng->tickRate = 0.0;
+	if(eng->tickRate < 0.0f) eng->tickRate = 0.0f;
 }
 
 ELF_API float ELF_APIENTRY elfGetTickRate()
@@ -595,7 +595,7 @@ ELF_API float ELF_APIENTRY elfGetTickRate()
 ELF_API void ELF_APIENTRY elfSetSpeed(float speed)
 {
 	eng->speed = speed;
-	if(eng->speed < 0.0001) eng->speed = 0.0001;
+	if(eng->speed < 0.0001f) eng->speed = 0.0001f;
 }
 
 ELF_API float ELF_APIENTRY elfGetSpeed()
@@ -789,7 +789,7 @@ ELF_API void ELF_APIENTRY elfDisableSsao()
 ELF_API float ELF_APIENTRY elfGetSsaoAmount()
 {
 	if(eng->postProcess) return elfGetPostProcessSsaoAmount(eng->postProcess);
-	return 0.0;
+	return 0.0f;
 }
 
 ELF_API void ELF_APIENTRY elfSetLightShafts(float intensity)
@@ -819,7 +819,7 @@ ELF_API void ELF_APIENTRY elfDisableLightShafts()
 ELF_API float ELF_APIENTRY elfGetLightShaftsIntensity()
 {
 	if(eng->postProcess) return elfGetPostProcessLightShaftsIntensity(eng->postProcess);
-	return 0.0;
+	return 0.0f;
 }
 
 ELF_API unsigned char ELF_APIENTRY elfIsFog()
@@ -1189,13 +1189,13 @@ ELF_API float ELF_APIENTRY elfGetVec3fLength(elfVec3f vec)
 
 ELF_API unsigned char ELF_APIENTRY elfAboutZero(float val)
 {
-	if(val < 0.0001 && val > -0.0001) return ELF_TRUE;
+	if(val < 0.0001f && val > -0.0001f) return ELF_TRUE;
 	return ELF_FALSE;
 }
 
 ELF_API float ELF_APIENTRY elfFloatAbs(float val)
 {
-	if(val < 0.0) return -val;
+	if(val < 0.0f) return -val;
 	return val;
 }
 

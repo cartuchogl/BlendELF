@@ -8,15 +8,15 @@ ELF_API elfMaterial* ELF_APIENTRY elfCreateMaterial(const char* name)
 	material->objType = ELF_MATERIAL;
 	material->objDestr = elfDestroyMaterial;
 
-	material->diffuseColor.r = material->diffuseColor.g = material->diffuseColor.b = material->diffuseColor.a = 1.0;
-	material->ambientColor.r = material->ambientColor.g = material->ambientColor.b = material->ambientColor.a = 1.0;
-	material->specularColor.r = material->specularColor.g = material->specularColor.b = 0.25; material->specularColor.a = 1.0;
-	material->specPower = 32.0;
+	material->diffuseColor.r = material->diffuseColor.g = material->diffuseColor.b = material->diffuseColor.a = 1.0f;
+	material->ambientColor.r = material->ambientColor.g = material->ambientColor.b = material->ambientColor.a = 1.0f;
+	material->specularColor.r = material->specularColor.g = material->specularColor.b = 0.25f; material->specularColor.a = 1.0f;
+	material->specPower = 32.0f;
 	material->lighting = ELF_TRUE;
 
 	material->alphaTest = ELF_FALSE;
-	material->alphaThreshold = 0.99;
-	material->parallaxScale = 0.25;
+	material->alphaThreshold = 0.99f;
+	material->parallaxScale = 0.25f;
 
 	if(name) material->name = elfCreateString(name);
 
@@ -243,7 +243,7 @@ ELF_API elfTexture* ELF_APIENTRY elfGetMaterialCubeMap(elfMaterial* material)
 ELF_API void ELF_APIENTRY elfSetMaterialParallaxScale(elfMaterial* material, float scale)
 {
 	material->parallaxScale = scale;
-	if(material->parallaxScale < 0.0) material->parallaxScale = 0.0;
+	if(material->parallaxScale < 0.0f) material->parallaxScale = 0.0f;
 }
 
 ELF_API void ELF_APIENTRY elfSetMaterialAlphaTest(elfMaterial* material, unsigned char alphaTest)
@@ -254,8 +254,8 @@ ELF_API void ELF_APIENTRY elfSetMaterialAlphaTest(elfMaterial* material, unsigne
 ELF_API void ELF_APIENTRY elfSetMaterialAlphaThreshold(elfMaterial* material, float threshold)
 {
 	material->alphaThreshold = threshold;
-	if(material->alphaThreshold < 0.0) material->alphaThreshold = 0.0;
-	if(material->alphaThreshold > 1.0) material->alphaThreshold = 1.0;
+	if(material->alphaThreshold < 0.0f) material->alphaThreshold = 0.0f;
+	if(material->alphaThreshold > 1.0f) material->alphaThreshold = 1.0f;
 }
 
 ELF_API float ELF_APIENTRY elfGetMaterialParallaxScale(elfMaterial* material)
@@ -278,7 +278,7 @@ void elfSetTextureParamsDefault(gfxTextureParams* params)
 	params->type = ELF_COLOR_MAP;
 	params->texture = NULL;
 	params->projectionMode = GFX_NONE;
-	params->parallaxScale = 0.0;
+	params->parallaxScale = 0.0f;
 }
 
 void elfSetMaterial(elfMaterial* material, int mode, gfxShaderParams* shaderParams)
@@ -303,7 +303,7 @@ void elfSetMaterial(elfMaterial* material, int mode, gfxShaderParams* shaderPara
 		shaderParams->materialParams.diffuseColor.r = material->ambientColor.r*eng->ambientColor.r;
 		shaderParams->materialParams.diffuseColor.g = material->ambientColor.g*eng->ambientColor.g;
 		shaderParams->materialParams.diffuseColor.b = material->ambientColor.b*eng->ambientColor.b;
-		shaderParams->materialParams.diffuseColor.a = 1.0;
+		shaderParams->materialParams.diffuseColor.a = 1.0f;
 
 		if(material->diffuseMap)
 		{
@@ -317,7 +317,7 @@ void elfSetMaterial(elfMaterial* material, int mode, gfxShaderParams* shaderPara
 			shaderParams->textureParams[2].type = ELF_HEIGHT_MAP;
 			shaderParams->textureParams[2].texture = material->heightMap->texture;
 			shaderParams->textureParams[2].projectionMode = GFX_NONE;
-			shaderParams->textureParams[2].parallaxScale = material->parallaxScale*0.05;
+			shaderParams->textureParams[2].parallaxScale = material->parallaxScale*0.05f;
 		}
 
 		if(material->lightMap)
@@ -350,7 +350,7 @@ void elfSetMaterial(elfMaterial* material, int mode, gfxShaderParams* shaderPara
 			shaderParams->textureParams[2].type = ELF_HEIGHT_MAP;
 			shaderParams->textureParams[2].texture = material->heightMap->texture;
 			shaderParams->textureParams[2].projectionMode = GFX_NONE;
-			shaderParams->textureParams[2].parallaxScale = material->parallaxScale*0.05;
+			shaderParams->textureParams[2].parallaxScale = material->parallaxScale*0.05f;
 		}
 
 		if(material->lightMap)
@@ -392,7 +392,7 @@ void elfSetMaterial(elfMaterial* material, int mode, gfxShaderParams* shaderPara
 			shaderParams->textureParams[2].type = ELF_HEIGHT_MAP;
 			shaderParams->textureParams[2].texture = material->heightMap->texture;
 			shaderParams->textureParams[2].projectionMode = GFX_NONE;
-			shaderParams->textureParams[2].parallaxScale = material->parallaxScale*0.05;
+			shaderParams->textureParams[2].parallaxScale = material->parallaxScale*0.05f;
 		}
 
 		if(material->specularMap)

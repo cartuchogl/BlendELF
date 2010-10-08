@@ -145,10 +145,10 @@ void gfxGetShaderProgramConfig(gfxShaderParams* shaderParams, gfxShaderConfig* s
 	shaderConfig->light = shaderParams->lightParams.type;
 	shaderConfig->vertexColor = shaderParams->renderParams.vertexColor;
 	shaderConfig->specular = GFX_FALSE;
-	if((shaderParams->materialParams.specularColor.r > 0.0001 ||
-		shaderParams->materialParams.specularColor.g > 0.0001 ||
-		shaderParams->materialParams.specularColor.b > 0.0001) &&
-		shaderParams->materialParams.shininess > 0.0001)
+	if((shaderParams->materialParams.specularColor.r > 0.0001f ||
+		shaderParams->materialParams.specularColor.g > 0.0001f ||
+		shaderParams->materialParams.specularColor.b > 0.0001f) &&
+		shaderParams->materialParams.shininess > 0.0001f)
 	{
 		shaderConfig->specular = GFX_TRUE;
 	}

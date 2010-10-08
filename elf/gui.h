@@ -7,16 +7,16 @@ void elfDrawHorGradient(int x, int y, int width, int height, elfColor col1, elfC
 
 	vertexBuffer[0] = x;
 	vertexBuffer[1] = y+height;
-	vertexBuffer[2] = 0.0;
+	vertexBuffer[2] = 0.0f;
 	vertexBuffer[3] = x;
 	vertexBuffer[4] = y;
-	vertexBuffer[5] = 0.0;
+	vertexBuffer[5] = 0.0f;
 	vertexBuffer[6] = x+width;
 	vertexBuffer[7] = y+height;
-	vertexBuffer[8] = 0.0;
+	vertexBuffer[8] = 0.0f;
 	vertexBuffer[9] = x+width;
 	vertexBuffer[10] = y;
-	vertexBuffer[11] = 0.0;
+	vertexBuffer[11] = 0.0f;
 
 	vertexBuffer = gfxGetVertexDataBuffer(eng->gradientColorData);
 
@@ -48,16 +48,16 @@ void elfDrawBorder(int x, int y, int width, int height, elfColor col)
 
 	vertexBuffer[0] = x;
 	vertexBuffer[1] = y+height;
-	vertexBuffer[2] = 0.0;
+	vertexBuffer[2] = 0.0f;
 	vertexBuffer[3] = x;
 	vertexBuffer[4] = y;
-	vertexBuffer[5] = 0.0;
+	vertexBuffer[5] = 0.0f;
 	vertexBuffer[6] = x+width;
 	vertexBuffer[7] = y;
-	vertexBuffer[8] = 0.0;
+	vertexBuffer[8] = 0.0f;
 	vertexBuffer[9] = x+width;
 	vertexBuffer[10] = y+height;
-	vertexBuffer[11] = 0.0;
+	vertexBuffer[11] = 0.0f;
 
 	vertexBuffer = gfxGetVertexDataBuffer(eng->gradientColorData);
 
@@ -89,16 +89,16 @@ void elfDrawHorGradientBorder(int x, int y, int width, int height, elfColor col1
 
 	vertexBuffer[0] = x;
 	vertexBuffer[1] = y+height;
-	vertexBuffer[2] = 0.0;
+	vertexBuffer[2] = 0.0f;
 	vertexBuffer[3] = x;
 	vertexBuffer[4] = y;
-	vertexBuffer[5] = 0.0;
+	vertexBuffer[5] = 0.0f;
 	vertexBuffer[6] = x+width;
 	vertexBuffer[7] = y;
-	vertexBuffer[8] = 0.0;
+	vertexBuffer[8] = 0.0f;
 	vertexBuffer[9] = x+width;
 	vertexBuffer[10] = y+height;
-	vertexBuffer[11] = 0.0;
+	vertexBuffer[11] = 0.0f;
 
 	vertexBuffer = gfxGetVertexDataBuffer(eng->gradientColorData);
 
@@ -198,7 +198,7 @@ ELF_API elfLabel* ELF_APIENTRY elfCreateLabel(elfGuiObject* parent, const char *
 	label->objType = ELF_LABEL;
 	label->objDestr = elfDestroyLabel;
 
-	label->color.r = label->color.g = label->color.b = label->color.a = 1.0;
+	label->color.r = label->color.g = label->color.b = label->color.a = 1.0f;
 	label->visible = ELF_TRUE;
 
 	if(name) label->name = elfCreateString(name);
@@ -287,7 +287,7 @@ ELF_API elfButton* ELF_APIENTRY elfCreateButton(elfGuiObject* parent, const char
 	button->objType = ELF_BUTTON;
 	button->objDestr = elfDestroyButton;
 
-	button->color.r = button->color.g = button->color.b = button->color.a = 1.0;
+	button->color.r = button->color.g = button->color.b = button->color.a = 1.0f;
 	button->visible = ELF_TRUE;
 
 	if(name) button->name = elfCreateString(name);
@@ -334,26 +334,26 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams)
 		elfColor col1, col2;
 
 		shaderParams->renderParams.vertexColor = ELF_TRUE;
-		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 1.0, 1.0, 1.0);
+		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 1.0f);
 		gfxSetShaderParams(shaderParams);
 
-		if(button->state == ELF_OFF) {col1.r = col1.g = col1.b = 0.40; col1.a = 1.0; col2.r = col2.g = col2.b = 0.25; col2.a = 1.0;}
-		else if(button->state == ELF_OVER) {col1.r = col1.g = col1.b = 0.50; col1.a = 1.0; col2.r = col2.g = col2.b = 0.35; col2.a = 1.0;}
-		else if(button->state == ELF_ON) {col1.r = col1.g = col1.b = 0.35; col1.a = 1.0; col2.r = col2.g = col2.b = 0.20; col2.a = 1.0;}
+		if(button->state == ELF_OFF) {col1.r = col1.g = col1.b = 0.40f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.25f; col2.a = 1.0f;}
+		else if(button->state == ELF_OVER) {col1.r = col1.g = col1.b = 0.50f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.35f; col2.a = 1.0f;}
+		else if(button->state == ELF_ON) {col1.r = col1.g = col1.b = 0.35f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.20f; col2.a = 1.0f;}
 		elfDrawHorGradient(button->pos.x, button->pos.y+button->height/2, button->width, button->height/2, col1, col2);
 
-		if(button->state == ELF_OFF) {col1.r = col1.g = col1.b = 0.20; col1.a = 1.0; col2.r = col2.g = col2.b = 0.10; col2.a = 1.0;}
-		else if(button->state == ELF_OVER) {col1.r = col1.g = col1.b = 0.30; col1.a = 1.0; col2.r = col2.g = col2.b = 0.20; col2.a = 1.0;}
-		else if(button->state == ELF_ON) {col1.r = col1.g = col1.b = 0.15; col1.a = 1.0; col2.r = col2.g = col2.b = 0.05; col2.a = 1.0;}
+		if(button->state == ELF_OFF) {col1.r = col1.g = col1.b = 0.20f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.10f; col2.a = 1.0f;}
+		else if(button->state == ELF_OVER) {col1.r = col1.g = col1.b = 0.30f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.20f; col2.a = 1.0f;}
+		else if(button->state == ELF_ON) {col1.r = col1.g = col1.b = 0.15f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.05f; col2.a = 1.0f;}
 		elfDrawHorGradient(button->pos.x, button->pos.y, button->width, button->height/2, col1, col2);
 
-		if(button->state == ELF_OFF) {col1.r = col1.g = col1.b = 0.40; col1.a = 1.0; col2.r = col2.g = col2.b = 0.20; col2.a = 1.0;}
-		else if(button->state == ELF_OVER) {col1.r = col1.g = col1.b = 0.50; col1.a = 1.0; col2.r = col2.g = col2.b = 0.30; col2.a = 1.0;}
-		else if(button->state == ELF_ON) {col1.r = col1.g = col1.b = 0.35; col1.a = 1.0; col2.r = col2.g = col2.b = 0.15; col2.a = 1.0;}
+		if(button->state == ELF_OFF) {col1.r = col1.g = col1.b = 0.40f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.20f; col2.a = 1.0f;}
+		else if(button->state == ELF_OVER) {col1.r = col1.g = col1.b = 0.50f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.30f; col2.a = 1.0f;}
+		else if(button->state == ELF_ON) {col1.r = col1.g = col1.b = 0.35f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.15f; col2.a = 1.0f;}
 		elfDrawHorGradientBorder(button->pos.x, button->pos.y, button->width, button->height, col1, col2);
 
 		shaderParams->renderParams.vertexColor = ELF_FALSE;
-		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 1.0, 1.0, 0.6);
+		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 0.6f);
 		gfxSetShaderParams(shaderParams);
 
 		elfDrawString(button->font, button->text, button->pos.x+(button->width-elfGetStringWidth(button->font, button->text))/2,
@@ -486,8 +486,8 @@ ELF_API elfPicture* ELF_APIENTRY elfCreatePicture(elfGuiObject* parent, const ch
 	picture->objType = ELF_PICTURE;
 	picture->objDestr = elfDestroyPicture;
 
-	picture->color.r = picture->color.g = picture->color.b = picture->color.a = 1.0;
-	picture->scale.x = picture->scale.y = 1.0;
+	picture->color.r = picture->color.g = picture->color.b = picture->color.a = 1.0f;
+	picture->scale.x = picture->scale.y = 1.0f;
 	picture->visible = ELF_TRUE;
 
 	if(name) picture->name = elfCreateString(name);
@@ -575,8 +575,8 @@ ELF_API elfTextField* ELF_APIENTRY elfCreateTextField(elfGuiObject* parent, cons
 	textField->objType = ELF_TEXT_FIELD;
 	textField->objDestr = elfDestroyTextField;
 
-	textField->color.r = textField->color.g = textField->color.b = 1.0; textField->color.a = 0.6;
-	textField->textColor.r = textField->textColor.g = textField->textColor.b = textField->textColor.a = 1.0;
+	textField->color.r = textField->color.g = textField->color.b = 1.0f; textField->color.a = 0.6f;
+	textField->textColor.r = textField->textColor.g = textField->textColor.b = textField->textColor.a = 1.0f;
 	textField->visible = ELF_TRUE;
 	textField->text = elfCreateString("");
 
@@ -643,13 +643,13 @@ void elfDrawTextField(elfTextField* textField, elfArea* area, gfxShaderParams* s
 		elfColor col1, col2;
 
 		shaderParams->renderParams.vertexColor = GFX_TRUE;
-		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 1.0, 1.0, 1.0);
+		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 1.0f);
 		gfxSetShaderParams(shaderParams);
 
-		col1.r = col1.g = col1.b = 0.15; col1.a = 1.0; col2.r = col2.g = col2.b = 0.35; col2.a = 1.0;
+		col1.r = col1.g = col1.b = 0.15f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.35f; col2.a = 1.0f;
 		elfDrawHorGradient(textField->pos.x, textField->pos.y, textField->width, textField->height, col1, col2);
 
-		col1.r = col1.g = col1.b = 0.25; col1.a = 1.0; col2.r = col2.g = col2.b = 0.4; col2.a = 1.0;
+		col1.r = col1.g = col1.b = 0.25f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.4f; col2.a = 1.0f;
 		elfDrawHorGradientBorder(textField->pos.x, textField->pos.y, textField->width, textField->height, col1, col2);
 
 		shaderParams->renderParams.vertexColor = GFX_FALSE;
@@ -672,7 +672,7 @@ void elfDrawTextField(elfTextField* textField, elfArea* area, gfxShaderParams* s
 	{
 		gfxSetViewport(x, y, width, height);
 		gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
-			-1.0, 1.0, shaderParams->projectionMatrix);
+			-1.0f, 1.0f, shaderParams->projectionMatrix);
 
 		gfxSetColor(&shaderParams->materialParams.diffuseColor, textField->textColor.r, textField->textColor.g,
 			textField->textColor.b, textField->textColor.a*textField->color.a);
@@ -844,9 +844,9 @@ ELF_API elfSlider* ELF_APIENTRY elfCreateSlider(const char* name)
 	slider->objType = ELF_SLIDER;
 	slider->objDestr = elfDestroySlider;
 
-	slider->color.r = slider->color.g = slider->color.b = slider->color.a = 1.0; 
+	slider->color.r = slider->color.g = slider->color.b = slider->color.a = 1.0f; 
 	slider->visible = ELF_TRUE;
-	slider->value = 1.0;
+	slider->value = 1.0f;
 
 	if(name) slider->name = elfCreateString(name);
 
@@ -891,11 +891,11 @@ void elfDrawSlider(elfSlider* slider, gfxShaderParams* shaderParams)
 		gfxSetShaderParams(shaderParams);
 		if(slider->width > slider->height)
 		{
-			gfxDrawTextured2dQuadRegion((float)slider->pos.x, (float)slider->pos.y, (float)slider->width*slider->value, (float)slider->height, 0.0, 0.0, slider->value, 1.0);
+			gfxDrawTextured2dQuadRegion((float)slider->pos.x, (float)slider->pos.y, (float)slider->width*slider->value, (float)slider->height, 0.0f, 0.0f, slider->value, 1.0f);
 		}
 		else
 		{
-			gfxDrawTextured2dQuadRegion((float)slider->pos.x, (float)slider->pos.y, (float)slider->width, (float)slider->height*slider->value, 0.0, 0.0, 1.0, slider->value);	
+			gfxDrawTextured2dQuadRegion((float)slider->pos.x, (float)slider->pos.y, (float)slider->width, (float)slider->height*slider->value, 0.0f, 0.0f, 1.0f, slider->value);	
 		}
 		shaderParams->textureParams[0].texture = NULL;
 	}
@@ -948,8 +948,8 @@ ELF_API void ELF_APIENTRY elfSetSliderSliderTexture(elfSlider* slider, elfTextur
 ELF_API void ELF_APIENTRY elfSetSliderValue(elfSlider* slider, float value)
 {
 	slider->value = value;
-	if(slider->value < 0.0) slider->value = 0.0;
-	if(slider->value > 1.0) slider->value = 1.0;
+	if(slider->value < 0.0f) slider->value = 0.0f;
+	if(slider->value > 1.0f) slider->value = 1.0f;
 }
 
 ELF_API elfScreen* ELF_APIENTRY elfCreateScreen(const char* name)
@@ -961,7 +961,7 @@ ELF_API elfScreen* ELF_APIENTRY elfCreateScreen(const char* name)
 	screen->objType = ELF_SCREEN;
 	screen->objDestr = elfDestroyScreen;
 
-	screen->color.r = screen->color.g = screen->color.b = screen->color.a = 1.0;
+	screen->color.r = screen->color.g = screen->color.b = screen->color.a = 1.0f;
 	screen->visible = ELF_TRUE;
 
 	screen->children = elfCreateList();
@@ -1030,7 +1030,7 @@ void elfDrawScreen(elfScreen* screen, elfArea* area, gfxShaderParams* shaderPara
 
 	gfxSetViewport(x, y, width, height);
 	gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
-		-1.0, 1.0, shaderParams->projectionMatrix);
+		-1.0f, 1.0f, shaderParams->projectionMatrix);
 
 	for(object = (elfGuiObject*)elfBeginList(screen->children); object;
 		object = (elfGuiObject*)elfGetListNext(screen->children))
@@ -1043,14 +1043,14 @@ void elfDrawScreen(elfScreen* screen, elfArea* area, gfxShaderParams* shaderPara
 			elfDrawTextField((elfTextField*)object, area, shaderParams);
 			gfxSetViewport(x, y, width, height);
 			gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
-				-1.0, 1.0, shaderParams->projectionMatrix);
+				-1.0f, 1.0f, shaderParams->projectionMatrix);
 		}
 		else if(object->objType == ELF_TEXT_LIST)
 		{
 			elfDrawTextList((elfTextList*)object, area, shaderParams);
 			gfxSetViewport(x, y, width, height);
 			gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
-				-1.0, 1.0, shaderParams->projectionMatrix);
+				-1.0f, 1.0f, shaderParams->projectionMatrix);
 		}
 		else if(object->objType == ELF_SLIDER) elfDrawSlider((elfSlider*)object, shaderParams);
 		else if(object->objType == ELF_CHECK_BOX) elfDrawCheckBox((elfCheckBox*)object, shaderParams);
@@ -1063,7 +1063,7 @@ void elfDrawScreen(elfScreen* screen, elfArea* area, gfxShaderParams* shaderPara
 		elfDrawScreen((elfScreen*)object, area, shaderParams);
 		gfxSetViewport(x, y, width, height);
 		gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
-			-1.0, 1.0, shaderParams->projectionMatrix);
+			-1.0f, 1.0f, shaderParams->projectionMatrix);
 	}
 }
 
@@ -1139,10 +1139,10 @@ ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(const char* name)
 	textList->objType = ELF_TEXT_LIST;
 	textList->objDestr = elfDestroyTextList;
 
-	textList->color.r = textList->color.g = textList->color.b = textList->color.a = 1.0;
-	textList->selectionColor.r = textList->selectionColor.g = textList->selectionColor.b = textList->selectionColor.a = 0.5;
-	textList->lightColor.r = textList->lightColor.g = textList->lightColor.b = 0.0; textList->lightColor.a = 0.25;
-	textList->darkColor.r = textList->darkColor.g = textList->darkColor.b = 0.0; textList->darkColor.a = 0.125;
+	textList->color.r = textList->color.g = textList->color.b = textList->color.a = 1.0f;
+	textList->selectionColor.r = textList->selectionColor.g = textList->selectionColor.b = textList->selectionColor.a = 0.5f;
+	textList->lightColor.r = textList->lightColor.g = textList->lightColor.b = 0.0f; textList->lightColor.a = 0.25f;
+	textList->darkColor.r = textList->darkColor.g = textList->darkColor.b = 0.0f; textList->darkColor.a = 0.125f;
 	textList->visible = ELF_TRUE;
 	textList->rows = 16;
 	textList->listWidth = 256;
@@ -1206,7 +1206,7 @@ void elfDrawTextList(elfTextList* textList, elfArea* area, gfxShaderParams* shad
 
 	gfxSetViewport(x, y, width, height);
 	gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
-		-1.0, 1.0, shaderParams->projectionMatrix);
+		-1.0f, 1.0f, shaderParams->projectionMatrix);
 	gfxSetColor(&shaderParams->materialParams.diffuseColor, textList->color.r,
 		textList->color.g, textList->color.b, textList->color.a);
 
@@ -1456,7 +1456,7 @@ ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(const char* name)
 	checkBox->objType = ELF_CHECK_BOX;
 	checkBox->objDestr = elfDestroyCheckBox;
 
-	checkBox->color.r = checkBox->color.g = checkBox->color.b = checkBox->color.a = 1.0;
+	checkBox->color.r = checkBox->color.g = checkBox->color.b = checkBox->color.a = 1.0f;
 	checkBox->visible = ELF_TRUE;
 
 	if(name) checkBox->name = elfCreateString(name);
@@ -1964,14 +1964,14 @@ void elfUpdateGui(elfGui* gui, float step)
 				if(slider->width > slider->height)
 				{
 					slider->value = (float)(mousePosition.x-slider->pos.x)/((float)slider->width);
-					if(slider->value < 0.0) slider->value = 0.0;
-					if(slider->value > 1.0) slider->value = 1.0;
+					if(slider->value < 0.0f) slider->value = 0.0f;
+					if(slider->value > 1.0f) slider->value = 1.0f;
 				}
 				else
 				{
 					slider->value = (float)((elfGetWindowHeight()-mousePosition.y)-slider->pos.y)/((float)slider->height);
-					if(slider->value < 0.0) slider->value = 0.0;
-					if(slider->value > 1.0) slider->value = 1.0;
+					if(slider->value < 0.0f) slider->value = 0.0f;
+					if(slider->value > 1.0f) slider->value = 1.0f;
 				}
 
 				slider->event = ELF_VALUE_CHANGED;
@@ -2072,14 +2072,14 @@ void elfUpdateGui(elfGui* gui, float step)
 				if(slider->width > slider->height)
 				{
 					slider->value = (float)(mousePosition.x-slider->pos.x)/((float)slider->width);
-					if(slider->value < 0.0) slider->value = 0.0;
-					if(slider->value > 1.0) slider->value = 1.0;
+					if(slider->value < 0.0f) slider->value = 0.0f;
+					if(slider->value > 1.0f) slider->value = 1.0f;
 				}
 				else
 				{
 					slider->value = (float)((elfGetWindowHeight()-mousePosition.y)-slider->pos.y)/((float)slider->height);
-					if(slider->value < 0.0) slider->value = 0.0;
-					if(slider->value > 1.0) slider->value = 1.0;
+					if(slider->value < 0.0f) slider->value = 0.0f;
+					if(slider->value > 1.0f) slider->value = 1.0f;
 				}
 
 				slider->event = ELF_VALUE_CHANGED;
@@ -2106,18 +2106,18 @@ void elfUpdateGui(elfGui* gui, float step)
 
 		if(gui->keyRepeat)
 		{
-			if(gui->keyStep >= 0.05)
+			if(gui->keyStep >= 0.05f)
 			{
 				elfSendGuiKeyEvent(gui, gui->curKey);
-				gui->keyStep = gui->keyStep-0.05;
+				gui->keyStep = gui->keyStep-0.05f;
 			}
 		}
 		else
 		{
-			if(gui->keyStep >= 0.35)
+			if(gui->keyStep >= 0.35f)
 			{
 				elfSendGuiKeyEvent(gui, gui->curKey);
-				gui->keyStep = gui->keyStep-0.35;
+				gui->keyStep = gui->keyStep-0.35f;
 				gui->keyRepeat = ELF_TRUE;
 			}
 		}
@@ -2129,18 +2129,18 @@ void elfUpdateGui(elfGui* gui, float step)
 
 		if(gui->charRepeat)
 		{
-			if(gui->charStep >= 0.05)
+			if(gui->charStep >= 0.05f)
 			{
 				elfSendGuiCharEvent(gui, gui->curChar);
-				gui->charStep = gui->charStep-0.05;
+				gui->charStep = gui->charStep-0.05f;
 			}
 		}
 		else
 		{
-			if(gui->charStep >= 0.35)
+			if(gui->charStep >= 0.35f)
 			{
 				elfSendGuiCharEvent(gui, gui->curChar);
-				gui->charStep = gui->charStep-0.35;
+				gui->charStep = gui->charStep-0.35f;
 				gui->charRepeat = ELF_TRUE;
 			}
 		}
@@ -2158,12 +2158,12 @@ void elfUpdateGui(elfGui* gui, float step)
 				elfSendGuiCharEvent(gui, (char)((elfCharEvent*)event)->code);
 
 				gui->curChar = (char)((elfCharEvent*)event)->code;
-				gui->charStep = 0.0;
+				gui->charStep = 0.0f;
 			}
 			else
 			{
 				gui->curChar = 0;
-				gui->charStep = 0.0;
+				gui->charStep = 0.0f;
 				gui->charRepeat = ELF_FALSE;
 			}
 		}
@@ -2175,12 +2175,12 @@ void elfUpdateGui(elfGui* gui, float step)
 				elfSendGuiKeyEvent(gui, ((elfKeyEvent*)event)->key);
 
 				gui->curKey = ((elfKeyEvent*)event)->key;
-				gui->keyStep = 0.0;
+				gui->keyStep = 0.0f;
 			}
 			else
 			{
 				gui->curKey = 0;
-				gui->keyStep = 0.0;
+				gui->keyStep = 0.0f;
 				gui->keyRepeat = ELF_FALSE;
 			}
 		}
@@ -2206,7 +2206,7 @@ void elfDrawGui(elfGui* gui)
 	gui->shaderParams.renderParams.blendMode = GFX_TRANSPARENT;
 	gfxSetViewport(gui->pos.x, gui->pos.y, gui->width, gui->height);
 	gfxGetOrthographicProjectionMatrix((float)gui->pos.x, (float)gui->width, (float)gui->pos.x, (float)gui->height,
-		-1.0, 1.0, gui->shaderParams.projectionMatrix);
+		-1.0f, 1.0f, gui->shaderParams.projectionMatrix);
 
 	for(object = (elfGuiObject*)elfBeginList(gui->children); object;
 		object = (elfGuiObject*)elfGetListNext(gui->children))
@@ -2219,14 +2219,14 @@ void elfDrawGui(elfGui* gui)
 			elfDrawTextField((elfTextField*)object, &area, &gui->shaderParams);
 			gfxSetViewport(gui->pos.x, gui->pos.y, gui->width, gui->height);
 			gfxGetOrthographicProjectionMatrix((float)gui->pos.x, (float)gui->pos.x+gui->width, (float)gui->pos.y, (float)gui->pos.y+gui->height,
-				-1.0, 1.0, gui->shaderParams.projectionMatrix);
+				-1.0f, 1.0f, gui->shaderParams.projectionMatrix);
 		}
 		else if(object->objType == ELF_TEXT_LIST)
 		{
 			elfDrawTextList((elfTextList*)object, &area, &gui->shaderParams);
 			gfxSetViewport(gui->pos.x, gui->pos.y, gui->width, gui->height);
 			gfxGetOrthographicProjectionMatrix((float)gui->pos.x, (float)gui->pos.x+gui->width, (float)gui->pos.y, (float)gui->pos.y+gui->height,
-				-1.0, 1.0, gui->shaderParams.projectionMatrix);
+				-1.0f, 1.0f, gui->shaderParams.projectionMatrix);
 		}
 		else if(object->objType == ELF_SLIDER) elfDrawSlider((elfSlider*)object, &gui->shaderParams);
 		else if(object->objType == ELF_CHECK_BOX) elfDrawCheckBox((elfCheckBox*)object, &gui->shaderParams);
@@ -2239,7 +2239,7 @@ void elfDrawGui(elfGui* gui)
 		elfDrawScreen((elfScreen*)object, &area, &gui->shaderParams);
 		gfxSetViewport(gui->pos.x, gui->pos.y, gui->width, gui->height);
 		gfxGetOrthographicProjectionMatrix((float)gui->pos.x, (float)gui->pos.x+gui->width, (float)gui->pos.y, (float)gui->pos.y+gui->height,
-			-1.0, 1.0, gui->shaderParams.projectionMatrix);
+			-1.0f, 1.0f, gui->shaderParams.projectionMatrix);
 	}
 
 	// reset state just to be sure...

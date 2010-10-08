@@ -15,25 +15,25 @@ ELF_API elfCamera* ELF_APIENTRY elfCreateCamera(const char* name)
 	camera->viewpY = 0;
 	camera->viewpWidth = -1;
 	camera->viewpHeight = -1;
-	camera->fov = 35.0;
-	camera->aspect = -1.0;
+	camera->fov = 35.0f;
+	camera->aspect = -1.0f;
 	camera->orthoX = 0;
 	camera->orthoY = 0;
 	camera->orthoWidth = -1;
 	camera->orthoHeight = -1;
-	camera->clipNear = 1.0;
-	camera->clipFar = 100.0;
+	camera->clipNear = 1.0f;
+	camera->clipFar = 100.0f;
 
 	gfxMatrix4SetIdentity(camera->projectionMatrix);
 	gfxMatrix4SetIdentity(camera->modelviewMatrix);
 
 	elfSetCameraPerspective(camera, camera->fov, camera->aspect, camera->clipNear, camera->clipFar);
 
-	camera->dobject = elfCreatePhysicsObjectBox(0.35, 0.35, 0.35, 0.0, 0.0, 0.0, 0.0);
+	camera->dobject = elfCreatePhysicsObjectBox(0.35f, 0.35f, 0.35f, 0.0f, 0.0f, 0.0f, 0.0f);
 	elfSetPhysicsObjectActor(camera->dobject, (elfActor*)camera);
 	elfIncRef((elfObject*)camera->dobject);
 
-	camera->pbbLengths.x = camera->pbbLengths.y = camera->pbbLengths.z = 0.7;
+	camera->pbbLengths.x = camera->pbbLengths.y = camera->pbbLengths.z = 0.7f;
 
 	if(name) camera->name = elfCreateString(name);
 
@@ -93,9 +93,9 @@ ELF_API void ELF_APIENTRY elfSetCameraPerspective(elfCamera* camera, float fov, 
 	camera->clipNear = clipNear;
 	camera->clipFar = clipFar;
 
-	if(aspect <= 0.0)
+	if(aspect <= 0.0f)
 	{
-		if((float)elfGetWindowWidth()/(float)elfGetWindowHeight() >= 1.0)
+		if((float)elfGetWindowWidth()/(float)elfGetWindowHeight() >= 1.0f)
 			aspect = (float)elfGetWindowWidth()/(float)elfGetWindowHeight();
 		else aspect = (float)elfGetWindowHeight()/(float)elfGetWindowWidth();
 	}
@@ -139,9 +139,9 @@ ELF_API float ELF_APIENTRY elfGetCameraAspect(elfCamera* camera)
 {
 	float aspect = camera->aspect;
 
-	if(aspect <= 0.0)
+	if(aspect <= 0.0f)
 	{
-		if((float)elfGetWindowWidth()/(float)elfGetWindowHeight() >= 1.0)
+		if((float)elfGetWindowWidth()/(float)elfGetWindowHeight() >= 1.0f)
 			aspect = (float)elfGetWindowWidth()/(float)elfGetWindowHeight();
 		else aspect = (float)elfGetWindowHeight()/(float)elfGetWindowWidth();
 	}
@@ -155,8 +155,8 @@ ELF_API elfVec2i ELF_APIENTRY elfGetCameraViewportSize(elfCamera* camera)
 
 	size.x = camera->viewpWidth;
 	size.y = camera->viewpHeight;
-	if(size.x <= 0.0) size.x = elfGetWindowWidth();
-	if(size.y <= 0.0) size.x = elfGetWindowHeight();
+	if(size.x <= 0.0f) size.x = elfGetWindowWidth();
+	if(size.y <= 0.0f) size.x = elfGetWindowHeight();
 
 	return size;
 }
@@ -187,8 +187,8 @@ ELF_API elfVec2f ELF_APIENTRY elfGetCameraFarPlaneSize(elfCamera* camera)
 
 	size.x = camera->farPlaneWidth;
 	size.y = camera->farPlaneHeight;
-	if(size.x <= 0.0) size.x = elfGetWindowWidth();
-	if(size.y <= 0.0) size.x = elfGetWindowHeight();
+	if(size.x <= 0.0f) size.x = elfGetWindowWidth();
+	if(size.y <= 0.0f) size.x = elfGetWindowHeight();
 
 	return size;
 }
@@ -273,37 +273,37 @@ void elfDrawCameraDebug(elfCamera* camera, gfxShaderParams* shaderParams)
 
 	gfxDestroyTransform(transform);
 
-	min[0] = min[1] = min[2] = -0.35;
-	max[0] = max[1] = max[2] = 0.35;
+	min[0] = min[1] = min[2] = -0.35f;
+	max[0] = max[1] = max[2] = 0.35f;
 
-	gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.2, 0.6, 0.2, 1.0);
+	gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.2f, 0.6f, 0.2f, 1.0f);
 	shaderParams->renderParams.blendMode = ELF_ADD;
 	gfxSetShaderParams(shaderParams);
 	gfxDrawBoundingBox(min, max);
 
 	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->lines);
 
-	vertexBuffer[0] = -1.5;
-	vertexBuffer[1] = 0.0;
-	vertexBuffer[2] = 0.0;
-	vertexBuffer[3] = 1.5;
-	vertexBuffer[4] = 0.0;
-	vertexBuffer[5] = 0.0;
-	vertexBuffer[6] = 0.0;
-	vertexBuffer[7] = -1.5;
-	vertexBuffer[8] = 0.0;
-	vertexBuffer[9] = 0.0;
-	vertexBuffer[10] = 1.5;
-	vertexBuffer[11] = 0.0;
-	vertexBuffer[12] = 0.0;
-	vertexBuffer[13] = 0.0;
-	vertexBuffer[14] = 0.5;
-	vertexBuffer[15] = 0.0;
-	vertexBuffer[16] = 0.0;
-	vertexBuffer[17] = -3.0;
+	vertexBuffer[0] = -1.5f;
+	vertexBuffer[1] = 0.0f;
+	vertexBuffer[2] = 0.0f;
+	vertexBuffer[3] = 1.5f;
+	vertexBuffer[4] = 0.0f;
+	vertexBuffer[5] = 0.0f;
+	vertexBuffer[6] = 0.0f;
+	vertexBuffer[7] = -1.5f;
+	vertexBuffer[8] = 0.0f;
+	vertexBuffer[9] = 0.0f;
+	vertexBuffer[10] = 1.5f;
+	vertexBuffer[11] = 0.0f;
+	vertexBuffer[12] = 0.0f;
+	vertexBuffer[13] = 0.0f;
+	vertexBuffer[14] = 0.5f;
+	vertexBuffer[15] = 0.0f;
+	vertexBuffer[16] = 0.0f;
+	vertexBuffer[17] = -3.0f;
 
-	if(!camera->selected) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.2, 0.6, 0.2, 1.0);
-	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 0.0, 0.0, 1.0);
+	if(!camera->selected) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.2f, 0.6f, 0.2f, 1.0f);
+	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.0f, 0.0f, 1.0f);
 	gfxSetShaderParams(shaderParams);
 	gfxDrawLines(6, eng->lines);
 }

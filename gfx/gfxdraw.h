@@ -7,16 +7,16 @@ void gfxDraw2dQuad(float x, float y, float width, float height)
 
 	vertexBuffer[0] = x;
 	vertexBuffer[1] = y+height;
-	vertexBuffer[2] = 0.0;
+	vertexBuffer[2] = 0.0f;
 	vertexBuffer[3] = x;
 	vertexBuffer[4] = y;
-	vertexBuffer[5] = 0.0;
+	vertexBuffer[5] = 0.0f;
 	vertexBuffer[6] = x+width;
 	vertexBuffer[7] = y+height;
-	vertexBuffer[8] = 0.0;
+	vertexBuffer[8] = 0.0f;
 	vertexBuffer[9] = x+width;
 	vertexBuffer[10] = y;
-	vertexBuffer[11] = 0.0;
+	vertexBuffer[11] = 0.0f;
 
 	gfxUpdateVertexData(driver->quadVertexData);
 	gfxDrawVertexArray(driver->quadVertexArray, 4, GFX_TRIANGLE_STRIP);
@@ -32,24 +32,24 @@ void gfxDrawTextured2dQuad(float x, float y, float width, float height)
 
 	vertexBuffer[0] = x;
 	vertexBuffer[1] = y+height;
-	vertexBuffer[2] = 0.0;
+	vertexBuffer[2] = 0.0f;
 	vertexBuffer[3] = x;
 	vertexBuffer[4] = y;
-	vertexBuffer[5] = 0.0;
+	vertexBuffer[5] = 0.0f;
 	vertexBuffer[6] = x+width;
 	vertexBuffer[7] = y+height;
-	vertexBuffer[8] = 0.0;
+	vertexBuffer[8] = 0.0f;
 	vertexBuffer[9] = x+width;
 	vertexBuffer[10] = y;
-	vertexBuffer[11] = 0.0;
-	texCoordBuffer[0] = 0.0;
-	texCoordBuffer[1] = 1.0;
-	texCoordBuffer[2] = 0.0;
-	texCoordBuffer[3] = 0.0;
-	texCoordBuffer[4] = 1.0;
-	texCoordBuffer[5] = 1.0;
-	texCoordBuffer[6] = 1.0;
-	texCoordBuffer[7] = 0.0;
+	vertexBuffer[11] = 0.0f;
+	texCoordBuffer[0] = 0.0f;
+	texCoordBuffer[1] = 1.0f;
+	texCoordBuffer[2] = 0.0f;
+	texCoordBuffer[3] = 0.0f;
+	texCoordBuffer[4] = 1.0f;
+	texCoordBuffer[5] = 1.0f;
+	texCoordBuffer[6] = 1.0f;
+	texCoordBuffer[7] = 0.0f;
 
 	gfxUpdateVertexData(driver->quadVertexData);
 	gfxUpdateVertexData(driver->quadTexCoordData);
@@ -66,16 +66,16 @@ void gfxDrawTextured2dQuadRegion(float x, float y, float width, float height, fl
 
 	vertexBuffer[0] = x;
 	vertexBuffer[1] = y+height;
-	vertexBuffer[2] = 0.0;
+	vertexBuffer[2] = 0.0f;
 	vertexBuffer[3] = x;
 	vertexBuffer[4] = y;
-	vertexBuffer[5] = 0.0;
+	vertexBuffer[5] = 0.0f;
 	vertexBuffer[6] = x+width;
 	vertexBuffer[7] = y+height;
-	vertexBuffer[8] = 0.0;
+	vertexBuffer[8] = 0.0f;
 	vertexBuffer[9] = x+width;
 	vertexBuffer[10] = y;
-	vertexBuffer[11] = 0.0;
+	vertexBuffer[11] = 0.0f;
 	texCoordBuffer[0] = tx;
 	texCoordBuffer[1] = ty+theight;
 	texCoordBuffer[2] = tx;
@@ -146,13 +146,13 @@ void gfxDrawLineLoop(int count, gfxVertexData* vertices)
 
 float gfxGetAbsoluteValue(float val)
 {
-	if(val < 0.0) return -val;
+	if(val < 0.0f) return -val;
 	return val;
 }
 
 unsigned char gfxIsAboutSame(float v1, float v2)
 {
-	if(gfxGetAbsoluteValue(v1-v2) < 0.0001) return GFX_TRUE;
+	if(gfxGetAbsoluteValue(v1-v2) < 0.0001f) return GFX_TRUE;
 	return GFX_FALSE;
 }
 
@@ -167,13 +167,13 @@ void gfxDrawCircle(int vertices, float size)
 
 	if(vertices != driver->prevCircleVerticeCount || !gfxIsAboutSame(size, driver->prevCircleSize))
 	{
-		step = (360.0/((float)vertices))*GFX_PI_DIV_180;
+		step = (360.0f/((float)vertices))*GFX_PI_DIV_180;
 
 		vertexBuffer = (float*)gfxGetVertexDataBuffer(driver->circleVertexData);
 
-		vertexBuffer[0] = 0.0;
-		vertexBuffer[1] = 0.0;
-		vertexBuffer[2] = 0.0;
+		vertexBuffer[0] = 0.0f;
+		vertexBuffer[1] = 0.0f;
+		vertexBuffer[2] = 0.0f;
 
 		for(i = 1; i < vertices+2; i++)
 		{

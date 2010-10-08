@@ -714,9 +714,9 @@ elfCamera* elfCreateCameraFromPak(FILE* file, const char* name, elfScene* scene)
 {
 	elfCamera* camera;
 	int magic;
-	float fov = 0.0;
-	float clipNear = 0.0;
-	float clipFar = 0.0;
+	float fov = 0.0f;
+	float clipNear = 0.0f;
+	float clipFar = 0.0f;
 
 	fread((char*)&magic, sizeof(int), 1, file);
 
@@ -733,7 +733,7 @@ elfCamera* elfCreateCameraFromPak(FILE* file, const char* name, elfScene* scene)
 	fread((char*)&clipNear, sizeof(float), 1, file);
 	fread((char*)&clipFar, sizeof(float), 1, file);
 
-	elfSetCameraPerspective(camera, fov, -1.0, clipNear, clipFar);
+	elfSetCameraPerspective(camera, fov, -1.0f, clipNear, clipFar);
 
 	return camera;
 }
@@ -747,7 +747,7 @@ elfEntity* elfCreateEntityFromPak(FILE* file, const char* name, elfScene* scene)
 	unsigned int materialCount;
 	int i, j;
 	int magic = 0;
-	float scale[3] = {0.0, 0.0, 0.0};
+	float scale[3] = {0.0f, 0.0f, 0.0f};
 	char model[ELF_NAME_LENGTH];
 	char armature[ELF_NAME_LENGTH];
 	char material[ELF_NAME_LENGTH];
@@ -1046,14 +1046,14 @@ elfModel* elfCreateModelFromPak(FILE* file, const char* name, elfScene* scene)
 		for(i = 0; i < model->verticeCount; i++)
 		{
 			fread((char*)weights, sizeof(float), 4, file);
-			if(weights[0] > 1.0) weights[0] = 1.0;
-			if(weights[1] > 1.0) weights[1] = 1.0;
-			if(weights[2] > 1.0) weights[2] = 1.0;
-			if(weights[3] > 1.0) weights[3] = 1.0;
-			if(weights[0] < 0.0) weights[0] = 0.0;
-			if(weights[1] < 0.0) weights[1] = 0.0;
-			if(weights[2] < 0.0) weights[2] = 0.0;
-			if(weights[3] < 0.0) weights[3] = 0.0;
+			if(weights[0] > 1.0f) weights[0] = 1.0f;
+			if(weights[1] > 1.0f) weights[1] = 1.0f;
+			if(weights[2] > 1.0f) weights[2] = 1.0f;
+			if(weights[3] > 1.0f) weights[3] = 1.0f;
+			if(weights[0] < 0.0f) weights[0] = 0.0f;
+			if(weights[1] < 0.0f) weights[1] = 0.0f;
+			if(weights[2] < 0.0f) weights[2] = 0.0f;
+			if(weights[3] < 0.0f) weights[3] = 0.0f;
 			length = 1.0f/(weights[0]+weights[1]+weights[2]+weights[3]);
 			model->weights[i*4] = weights[0]*length;
 			model->weights[i*4+1] = weights[1]*length;
@@ -1240,7 +1240,7 @@ elfSprite* elfCreateSpriteFromPak(FILE* file, const char* name, elfScene* scene)
 	elfSprite* sprite;
 	elfMaterial* rmaterial;
 	int magic = 0;
-	float scale[2] = {0.0, 0.0};
+	float scale[2] = {0.0f, 0.0f};
 	char material[ELF_NAME_LENGTH];
 
 	fread((char*)&magic, sizeof(int), 1, file);

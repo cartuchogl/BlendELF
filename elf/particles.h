@@ -43,24 +43,24 @@ ELF_API elfParticles* ELF_APIENTRY elfCreateParticles(const char* name, int maxC
 	elfIncRef((elfObject*)particles->particles);
 
 	particles->drawMode = ELF_ADD;
-	particles->spawnDelay = 0.02;
+	particles->spawnDelay = 0.02f;
 	particles->spawn = ELF_TRUE;
-	particles->sizeMin = 1.0;
-	particles->sizeMax = 1.0;
-	particles->sizeGrowthMin = 0.0;
-	particles->sizeGrowthMax = 0.0;
-	particles->rotationMin = 0.0;
-	particles->rotationMax = 0.0;
-	particles->rotationGrowthMin = 0.0;
-	particles->rotationGrowthMax = 0.0;
-	particles->lifeSpanMin = 3.0;
-	particles->lifeSpanMax = 3.0;
-	particles->fadeSpeedMin = 0.33;
-	particles->fadeSpeedMax = 0.33;
-	particles->velocityMin.x = -10.0; particles->velocityMin.y = -10.0; particles->velocityMin.z = -10.0;
-	particles->velocityMax.x = 10.0; particles->velocityMax.y = 10.0; particles->velocityMax.z = 10.0;
-	particles->colorMin.r = 1.0; particles->colorMin.g = 1.0; particles->colorMin.b = 1.0; particles->colorMin.a = 1.0;
-	particles->colorMax.r = 1.0; particles->colorMax.g = 1.0; particles->colorMax.b = 1.0; particles->colorMax.a = 1.0;
+	particles->sizeMin = 1.0f;
+	particles->sizeMax = 1.0f;
+	particles->sizeGrowthMin = 0.0f;
+	particles->sizeGrowthMax = 0.0f;
+	particles->rotationMin = 0.0f;
+	particles->rotationMax = 0.0f;
+	particles->rotationGrowthMin = 0.0f;
+	particles->rotationGrowthMax = 0.0f;
+	particles->lifeSpanMin = 3.0f;
+	particles->lifeSpanMax = 3.0f;
+	particles->fadeSpeedMin = 0.33f;
+	particles->fadeSpeedMax = 0.33f;
+	particles->velocityMin.x = -10.0f; particles->velocityMin.y = -10.0f; particles->velocityMin.z = -10.0f;
+	particles->velocityMax.x = 10.0f; particles->velocityMax.y = 10.0f; particles->velocityMax.z = 10.0f;
+	particles->colorMin.r = 1.0f; particles->colorMin.g = 1.0f; particles->colorMin.b = 1.0f; particles->colorMin.a = 1.0f;
+	particles->colorMax.r = 1.0f; particles->colorMax.g = 1.0f; particles->colorMax.b = 1.0f; particles->colorMax.a = 1.0f;
 
 	particles->vertices = gfxCreateVertexData(3*6*maxCount, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
 	particles->texCoords = gfxCreateVertexData(2*6*maxCount, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
@@ -83,51 +83,51 @@ ELF_API elfParticles* ELF_APIENTRY elfCreateParticles(const char* name, int maxC
 		j = i*12;
 		k = i*24;
 
-		texCoordBuffer[j] = 0.0;
-		texCoordBuffer[j+1] = 1.0;
-		texCoordBuffer[j+2] = 0.0;
-		texCoordBuffer[j+3] = 0.0;
-		texCoordBuffer[j+4] = 1.0;
-		texCoordBuffer[j+5] = 0.0;
+		texCoordBuffer[j] = 0.0f;
+		texCoordBuffer[j+1] = 1.0f;
+		texCoordBuffer[j+2] = 0.0f;
+		texCoordBuffer[j+3] = 0.0f;
+		texCoordBuffer[j+4] = 1.0f;
+		texCoordBuffer[j+5] = 0.0f;
 
-		texCoordBuffer[j+6] = 0.0;
-		texCoordBuffer[j+7] = 1.0;
-		texCoordBuffer[j+8] = 1.0;
-		texCoordBuffer[j+9] = 0.0;
-		texCoordBuffer[j+10] = 1.0;
-		texCoordBuffer[j+11] = 1.0;
+		texCoordBuffer[j+6] = 0.0f;
+		texCoordBuffer[j+7] = 1.0f;
+		texCoordBuffer[j+8] = 1.0f;
+		texCoordBuffer[j+9] = 0.0f;
+		texCoordBuffer[j+10] = 1.0f;
+		texCoordBuffer[j+11] = 1.0f;
 
-		colorBuffer[k] = 1.0;
-		colorBuffer[k+1] = 1.0;
-		colorBuffer[k+2] = 1.0;
-		colorBuffer[k+3] = 1.0;
-		colorBuffer[k+4] = 1.0;
-		colorBuffer[k+5] = 1.0;
-		colorBuffer[k+6] = 1.0;
-		colorBuffer[k+7] = 1.0;
-		colorBuffer[k+8] = 1.0;
-		colorBuffer[k+9] = 1.0;
-		colorBuffer[k+10] = 1.0;
-		colorBuffer[k+11] = 1.0;
-		colorBuffer[k+12] = 1.0;
-		colorBuffer[k+13] = 1.0;
-		colorBuffer[k+14] = 1.0;
-		colorBuffer[k+15] = 1.0;
-		colorBuffer[k+16] = 1.0;
-		colorBuffer[k+17] = 1.0;
-		colorBuffer[k+18] = 1.0;
-		colorBuffer[k+19] = 1.0;
-		colorBuffer[k+20] = 1.0;
-		colorBuffer[k+21] = 1.0;
-		colorBuffer[k+22] = 1.0;
-		colorBuffer[k+23] = 1.0;
+		colorBuffer[k] = 1.0f;
+		colorBuffer[k+1] = 1.0f;
+		colorBuffer[k+2] = 1.0f;
+		colorBuffer[k+3] = 1.0f;
+		colorBuffer[k+4] = 1.0f;
+		colorBuffer[k+5] = 1.0f;
+		colorBuffer[k+6] = 1.0f;
+		colorBuffer[k+7] = 1.0f;
+		colorBuffer[k+8] = 1.0f;
+		colorBuffer[k+9] = 1.0f;
+		colorBuffer[k+10] = 1.0f;
+		colorBuffer[k+11] = 1.0f;
+		colorBuffer[k+12] = 1.0f;
+		colorBuffer[k+13] = 1.0f;
+		colorBuffer[k+14] = 1.0f;
+		colorBuffer[k+15] = 1.0f;
+		colorBuffer[k+16] = 1.0f;
+		colorBuffer[k+17] = 1.0f;
+		colorBuffer[k+18] = 1.0f;
+		colorBuffer[k+19] = 1.0f;
+		colorBuffer[k+20] = 1.0f;
+		colorBuffer[k+21] = 1.0f;
+		colorBuffer[k+22] = 1.0f;
+		colorBuffer[k+23] = 1.0f;
 	}
 
-	particles->dobject = elfCreatePhysicsObjectBox(0.5, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0);
+	particles->dobject = elfCreatePhysicsObjectBox(0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f);
 	elfSetPhysicsObjectActor(particles->dobject, (elfActor*)particles);
 	elfIncRef((elfObject*)particles->dobject);
 
-	particles->pbbLengths.x = particles->pbbLengths.y = particles->pbbLengths.z = 1.0;
+	particles->pbbLengths.x = particles->pbbLengths.y = particles->pbbLengths.z = 1.0f;
 
 	if(name) particles->name = elfCreateString(name);
 
@@ -197,13 +197,13 @@ void elfCalcParticlesAabb(elfParticles* particles)
 {
 	elfVec3f position;
 
-	particles->cullAabbMin.x = particles->lifeSpanMax*(particles->velocityMin.x+elfFloatMin(0.0, particles->gravity.x));
-	particles->cullAabbMin.y = particles->lifeSpanMax*(particles->velocityMin.y+elfFloatMin(0.0, particles->gravity.y));
-	particles->cullAabbMin.z = particles->lifeSpanMax*(particles->velocityMin.z+elfFloatMin(0.0, particles->gravity.z));
+	particles->cullAabbMin.x = particles->lifeSpanMax*(particles->velocityMin.x+elfFloatMin(0.0f, particles->gravity.x));
+	particles->cullAabbMin.y = particles->lifeSpanMax*(particles->velocityMin.y+elfFloatMin(0.0f, particles->gravity.y));
+	particles->cullAabbMin.z = particles->lifeSpanMax*(particles->velocityMin.z+elfFloatMin(0.0f, particles->gravity.z));
 
-	particles->cullAabbMax.x = particles->lifeSpanMax*(particles->velocityMax.x+elfFloatMax(0.0, particles->gravity.x));
-	particles->cullAabbMax.y = particles->lifeSpanMax*(particles->velocityMax.y+elfFloatMax(0.0, particles->gravity.y));
-	particles->cullAabbMax.z = particles->lifeSpanMax*(particles->velocityMax.z+elfFloatMax(0.0, particles->gravity.z));
+	particles->cullAabbMax.x = particles->lifeSpanMax*(particles->velocityMax.x+elfFloatMax(0.0f, particles->gravity.x));
+	particles->cullAabbMax.y = particles->lifeSpanMax*(particles->velocityMax.y+elfFloatMax(0.0f, particles->gravity.y));
+	particles->cullAabbMax.z = particles->lifeSpanMax*(particles->velocityMax.z+elfFloatMax(0.0f, particles->gravity.z));
 
 	if(particles->model)
 	{
@@ -284,7 +284,7 @@ void elfUpdateParticles(elfParticles* particles, float sync)
 	for(particle = (elfParticle*)elfBeginList(particles->particles); particle;
 		particle = (elfParticle*)elfGetListNext(particles->particles))
 	{
-		if(particle->lifeSpan < 0.0 || particle->color.a < 0.0)
+		if(particle->lifeSpan < 0.0f || particle->color.a < 0.0f)
 		{
 			if(spawnCount > 0 && particles->spawn)
 			{
@@ -371,7 +371,7 @@ void elfDrawParticles(elfParticles* particles, elfCamera* camera, gfxShaderParam
 			gfxMulQuaVec(invCameraOrient, particleOffset, pos);
 
 			j = i*18;
-			offset = particle->size*0.5;
+			offset = particle->size*0.5f;
 
 			vertexBuffer[j] = pos[0]-offset;
 			vertexBuffer[j+1] = pos[1]+offset;
@@ -400,7 +400,7 @@ void elfDrawParticles(elfParticles* particles, elfCamera* camera, gfxShaderParam
 				realColor.r *= realColor.a;
 				realColor.g *= realColor.a;
 				realColor.b *= realColor.a;
-				realColor.a = 1.0;
+				realColor.a = 1.0f;
 			}
 
 			colorBuffer[j] = realColor.r;
@@ -442,16 +442,16 @@ void elfDrawParticles(elfParticles* particles, elfCamera* camera, gfxShaderParam
 			gfxMulQuaVec(invCameraOrient, particleOffset, pos);
 
 			j = i*18;
-			offset = particle->size*0.5;
-			radius = offset/0.707107;
-			sinX1 = sin(GFX_PI_DIV_180*(45.0+particle->rotation));
-			cosY1 = cos(GFX_PI_DIV_180*(45.0+particle->rotation));
-			sinX2 = sin(GFX_PI_DIV_180*(135.0+particle->rotation));
-			cosY2 = cos(GFX_PI_DIV_180*(135.0+particle->rotation));
-			sinX3 = sin(GFX_PI_DIV_180*(225.0+particle->rotation));
-			cosY3 = cos(GFX_PI_DIV_180*(225.0+particle->rotation));
-			sinX4 = sin(GFX_PI_DIV_180*(315.0+particle->rotation));
-			cosY4 = cos(GFX_PI_DIV_180*(315.0+particle->rotation));
+			offset = particle->size*0.5f;
+			radius = offset/0.707107f;
+			sinX1 = sin(GFX_PI_DIV_180*(45.0f+particle->rotation));
+			cosY1 = cos(GFX_PI_DIV_180*(45.0f+particle->rotation));
+			sinX2 = sin(GFX_PI_DIV_180*(135.0f+particle->rotation));
+			cosY2 = cos(GFX_PI_DIV_180*(135.0f+particle->rotation));
+			sinX3 = sin(GFX_PI_DIV_180*(225.0f+particle->rotation));
+			cosY3 = cos(GFX_PI_DIV_180*(225.0f+particle->rotation));
+			sinX4 = sin(GFX_PI_DIV_180*(315.0f+particle->rotation));
+			cosY4 = cos(GFX_PI_DIV_180*(315.0f+particle->rotation));
 
 			vertexBuffer[j] = pos[0]+radius*sinX4;
 			vertexBuffer[j+1] = pos[1]+radius*cosY4;
@@ -480,7 +480,7 @@ void elfDrawParticles(elfParticles* particles, elfCamera* camera, gfxShaderParam
 				realColor.r *= realColor.a;
 				realColor.g *= realColor.a;
 				realColor.b *= realColor.a;
-				realColor.a = 1.0;
+				realColor.a = 1.0f;
 			}
 
 			colorBuffer[j] = realColor.r;
@@ -533,31 +533,31 @@ void elfDrawParticlesDebug(elfParticles* particles, gfxShaderParams* shaderParam
 	gfxMulMatrix4Matrix4(gfxGetTransformMatrix(particles->transform),
 		shaderParams->cameraMatrix, shaderParams->modelviewMatrix);
 
-	min[0] = min[1] = min[2] = -0.5;
-	max[0] = max[1] = max[2] = 0.5;
+	min[0] = min[1] = min[2] = -0.5f;
+	max[0] = max[1] = max[2] = 0.5f;
 
 	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->lines);
 
-	vertexBuffer[0] = 0.0;
-	vertexBuffer[1] = 0.0;
+	vertexBuffer[0] = 0.0f;
+	vertexBuffer[1] = 0.0f;
 	vertexBuffer[2] = min[2];
-	vertexBuffer[3] = 0.0;
-	vertexBuffer[4] = 0.0;
+	vertexBuffer[3] = 0.0f;
+	vertexBuffer[4] = 0.0f;
 	vertexBuffer[5] = max[2];
 
-	vertexBuffer[6] = 0.0;
+	vertexBuffer[6] = 0.0f;
 	vertexBuffer[7] = min[1];
-	vertexBuffer[8] = 0.0;
-	vertexBuffer[9] = 0.0;
+	vertexBuffer[8] = 0.0f;
+	vertexBuffer[9] = 0.0f;
 	vertexBuffer[10] = max[1];
-	vertexBuffer[11] = 0.0;
+	vertexBuffer[11] = 0.0f;
 
 	vertexBuffer[12] = min[0];
-	vertexBuffer[13] = 0.0;
-	vertexBuffer[14] = 0.0;
+	vertexBuffer[13] = 0.0f;
+	vertexBuffer[14] = 0.0f;
 	vertexBuffer[15] = max[0];
-	vertexBuffer[16] = 0.0;
-	vertexBuffer[17] = 0.0;
+	vertexBuffer[16] = 0.0f;
+	vertexBuffer[17] = 0.0f;
 
 	vertexBuffer[18] = min[0];
 	vertexBuffer[19] = min[1];
@@ -587,8 +587,8 @@ void elfDrawParticlesDebug(elfParticles* particles, gfxShaderParams* shaderParam
 	vertexBuffer[40] = min[1];
 	vertexBuffer[41] = max[2];
 
-	if(!particles->selected) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.35, 0.75, 0.75, 1.0);
-	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 0.0, 0.0, 1.0);
+	if(!particles->selected) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.35f, 0.75f, 0.75f, 1.0f);
+	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.0f, 0.0f, 1.0f);
 	gfxSetShaderParams(shaderParams);
 	gfxDrawLines(14, eng->lines);
 }
@@ -664,44 +664,44 @@ ELF_API void ELF_APIENTRY elfSetParticlesMaxCount(elfParticles* particles, int m
 		j = i*12;
 		k = i*24;
 
-		texCoordBuffer[j] = 0.0;
-		texCoordBuffer[j+1] = 1.0;
-		texCoordBuffer[j+2] = 0.0;
-		texCoordBuffer[j+3] = 0.0;
-		texCoordBuffer[j+4] = 1.0;
-		texCoordBuffer[j+5] = 0.0;
+		texCoordBuffer[j] = 0.0f;
+		texCoordBuffer[j+1] = 1.0f;
+		texCoordBuffer[j+2] = 0.0f;
+		texCoordBuffer[j+3] = 0.0f;
+		texCoordBuffer[j+4] = 1.0f;
+		texCoordBuffer[j+5] = 0.0f;
 
-		texCoordBuffer[j+6] = 0.0;
-		texCoordBuffer[j+7] = 1.0;
-		texCoordBuffer[j+8] = 1.0;
-		texCoordBuffer[j+9] = 0.0;
-		texCoordBuffer[j+10] = 1.0;
-		texCoordBuffer[j+11] = 1.0;
+		texCoordBuffer[j+6] = 0.0f;
+		texCoordBuffer[j+7] = 1.0f;
+		texCoordBuffer[j+8] = 1.0f;
+		texCoordBuffer[j+9] = 0.0f;
+		texCoordBuffer[j+10] = 1.0f;
+		texCoordBuffer[j+11] = 1.0f;
 
-		colorBuffer[k] = 1.0;
-		colorBuffer[k+1] = 1.0;
-		colorBuffer[k+2] = 1.0;
-		colorBuffer[k+3] = 1.0;
-		colorBuffer[k+4] = 1.0;
-		colorBuffer[k+5] = 1.0;
-		colorBuffer[k+6] = 1.0;
-		colorBuffer[k+7] = 1.0;
-		colorBuffer[k+8] = 1.0;
-		colorBuffer[k+9] = 1.0;
-		colorBuffer[k+10] = 1.0;
-		colorBuffer[k+11] = 1.0;
-		colorBuffer[k+12] = 1.0;
-		colorBuffer[k+13] = 1.0;
-		colorBuffer[k+14] = 1.0;
-		colorBuffer[k+15] = 1.0;
-		colorBuffer[k+16] = 1.0;
-		colorBuffer[k+17] = 1.0;
-		colorBuffer[k+18] = 1.0;
-		colorBuffer[k+19] = 1.0;
-		colorBuffer[k+20] = 1.0;
-		colorBuffer[k+21] = 1.0;
-		colorBuffer[k+22] = 1.0;
-		colorBuffer[k+23] = 1.0;
+		colorBuffer[k] = 1.0f;
+		colorBuffer[k+1] = 1.0f;
+		colorBuffer[k+2] = 1.0f;
+		colorBuffer[k+3] = 1.0f;
+		colorBuffer[k+4] = 1.0f;
+		colorBuffer[k+5] = 1.0f;
+		colorBuffer[k+6] = 1.0f;
+		colorBuffer[k+7] = 1.0f;
+		colorBuffer[k+8] = 1.0f;
+		colorBuffer[k+9] = 1.0f;
+		colorBuffer[k+10] = 1.0f;
+		colorBuffer[k+11] = 1.0f;
+		colorBuffer[k+12] = 1.0f;
+		colorBuffer[k+13] = 1.0f;
+		colorBuffer[k+14] = 1.0f;
+		colorBuffer[k+15] = 1.0f;
+		colorBuffer[k+16] = 1.0f;
+		colorBuffer[k+17] = 1.0f;
+		colorBuffer[k+18] = 1.0f;
+		colorBuffer[k+19] = 1.0f;
+		colorBuffer[k+20] = 1.0f;
+		colorBuffer[k+21] = 1.0f;
+		colorBuffer[k+22] = 1.0f;
+		colorBuffer[k+23] = 1.0f;
 	}
 }
 
@@ -776,7 +776,7 @@ ELF_API void ELF_APIENTRY elfSetParticlesGravity(elfParticles* particles, float 
 ELF_API void ELF_APIENTRY elfSetParticlesSpawnDelay(elfParticles* particles, float delay)
 {
 	particles->spawnDelay = delay;
-	if(particles->spawnDelay < 0.00001) particles->spawnDelay = 0.00001;
+	if(particles->spawnDelay < 0.00001f) particles->spawnDelay = 0.00001f;
 }
 
 ELF_API void ELF_APIENTRY elfSetParticlesSpawn(elfParticles* particles, unsigned char spawn)

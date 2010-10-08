@@ -360,7 +360,7 @@ ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* filePath)
 
 			camera = elfCreateCamera(aicam->mName.data);
 
-			elfSetCameraPerspective(camera, aicam->mHorizontalFOV, -1.0, aicam->mClipPlaneNear, aicam->mClipPlaneFar);
+			elfSetCameraPerspective(camera, aicam->mHorizontalFOV, -1.0f, aicam->mClipPlaneNear, aicam->mClipPlaneFar);
 			elfSetActorPosition((elfActor*)camera, aicam->mPosition.x, aicam->mPosition.y, aicam->mPosition.z);
 
 			elfAddSceneCamera(scene, camera);
@@ -376,10 +376,10 @@ ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* filePath)
 			else if(ailig->mType == aiLightSource_POINT) elfSetLightType(light, ELF_POINT_LIGHT);
 			else if(ailig->mType == aiLightSource_SPOT) elfSetLightType(light, ELF_SPOT_LIGHT);
 
-			elfSetLightColor(light, ailig->mColorDiffuse.r, ailig->mColorDiffuse.g, ailig->mColorDiffuse.b, 1.0);
+			elfSetLightColor(light, ailig->mColorDiffuse.r, ailig->mColorDiffuse.g, ailig->mColorDiffuse.b, 1.0f);
 			elfSetLightCone(light, ailig->mAngleInnerCone, ailig->mAngleOuterCone);
-			elfSetLightDistance(light, 0.0001);
-			elfSetLightFadeSpeed(light, (ailig->mAttenuationLinear+ailig->mAttenuationQuadratic)/2.0);
+			elfSetLightDistance(light, 0.0001f);
+			elfSetLightFadeSpeed(light, (ailig->mAttenuationLinear+ailig->mAttenuationQuadratic)/2.0f);
 			elfSetActorPosition((elfActor*)light, ailig->mPosition.x, ailig->mPosition.y, ailig->mPosition.z);
 			elfSetActorDirection((elfActor*)light, ailig->mDirection.x, ailig->mDirection.y, ailig->mDirection.z);
 
@@ -412,11 +412,11 @@ void elfUpdateScene(elfScene* scene, float sync)
 	elfSprite* spr;
 	float position[3];
 	float orient[4];
-	float vecZ[3] = {0.0, 0.0, -1.0};
-	float vecY[3] = {0.0, 1.0, -1.0};
+	float vecZ[3] = {0.0f, 0.0f, -1.0f};
+	float vecY[3] = {0.0f, 1.0f, -1.0f};
 	float frontUpVec[6];
 
-	if(sync > 0.0)
+	if(sync > 0.0f)
 	{
 		if(scene->physics) elfUpdatePhysicsWorld(scene->world, sync);
 		elfUpdatePhysicsWorld(scene->dworld, sync);
@@ -1541,10 +1541,10 @@ void elfDrawScene(elfScene* scene)
 	elfEntity* ent;
 	elfSprite* spr;
 	elfParticles* par;
-	float bias[16] = {0.5, 0.0, 0.0, 0.0,
-			0.0, 0.5, 0.0, 0.0,
-			0.0, 0.0, 0.5, 0.0,
-			0.5, 0.5, 0.5, 1.0};
+	float bias[16] = {0.5f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.5f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.5f, 0.0f,
+			0.5f, 0.5f, 0.5f, 1.0f};
 	float tempMat1[16];
 	float tempMat2[16];
 	gfxRenderTarget* renderTarget;
@@ -1865,13 +1865,13 @@ void elfDrawScene(elfScene* scene)
 			gfxSetShaderParamsDefault(&scene->shaderParams);
 			scene->shaderParams.renderParams.colorWrite = GFX_FALSE;
 			scene->shaderParams.renderParams.alphaWrite = GFX_FALSE;
-			scene->shaderParams.renderParams.offsetBias = 2.0;
-			scene->shaderParams.renderParams.offsetScale = 4.0;
+			scene->shaderParams.renderParams.offsetBias = 2.0f;
+			scene->shaderParams.renderParams.offsetScale = 4.0f;
 			elfSetCamera(light->shadowCamera, &scene->shaderParams);
 			gfxSetShaderParams(&scene->shaderParams);
 
 			gfxSetRenderTarget(eng->shadowTarget);
-			gfxClearDepthBuffer(1.0);
+			gfxClearDepthBuffer(1.0f);
 
 			for(ent = (elfEntity*)elfBeginList(scene->entities); ent != NULL;
 				ent = (elfEntity*)elfGetListNext(scene->entities))
@@ -1953,7 +1953,7 @@ void elfDrawScene(elfScene* scene)
 			}
 			else if(light->lightType == ELF_POINT_LIGHT)
 			{
-				lrad = light->distance+1.0/light->fadeSpeed;
+				lrad = light->distance+1.0f/light->fadeSpeed;
 				if(gfxBoxSphereIntersect(&ent->cullAabbMin.x, &ent->cullAabbMax.x, &lpos.x, lrad))
 				{
 					elfDrawEntity(ent, ELF_DRAW_WITH_LIGHTING, &scene->shaderParams);
@@ -1982,8 +1982,8 @@ void elfDrawScene(elfScene* scene)
 				dvec = elfSubVec3fVec3f(spos, lpos);
 				dist = elfGetVec3fLength(dvec);
 				dist -= spr->cullRadius;
-				att = 1.0-elfFloatMax(dist-light->distance, 0.0)*light->fadeSpeed;
-				if(att > 0.0)
+				att = 1.0f-elfFloatMax(dist-light->distance, 0.0f)*light->fadeSpeed;
+				if(att > 0.0f)
 				{
 					elfDrawSprite(spr, ELF_DRAW_WITH_LIGHTING, &scene->shaderParams);
 				}

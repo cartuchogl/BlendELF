@@ -358,50 +358,50 @@ void elfDrawBoneHierarchy(elfBone* bone, gfxShaderParams* shaderParams)
 	vertexBuffer[1] = pos.y;
 	vertexBuffer[2] = pos.z;
 
-	axis.x = 0.2; axis.y = 0.0; axis.z = 0.0;
+	axis.x = 0.2f; axis.y = 0.0f; axis.z = 0.0f;
 	axis = elfMulQuaVec3f(orient, axis);
 	vertexBuffer[3] = pos.x+axis.x;
 	vertexBuffer[4] = pos.y+axis.y;
 	vertexBuffer[5] = pos.z+axis.z;
 
 	shaderParams->renderParams.blendMode = GFX_NONE;
-	gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.0, 0.0, 1.0, 1.0);
+	gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.0f, 0.0f, 1.0f, 1.0f);
 	gfxSetShaderParams(shaderParams);
 
 	gfxDrawLines(2, eng->lines);
 
-	axis.x = 0.0; axis.y = 0.2; axis.z = 0.0;
+	axis.x = 0.0f; axis.y = 0.2f; axis.z = 0.0f;
 	axis = elfMulQuaVec3f(orient, axis);
 	vertexBuffer[3] = pos.x+axis.x;
 	vertexBuffer[4] = pos.y+axis.y;
 	vertexBuffer[5] = pos.z+axis.z;
 
-	gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.0, 1.0, 0.0, 1.0);
+	gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.0f, 1.0f, 0.0f, 1.0f);
 	gfxSetShaderParams(shaderParams);
 
 	gfxDrawLines(2, eng->lines);
 
-	axis.x = 0.0; axis.y = 0.0; axis.z = 0.2;
+	axis.x = 0.0f; axis.y = 0.0f; axis.z = 0.2f;
 	axis = elfMulQuaVec3f(orient, axis);
 	vertexBuffer[3] = pos.x+axis.x;
 	vertexBuffer[4] = pos.y+axis.y;
 	vertexBuffer[5] = pos.z+axis.z;
 
-	gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 0.0, 0.0, 1.0);
+	gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.0f, 0.0f, 1.0f);
 	gfxSetShaderParams(shaderParams);
 
 	gfxDrawLines(2, eng->lines);
 
-	min[0] = pos.x-0.05;
-	min[1] = pos.y-0.05;
-	min[2] = pos.z-0.05;
+	min[0] = pos.x-0.05f;
+	min[1] = pos.y-0.05f;
+	min[2] = pos.z-0.05f;
 
-	max[0] = pos.x+0.05;
-	max[1] = pos.y+0.05;
-	max[2] = pos.z+0.05;
+	max[0] = pos.x+0.05f;
+	max[1] = pos.y+0.05f;
+	max[2] = pos.z+0.05f;
 
 	shaderParams->renderParams.blendMode = GFX_ADD;
-	gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 0.4, 0.2, 1.0);
+	gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.4f, 0.2f, 1.0f);
 	gfxSetShaderParams(shaderParams);
 
 	gfxDrawBoundingBox(min, max);

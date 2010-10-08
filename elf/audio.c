@@ -167,8 +167,8 @@ elfAudioDevice* elfCreateAudioDevice()
 	device->objType = ELF_AUDIO_DEVICE;
 	device->objDestr = elfDestroyAudioDevice;
 
-	device->volume = 1.0;
-	device->rolloff = 1.0;
+	device->volume = 1.0f;
+	device->rolloff = 1.0f;
 
 	device->sources = elfCreateList();
 	elfIncRef((elfObject*)device->sources);
@@ -229,10 +229,10 @@ unsigned char elfInitAudio()
 
 	alGetError();
 
-	alListener3f(AL_POSITION, 0.0, 0.0, 0.0);
-	alListener3f(AL_DIRECTION, 0.0, 0.0, -1.0);
+	alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
+	alListener3f(AL_DIRECTION, 0.0f, 0.0f, -1.0f);
 
-	alListenerf(AL_GAIN, 1.0);
+	alListenerf(AL_GAIN, 1.0f);
 
 	return ELF_TRUE;
 }
@@ -282,7 +282,7 @@ ELF_API void ELF_APIENTRY elfSetAudioVolume(float volume)
 
 ELF_API float ELF_APIENTRY elfGetAudioVolume()
 {
-	if(!audioDevice) return 0.0;
+	if(!audioDevice) return 0.0f;
 	return audioDevice->volume;
 }
 
@@ -294,7 +294,7 @@ ELF_API void ELF_APIENTRY elfSetAudioRolloff(float rolloff)
 
 ELF_API float ELF_APIENTRY elfGetAudioRolloff()
 {
-	if(!audioDevice) return 0.0;
+	if(!audioDevice) return 0.0f;
 	return audioDevice->rolloff;
 }
 
@@ -921,7 +921,7 @@ ELF_API void ELF_APIENTRY elfSetSoundVolume(elfAudioSource* source, float volume
 
 ELF_API float ELF_APIENTRY elfGetSoundVolume(elfAudioSource* source)
 {
-	float volume = 0.0;
+	float volume = 0.0f;
 	alGetSourcef(source->source, AL_GAIN, &volume);
 	return volume;
 }

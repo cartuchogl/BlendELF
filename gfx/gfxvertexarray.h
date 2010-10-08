@@ -218,7 +218,7 @@ void gfxSetVertexArray(gfxVertexArray* vertexArray)
 		if(vertexArray->varrs[GFX_COLOR].data)
 		{
 			// input something that doesn't make sense so that the driver will know something has changed in the color
-			gfxSetColor(&driver->shaderParams.materialParams.diffuseColor, 10.3, 10.056, 10.230, 1.0);
+			gfxSetColor(&driver->shaderParams.materialParams.diffuseColor, 10.3f, 10.056f, 10.230f, 1.0f);
 			glEnableClientState(GL_COLOR_ARRAY);
 			glColorPointer(4, driver->formats[vertexArray->varrs[GFX_COLOR].data->format], 0, vertexArray->varrs[GFX_COLOR].data->data);
 		}

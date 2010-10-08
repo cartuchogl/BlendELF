@@ -121,7 +121,7 @@ elfPhysicsWorld* elfCreatePhysicsWorld()
 	world->solver = new btSequentialImpulseConstraintSolver();
 	world->world = new btDiscreteDynamicsWorld(world->dispatcher, world->broadphase, world->solver, world->collisionConfiguration);
 	world->world->getDispatchInfo().m_enableSPU = true;
-	world->world->setGravity(btVector3(0.0, 0.0, -9.81));
+	world->world->setGravity(btVector3(0.0f, 0.0f, -9.81f));
 
 	elfIncObj(ELF_PHYSICS_WORLD);
 
@@ -371,10 +371,10 @@ void elfRecalcJoint(elfJoint* joint)
 	btVector3 pivotInB(localCoordPivot2.x, localCoordPivot2.y, localCoordPivot2.z);
 
 	aqua1 = elfCreateQuaFromEuler(joint->axis[0], joint->axis[1], joint->axis[2]);
-	localAxis1 = elfMulQuaVec3f(aqua1, elfCreateVec3f(0.0, 0.0, 1.0));
+	localAxis1 = elfMulQuaVec3f(aqua1, elfCreateVec3f(0.0f, 0.0f, 1.0f));
 
 	aqua2 = elfMulQuaQua(aqua1, elfMulQuaQua(qua1, elfGetQuaInverted(qua2)));
-	localAxis2 = elfMulQuaVec3f(aqua2, elfCreateVec3f(0.0, 0.0, 1.0));
+	localAxis2 = elfMulQuaVec3f(aqua2, elfCreateVec3f(0.0f, 0.0f, 1.0f));
 
 	btVector3 axisInA(localAxis1.x, localAxis1.y, localAxis1.z);
 	btVector3 axisInB(localAxis2.x, localAxis2.y, localAxis2.z);
@@ -641,13 +641,13 @@ elfPhysicsObject* elfCreatePhysicsObjectMesh(elfPhysicsTriMesh* triMesh, float m
 	elfIncRef((elfObject*)triMesh);
 
 	btScalar bodyMass(mass);
-	btVector3 localInertia(0.0, 0.0, 0.0);
+	btVector3 localInertia(0.0f, 0.0f, 0.0f);
 
 	if(!elfAboutZero(mass)) object->shape->calculateLocalInertia(mass, localInertia);
 
 	btTransform startTransform;
-	startTransform.setOrigin(btVector3(0.0, 0.0, 0.0));
-	startTransform.setRotation(btQuaternion(0.0, 0.0, 0.0, 1.0));
+	startTransform.setOrigin(btVector3(0.0f, 0.0f, 0.0f));
+	startTransform.setRotation(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f));
 
 	object->motionState = new btDefaultMotionState(startTransform);
 	object->body = new btRigidBody(bodyMass, object->motionState, object->shape, localInertia);
@@ -671,13 +671,13 @@ elfPhysicsObject* elfCreatePhysicsObjectSphere(float radius, float mass, float o
 	object->offset.z = oz;
 
 	btScalar bodyMass(mass);
-	btVector3 localInertia(0.0, 0.0, 0.0);
+	btVector3 localInertia(0.0f, 0.0f, 0.0f);
 
 	if(!elfAboutZero(mass)) object->shape->calculateLocalInertia(mass, localInertia);
 
 	btTransform startTransform;
 	startTransform.setOrigin(btVector3(object->offset.x, object->offset.y, object->offset.z));
-	startTransform.setRotation(btQuaternion(0.0, 0.0, 0.0, 1.0));
+	startTransform.setRotation(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f));
 
 	object->motionState = new btDefaultMotionState(startTransform);
 	object->body = new btRigidBody(bodyMass, object->motionState, object->shape, localInertia);
@@ -693,7 +693,7 @@ elfPhysicsObject* elfCreatePhysicsObjectBox(float hx, float hy, float hz, float 
 
 	object = elfCreatePhysicsObject();
 
-	object->shape = new btBoxShape(btVector3(hx+0.001, hy+0.001, hz+0.001));
+	object->shape = new btBoxShape(btVector3(hx+0.001f, hy+0.001f, hz+0.001f));
 	object->shapeType = ELF_BOX;
 	object->mass = mass;
 	object->offset.x = ox;
@@ -701,13 +701,13 @@ elfPhysicsObject* elfCreatePhysicsObjectBox(float hx, float hy, float hz, float 
 	object->offset.z = oz;
 
 	btScalar bodyMass(mass);
-	btVector3 localInertia(0.0, 0.0, 0.0);
+	btVector3 localInertia(0.0f, 0.0f, 0.0f);
 
 	if(!elfAboutZero(mass)) object->shape->calculateLocalInertia(mass, localInertia);
 
 	btTransform startTransform;
 	startTransform.setOrigin(btVector3(object->offset.x, object->offset.y, object->offset.z));
-	startTransform.setRotation(btQuaternion(0.0, 0.0, 0.0, 1.0));
+	startTransform.setRotation(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f));
 
 	object->motionState = new btDefaultMotionState(startTransform);
 	object->body = new btRigidBody(bodyMass, object->motionState, object->shape, localInertia);
@@ -734,13 +734,13 @@ elfPhysicsObject* elfCreatePhysicsObjectCapsule(unsigned char type, float length
 	object->offset.z = oz;
 
 	btScalar bodyMass(mass);
-	btVector3 localInertia(0.0, 0.0, 0.0);
+	btVector3 localInertia(0.0f, 0.0f, 0.0f);
 
 	if(!elfAboutZero(mass)) object->shape->calculateLocalInertia(mass, localInertia);
 
 	btTransform startTransform;
 	startTransform.setOrigin(btVector3(object->offset.x, object->offset.y, object->offset.z));
-	startTransform.setRotation(btQuaternion(0.0, 0.0, 0.0, 1.0));
+	startTransform.setRotation(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f));
 
 	object->motionState = new btDefaultMotionState(startTransform);
 	object->body = new btRigidBody(bodyMass, object->motionState, object->shape, localInertia);
@@ -767,13 +767,13 @@ elfPhysicsObject* elfCreatePhysicsObjectCone(unsigned char type, float length, f
 	object->offset.z = oz;
 
 	btScalar bodyMass(mass);
-	btVector3 localInertia(0.0, 0.0, 0.0);
+	btVector3 localInertia(0.0f, 0.0f, 0.0f);
 
 	if(!elfAboutZero(mass)) object->shape->calculateLocalInertia(mass, localInertia);
 
 	btTransform startTransform;
 	startTransform.setOrigin(btVector3(object->offset.x, object->offset.y, object->offset.z));
-	startTransform.setRotation(btQuaternion(0.0, 0.0, 0.0, 1.0));
+	startTransform.setRotation(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f));
 
 	object->motionState = new btDefaultMotionState(startTransform);
 	object->body = new btRigidBody(bodyMass, object->motionState, object->shape, localInertia);

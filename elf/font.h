@@ -95,7 +95,7 @@ ELF_API elfFont* ELF_APIENTRY elfCreateFontFromFile(const char* filePath, int si
 		font->chars[i].code = (char)i;
 		font->chars[i].offsetX = width+size/7;
 		font->chars[i].offsetY = -(face->glyph->bitmap.rows-face->glyph->bitmap_top);
-		font->chars[i].texture = gfxCreate2dTexture(width, height, 0.0, GFX_CLAMP, GFX_NEAREST, GFX_LUMINANCE_ALPHA, GFX_LUMINANCE_ALPHA, GFX_UBYTE, data);
+		font->chars[i].texture = gfxCreate2dTexture(width, height, 0.0f, GFX_CLAMP, GFX_NEAREST, GFX_LUMINANCE_ALPHA, GFX_LUMINANCE_ALPHA, GFX_UBYTE, data);
 
 		if(-font->chars[i].offsetY > font->offsetY) font->offsetY = -font->chars[i].offsetY;
 

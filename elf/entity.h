@@ -10,7 +10,7 @@ ELF_API elfEntity* ELF_APIENTRY elfCreateEntity(const char* name)
 
 	elfInitActor((elfActor*)entity, ELF_FALSE);
 
-	entity->scale.x = entity->scale.y = entity->scale.z = 1.0;
+	entity->scale.x = entity->scale.y = entity->scale.z = 1.0f;
 	entity->query = gfxCreateQuery();
 	entity->visible = ELF_TRUE;
 
@@ -19,11 +19,11 @@ ELF_API elfEntity* ELF_APIENTRY elfCreateEntity(const char* name)
 
 	entity->culled = ELF_TRUE;
 
-	entity->dobject = elfCreatePhysicsObjectBox(0.2, 0.2, 0.2, 0.0, 0.0, 0.0, 0.0);
+	entity->dobject = elfCreatePhysicsObjectBox(0.2f, 0.2f, 0.2f, 0.0f, 0.0f, 0.0f, 0.f);
 	elfSetPhysicsObjectActor(entity->dobject, (elfActor*)entity);
 	elfIncRef((elfObject*)entity->dobject);
 
-	entity->pbbLengths.x = entity->pbbLengths.y = entity->pbbLengths.z = 0.4;
+	entity->pbbLengths.x = entity->pbbLengths.y = entity->pbbLengths.z = 0.4f;
 
 	entity->armaturePlayer = elfCreateFramePlayer();
 	elfIncRef((elfObject*)entity->armaturePlayer);
@@ -66,7 +66,7 @@ void elfEntityPreDraw(elfEntity* entity)
 
 	gfxGetTransformPosition(entity->transform, &entity->position.x);
 
-	if(entity->armature && fabs(elfGetFramePlayerFrame(entity->armaturePlayer)-entity->prevArmatureFrame) > 0.0001 &&
+	if(entity->armature && fabs(elfGetFramePlayerFrame(entity->armaturePlayer)-entity->prevArmatureFrame) > 0.0001f &&
 		elfGetFramePlayerFrame(entity->armaturePlayer) <= entity->armature->frameCount)
 	{
 		elfDeformEntityWithArmature(entity->armature, entity, elfGetFramePlayerFrame(entity->armaturePlayer));
@@ -217,11 +217,11 @@ void elfCalcEntityBoundingVolumes(elfEntity* entity, unsigned char newModel)
 {
 	if(!entity->model)
 	{
-		entity->bbMin.x = entity->bbMin.y = entity->bbMin.z = -0.2;
-		entity->bbMax.x = entity->bbMax.y = entity->bbMax.z = 0.2;
-		entity->bbOffset.x = entity->bbOffset.y = entity->bbOffset.z = 0.0;
+		entity->bbMin.x = entity->bbMin.y = entity->bbMin.z = -0.2f;
+		entity->bbMax.x = entity->bbMax.y = entity->bbMax.z = 0.2f;
+		entity->bbOffset.x = entity->bbOffset.y = entity->bbOffset.z = 0.0f;
 		elfCalcEntityAabb(entity);
-		entity->cullRadius = 0.2;
+		entity->cullRadius = 0.2f;
 		return;
 	}
 
@@ -248,9 +248,9 @@ void elfCalcEntityBoundingVolumes(elfEntity* entity, unsigned char newModel)
 		entity->armBbMax.z *= entity->scale.z;
 	}
 
-	entity->bbOffset.x = (entity->bbMax.x+entity->bbMin.x)/2.0;
-	entity->bbOffset.y = (entity->bbMax.y+entity->bbMin.y)/2.0;
-	entity->bbOffset.z = (entity->bbMax.z+entity->bbMin.z)/2.0;
+	entity->bbOffset.x = (entity->bbMax.x+entity->bbMin.x)/2.0f;
+	entity->bbOffset.y = (entity->bbMax.y+entity->bbMin.y)/2.0f;
+	entity->bbOffset.z = (entity->bbMax.z+entity->bbMin.z)/2.0f;
 
 	if(!entity->pbbOffsetSet) entity->pbbOffset = entity->bbOffset;
 
@@ -326,7 +326,7 @@ ELF_API void ELF_APIENTRY elfSetEntityModel(elfEntity* entity, elfModel* model)
 		elfAddEntityMaterial(entity, material);
 	}
 
-	elfSetEntityScale(entity, 1.0, 1.0, 1.0);
+	elfSetEntityScale(entity, 1.0f, 1.0f, 1.0f);
 	elfCalcEntityBoundingVolumes(entity, ELF_TRUE);
 
 	if(elfIsActorPhysics((elfActor*)entity))
@@ -351,7 +351,7 @@ ELF_API void ELF_APIENTRY elfClearEntityModel(elfEntity* entity)
 		entity->object = NULL;
 	}
 
-	elfSetEntityScale(entity, 1.0, 1.0, 1.0);
+	elfSetEntityScale(entity, 1.0f, 1.0f, 1.0f);
 	elfCalcEntityBoundingVolumes(entity, ELF_FALSE);
 }
 
@@ -464,14 +464,14 @@ void elfResetEntityDebugPhysicsObject(elfEntity* entity)
 
 	if(!entity->model)
 	{
-		entity->dobject = elfCreatePhysicsObjectBox(0.2, 0.2, 0.2, 0.0, 0.0, 0.0, 0.0);
+		entity->dobject = elfCreatePhysicsObjectBox(0.2f, 0.2f, 0.2f, 0.0f, 0.0f, 0.0f, 0.0f);
 	}
 	else
 	{
 		entity->dobject = elfCreatePhysicsObjectBox(
-			(entity->model->bbMax.x-entity->model->bbMin.x)/2.0,
-			(entity->model->bbMax.y-entity->model->bbMin.y)/2.0,
-			(entity->model->bbMax.z-entity->model->bbMin.z)/2.0, 0.0,
+			(entity->model->bbMax.x-entity->model->bbMin.x)/2.0f,
+			(entity->model->bbMax.y-entity->model->bbMin.y)/2.0f,
+			(entity->model->bbMax.z-entity->model->bbMin.z)/2.0f, 0.0f,
 			entity->bbOffset.x, entity->bbOffset.y, entity->bbOffset.z);
 	}
 
@@ -621,8 +621,8 @@ void elfDrawEntityDebug(elfEntity* entity, gfxShaderParams* shaderParams)
 	}
 	else
 	{
-		min[0] = min[1] = min[2] = -0.2;
-		max[0] = max[1] = max[2] = 0.2;
+		min[0] = min[1] = min[2] = -0.2f;
+		max[0] = max[1] = max[2] = 0.2f;
 	}
 
 	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->lines);
@@ -711,8 +711,8 @@ void elfDrawEntityDebug(elfEntity* entity, gfxShaderParams* shaderParams)
 	vertexBuffer[70] = max[1];
 	vertexBuffer[71] = min[2];
 
-	if(!entity->selected) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.1, 0.1, 0.2, 1.0);
-	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 0.0, 0.0, 1.0);
+	if(!entity->selected) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.1f, 0.1f, 0.2f, 1.0f);
+	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.0f, 0.0f, 1.0f);
 	gfxSetShaderParams(shaderParams);
 	gfxDrawLines(24, eng->lines);
 

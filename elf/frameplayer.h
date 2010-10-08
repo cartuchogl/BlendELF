@@ -8,7 +8,7 @@ ELF_API elfFramePlayer* ELF_APIENTRY elfCreateFramePlayer()
 	player->objType = ELF_FRAME_PLAYER;
 	player->objDestr = elfDestroyFramePlayer;
 
-	player->curFrame = 1.0;
+	player->curFrame = 1.0f;
 
 	elfIncObj(ELF_FRAME_PLAYER);
 	
@@ -26,7 +26,7 @@ void elfDestroyFramePlayer(void* data)
 
 ELF_API void ELF_APIENTRY elfUpdateFramePlayer(elfFramePlayer* player)
 {
-	if(player->end > 1.0 && !player->pause)
+	if(player->end > 1.0f && !player->pause)
 	{
 		player->curFrame += player->speed*elfGetSync();
 		if(player->loop)
@@ -49,7 +49,7 @@ ELF_API void ELF_APIENTRY elfUpdateFramePlayer(elfFramePlayer* player)
 ELF_API void ELF_APIENTRY elfSetFramePlayerFrame(elfFramePlayer* player, float frame)
 {
 	player->curFrame = frame;
-	if(player->curFrame < 1.0) player->curFrame = 1.0;
+	if(player->curFrame < 1.0f) player->curFrame = 1.0f;
 
 	if(elfIsFramePlayerPlaying(player) || elfIsFramePlayerPaused(player))
 	{
@@ -71,7 +71,7 @@ ELF_API void ELF_APIENTRY elfPlayFramePlayer(elfFramePlayer* player, float start
 {
 	player->start = start;
 	player->end = end;
-	if(player->start < 1.0) player->start = 1.0;
+	if(player->start < 1.0f) player->start = 1.0f;
 	if(player->end < player->start) player->end = player->start;
 	player->curFrame = player->start;
 	player->speed = speed;
@@ -104,12 +104,12 @@ ELF_API void ELF_APIENTRY elfStopFramePlayer(elfFramePlayer* player)
 
 ELF_API void ELF_APIENTRY elfPauseFramePlayer(elfFramePlayer* player)
 {
-	if(player->end > 0.99999) player->pause = ELF_TRUE;
+	if(player->end > 0.99999f) player->pause = ELF_TRUE;
 }
 
 ELF_API void ELF_APIENTRY elfResumeFramePlayer(elfFramePlayer* player)
 {
-	if(player->end > 0.99999) player->pause = ELF_FALSE;
+	if(player->end > 0.99999f) player->pause = ELF_FALSE;
 }
 
 ELF_API float ELF_APIENTRY elfGetFramePlayerStart(elfFramePlayer* player)
@@ -134,7 +134,7 @@ ELF_API float ELF_APIENTRY elfGetFramePlayerFrame(elfFramePlayer* player)
 
 ELF_API unsigned char ELF_APIENTRY elfIsFramePlayerPlaying(elfFramePlayer* player)
 {
-	if(player->end > 0.99999 && !player->pause) return ELF_TRUE;
+	if(player->end > 0.99999f && !player->pause) return ELF_TRUE;
 	return ELF_FALSE;
 }
 

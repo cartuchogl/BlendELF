@@ -18,15 +18,15 @@ void gfxSetShaderParamsDefault(gfxShaderParams* shaderParams)
 	shaderParams->renderParams.depthFunc = GFX_LESS;
 	shaderParams->renderParams.colorWrite = GFX_TRUE;
 	shaderParams->renderParams.alphaWrite = GFX_TRUE;
-	shaderParams->renderParams.alphaThreshold = 0.99;
+	shaderParams->renderParams.alphaThreshold = 0.99f;
 	shaderParams->renderParams.cullFace = GFX_TRUE;
-	shaderParams->renderParams.lineWidth = 1.0;
+	shaderParams->renderParams.lineWidth = 1.0f;
 	shaderParams->renderParams.cullFaceMode = GFX_BACK;
 	shaderParams->renderParams.frontFace = GFX_COUNTER_CLOCK_WISE;
 	shaderParams->renderParams.multisample = GFX_TRUE;
 
-	gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 1.0, 1.0, 1.0);
-	gfxSetColor(&shaderParams->materialParams.specularColor, 1.0, 1.0, 1.0, 1.0);
+	gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 1.0f);
+	gfxSetColor(&shaderParams->materialParams.specularColor, 1.0f, 1.0f, 1.0f, 1.0f);
 
 	for(i = 0; i < GFX_MAX_TEXTURES; i++)
 	{
@@ -45,9 +45,9 @@ void gfxSetShaderParamsDefault(gfxShaderParams* shaderParams)
 
 void gfxSetMaterialParamsDefault(gfxShaderParams* shaderParams)
 {
-	gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 1.0, 1.0, 1.0);
-	gfxSetColor(&shaderParams->materialParams.specularColor, 1.0, 1.0, 1.0, 1.0);
-	shaderParams->materialParams.shininess = 0.0;
+	gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 1.0f);
+	gfxSetColor(&shaderParams->materialParams.specularColor, 1.0f, 1.0f, 1.0f, 1.0f);
+	shaderParams->materialParams.shininess = 0.0f;
 }
 
 void gfxSetTextureParamsDefault(gfxShaderParams* shaderParams)
@@ -59,7 +59,7 @@ void gfxSetTextureParamsDefault(gfxShaderParams* shaderParams)
 		shaderParams->textureParams[i].type = GFX_COLOR_MAP;
 		shaderParams->textureParams[i].texture = NULL;
 		shaderParams->textureParams[i].projectionMode = GFX_NONE;
-		shaderParams->textureParams[i].parallaxScale = 0.25;
+		shaderParams->textureParams[i].parallaxScale = 0.25f;
 		gfxMatrix4SetIdentity(shaderParams->textureParams[i].matrix);
 	}
 }
@@ -254,12 +254,12 @@ void gfxSetShaderParams(gfxShaderParams* shaderParams)
 
 				glLightfv(GL_LIGHT0, GL_DIFFUSE, &shaderParams->lightParams.color.r);
 				glLightfv(GL_LIGHT0, GL_SPECULAR, &shaderParams->lightParams.color.r);
-				glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 1.0/shaderParams->lightParams.distance);
+				glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 1.0f/shaderParams->lightParams.distance);
 
 				if(shaderParams->lightParams.type != GFX_SPOT_LIGHT)
 				{
-					glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 0.0);
-					glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180.0);
+					glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 0.0f);
+					glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180.0f);
 				}
 				else
 				{
@@ -274,12 +274,12 @@ void gfxSetShaderParams(gfxShaderParams* shaderParams)
 					position[0] = -shaderParams->lightParams.direction.x;
 					position[1] = -shaderParams->lightParams.direction.y;
 					position[2] = -shaderParams->lightParams.direction.z;
-					position[3] = 0.0;
+					position[3] = 0.0f;
 				}
 				else
 				{
 					memcpy(position, &shaderParams->lightParams.position.x, sizeof(float)*3); 
-					position[3] = 1.0;
+					position[3] = 1.0f;
 				}
 
 				glLightfv(GL_LIGHT0, GL_POSITION, position);

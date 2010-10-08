@@ -54,17 +54,17 @@ void elfInitActor(elfActor* actor, unsigned char camera)
 	elfSetFramePlayerUserData(actor->ipoPlayer, actor);
 	elfSetFramePlayerCallback(actor->ipoPlayer, elfActorIpoCallback);
 
-	actor->pbbLengths.x = actor->pbbLengths.y = actor->pbbLengths.z = 1.0;
+	actor->pbbLengths.x = actor->pbbLengths.y = actor->pbbLengths.z = 1.0f;
 	actor->shape = ELF_NONE;
-	actor->mass = 0.0;
-	actor->linDamp = 0.0;
-	actor->angDamp = 0.0;
-	actor->linSleep = 0.8;
-	actor->angSleep = 1.0;
-	actor->restitution = 0.0;
-	actor->anisFric.x = actor->anisFric.y = actor->anisFric.z = 1.0;
-	actor->linFactor.x = actor->linFactor.y = actor->linFactor.z = 1.0;
-	actor->angFactor.x = actor->angFactor.y = actor->angFactor.z = 1.0;
+	actor->mass = 0.0f;
+	actor->linDamp = 0.0f;
+	actor->angDamp = 0.0f;
+	actor->linSleep = 0.8f;
+	actor->angSleep = 1.0f;
+	actor->restitution = 0.0f;
+	actor->anisFric.x = actor->anisFric.y = actor->anisFric.z = 1.0f;
+	actor->linFactor.x = actor->linFactor.y = actor->linFactor.z = 1.0f;
+	actor->angFactor.x = actor->angFactor.y = actor->angFactor.z = 1.0f;
 
 	actor->moved = ELF_TRUE;
 }
@@ -495,18 +495,18 @@ ELF_API void ELF_APIENTRY elfSetActorPhysics(elfActor* actor, int shape, float m
 	{
 		case ELF_BOX:
 		{
-			actor->object = elfCreatePhysicsObjectBox(actor->pbbLengths.x/2.0,
-				actor->pbbLengths.y/2.0, actor->pbbLengths.z/2.0, mass,
+			actor->object = elfCreatePhysicsObjectBox(actor->pbbLengths.x/2.0f,
+				actor->pbbLengths.y/2.0f, actor->pbbLengths.z/2.0f, mass,
 				actor->pbbOffset.x, actor->pbbOffset.y, actor->pbbOffset.z);
 			break;
 		}
 		case ELF_SPHERE:
 		{
 			if(actor->pbbLengths.x > actor->pbbLengths.y && actor->pbbLengths.x > actor->pbbLengths.z)
-				radius = actor->pbbLengths.x/2.0;
+				radius = actor->pbbLengths.x/2.0f;
 			else if(actor->pbbLengths.y > actor->pbbLengths.x && actor->pbbLengths.y > actor->pbbLengths.z)
-				radius = actor->pbbLengths.y/2.0;
-			else  radius = actor->pbbLengths.z/2.0;
+				radius = actor->pbbLengths.y/2.0f;
+			else  radius = actor->pbbLengths.z/2.0f;
 
 			actor->object = elfCreatePhysicsObjectSphere(radius, mass,
 				actor->pbbOffset.x, actor->pbbOffset.y, actor->pbbOffset.z);
@@ -530,35 +530,35 @@ ELF_API void ELF_APIENTRY elfSetActorPhysics(elfActor* actor, int shape, float m
 		}
 		case ELF_CAPSULE_X:
 		{
-			if(actor->pbbLengths.z > actor->pbbLengths.y) radius = actor->pbbLengths.z/2.0;
-			else radius = actor->pbbLengths.y/2.0;
+			if(actor->pbbLengths.z > actor->pbbLengths.y) radius = actor->pbbLengths.z/2.0f;
+			else radius = actor->pbbLengths.y/2.0f;
 
-			actor->object = elfCreatePhysicsObjectCapsule(ELF_CAPSULE_X, elfFloatMax(actor->pbbLengths.x-radius*2, 0.0), radius, mass,
+			actor->object = elfCreatePhysicsObjectCapsule(ELF_CAPSULE_X, elfFloatMax(actor->pbbLengths.x-radius*2, 0.0f), radius, mass,
 				actor->pbbOffset.x, actor->pbbOffset.y, actor->pbbOffset.z);
 			break;
 		}
 		case ELF_CAPSULE_Y:
 		{
-			if(actor->pbbLengths.z > actor->pbbLengths.x) radius = actor->pbbLengths.z/2.0;
-			else radius = actor->pbbLengths.x/2.0;
+			if(actor->pbbLengths.z > actor->pbbLengths.x) radius = actor->pbbLengths.z/2.0f;
+			else radius = actor->pbbLengths.x/2.0f;
 
-			actor->object = elfCreatePhysicsObjectCapsule(ELF_CAPSULE_Y, elfFloatMax(actor->pbbLengths.y-radius*2, 0.0), radius, mass,
+			actor->object = elfCreatePhysicsObjectCapsule(ELF_CAPSULE_Y, elfFloatMax(actor->pbbLengths.y-radius*2, 0.0f), radius, mass,
 				actor->pbbOffset.x, actor->pbbOffset.y, actor->pbbOffset.z);
 			break;
 		}
 		case ELF_CAPSULE_Z:
 		{
-			if(actor->pbbLengths.x > actor->pbbLengths.y) radius = actor->pbbLengths.x/2.0;
-			else radius = actor->pbbLengths.y/2.0;
+			if(actor->pbbLengths.x > actor->pbbLengths.y) radius = actor->pbbLengths.x/2.0f;
+			else radius = actor->pbbLengths.y/2.0f;
 
-			actor->object = elfCreatePhysicsObjectCapsule(ELF_CAPSULE_Z, elfFloatMax(actor->pbbLengths.z-radius*2, 0.0), radius, mass,
+			actor->object = elfCreatePhysicsObjectCapsule(ELF_CAPSULE_Z, elfFloatMax(actor->pbbLengths.z-radius*2, 0.0f), radius, mass,
 				actor->pbbOffset.x, actor->pbbOffset.y, actor->pbbOffset.z);
 			break;
 		}
 		case ELF_CONE_X:
 		{
-			if(actor->pbbLengths.z > actor->pbbLengths.y) radius = actor->pbbLengths.z/2.0;
-			else radius = actor->pbbLengths.y/2.0;
+			if(actor->pbbLengths.z > actor->pbbLengths.y) radius = actor->pbbLengths.z/2.0f;
+			else radius = actor->pbbLengths.y/2.0f;
 
 			actor->object = elfCreatePhysicsObjectCone(ELF_CONE_X, actor->pbbLengths.x, radius, mass,
 				actor->pbbOffset.x, actor->pbbOffset.y, actor->pbbOffset.z);
@@ -566,8 +566,8 @@ ELF_API void ELF_APIENTRY elfSetActorPhysics(elfActor* actor, int shape, float m
 		}
 		case ELF_CONE_Y:
 		{
-			if(actor->pbbLengths.z > actor->pbbLengths.x) radius = actor->pbbLengths.z/2.0;
-			else radius = actor->pbbLengths.x/2.0;
+			if(actor->pbbLengths.z > actor->pbbLengths.x) radius = actor->pbbLengths.z/2.0f;
+			else radius = actor->pbbLengths.x/2.0f;
 
 			actor->object = elfCreatePhysicsObjectCone(ELF_CONE_Y, actor->pbbLengths.y, radius, mass,
 				actor->pbbOffset.x, actor->pbbOffset.y, actor->pbbOffset.z);
@@ -575,8 +575,8 @@ ELF_API void ELF_APIENTRY elfSetActorPhysics(elfActor* actor, int shape, float m
 		}
 		case ELF_CONE_Z:
 		{
-			if(actor->pbbLengths.x > actor->pbbLengths.y) radius = actor->pbbLengths.x/2.0;
-			else radius = actor->pbbLengths.y/2.0;
+			if(actor->pbbLengths.x > actor->pbbLengths.y) radius = actor->pbbLengths.x/2.0f;
+			else radius = actor->pbbLengths.y/2.0f;
 
 			actor->object = elfCreatePhysicsObjectCone(ELF_CONE_Z, actor->pbbLengths.z, radius, mass,
 				actor->pbbOffset.x, actor->pbbOffset.y, actor->pbbOffset.z);
@@ -1105,8 +1105,8 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 
 	if(!actor->selected) return;
 
-	if(elfIsActorPhysics(actor)) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.5, 1.0, 0.5, 1.0);
-	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.5, 0.5, 1.0, 1.0);
+	if(elfIsActorPhysics(actor)) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.5f, 1.0f, 0.5f, 1.0f);
+	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.5f, 0.5f, 1.0f, 1.0f);
 	gfxSetShaderParams(shaderParams);
 
 	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->lines);
@@ -1209,13 +1209,13 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 	}
 	else if(actor->shape == ELF_SPHERE)
 	{
-		step = (360.0/128.0)*GFX_PI_DIV_180;
+		step = (360.0f/128.0f)*GFX_PI_DIV_180;
 		
 		if(actor->pbbLengths.x > actor->pbbLengths.y && actor->pbbLengths.x > actor->pbbLengths.z)
-			size = actor->pbbLengths.x/2.0;
+			size = actor->pbbLengths.x/2.0f;
 		else if(actor->pbbLengths.y > actor->pbbLengths.x && actor->pbbLengths.y > actor->pbbLengths.z)
-			size = actor->pbbLengths.y/2.0;
-		else size = actor->pbbLengths.z/2.0;
+			size = actor->pbbLengths.y/2.0f;
+		else size = actor->pbbLengths.z/2.0f;
 
 		for(i = 0; i < 128; i++)
 		{
@@ -1246,12 +1246,12 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 	}
 	else if(actor->shape == ELF_CAPSULE_X)
 	{
-		step = (360.0/128.0)*GFX_PI_DIV_180;
+		step = (360.0f/128.0f)*GFX_PI_DIV_180;
 
-		if(actor->pbbLengths.y > actor->pbbLengths.z) size = actor->pbbLengths.y/2.0;
-		else size = actor->pbbLengths.z/2.0;
+		if(actor->pbbLengths.y > actor->pbbLengths.z) size = actor->pbbLengths.y/2.0f;
+		else size = actor->pbbLengths.z/2.0f;
 
-		halfLength = elfFloatMax(actor->pbbLengths.x-size*2, 0.0)/2.0;
+		halfLength = elfFloatMax(actor->pbbLengths.x-size*2, 0.0f)/2.0f;
 
 		for(i = 0; i < 32; i++)
 		{
@@ -1315,12 +1315,12 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 	}
 	else if(actor->shape == ELF_CAPSULE_Y)
 	{
-		step = (360.0/128.0)*GFX_PI_DIV_180;
+		step = (360.0f/128.0f)*GFX_PI_DIV_180;
 
-		if(actor->pbbLengths.x > actor->pbbLengths.z) size = actor->pbbLengths.x/2.0;
-		else size = actor->pbbLengths.z/2.0;
+		if(actor->pbbLengths.x > actor->pbbLengths.z) size = actor->pbbLengths.x/2.0f;
+		else size = actor->pbbLengths.z/2.0f;
 
-		halfLength = elfFloatMax(actor->pbbLengths.y-size*2, 0.0)/2.0;
+		halfLength = elfFloatMax(actor->pbbLengths.y-size*2, 0.0f)/2.0f;
 
 		for(i = 0; i < 32; i++)
 		{
@@ -1384,12 +1384,12 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 	}
 	else if(actor->shape == ELF_CAPSULE_Z)
 	{
-		step = (360.0/128.0)*GFX_PI_DIV_180;
+		step = (360.0f/128.0f)*GFX_PI_DIV_180;
 
-		if(actor->pbbLengths.x > actor->pbbLengths.y) size = actor->pbbLengths.x/2.0;
-		else size = actor->pbbLengths.y/2.0;
+		if(actor->pbbLengths.x > actor->pbbLengths.y) size = actor->pbbLengths.x/2.0f;
+		else size = actor->pbbLengths.y/2.0f;
 
-		halfLength = elfFloatMax(actor->pbbLengths.z-size*2, 0.0)/2.0;
+		halfLength = elfFloatMax(actor->pbbLengths.z-size*2, 0.0f)/2.0f;
 
 		for(i = 0; i < 32; i++)
 		{
@@ -1453,12 +1453,12 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 	}
 	else if(actor->shape == ELF_CONE_X)
 	{
-		step = (360.0/128.0)*GFX_PI_DIV_180;
+		step = (360.0f/128.0f)*GFX_PI_DIV_180;
 		
-		if(actor->pbbLengths.y > actor->pbbLengths.z) size = actor->pbbLengths.y/2.0;
-		else size = actor->pbbLengths.z/2.0;
+		if(actor->pbbLengths.y > actor->pbbLengths.z) size = actor->pbbLengths.y/2.0f;
+		else size = actor->pbbLengths.z/2.0f;
 
-		halfLength = actor->pbbLengths.x/2.0;
+		halfLength = actor->pbbLengths.x/2.0f;
 
 		for(i = 0; i < 128; i++)
 		{
@@ -1470,40 +1470,40 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 		gfxDrawLineLoop(128, eng->lines);
 
 		vertexBuffer[0] = halfLength;
-		vertexBuffer[1] = 0.0;
-		vertexBuffer[2] = 0.0;
+		vertexBuffer[1] = 0.0f;
+		vertexBuffer[2] = 0.0f;
 		vertexBuffer[3] = -halfLength;
 		vertexBuffer[4] = size;
-		vertexBuffer[5] = 0.0;
+		vertexBuffer[5] = 0.0f;
 		vertexBuffer[6] = halfLength;
-		vertexBuffer[7] = 0.0;
-		vertexBuffer[8] = 0.0;
+		vertexBuffer[7] = 0.0f;
+		vertexBuffer[8] = 0.0f;
 		vertexBuffer[9] = -halfLength;
 		vertexBuffer[10] = -size;
-		vertexBuffer[11] = 0.0;
+		vertexBuffer[11] = 0.0f;
 		vertexBuffer[12] = halfLength;
-		vertexBuffer[13] = 0.0;
-		vertexBuffer[14] = 0.0;
+		vertexBuffer[13] = 0.0f;
+		vertexBuffer[14] = 0.0f;
 		vertexBuffer[15] = -halfLength;
-		vertexBuffer[16] = 0.0;
+		vertexBuffer[16] = 0.0f;
 		vertexBuffer[17] = size;
 		vertexBuffer[18] = halfLength;
-		vertexBuffer[19] = 0.0;
-		vertexBuffer[20] = 0.0;
+		vertexBuffer[19] = 0.0f;
+		vertexBuffer[20] = 0.0f;
 		vertexBuffer[21] = -halfLength;
-		vertexBuffer[22] = 0.0;
+		vertexBuffer[22] = 0.0f;
 		vertexBuffer[23] = -size;
 
 		gfxDrawLines(8, eng->lines);
 	}
 	else if(actor->shape == ELF_CONE_Y)
 	{
-		step = (360.0/128.0)*GFX_PI_DIV_180;
+		step = (360.0f/128.0f)*GFX_PI_DIV_180;
 		
-		if(actor->pbbLengths.x > actor->pbbLengths.z) size = actor->pbbLengths.x/2.0;
-		else size = actor->pbbLengths.z/2.0;
+		if(actor->pbbLengths.x > actor->pbbLengths.z) size = actor->pbbLengths.x/2.0f;
+		else size = actor->pbbLengths.z/2.0f;
 
-		halfLength = actor->pbbLengths.y/2.0;
+		halfLength = actor->pbbLengths.y/2.0f;
 
 		for(i = 0; i < 128; i++)
 		{
@@ -1514,28 +1514,28 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 
 		gfxDrawLineLoop(128, eng->lines);
 
-		vertexBuffer[0] = 0.0;
+		vertexBuffer[0] = 0.0f;
 		vertexBuffer[1] = halfLength;
-		vertexBuffer[2] = 0.0;
+		vertexBuffer[2] = 0.0f;
 		vertexBuffer[3] = size;
 		vertexBuffer[4] = -halfLength;
-		vertexBuffer[5] = 0.0;
-		vertexBuffer[6] = 0.0;
+		vertexBuffer[5] = 0.0f;
+		vertexBuffer[6] = 0.0f;
 		vertexBuffer[7] = halfLength;
-		vertexBuffer[8] = 0.0;
+		vertexBuffer[8] = 0.0f;
 		vertexBuffer[9] = -size;
 		vertexBuffer[10] = -halfLength;
-		vertexBuffer[11] = 0.0;
-		vertexBuffer[12] = 0.0;
+		vertexBuffer[11] = 0.0f;
+		vertexBuffer[12] = 0.0f;
 		vertexBuffer[13] = halfLength;
-		vertexBuffer[14] = 0.0;
-		vertexBuffer[15] = 0.0;
+		vertexBuffer[14] = 0.0f;
+		vertexBuffer[15] = 0.0f;
 		vertexBuffer[16] = -halfLength;
 		vertexBuffer[17] = size;
-		vertexBuffer[18] = 0.0;
+		vertexBuffer[18] = 0.0f;
 		vertexBuffer[19] = halfLength;
-		vertexBuffer[20] = 0.0;
-		vertexBuffer[21] = 0.0;
+		vertexBuffer[20] = 0.0f;
+		vertexBuffer[21] = 0.0f;
 		vertexBuffer[22] = -halfLength;
 		vertexBuffer[23] = -size;
 
@@ -1543,12 +1543,12 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 	}
 	else if(actor->shape == ELF_CONE_Z)
 	{
-		step = (360.0/128.0)*GFX_PI_DIV_180;
+		step = (360.0f/128.0f)*GFX_PI_DIV_180;
 		
-		if(actor->pbbLengths.x > actor->pbbLengths.y) size = actor->pbbLengths.x/2.0;
-		else size = actor->pbbLengths.y/2.0;
+		if(actor->pbbLengths.x > actor->pbbLengths.y) size = actor->pbbLengths.x/2.0f;
+		else size = actor->pbbLengths.y/2.0f;
 
-		halfLength = actor->pbbLengths.z/2.0;
+		halfLength = actor->pbbLengths.z/2.0f;
 
 		for(i = 0; i < 128; i++)
 		{
@@ -1559,28 +1559,28 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 
 		gfxDrawLineLoop(128, eng->lines);
 
-		vertexBuffer[0] = 0.0;
-		vertexBuffer[1] = 0.0;
+		vertexBuffer[0] = 0.0f;
+		vertexBuffer[1] = 0.0f;
 		vertexBuffer[2] = halfLength;
 		vertexBuffer[3] = size;
-		vertexBuffer[4] = 0.0;
+		vertexBuffer[4] = 0.0f;
 		vertexBuffer[5] = -halfLength;
-		vertexBuffer[6] = 0.0;
-		vertexBuffer[7] = 0.0;
+		vertexBuffer[6] = 0.0f;
+		vertexBuffer[7] = 0.0f;
 		vertexBuffer[8] = halfLength;
 		vertexBuffer[9] = -size;
-		vertexBuffer[10] = 0.0;
+		vertexBuffer[10] = 0.0f;
 		vertexBuffer[11] = -halfLength;
-		vertexBuffer[12] = 0.0;
-		vertexBuffer[13] = 0.0;
+		vertexBuffer[12] = 0.0f;
+		vertexBuffer[13] = 0.0f;
 		vertexBuffer[14] = halfLength;
-		vertexBuffer[15] = 0.0;
+		vertexBuffer[15] = 0.0f;
 		vertexBuffer[16] = size;
 		vertexBuffer[17] = -halfLength;
-		vertexBuffer[18] = 0.0;
-		vertexBuffer[19] = 0.0;
+		vertexBuffer[18] = 0.0f;
+		vertexBuffer[19] = 0.0f;
 		vertexBuffer[20] = halfLength;
-		vertexBuffer[21] = 0.0;
+		vertexBuffer[21] = 0.0f;
 		vertexBuffer[22] = -size;
 		vertexBuffer[23] = -halfLength;
 

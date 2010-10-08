@@ -2,14 +2,14 @@
 void gfxVecToEuler(float* vec, float* euler)
 {
 	//euler[0] = -GFX_180_DIV_PI*atan(sqrt(vec[0]*vec[0]+vec[1]*vec[1])/vec[2]);
-	euler[0] = 0.0;
-	euler[1] = 0.0;
+	euler[0] = 0.0f;
+	euler[1] = 0.0f;
 	euler[2] = -GFX_180_DIV_PI*atan(vec[0]/(vec[1]));
 }
 
 void gfxVecNormalize(float* vec)
 {
-	float length = 1.0/(float)sqrt(vec[0]*vec[0]+vec[1]*vec[1]+vec[2]*vec[2]);
+	float length = 1.0f/(float)sqrt(vec[0]*vec[0]+vec[1]*vec[1]+vec[2]*vec[2]);
 	vec[0] *= length;
 	vec[1] *= length;
 	vec[2] *= length;
@@ -34,13 +34,13 @@ float gfxVecLength(float* vec)
 
 void gfxQuaSetIdentity(float* qua)
 {
-	qua[0] = qua[1] = qua[2] = 0.0;
-	qua[3] = 1.0;
+	qua[0] = qua[1] = qua[2] = 0.0f;
+	qua[3] = 1.0f;
 }
 
 void gfxQuaNormalize(float* qua, float* result)
 {
-	float length = 1.0/sqrt(qua[0]*qua[0]+qua[1]*qua[1]+qua[2]*qua[2]+qua[3]*qua[3]);
+	float length = 1.0f/sqrt(qua[0]*qua[0]+qua[1]*qua[1]+qua[2]*qua[2]+qua[3]*qua[3]);
 	result[0] = qua[0]*length;
 	result[1] = qua[1]*length;
 	result[2] = qua[2]*length;
@@ -49,7 +49,7 @@ void gfxQuaNormalize(float* qua, float* result)
 
 void gfxQuaGetInverse(float* qua, float* invqua)
 {
-	float length = 1.0/(qua[0]*qua[0]+qua[1]*qua[1]+qua[2]*qua[2]+qua[3]*qua[3]);
+	float length = 1.0f/(qua[0]*qua[0]+qua[1]*qua[1]+qua[2]*qua[2]+qua[3]*qua[3]);
 	invqua[0] = qua[0]*(-length);
 	invqua[1] = qua[1]*(-length);
 	invqua[2] = qua[2]*(-length);
@@ -58,7 +58,7 @@ void gfxQuaGetInverse(float* qua, float* invqua)
 
 void gfxQuaFromDirection(float* dir, float* qua)
 {
-	float up[3] = {0.0, 0.0, -1.0};
+	float up[3] = {0.0f, 0.0f, -1.0f};
 	float right[3];
 	float scale;
 	float tempQua[4];
@@ -66,8 +66,8 @@ void gfxQuaFromDirection(float* dir, float* qua)
 	gfxVecCrossProduct(up, dir, right);
 	gfxVecCrossProduct(dir, right, up);
 
-	tempQua[3] = (float)sqrt(1.0 + right[0]+up[1]+dir[2]) / 2.0;
-	scale = tempQua[3]*4.0;
+	tempQua[3] = (float)sqrt(1.0f + right[0]+up[1]+dir[2]) / 2.0f;
+	scale = tempQua[3]*4.0f;
 	tempQua[0] = (dir[1]-up[2])/scale;
 	tempQua[1] = (right[2]-dir[0])/scale;
 	tempQua[2] = (up[0]-right[1])/scale;
@@ -82,8 +82,8 @@ void gfxQuaFromAngleAxis(float angle, float* axis, float* qua)
 	float sinA;
 	float cosA;
 
-	sinA = (float)sin(angle/2.0*GFX_PI_DIV_180);
-	cosA = (float)cos(angle/2.0*GFX_PI_DIV_180);
+	sinA = (float)sin(angle/2.0f*GFX_PI_DIV_180);
+	cosA = (float)cos(angle/2.0f*GFX_PI_DIV_180);
 
 	qua[0] = axis[0]*sinA;
 	qua[1] = axis[1]*sinA;
@@ -100,23 +100,23 @@ void gfxQuaFromEuler(float x, float y, float z, float* qua)
 	gfxQuaSetIdentity(qua);
 	memset(axis, 0x0, sizeof(float)*3);
 
-	if(x != 0.0)
+	if(x != 0.0f)
 	{
-		axis[0] = 1.0; axis[1] = axis[2] = 0.0;
+		axis[0] = 1.0f; axis[1] = axis[2] = 0.0f;
 		gfxQuaFromAngleAxis(x, axis, axisAngleQua);
 		gfxMulQuaQua(axisAngleQua, qua, tempQua);
 		memcpy(qua, tempQua, sizeof(float)*4);
 	}
-	if(y != 0.0)
+	if(y != 0.0f)
 	{
-		axis[1] = 1.0; axis[0] = axis[2] = 0.0;
+		axis[1] = 1.0f; axis[0] = axis[2] = 0.0f;
 		gfxQuaFromAngleAxis(y, axis, axisAngleQua);
 		gfxMulQuaQua(axisAngleQua, qua, tempQua);
 		memcpy(qua, tempQua, sizeof(float)*4);
 	}
-	if(z != 0.0)
+	if(z != 0.0f)
 	{
-		axis[2] = 1.0; axis[0] = axis[1] = 0.0;
+		axis[2] = 1.0f; axis[0] = axis[1] = 0.0f;
 		gfxQuaFromAngleAxis(z, axis, axisAngleQua);
 		gfxMulQuaQua(axisAngleQua, qua, tempQua);
 		memcpy(qua, tempQua, sizeof(float)*4);
@@ -167,23 +167,23 @@ void gfxRotateQua(float x, float y, float z, float* qua)
 	gfxQuaSetIdentity(tempQua0);
 	memset(axis, 0x0, sizeof(float)*3);
 
-	if(x != 0.0)
+	if(x != 0.0f)
 	{
-		axis[0] = 1.0; axis[1] = axis[2] = 0.0;
+		axis[0] = 1.0f; axis[1] = axis[2] = 0.0f;
 		gfxQuaFromAngleAxis(x, axis, axisAngleQua);
 		gfxMulQuaQua(axisAngleQua, tempQua0, tempQua1);
 		memcpy(tempQua0, tempQua1, sizeof(float)*4);
 	}
-	if(y != 0.0)
+	if(y != 0.0f)
 	{
-		axis[1] = 1.0; axis[0] = axis[2] = 0.0;
+		axis[1] = 1.0f; axis[0] = axis[2] = 0.0f;
 		gfxQuaFromAngleAxis(y, axis, axisAngleQua);
 		gfxMulQuaQua(axisAngleQua, tempQua0, tempQua1);
 		memcpy(tempQua0, tempQua1, sizeof(float)*4);
 	}
-	if(z != 0.0)
+	if(z != 0.0f)
 	{
-		axis[2] = 1.0; axis[0] = axis[1] = 0.0;
+		axis[2] = 1.0f; axis[0] = axis[1] = 0.0f;
 		gfxQuaFromAngleAxis(z, axis, axisAngleQua);
 		gfxMulQuaQua(axisAngleQua, tempQua0, tempQua1);
 		memcpy(tempQua0, tempQua1, sizeof(float)*4);
@@ -204,25 +204,25 @@ void gfxRotateQuaLocal(float x, float y, float z, float* qua)
 	gfxQuaSetIdentity(tempQua0);
 	memset(axis, 0x0, sizeof(float)*3);
 
-	if(x != 0.0)
+	if(x != 0.0f)
 	{
-		tempAxis[0] = 1.0; tempAxis[1] = tempAxis[2] = 0.0;
+		tempAxis[0] = 1.0f; tempAxis[1] = tempAxis[2] = 0.0f;
 		gfxMulQuaVec(qua, tempAxis, axis);
 		gfxQuaFromAngleAxis(x, axis, axisAngleQua);
 		gfxMulQuaQua(axisAngleQua, tempQua0, tempQua1);
 		memcpy(tempQua0, tempQua1, sizeof(float)*4);
 	}
-	if(y != 0.0)
+	if(y != 0.0f)
 	{
-		tempAxis[1] = 1.0; tempAxis[0] = tempAxis[2] = 0.0;
+		tempAxis[1] = 1.0f; tempAxis[0] = tempAxis[2] = 0.0f;
 		gfxMulQuaVec(qua, tempAxis, axis);
 		gfxQuaFromAngleAxis(y, axis, axisAngleQua);
 		gfxMulQuaQua(axisAngleQua, tempQua0, tempQua1);
 		memcpy(tempQua0, tempQua1, sizeof(float)*4);
 	}
-	if(z != 0.0)
+	if(z != 0.0f)
 	{
-		tempAxis[2] = 1.0; tempAxis[0] = tempAxis[1] = 0.0;
+		tempAxis[2] = 1.0f; tempAxis[0] = tempAxis[1] = 0.0f;
 		gfxMulQuaVec(qua, tempAxis, axis);
 		gfxQuaFromAngleAxis(z, axis, axisAngleQua);
 		gfxMulQuaQua(axisAngleQua, tempQua0, tempQua1);
@@ -245,14 +245,14 @@ void gfxMulQuaVec(float* qua, float* vec1, float* vec2)
 	gfxVecCrossProduct(qvec, vec1, uv);
 	gfxVecCrossProduct(qvec, uv, uuv);
 
-	qmul = 2.0*qua[3];
+	qmul = 2.0f*qua[3];
 	uv[0] *= qmul;
 	uv[1] *= qmul;
 	uv[2] *= qmul;
 
-	uuv[0] *= 2.0;
-	uuv[1] *= 2.0;
-	uuv[2] *= 2.0;
+	uuv[0] *= 2.0f;
+	uuv[1] *= 2.0f;
+	uuv[2] *= 2.0f;
 
 	vec2[0] = vec1[0]+uv[0]+uuv[0];
 	vec2[1] = vec1[1]+uv[1]+uuv[1];
@@ -279,7 +279,7 @@ void gfxQuaSlerp(float* qa, float* qc, double t, float* result)
 	memcpy(qb, qc, sizeof(float)*4);
 
 	cosHalfTheta = qa[3]*qb[3]+qa[0]*qb[0]+qa[1]*qb[1]+qa[2]*qb[2];
-	if(abs(cosHalfTheta) >= 1.0)
+	if(abs(cosHalfTheta) >= 1.0f)
 	{
 		result[0] = qa[0];
 		result[1] = qa[1];
@@ -288,7 +288,7 @@ void gfxQuaSlerp(float* qa, float* qc, double t, float* result)
 		return;
 	}
 
-	if (cosHalfTheta < 0.0)
+	if (cosHalfTheta < 0.0f)
 	{
 		qb[0] = -qb[0];
 		qb[1] = -qb[1];
@@ -298,14 +298,14 @@ void gfxQuaSlerp(float* qa, float* qc, double t, float* result)
 	}
 
 	halfTheta = acos(cosHalfTheta);
-	sinHalfTheta = sqrt(1.0-cosHalfTheta*cosHalfTheta);
+	sinHalfTheta = sqrt(1.0f-cosHalfTheta*cosHalfTheta);
 
-	if(fabs(sinHalfTheta) < 0.001)
+	if(fabs(sinHalfTheta) < 0.001f)
 	{
-		result[0] = (qa[0] * 0.5 + qb[0] * 0.5);
-		result[1] = (qa[1] * 0.5 + qb[1] * 0.5);
-		result[2] = (qa[2] * 0.5 + qb[2] * 0.5);
-		result[3] = (qa[3] * 0.5 + qb[3] * 0.5);
+		result[0] = (qa[0] * 0.5f + qb[0] * 0.5f);
+		result[1] = (qa[1] * 0.5f + qb[1] * 0.5f);
+		result[2] = (qa[2] * 0.5f + qb[2] * 0.5f);
+		result[3] = (qa[3] * 0.5f + qb[3] * 0.5f);
 		return;
 	}
 
@@ -321,7 +321,7 @@ void gfxQuaSlerp(float* qa, float* qc, double t, float* result)
 void gfxMatrix4SetIdentity(float* mat)
 {
 	memset(mat, 0x0, sizeof(float)*16);
-	mat[0] = mat[5] = mat[10] = mat[15] = 1.0;
+	mat[0] = mat[5] = mat[10] = mat[15] = 1.0f;
 }
 
 void gfxMatrix4Transpose(float* mat1, float* mat2)
@@ -398,7 +398,7 @@ float gfxMatrix4GetDeterminant(float* mat1)
 
 void gfxMatrix4GetInverseFast(float* mat1, float* mat2)
 {
-	mat2[3] = mat2[7] = mat2[11] = 0.0; mat2[15] = 1.0;
+	mat2[3] = mat2[7] = mat2[11] = 0.0f; mat2[15] = 1.0f;
 	mat2[0] = mat1[0];
 	mat2[1] = mat1[4];
 	mat2[2] = mat1[8];
@@ -426,15 +426,15 @@ unsigned char gfxMatrix4GetInverse(float* mat1, float* mat2)
 	for(i = 0; i < 4; i++) {
 		for (j=0; j<4; j++) {
 			matr[i][j] = mat1[4*i+j];
-			ident[i][j] = 0.0;
+			ident[i][j] = 0.0f;
 		}
-		ident[i][i] = 1.0;
+		ident[i][i] = 1.0f;
 	} 
 
 	for(j = 0; j <= 3; j++) ipiv[j] = 0;
 	for(i = 0; i <= 3; i++)
 	{
-		big = 0.0;
+		big = 0.0f;
 
 		for (j = 0; j <= 3; j++)
 		{
@@ -447,8 +447,8 @@ unsigned char gfxMatrix4GetInverse(float* mat1, float* mat2)
 						if(fabs(matr[j][k]) >= big)
 						{
 							big = (float)fabs(matr[j][k]);
-							irow=j;
-							icol=k;
+							irow = j;
+							icol = k;
 						}
 					}
 					else if(ipiv[k] > 1)
@@ -470,10 +470,10 @@ unsigned char gfxMatrix4GetInverse(float* mat1, float* mat2)
 		indxr[i]=irow;
 		indxc[i]=icol;
 
-		if(matr[icol][icol] == 0.0) return GFX_FALSE; 
+		if(matr[icol][icol] == 0.0f) return GFX_FALSE; 
 
-		pivinv = 1.0 / matr[icol][icol];
-		matr[icol][icol]=1.0;
+		pivinv = 1.0f / matr[icol][icol];
+		matr[icol][icol] = 1.0f;
 
 		for(l = 0; l <= 3 ; l++) matr[icol][l] *= pivinv;
 		for(l = 0; l <= 3 ; l++) ident[icol][l] *= pivinv;
@@ -483,9 +483,9 @@ unsigned char gfxMatrix4GetInverse(float* mat1, float* mat2)
 			if (ll != icol)
 			{
 				dum=matr[ll][icol];
-				matr[ll][icol]=0.0;
-				for (l=0;l<=3;l++) matr[ll][l] -= matr[icol][l]*dum;
-				for (l=0;l<=3;l++) ident[ll][l] -= ident[icol][l]*dum;
+				matr[ll][icol] = 0.0f;
+				for(l = 0; l<=3; l++) matr[ll][l] -= matr[icol][l]*dum;
+				for(l = 0; l<=3; l++) ident[ll][l] -= ident[icol][l]*dum;
 			}
 		}
 	}
@@ -519,48 +519,48 @@ void gfxMatrix3ToQua(float* mat, float* qua)
 
 	if (tr > 0)
 	{
-		S = (float)sqrt(tr+1.0) * 2.0;
-		qua[3] = 0.25 * S;
+		S = (float)sqrt(tr+1.0f) * 2.0f;
+		qua[3] = 0.25f * S;
 		qua[0] = (mat[7] - mat[5]) / S;
 		qua[1] = (mat[2] - mat[6]) / S;
 		qua[2] = (mat[3] - mat[1]) / S;
 	}
 	else if(mat[0] > mat[4] && mat[0] > mat[8])
 	{
-		S = (float)sqrt(1.0 + mat[0] - mat[4] - mat[8]) * 2.0;
+		S = (float)sqrt(1.0f + mat[0] - mat[4] - mat[8]) * 2.0f;
 		qua[3] = (mat[7] - mat[5]) / S;
-		qua[0] = 0.25 * S;
+		qua[0] = 0.25f * S;
 		qua[1] = (mat[1] + mat[3]) / S;
 		qua[2] = (mat[2] + mat[6]) / S;
 	}
 	else if(mat[4] > mat[8])
 	{
-		S = (float)sqrt(1.0 + mat[4] - mat[0] - mat[8]) * 2.0;
+		S = (float)sqrt(1.0f + mat[4] - mat[0] - mat[8]) * 2.0f;
 		qua[3] = (mat[2] - mat[6]) / S;
 		qua[0] = (mat[1] + mat[3]) / S;
-		qua[1] = 0.25 * S;
+		qua[1] = 0.25f * S;
 		qua[2] = (mat[5] + mat[7]) / S;
 	}
 	else
 	{ 
-		S = (float)sqrt(1.0 + mat[8] - mat[0] - mat[4]) * 2.0;
+		S = (float)sqrt(1.0f + mat[8] - mat[0] - mat[4]) * 2.0f;
 		qua[3] = (mat[3] - mat[1]) / S;
 		qua[0] = (mat[2] + mat[6]) / S;
 		qua[1] = (mat[5] + mat[7]) / S;
-		qua[2] = 0.25 * S;
+		qua[2] = 0.25f * S;
 	}
 }
 
 void gfxMatrix4ToEuler(float* mat, float* eul)
 {
-	if(mat[4] > 0.998)
+	if(mat[4] > 0.998f)
 	{
 		eul[0] = atan2(mat[2],mat[10])*GFX_180_DIV_PI;
 		eul[1] = GFX_PI/2*GFX_180_DIV_PI;
 		eul[2] = 0;
 		return;
 	}
-	if(mat[4] < -0.998)
+	if(mat[4] < -0.998f)
 	{
 		eul[0] = atan2(mat[2],mat[10])*GFX_180_DIV_PI;
 		eul[1] = -GFX_PI/2*GFX_180_DIV_PI;
@@ -633,21 +633,21 @@ unsigned char gfxAabbInsideFrustum(float frustum[6][4], float* min, float* max)
 
 	for(i = 0; i < 6; i++)
 	{
-		if(frustum[i][0]*min[0]+frustum[i][1]*min[1]+frustum[i][2]*max[2]+frustum[i][3] > 0.0)
+		if(frustum[i][0]*min[0]+frustum[i][1]*min[1]+frustum[i][2]*max[2]+frustum[i][3] > 0.0f)
 			continue;
-		if(frustum[i][0]*max[0]+frustum[i][1]*min[1]+frustum[i][2]*max[2]+frustum[i][3] > 0.0)
+		if(frustum[i][0]*max[0]+frustum[i][1]*min[1]+frustum[i][2]*max[2]+frustum[i][3] > 0.0f)
 			continue;
-		if(frustum[i][0]*max[0]+frustum[i][1]*max[1]+frustum[i][2]*max[2]+frustum[i][3] > 0.0)
+		if(frustum[i][0]*max[0]+frustum[i][1]*max[1]+frustum[i][2]*max[2]+frustum[i][3] > 0.0f)
 			continue;
-		if(frustum[i][0]*min[0]+frustum[i][1]*max[1]+frustum[i][2]*max[2]+frustum[i][3] > 0.0)
+		if(frustum[i][0]*min[0]+frustum[i][1]*max[1]+frustum[i][2]*max[2]+frustum[i][3] > 0.0f)
 			continue;
-		if(frustum[i][0]*min[0]+frustum[i][1]*min[1]+frustum[i][2]*min[2]+frustum[i][3] > 0.0)
+		if(frustum[i][0]*min[0]+frustum[i][1]*min[1]+frustum[i][2]*min[2]+frustum[i][3] > 0.0f)
 			continue;
-		if(frustum[i][0]*max[0]+frustum[i][1]*min[1]+frustum[i][2]*min[2]+frustum[i][3] > 0.0)
+		if(frustum[i][0]*max[0]+frustum[i][1]*min[1]+frustum[i][2]*min[2]+frustum[i][3] > 0.0f)
 			continue;
-		if(frustum[i][0]*max[0]+frustum[i][1]*max[1]+frustum[i][2]*min[2]+frustum[i][3] > 0.0)
+		if(frustum[i][0]*max[0]+frustum[i][1]*max[1]+frustum[i][2]*min[2]+frustum[i][3] > 0.0f)
 			continue;
-		if(frustum[i][0]*min[0]+frustum[i][1]*max[1]+frustum[i][2]*min[2]+frustum[i][3] > 0.0)
+		if(frustum[i][0]*min[0]+frustum[i][1]*max[1]+frustum[i][2]*min[2]+frustum[i][3] > 0.0f)
 			continue;
 		return GFX_FALSE;
 	}

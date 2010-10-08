@@ -46,15 +46,15 @@ void gfxProject(float x, float y, float z, float modl[16], float proj[16], int v
 	ftempo[6] = proj[2] * ftempo[0] + proj[6] * ftempo[1] + proj[10] * ftempo[2] + proj[14] * ftempo[3];
 	ftempo[7] = -ftempo[2];
 
-	if(ftempo[7] == 0.0) return;
-	ftempo[7] = 1.0 / ftempo[7];
+	if(ftempo[7] == 0.0f) return;
+	ftempo[7] = 1.0f / ftempo[7];
 	ftempo[4] *= ftempo[7];
 	ftempo[5] *= ftempo[7];
 	ftempo[6] *= ftempo[7];
 
-	winCoord[0] = viewp[0] + viewp[2] * (ftempo[4]+1.0) * 0.5;
-	winCoord[1] = viewp[1] + viewp[3] * (ftempo[5]+1.0) * 0.5;
-	winCoord[2] = (ftempo[6] + 1.0) * 0.5;
+	winCoord[0] = viewp[0] + viewp[2] * (ftempo[4] + 1.0f) * 0.5f;
+	winCoord[1] = viewp[1] + viewp[3] * (ftempo[5] + 1.0f) * 0.5f;
+	winCoord[2] = (ftempo[6] + 1.0f) * 0.5f;
 }
 
 void gfxUnProject(float x, float y, float z, float modl[16], float proj[16], int viewp[4], float objCoord[3])
@@ -64,15 +64,15 @@ void gfxUnProject(float x, float y, float z, float modl[16], float proj[16], int
 	gfxMulMatrix4Matrix4(proj, modl, m2);
 	gfxMatrix4GetInverse(m2, m);
 
-	in[0] = (x - (float)viewp[0]) / (float)viewp[2] * 2.0 - 1.0;
-	in[1] = (y - (float)viewp[1]) / (float)viewp[3] * 2.0 - 1.0;
-	in[2] = 2.0 * z - 1.0;
-	in[3] = 1.0;
+	in[0] = (x - (float)viewp[0]) / (float)viewp[2] * 2.0f - 1.0f;
+	in[1] = (y - (float)viewp[1]) / (float)viewp[3] * 2.0f - 1.0f;
+	in[2] = 2.0f * z - 1.0f;
+	in[3] = 1.0f;
 
 	gfxMulMatrix4Vec4(m, in, out);
-	if(out[3] == 0.0) return;
+	if(out[3] == 0.0f) return;
 
-	out[3] = 1.0 / out[3];
+	out[3] = 1.0f / out[3];
 	objCoord[0] = out[0] * out[3];
 	objCoord[1] = out[1] * out[3];
 	objCoord[2] = out[2] * out[3];
@@ -188,9 +188,9 @@ gfxTransform* gfxCreateCameraTransform()
 	gfxQuaSetIdentity(transform->orient);
 	gfxMatrix4SetIdentity(transform->matrix);
 
-	transform->scale[0] = 1.0;
-	transform->scale[1] = 1.0;
-	transform->scale[2] = 1.0;
+	transform->scale[0] = 1.0f;
+	transform->scale[1] = 1.0f;
+	transform->scale[2] = 1.0f;
 
 	transform->cameraMode = GFX_TRUE;
 
@@ -207,9 +207,9 @@ gfxTransform* gfxCreateObjectTransform()
 	gfxQuaSetIdentity(transform->orient);
 	gfxMatrix4SetIdentity(transform->matrix);
 
-	transform->scale[0] = 1.0;
-	transform->scale[1] = 1.0;
-	transform->scale[2] = 1.0;
+	transform->scale[0] = 1.0f;
+	transform->scale[1] = 1.0f;
+	transform->scale[2] = 1.0f;
 
 	return transform;
 }
