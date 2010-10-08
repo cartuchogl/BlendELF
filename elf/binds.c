@@ -9315,6 +9315,23 @@ static int lua_SetButtonFont(lua_State *L)
 	elfSetButtonFont(arg0, arg1);
 	return 0;
 }
+static int lua_SetButtonSize(lua_State *L)
+{
+	elfButton* arg0;
+	int arg1;
+	int arg2;
+	if(lua_gettop(L) != 3) {return lua_fail_arg_count(L, "SetButtonSize", lua_gettop(L), 3);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_BUTTON)
+		{return lua_fail_arg(L, "SetButtonSize", 1, "elfButton");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetButtonSize", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetButtonSize", 3, "number");}
+	arg0 = (elfButton*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (int)lua_tonumber(L, 2);
+	arg2 = (int)lua_tonumber(L, 3);
+	elfSetButtonSize(arg0, arg1, arg2);
+	return 0;
+}
 static int lua_SetButtonOffTexture(lua_State *L)
 {
 	elfButton* arg0;
@@ -9452,11 +9469,28 @@ static int lua_SetPictureScale(lua_State *L)
 static int lua_CreateTextField(lua_State *L)
 {
 	elfTextField* result;
-	const char* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateTextField", lua_gettop(L), 1);}
-	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateTextField", 1, "string");}
-	arg0 = lua_tostring(L, 1);
-	result = elfCreateTextField(arg0);
+	elfGuiObject* arg0;
+	const char* arg1;
+	int arg2;
+	int arg3;
+	int arg4;
+	const char* arg5;
+	if(lua_gettop(L) != 6) {return lua_fail_arg_count(L, "CreateTextField", lua_gettop(L), 6);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
+		{return lua_fail_arg(L, "CreateTextField", 1, "elfGuiObject");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateTextField", 2, "string");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateTextField", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreateTextField", 4, "number");}
+	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "CreateTextField", 5, "number");}
+	if(!lua_isstring(L, 6)) {return lua_fail_arg(L, "CreateTextField", 6, "string");}
+	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = lua_tostring(L, 2);
+	arg2 = (int)lua_tonumber(L, 3);
+	arg3 = (int)lua_tonumber(L, 4);
+	arg4 = (int)lua_tonumber(L, 5);
+	arg5 = lua_tostring(L, 6);
+	result = elfCreateTextField(arg0, arg1, arg2, arg3, arg4, arg5);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -9528,22 +9562,6 @@ static int lua_GetTextFieldText(lua_State *L)
 	lua_pushstring(L, result);
 	return 1;
 }
-static int lua_SetTextFieldTexture(lua_State *L)
-{
-	elfTextField* arg0;
-	elfTexture* arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetTextFieldTexture", lua_gettop(L), 2);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_TEXT_FIELD)
-		{return lua_fail_arg(L, "SetTextFieldTexture", 1, "elfTextField");}
-	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_TEXTURE)
-		{return lua_fail_arg(L, "SetTextFieldTexture", 2, "elfTexture");}
-	arg0 = (elfTextField*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = (elfTexture*)((lua_elfObject*)lua_touserdata(L, 2))->object;
-	elfSetTextFieldTexture(arg0, arg1);
-	return 0;
-}
 static int lua_SetTextFieldFont(lua_State *L)
 {
 	elfTextField* arg0;
@@ -9558,6 +9576,36 @@ static int lua_SetTextFieldFont(lua_State *L)
 	arg0 = (elfTextField*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfFont*)((lua_elfObject*)lua_touserdata(L, 2))->object;
 	elfSetTextFieldFont(arg0, arg1);
+	return 0;
+}
+static int lua_SetTextFieldWidth(lua_State *L)
+{
+	elfTextField* arg0;
+	int arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetTextFieldWidth", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_TEXT_FIELD)
+		{return lua_fail_arg(L, "SetTextFieldWidth", 1, "elfTextField");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetTextFieldWidth", 2, "number");}
+	arg0 = (elfTextField*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (int)lua_tonumber(L, 2);
+	elfSetTextFieldWidth(arg0, arg1);
+	return 0;
+}
+static int lua_SetTextFieldTexture(lua_State *L)
+{
+	elfTextField* arg0;
+	elfTexture* arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetTextFieldTexture", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_TEXT_FIELD)
+		{return lua_fail_arg(L, "SetTextFieldTexture", 1, "elfTextField");}
+	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_TEXTURE)
+		{return lua_fail_arg(L, "SetTextFieldTexture", 2, "elfTexture");}
+	arg0 = (elfTextField*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (elfTexture*)((lua_elfObject*)lua_touserdata(L, 2))->object;
+	elfSetTextFieldTexture(arg0, arg1);
 	return 0;
 }
 static int lua_SetTextFieldTextColor(lua_State *L)
@@ -11038,6 +11086,7 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetButtonOnTexture", lua_GetButtonOnTexture},
 	{"SetButtonText", lua_SetButtonText},
 	{"SetButtonFont", lua_SetButtonFont},
+	{"SetButtonSize", lua_SetButtonSize},
 	{"SetButtonOffTexture", lua_SetButtonOffTexture},
 	{"SetButtonOverTexture", lua_SetButtonOverTexture},
 	{"SetButtonOnTexture", lua_SetButtonOnTexture},
@@ -11052,8 +11101,9 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetTextFieldTextColor", lua_GetTextFieldTextColor},
 	{"GetTextFieldOffset", lua_GetTextFieldOffset},
 	{"GetTextFieldText", lua_GetTextFieldText},
-	{"SetTextFieldTexture", lua_SetTextFieldTexture},
 	{"SetTextFieldFont", lua_SetTextFieldFont},
+	{"SetTextFieldWidth", lua_SetTextFieldWidth},
+	{"SetTextFieldTexture", lua_SetTextFieldTexture},
 	{"SetTextFieldTextColor", lua_SetTextFieldTextColor},
 	{"SetTextFieldOffset", lua_SetTextFieldOffset},
 	{"SetTextFieldCursorPosition", lua_SetTextFieldCursorPosition},

@@ -1828,6 +1828,7 @@ ELF_API elfTexture* ELF_APIENTRY elfGetButtonOnTexture(elfButton* button);
 
 ELF_API void ELF_APIENTRY elfSetButtonText(elfButton* button, const char* text);
 ELF_API void ELF_APIENTRY elfSetButtonFont(elfButton* button, elfFont* font);
+ELF_API void ELF_APIENTRY elfSetButtonSize(elfButton* button, int width, int height);
 ELF_API void ELF_APIENTRY elfSetButtonOffTexture(elfButton* button, elfTexture* off);
 ELF_API void ELF_APIENTRY elfSetButtonOverTexture(elfButton* button, elfTexture* over);
 ELF_API void ELF_APIENTRY elfSetButtonOnTexture(elfButton* button, elfTexture* on);
@@ -1852,7 +1853,7 @@ void elfDrawTextField(elfTextField* textField, elfArea* area, gfxShaderParams* s
 void elfRecalcTextField(elfTextField* textField);
 // !!>
 
-ELF_API elfTextField* ELF_APIENTRY elfCreateTextField(const char* name);	// <mdoc> TEXT FIELD FUNCTIONS
+ELF_API elfTextField* ELF_APIENTRY elfCreateTextField(elfGuiObject* parent, const char* name, int x, int y, int width, const char* text);	// <mdoc> TEXT FIELD FUNCTIONS
 
 ELF_API elfTexture* ELF_APIENTRY elfGetTextFieldTexture(elfTextField* textField);
 ELF_API elfFont* ELF_APIENTRY elfGetTextFieldFont(elfTextField* textField);
@@ -1860,8 +1861,9 @@ ELF_API elfColor ELF_APIENTRY elfGetTextFieldTextColor(elfTextField* textField);
 ELF_API elfVec2i ELF_APIENTRY elfGetTextFieldOffset(elfTextField* textField);
 ELF_API const char* ELF_APIENTRY elfGetTextFieldText(elfTextField* textField);
 
-ELF_API void ELF_APIENTRY elfSetTextFieldTexture(elfTextField* textField, elfTexture* texture);
 ELF_API void ELF_APIENTRY elfSetTextFieldFont(elfTextField* textField, elfFont* font);
+ELF_API void ELF_APIENTRY elfSetTextFieldWidth(elfTextField* textField, int width);
+ELF_API void ELF_APIENTRY elfSetTextFieldTexture(elfTextField* textField, elfTexture* texture);
 ELF_API void ELF_APIENTRY elfSetTextFieldTextColor(elfTextField* textField, float r, float g, float b, float a);
 ELF_API void ELF_APIENTRY elfSetTextFieldOffset(elfTextField* textField, int offsetX, int offsetY);
 ELF_API void ELF_APIENTRY elfSetTextFieldCursorPosition(elfTextField* textField, int idx);

@@ -3,7 +3,7 @@ void elfDrawHorGradient(int x, int y, int width, int height, elfColor col1, elfC
 {
 	float *vertexBuffer;
 
-	vertexBuffer = gfxGetVertexDataBuffer(eng->gradientVertexData);
+	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->gradientVertexData);
 
 	vertexBuffer[0] = x;
 	vertexBuffer[1] = y+height;
@@ -44,7 +44,7 @@ void elfDrawBorder(int x, int y, int width, int height, elfColor col)
 {
 	float *vertexBuffer;
 
-	vertexBuffer = gfxGetVertexDataBuffer(eng->gradientVertexData);
+	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->gradientVertexData);
 
 	vertexBuffer[0] = x;
 	vertexBuffer[1] = y+height;
@@ -566,7 +566,7 @@ ELF_API void ELF_APIENTRY elfSetPictureScale(elfPicture* picture, float x, float
 	elfRecalcGuiObject((elfGuiObject*)picture);
 }
 
-ELF_API elfTextField* ELF_APIENTRY elfCreateTextField(const char* name)
+ELF_API elfTextField* ELF_APIENTRY elfCreateTextField(elfGuiObject* parent, const char* name, int x, int y, int width, const char* text)
 {
 	elfTextField* textField;
 
@@ -575,12 +575,18 @@ ELF_API elfTextField* ELF_APIENTRY elfCreateTextField(const char* name)
 	textField->objType = ELF_TEXT_FIELD;
 	textField->objDestr = elfDestroyTextField;
 
-	textField->color.r = textField->color.g = textField->color.b = textField->color.a = 1.0;
+	textField->color.r = textField->color.g = textField->color.b = 1.0; textField->color.a = 0.6;
 	textField->textColor.r = textField->textColor.g = textField->textColor.b = textField->textColor.a = 1.0;
 	textField->visible = ELF_TRUE;
 	textField->text = elfCreateString("");
 
 	if(name) textField->name = elfCreateString(name);
+
+	elfSetGuiObjectPosition((elfGuiObject*)textField, x, y);
+	elfSetTextFieldFont(textField, eng->guiFont);	
+	elfSetTextFieldWidth(textField, width);
+	elfSetTextFieldOffset(textField, 2, 2);
+	elfAddGuiObject(parent, (elfGuiObject*)textField);
 
 	elfIncObj(ELF_TEXT_FIELD);
 
@@ -632,24 +638,40 @@ void elfDrawTextField(elfTextField* textField, elfArea* area, gfxShaderParams* s
 			height -= (y+height)-(area->pos.y+area->size.y);
 	}
 
-	gfxSetColor(&shaderParams->materialParams.diffuseColor, textField->color.r,
-		textField->color.g, textField->color.b, textField->color.a);
-
-	if(textField->texture) shaderParams->textureParams[0].texture = textField->texture->texture;
-
-	if(shaderParams->textureParams[0].texture)
+	if(!textField->texture)
 	{
+		elfColor col1, col2;
+
+		shaderParams->renderParams.vertexColor = GFX_TRUE;
+		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 1.0, 1.0, 1.0);
 		gfxSetShaderParams(shaderParams);
-		gfxDrawTextured2dQuad((float)textField->pos.x, (float)textField->pos.y, (float)textField->width, (float)textField->height);
-		shaderParams->textureParams[0].texture = NULL;
+
+		col1.r = col1.g = col1.b = 0.15; col1.a = 1.0; col2.r = col2.g = col2.b = 0.35; col2.a = 1.0;
+		elfDrawHorGradient(textField->pos.x, textField->pos.y, textField->width, textField->height, col1, col2);
+
+		col1.r = col1.g = col1.b = 0.25; col1.a = 1.0; col2.r = col2.g = col2.b = 0.4; col2.a = 1.0;
+		elfDrawHorGradientBorder(textField->pos.x, textField->pos.y, textField->width, textField->height, col1, col2);
+
+		shaderParams->renderParams.vertexColor = GFX_FALSE;
+	}
+	else
+	{
+		gfxSetColor(&shaderParams->materialParams.diffuseColor, textField->color.r,
+			textField->color.g, textField->color.b, textField->color.a);
+		shaderParams->textureParams[0].texture = textField->texture->texture;
+
+		if(shaderParams->textureParams[0].texture)
+		{
+			gfxSetShaderParams(shaderParams);
+			gfxDrawTextured2dQuad((float)textField->pos.x, (float)textField->pos.y, (float)textField->width, (float)textField->height);
+			shaderParams->textureParams[0].texture = NULL;
+		}
 	}
 
 	if(textField->font && textField->text && strlen(textField->text) > 0)
 	{
-		gfxSetViewport(x+textField->offsetX, y+textField->offsetY,
-			width-textField->offsetX*2, height-textField->offsetY*2);
-		gfxGetOrthographicProjectionMatrix((float)x+textField->offsetX, (float)x+width-textField->offsetX,
-			(float)y+textField->offsetY, (float)y+height-textField->offsetY,
+		gfxSetViewport(x, y, width, height);
+		gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
 			-1.0, 1.0, shaderParams->projectionMatrix);
 
 		gfxSetColor(&shaderParams->materialParams.diffuseColor, textField->textColor.r, textField->textColor.g,
@@ -657,7 +679,7 @@ void elfDrawTextField(elfTextField* textField, elfArea* area, gfxShaderParams* s
 
 		str = elfSubString(textField->text, textField->drawPos,
 			strlen(textField->text)-textField->drawPos);
-		elfDrawString(textField->font, str, textField->pos.x+textField->offsetX, textField->pos.y+textField->offsetY, shaderParams);
+		elfDrawString(textField->font, str, textField->pos.x+textField->offsetX, textField->pos.y+textField->offsetY-textField->font->offsetY/2, shaderParams);
 		elfDestroyString(str);
 
 		shaderParams->textureParams[0].texture = NULL;
@@ -672,6 +694,15 @@ void elfDrawTextField(elfTextField* textField, elfArea* area, gfxShaderParams* s
 		gfxDraw2dQuad(textField->pos.x+textField->offsetX+elfGetStringWidth(textField->font, str),
 			textField->pos.y+textField->offsetY, 1, textField->height-textField->offsetY*2);
 		elfDestroyString(str);
+	}
+}
+
+void elfRecalcTextField(elfTextField* textField)
+{
+	if(textField->texture)
+	{
+		textField->width = elfGetTextureWidth(textField->texture);
+		textField->height = elfGetTextureHeight(textField->texture);
 	}
 }
 
@@ -705,18 +736,23 @@ ELF_API const char* ELF_APIENTRY elfGetTextFieldText(elfTextField* textField)
 	return textField->text;
 }
 
-void elfRecalcTextField(elfTextField* textField)
+ELF_API void ELF_APIENTRY elfSetTextFieldFont(elfTextField* textField, elfFont* font)
 {
-	if(textField->texture)
+	if(textField->font) elfDecRef((elfObject*)textField->font);
+	textField->font = font;
+	if(textField->font)
 	{
-		textField->width = elfGetTextureWidth(textField->texture);
-		textField->height = elfGetTextureHeight(textField->texture);
+		elfIncRef((elfObject*)textField->font);
+		textField->height = textField->font->size+textField->font->size/2;
 	}
-	else
-	{
-		textField->height = 0;
-		textField->width = 0;
-	}
+	else textField->height = 0;
+	elfRecalcGuiObject((elfGuiObject*)textField);
+}
+
+ELF_API void ELF_APIENTRY elfSetTextFieldWidth(elfTextField* textField, int width)
+{
+	textField->width = width;
+	elfRecalcGuiObject((elfGuiObject*)textField);
 }
 
 ELF_API void ELF_APIENTRY elfSetTextFieldTexture(elfTextField* textField, elfTexture* texture)
@@ -725,13 +761,6 @@ ELF_API void ELF_APIENTRY elfSetTextFieldTexture(elfTextField* textField, elfTex
 	textField->texture = texture;
 	if(textField->texture) elfIncRef((elfObject*)textField->texture);
 	elfRecalcGuiObject((elfGuiObject*)textField);
-}
-
-ELF_API void ELF_APIENTRY elfSetTextFieldFont(elfTextField* textField, elfFont* font)
-{
-	if(textField->font) elfDecRef((elfObject*)textField->font);
-	textField->font = font;
-	if(textField->font) elfIncRef((elfObject*)textField->font);
 }
 
 ELF_API void ELF_APIENTRY elfSetTextFieldTextColor(elfTextField* textField, float r, float g, float b, float a)
