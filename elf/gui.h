@@ -2200,6 +2200,7 @@ void elfDrawGui(elfGui* gui)
 	area.size.y = gui->height;
 
 	gfxSetShaderParamsDefault(&gui->shaderParams);
+	gui->shaderParams.renderParams.multisample = GFX_FALSE;
 	gui->shaderParams.renderParams.depthWrite = GFX_FALSE;
 	gui->shaderParams.renderParams.depthTest = GFX_FALSE;
 	gui->shaderParams.renderParams.blendMode = GFX_TRANSPARENT;

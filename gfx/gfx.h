@@ -173,6 +173,7 @@ typedef struct gfxRenderParams {
 	unsigned char frontFace;
 	unsigned char wireframe;
 	unsigned char vertexColor;
+	unsigned char multisample;
 } gfxRenderParams;
 
 typedef struct gfxFogParams {

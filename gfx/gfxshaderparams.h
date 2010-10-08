@@ -23,6 +23,7 @@ void gfxSetShaderParamsDefault(gfxShaderParams* shaderParams)
 	shaderParams->renderParams.lineWidth = 1.0;
 	shaderParams->renderParams.cullFaceMode = GFX_BACK;
 	shaderParams->renderParams.frontFace = GFX_COUNTER_CLOCK_WISE;
+	shaderParams->renderParams.multisample = GFX_TRUE;
 
 	gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 1.0, 1.0, 1.0);
 	gfxSetColor(&shaderParams->materialParams.specularColor, 1.0, 1.0, 1.0, 1.0);
@@ -157,6 +158,10 @@ void gfxSetShaderParams(gfxShaderParams* shaderParams)
 		if(shaderParams->renderParams.wireframe)
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+		if(shaderParams->renderParams.multisample)
+			glEnable(GL_MULTISAMPLE);
+		else glDisable(GL_MULTISAMPLE);
 	}
 
 	if(driver->version < 200)
