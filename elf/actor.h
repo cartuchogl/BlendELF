@@ -1209,7 +1209,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 	}
 	else if(actor->shape == ELF_SPHERE)
 	{
-		step = (360.0/((float)128))*GFX_PI_DIV_180;
+		step = (360.0/128.0)*GFX_PI_DIV_180;
 		
 		if(actor->pbbLengths.x > actor->pbbLengths.y && actor->pbbLengths.x > actor->pbbLengths.z)
 			size = actor->pbbLengths.x/2.0;
@@ -1246,7 +1246,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 	}
 	else if(actor->shape == ELF_CAPSULE_X)
 	{
-		step = (360.0/((float)128))*GFX_PI_DIV_180;
+		step = (360.0/128.0)*GFX_PI_DIV_180;
 
 		if(actor->pbbLengths.y > actor->pbbLengths.z) size = actor->pbbLengths.y/2.0;
 		else size = actor->pbbLengths.z/2.0;
@@ -1315,7 +1315,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 	}
 	else if(actor->shape == ELF_CAPSULE_Y)
 	{
-		step = (360.0/((float)128))*GFX_PI_DIV_180;
+		step = (360.0/128.0)*GFX_PI_DIV_180;
 
 		if(actor->pbbLengths.x > actor->pbbLengths.z) size = actor->pbbLengths.x/2.0;
 		else size = actor->pbbLengths.z/2.0;
@@ -1384,7 +1384,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 	}
 	else if(actor->shape == ELF_CAPSULE_Z)
 	{
-		step = (360.0/((float)128))*GFX_PI_DIV_180;
+		step = (360.0/128.0)*GFX_PI_DIV_180;
 
 		if(actor->pbbLengths.x > actor->pbbLengths.y) size = actor->pbbLengths.x/2.0;
 		else size = actor->pbbLengths.y/2.0;
@@ -1453,7 +1453,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 	}
 	else if(actor->shape == ELF_CONE_X)
 	{
-		step = (360.0/((float)128))*GFX_PI_DIV_180;
+		step = (360.0/128.0)*GFX_PI_DIV_180;
 		
 		if(actor->pbbLengths.y > actor->pbbLengths.z) size = actor->pbbLengths.y/2.0;
 		else size = actor->pbbLengths.z/2.0;
@@ -1498,7 +1498,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 	}
 	else if(actor->shape == ELF_CONE_Y)
 	{
-		step = (360.0/((float)128))*GFX_PI_DIV_180;
+		step = (360.0/128.0)*GFX_PI_DIV_180;
 		
 		if(actor->pbbLengths.x > actor->pbbLengths.z) size = actor->pbbLengths.x/2.0;
 		else size = actor->pbbLengths.z/2.0;
@@ -1543,7 +1543,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 	}
 	else if(actor->shape == ELF_CONE_Z)
 	{
-		step = (360.0/((float)128))*GFX_PI_DIV_180;
+		step = (360.0/128.0)*GFX_PI_DIV_180;
 		
 		if(actor->pbbLengths.x > actor->pbbLengths.y) size = actor->pbbLengths.x/2.0;
 		else size = actor->pbbLengths.y/2.0;
