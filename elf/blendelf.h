@@ -187,7 +187,8 @@ extern "C" {
 #define ELF_FACE					0x0046
 #define ELF_MESH_DATA					0x0047
 #define ELF_LIST_PTR					0x0048
-#define ELF_OBJECT_TYPE_COUNT				0x0049	// <mdoc> NUMBER OF OBJECT TYPES
+#define ELF_RESOURCES					0x0049
+#define ELF_OBJECT_TYPE_COUNT				0x004A	// <mdoc> NUMBER OF OBJECT TYPES
 
 #define ELF_PERSPECTIVE					0x0000	// <mdoc> CAMERA MODE <mdocc> The camera modes used by camera internal functions
 #define ELF_ORTHOGRAPHIC				0x0001
@@ -711,6 +712,7 @@ ELF_API elfDirectoryItem* ELF_APIENTRY elfGetDirectoryItem(elfDirectory* directo
 ELF_API const char* ELF_APIENTRY elfGetDirectoryItemName(elfDirectoryItem* dirItem);
 ELF_API int ELF_APIENTRY elfGetDirectoryItemType(elfDirectoryItem* dirItem);
 
+ELF_API elfColor ELF_APIENTRY elfCreateColor(float r, float g, float b, float a);
 ELF_API elfVec3f ELF_APIENTRY elfCreateVec3f(float x, float y, float z);
 ELF_API elfVec4f ELF_APIENTRY elfCreateQua(float x, float y, float z, float w);
 ELF_API elfVec4f ELF_APIENTRY elfCreateQuaFromEuler(float x, float y, float z);
@@ -731,6 +733,19 @@ ELF_API float ELF_APIENTRY elfRandomFloat();
 ELF_API float ELF_APIENTRY elfRandomFloatRange(float min, float max);
 ELF_API int ELF_APIENTRY elfRandomInt();
 ELF_API int ELF_APIENTRY elfRandomIntRange(int min, int max);
+
+////////////////////////////// RESOURCES //////////////////////////////
+
+// <!!
+elfResources* elfCreateResources();
+void elfDestroyResources(void *data);
+unsigned char elfInitResources();
+void elfDeinitResources();
+// !!>
+
+ELF_API elfTexture* elfGetResourcesTexture(const char* filePath, const char* name);
+
+ELF_API elfTexture* elfGetOrLoadResourcesTexture(const char* filePath, const char* name);
 
 ///////////////////////////// FRAME PLAYER ////////////////////////////
 
@@ -1823,7 +1838,7 @@ void elfDrawPicture(elfPicture* picture, gfxShaderParams* shaderParams);
 void elfRecalcPicture(elfPicture* picture);
 // !!>
 
-ELF_API elfPicture* ELF_APIENTRY elfCreatePicture(const char* name);	// <mdoc> PICTURE FUNCTIONS
+ELF_API elfPicture* ELF_APIENTRY elfCreatePicture(elfGuiObject* parent, const char* name, int x, int y, const char* filePath);	// <mdoc> PICTURE FUNCTIONS
 
 ELF_API elfTexture* ELF_APIENTRY elfGetPictureTexture(elfPicture* picture);
 ELF_API elfVec2f ELF_APIENTRY elfGetPictureScale(elfPicture* picture);

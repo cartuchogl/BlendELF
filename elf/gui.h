@@ -236,16 +236,6 @@ void elfDrawLabel(elfLabel* label, gfxShaderParams* shaderParams)
 	shaderParams->textureParams[0].texture = NULL;
 }
 
-ELF_API elfFont* ELF_APIENTRY elfGetLabelFont(elfLabel* label)
-{
-	return label->font;
-}
-
-ELF_API const char* ELF_APIENTRY elfGetLabelText(elfLabel* label)
-{
-	return label->text;
-}
-
 void elfRecalcLabel(elfLabel* label)
 {
 	if(label->font)
@@ -261,6 +251,16 @@ void elfRecalcLabel(elfLabel* label)
 		label->height = 0;
 		label->width = 0;
 	}
+}
+
+ELF_API elfFont* ELF_APIENTRY elfGetLabelFont(elfLabel* label)
+{
+	return label->font;
+}
+
+ELF_API const char* ELF_APIENTRY elfGetLabelText(elfLabel* label)
+{
+	return label->text;
 }
 
 ELF_API void ELF_APIENTRY elfSetLabelFont(elfLabel* label, elfFont* font)
@@ -334,6 +334,7 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams)
 		elfColor col1, col2;
 
 		shaderParams->renderParams.vertexColor = ELF_TRUE;
+		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 1.0, 1.0, 1.0);
 		gfxSetShaderParams(shaderParams);
 
 		if(button->state == ELF_OFF) {col1.r = col1.g = col1.b = 0.40; col1.a = 1.0; col2.r = col2.g = col2.b = 0.25; col2.a = 1.0;}
@@ -346,23 +347,17 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams)
 		else if(button->state == ELF_ON) {col1.r = col1.g = col1.b = 0.15; col1.a = 1.0; col2.r = col2.g = col2.b = 0.05; col2.a = 1.0;}
 		elfDrawHorGradient(button->pos.x, button->pos.y, button->width, button->height/2, col1, col2);
 
-		shaderParams->renderParams.vertexColor = ELF_FALSE;
-		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 1.0, 1.0, 0.6);
-		gfxSetShaderParams(shaderParams);
-
-		elfDrawString(button->font, button->text, button->pos.x+(button->width-elfGetStringWidth(button->font, button->text))/2,
-			button->pos.y+(button->height-elfGetStringHeight(button->font, button->text))/2-button->font->offsetY/2, shaderParams);
-
-		shaderParams->renderParams.vertexColor = ELF_TRUE;
-		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 1.0, 1.0, 1.0);
-		gfxSetShaderParams(shaderParams);
-
 		if(button->state == ELF_OFF) {col1.r = col1.g = col1.b = 0.40; col1.a = 1.0; col2.r = col2.g = col2.b = 0.20; col2.a = 1.0;}
 		else if(button->state == ELF_OVER) {col1.r = col1.g = col1.b = 0.50; col1.a = 1.0; col2.r = col2.g = col2.b = 0.30; col2.a = 1.0;}
 		else if(button->state == ELF_ON) {col1.r = col1.g = col1.b = 0.35; col1.a = 1.0; col2.r = col2.g = col2.b = 0.15; col2.a = 1.0;}
 		elfDrawHorGradientBorder(button->pos.x, button->pos.y, button->width, button->height, col1, col2);
 
 		shaderParams->renderParams.vertexColor = ELF_FALSE;
+		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 1.0, 1.0, 0.6);
+		gfxSetShaderParams(shaderParams);
+
+		elfDrawString(button->font, button->text, button->pos.x+(button->width-elfGetStringWidth(button->font, button->text))/2,
+			button->pos.y+(button->height-elfGetStringHeight(button->font, button->text))/2-button->font->offsetY/2, shaderParams);
 	}
 	else
 	{
@@ -386,6 +381,15 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams)
 	}
 }
 
+void elfRecalcButton(elfButton* button)
+{
+	if(button->off)
+	{
+		button->width = elfGetTextureWidth(button->off);
+		button->height = elfGetTextureHeight(button->off);
+	}
+}
+
 ELF_API unsigned char ELF_APIENTRY elfGetButtonState(elfButton* button)
 {
 	return button->state;
@@ -399,6 +403,16 @@ ELF_API const char* ELF_APIENTRY elfGetButtonText(elfButton* button)
 ELF_API elfFont* ELF_APIENTRY elfGetButtonFont(elfButton* button)
 {
 	return button->font;
+}
+
+ELF_API elfVec2i ELF_APIENTRY elfGetButtonSize(elfButton* button)
+{
+	elfVec2i size;
+
+	size.x = button->width;
+	size.y = button->height;
+
+	return size;
 }
 
 ELF_API elfTexture* ELF_APIENTRY elfGetButtonOffTexture(elfButton* button)
@@ -416,15 +430,6 @@ ELF_API elfTexture* ELF_APIENTRY elfGetButtonOnTexture(elfButton* button)
 	return button->on;
 }
 
-void elfRecalcButton(elfButton* button)
-{
-	if(button->off)
-	{
-		button->width = elfGetTextureWidth(button->off);
-		button->height = elfGetTextureHeight(button->off);
-	}
-}
-
 ELF_API void ELF_APIENTRY elfSetButtonText(elfButton* button, const char* text)
 {
 	if(button->text) elfDestroyString(button->text);
@@ -437,6 +442,15 @@ ELF_API void ELF_APIENTRY elfSetButtonFont(elfButton* button, elfFont* font)
 	if(button->font) elfDecRef((elfObject*)button->font);
 	button->font = font;
 	if(button->font) elfIncRef((elfObject*)button->font);
+	elfRecalcGuiObject((elfGuiObject*)button);
+}
+
+ELF_API void ELF_APIENTRY elfSetButtonSize(elfButton* button, int width, int height)
+{
+	button->width = width;
+	button->height = height;
+	if(button->width < 1) button->width = 1;
+	if(button->height < 1) button->height = 1;
 	elfRecalcGuiObject((elfGuiObject*)button);
 }
 
@@ -462,9 +476,10 @@ ELF_API void ELF_APIENTRY elfSetButtonOnTexture(elfButton* button, elfTexture* o
 	if(button->on) elfIncRef((elfObject*)button->on);
 }
 
-ELF_API elfPicture* ELF_APIENTRY elfCreatePicture(const char* name)
+ELF_API elfPicture* ELF_APIENTRY elfCreatePicture(elfGuiObject* parent, const char* name, int x, int y, const char *path)
 {
 	elfPicture* picture;
+	elfTexture* texture;
 
 	picture = (elfPicture*)malloc(sizeof(elfPicture));
 	memset(picture, 0x0, sizeof(elfPicture));
@@ -476,6 +491,11 @@ ELF_API elfPicture* ELF_APIENTRY elfCreatePicture(const char* name)
 	picture->visible = ELF_TRUE;
 
 	if(name) picture->name = elfCreateString(name);
+
+	elfSetGuiObjectPosition((elfGuiObject*)picture, x, y);
+	texture = elfGetOrLoadResourcesTexture(path, NULL);
+	if(texture) elfSetPictureTexture(picture, texture);
+	elfAddGuiObject(parent, (elfGuiObject*)picture);
 
 	elfIncObj(ELF_PICTURE);
 

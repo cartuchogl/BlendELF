@@ -262,6 +262,7 @@ ELF_API unsigned char ELF_APIENTRY elfInit(int width, int height, const char* ti
 	}
 	elfInitAudio();
 	elfInitEngine();
+	elfInitResources();
 	elfInitScripting();
 
 	return ELF_TRUE;
@@ -423,6 +424,7 @@ ELF_API unsigned char ELF_APIENTRY elfRun()
 ELF_API void ELF_APIENTRY elfDeinit()
 {
 	elfDeinitScripting();
+	elfDeinitResources();
 	elfDeinitEngine();
 	elfDeinitAudio();
 	gfxDeinit();
@@ -1065,6 +1067,18 @@ ELF_API const char* ELF_APIENTRY elfGetDirectoryItemName(elfDirectoryItem* dirIt
 ELF_API int ELF_APIENTRY elfGetDirectoryItemType(elfDirectoryItem* dirItem)
 {
 	return dirItem->itemType;
+}
+
+ELF_API elfColor ELF_APIENTRY elfCreateColor(float r, float g, float b, float a)
+{
+	elfColor col;
+
+	col.r = r;
+	col.g = g;
+	col.b = b;
+	col.a = a;
+
+	return col;
 }
 
 ELF_API elfVec3f ELF_APIENTRY elfCreateVec3f(float x, float y, float z)

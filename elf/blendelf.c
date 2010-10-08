@@ -38,6 +38,7 @@
 elfGeneral* gen = NULL;
 elfContext* ctx = NULL;
 elfEngine* eng = NULL;
+elfResources* res = NULL;
 
 #include "general.h"
 #include "config.h"
@@ -47,6 +48,7 @@ elfEngine* eng = NULL;
 #include "list.h"
 #include "context.h"
 #include "engine.h"
+#include "resources.h"
 #include "frameplayer.h"
 #include "timer.h"
 #include "image.h"

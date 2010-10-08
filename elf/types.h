@@ -217,6 +217,11 @@ struct elfEngine {
 	elfObject* actor;
 };
 
+struct elfResources {
+	ELF_OBJECT_HEADER;
+	elfList* textures;
+};
+
 struct elfDirectory {
 	ELF_OBJECT_HEADER;
 	char* path;

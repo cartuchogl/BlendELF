@@ -1635,6 +1635,26 @@ static int lua_GetDirectoryItemType(lua_State *L)
 	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
+static int lua_CreateColor(lua_State *L)
+{
+	elfColor result;
+	float arg0;
+	float arg1;
+	float arg2;
+	float arg3;
+	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "CreateColor", lua_gettop(L), 4);}
+	if(!lua_isnumber(L, 1)) {return lua_fail_arg(L, "CreateColor", 1, "number");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "CreateColor", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateColor", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreateColor", 4, "number");}
+	arg0 = (float)lua_tonumber(L, 1);
+	arg1 = (float)lua_tonumber(L, 2);
+	arg2 = (float)lua_tonumber(L, 3);
+	arg3 = (float)lua_tonumber(L, 4);
+	result = elfCreateColor(arg0, arg1, arg2, arg3);
+	lua_create_elfColor(L, result);
+	return 1;
+}
 static int lua_CreateVec3f(lua_State *L)
 {
 	elfVec3f result;
@@ -1899,6 +1919,36 @@ static int lua_RandomIntRange(lua_State *L)
 	arg1 = (int)lua_tonumber(L, 2);
 	result = elfRandomIntRange(arg0, arg1);
 	lua_pushnumber(L, (lua_Number)result);
+	return 1;
+}
+static int lua_GetResourcesTexture(lua_State *L)
+{
+	elfTexture* result;
+	const char* arg0;
+	const char* arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetResourcesTexture", lua_gettop(L), 2);}
+	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "GetResourcesTexture", 1, "string");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetResourcesTexture", 2, "string");}
+	arg0 = lua_tostring(L, 1);
+	arg1 = lua_tostring(L, 2);
+	result = elfGetResourcesTexture(arg0, arg1);
+	if(result) lua_create_elfObject(L, (elfObject*)result);
+	else lua_pushnil(L);
+	return 1;
+}
+static int lua_GetOrLoadResourcesTexture(lua_State *L)
+{
+	elfTexture* result;
+	const char* arg0;
+	const char* arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetOrLoadResourcesTexture", lua_gettop(L), 2);}
+	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "GetOrLoadResourcesTexture", 1, "string");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "GetOrLoadResourcesTexture", 2, "string");}
+	arg0 = lua_tostring(L, 1);
+	arg1 = lua_tostring(L, 2);
+	result = elfGetOrLoadResourcesTexture(arg0, arg1);
+	if(result) lua_create_elfObject(L, (elfObject*)result);
+	else lua_pushnil(L);
 	return 1;
 }
 static int lua_CreateFramePlayer(lua_State *L)
@@ -9316,11 +9366,25 @@ static int lua_SetButtonOnTexture(lua_State *L)
 static int lua_CreatePicture(lua_State *L)
 {
 	elfPicture* result;
-	const char* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreatePicture", lua_gettop(L), 1);}
-	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreatePicture", 1, "string");}
-	arg0 = lua_tostring(L, 1);
-	result = elfCreatePicture(arg0);
+	elfGuiObject* arg0;
+	const char* arg1;
+	int arg2;
+	int arg3;
+	const char* arg4;
+	if(lua_gettop(L) != 5) {return lua_fail_arg_count(L, "CreatePicture", lua_gettop(L), 5);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
+		{return lua_fail_arg(L, "CreatePicture", 1, "elfGuiObject");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreatePicture", 2, "string");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreatePicture", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreatePicture", 4, "number");}
+	if(!lua_isstring(L, 5)) {return lua_fail_arg(L, "CreatePicture", 5, "string");}
+	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = lua_tostring(L, 2);
+	arg2 = (int)lua_tonumber(L, 3);
+	arg3 = (int)lua_tonumber(L, 4);
+	arg4 = lua_tostring(L, 5);
+	result = elfCreatePicture(arg0, arg1, arg2, arg3, arg4);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -10464,6 +10528,7 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetDirectoryItem", lua_GetDirectoryItem},
 	{"GetDirectoryItemName", lua_GetDirectoryItemName},
 	{"GetDirectoryItemType", lua_GetDirectoryItemType},
+	{"CreateColor", lua_CreateColor},
 	{"CreateVec3f", lua_CreateVec3f},
 	{"CreateQua", lua_CreateQua},
 	{"CreateQuaFromEuler", lua_CreateQuaFromEuler},
@@ -10483,6 +10548,8 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"RandomFloatRange", lua_RandomFloatRange},
 	{"RandomInt", lua_RandomInt},
 	{"RandomIntRange", lua_RandomIntRange},
+	{"GetResourcesTexture", lua_GetResourcesTexture},
+	{"GetOrLoadResourcesTexture", lua_GetOrLoadResourcesTexture},
 	{"CreateFramePlayer", lua_CreateFramePlayer},
 	{"UpdateFramePlayer", lua_UpdateFramePlayer},
 	{"SetFramePlayerFrame", lua_SetFramePlayerFrame},
@@ -11518,8 +11585,11 @@ int luaopen_elf(lua_State* L)
 	lua_pushstring(L, "LIST_PTR");
 	lua_pushnumber(L, 0x0048);
 	lua_settable(L, -3);
-	lua_pushstring(L, "OBJECT_TYPE_COUNT");
+	lua_pushstring(L, "RESOURCES");
 	lua_pushnumber(L, 0x0049);
+	lua_settable(L, -3);
+	lua_pushstring(L, "OBJECT_TYPE_COUNT");
+	lua_pushnumber(L, 0x004A);
 	lua_settable(L, -3);
 	lua_pushstring(L, "PERSPECTIVE");
 	lua_pushnumber(L, 0x0000);
