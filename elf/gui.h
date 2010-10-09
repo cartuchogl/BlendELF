@@ -358,6 +358,8 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams)
 
 		elfDrawString(button->font, button->text, button->pos.x+(button->width-elfGetStringWidth(button->font, button->text))/2,
 			button->pos.y+(button->height-elfGetStringHeight(button->font, button->text))/2-button->font->offsetY/2, shaderParams);
+
+		shaderParams->textureParams[0].texture = NULL;
 	}
 	else
 	{
@@ -970,17 +972,22 @@ void elfRecalcSlider(elfSlider* slider)
 
 ELF_API void ELF_APIENTRY elfSetSliderSize(elfSlider* slider, int width, int height)
 {
-	if(width > height)
+	if(!slider->background)
 	{
-		slider->width = width;
-		slider->height = 4;
+		if(width > height)
+		{
+			slider->width = width;
+			slider->height = 4;
+		}
+		else
+		{
+			slider->height = height;
+			slider->width = 4;
+		}
+		if(slider->width < 4) slider->width = 4;
+		if(slider->height < 4) slider->height = 4;
+		elfRecalcGuiObject((elfGuiObject*)slider);
 	}
-	else
-	{
-		slider->height = height;
-		slider->width = 4;
-	}
-	elfRecalcGuiObject((elfGuiObject*)slider);
 }
 
 ELF_API void ELF_APIENTRY elfSetSliderBackgroundTexture(elfSlider* slider, elfTexture* background)
@@ -1005,7 +1012,7 @@ ELF_API void ELF_APIENTRY elfSetSliderValue(elfSlider* slider, float value)
 	if(slider->value > 1.0f) slider->value = 1.0f;
 }
 
-ELF_API elfScreen* ELF_APIENTRY elfCreateScreen(const char* name)
+ELF_API elfScreen* ELF_APIENTRY elfCreateScreen(elfGuiObject* parent, const char* name, int x, int y, int width, int height)
 {
 	elfScreen* screen;
 
@@ -1024,6 +1031,10 @@ ELF_API elfScreen* ELF_APIENTRY elfCreateScreen(const char* name)
 	elfIncRef((elfObject*)screen->screens);
 
 	if(name) screen->name = elfCreateString(name);
+
+	elfSetGuiObjectPosition((elfGuiObject*)screen, x, y);
+	elfSetScreenSize(screen, width, height);
+	elfAddGuiObject(parent, (elfGuiObject*)screen);
 
 	elfIncObj(ELF_SCREEN);
 
@@ -1049,8 +1060,9 @@ void elfDrawScreen(elfScreen* screen, elfArea* area, gfxShaderParams* shaderPara
 {
 	elfGuiObject* object;
 	int x, y, width, height;
+	elfArea narea;
 
-	if(!screen->visible || !screen->texture) return;
+	if(!screen->visible) return;
 
 	x = screen->pos.x;
 	y = screen->pos.y;
@@ -1074,12 +1086,39 @@ void elfDrawScreen(elfScreen* screen, elfArea* area, gfxShaderParams* shaderPara
 			height -= (y+height)-(area->pos.y+area->size.y);
 	}
 
+	narea.pos.x = x;
+	narea.pos.y = y;
+	narea.size.x = width;
+	narea.size.y = height;
+
 	gfxSetColor(&shaderParams->materialParams.diffuseColor, screen->color.r, screen->color.g, screen->color.b, screen->color.a);
 
-	shaderParams->textureParams[0].texture = screen->texture->texture;
-	gfxSetShaderParams(shaderParams);
-	gfxDrawTextured2dQuad((float)screen->pos.x, (float)screen->pos.y, (float)screen->width, (float)screen->height);
-	shaderParams->textureParams[0].texture = NULL;
+	if(!screen->texture)
+	{
+		elfColor col1, col2;
+
+		shaderParams->renderParams.vertexColor = GFX_TRUE;
+		gfxSetShaderParams(shaderParams);
+
+		col1.r = col1.g = col1.b = 0.10f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.10f; col2.a = 1.0f;
+		elfDrawHorGradient(screen->pos.x, screen->pos.y+screen->height/3, screen->width, screen->height/3*2, col1, col2);
+
+		col1.r = col1.g = col1.b = 0.10f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.15f; col2.a = 1.0f;
+		elfDrawHorGradient(screen->pos.x, screen->pos.y, screen->width, screen->height/3, col1, col2);
+
+		shaderParams->renderParams.vertexColor = GFX_FALSE;
+	}
+	else
+	{
+		shaderParams->textureParams[0].texture = screen->texture->texture;
+		if(shaderParams->textureParams[0].texture)
+		{
+			gfxSetShaderParams(shaderParams);
+			gfxDrawTextured2dQuad((float)screen->pos.x, (float)screen->pos.y, (float)screen->width, (float)screen->height);
+
+			shaderParams->textureParams[0].texture = NULL;
+		}
+	}
 
 	gfxSetViewport(x, y, width, height);
 	gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
@@ -1093,14 +1132,14 @@ void elfDrawScreen(elfScreen* screen, elfArea* area, gfxShaderParams* shaderPara
 		else if(object->objType == ELF_PICTURE) elfDrawPicture((elfPicture*)object, shaderParams);
 		else if(object->objType == ELF_TEXT_FIELD)
 		{
-			elfDrawTextField((elfTextField*)object, area, shaderParams);
+			elfDrawTextField((elfTextField*)object, &narea, shaderParams);
 			gfxSetViewport(x, y, width, height);
 			gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
 				-1.0f, 1.0f, shaderParams->projectionMatrix);
 		}
 		else if(object->objType == ELF_TEXT_LIST)
 		{
-			elfDrawTextList((elfTextList*)object, area, shaderParams);
+			elfDrawTextList((elfTextList*)object, &narea, shaderParams);
 			gfxSetViewport(x, y, width, height);
 			gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
 				-1.0f, 1.0f, shaderParams->projectionMatrix);
@@ -1112,11 +1151,28 @@ void elfDrawScreen(elfScreen* screen, elfArea* area, gfxShaderParams* shaderPara
 	for(object = (elfGuiObject*)elfBeginList(screen->screens); object;
 		object = (elfGuiObject*)elfGetListNext(screen->screens))
 	{
-		area->pos.x = x; area->pos.y = y; area->size.x = width; area->size.y = height;
-		elfDrawScreen((elfScreen*)object, area, shaderParams);
+		elfDrawScreen((elfScreen*)object, &narea, shaderParams);
 		gfxSetViewport(x, y, width, height);
 		gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
 			-1.0f, 1.0f, shaderParams->projectionMatrix);
+	}
+
+	if(!screen->texture)
+	{
+		elfColor col1, col2;
+
+		gfxSetViewport(area->pos.x, area->pos.y, area->size.x, area->size.y);
+		gfxGetOrthographicProjectionMatrix((float)area->pos.x, (float)area->pos.x+area->size.x, (float)area->pos.y, (float)area->pos.y+area->size.y,
+			-1.0f, 1.0f, shaderParams->projectionMatrix);
+
+		shaderParams->renderParams.vertexColor = GFX_TRUE;
+		gfxSetColor(&shaderParams->materialParams.diffuseColor, screen->color.r, screen->color.g, screen->color.b, screen->color.a);
+		gfxSetShaderParams(shaderParams);
+
+		col1.r = col1.g = col1.b = 0.15f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.15f; col2.a = 1.0f;
+		elfDrawHorGradientBorder(screen->pos.x, screen->pos.y, screen->width, screen->height, col1, col2);
+
+		shaderParams->renderParams.vertexColor = GFX_FALSE;
 	}
 }
 
@@ -1132,10 +1188,17 @@ void elfRecalcScreen(elfScreen* screen)
 		screen->width = elfGetTextureWidth(screen->texture);
 		screen->height = elfGetTextureHeight(screen->texture);
 	}
-	else
+}
+
+ELF_API void ELF_APIENTRY elfSetScreenSize(elfScreen* screen, int width, int height)
+{
+	if(!screen->texture)
 	{
-		screen->height = 0;
-		screen->width = 0;
+		screen->width = width;
+		screen->height = height;
+		if(screen->width < 0) screen->width = 0;
+		if(screen->height < 0) screen->height = 0;
+		elfRecalcGuiObject((elfGuiObject*)screen);
 	}
 }
 
@@ -1176,7 +1239,7 @@ ELF_API void ELF_APIENTRY elfForceScreenFocus(elfScreen* screen)
 	screen->root->focusScreen = screen;
 }
 
-ELF_API void ELF_APIENTRY elfReleaseFocusFromScreen(elfScreen* screen)
+ELF_API void ELF_APIENTRY elfReleaseScreenFocus(elfScreen* screen)
 {
 	if(!screen->root) return;
 

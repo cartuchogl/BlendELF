@@ -1892,13 +1892,14 @@ void elfDrawScreen(elfScreen* screen, elfArea* area, gfxShaderParams* shaderPara
 void elfRecalcScreen(elfScreen* screen);
 // !!>
 
-ELF_API elfScreen* ELF_APIENTRY elfCreateScreen(const char* name);	// <mdoc> SCREEN FUCNTIONS
+ELF_API elfScreen* ELF_APIENTRY elfCreateScreen(elfGuiObject* parent, const char* name, int x, int y, int width, int height);	// <mdoc> SCREEN FUCNTIONS
 
+ELF_API void ELF_APIENTRY elfSetScreenSize(elfScreen* screen, int width, int height);
 ELF_API elfTexture* ELF_APIENTRY elfGetScreenTexture(elfScreen* screen);
 ELF_API void ELF_APIENTRY elfSetScreenTexture(elfScreen* screen, elfTexture* texture);
 ELF_API void ELF_APIENTRY elfSetScreenToTop(elfScreen* screen);
 ELF_API void ELF_APIENTRY elfForceScreenFocus(elfScreen* screen);
-ELF_API void ELF_APIENTRY elfReleaseFocusFromScreen(elfScreen* screen);
+ELF_API void ELF_APIENTRY elfReleaseScreenFocus(elfScreen* screen);
 
 // <!!
 void elfDestroyTextList(void* data);

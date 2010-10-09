@@ -9815,14 +9815,48 @@ static int lua_SetSliderValue(lua_State *L)
 static int lua_CreateScreen(lua_State *L)
 {
 	elfScreen* result;
-	const char* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateScreen", lua_gettop(L), 1);}
-	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateScreen", 1, "string");}
-	arg0 = lua_tostring(L, 1);
-	result = elfCreateScreen(arg0);
+	elfGuiObject* arg0;
+	const char* arg1;
+	int arg2;
+	int arg3;
+	int arg4;
+	int arg5;
+	if(lua_gettop(L) != 6) {return lua_fail_arg_count(L, "CreateScreen", lua_gettop(L), 6);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
+		{return lua_fail_arg(L, "CreateScreen", 1, "elfGuiObject");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateScreen", 2, "string");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateScreen", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreateScreen", 4, "number");}
+	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "CreateScreen", 5, "number");}
+	if(!lua_isnumber(L, 6)) {return lua_fail_arg(L, "CreateScreen", 6, "number");}
+	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = lua_tostring(L, 2);
+	arg2 = (int)lua_tonumber(L, 3);
+	arg3 = (int)lua_tonumber(L, 4);
+	arg4 = (int)lua_tonumber(L, 5);
+	arg5 = (int)lua_tonumber(L, 6);
+	result = elfCreateScreen(arg0, arg1, arg2, arg3, arg4, arg5);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
+}
+static int lua_SetScreenSize(lua_State *L)
+{
+	elfScreen* arg0;
+	int arg1;
+	int arg2;
+	if(lua_gettop(L) != 3) {return lua_fail_arg_count(L, "SetScreenSize", lua_gettop(L), 3);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCREEN)
+		{return lua_fail_arg(L, "SetScreenSize", 1, "elfScreen");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetScreenSize", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetScreenSize", 3, "number");}
+	arg0 = (elfScreen*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (int)lua_tonumber(L, 2);
+	arg2 = (int)lua_tonumber(L, 3);
+	elfSetScreenSize(arg0, arg1, arg2);
+	return 0;
 }
 static int lua_GetScreenTexture(lua_State *L)
 {
@@ -9876,15 +9910,15 @@ static int lua_ForceScreenFocus(lua_State *L)
 	elfForceScreenFocus(arg0);
 	return 0;
 }
-static int lua_ReleaseFocusFromScreen(lua_State *L)
+static int lua_ReleaseScreenFocus(lua_State *L)
 {
 	elfScreen* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "ReleaseFocusFromScreen", lua_gettop(L), 1);}
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "ReleaseScreenFocus", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCREEN)
-		{return lua_fail_arg(L, "ReleaseFocusFromScreen", 1, "elfScreen");}
+		{return lua_fail_arg(L, "ReleaseScreenFocus", 1, "elfScreen");}
 	arg0 = (elfScreen*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	elfReleaseFocusFromScreen(arg0);
+	elfReleaseScreenFocus(arg0);
 	return 0;
 }
 static int lua_CreateTextList(lua_State *L)
@@ -11154,11 +11188,12 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"SetSliderSliderTexture", lua_SetSliderSliderTexture},
 	{"SetSliderValue", lua_SetSliderValue},
 	{"CreateScreen", lua_CreateScreen},
+	{"SetScreenSize", lua_SetScreenSize},
 	{"GetScreenTexture", lua_GetScreenTexture},
 	{"SetScreenTexture", lua_SetScreenTexture},
 	{"SetScreenToTop", lua_SetScreenToTop},
 	{"ForceScreenFocus", lua_ForceScreenFocus},
-	{"ReleaseFocusFromScreen", lua_ReleaseFocusFromScreen},
+	{"ReleaseScreenFocus", lua_ReleaseScreenFocus},
 	{"CreateTextList", lua_CreateTextList},
 	{"GetTextListFont", lua_GetTextListFont},
 	{"GetTextListSelectionColor", lua_GetTextListSelectionColor},
