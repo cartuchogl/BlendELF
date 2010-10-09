@@ -1907,12 +1907,9 @@ void elfDrawTextList(elfTextList* textList, elfArea* area, gfxShaderParams* shad
 void elfRecalcTextList(elfTextList* textList);
 // !!>
 
-ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(const char* name);	// <mdoc> TEXT LIST FUNCTIONS
+ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(elfGuiObject* parent, const char* name, int x, int y, int rows, int width);	// <mdoc> TEXT LIST FUNCTIONS
 
 ELF_API elfFont* ELF_APIENTRY elfGetTextListFont(elfTextList* textList);
-ELF_API elfColor ELF_APIENTRY elfGetTextListSelectionColor(elfTextList* textList);
-ELF_API elfColor ELF_APIENTRY elfGetTextListLightColor(elfTextList* textList);
-ELF_API elfColor ELF_APIENTRY elfGetTextListDarkColor(elfTextList* textList);
 ELF_API int ELF_APIENTRY elfGetTextListRowCount(elfTextList* textList);
 ELF_API int ELF_APIENTRY elfGetTextListItemCount(elfTextList* textList);
 ELF_API int ELF_APIENTRY elfGetTextListSelectionIndex(elfTextList* textList);
@@ -1921,9 +1918,6 @@ ELF_API const char* ELF_APIENTRY elfGetTextListItem(elfTextList* textList, int i
 ELF_API const char* ELF_APIENTRY elfGetTextListSelectedItem(elfTextList* textList);
 
 ELF_API void ELF_APIENTRY elfSetTextListFont(elfTextList* textList, elfFont* font);
-ELF_API void ELF_APIENTRY elfSetTextListSelectionColor(elfTextList* textList, float r, float g, float b, float a);
-ELF_API void ELF_APIENTRY elfSetTextListLightColor(elfTextList* textList, float r, float g, float b, float a);
-ELF_API void ELF_APIENTRY elfSetTextListDarkColor(elfTextList* textList, float r, float g, float b, float a);
 ELF_API void ELF_APIENTRY elfSetTextListSize(elfTextList* textList, int rows, int width);
 ELF_API void ELF_APIENTRY elfAddTextListItem(elfTextList* textList, const char* text);
 ELF_API void ELF_APIENTRY elfSetTextListItem(elfTextList* textList, int idx, const char* text);
@@ -1938,7 +1932,7 @@ void elfDrawCheckBox(elfCheckBox* checkBox, gfxShaderParams* shaderParams);
 void elfRecalcCheckBox(elfCheckBox* checkBox);
 // !!>
 
-ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(const char* name);	// <mdoc> CHECK BOX FUNCTIONS
+ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(elfGuiObject* parent, const char* name, int x, int y);	// <mdoc> CHECK BOX FUNCTIONS
 
 ELF_API unsigned char ELF_APIENTRY elfGetCheckBoxState(elfCheckBox* checkBox);
 ELF_API elfTexture* ELF_APIENTRY elfGetCheckBoxOffTexture(elfCheckBox* checkBox);

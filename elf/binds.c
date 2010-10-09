@@ -9924,11 +9924,28 @@ static int lua_ReleaseScreenFocus(lua_State *L)
 static int lua_CreateTextList(lua_State *L)
 {
 	elfTextList* result;
-	const char* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateTextList", lua_gettop(L), 1);}
-	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateTextList", 1, "string");}
-	arg0 = lua_tostring(L, 1);
-	result = elfCreateTextList(arg0);
+	elfGuiObject* arg0;
+	const char* arg1;
+	int arg2;
+	int arg3;
+	int arg4;
+	int arg5;
+	if(lua_gettop(L) != 6) {return lua_fail_arg_count(L, "CreateTextList", lua_gettop(L), 6);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
+		{return lua_fail_arg(L, "CreateTextList", 1, "elfGuiObject");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateTextList", 2, "string");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateTextList", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreateTextList", 4, "number");}
+	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "CreateTextList", 5, "number");}
+	if(!lua_isnumber(L, 6)) {return lua_fail_arg(L, "CreateTextList", 6, "number");}
+	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = lua_tostring(L, 2);
+	arg2 = (int)lua_tonumber(L, 3);
+	arg3 = (int)lua_tonumber(L, 4);
+	arg4 = (int)lua_tonumber(L, 5);
+	arg5 = (int)lua_tonumber(L, 6);
+	result = elfCreateTextList(arg0, arg1, arg2, arg3, arg4, arg5);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -9945,45 +9962,6 @@ static int lua_GetTextListFont(lua_State *L)
 	result = elfGetTextListFont(arg0);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
-	return 1;
-}
-static int lua_GetTextListSelectionColor(lua_State *L)
-{
-	elfColor result;
-	elfTextList* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetTextListSelectionColor", lua_gettop(L), 1);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_TEXT_LIST)
-		{return lua_fail_arg(L, "GetTextListSelectionColor", 1, "elfTextList");}
-	arg0 = (elfTextList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetTextListSelectionColor(arg0);
-	lua_create_elfColor(L, result);
-	return 1;
-}
-static int lua_GetTextListLightColor(lua_State *L)
-{
-	elfColor result;
-	elfTextList* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetTextListLightColor", lua_gettop(L), 1);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_TEXT_LIST)
-		{return lua_fail_arg(L, "GetTextListLightColor", 1, "elfTextList");}
-	arg0 = (elfTextList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetTextListLightColor(arg0);
-	lua_create_elfColor(L, result);
-	return 1;
-}
-static int lua_GetTextListDarkColor(lua_State *L)
-{
-	elfColor result;
-	elfTextList* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetTextListDarkColor", lua_gettop(L), 1);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_TEXT_LIST)
-		{return lua_fail_arg(L, "GetTextListDarkColor", 1, "elfTextList");}
-	arg0 = (elfTextList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetTextListDarkColor(arg0);
-	lua_create_elfColor(L, result);
 	return 1;
 }
 static int lua_GetTextListRowCount(lua_State *L)
@@ -10081,75 +10059,6 @@ static int lua_SetTextListFont(lua_State *L)
 	arg0 = (elfTextList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (elfFont*)((lua_elfObject*)lua_touserdata(L, 2))->object;
 	elfSetTextListFont(arg0, arg1);
-	return 0;
-}
-static int lua_SetTextListSelectionColor(lua_State *L)
-{
-	elfTextList* arg0;
-	float arg1;
-	float arg2;
-	float arg3;
-	float arg4;
-	if(lua_gettop(L) != 5) {return lua_fail_arg_count(L, "SetTextListSelectionColor", lua_gettop(L), 5);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_TEXT_LIST)
-		{return lua_fail_arg(L, "SetTextListSelectionColor", 1, "elfTextList");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetTextListSelectionColor", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetTextListSelectionColor", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "SetTextListSelectionColor", 4, "number");}
-	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "SetTextListSelectionColor", 5, "number");}
-	arg0 = (elfTextList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = (float)lua_tonumber(L, 2);
-	arg2 = (float)lua_tonumber(L, 3);
-	arg3 = (float)lua_tonumber(L, 4);
-	arg4 = (float)lua_tonumber(L, 5);
-	elfSetTextListSelectionColor(arg0, arg1, arg2, arg3, arg4);
-	return 0;
-}
-static int lua_SetTextListLightColor(lua_State *L)
-{
-	elfTextList* arg0;
-	float arg1;
-	float arg2;
-	float arg3;
-	float arg4;
-	if(lua_gettop(L) != 5) {return lua_fail_arg_count(L, "SetTextListLightColor", lua_gettop(L), 5);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_TEXT_LIST)
-		{return lua_fail_arg(L, "SetTextListLightColor", 1, "elfTextList");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetTextListLightColor", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetTextListLightColor", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "SetTextListLightColor", 4, "number");}
-	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "SetTextListLightColor", 5, "number");}
-	arg0 = (elfTextList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = (float)lua_tonumber(L, 2);
-	arg2 = (float)lua_tonumber(L, 3);
-	arg3 = (float)lua_tonumber(L, 4);
-	arg4 = (float)lua_tonumber(L, 5);
-	elfSetTextListLightColor(arg0, arg1, arg2, arg3, arg4);
-	return 0;
-}
-static int lua_SetTextListDarkColor(lua_State *L)
-{
-	elfTextList* arg0;
-	float arg1;
-	float arg2;
-	float arg3;
-	float arg4;
-	if(lua_gettop(L) != 5) {return lua_fail_arg_count(L, "SetTextListDarkColor", lua_gettop(L), 5);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_TEXT_LIST)
-		{return lua_fail_arg(L, "SetTextListDarkColor", 1, "elfTextList");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetTextListDarkColor", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetTextListDarkColor", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "SetTextListDarkColor", 4, "number");}
-	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "SetTextListDarkColor", 5, "number");}
-	arg0 = (elfTextList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = (float)lua_tonumber(L, 2);
-	arg2 = (float)lua_tonumber(L, 3);
-	arg3 = (float)lua_tonumber(L, 4);
-	arg4 = (float)lua_tonumber(L, 5);
-	elfSetTextListDarkColor(arg0, arg1, arg2, arg3, arg4);
 	return 0;
 }
 static int lua_SetTextListSize(lua_State *L)
@@ -10258,11 +10167,22 @@ static int lua_SetTextListSelection(lua_State *L)
 static int lua_CreateCheckBox(lua_State *L)
 {
 	elfCheckBox* result;
-	const char* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateCheckBox", lua_gettop(L), 1);}
-	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateCheckBox", 1, "string");}
-	arg0 = lua_tostring(L, 1);
-	result = elfCreateCheckBox(arg0);
+	elfGuiObject* arg0;
+	const char* arg1;
+	int arg2;
+	int arg3;
+	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "CreateCheckBox", lua_gettop(L), 4);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
+		{return lua_fail_arg(L, "CreateCheckBox", 1, "elfGuiObject");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateCheckBox", 2, "string");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateCheckBox", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreateCheckBox", 4, "number");}
+	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = lua_tostring(L, 2);
+	arg2 = (int)lua_tonumber(L, 3);
+	arg3 = (int)lua_tonumber(L, 4);
+	result = elfCreateCheckBox(arg0, arg1, arg2, arg3);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -11196,9 +11116,6 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"ReleaseScreenFocus", lua_ReleaseScreenFocus},
 	{"CreateTextList", lua_CreateTextList},
 	{"GetTextListFont", lua_GetTextListFont},
-	{"GetTextListSelectionColor", lua_GetTextListSelectionColor},
-	{"GetTextListLightColor", lua_GetTextListLightColor},
-	{"GetTextListDarkColor", lua_GetTextListDarkColor},
 	{"GetTextListRowCount", lua_GetTextListRowCount},
 	{"GetTextListItemCount", lua_GetTextListItemCount},
 	{"GetTextListSelectionIndex", lua_GetTextListSelectionIndex},
@@ -11206,9 +11123,6 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetTextListItem", lua_GetTextListItem},
 	{"GetTextListSelectedItem", lua_GetTextListSelectedItem},
 	{"SetTextListFont", lua_SetTextListFont},
-	{"SetTextListSelectionColor", lua_SetTextListSelectionColor},
-	{"SetTextListLightColor", lua_SetTextListLightColor},
-	{"SetTextListDarkColor", lua_SetTextListDarkColor},
 	{"SetTextListSize", lua_SetTextListSize},
 	{"AddTextListItem", lua_AddTextListItem},
 	{"SetTextListItem", lua_SetTextListItem},

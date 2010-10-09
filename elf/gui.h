@@ -887,7 +887,7 @@ void elfDrawSlider(elfSlider* slider, gfxShaderParams* shaderParams)
 		elfColor col1, col2;
 
 		shaderParams->renderParams.vertexColor = GFX_TRUE;
-		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 1.0, 1.0, 1.0);
+		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 1.0f);
 		gfxSetShaderParams(shaderParams);
 
 		if(slider->width > slider->height)
@@ -1246,7 +1246,7 @@ ELF_API void ELF_APIENTRY elfReleaseScreenFocus(elfScreen* screen)
 	screen->root->focusScreen = NULL;
 }
 
-ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(const char* name)
+ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(elfGuiObject* parent, const char* name, int x, int y, int rows, int width)
 {
 	elfTextList* textList;
 
@@ -1256,9 +1256,6 @@ ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(const char* name)
 	textList->objDestr = elfDestroyTextList;
 
 	textList->color.r = textList->color.g = textList->color.b = textList->color.a = 1.0f;
-	textList->selectionColor.r = textList->selectionColor.g = textList->selectionColor.b = textList->selectionColor.a = 0.5f;
-	textList->lightColor.r = textList->lightColor.g = textList->lightColor.b = 0.0f; textList->lightColor.a = 0.25f;
-	textList->darkColor.r = textList->darkColor.g = textList->darkColor.b = 0.0f; textList->darkColor.a = 0.125f;
 	textList->visible = ELF_TRUE;
 	textList->rows = 16;
 	textList->listWidth = 256;
@@ -1268,6 +1265,11 @@ ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(const char* name)
 	elfIncRef((elfObject*)textList->items);
 
 	if(name) textList->name = elfCreateString(name);
+
+	elfSetGuiObjectPosition((elfGuiObject*)textList, x, y);
+	elfSetTextListFont(textList, eng->guiFont);
+	elfSetTextListSize(textList, rows, width);
+	elfAddGuiObject(parent, (elfGuiObject*)textList);
 
 	elfIncObj(ELF_TEXT_LIST);
 
@@ -1295,6 +1297,7 @@ void elfDrawTextList(elfTextList* textList, elfArea* area, gfxShaderParams* shad
 	int i;
 	unsigned char light;
 	elfString* strObj;
+	elfColor col1, col2;
 
 	if(!textList->visible || !textList->font || elfGetListLength(textList->items) < 1) return;
 
@@ -1323,8 +1326,6 @@ void elfDrawTextList(elfTextList* textList, elfArea* area, gfxShaderParams* shad
 	gfxSetViewport(x, y, width, height);
 	gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
 		-1.0f, 1.0f, shaderParams->projectionMatrix);
-	gfxSetColor(&shaderParams->materialParams.diffuseColor, textList->color.r,
-		textList->color.g, textList->color.b, textList->color.a);
 
 	light = ELF_TRUE;
 	offset = textList->font->size+textList->font->offsetY;
@@ -1337,28 +1338,28 @@ void elfDrawTextList(elfTextList* textList, elfArea* area, gfxShaderParams* shad
 		if(i == textList->selection)
 		{
 			shaderParams->textureParams[0].texture = NULL;
-			gfxSetColor(&shaderParams->materialParams.diffuseColor, textList->selectionColor.r,
-				textList->selectionColor.g, textList->selectionColor.b, textList->selectionColor.a);
-			gfxSetShaderParams(shaderParams);	
-			gfxDraw2dQuad((float)textList->pos.x, (float)textList->pos.y+textList->height-offset,
-				(float)textList->listWidth, (float)textList->font->size+textList->font->offsetY);
+			shaderParams->renderParams.vertexColor = GFX_TRUE;
+			gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 1.0f);
+			gfxSetShaderParams(shaderParams);
+			col1.r = col1.g = col1.b = 0.35f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.4f; col2.a = 1.0f;
+			elfDrawHorGradient(textList->pos.x, textList->pos.y+textList->height-offset,
+				textList->listWidth, textList->font->size+textList->font->offsetY, col1, col2);
 		}
 		else
 		{
 			shaderParams->textureParams[0].texture = NULL;
-			if(light) gfxSetColor(&shaderParams->materialParams.diffuseColor, textList->lightColor.r,
-				textList->lightColor.g, textList->lightColor.b, textList->lightColor.a);
-			else gfxSetColor(&shaderParams->materialParams.diffuseColor, textList->darkColor.r,
-				textList->darkColor.g, textList->darkColor.b, textList->darkColor.a);
-			gfxSetShaderParams(shaderParams);	
-			gfxDraw2dQuad((float)textList->pos.x, (float)textList->pos.y+textList->height-offset,
-				(float)textList->listWidth, (float)textList->font->size+textList->font->offsetY);
+			shaderParams->renderParams.vertexColor = GFX_TRUE;
+			gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 1.0f);
+			gfxSetShaderParams(shaderParams);
+			col1.r = col1.g = col1.b = 0.16f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.20f; col2.a = 1.0f;
+			elfDrawHorGradient(textList->pos.x, textList->pos.y+textList->height-offset,
+				textList->listWidth, textList->font->size+textList->font->offsetY, col1, col2);
 		}
 
 		light = !light;
 
-		gfxSetColor(&shaderParams->materialParams.diffuseColor, textList->color.r,
-			textList->color.g, textList->color.b, textList->color.a);
+		shaderParams->renderParams.vertexColor = GFX_FALSE;
+		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 0.6f);
 		elfDrawString(textList->font, strObj->str, textList->pos.x, textList->pos.y+textList->height-offset, shaderParams);
 
 		offset += textList->font->size+textList->font->offsetY;
@@ -1367,24 +1368,23 @@ void elfDrawTextList(elfTextList* textList, elfArea* area, gfxShaderParams* shad
 	shaderParams->textureParams[0].texture = NULL;
 }
 
+void elfRecalcTextList(elfTextList* textList)
+{
+	if(textList->font)
+	{
+		textList->height = (textList->font->size+textList->font->offsetY)*textList->rows;
+		textList->width = textList->listWidth;
+	}
+	else
+	{
+		textList->height = 0;
+		textList->width = 0;
+	}
+}
+
 ELF_API elfFont* ELF_APIENTRY elfGetTextListFont(elfTextList* textList)
 {
 	return textList->font;
-}
-
-ELF_API elfColor ELF_APIENTRY elfGetTextListSelectionColor(elfTextList* textList)
-{
-	return textList->selectionColor;
-}
-
-ELF_API elfColor ELF_APIENTRY elfGetTextListLightColor(elfTextList* textList)
-{
-	return textList->lightColor;
-}
-
-ELF_API elfColor ELF_APIENTRY elfGetTextListDarkColor(elfTextList* textList)
-{
-	return textList->darkColor;
 }
 
 ELF_API int ELF_APIENTRY elfGetTextListRowCount(elfTextList* textList)
@@ -1439,50 +1439,12 @@ ELF_API const char* ELF_APIENTRY elfGetTextListSelectedItem(elfTextList* textLis
 	return "";
 }
 
-void elfRecalcTextList(elfTextList* textList)
-{
-	if(textList->font)
-	{
-		textList->height = (textList->font->size+textList->font->offsetY)*textList->rows;
-		textList->width = textList->listWidth;
-	}
-	else
-	{
-		textList->height = 0;
-		textList->width = 0;
-	}
-}
-
 ELF_API void ELF_APIENTRY elfSetTextListFont(elfTextList* textList, elfFont* font)
 {
 	if(textList->font) elfDecRef((elfObject*)textList->font);
 	textList->font = font;
 	if(textList->font) elfIncRef((elfObject*)textList->font);
 	elfRecalcGuiObject((elfGuiObject*)textList);
-}
-
-ELF_API void ELF_APIENTRY elfSetTextListSelectionColor(elfTextList* textList, float r, float g, float b, float a)
-{
-	textList->selectionColor.r = r;
-	textList->selectionColor.g = g;
-	textList->selectionColor.b = b;
-	textList->selectionColor.a = a;
-}
-
-ELF_API void ELF_APIENTRY elfSetTextListLightColor(elfTextList* textList, float r, float g, float b, float a)
-{
-	textList->lightColor.r = r;
-	textList->lightColor.g = g;
-	textList->lightColor.b = b;
-	textList->lightColor.a = a;
-}
-
-ELF_API void ELF_APIENTRY elfSetTextListDarkColor(elfTextList* textList, float r, float g, float b, float a)
-{
-	textList->darkColor.r = r;
-	textList->darkColor.g = g;
-	textList->darkColor.b = b;
-	textList->darkColor.a = a;
 }
 
 ELF_API void ELF_APIENTRY elfSetTextListSize(elfTextList* textList, int rows, int width)
@@ -1563,7 +1525,7 @@ ELF_API void ELF_APIENTRY elfSetTextListSelection(elfTextList* textList, int sel
 	if(elfGetListLength(textList->items) == 0) textList->selection = -1;
 }
 
-ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(const char* name)
+ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(elfGuiObject* parent, const char* name, int x, int y)
 {
 	elfCheckBox* checkBox;
 
@@ -1576,6 +1538,9 @@ ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(const char* name)
 	checkBox->visible = ELF_TRUE;
 
 	if(name) checkBox->name = elfCreateString(name);
+
+	elfSetGuiObjectPosition((elfGuiObject*)checkBox, x, y);
+	elfAddGuiObject(parent, (elfGuiObject*)checkBox);
 
 	elfIncObj(ELF_CHECK_BOX);
 
@@ -1602,24 +1567,79 @@ void elfDrawCheckBox(elfCheckBox* checkBox, gfxShaderParams* shaderParams)
 {
 	if(!checkBox->visible) return;
 
-	gfxSetColor(&shaderParams->materialParams.diffuseColor, checkBox->color.r,
-		checkBox->color.g, checkBox->color.b, checkBox->color.a);
+	if(!checkBox->off)
+	{
+		elfColor col1, col2;
+		float *vertexBuffer;
 
-	if(checkBox->state == ELF_OFF)
-	{
-		if(checkBox->off) shaderParams->textureParams[0].texture = checkBox->off->texture;
-	}
-	else if(checkBox->state == ELF_ON)
-	{
-		if(checkBox->on) shaderParams->textureParams[0].texture = checkBox->on->texture;
-	}
-
-	if(shaderParams->textureParams[0].texture)
-	{
+		shaderParams->renderParams.vertexColor = GFX_TRUE;
+		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 1.0f);
 		gfxSetShaderParams(shaderParams);
-		gfxDrawTextured2dQuad((float)checkBox->pos.x, (float)checkBox->pos.y, (float)checkBox->width, (float)checkBox->height);
-		shaderParams->textureParams[0].texture = NULL;
+
+		col1.r = col1.g = col1.b = 0.10f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.35f; col2.a = 1.0f;
+		elfDrawHorGradient(checkBox->pos.x, checkBox->pos.y, checkBox->width, checkBox->height, col1, col2);
+
+		col1.r = col1.g = col1.b = 0.25f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.35f; col2.a = 1.0f;
+		elfDrawHorGradientBorder(checkBox->pos.x, checkBox->pos.y, checkBox->width, checkBox->height, col1, col2);
+
+		shaderParams->renderParams.vertexColor = GFX_FALSE;
+
+		if(checkBox->state == ELF_ON)
+		{
+			shaderParams->renderParams.lineWidth = 2.0;
+			gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 0.6f);
+			gfxSetShaderParams(shaderParams);
+
+			vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->lines);
+
+			vertexBuffer[0] = checkBox->pos.x+4;
+			vertexBuffer[1] = checkBox->pos.y+2;
+			vertexBuffer[2] = 0.0;
+			vertexBuffer[3] = checkBox->pos.x+2;
+			vertexBuffer[4] = checkBox->pos.y+6;
+			vertexBuffer[5] = 0.0;
+
+			vertexBuffer[6] = checkBox->pos.x+4;
+			vertexBuffer[7] = checkBox->pos.y+2;
+			vertexBuffer[8] = 0.0;
+			vertexBuffer[9] = checkBox->pos.x+9;
+			vertexBuffer[10] = checkBox->pos.y+9;
+			vertexBuffer[11] = 0.0;
+
+			gfxDrawLines(4, eng->lines);
+
+			shaderParams->renderParams.lineWidth = 1.0;
+		}
 	}
+	else
+	{
+		shaderParams->textureParams[0].texture = checkBox->off->texture;
+
+		if(checkBox->state == ELF_ON)
+		{
+			if(checkBox->on) shaderParams->textureParams[0].texture = checkBox->on->texture;
+		}
+
+		if(shaderParams->textureParams[0].texture)
+		{
+			gfxSetColor(&shaderParams->materialParams.diffuseColor, checkBox->color.r,
+				checkBox->color.g, checkBox->color.b, checkBox->color.a);
+			gfxSetShaderParams(shaderParams);
+			gfxDrawTextured2dQuad((float)checkBox->pos.x, (float)checkBox->pos.y, (float)checkBox->width, (float)checkBox->height);
+			shaderParams->textureParams[0].texture = NULL;
+		}
+	}
+}
+
+void elfRecalcCheckBox(elfCheckBox* checkBox)
+{
+	if(checkBox->off)
+	{
+		checkBox->width = elfGetTextureWidth(checkBox->off);
+		checkBox->height = elfGetTextureHeight(checkBox->off);
+	}
+	checkBox->height = 12;
+	checkBox->width = 12;
 }
 
 ELF_API unsigned char ELF_APIENTRY elfGetCheckBoxState(elfCheckBox* checkBox)
@@ -1635,20 +1655,6 @@ ELF_API elfTexture* ELF_APIENTRY elfGetCheckBoxOffTexture(elfCheckBox* checkBox)
 ELF_API elfTexture* ELF_APIENTRY elfGetCheckBoxOnTexture(elfCheckBox* checkBox)
 {
 	return checkBox->on;
-}
-
-void elfRecalcCheckBox(elfCheckBox* checkBox)
-{
-	if(checkBox->off)
-	{
-		checkBox->width = elfGetTextureWidth(checkBox->off);
-		checkBox->height = elfGetTextureHeight(checkBox->off);
-	}
-	else
-	{
-		checkBox->height = 0;
-		checkBox->width = 0;
-	}
 }
 
 ELF_API void ELF_APIENTRY elfSetCheckBoxOffTexture(elfCheckBox* checkBox, elfTexture* off)

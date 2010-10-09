@@ -737,9 +737,6 @@ struct elfScreen {
 
 struct elfTextList {
 	ELF_GUI_OBJECT_HEADER;
-	elfColor selectionColor;
-	elfColor lightColor;
-	elfColor darkColor;
 	elfFont* font;
 	elfList* items;
 	int rows;
