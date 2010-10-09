@@ -1875,12 +1875,13 @@ void elfDrawSlider(elfSlider* slider, gfxShaderParams* shaderParams);
 void elfRecalcSlider(elfSlider* slider);
 // !!>
 
-ELF_API elfSlider* ELF_APIENTRY elfCreateSlider(const char* name);	// <mdoc> SLIDER FUNCTIONS
+ELF_API elfSlider* ELF_APIENTRY elfCreateSlider(elfGuiObject* parent, const char* name, int x, int y, int width, int height, float value);	// <mdoc> SLIDER FUNCTIONS
 
 ELF_API elfTexture* ELF_APIENTRY elfGetSliderBackgroundTexture(elfSlider* slider);
 ELF_API elfTexture* ELF_APIENTRY elfGetSliderSliderTexture(elfSlider* slider);
 ELF_API float ELF_APIENTRY elfGetSliderValue(elfSlider* slider);
 
+ELF_API void ELF_APIENTRY elfSetSliderSize(elfSlider* slider, int width, int height);
 ELF_API void ELF_APIENTRY elfSetSliderBackgroundTexture(elfSlider* slider, elfTexture* background);
 ELF_API void ELF_APIENTRY elfSetSliderSliderTexture(elfSlider* slider, elfTexture* sliderTexture);
 ELF_API void ELF_APIENTRY elfSetSliderValue(elfSlider* slider, float value);

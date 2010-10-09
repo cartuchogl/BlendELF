@@ -90,6 +90,51 @@ void gfxDrawTextured2dQuadRegion(float x, float y, float width, float height, fl
 	gfxDrawVertexArray(driver->quadVertexArray, 4, GFX_TRIANGLE_STRIP);
 }
 
+float gfxGetAbsoluteValue(float val)
+{
+	if(val < 0.0f) return -val;
+	return val;
+}
+
+unsigned char gfxIsAboutSame(float v1, float v2)
+{
+	if(gfxGetAbsoluteValue(v1-v2) < 0.0001f) return GFX_TRUE;
+	return GFX_FALSE;
+}
+
+void gfxDrawCircle(float x, float y, int vertices, float size)
+{
+	float step;
+	int i;
+	float* vertexBuffer;
+
+	if(vertices < 3) return;
+	if(vertices > GFX_MAX_CIRCLE_VERTICES) vertices = GFX_MAX_CIRCLE_VERTICES;
+
+	if(vertices != driver->prevCircleVerticeCount || !gfxIsAboutSame(size, driver->prevCircleSize))
+	{
+		step = (360.0f/((float)vertices))*GFX_PI_DIV_180;
+
+		vertexBuffer = (float*)gfxGetVertexDataBuffer(driver->circleVertexData);
+
+		vertexBuffer[0] = x;
+		vertexBuffer[1] = y;
+		vertexBuffer[2] = 0.0f;
+
+		for(i = 1; i < vertices+2; i++)
+		{
+			vertexBuffer[i*3] = -((float)sin((float)(step*(i-1))))*size+x;
+			vertexBuffer[i*3+1] = ((float)cos((float)(step*(i-1))))*size+y;
+			vertexBuffer[i*3+2] = 0.0f;
+		}
+	}
+
+	gfxUpdateVertexData(driver->circleVertexData);
+	gfxDrawVertexArray(driver->circleVertexArray, vertices+2, GFX_TRIANGLE_FAN);
+
+	driver->prevCircleVerticeCount = vertices;
+}
+
 void gfxDrawBoundingBox(float min[3], float max[3])
 {
 	float* vertexBuffer;
@@ -142,50 +187,5 @@ void gfxDrawLineLoop(int count, gfxVertexData* vertices)
 
 	gfxSetVertexArrayData(driver->lineVertexArray, GFX_VERTEX, vertices);
 	gfxDrawVertexArray(driver->lineVertexArray, count, GFX_LINE_LOOP);
-}
-
-float gfxGetAbsoluteValue(float val)
-{
-	if(val < 0.0f) return -val;
-	return val;
-}
-
-unsigned char gfxIsAboutSame(float v1, float v2)
-{
-	if(gfxGetAbsoluteValue(v1-v2) < 0.0001f) return GFX_TRUE;
-	return GFX_FALSE;
-}
-
-void gfxDrawCircle(int vertices, float size)
-{
-	float step;
-	int i;
-	float* vertexBuffer;
-
-	if(vertices < 3) return;
-	if(vertices > GFX_MAX_CIRCLE_VERTICES) vertices = GFX_MAX_CIRCLE_VERTICES;
-
-	if(vertices != driver->prevCircleVerticeCount || !gfxIsAboutSame(size, driver->prevCircleSize))
-	{
-		step = (360.0f/((float)vertices))*GFX_PI_DIV_180;
-
-		vertexBuffer = (float*)gfxGetVertexDataBuffer(driver->circleVertexData);
-
-		vertexBuffer[0] = 0.0f;
-		vertexBuffer[1] = 0.0f;
-		vertexBuffer[2] = 0.0f;
-
-		for(i = 1; i < vertices+2; i++)
-		{
-			vertexBuffer[i*3] = -((float)sin((float)(step*(i-1))))*size;
-			vertexBuffer[i*3+1] = ((float)cos((float)(step*(i-1))))*size;
-			vertexBuffer[i*3+2] = 0.0;
-		}
-	}
-
-	gfxUpdateVertexData(driver->circleVertexData);
-	gfxDrawVertexArray(driver->circleVertexArray, vertices+2, GFX_TRIANGLE_FAN);
-
-	driver->prevCircleVerticeCount = vertices;
 }
 

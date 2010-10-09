@@ -9679,11 +9679,31 @@ static int lua_SetTextFieldText(lua_State *L)
 static int lua_CreateSlider(lua_State *L)
 {
 	elfSlider* result;
-	const char* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateSlider", lua_gettop(L), 1);}
-	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateSlider", 1, "string");}
-	arg0 = lua_tostring(L, 1);
-	result = elfCreateSlider(arg0);
+	elfGuiObject* arg0;
+	const char* arg1;
+	int arg2;
+	int arg3;
+	int arg4;
+	int arg5;
+	float arg6;
+	if(lua_gettop(L) != 7) {return lua_fail_arg_count(L, "CreateSlider", lua_gettop(L), 7);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
+		{return lua_fail_arg(L, "CreateSlider", 1, "elfGuiObject");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateSlider", 2, "string");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateSlider", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreateSlider", 4, "number");}
+	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "CreateSlider", 5, "number");}
+	if(!lua_isnumber(L, 6)) {return lua_fail_arg(L, "CreateSlider", 6, "number");}
+	if(!lua_isnumber(L, 7)) {return lua_fail_arg(L, "CreateSlider", 7, "number");}
+	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = lua_tostring(L, 2);
+	arg2 = (int)lua_tonumber(L, 3);
+	arg3 = (int)lua_tonumber(L, 4);
+	arg4 = (int)lua_tonumber(L, 5);
+	arg5 = (int)lua_tonumber(L, 6);
+	arg6 = (float)lua_tonumber(L, 7);
+	result = elfCreateSlider(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -9728,6 +9748,23 @@ static int lua_GetSliderValue(lua_State *L)
 	result = elfGetSliderValue(arg0);
 	lua_pushnumber(L, (lua_Number)result);
 	return 1;
+}
+static int lua_SetSliderSize(lua_State *L)
+{
+	elfSlider* arg0;
+	int arg1;
+	int arg2;
+	if(lua_gettop(L) != 3) {return lua_fail_arg_count(L, "SetSliderSize", lua_gettop(L), 3);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SLIDER)
+		{return lua_fail_arg(L, "SetSliderSize", 1, "elfSlider");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetSliderSize", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetSliderSize", 3, "number");}
+	arg0 = (elfSlider*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (int)lua_tonumber(L, 2);
+	arg2 = (int)lua_tonumber(L, 3);
+	elfSetSliderSize(arg0, arg1, arg2);
+	return 0;
 }
 static int lua_SetSliderBackgroundTexture(lua_State *L)
 {
@@ -11112,6 +11149,7 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetSliderBackgroundTexture", lua_GetSliderBackgroundTexture},
 	{"GetSliderSliderTexture", lua_GetSliderSliderTexture},
 	{"GetSliderValue", lua_GetSliderValue},
+	{"SetSliderSize", lua_SetSliderSize},
 	{"SetSliderBackgroundTexture", lua_SetSliderBackgroundTexture},
 	{"SetSliderSliderTexture", lua_SetSliderSliderTexture},
 	{"SetSliderValue", lua_SetSliderValue},

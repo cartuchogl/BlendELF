@@ -667,7 +667,7 @@ void elfRunPostProcess(elfPostProcess* postProcess, elfScene* scene)
 				gfxSetRenderTarget(postProcess->rtHigh);
 				gfxSetRenderTargetColorTexture(postProcess->rtHigh, 0, postProcess->rtTexHigh_1);
 
-				gfxDrawCircle(32, light->shaftSize);
+				gfxDrawCircle(0, 0, 32, light->shaftSize);
 
 				// shaft the light...
 				gfxSetRenderTargetColorTexture(postProcess->rtHigh, 0, postProcess->rtTexHigh_2);

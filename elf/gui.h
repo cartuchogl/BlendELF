@@ -835,7 +835,7 @@ ELF_API void ELF_APIENTRY elfSetTextFieldText(elfTextField* textField, const cha
 		elfMoveTextFieldCursorRight(textField);
 }
 
-ELF_API elfSlider* ELF_APIENTRY elfCreateSlider(const char* name)
+ELF_API elfSlider* ELF_APIENTRY elfCreateSlider(elfGuiObject* parent, const char* name, int x, int y, int width, int height, float value)
 {
 	elfSlider* slider;
 
@@ -849,6 +849,11 @@ ELF_API elfSlider* ELF_APIENTRY elfCreateSlider(const char* name)
 	slider->value = 1.0f;
 
 	if(name) slider->name = elfCreateString(name);
+
+	elfSetGuiObjectPosition((elfGuiObject*)slider, x, y);
+	elfSetSliderSize(slider, width, height);
+	elfSetSliderValue(slider, value);
+	elfAddGuiObject(parent, (elfGuiObject*)slider);
 
 	elfIncObj(ELF_SLIDER);
 
@@ -875,29 +880,67 @@ void elfDrawSlider(elfSlider* slider, gfxShaderParams* shaderParams)
 {
 	if(!slider->visible) return;
 
-	if(slider->background)
+	if(!slider->background)
+	{
+		elfColor col1, col2;
+
+		shaderParams->renderParams.vertexColor = GFX_TRUE;
+		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0, 1.0, 1.0, 1.0);
+		gfxSetShaderParams(shaderParams);
+
+		if(slider->width > slider->height)
+		{
+			col1.r = col1.g = col1.b = 0.40f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.25f; col2.a = 1.0f;
+			elfDrawHorGradient(slider->pos.x, slider->pos.y+2, slider->width, 2, col1, col2);
+			col1.r = col1.g = col1.b = 0.20f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.10f; col2.a = 1.0f;
+			elfDrawHorGradient(slider->pos.x, slider->pos.y, slider->width, 2, col1, col2);
+
+			col1.r = col1.g = col1.b = 0.60f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.45f; col2.a = 1.0f;
+			elfDrawHorGradient(slider->pos.x+slider->width*slider->value-4, slider->pos.y+2, 8, 4, col1, col2);
+			col1.r = col1.g = col1.b = 0.40f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.30f; col2.a = 1.0f;
+			elfDrawHorGradient(slider->pos.x+slider->width*slider->value-4, slider->pos.y-2, 8, 4, col1, col2);
+		}
+		else	
+		{
+			col1.r = col1.g = col1.b = 0.40f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.25f; col2.a = 1.0f;
+			elfDrawHorGradient(slider->pos.x, slider->pos.y+slider->height/2, slider->width, slider->height/2, col1, col2);
+			col1.r = col1.g = col1.b = 0.20f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.10f; col2.a = 1.0f;
+			elfDrawHorGradient(slider->pos.x, slider->pos.y, slider->width, slider->height/2, col1, col2);
+
+			col1.r = col1.g = col1.b = 0.60f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.45f; col2.a = 1.0f;
+			elfDrawHorGradient(slider->pos.x-2, slider->pos.y+slider->height*slider->value, 8, 4, col1, col2);
+			col1.r = col1.g = col1.b = 0.40f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.30f; col2.a = 1.0f;
+			elfDrawHorGradient(slider->pos.x-2, slider->pos.y+slider->height*slider->value-4, 8, 4, col1, col2);
+		}
+
+		shaderParams->renderParams.vertexColor = GFX_FALSE;
+	}
+	else
 	{
 		gfxSetColor(&shaderParams->materialParams.diffuseColor, slider->color.r, slider->color.g, slider->color.b, slider->color.a);
 		shaderParams->textureParams[0].texture = slider->background->texture;
-		gfxSetShaderParams(shaderParams);
-		gfxDrawTextured2dQuad((float)slider->pos.x, (float)slider->pos.y, (float)slider->width, (float)slider->height);
-		shaderParams->textureParams[0].texture = NULL;
-	}
+		if(shaderParams->textureParams[0].texture)
+		{
+			gfxSetShaderParams(shaderParams);
+			gfxDrawTextured2dQuad((float)slider->pos.x, (float)slider->pos.y, (float)slider->width, (float)slider->height);
+			shaderParams->textureParams[0].texture = NULL;
+		}
 
-	if(slider->slider)
-	{
-		gfxSetColor(&shaderParams->materialParams.diffuseColor, slider->color.r, slider->color.g, slider->color.b, slider->color.a);
-		shaderParams->textureParams[0].texture = slider->slider->texture;
-		gfxSetShaderParams(shaderParams);
-		if(slider->width > slider->height)
+		if(slider->slider)
 		{
-			gfxDrawTextured2dQuadRegion((float)slider->pos.x, (float)slider->pos.y, (float)slider->width*slider->value, (float)slider->height, 0.0f, 0.0f, slider->value, 1.0f);
+			gfxSetColor(&shaderParams->materialParams.diffuseColor, slider->color.r, slider->color.g, slider->color.b, slider->color.a);
+			shaderParams->textureParams[0].texture = slider->slider->texture;
+			gfxSetShaderParams(shaderParams);
+			if(slider->width > slider->height)
+			{
+				gfxDrawTextured2dQuadRegion((float)slider->pos.x, (float)slider->pos.y, (float)slider->width*slider->value, (float)slider->height, 0.0f, 0.0f, slider->value, 1.0f);
+			}
+			else
+			{
+				gfxDrawTextured2dQuadRegion((float)slider->pos.x, (float)slider->pos.y, (float)slider->width, (float)slider->height*slider->value, 0.0f, 0.0f, 1.0f, slider->value);	
+			}
+			shaderParams->textureParams[0].texture = NULL;
 		}
-		else
-		{
-			gfxDrawTextured2dQuadRegion((float)slider->pos.x, (float)slider->pos.y, (float)slider->width, (float)slider->height*slider->value, 0.0f, 0.0f, 1.0f, slider->value);	
-		}
-		shaderParams->textureParams[0].texture = NULL;
 	}
 }
 
@@ -923,11 +966,21 @@ void elfRecalcSlider(elfSlider* slider)
 		slider->width = elfGetTextureWidth(slider->background);
 		slider->height = elfGetTextureHeight(slider->background);
 	}
+}
+
+ELF_API void ELF_APIENTRY elfSetSliderSize(elfSlider* slider, int width, int height)
+{
+	if(width > height)
+	{
+		slider->width = width;
+		slider->height = 4;
+	}
 	else
 	{
-		slider->height = 0;
-		slider->width = 0;
+		slider->height = height;
+		slider->width = 4;
 	}
+	elfRecalcGuiObject((elfGuiObject*)slider);
 }
 
 ELF_API void ELF_APIENTRY elfSetSliderBackgroundTexture(elfSlider* slider, elfTexture* background)

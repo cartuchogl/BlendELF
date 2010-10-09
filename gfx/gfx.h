@@ -431,11 +431,11 @@ void gfxSetShaderParams(gfxShaderParams* shaderParams);
 void gfxDraw2dQuad(float x, float y, float width, float height);
 void gfxDrawTextured2dQuad(float x, float y, float width, float height);
 void gfxDrawTextured2dQuadRegion(float x, float y, float width, float height, float tx, float ty, float twidth, float theight);
+void gfxDrawCircle(float x, float y, int vertices, float size);
 
 void gfxDrawBoundingBox(float min[3], float max[3]);
 void gfxDrawLines(int count, gfxVertexData* vertices);
 void gfxDrawLineLoop(int count, gfxVertexData* vertices);
-void gfxDrawCircle(int vertices, float size);
 
 //////////////////////////////// SHADER GEN ////////////////////////////////
 
