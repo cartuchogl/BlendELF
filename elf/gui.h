@@ -1638,8 +1638,11 @@ void elfRecalcCheckBox(elfCheckBox* checkBox)
 		checkBox->width = elfGetTextureWidth(checkBox->off);
 		checkBox->height = elfGetTextureHeight(checkBox->off);
 	}
-	checkBox->height = 12;
-	checkBox->width = 12;
+	else
+	{
+		checkBox->height = 12;
+		checkBox->width = 12;
+	}
 }
 
 ELF_API unsigned char ELF_APIENTRY elfGetCheckBoxState(elfCheckBox* checkBox)
