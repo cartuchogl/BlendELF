@@ -585,9 +585,10 @@ ELF_API elfTextField* ELF_APIENTRY elfCreateTextField(elfGuiObject* parent, cons
 	if(name) textField->name = elfCreateString(name);
 
 	elfSetGuiObjectPosition((elfGuiObject*)textField, x, y);
-	elfSetTextFieldFont(textField, eng->guiFont);	
+	elfSetTextFieldFont(textField, eng->guiFont);
 	elfSetTextFieldWidth(textField, width);
 	elfSetTextFieldOffset(textField, 2, 2);
+	elfSetTextFieldText(textField, text);	
 	elfAddGuiObject(parent, (elfGuiObject*)textField);
 
 	elfIncObj(ELF_TEXT_FIELD);
