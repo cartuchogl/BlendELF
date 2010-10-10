@@ -904,9 +904,9 @@ void elfDrawSlider(elfSlider* slider, gfxShaderParams* shaderParams)
 		}
 		else	
 		{
-			col1.r = col1.g = col1.b = 0.40f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.25f; col2.a = 1.0f;
+			col1.r = col1.g = col1.b = 0.20f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.40f; col2.a = 1.0f;
 			elfDrawHorGradient(slider->pos.x, slider->pos.y+slider->height/2, slider->width, slider->height/2, col1, col2);
-			col1.r = col1.g = col1.b = 0.20f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.10f; col2.a = 1.0f;
+			col1.r = col1.g = col1.b = 0.40f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.20f; col2.a = 1.0f;
 			elfDrawHorGradient(slider->pos.x, slider->pos.y, slider->width, slider->height/2, col1, col2);
 
 			col1.r = col1.g = col1.b = 0.60f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.45f; col2.a = 1.0f;
