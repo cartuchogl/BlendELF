@@ -157,7 +157,7 @@ class Material:
 		self.shininess = float(hardness)/4.0
 
 		for tex in mat.texture_slots:
-			if tex != None and tex.texture != None and tex.texture.image != None:
+			if tex != None and tex.texture != None and 'image' in dir(tex.texture):
 				if tex.texture.image.depth == 32: self.alpha_test = True
 				if tex.use_map_normal: self.normal_map = tex.texture.name
 				elif tex.use_map_displacement != 0:
@@ -668,8 +668,9 @@ class Light(Actor):
 		self.distance = data.distance
 		self.fade_speed = 1.0/self.distance;
 
-		self.inner_cone = data.spot_size*(180.0/3.1415926535)/2.0*(1.0-data.spot_blend)
-		self.outer_cone = data.spot_size*(180.0/3.1415926535)/2.0-self.inner_cone
+		if data.type == "SPOT":
+			self.inner_cone = data.spot_size*(180.0/3.1415926535)/2.0*(1.0-data.spot_blend)
+			self.outer_cone = data.spot_size*(180.0/3.1415926535)/2.0-self.inner_cone
 		
 		self.shadow_map_size = data.shadow_buffer_size
 		
@@ -727,7 +728,7 @@ def matrix4_to_eulers(mat):
 	if mat[4] < -0.998:
 		eul[0] = math.atan2(mat[2],mat[10])*(180.0/math.pi);
 		eul[1] = -math.pi/2*(180.0/math.pi);
-		eul[2] = 0;
+		eul[2] = 0; 'image' in dir(tex.texture)
 		return eul
 	eul[0] = math.atan2(-mat[8],mat[0])*(180.0/math.pi);
 	eul[1] = math.atan2(-mat[6],mat[5])*(180.0/math.pi);
@@ -796,6 +797,7 @@ class Armature:
 
 		for i in range(self.frame_count):
 			#Blender.Set("curframe", i+1)
+
 			#Blender.Window.Redraw()
 			pose = obj.getPose()
 			for bone in self.bones:
@@ -961,7 +963,7 @@ def export(path, sce):
 						material.load(mat)
 						materials.append(material)
 						for tex in mat.texture_slots:
-							if tex != None and tex.texture != None and tex.texture.image != None and tex.texture.name not in texture_names:
+							if tex != None and tex.texture != None and 'image' in dir(tex.texture) and tex.texture.name not in texture_names:
 								texture = Texture()
 								if texture.load(tex) == True:
 									textures.append(texture)
