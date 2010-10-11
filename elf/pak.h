@@ -2151,11 +2151,16 @@ unsigned char elfSaveSceneToPak(elfScene* scene, const char* filePath)
 		elfGetListLength(sprites);
 
 	offset += sizeof(int);	// magic
+	offset += sizeof(int);	// version
 	offset += sizeof(int);	// number of indexes
 
 	ival = 179532100;
 
 	fwrite((char*)&ival, sizeof(int), 1, file);	// magic
+
+	ival = ELF_PAK_VERSION;
+
+	fwrite((char*)&ival, sizeof(int), 1, file);	// pak version
 
 	ival = elfGetListLength(scenes) +
 		elfGetListLength(scripts) +
