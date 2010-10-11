@@ -1932,7 +1932,7 @@ void elfDrawCheckBox(elfCheckBox* checkBox, gfxShaderParams* shaderParams);
 void elfRecalcCheckBox(elfCheckBox* checkBox);
 // !!>
 
-ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(elfGuiObject* parent, const char* name, int x, int y);	// <mdoc> CHECK BOX FUNCTIONS
+ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(elfGuiObject* parent, const char* name, int x, int y, unsigned char state);	// <mdoc> CHECK BOX FUNCTIONS
 
 ELF_API unsigned char ELF_APIENTRY elfGetCheckBoxState(elfCheckBox* checkBox);
 ELF_API elfTexture* ELF_APIENTRY elfGetCheckBoxOffTexture(elfCheckBox* checkBox);

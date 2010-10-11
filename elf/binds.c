@@ -10171,18 +10171,21 @@ static int lua_CreateCheckBox(lua_State *L)
 	const char* arg1;
 	int arg2;
 	int arg3;
-	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "CreateCheckBox", lua_gettop(L), 4);}
+	unsigned char arg4;
+	if(lua_gettop(L) != 5) {return lua_fail_arg_count(L, "CreateCheckBox", lua_gettop(L), 5);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
 		{return lua_fail_arg(L, "CreateCheckBox", 1, "elfGuiObject");}
 	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateCheckBox", 2, "string");}
 	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateCheckBox", 3, "number");}
 	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreateCheckBox", 4, "number");}
+	if(!lua_isboolean(L, 5)) {return lua_fail_arg(L, "CreateCheckBox", 5, "boolean");}
 	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = lua_tostring(L, 2);
 	arg2 = (int)lua_tonumber(L, 3);
 	arg3 = (int)lua_tonumber(L, 4);
-	result = elfCreateCheckBox(arg0, arg1, arg2, arg3);
+	arg4 = (unsigned char)lua_toboolean(L, 5);
+	result = elfCreateCheckBox(arg0, arg1, arg2, arg3, arg4);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;

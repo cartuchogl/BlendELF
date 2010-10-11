@@ -1526,7 +1526,7 @@ ELF_API void ELF_APIENTRY elfSetTextListSelection(elfTextList* textList, int sel
 	if(elfGetListLength(textList->items) == 0) textList->selection = -1;
 }
 
-ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(elfGuiObject* parent, const char* name, int x, int y)
+ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(elfGuiObject* parent, const char* name, int x, int y, unsigned char state)
 {
 	elfCheckBox* checkBox;
 
@@ -1541,6 +1541,7 @@ ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(elfGuiObject* parent, const 
 	if(name) checkBox->name = elfCreateString(name);
 
 	elfSetGuiObjectPosition((elfGuiObject*)checkBox, x, y);
+	elfSetCheckBoxState(checkBox, state);
 	elfAddGuiObject(parent, (elfGuiObject*)checkBox);
 
 	elfIncObj(ELF_CHECK_BOX);
