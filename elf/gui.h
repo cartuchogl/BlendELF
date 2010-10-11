@@ -327,8 +327,6 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams)
 {
 	if(!button->visible) return;
 
-	gfxSetColor(&shaderParams->materialParams.diffuseColor, button->color.r, button->color.g, button->color.b, button->color.a);
-
 	if(!button->off)
 	{
 		elfColor col1, col2;
@@ -376,6 +374,8 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams)
 
 		if(shaderParams->textureParams[0].texture)
 		{
+			gfxSetColor(&shaderParams->materialParams.diffuseColor, button->color.r,
+				button->color.g, button->color.b, button->color.a);
 			gfxSetShaderParams(shaderParams);
 			gfxDrawTextured2dQuad((float)button->pos.x, (float)button->pos.y, (float)button->width, (float)button->height);
 			shaderParams->textureParams[0].texture = NULL;
@@ -577,8 +577,8 @@ ELF_API elfTextField* ELF_APIENTRY elfCreateTextField(elfGuiObject* parent, cons
 	textField->objType = ELF_TEXT_FIELD;
 	textField->objDestr = elfDestroyTextField;
 
-	textField->color.r = textField->color.g = textField->color.b = 1.0f; textField->color.a = 0.6f;
-	textField->textColor.r = textField->textColor.g = textField->textColor.b = textField->textColor.a = 1.0f;
+	textField->color.r = textField->color.g = textField->color.b = textField->color.a = 1.0f;
+	textField->textColor.r = textField->textColor.g = textField->textColor.b = 1.0f; textField->textColor.a = 0.6f;
 	textField->visible = ELF_TRUE;
 	textField->text = elfCreateString("");
 
