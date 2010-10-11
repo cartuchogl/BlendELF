@@ -746,9 +746,9 @@ ELF_API void ELF_APIENTRY elfSetTextFieldFont(elfTextField* textField, elfFont* 
 	if(textField->font)
 	{
 		elfIncRef((elfObject*)textField->font);
-		textField->height = textField->font->size+textField->font->size/2;
+		if(!textField->texture) textField->height = textField->font->size+textField->font->size/2;
 	}
-	else textField->height = 0;
+	else if(!textField->texture) textField->height = 0;
 	elfRecalcGuiObject((elfGuiObject*)textField);
 }
 
@@ -763,6 +763,7 @@ ELF_API void ELF_APIENTRY elfSetTextFieldTexture(elfTextField* textField, elfTex
 	if(textField->texture) elfDecRef((elfObject*)textField->texture);
 	textField->texture = texture;
 	if(textField->texture) elfIncRef((elfObject*)textField->texture);
+	else if(textField->font) textField->height = textField->font->size+textField->font->size/2;
 	elfRecalcGuiObject((elfGuiObject*)textField);
 }
 
@@ -996,6 +997,11 @@ ELF_API void ELF_APIENTRY elfSetSliderBackgroundTexture(elfSlider* slider, elfTe
 	if(slider->background) elfDecRef((elfObject*)slider->background);
 	slider->background = background;
 	if(slider->background) elfIncRef((elfObject*)slider->background);
+	else
+	{
+		if(slider->width > slider->height) slider->height = 4;
+		else slider->width = 4;
+	}
 	elfRecalcGuiObject((elfGuiObject*)slider);
 }
 
