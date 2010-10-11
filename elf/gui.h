@@ -649,10 +649,10 @@ void elfDrawTextField(elfTextField* textField, elfArea* area, gfxShaderParams* s
 		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 1.0f);
 		gfxSetShaderParams(shaderParams);
 
-		col1.r = col1.g = col1.b = 0.15f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.35f; col2.a = 1.0f;
+		col1.r = col1.g = col1.b = 0.15f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.20f; col2.a = 1.0f;
 		elfDrawHorGradient(textField->pos.x, textField->pos.y, textField->width, textField->height, col1, col2);
 
-		col1.r = col1.g = col1.b = 0.25f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.4f; col2.a = 1.0f;
+		col1.r = col1.g = col1.b = 0.25f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.30f; col2.a = 1.0f;
 		elfDrawHorGradientBorder(textField->pos.x, textField->pos.y, textField->width, textField->height, col1, col2);
 
 		shaderParams->renderParams.vertexColor = GFX_FALSE;
@@ -1358,7 +1358,7 @@ void elfDrawTextList(elfTextList* textList, elfArea* area, gfxShaderParams* shad
 			shaderParams->renderParams.vertexColor = GFX_TRUE;
 			gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 1.0f);
 			gfxSetShaderParams(shaderParams);
-			col1.r = col1.g = col1.b = 0.16f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.20f; col2.a = 1.0f;
+			col1.r = col1.g = col1.b = 0.17f; col1.a = 1.0f; col2.r = col2.g = col2.b = 0.14f; col2.a = 1.0f;
 			elfDrawHorGradient(textList->pos.x, textList->pos.y+textList->height-offset,
 				textList->listWidth, textList->font->size+textList->font->offsetY, col1, col2);
 		}
