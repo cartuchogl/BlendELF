@@ -1965,7 +1965,9 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveGuiObjectByObject(elfGuiObject* pare
 ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiTrace(elfGui* gui);
 ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiFocus(elfGui* gui);
 ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiActiveTextField(elfGui* gui);
-ELF_API const char* ELF_APIENTRY elfGetGuiDragBoard(elfGui* gui);
+ELF_API unsigned char ELF_APIENTRY elfGetGuiDragging(elfGui* gui);
+ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiDragObject(elfGui* gui);
+ELF_API const char* ELF_APIENTRY elfGetGuiDragContent(elfGui* gui);
 
 ELF_API void ELF_APIENTRY elfEmptyGui(elfGui* gui);
 

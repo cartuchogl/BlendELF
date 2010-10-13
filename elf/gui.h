@@ -1808,7 +1808,8 @@ void elfDestroyGui(void* data)
 	elfGui* gui = (elfGui*)data;
 
 	if(gui->name) elfDestroyString(gui->name);
-	if(gui->dragBoard) elfDestroyString(gui->dragBoard);
+	if(gui->dragObject) elfDecRef((elfObject*)gui->dragObject);
+	if(gui->dragContent) elfDestroyString(gui->dragContent);
 
 	for(object = (elfGuiObject*)elfBeginList(gui->children); object;
 		object = (elfGuiObject*)elfGetListNext(gui->children))
@@ -2142,7 +2143,15 @@ void elfUpdateGui(elfGui* gui, float step)
 						/ (textList->font->size+textList->font->offsetY)+textList->offset;
 
 					if(textList->selection > elfGetListLength(textList->items)-1) textList->selection = -1;
-					else if(textList->itemDrag) gui->dragBoard = elfCreateString(elfGetTextListItem(textList, textList->selection));
+					else if(textList->itemDrag)
+					{
+						if(gui->dragContent) elfDestroyString(gui->dragContent);
+						if(gui->dragObject) elfDecRef((elfObject*)gui->dragObject);
+						gui->dragging = ELF_TRUE;
+						gui->dragContent = elfCreateString(elfGetTextListItem(textList, textList->selection));
+						gui->dragObject = (elfGuiObject*)textList;
+						elfIncRef((elfObject*)gui->dragObject);
+					}
 
 					textList->event = ELF_SELECTION_CHANGED;
 
@@ -2214,7 +2223,7 @@ void elfUpdateGui(elfGui* gui, float step)
 			{
 				((elfTextField*)gui->trace)->event = ELF_DROP;
 
-				if(gui->dragBoard && ((elfTextField*)gui->trace)->script)
+				if(gui->dragContent && ((elfTextField*)gui->trace)->script)
 				{
 					eng->actor = (elfObject*)gui->trace;
 					elfIncRef((elfObject*)gui->trace);
@@ -2229,8 +2238,7 @@ void elfUpdateGui(elfGui* gui, float step)
 			}
 		}
 
-		if(gui->dragBoard) elfDestroyString(gui->dragBoard);
-		gui->dragBoard = NULL;
+		gui->dragging = ELF_FALSE;
 	}
 	else if(elfGetMouseButtonState(ELF_BUTTON_LEFT) == ELF_DOWN && moved)
 	{
@@ -2412,7 +2420,7 @@ void elfDrawGui(elfGui* gui)
 			-1.0f, 1.0f, gui->shaderParams.projectionMatrix);
 	}
 
-	if(gui->dragBoard && gui->trace && gui->trace->objType != ELF_TEXT_LIST)
+	if(gui->dragging && gui->trace && gui->trace->objType != ELF_TEXT_LIST)
 	{
 		elfVec2i mousePos = elfGetMousePosition();
 
@@ -2638,9 +2646,19 @@ ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiActiveTextField(elfGui* gui)
 	return (elfGuiObject*)gui->activeTextField;
 }
 
-ELF_API const char* ELF_APIENTRY elfGetGuiDragBoard(elfGui* gui)
+ELF_API unsigned char ELF_APIENTRY elfGetGuiDragging(elfGui* gui)
 {
-	return gui->dragBoard;
+	return gui->dragging;
+}
+
+ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiDragObject(elfGui* gui)
+{
+	return gui->dragObject;
+}
+
+ELF_API const char* ELF_APIENTRY elfGetGuiDragContent(elfGui* gui)
+{
+	return gui->dragContent;
 }
 
 ELF_API void ELF_APIENTRY elfEmptyGui(elfGui* gui)

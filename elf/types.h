@@ -761,7 +761,9 @@ struct elfGui {
 	elfGuiObject* target;
 	elfTextField* activeTextField;
 	elfScreen* focusScreen;
-	char* dragBoard;
+	unsigned char dragging;
+	char* dragContent;
+	elfGuiObject* dragObject;
 
 	unsigned char updateSize;
 

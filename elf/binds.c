@@ -10457,16 +10457,43 @@ static int lua_GetGuiActiveTextField(lua_State *L)
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetGuiDragBoard(lua_State *L)
+static int lua_GetGuiDragging(lua_State *L)
+{
+	unsigned char result;
+	elfGui* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetGuiDragging", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_GUI)
+		{return lua_fail_arg(L, "GetGuiDragging", 1, "elfGui");}
+	arg0 = (elfGui*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetGuiDragging(arg0);
+	lua_pushboolean(L, result);
+	return 1;
+}
+static int lua_GetGuiDragObject(lua_State *L)
+{
+	elfGuiObject* result;
+	elfGui* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetGuiDragObject", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_GUI)
+		{return lua_fail_arg(L, "GetGuiDragObject", 1, "elfGui");}
+	arg0 = (elfGui*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetGuiDragObject(arg0);
+	if(result) lua_create_elfObject(L, (elfObject*)result);
+	else lua_pushnil(L);
+	return 1;
+}
+static int lua_GetGuiDragContent(lua_State *L)
 {
 	const char* result;
 	elfGui* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetGuiDragBoard", lua_gettop(L), 1);}
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetGuiDragContent", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_GUI)
-		{return lua_fail_arg(L, "GetGuiDragBoard", 1, "elfGui");}
+		{return lua_fail_arg(L, "GetGuiDragContent", 1, "elfGui");}
 	arg0 = (elfGui*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetGuiDragBoard(arg0);
+	result = elfGetGuiDragContent(arg0);
 	lua_pushstring(L, result);
 	return 1;
 }
@@ -11192,7 +11219,9 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetGuiTrace", lua_GetGuiTrace},
 	{"GetGuiFocus", lua_GetGuiFocus},
 	{"GetGuiActiveTextField", lua_GetGuiActiveTextField},
-	{"GetGuiDragBoard", lua_GetGuiDragBoard},
+	{"GetGuiDragging", lua_GetGuiDragging},
+	{"GetGuiDragObject", lua_GetGuiDragObject},
+	{"GetGuiDragContent", lua_GetGuiDragContent},
 	{"EmptyGui", lua_EmptyGui},
 	{NULL, NULL}
 };
