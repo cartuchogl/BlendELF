@@ -10045,6 +10045,19 @@ static int lua_GetTextListSelectedItem(lua_State *L)
 	lua_pushstring(L, result);
 	return 1;
 }
+static int lua_GetTextListItemDrag(lua_State *L)
+{
+	unsigned char result;
+	elfTextList* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetTextListItemDrag", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_TEXT_LIST)
+		{return lua_fail_arg(L, "GetTextListItemDrag", 1, "elfTextList");}
+	arg0 = (elfTextList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetTextListItemDrag(arg0);
+	lua_pushboolean(L, result);
+	return 1;
+}
 static int lua_SetTextListFont(lua_State *L)
 {
 	elfTextList* arg0;
@@ -10162,6 +10175,20 @@ static int lua_SetTextListSelection(lua_State *L)
 	arg0 = (elfTextList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (int)lua_tonumber(L, 2);
 	elfSetTextListSelection(arg0, arg1);
+	return 0;
+}
+static int lua_SetTextListItemDrag(lua_State *L)
+{
+	elfTextList* arg0;
+	unsigned char arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetTextListItemDrag", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_TEXT_LIST)
+		{return lua_fail_arg(L, "SetTextListItemDrag", 1, "elfTextList");}
+	if(!lua_isboolean(L, 2)) {return lua_fail_arg(L, "SetTextListItemDrag", 2, "boolean");}
+	arg0 = (elfTextList*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (unsigned char)lua_toboolean(L, 2);
+	elfSetTextListItemDrag(arg0, arg1);
 	return 0;
 }
 static int lua_CreateCheckBox(lua_State *L)
@@ -10428,6 +10455,19 @@ static int lua_GetGuiActiveTextField(lua_State *L)
 	result = elfGetGuiActiveTextField(arg0);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
+	return 1;
+}
+static int lua_GetGuiDragBoard(lua_State *L)
+{
+	const char* result;
+	elfGui* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetGuiDragBoard", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_GUI)
+		{return lua_fail_arg(L, "GetGuiDragBoard", 1, "elfGui");}
+	arg0 = (elfGui*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetGuiDragBoard(arg0);
+	lua_pushstring(L, result);
 	return 1;
 }
 static int lua_EmptyGui(lua_State *L)
@@ -11125,6 +11165,7 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetTextListOffset", lua_GetTextListOffset},
 	{"GetTextListItem", lua_GetTextListItem},
 	{"GetTextListSelectedItem", lua_GetTextListSelectedItem},
+	{"GetTextListItemDrag", lua_GetTextListItemDrag},
 	{"SetTextListFont", lua_SetTextListFont},
 	{"SetTextListSize", lua_SetTextListSize},
 	{"AddTextListItem", lua_AddTextListItem},
@@ -11133,6 +11174,7 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"RemoveTextListItems", lua_RemoveTextListItems},
 	{"SetTextListOffset", lua_SetTextListOffset},
 	{"SetTextListSelection", lua_SetTextListSelection},
+	{"SetTextListItemDrag", lua_SetTextListItemDrag},
 	{"CreateCheckBox", lua_CreateCheckBox},
 	{"GetCheckBoxState", lua_GetCheckBoxState},
 	{"GetCheckBoxOffTexture", lua_GetCheckBoxOffTexture},
@@ -11150,6 +11192,7 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetGuiTrace", lua_GetGuiTrace},
 	{"GetGuiFocus", lua_GetGuiFocus},
 	{"GetGuiActiveTextField", lua_GetGuiActiveTextField},
+	{"GetGuiDragBoard", lua_GetGuiDragBoard},
 	{"EmptyGui", lua_EmptyGui},
 	{NULL, NULL}
 };
@@ -11816,6 +11859,9 @@ int luaopen_elf(lua_State* L)
 	lua_settable(L, -3);
 	lua_pushstring(L, "STATE_CHANGED");
 	lua_pushnumber(L, 0x0007);
+	lua_settable(L, -3);
+	lua_pushstring(L, "DROP");
+	lua_pushnumber(L, 0x0008);
 	lua_settable(L, -3);
 	lua_pushstring(L, "JOYSTICK_BUTTON_1");
 	lua_pushnumber(L, 0x0000);

@@ -262,6 +262,7 @@ extern "C" {
 #define ELF_CHAR_INPUT					0x0005
 #define ELF_SELECTION_CHANGED				0x0006
 #define ELF_STATE_CHANGED				0x0007
+#define ELF_DROP					0x0008
 
 #define ELF_JOYSTICK_BUTTON_1				0x0000	// <mdoc> JOYSTICK BUTTONS <mdocc> The joystick buttons used by elf.GetJoystickButtonState
 #define ELF_JOYSTICK_BUTTON_2				0x0001
@@ -1916,6 +1917,7 @@ ELF_API int ELF_APIENTRY elfGetTextListSelectionIndex(elfTextList* textList);
 ELF_API int ELF_APIENTRY elfGetTextListOffset(elfTextList* textList);
 ELF_API const char* ELF_APIENTRY elfGetTextListItem(elfTextList* textList, int idx);
 ELF_API const char* ELF_APIENTRY elfGetTextListSelectedItem(elfTextList* textList);
+ELF_API unsigned char ELF_APIENTRY elfGetTextListItemDrag(elfTextList* textList);
 
 ELF_API void ELF_APIENTRY elfSetTextListFont(elfTextList* textList, elfFont* font);
 ELF_API void ELF_APIENTRY elfSetTextListSize(elfTextList* textList, int rows, int width);
@@ -1925,6 +1927,7 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveTextListItem(elfTextList* textList, 
 ELF_API void ELF_APIENTRY elfRemoveTextListItems(elfTextList* textList);
 ELF_API void ELF_APIENTRY elfSetTextListOffset(elfTextList* textList, int offset);
 ELF_API void ELF_APIENTRY elfSetTextListSelection(elfTextList* textList, int selection);
+ELF_API void ELF_APIENTRY elfSetTextListItemDrag(elfTextList* textList, unsigned char itemDrag);
 
 // <!!
 void elfDestroyCheckBox(void* data);
@@ -1962,6 +1965,7 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveGuiObjectByObject(elfGuiObject* pare
 ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiTrace(elfGui* gui);
 ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiFocus(elfGui* gui);
 ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiActiveTextField(elfGui* gui);
+ELF_API const char* ELF_APIENTRY elfGetGuiDragBoard(elfGui* gui);
 
 ELF_API void ELF_APIENTRY elfEmptyGui(elfGui* gui);
 

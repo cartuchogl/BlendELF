@@ -743,6 +743,7 @@ struct elfTextList {
 	int listWidth;
 	int selection;
 	int offset;
+	unsigned char itemDrag;
 };
 
 struct elfCheckBox {
@@ -760,6 +761,7 @@ struct elfGui {
 	elfGuiObject* target;
 	elfTextField* activeTextField;
 	elfScreen* focusScreen;
+	char* dragBoard;
 
 	unsigned char updateSize;
 

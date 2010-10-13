@@ -1446,6 +1446,11 @@ ELF_API const char* ELF_APIENTRY elfGetTextListSelectedItem(elfTextList* textLis
 	return "";
 }
 
+ELF_API unsigned char ELF_APIENTRY elfGetTextListItemDrag(elfTextList* textList)
+{
+	return textList->itemDrag;
+}
+
 ELF_API void ELF_APIENTRY elfSetTextListFont(elfTextList* textList, elfFont* font)
 {
 	if(textList->font) elfDecRef((elfObject*)textList->font);
@@ -1530,6 +1535,11 @@ ELF_API void ELF_APIENTRY elfSetTextListSelection(elfTextList* textList, int sel
 	if(textList->selection > elfGetListLength(textList->items)-1)
 		textList->selection = elfGetListLength(textList->items)-1;
 	if(elfGetListLength(textList->items) == 0) textList->selection = -1;
+}
+
+ELF_API void ELF_APIENTRY elfSetTextListItemDrag(elfTextList* textList, unsigned char itemDrag)
+{
+	textList->itemDrag = !itemDrag == ELF_FALSE;
 }
 
 ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(elfGuiObject* parent, const char* name, int x, int y, unsigned char state)
@@ -1798,6 +1808,7 @@ void elfDestroyGui(void* data)
 	elfGui* gui = (elfGui*)data;
 
 	if(gui->name) elfDestroyString(gui->name);
+	if(gui->dragBoard) elfDestroyString(gui->dragBoard);
 
 	for(object = (elfGuiObject*)elfBeginList(gui->children); object;
 		object = (elfGuiObject*)elfGetListNext(gui->children))
@@ -2126,13 +2137,15 @@ void elfUpdateGui(elfGui* gui, float step)
 				textList = (elfTextList*)gui->target;
 				if(textList->font && elfGetListLength(textList->items) > 0)
 				{
-					textList->selection = textList->rows-1
-						-(elfGetWindowHeight()-mousePosition.y-textList->pos.y)/
-							(textList->font->size+textList->font->offsetY)
-						+textList->offset;
+					textList->selection = textList->rows - 1
+						- (elfGetWindowHeight()- mousePosition.y - textList->pos.y)
+						/ (textList->font->size+textList->font->offsetY)+textList->offset;
+
 					if(textList->selection > elfGetListLength(textList->items)-1) textList->selection = -1;
+					else if(textList->itemDrag) gui->dragBoard = elfCreateString(elfGetTextListItem(textList, textList->selection));
 
 					textList->event = ELF_SELECTION_CHANGED;
+
 					if(textList->script)
 					{
 						eng->actor = (elfObject*)gui->target;
@@ -2150,8 +2163,8 @@ void elfUpdateGui(elfGui* gui, float step)
 			else if(gui->target->objType == ELF_CHECK_BOX)
 			{
 				((elfCheckBox*)gui->target)->state = !((elfCheckBox*)gui->target)->state;
-
 				((elfCheckBox*)gui->target)->event = ELF_STATE_CHANGED;
+
 				if(((elfCheckBox*)gui->target)->script)
 				{
 					eng->actor = (elfObject*)gui->target;
@@ -2176,12 +2189,12 @@ void elfUpdateGui(elfGui* gui, float step)
 				if(gui->target == gui->trace)
 				{
 					((elfButton*)gui->target)->event = ELF_CLICKED;
+					((elfButton*)gui->target)->state = ELF_OFF;
+
 					if(((elfButton*)gui->target)->script)
 					{
 						eng->actor = (elfObject*)gui->target;
 						elfIncRef((elfObject*)gui->target);
-
-						((elfButton*)gui->target)->state = ELF_OFF;
 
 						elfRunString("me = GetActor(); event = CLICKED");
 						elfRunScript(((elfButton*)gui->target)->script);
@@ -2194,6 +2207,30 @@ void elfUpdateGui(elfGui* gui, float step)
 			}
 		}
 		gui->target = NULL;
+
+		if(gui->trace)
+		{
+			if(gui->trace->objType == ELF_TEXT_FIELD)
+			{
+				((elfTextField*)gui->trace)->event = ELF_DROP;
+
+				if(gui->dragBoard && ((elfTextField*)gui->trace)->script)
+				{
+					eng->actor = (elfObject*)gui->trace;
+					elfIncRef((elfObject*)gui->trace);
+
+					elfRunString("me = GetActor(); event = DROP");
+					elfRunScript(((elfTextField*)gui->trace)->script);
+					elfRunString("me = nil; event = 0");
+
+					elfDecRef((elfObject*)gui->trace);
+					eng->actor = NULL;
+				}
+			}
+		}
+
+		if(gui->dragBoard) elfDestroyString(gui->dragBoard);
+		gui->dragBoard = NULL;
 	}
 	else if(elfGetMouseButtonState(ELF_BUTTON_LEFT) == ELF_DOWN && moved)
 	{
@@ -2373,6 +2410,20 @@ void elfDrawGui(elfGui* gui)
 		gfxSetViewport(gui->pos.x, gui->pos.y, gui->width, gui->height);
 		gfxGetOrthographicProjectionMatrix((float)gui->pos.x, (float)gui->pos.x+gui->width, (float)gui->pos.y, (float)gui->pos.y+gui->height,
 			-1.0f, 1.0f, gui->shaderParams.projectionMatrix);
+	}
+
+	if(gui->dragBoard && gui->trace && gui->trace->objType != ELF_TEXT_LIST)
+	{
+		elfVec2i mousePos = elfGetMousePosition();
+
+		gfxSetViewport(gui->pos.x, gui->pos.y, gui->width, gui->height);
+		gfxGetOrthographicProjectionMatrix((float)gui->pos.x, (float)gui->width, (float)gui->pos.x, (float)gui->height,
+			-1.0f, 1.0f, gui->shaderParams.projectionMatrix);
+		gfxSetColor(&gui->shaderParams.materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 0.15f);
+
+		gfxSetShaderParams(&gui->shaderParams);
+
+		gfxDrawCircle((float)mousePos.x, (float)(elfGetWindowHeight()-mousePos.y), 16, 12.0f);
 	}
 
 	// reset state just to be sure...
@@ -2585,6 +2636,11 @@ ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiFocus(elfGui* gui)
 ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiActiveTextField(elfGui* gui)
 {
 	return (elfGuiObject*)gui->activeTextField;
+}
+
+ELF_API const char* ELF_APIENTRY elfGetGuiDragBoard(elfGui* gui)
+{
+	return gui->dragBoard;
 }
 
 ELF_API void ELF_APIENTRY elfEmptyGui(elfGui* gui)
