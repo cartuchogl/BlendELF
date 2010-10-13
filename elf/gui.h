@@ -2221,19 +2221,22 @@ void elfUpdateGui(elfGui* gui, float step)
 		{
 			if(gui->trace->objType == ELF_TEXT_FIELD)
 			{
-				((elfTextField*)gui->trace)->event = ELF_DROP;
-
-				if(gui->dragContent && ((elfTextField*)gui->trace)->script)
+				if(gui->dragging)
 				{
-					eng->actor = (elfObject*)gui->trace;
-					elfIncRef((elfObject*)gui->trace);
+					((elfTextField*)gui->trace)->event = ELF_DROP;
 
-					elfRunString("me = GetActor(); event = DROP");
-					elfRunScript(((elfTextField*)gui->trace)->script);
-					elfRunString("me = nil; event = 0");
+					if(((elfTextField*)gui->trace)->script)
+					{
+						eng->actor = (elfObject*)gui->trace;
+						elfIncRef((elfObject*)gui->trace);
 
-					elfDecRef((elfObject*)gui->trace);
-					eng->actor = NULL;
+						elfRunString("me = GetActor(); event = DROP");
+						elfRunScript(((elfTextField*)gui->trace)->script);
+						elfRunString("me = nil; event = 0");
+
+						elfDecRef((elfObject*)gui->trace);
+						eng->actor = NULL;
+					}
 				}
 			}
 		}
