@@ -2484,9 +2484,11 @@ ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiObjectByIndex(elfGuiObject* parent, 
 	elfGuiObject* object;
 	int i;
 
-	if(parent->objType != ELF_GUI && parent->objType == ELF_SCREEN) return ELF_FALSE;
+	if(parent->objType != ELF_GUI && parent->objType != ELF_SCREEN) return NULL;
 
-	if(idx < 0 || idx > elfGetListLength(parent->children)+elfGetListLength(parent->screens)-1) return ELF_FALSE;
+	if(idx < 0 || idx > elfGetListLength(parent->children)+elfGetListLength(parent->screens)-1) return NULL;
+
+	printf("starting search\n");
 
 	if(idx < elfGetListLength(parent->children))
 	{
@@ -2498,6 +2500,7 @@ ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiObjectByIndex(elfGuiObject* parent, 
 	}
 	else
 	{
+		printf("searching screens\n");
 		idx -= elfGetListLength(parent->children);
 		for(i = 0, object = (elfGuiObject*)elfBeginList(parent->screens); object;
 			i++, object = (elfGuiObject*)elfGetListNext(parent->screens))
