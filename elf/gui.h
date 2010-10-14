@@ -2458,14 +2458,12 @@ ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiObjectByName(elfGuiObject* parent, c
 {
 	elfGuiObject* object;
 
-	if(!strcmp(parent->name, name)) return parent;
-
 	if(parent->children)
 	{
 		for(object = (elfGuiObject*)elfBeginList(parent->children); object;
 			object = (elfGuiObject*)elfGetListNext(parent->children))
 		{
-			elfGetGuiObjectByName(object, name);
+			if(!strcmp(object->name, name)) return object;
 		}
 	}
 
@@ -2474,7 +2472,7 @@ ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiObjectByName(elfGuiObject* parent, c
 		for(object = (elfGuiObject*)elfBeginList(parent->screens); object;
 			object = (elfGuiObject*)elfGetListNext(parent->screens))
 		{
-			elfGetGuiObjectByName(object, name);
+			if(!strcmp(object->name, name)) return object;
 		}
 	}
 
