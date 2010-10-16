@@ -690,6 +690,8 @@ void elfDrawTextField(elfTextField* textField, elfArea* area, gfxShaderParams* s
 
 	if(textField->text && textField->root && textField->root->activeTextField == textField)
 	{
+		gfxSetColor(&shaderParams->materialParams.diffuseColor, textField->textColor.r, textField->textColor.g,
+			textField->textColor.b, textField->textColor.a*textField->color.a);
 		gfxSetShaderParams(shaderParams);
 
 		str = elfSubString(textField->text, textField->drawPos,
