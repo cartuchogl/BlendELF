@@ -277,5 +277,7 @@ void elfDrawSpriteDebug(elfSprite* sprite, gfxShaderParams* shaderParams)
 	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.0f, 0.0f, 1.0f);
 	gfxSetShaderParams(shaderParams);
 	gfxDrawLines(8, eng->lines);
+
+	elfDrawActorDebug((elfActor*)sprite, shaderParams);
 }
 

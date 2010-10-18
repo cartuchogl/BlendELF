@@ -306,6 +306,8 @@ void elfDrawCameraDebug(elfCamera* camera, gfxShaderParams* shaderParams)
 	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.0f, 0.0f, 1.0f);
 	gfxSetShaderParams(shaderParams);
 	gfxDrawLines(6, eng->lines);
+
+	elfDrawActorDebug((elfActor*)camera, shaderParams);
 }
 
 ELF_API elfVec3f ELF_APIENTRY elfProjectCameraPoint(elfCamera* camera, float x, float y, float z)

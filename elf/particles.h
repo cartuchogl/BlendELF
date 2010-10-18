@@ -591,6 +591,8 @@ void elfDrawParticlesDebug(elfParticles* particles, gfxShaderParams* shaderParam
 	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.0f, 0.0f, 1.0f);
 	gfxSetShaderParams(shaderParams);
 	gfxDrawLines(14, eng->lines);
+
+	elfDrawActorDebug((elfActor*)particles, shaderParams);
 }
 
 void elfDestroyParticles(void* data)

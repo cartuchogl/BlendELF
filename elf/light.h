@@ -432,5 +432,7 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 
 		gfxDrawLines(6, eng->lines);
 	}
+
+	elfDrawActorDebug((elfActor*)light, shaderParams);
 }
 

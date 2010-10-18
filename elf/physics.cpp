@@ -1013,11 +1013,13 @@ void elfSetPhysicsObjectAngularVelocity(elfPhysicsObject* object, float x, float
 
 void elfSetPhysicsObjectLinearFactor(elfPhysicsObject* object, float x, float y, float z)
 {
+	object->body->activate(true);
 	object->body->setLinearFactor(btVector3(x, y, z));
 }
 
 void elfSetPhysicsObjectAngularFactor(elfPhysicsObject* object, float x, float y, float z)
 {
+	object->body->activate(true);
 	object->body->setAngularFactor(btVector3(x, y, z));
 }
 
