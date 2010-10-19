@@ -19,7 +19,7 @@ import struct
 import math
 
 ELF_NAME_LENGTH = 128
-ELF_PAK_VERSION = 100
+ELF_PAK_VERSION = 101
 
 def write_name_to_file(name, f):
 	if len(name) > ELF_NAME_LENGTH-1: name = name[0:ELF_NAME_LENGTH-1]
@@ -625,6 +625,7 @@ class Entity(Actor):
 		self.size_bytes += struct.calcsize('<fff')	# scale
 		self.size_bytes += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')	# model
 		self.size_bytes += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')	# armature
+		self.size_bytes += struct.calcsize('<B')	# occluder flag
 		
 		self.size_bytes += struct.calcsize('<i')	# material count
 		self.size_bytes += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')*len(self.materials)	# material names
@@ -641,12 +642,11 @@ class Entity(Actor):
 		# write actor header
 		write_actor_header(self, f)
 		
-		# write scale
-		f.write(struct.pack('<fff', self.scale[0], self.scale[1], self.scale[2]))
-		# write model
-		write_name_to_file(self.model, f)
-		# write armature
-		write_name_to_file(self.armature, f)
+		f.write(struct.pack('<fff', self.scale[0], self.scale[1], self.scale[2]))	# write scale
+		write_name_to_file(self.model, f)	# write model
+		write_name_to_file(self.armature, f)	# write armature
+		f.write(struct.pack('<B', 0))	# write occluder flag
+
 		# write materials
 		f.write(struct.pack('<i', len(self.materials)))
 		for mat in self.materials:

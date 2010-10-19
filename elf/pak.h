@@ -59,14 +59,14 @@ elfPak* elfCreatePakFromFile(const char* filePath)
 
 	if(version < ELF_PAK_VERSION)
 	{
-		elfSetError(ELF_INVALID_FILE, "error: can't load \"%s\", too old .pak version\n", filePath);
+		elfSetError(ELF_INVALID_FILE, "error: can't load \"%s\", old .pak version\n", filePath);
 		fclose(file);
 		return NULL;
 	}
 
 	if(version > ELF_PAK_VERSION)
 	{
-		elfSetError(ELF_INVALID_FILE, "error: can't load \"%s\", too new .pak version\n", filePath);
+		elfSetError(ELF_INVALID_FILE, "error: can't load \"%s\", new .pak version\n", filePath);
 		return NULL;
 	}
 
@@ -285,6 +285,7 @@ int elfGetEntitySizeBytes(elfEntity* entity)
 	sizeBytes += sizeof(float)*3;	// scale
 	sizeBytes += sizeof(char)*ELF_NAME_LENGTH;	// model
 	sizeBytes += sizeof(char)*ELF_NAME_LENGTH;	// armature
+	sizeBytes += sizeof(unsigned char);	// occluder flag
 	sizeBytes += sizeof(int);	// material count
 	sizeBytes += sizeof(char)*ELF_NAME_LENGTH*elfGetEntityMaterialCount(entity);	// materials
 
@@ -791,6 +792,9 @@ elfEntity* elfCreateEntityFromPak(FILE* file, const char* name, elfScene* scene)
 
 	// scale must be set after setting a model, setting a model resets the scale
 	elfSetEntityScale(entity, scale[0], scale[1], scale[2]);
+
+	fread((char*)&entity->occluder, sizeof(unsigned char), 1, file);
+	elfSetEntityOccluder(entity, entity->occluder);
 
 	fread((char*)&materialCount, sizeof(int), 1, file);
 
@@ -1614,6 +1618,8 @@ void elfWriteEntityToFile(elfEntity* entity, FILE* file)
 
 	if(entity->armature) elfWriteNameToFile(entity->armature->name, file);
 	else elfWriteNameToFile("", file);
+
+	fwrite((char*)&entity->occluder, sizeof(unsigned char), 1, file);
 
 	materialCount = elfGetEntityMaterialCount(entity);
 	fwrite((char*)&materialCount, sizeof(unsigned int), 1, file);
