@@ -1177,7 +1177,7 @@ ELF_API void ELF_APIENTRY elfSetEntityVisible(elfEntity* entity, unsigned char v
 ELF_API unsigned char ELF_APIENTRY elfGetEntityVisible(elfEntity* entity);
 
 ELF_API void ELF_APIENTRY elfSetEntityOccluder(elfEntity* entity, unsigned char occluder);
-ELF_API unsigned char ELF_APIENTRY elfGetEntityOccluder(elfEntity* entity);
+ELF_API unsigned char ELF_APIENTRY elfIsEntityOccluder(elfEntity* entity);
 
 ELF_API void ELF_APIENTRY elfSetEntityPhysics(elfEntity* entity, int type, float mass);
 ELF_API void ELF_APIENTRY elfDisableEntityPhysics(elfEntity* entity);

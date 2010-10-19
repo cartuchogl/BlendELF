@@ -5594,16 +5594,16 @@ static int lua_SetEntityOccluder(lua_State *L)
 	elfSetEntityOccluder(arg0, arg1);
 	return 0;
 }
-static int lua_GetEntityOccluder(lua_State *L)
+static int lua_IsEntityOccluder(lua_State *L)
 {
 	unsigned char result;
 	elfEntity* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetEntityOccluder", lua_gettop(L), 1);}
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "IsEntityOccluder", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_ENTITY)
-		{return lua_fail_arg(L, "GetEntityOccluder", 1, "elfEntity");}
+		{return lua_fail_arg(L, "IsEntityOccluder", 1, "elfEntity");}
 	arg0 = (elfEntity*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetEntityOccluder(arg0);
+	result = elfIsEntityOccluder(arg0);
 	lua_pushboolean(L, result);
 	return 1;
 }
@@ -10898,7 +10898,7 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"SetEntityVisible", lua_SetEntityVisible},
 	{"GetEntityVisible", lua_GetEntityVisible},
 	{"SetEntityOccluder", lua_SetEntityOccluder},
-	{"GetEntityOccluder", lua_GetEntityOccluder},
+	{"IsEntityOccluder", lua_IsEntityOccluder},
 	{"SetEntityPhysics", lua_SetEntityPhysics},
 	{"DisableEntityPhysics", lua_DisableEntityPhysics},
 	{"SetEntityArmature", lua_SetEntityArmature},

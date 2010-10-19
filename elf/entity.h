@@ -434,7 +434,7 @@ ELF_API void ELF_APIENTRY elfSetEntityOccluder(elfEntity* entity, unsigned char 
 	entity->occluder = !occluder == ELF_FALSE;
 }
 
-ELF_API unsigned char ELF_APIENTRY elfGetEntityOccluder(elfEntity* entity)
+ELF_API unsigned char ELF_APIENTRY elfIsEntityOccluder(elfEntity* entity)
 {
 	return entity->occluder;
 }
