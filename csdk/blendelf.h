@@ -220,6 +220,7 @@
 #define ELF_CHAR_INPUT 0x0005
 #define ELF_SELECTION_CHANGED 0x0006
 #define ELF_STATE_CHANGED 0x0007
+#define ELF_DROP 0x0008
 #define ELF_JOYSTICK_BUTTON_1 0x0000
 #define ELF_JOYSTICK_BUTTON_2 0x0001
 #define ELF_JOYSTICK_BUTTON_3 0x0002
@@ -765,7 +766,7 @@ ELF_API elfMaterial* ELF_APIENTRY elfGetEntityMaterial(elfEntity* entity, int id
 ELF_API void ELF_APIENTRY elfSetEntityVisible(elfEntity* entity, unsigned char visible);
 ELF_API unsigned char ELF_APIENTRY elfGetEntityVisible(elfEntity* entity);
 ELF_API void ELF_APIENTRY elfSetEntityOccluder(elfEntity* entity, unsigned char occluder);
-ELF_API unsigned char ELF_APIENTRY elfGetEntityOccluder(elfEntity* entity);
+ELF_API unsigned char ELF_APIENTRY elfIsEntityOccluder(elfEntity* entity);
 ELF_API void ELF_APIENTRY elfSetEntityPhysics(elfEntity* entity, int type, float mass);
 ELF_API void ELF_APIENTRY elfDisableEntityPhysics(elfEntity* entity);
 ELF_API void ELF_APIENTRY elfSetEntityArmature(elfEntity* entity, elfArmature* armature);
@@ -1059,6 +1060,7 @@ ELF_API int ELF_APIENTRY elfGetTextListSelectionIndex(elfTextList* textList);
 ELF_API int ELF_APIENTRY elfGetTextListOffset(elfTextList* textList);
 ELF_API const char* ELF_APIENTRY elfGetTextListItem(elfTextList* textList, int idx);
 ELF_API const char* ELF_APIENTRY elfGetTextListSelectedItem(elfTextList* textList);
+ELF_API unsigned char ELF_APIENTRY elfGetTextListItemDrag(elfTextList* textList);
 ELF_API void ELF_APIENTRY elfSetTextListFont(elfTextList* textList, elfFont* font);
 ELF_API void ELF_APIENTRY elfSetTextListSize(elfTextList* textList, int rows, int width);
 ELF_API void ELF_APIENTRY elfAddTextListItem(elfTextList* textList, const char* text);
@@ -1067,6 +1069,7 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveTextListItem(elfTextList* textList, 
 ELF_API void ELF_APIENTRY elfRemoveTextListItems(elfTextList* textList);
 ELF_API void ELF_APIENTRY elfSetTextListOffset(elfTextList* textList, int offset);
 ELF_API void ELF_APIENTRY elfSetTextListSelection(elfTextList* textList, int selection);
+ELF_API void ELF_APIENTRY elfSetTextListItemDrag(elfTextList* textList, unsigned char itemDrag);
 ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(elfGuiObject* parent, const char* name, int x, int y, unsigned char state);
 ELF_API unsigned char ELF_APIENTRY elfGetCheckBoxState(elfCheckBox* checkBox);
 ELF_API elfTexture* ELF_APIENTRY elfGetCheckBoxOffTexture(elfCheckBox* checkBox);
@@ -1084,5 +1087,8 @@ ELF_API unsigned char ELF_APIENTRY elfRemoveGuiObjectByObject(elfGuiObject* pare
 ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiTrace(elfGui* gui);
 ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiFocus(elfGui* gui);
 ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiActiveTextField(elfGui* gui);
+ELF_API unsigned char ELF_APIENTRY elfGetGuiDragging(elfGui* gui);
+ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiDragObject(elfGui* gui);
+ELF_API const char* ELF_APIENTRY elfGetGuiDragContent(elfGui* gui);
 ELF_API void ELF_APIENTRY elfEmptyGui(elfGui* gui);
 #endif

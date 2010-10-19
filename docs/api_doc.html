@@ -302,6 +302,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apidefine">CHAR_INPUT</div>
 <div class="apidefine">SELECTION_CHANGED</div>
 <div class="apidefine">STATE_CHANGED</div>
+<div class="apidefine">DROP</div>
 <div class="apitopic">JOYSTICK BUTTONS</div>
 <div class="apiinfo">The joystick buttons used by elf.GetJoystickButtonState</div>
 <div class="apidefine">JOYSTICK_BUTTON_1</div>
@@ -762,7 +763,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetEntityVisible( <span class="apiobjtype">elfEntity</span> entity, <span class="apikeytype">unsigned char</span> visible )</div>
 <div class="apifunc"><span class="apikeytype">unsigned char</span> GetEntityVisible( <span class="apiobjtype">elfEntity</span> entity )</div>
 <div class="apifunc">SetEntityOccluder( <span class="apiobjtype">elfEntity</span> entity, <span class="apikeytype">unsigned char</span> occluder )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetEntityOccluder( <span class="apiobjtype">elfEntity</span> entity )</div>
+<div class="apifunc"><span class="apikeytype">unsigned char</span> IsEntityOccluder( <span class="apiobjtype">elfEntity</span> entity )</div>
 <div class="apifunc">SetEntityPhysics( <span class="apiobjtype">elfEntity</span> entity, <span class="apikeytype">int</span> type, <span class="apikeytype">float</span> mass )</div>
 <div class="apifunc">DisableEntityPhysics( <span class="apiobjtype">elfEntity</span> entity )</div>
 <div class="apifunc">SetEntityArmature( <span class="apiobjtype">elfEntity</span> entity, <span class="apiobjtype">elfArmature</span> armature )</div>
@@ -1076,6 +1077,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">int</span> GetTextListOffset( <span class="apiobjtype">elfTextList</span> textList )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetTextListItem( <span class="apiobjtype">elfTextList</span> textList, <span class="apikeytype">int</span> idx )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetTextListSelectedItem( <span class="apiobjtype">elfTextList</span> textList )</div>
+<div class="apifunc"><span class="apikeytype">unsigned char</span> GetTextListItemDrag( <span class="apiobjtype">elfTextList</span> textList )</div>
 <div class="apifunc">SetTextListFont( <span class="apiobjtype">elfTextList</span> textList, <span class="apiobjtype">elfFont</span> font )</div>
 <div class="apifunc">SetTextListSize( <span class="apiobjtype">elfTextList</span> textList, <span class="apikeytype">int</span> rows, <span class="apikeytype">int</span> width )</div>
 <div class="apifunc">AddTextListItem( <span class="apiobjtype">elfTextList</span> textList, <span class="apikeytype">string</span> text )</div>
@@ -1084,6 +1086,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">RemoveTextListItems( <span class="apiobjtype">elfTextList</span> textList )</div>
 <div class="apifunc">SetTextListOffset( <span class="apiobjtype">elfTextList</span> textList, <span class="apikeytype">int</span> offset )</div>
 <div class="apifunc">SetTextListSelection( <span class="apiobjtype">elfTextList</span> textList, <span class="apikeytype">int</span> selection )</div>
+<div class="apifunc">SetTextListItemDrag( <span class="apiobjtype">elfTextList</span> textList, <span class="apikeytype">unsigned char</span> itemDrag )</div>
 <div class="apitopic">CHECK BOX FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">elfCheckBox</span> CreateCheckBox( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apikeytype">string</span> name, <span class="apikeytype">int</span> x, <span class="apikeytype">int</span> y, <span class="apikeytype">unsigned char</span> state )</div>
 <div class="apifunc"><span class="apikeytype">unsigned char</span> GetCheckBoxState( <span class="apiobjtype">elfCheckBox</span> checkBox )</div>
@@ -1103,6 +1106,9 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apiobjtype">elfGuiObject</span> GetGuiTrace( <span class="apiobjtype">elfGui</span> gui )</div>
 <div class="apifunc"><span class="apiobjtype">elfGuiObject</span> GetGuiFocus( <span class="apiobjtype">elfGui</span> gui )</div>
 <div class="apifunc"><span class="apiobjtype">elfGuiObject</span> GetGuiActiveTextField( <span class="apiobjtype">elfGui</span> gui )</div>
+<div class="apifunc"><span class="apikeytype">unsigned char</span> GetGuiDragging( <span class="apiobjtype">elfGui</span> gui )</div>
+<div class="apifunc"><span class="apiobjtype">elfGuiObject</span> GetGuiDragObject( <span class="apiobjtype">elfGui</span> gui )</div>
+<div class="apifunc"><span class="apikeytype">string</span> GetGuiDragContent( <span class="apiobjtype">elfGui</span> gui )</div>
 <div class="apifunc">EmptyGui( <span class="apiobjtype">elfGui</span> gui )</div>
 <div class="copyright">Copyright &copy; 2009-2010 Samuel Anjam</div>
 
