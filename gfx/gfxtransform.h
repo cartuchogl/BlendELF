@@ -4,6 +4,21 @@ void gfxSetViewport(int x, int y, int width, int height)
 	glViewport(x, y, width, height);
 }
 
+void gfxSetScissor(int x, int y, int width, int height)
+{
+	glViewport(x, y, width, height);
+}
+
+void gfxEnableScissor()
+{
+	glEnable(GL_SCISSOR_TEST);
+}
+
+void gfxDisableScissor()
+{
+	glDisable(GL_SCISSOR_TEST);
+}
+
 void gfxGetPerspectiveProjectionMatrix(float fov, float aspect, float near, float far, float* mat)
 {
 	float top, bottom, left, right;

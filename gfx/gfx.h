@@ -296,6 +296,7 @@ unsigned char gfxSphereInsideFrustum(float frustum[6][4], float* pos, float radi
 //////////////////////////////// TRANSFORM ////////////////////////////////
 
 void gfxSetViewport(int x, int y, int width, int height);
+
 void gfxGetPerspectiveProjectionMatrix(float fov, float aspect, float near, float far, float* mat);
 void gfxGetOrthographicProjectionMatrix(float left, float right, float bottom, float top, float near, float far, float* matrix);
 void gfxGetFrustum(float proj[16], float modl[16], float frustum[6][4]);
@@ -343,9 +344,6 @@ void gfxResetVerticesDrawn();
 int gfxGetVerticesDrawn(unsigned int drawMode);
 
 void gfxPrintGLError();
-
-void gfxSetScissor(int x, int y, int width, int height);
-void gfxDisableScissor();
 
 //////////////////////////////// VERTEX ARRAY/INDEX ////////////////////////////////
 

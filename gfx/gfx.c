@@ -370,14 +370,3 @@ void gfxPrintGLError()
 	printf("%s\n", glewGetErrorString(err));
 }
 
-void gfxSetScissor(int x, int y, int width, int height)
-{
-	glScissor(x, y, width, height);
-	glEnable(GL_SCISSOR_TEST);
-}
-
-void gfxDisableScissor()
-{
-	glDisable(GL_SCISSOR_TEST);
-}
-
