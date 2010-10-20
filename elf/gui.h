@@ -1,4 +1,12 @@
 
+void elfSetOrtho(int x, int y, int width, int height, gfxShaderParams *shaderParams)
+{
+
+	gfxSetViewport(x, y, width, height);
+	gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
+		-1.0f, 1.0f, shaderParams->projectionMatrix);
+}
+
 void elfDrawHorGradient(int x, int y, int width, int height, elfColor col1, elfColor col2)
 {
 	float *vertexBuffer;
@@ -673,9 +681,7 @@ void elfDrawTextField(elfTextField* textField, elfArea* area, gfxShaderParams* s
 
 	if(textField->font && textField->text && strlen(textField->text) > 0)
 	{
-		gfxSetViewport(x, y, width, height);
-		gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
-			-1.0f, 1.0f, shaderParams->projectionMatrix);
+		elfSetOrtho(x, y, width, height, shaderParams);
 
 		gfxSetColor(&shaderParams->materialParams.diffuseColor, textField->textColor.r, textField->textColor.g,
 			textField->textColor.b, textField->textColor.a*textField->color.a);
@@ -1129,9 +1135,7 @@ void elfDrawScreen(elfScreen* screen, elfArea* area, gfxShaderParams* shaderPara
 		}
 	}
 
-	gfxSetViewport(x, y, width, height);
-	gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
-		-1.0f, 1.0f, shaderParams->projectionMatrix);
+	elfSetOrtho(x, y, width, height, shaderParams);
 
 	for(object = (elfGuiObject*)elfBeginList(screen->children); object;
 		object = (elfGuiObject*)elfGetListNext(screen->children))
@@ -1142,16 +1146,12 @@ void elfDrawScreen(elfScreen* screen, elfArea* area, gfxShaderParams* shaderPara
 		else if(object->objType == ELF_TEXT_FIELD)
 		{
 			elfDrawTextField((elfTextField*)object, &narea, shaderParams);
-			gfxSetViewport(x, y, width, height);
-			gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
-				-1.0f, 1.0f, shaderParams->projectionMatrix);
+			elfSetOrtho(x, y, width, height, shaderParams);
 		}
 		else if(object->objType == ELF_TEXT_LIST)
 		{
 			elfDrawTextList((elfTextList*)object, &narea, shaderParams);
-			gfxSetViewport(x, y, width, height);
-			gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
-				-1.0f, 1.0f, shaderParams->projectionMatrix);
+			elfSetOrtho(x, y, width, height, shaderParams);
 		}
 		else if(object->objType == ELF_SLIDER) elfDrawSlider((elfSlider*)object, shaderParams);
 		else if(object->objType == ELF_CHECK_BOX) elfDrawCheckBox((elfCheckBox*)object, shaderParams);
@@ -1161,18 +1161,14 @@ void elfDrawScreen(elfScreen* screen, elfArea* area, gfxShaderParams* shaderPara
 		object = (elfGuiObject*)elfGetListNext(screen->screens))
 	{
 		elfDrawScreen((elfScreen*)object, &narea, shaderParams);
-		gfxSetViewport(x, y, width, height);
-		gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
-			-1.0f, 1.0f, shaderParams->projectionMatrix);
+		elfSetOrtho(x, y, width, height, shaderParams);
 	}
 
 	if(!screen->texture)
 	{
 		elfColor col1, col2;
 
-		gfxSetViewport(area->pos.x, area->pos.y, area->size.x, area->size.y);
-		gfxGetOrthographicProjectionMatrix((float)area->pos.x, (float)area->pos.x+area->size.x, (float)area->pos.y, (float)area->pos.y+area->size.y,
-			-1.0f, 1.0f, shaderParams->projectionMatrix);
+		elfSetOrtho(area->pos.x, area->pos.y, area->size.x, area->size.y, shaderParams);
 
 		shaderParams->renderParams.vertexColor = GFX_TRUE;
 		gfxSetColor(&shaderParams->materialParams.diffuseColor, screen->color.r, screen->color.g, screen->color.b, screen->color.a);
@@ -1332,9 +1328,7 @@ void elfDrawTextList(elfTextList* textList, elfArea* area, gfxShaderParams* shad
 			height -= (y+height)-(area->pos.y+area->size.y);
 	}
 
-	gfxSetViewport(x, y, width, height);
-	gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
-		-1.0f, 1.0f, shaderParams->projectionMatrix);
+	elfSetOrtho(x, y, width, height, shaderParams);
 
 	light = ELF_TRUE;
 	offset = textList->font->size+textList->font->offsetY;
@@ -2387,9 +2381,7 @@ void elfDrawGui(elfGui* gui)
 	gui->shaderParams.renderParams.depthWrite = GFX_FALSE;
 	gui->shaderParams.renderParams.depthTest = GFX_FALSE;
 	gui->shaderParams.renderParams.blendMode = GFX_TRANSPARENT;
-	gfxSetViewport(gui->pos.x, gui->pos.y, gui->width, gui->height);
-	gfxGetOrthographicProjectionMatrix((float)gui->pos.x, (float)gui->width, (float)gui->pos.x, (float)gui->height,
-		-1.0f, 1.0f, gui->shaderParams.projectionMatrix);
+	elfSetOrtho(gui->pos.x, gui->pos.y, gui->width, gui->height, &gui->shaderParams);
 
 	for(object = (elfGuiObject*)elfBeginList(gui->children); object;
 		object = (elfGuiObject*)elfGetListNext(gui->children))
@@ -2400,16 +2392,12 @@ void elfDrawGui(elfGui* gui)
 		else if(object->objType == ELF_TEXT_FIELD)
 		{
 			elfDrawTextField((elfTextField*)object, &area, &gui->shaderParams);
-			gfxSetViewport(gui->pos.x, gui->pos.y, gui->width, gui->height);
-			gfxGetOrthographicProjectionMatrix((float)gui->pos.x, (float)gui->pos.x+gui->width, (float)gui->pos.y, (float)gui->pos.y+gui->height,
-				-1.0f, 1.0f, gui->shaderParams.projectionMatrix);
+			elfSetOrtho(gui->pos.x, gui->pos.y, gui->width, gui->height, &gui->shaderParams);
 		}
 		else if(object->objType == ELF_TEXT_LIST)
 		{
 			elfDrawTextList((elfTextList*)object, &area, &gui->shaderParams);
-			gfxSetViewport(gui->pos.x, gui->pos.y, gui->width, gui->height);
-			gfxGetOrthographicProjectionMatrix((float)gui->pos.x, (float)gui->pos.x+gui->width, (float)gui->pos.y, (float)gui->pos.y+gui->height,
-				-1.0f, 1.0f, gui->shaderParams.projectionMatrix);
+			elfSetOrtho(gui->pos.x, gui->pos.y, gui->width, gui->height, &gui->shaderParams);
 		}
 		else if(object->objType == ELF_SLIDER) elfDrawSlider((elfSlider*)object, &gui->shaderParams);
 		else if(object->objType == ELF_CHECK_BOX) elfDrawCheckBox((elfCheckBox*)object, &gui->shaderParams);
@@ -2420,18 +2408,14 @@ void elfDrawGui(elfGui* gui)
 	{
 		area.pos.x = gui->pos.x; area.pos.y = gui->pos.y; area.size.x = gui->width; area.size.y = gui->height;
 		elfDrawScreen((elfScreen*)object, &area, &gui->shaderParams);
-		gfxSetViewport(gui->pos.x, gui->pos.y, gui->width, gui->height);
-		gfxGetOrthographicProjectionMatrix((float)gui->pos.x, (float)gui->pos.x+gui->width, (float)gui->pos.y, (float)gui->pos.y+gui->height,
-			-1.0f, 1.0f, gui->shaderParams.projectionMatrix);
+		elfSetOrtho(gui->pos.x, gui->pos.y, gui->width, gui->height, &gui->shaderParams);
 	}
 
 	if(gui->dragging && gui->trace && gui->trace->objType != ELF_TEXT_LIST)
 	{
 		elfVec2i mousePos = elfGetMousePosition();
 
-		gfxSetViewport(gui->pos.x, gui->pos.y, gui->width, gui->height);
-		gfxGetOrthographicProjectionMatrix((float)gui->pos.x, (float)gui->width, (float)gui->pos.x, (float)gui->height,
-			-1.0f, 1.0f, gui->shaderParams.projectionMatrix);
+		elfSetOrtho(gui->pos.x, gui->pos.y, gui->width, gui->height, &gui->shaderParams);
 		gfxSetColor(&gui->shaderParams.materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 0.15f);
 
 		gfxSetShaderParams(&gui->shaderParams);
