@@ -466,12 +466,12 @@ ELF_API int ELF_APIENTRY elfGetVersionMinor()
 
 ELF_API const char* ELF_APIENTRY elfGetVersionRelease()
 {
-	return "Beta 2";
+	return "Beta 4";
 }
 
 ELF_API const char* ELF_APIENTRY elfGetVersion()
 {
-	return "BlendELF 0.9 Beta 2";
+	return "BlendELF 0.9 Beta 4";
 }
 
 char* elfGetDirectoryFromPath(const char* filePath)

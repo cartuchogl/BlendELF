@@ -82,7 +82,7 @@ typedef struct elfClient				elfClient;
 typedef struct elfScripting				elfScripting;
 typedef struct elfSprite				elfSprite;
 typedef struct elfVideoMode				elfVideoMode;
-typedef struct elfVertice				elfVertice;
+typedef struct elfVertex				elfVertex;
 typedef struct elfFace					elfFace;
 typedef struct elfMeshData				elfMeshData;
 struct elfVec2i {
@@ -439,7 +439,7 @@ void lua_create_elfObject(lua_State* L, elfObject* obj)
 }
 int lua_fail_arg_count(lua_State* L, const char* func_name, int a, int b)
 {
-	return luaL_error(L, "%s: Got %d arguments instead of %d", a, b);
+	return luaL_error(L, "%s: Got %d arguments instead of %d", func_name, a, b);
 }
 int lua_fail_arg(lua_State *L, const char* func_name, int idx, const char* etype)
 {
@@ -592,7 +592,7 @@ elfobjs = ['elfGeneral*',
 	'elfScripting*',
 	'elfSprite*',
 	'elfVideoMode*',
-	'elfVertice*',
+	'elfVertex*',
 	'elfFace*',
 	'elfMeshData*']
 
