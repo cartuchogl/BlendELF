@@ -46,7 +46,7 @@ ELF_API void ELF_APIENTRY elfGenerateEntityTangents(elfEntity* entity)
 	for(material = (elfMaterial*)elfBeginList(entity->materials); material;
 		material = (elfMaterial*)elfGetListNext(entity->materials))
 	{
-		if(elfGetMaterialNormalMap(material))
+		if(elfGetMaterialNormalMap(material) || elfGetMaterialHeightMap(material))
 		{
 			elfGenerateModelTangents(entity->model);
 			return;
