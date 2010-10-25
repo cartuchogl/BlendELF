@@ -295,7 +295,8 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 
 	gfxDrawLineLoop(32, eng->lines);
 
-	if(!light->selected) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.3f, 0.3f, 0.1f, 1.0f);
+	if(!light->selected) return;
+
 	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.0f, 0.0f, 1.0f);
 	gfxSetShaderParams(shaderParams);
 
