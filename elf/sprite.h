@@ -146,11 +146,7 @@ ELF_API void ELF_APIENTRY elfSetSpriteMaterial(elfSprite* sprite, elfMaterial* m
 
 	gfxSetTransformScale(sprite->transform, sprite->realScale.x, sprite->realScale.y, sprite->realScale.z);
 
-	if(sprite->object)
-	{
-		elfSetActorPhysics((elfActor*)sprite, elfGetActorShape((elfActor*)sprite),
-			elfGetActorMass((elfActor*)sprite));
-	}
+	if(sprite->object) elfSetActorPhysics((elfActor*)sprite, ELF_TRUE);
 
 	elfResetSpriteDebugPhysicsObject(sprite);
 }

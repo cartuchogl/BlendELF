@@ -54,8 +54,10 @@ void elfInitActor(elfActor* actor, unsigned char camera)
 	elfSetFramePlayerUserData(actor->ipoPlayer, actor);
 	elfSetFramePlayerCallback(actor->ipoPlayer, elfActorIpoCallback);
 
+	actor->physics = ELF_FALSE;
+	actor->shape = ELF_BOX;
 	actor->pbbLengths.x = actor->pbbLengths.y = actor->pbbLengths.z = 1.0f;
-	actor->shape = ELF_NONE;
+	actor->pbbOffset.x = actor->pbbOffset.y = actor->pbbOffset.z = 0.0f;
 	actor->mass = 0.0f;
 	actor->linDamp = 0.0f;
 	actor->angDamp = 0.0f;
@@ -443,40 +445,7 @@ void elfGetActorOrientation_(elfActor* actor, float* params)
 	gfxGetTransformOrientation(actor->transform, params);
 }
 
-ELF_API void ELF_APIENTRY elfSetActorBoundingLengths(elfActor* actor, float x, float y, float z)
-{
-	actor->pbbLengths.x = x;
-	actor->pbbLengths.y = y;
-	actor->pbbLengths.z = z;
-
-	if(actor->object)
-	{
-		elfSetActorPhysics(actor, elfGetActorShape(actor),
-			elfGetActorMass(actor));
-	}
-}
-
-ELF_API void ELF_APIENTRY elfSetActorBoundingOffset(elfActor* actor, float x, float y, float z)
-{
-	actor->pbbOffsetSet = ELF_TRUE;
-
-	actor->pbbOffset.x = x;
-	actor->pbbOffset.y = y;
-	actor->pbbOffset.z = z;
-
-	if(actor->object)
-	{
-		elfSetActorPhysics(actor, elfGetActorShape(actor),
-			elfGetActorMass(actor));
-	}
-}
-
-void elfResetActorBoundingOffsetSetFlag(elfActor* actor)
-{
-	actor->pbbOffsetSet = ELF_FALSE;
-}
-
-ELF_API void ELF_APIENTRY elfSetActorPhysics(elfActor* actor, int shape, float mass)
+ELF_API void ELF_APIENTRY elfSetActorPhysics(elfActor* actor, unsigned char physics)
 {
 	float position[3];
 	float orient[4];
@@ -485,35 +454,38 @@ ELF_API void ELF_APIENTRY elfSetActorPhysics(elfActor* actor, int shape, float m
 	elfJoint* joint;
 	elfEntity* entity;
 
-	elfDisableActorPhysics(actor);
+	if(actor->object)
+	{
+		elfSetPhysicsObjectActor(actor->object, NULL);
+		elfSetPhysicsObjectWorld(actor->object, NULL);
+		elfDecRef((elfObject*)actor->object);
+		actor->object = NULL;
+	}
 
-	actor->shape = (unsigned char)shape;
-	actor->mass = mass;
+	actor->physics = ELF_FALSE;
+
+	if(!physics) return;
+
 	actor->physics = ELF_TRUE;
 
-	switch(shape)
+	switch(actor->shape)
 	{
 		case ELF_BOX:
-		{
 			actor->object = elfCreatePhysicsObjectBox(actor->pbbLengths.x/2.0f,
-				actor->pbbLengths.y/2.0f, actor->pbbLengths.z/2.0f, mass,
+				actor->pbbLengths.y/2.0f, actor->pbbLengths.z/2.0f, actor->mass,
 				actor->pbbOffset.x, actor->pbbOffset.y, actor->pbbOffset.z);
 			break;
-		}
 		case ELF_SPHERE:
-		{
 			if(actor->pbbLengths.x > actor->pbbLengths.y && actor->pbbLengths.x > actor->pbbLengths.z)
 				radius = actor->pbbLengths.x/2.0f;
 			else if(actor->pbbLengths.y > actor->pbbLengths.x && actor->pbbLengths.y > actor->pbbLengths.z)
 				radius = actor->pbbLengths.y/2.0f;
 			else  radius = actor->pbbLengths.z/2.0f;
 
-			actor->object = elfCreatePhysicsObjectSphere(radius, mass,
+			actor->object = elfCreatePhysicsObjectSphere(radius, actor->mass,
 				actor->pbbOffset.x, actor->pbbOffset.y, actor->pbbOffset.z);
 			break;
-		}
 		case ELF_MESH:
-		{
 			if(actor->objType != ELF_ENTITY) return;
 			entity = (elfEntity*)actor;
 			if(!entity->model || !elfGetModelIndices(entity->model)) return;
@@ -525,63 +497,50 @@ ELF_API void ELF_APIENTRY elfSetActorPhysics(elfActor* actor, int shape, float m
 					elfGetModelIndiceCount(entity->model));
 				elfIncRef((elfObject*)entity->model->triMesh);
 			}
-			actor->object = elfCreatePhysicsObjectMesh(entity->model->triMesh, mass);
+			actor->object = elfCreatePhysicsObjectMesh(entity->model->triMesh, actor->mass);
 			break;
-		}
 		case ELF_CAPSULE_X:
-		{
 			if(actor->pbbLengths.z > actor->pbbLengths.y) radius = actor->pbbLengths.z/2.0f;
 			else radius = actor->pbbLengths.y/2.0f;
 
-			actor->object = elfCreatePhysicsObjectCapsule(ELF_CAPSULE_X, elfFloatMax(actor->pbbLengths.x-radius*2, 0.0f), radius, mass,
+			actor->object = elfCreatePhysicsObjectCapsule(ELF_CAPSULE_X, elfFloatMax(actor->pbbLengths.x-radius*2, 0.0f), radius, actor->mass,
 				actor->pbbOffset.x, actor->pbbOffset.y, actor->pbbOffset.z);
 			break;
-		}
 		case ELF_CAPSULE_Y:
-		{
 			if(actor->pbbLengths.z > actor->pbbLengths.x) radius = actor->pbbLengths.z/2.0f;
 			else radius = actor->pbbLengths.x/2.0f;
 
-			actor->object = elfCreatePhysicsObjectCapsule(ELF_CAPSULE_Y, elfFloatMax(actor->pbbLengths.y-radius*2, 0.0f), radius, mass,
+			actor->object = elfCreatePhysicsObjectCapsule(ELF_CAPSULE_Y, elfFloatMax(actor->pbbLengths.y-radius*2, 0.0f), radius, actor->mass,
 				actor->pbbOffset.x, actor->pbbOffset.y, actor->pbbOffset.z);
 			break;
-		}
 		case ELF_CAPSULE_Z:
-		{
 			if(actor->pbbLengths.x > actor->pbbLengths.y) radius = actor->pbbLengths.x/2.0f;
 			else radius = actor->pbbLengths.y/2.0f;
 
-			actor->object = elfCreatePhysicsObjectCapsule(ELF_CAPSULE_Z, elfFloatMax(actor->pbbLengths.z-radius*2, 0.0f), radius, mass,
+			actor->object = elfCreatePhysicsObjectCapsule(ELF_CAPSULE_Z, elfFloatMax(actor->pbbLengths.z-radius*2, 0.0f), radius, actor->mass,
 				actor->pbbOffset.x, actor->pbbOffset.y, actor->pbbOffset.z);
 			break;
-		}
 		case ELF_CONE_X:
-		{
 			if(actor->pbbLengths.z > actor->pbbLengths.y) radius = actor->pbbLengths.z/2.0f;
 			else radius = actor->pbbLengths.y/2.0f;
 
-			actor->object = elfCreatePhysicsObjectCone(ELF_CONE_X, actor->pbbLengths.x, radius, mass,
+			actor->object = elfCreatePhysicsObjectCone(ELF_CONE_X, actor->pbbLengths.x, radius, actor->mass,
 				actor->pbbOffset.x, actor->pbbOffset.y, actor->pbbOffset.z);
 			break;
-		}
 		case ELF_CONE_Y:
-		{
 			if(actor->pbbLengths.z > actor->pbbLengths.x) radius = actor->pbbLengths.z/2.0f;
 			else radius = actor->pbbLengths.x/2.0f;
 
-			actor->object = elfCreatePhysicsObjectCone(ELF_CONE_Y, actor->pbbLengths.y, radius, mass,
+			actor->object = elfCreatePhysicsObjectCone(ELF_CONE_Y, actor->pbbLengths.y, radius, actor->mass,
 				actor->pbbOffset.x, actor->pbbOffset.y, actor->pbbOffset.z);
 			break;
-		}
 		case ELF_CONE_Z:
-		{
 			if(actor->pbbLengths.x > actor->pbbLengths.y) radius = actor->pbbLengths.x/2.0f;
 			else radius = actor->pbbLengths.y/2.0f;
 
-			actor->object = elfCreatePhysicsObjectCone(ELF_CONE_Z, actor->pbbLengths.z, radius, mass,
+			actor->object = elfCreatePhysicsObjectCone(ELF_CONE_Z, actor->pbbLengths.z, radius, actor->mass,
 				actor->pbbOffset.x, actor->pbbOffset.y, actor->pbbOffset.z);
 			break;
-		}
 		default: return;
 	}
 
@@ -615,22 +574,41 @@ ELF_API void ELF_APIENTRY elfSetActorPhysics(elfActor* actor, int shape, float m
 	}
 }
 
-ELF_API unsigned char ELF_APIENTRY elfIsActorPhysics(elfActor* actor)
+ELF_API void ELF_APIENTRY elfSetActorShape(elfActor* actor, int shape)
 {
-	return actor->physics;
+	actor->shape = (unsigned char)shape;
+	if(actor->object) elfSetActorPhysics(actor, ELF_TRUE);
 }
 
-ELF_API void ELF_APIENTRY elfDisableActorPhysics(elfActor* actor)
+ELF_API void ELF_APIENTRY elfSetActorBoundingLengths(elfActor* actor, float x, float y, float z)
 {
-	if(actor->object)
-	{
-		elfSetPhysicsObjectActor(actor->object, NULL);
-		elfSetPhysicsObjectWorld(actor->object, NULL);
-		elfDecRef((elfObject*)actor->object);
-		actor->object = NULL;
-	}
+	actor->pbbLengths.x = x;
+	actor->pbbLengths.y = y;
+	actor->pbbLengths.z = z;
 
-	actor->physics = ELF_FALSE;
+	if(actor->object) elfSetActorPhysics(actor, ELF_TRUE);
+}
+
+ELF_API void ELF_APIENTRY elfSetActorBoundingOffset(elfActor* actor, float x, float y, float z)
+{
+	actor->pbbOffsetSet = ELF_TRUE;
+
+	actor->pbbOffset.x = x;
+	actor->pbbOffset.y = y;
+	actor->pbbOffset.z = z;
+
+	if(actor->object) elfSetActorPhysics(actor, ELF_TRUE);
+}
+
+void elfResetActorBoundingOffsetSetFlag(elfActor* actor)
+{
+	actor->pbbOffsetSet = ELF_FALSE;
+}
+
+ELF_API void ELF_APIENTRY elfSetActorMass(elfActor* actor, float mass)
+{
+	actor->mass = mass;
+	if(actor->object) elfSetActorPhysics(actor, ELF_TRUE);
 }
 
 ELF_API void ELF_APIENTRY elfSetActorDamping(elfActor* actor, float linDamp, float angDamp)
@@ -640,7 +618,7 @@ ELF_API void ELF_APIENTRY elfSetActorDamping(elfActor* actor, float linDamp, flo
 	if(actor->object) elfSetPhysicsObjectDamping(actor->object, linDamp, angDamp);
 }
 
-ELF_API void ELF_APIENTRY elfSetActorSleepThresholds(elfActor* actor, float linThrs, float angThrs)
+ELF_API void ELF_APIENTRY elfSetActorSleep(elfActor* actor, float linThrs, float angThrs)
 {
 	actor->linSleep = linThrs;
 	actor->angSleep = angThrs;
@@ -725,6 +703,16 @@ ELF_API void ELF_APIENTRY elfSetActorAngularVelocity(elfActor* actor, float x, f
 	if(actor->object) elfSetPhysicsObjectAngularVelocity(actor->object, x, y, z);
 }
 
+ELF_API unsigned char ELF_APIENTRY elfGetActorPhysics(elfActor* actor)
+{
+	return actor->physics;
+}
+
+ELF_API int ELF_APIENTRY elfGetActorShape(elfActor* actor)
+{
+	return actor->shape;
+}
+
 ELF_API elfVec3f ELF_APIENTRY elfGetActorBoundingLengths(elfActor* actor)
 {
 	return actor->pbbLengths;
@@ -735,12 +723,7 @@ ELF_API elfVec3f ELF_APIENTRY elfGetActorBoundingOffset(elfActor* actor)
 	return actor->pbbOffset;
 }
 
-ELF_API int ELF_APIENTRY elfGetActorShape(elfActor* actor)
-{
-	return actor->shape;
-}
-
-ELF_API float ELF_APIENTRY elfGetActorMass(elfActor* actor)
+ELF_API float elfGetActorMass(elfActor* actor)
 {
 	return actor->mass;
 }
@@ -755,12 +738,12 @@ ELF_API float ELF_APIENTRY elfGetActorAngularDamping(elfActor* actor)
 	return actor->angDamp;
 }
 
-ELF_API float ELF_APIENTRY elfGetActorLinearSleepThreshold(elfActor* actor)
+ELF_API float ELF_APIENTRY elfGetActorLinearSleep(elfActor* actor)
 {
 	return actor->linSleep;
 }
 
-ELF_API float ELF_APIENTRY elfGetActorAngularSleepThreshold(elfActor* actor)
+ELF_API float ELF_APIENTRY elfGetActorAngularSleep(elfActor* actor)
 {
 	return actor->angSleep;
 }
@@ -1103,10 +1086,9 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 	int i;
 	float halfLength;
 
-	if(!actor->selected) return;
+	if(!actor->selected || !elfGetActorPhysics(actor)) return;
 
-	if(elfIsActorPhysics(actor)) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.5f, 1.0f, 0.5f, 1.0f);
-	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.5f, 0.5f, 1.0f, 1.0f);
+	gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.5f, 1.0f, 0.5f, 1.0f);
 	gfxSetShaderParams(shaderParams);
 
 	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->lines);

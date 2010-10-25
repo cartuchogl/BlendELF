@@ -35,7 +35,7 @@ import math
 import os
 
 ELF_NAME_LENGTH = 128
-ELF_PAK_VERSION = 101
+ELF_PAK_VERSION = 102
 
 def write_name_to_file(name, f):
 	if len(name) > ELF_NAME_LENGTH-1: name = name[0:ELF_NAME_LENGTH-1]
@@ -429,9 +429,10 @@ class Actor(object):
 		self.position = [0.0, 0.0, 0.0]
 		self.rotation = [0.0, 0.0, 0.0]
 
+		self.physics = 0
+		self.shape = 0
 		self.bounding_lengths = [0.0, 0.0, 0.0]
 		self.bounding_offset = [0.0, 0.0, 0.0]
-		self.shape = 0
 		self.mass = 0.0
 		self.lin_damp = 0.0
 		self.ang_damp = 0.0
@@ -492,9 +493,10 @@ def write_actor_header(eobj, f):
 			for point in curve.points:
 				f.write(struct.pack('<ffffff', point.c1[0], point.c1[1], point.p[0], point.p[1], point.c2[0], point.c2[0]))
 
+	f.write(struct.pack('<B', eobj.physics))
+	f.write(struct.pack('<B', eobj.shape))
 	f.write(struct.pack('<fff', eobj.bounding_lengths[0], eobj.bounding_lengths[1], eobj.bounding_lengths[2]))
 	f.write(struct.pack('<fff', eobj.bounding_offset[0], eobj.bounding_offset[1], eobj.bounding_offset[2]))
-	f.write(struct.pack('<B', eobj.shape))
 	f.write(struct.pack('<f', eobj.mass))
 	f.write(struct.pack('<f', eobj.lin_damp))
 	f.write(struct.pack('<f', eobj.ang_damp))
@@ -520,9 +522,10 @@ def get_actor_header_size(eobj):
 			size_bytes += struct.calcsize('<BBi')
 			size_bytes += struct.calcsize('<ffffff')*len(curve.points)
 
+	size_bytes += struct.calcsize('<B')	# physics
+	size_bytes += struct.calcsize('<B')	# shape
 	size_bytes += struct.calcsize('<fff')	# bounding lengths
 	size_bytes += struct.calcsize('<fff')	# bounding offsets
-	size_bytes += struct.calcsize('<B')	# shape
 	size_bytes += struct.calcsize('<f')	# mass
 	size_bytes += struct.calcsize('<f')	# linear damp
 	size_bytes += struct.calcsize('<f')	# angular damp
@@ -570,7 +573,7 @@ class Camera(Actor):
 
 		write_actor_header(self, f)
 
-		# write filed of view
+		# write field of view
 		f.write(struct.pack('<f', self.fov))
 
 		# write clip
@@ -717,25 +720,6 @@ class Light(Actor):
 		f.write(struct.pack('<Bfff', 0, 0.0, 0.0, 0.0))
 
 		print('Light \"'+self.name+'\" saved')
-
-"""
-def matrix4_to_eulers(mat):
-	eul = [0.0, 0.0, 0.0]
-	if mat[4] > 0.998:
-		eul[0] = math.atan2(mat[2],mat[10])*(180.0/math.pi);
-		eul[1] = math.pi/2*(180.0/math.pi);
-		eul[2] = 0;
-		return eul
-	if mat[4] < -0.998:
-		eul[0] = math.atan2(mat[2],mat[10])*(180.0/math.pi);
-		eul[1] = -math.pi/2*(180.0/math.pi);
-		eul[2] = 0; 'image' in dir(tex.texture)
-		return eul
-	eul[0] = math.atan2(-mat[8],mat[0])*(180.0/math.pi);
-	eul[1] = math.atan2(-mat[6],mat[5])*(180.0/math.pi);
-	eul[2] = math.asin(mat[4])*(180.0/math.pi);
-	return eul
-"""
 
 class BoneFrame:
 	def __init__(self):

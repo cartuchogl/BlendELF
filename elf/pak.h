@@ -201,9 +201,10 @@ int elfGetActorHeaderSizeBytes(elfActor* actor)
 		sizeBytes += sizeof(float)*6*elfGetListLength(curve->points);	// points
 	}
 
+	sizeBytes += sizeof(unsigned char);	// physics
+	sizeBytes += sizeof(unsigned char);	// shape
 	sizeBytes += sizeof(float)*3;	// bounding lengths
 	sizeBytes += sizeof(float)*3;	// bounding offset
-	sizeBytes += sizeof(unsigned char);	// shape
 	sizeBytes += sizeof(float);	// mass
 	sizeBytes += sizeof(float);	// linear damp
 	sizeBytes += sizeof(float);	// angular damp
@@ -479,6 +480,7 @@ void elfReadActorHeader(elfActor* actor, FILE* file, elfScene* scene)
 	elfBezierCurve* curve;
 	unsigned char curveCount;
 	int pointCount;
+	unsigned char physics;
 	float boundingLengths[3];
 	float boundingOffset[3];
 	unsigned char shape;
@@ -540,15 +542,10 @@ void elfReadActorHeader(elfActor* actor, FILE* file, elfScene* scene)
 		elfAddIpoCurve(actor->ipo, curve);
 	}
 
+	fread((char*)&physics, sizeof(unsigned char), 1, file);
+	fread((char*)&shape, sizeof(unsigned char), 1, file);
 	fread((char*)boundingLengths, sizeof(float), 3, file);
 	fread((char*)boundingOffset, sizeof(float), 3, file);
-
-	elfSetActorBoundingLengths(actor, boundingLengths[0], boundingLengths[1], boundingLengths[2]);
-	elfSetActorBoundingOffset(actor, boundingOffset[0], boundingOffset[1], boundingOffset[2]);
-
-	elfResetActorBoundingOffsetSetFlag(actor);
-
-	fread((char*)&shape, sizeof(unsigned char), 1, file);
 	fread((char*)&mass, sizeof(float), 1, file);
 	fread((char*)&linDamp, sizeof(float), 1, file);
 	fread((char*)&angDamp, sizeof(float), 1, file);
@@ -559,18 +556,20 @@ void elfReadActorHeader(elfActor* actor, FILE* file, elfScene* scene)
 	fread((char*)linearFactor, sizeof(float), 3, file);
 	fread((char*)angularFactor, sizeof(float), 3, file);
 
-	if(shape == ELF_BOX || shape == ELF_SPHERE || shape == ELF_MESH || shape == ELF_CAPSULE_X ||
-		 shape == ELF_CAPSULE_Y || shape == ELF_CAPSULE_Z || shape == ELF_CONE_X ||
-		 shape == ELF_CONE_Y || shape == ELF_CONE_Z)
-	{
-		elfSetActorPhysics(actor, shape, mass);
-		elfSetActorDamping(actor, linDamp, angDamp);
-		elfSetActorSleepThresholds(actor, linSleep, angSleep);
-		elfSetActorRestitution(actor, restitution);
-		elfSetActorAnisotropicFriction(actor, anisFric[0], anisFric[1], anisFric[2]);
-		elfSetActorLinearFactor(actor, linearFactor[0], linearFactor[1], linearFactor[2]);
-		elfSetActorAngularFactor(actor, angularFactor[0], angularFactor[1], angularFactor[2]);
-	}
+	elfSetActorShape(actor, shape);
+
+	elfSetActorBoundingLengths(actor, boundingLengths[0], boundingLengths[1], boundingLengths[2]);
+	elfSetActorBoundingOffset(actor, boundingOffset[0], boundingOffset[1], boundingOffset[2]);
+	elfResetActorBoundingOffsetSetFlag(actor);
+
+	elfSetActorMass(actor, mass);
+	elfSetActorDamping(actor, linDamp, angDamp);
+	elfSetActorSleep(actor, linSleep, angSleep);
+	elfSetActorRestitution(actor, restitution);
+	elfSetActorAnisotropicFriction(actor, anisFric[0], anisFric[1], anisFric[2]);
+	elfSetActorLinearFactor(actor, linearFactor[0], linearFactor[1], linearFactor[2]);
+	elfSetActorAngularFactor(actor, angularFactor[0], angularFactor[1], angularFactor[2]);
+	elfSetActorPhysics(actor, physics);
 
 	fread((char*)&propertyCount, sizeof(int), 1, file);
 	for(i = 0; i < propertyCount; i++)
@@ -1455,6 +1454,7 @@ void elfWriteActorHeader(elfActor* actor, FILE* file)
 	elfBezierCurve* curve;
 	unsigned char curveCount;
 	int pointCount;
+	unsigned char physics;
 	elfVec3f boundingLengths;
 	elfVec3f boundingOffset;
 	unsigned char shape;
@@ -1502,24 +1502,24 @@ void elfWriteActorHeader(elfActor* actor, FILE* file)
 		}
 	}
 
+	physics = elfGetActorPhysics(actor);
+	shape = (unsigned char)elfGetActorShape(actor);
 	boundingLengths = elfGetActorBoundingLengths(actor);
 	boundingOffset = elfGetActorBoundingOffset(actor);
-
-	fwrite((char*)&boundingLengths.x, sizeof(float), 3, file);
-	fwrite((char*)&boundingOffset.x, sizeof(float), 3, file);
-
-	shape = (unsigned char)elfGetActorShape(actor);
 	mass = elfGetActorMass(actor);
 	linDamp = elfGetActorLinearDamping(actor);
 	angDamp = elfGetActorAngularDamping(actor);
-	linSleep = elfGetActorLinearSleepThreshold(actor);
-	angSleep = elfGetActorAngularSleepThreshold(actor);
+	linSleep = elfGetActorLinearSleep(actor);
+	angSleep = elfGetActorAngularSleep(actor);
 	restitution = elfGetActorRestitution(actor);
 	anisFric = elfGetActorAnisotropicFriction(actor);
 	linearFactor = elfGetActorLinearFactor(actor);
 	angularFactor = elfGetActorAngularFactor(actor);
 
+	fwrite((char*)&physics, sizeof(unsigned char), 1, file);
 	fwrite((char*)&shape, sizeof(unsigned char), 1, file);
+	fwrite((char*)&boundingLengths.x, sizeof(float), 3, file);
+	fwrite((char*)&boundingOffset.x, sizeof(float), 3, file);
 	fwrite((char*)&mass, sizeof(float), 1, file);
 	fwrite((char*)&linDamp, sizeof(float), 1, file);
 	fwrite((char*)&angDamp, sizeof(float), 1, file);

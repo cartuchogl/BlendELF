@@ -310,7 +310,7 @@ ELF_API void ELF_APIENTRY elfSetEntityModel(elfEntity* entity, elfModel* model)
 
 	if(!entity->model)
 	{
-		if(entity->object) elfDisableEntityPhysics(entity);
+		if(entity->object) elfSetActorPhysics((elfActor*)entity, ELF_FALSE);
 		elfResetEntityDebugPhysicsObject(entity);
 		elfCalcEntityBoundingVolumes(entity, ELF_FALSE);
 		return;
@@ -329,11 +329,7 @@ ELF_API void ELF_APIENTRY elfSetEntityModel(elfEntity* entity, elfModel* model)
 	elfSetEntityScale(entity, 1.0f, 1.0f, 1.0f);
 	elfCalcEntityBoundingVolumes(entity, ELF_TRUE);
 
-	if(elfIsActorPhysics((elfActor*)entity))
-	{
-		elfSetActorPhysics((elfActor*)entity, elfGetActorShape((elfActor*)entity),
-			elfGetActorMass((elfActor*)entity));
-	}
+	if(elfGetActorPhysics((elfActor*)entity)) elfSetActorPhysics((elfActor*)entity, ELF_TRUE);
 
 	elfResetEntityDebugPhysicsObject(entity);
 
@@ -437,16 +433,6 @@ ELF_API void ELF_APIENTRY elfSetEntityOccluder(elfEntity* entity, unsigned char 
 ELF_API unsigned char ELF_APIENTRY elfIsEntityOccluder(elfEntity* entity)
 {
 	return entity->occluder;
-}
-
-ELF_API void ELF_APIENTRY elfSetEntityPhysics(elfEntity* entity, int type, float mass)
-{
-	elfSetActorPhysics((elfActor*)entity, type, mass);
-}
-
-ELF_API void ELF_APIENTRY elfDisableEntityPhysics(elfEntity* entity)
-{
-	elfDisableActorPhysics((elfActor*)entity);
 }
 
 void elfResetEntityDebugPhysicsObject(elfEntity* entity)

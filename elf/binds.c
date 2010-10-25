@@ -3751,6 +3751,34 @@ static int lua_GetActorOrientation(lua_State *L)
 	lua_create_elfVec4f(L, result);
 	return 1;
 }
+static int lua_SetActorPhysics(lua_State *L)
+{
+	elfActor* arg0;
+	unsigned char arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetActorPhysics", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 1))->object))
+		{return lua_fail_arg(L, "SetActorPhysics", 1, "elfActor");}
+	if(!lua_isboolean(L, 2)) {return lua_fail_arg(L, "SetActorPhysics", 2, "boolean");}
+	arg0 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (unsigned char)lua_toboolean(L, 2);
+	elfSetActorPhysics(arg0, arg1);
+	return 0;
+}
+static int lua_SetActorShape(lua_State *L)
+{
+	elfActor* arg0;
+	int arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetActorShape", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 1))->object))
+		{return lua_fail_arg(L, "SetActorShape", 1, "elfActor");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetActorShape", 2, "number");}
+	arg0 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (int)lua_tonumber(L, 2);
+	elfSetActorShape(arg0, arg1);
+	return 0;
+}
 static int lua_SetActorBoundingLengths(lua_State *L)
 {
 	elfActor* arg0;
@@ -3791,45 +3819,18 @@ static int lua_SetActorBoundingOffset(lua_State *L)
 	elfSetActorBoundingOffset(arg0, arg1, arg2, arg3);
 	return 0;
 }
-static int lua_SetActorPhysics(lua_State *L)
+static int lua_SetActorMass(lua_State *L)
 {
 	elfActor* arg0;
-	int arg1;
-	float arg2;
-	if(lua_gettop(L) != 3) {return lua_fail_arg_count(L, "SetActorPhysics", lua_gettop(L), 3);}
+	float arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetActorMass", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "SetActorPhysics", 1, "elfActor");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetActorPhysics", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetActorPhysics", 3, "number");}
+		{return lua_fail_arg(L, "SetActorMass", 1, "elfActor");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetActorMass", 2, "number");}
 	arg0 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = (int)lua_tonumber(L, 2);
-	arg2 = (float)lua_tonumber(L, 3);
-	elfSetActorPhysics(arg0, arg1, arg2);
-	return 0;
-}
-static int lua_IsActorPhysics(lua_State *L)
-{
-	unsigned char result;
-	elfActor* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "IsActorPhysics", lua_gettop(L), 1);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "IsActorPhysics", 1, "elfActor");}
-	arg0 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfIsActorPhysics(arg0);
-	lua_pushboolean(L, result);
-	return 1;
-}
-static int lua_DisableActorPhysics(lua_State *L)
-{
-	elfActor* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "DisableActorPhysics", lua_gettop(L), 1);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "DisableActorPhysics", 1, "elfActor");}
-	arg0 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	elfDisableActorPhysics(arg0);
+	arg1 = (float)lua_tonumber(L, 2);
+	elfSetActorMass(arg0, arg1);
 	return 0;
 }
 static int lua_SetActorDamping(lua_State *L)
@@ -3849,21 +3850,21 @@ static int lua_SetActorDamping(lua_State *L)
 	elfSetActorDamping(arg0, arg1, arg2);
 	return 0;
 }
-static int lua_SetActorSleepThresholds(lua_State *L)
+static int lua_SetActorSleep(lua_State *L)
 {
 	elfActor* arg0;
 	float arg1;
 	float arg2;
-	if(lua_gettop(L) != 3) {return lua_fail_arg_count(L, "SetActorSleepThresholds", lua_gettop(L), 3);}
+	if(lua_gettop(L) != 3) {return lua_fail_arg_count(L, "SetActorSleep", lua_gettop(L), 3);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "SetActorSleepThresholds", 1, "elfActor");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetActorSleepThresholds", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetActorSleepThresholds", 3, "number");}
+		{return lua_fail_arg(L, "SetActorSleep", 1, "elfActor");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetActorSleep", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetActorSleep", 3, "number");}
 	arg0 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (float)lua_tonumber(L, 2);
 	arg2 = (float)lua_tonumber(L, 3);
-	elfSetActorSleepThresholds(arg0, arg1, arg2);
+	elfSetActorSleep(arg0, arg1, arg2);
 	return 0;
 }
 static int lua_SetActorRestitution(lua_State *L)
@@ -4060,6 +4061,19 @@ static int lua_SetActorAngularVelocity(lua_State *L)
 	elfSetActorAngularVelocity(arg0, arg1, arg2, arg3);
 	return 0;
 }
+static int lua_GetActorPhysics(lua_State *L)
+{
+	unsigned char result;
+	elfActor* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetActorPhysics", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 1))->object))
+		{return lua_fail_arg(L, "GetActorPhysics", 1, "elfActor");}
+	arg0 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetActorPhysics(arg0);
+	lua_pushboolean(L, result);
+	return 1;
+}
 static int lua_GetActorBoundingLengths(lua_State *L)
 {
 	elfVec3f result;
@@ -4138,29 +4152,29 @@ static int lua_GetActorAngularDamping(lua_State *L)
 	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
-static int lua_GetActorLinearSleepThreshold(lua_State *L)
+static int lua_GetActorLinearSleep(lua_State *L)
 {
 	float result;
 	elfActor* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetActorLinearSleepThreshold", lua_gettop(L), 1);}
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetActorLinearSleep", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "GetActorLinearSleepThreshold", 1, "elfActor");}
+		{return lua_fail_arg(L, "GetActorLinearSleep", 1, "elfActor");}
 	arg0 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetActorLinearSleepThreshold(arg0);
+	result = elfGetActorLinearSleep(arg0);
 	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
-static int lua_GetActorAngularSleepThreshold(lua_State *L)
+static int lua_GetActorAngularSleep(lua_State *L)
 {
 	float result;
 	elfActor* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetActorAngularSleepThreshold", lua_gettop(L), 1);}
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetActorAngularSleep", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		!elfIsActor(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "GetActorAngularSleepThreshold", 1, "elfActor");}
+		{return lua_fail_arg(L, "GetActorAngularSleep", 1, "elfActor");}
 	arg0 = (elfActor*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetActorAngularSleepThreshold(arg0);
+	result = elfGetActorAngularSleep(arg0);
 	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
@@ -5606,34 +5620,6 @@ static int lua_IsEntityOccluder(lua_State *L)
 	result = elfIsEntityOccluder(arg0);
 	lua_pushboolean(L, result);
 	return 1;
-}
-static int lua_SetEntityPhysics(lua_State *L)
-{
-	elfEntity* arg0;
-	int arg1;
-	float arg2;
-	if(lua_gettop(L) != 3) {return lua_fail_arg_count(L, "SetEntityPhysics", lua_gettop(L), 3);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_ENTITY)
-		{return lua_fail_arg(L, "SetEntityPhysics", 1, "elfEntity");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetEntityPhysics", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetEntityPhysics", 3, "number");}
-	arg0 = (elfEntity*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = (int)lua_tonumber(L, 2);
-	arg2 = (float)lua_tonumber(L, 3);
-	elfSetEntityPhysics(arg0, arg1, arg2);
-	return 0;
-}
-static int lua_DisableEntityPhysics(lua_State *L)
-{
-	elfEntity* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "DisableEntityPhysics", lua_gettop(L), 1);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_ENTITY)
-		{return lua_fail_arg(L, "DisableEntityPhysics", 1, "elfEntity");}
-	arg0 = (elfEntity*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	elfDisableEntityPhysics(arg0);
-	return 0;
 }
 static int lua_SetEntityArmature(lua_State *L)
 {
@@ -10781,13 +10767,13 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetActorPosition", lua_GetActorPosition},
 	{"GetActorRotation", lua_GetActorRotation},
 	{"GetActorOrientation", lua_GetActorOrientation},
+	{"SetActorPhysics", lua_SetActorPhysics},
+	{"SetActorShape", lua_SetActorShape},
 	{"SetActorBoundingLengths", lua_SetActorBoundingLengths},
 	{"SetActorBoundingOffset", lua_SetActorBoundingOffset},
-	{"SetActorPhysics", lua_SetActorPhysics},
-	{"IsActorPhysics", lua_IsActorPhysics},
-	{"DisableActorPhysics", lua_DisableActorPhysics},
+	{"SetActorMass", lua_SetActorMass},
 	{"SetActorDamping", lua_SetActorDamping},
-	{"SetActorSleepThresholds", lua_SetActorSleepThresholds},
+	{"SetActorSleep", lua_SetActorSleep},
 	{"SetActorRestitution", lua_SetActorRestitution},
 	{"SetActorAnisotropicFriction", lua_SetActorAnisotropicFriction},
 	{"SetActorLinearFactor", lua_SetActorLinearFactor},
@@ -10798,14 +10784,15 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"SetActorLinearVelocity", lua_SetActorLinearVelocity},
 	{"SetActorLinearVelocityLocal", lua_SetActorLinearVelocityLocal},
 	{"SetActorAngularVelocity", lua_SetActorAngularVelocity},
+	{"GetActorPhysics", lua_GetActorPhysics},
 	{"GetActorBoundingLengths", lua_GetActorBoundingLengths},
 	{"GetActorBoundingOffset", lua_GetActorBoundingOffset},
 	{"GetActorShape", lua_GetActorShape},
 	{"GetActorMass", lua_GetActorMass},
 	{"GetActorLinearDamping", lua_GetActorLinearDamping},
 	{"GetActorAngularDamping", lua_GetActorAngularDamping},
-	{"GetActorLinearSleepThreshold", lua_GetActorLinearSleepThreshold},
-	{"GetActorAngularSleepThreshold", lua_GetActorAngularSleepThreshold},
+	{"GetActorLinearSleep", lua_GetActorLinearSleep},
+	{"GetActorAngularSleep", lua_GetActorAngularSleep},
 	{"GetActorRestitution", lua_GetActorRestitution},
 	{"GetActorAnisotropicFriction", lua_GetActorAnisotropicFriction},
 	{"GetActorLinearFactor", lua_GetActorLinearFactor},
@@ -10899,8 +10886,6 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetEntityVisible", lua_GetEntityVisible},
 	{"SetEntityOccluder", lua_SetEntityOccluder},
 	{"IsEntityOccluder", lua_IsEntityOccluder},
-	{"SetEntityPhysics", lua_SetEntityPhysics},
-	{"DisableEntityPhysics", lua_DisableEntityPhysics},
 	{"SetEntityArmature", lua_SetEntityArmature},
 	{"SetEntityArmatureFrame", lua_SetEntityArmatureFrame},
 	{"PlayEntityArmature", lua_PlayEntityArmature},

@@ -19,7 +19,7 @@ import struct
 import math
 
 ELF_NAME_LENGTH = 128
-ELF_PAK_VERSION = 101
+ELF_PAK_VERSION = 102
 
 def write_name_to_file(name, f):
 	if len(name) > ELF_NAME_LENGTH-1: name = name[0:ELF_NAME_LENGTH-1]
@@ -411,9 +411,10 @@ class Actor(object):
 		self.position = [0.0, 0.0, 0.0]
 		self.rotation = [0.0, 0.0, 0.0]
 
+		self.physics = 0
+		self.shape = 0
 		self.bounding_lengths = [0.0, 0.0, 0.0]
 		self.bounding_offset = [0.0, 0.0, 0.0]
-		self.shape = 0
 		self.mass = 0.0
 		self.lin_damp = 0.0
 		self.ang_damp = 0.0
@@ -461,15 +462,15 @@ def get_actor_header_from_object(obj, eobj):
 	try:
 		prop = obj.getProperty('shape')
 		if prop.getType() == 'STRING':
-			if prop.getData() == 'CONE_Z': eobj.shape = 9
-			if prop.getData() == 'CONE_Y': eobj.shape = 8
-			if prop.getData() == 'CONE_X': eobj.shape = 7
-			if prop.getData() == 'CAPSULE_Z': eobj.shape = 6
-			if prop.getData() == 'CAPSULE_Y': eobj.shape = 5
-			if prop.getData() == 'CAPSULE_X': eobj.shape = 4
-			if prop.getData() == 'MESH': eobj.shape = 3
-			if prop.getData() == 'SPHERE': eobj.shape = 2
-			if prop.getData() == 'BOX': eobj.shape = 1
+			if prop.getData() == 'CONE_Z': eobj.shape = 8; eobj.physics = 1
+			if prop.getData() == 'CONE_Y': eobj.shape = 7; eobj.physics = 1
+			if prop.getData() == 'CONE_X': eobj.shape = 6; eobj.physics = 1
+			if prop.getData() == 'CAPSULE_Z': eobj.shape = 5; eobj.physics = 1
+			if prop.getData() == 'CAPSULE_Y': eobj.shape = 4; eobj.physics = 1
+			if prop.getData() == 'CAPSULE_X': eobj.shape = 3; eobj.physics = 1
+			if prop.getData() == 'MESH': eobj.shape = 2; eobj.physics = 1
+			if prop.getData() == 'SPHERE': eobj.shape = 1; eobj.physics = 1
+			if prop.getData() == 'BOX': eobj.shape = 0; eobj.physics = 1
 	except: pass
 	try:
 		prop = obj.getProperty('mass')
@@ -507,9 +508,10 @@ def write_actor_header(eobj, f):
 			for point in curve.points:
 				f.write(struct.pack('<ffffff', point.c1[0], point.c1[1], point.p[0], point.p[1], point.c2[0], point.c2[0]))
 
+	f.write(struct.pack('<B', eobj.physics))
+	f.write(struct.pack('<B', eobj.shape))
 	f.write(struct.pack('<fff', eobj.bounding_lengths[0], eobj.bounding_lengths[1], eobj.bounding_lengths[2]))
 	f.write(struct.pack('<fff', eobj.bounding_offset[0], eobj.bounding_offset[1], eobj.bounding_offset[2]))
-	f.write(struct.pack('<B', eobj.shape))
 	f.write(struct.pack('<f', eobj.mass))
 	f.write(struct.pack('<f', eobj.lin_damp))
 	f.write(struct.pack('<f', eobj.ang_damp))
