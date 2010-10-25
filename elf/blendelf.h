@@ -193,15 +193,15 @@ extern "C" {
 #define ELF_PERSPECTIVE					0x0000	// <mdoc> CAMERA MODE <mdocc> The camera modes used by camera internal functions
 #define ELF_ORTHOGRAPHIC				0x0001
 
-#define ELF_BOX						0x0001	// <mdoc> PHYSICS SHAPES <mdocc> The physics shapes used by elf.SetEntityPhysics
-#define ELF_SPHERE					0x0002
-#define ELF_MESH					0x0003
-#define ELF_CAPSULE_X					0x0004
-#define ELF_CAPSULE_Y					0x0005
-#define ELF_CAPSULE_Z					0x0006
-#define ELF_CONE_X					0x0007
-#define ELF_CONE_Y					0x0008
-#define ELF_CONE_Z					0x0009
+#define ELF_BOX						0x0000	// <mdoc> PHYSICS SHAPES <mdocc> The physics shapes used by elf.SetEntityPhysics
+#define ELF_SPHERE					0x0001
+#define ELF_MESH					0x0002
+#define ELF_CAPSULE_X					0x0003
+#define ELF_CAPSULE_Y					0x0004
+#define ELF_CAPSULE_Z					0x0005
+#define ELF_CONE_X					0x0006
+#define ELF_CONE_Y					0x0007
+#define ELF_CONE_Z					0x0008
 
 #define ELF_HINGE					0x0001	// <mdoc> JOINT TYPES <mdocc> The joint types returned by elf.GetJointType
 #define ELF_BALL					0x0002
