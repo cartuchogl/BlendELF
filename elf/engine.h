@@ -166,7 +166,7 @@ elfEngine* elfCreateEngine()
 
 	gfxSetVertexArrayData(engine->spriteVertexArray, GFX_NORMAL, vertexData);
 
-	engine->gradientVertexData = gfxCreateVertexData(18, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
+	engine->gradientVertexData = gfxCreateVertexData(18, GFX_INT, GFX_VERTEX_DATA_DYNAMIC);
 	engine->gradientColorData = gfxCreateVertexData(24, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
 	engine->gradientVertexArray = gfxCreateVertexArray(GFX_FALSE);
 

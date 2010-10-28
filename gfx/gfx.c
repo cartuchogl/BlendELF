@@ -46,14 +46,6 @@ unsigned char gfxInit()
 	driver = (gfxDriver*)malloc(sizeof(gfxDriver));
 	memset(driver, 0x0, sizeof(gfxDriver));
 
-	driver->formatSizes[GFX_FLOAT] = sizeof(float);
-	driver->formatSizes[GFX_INT] = sizeof(int);
-	driver->formatSizes[GFX_UINT] = sizeof(unsigned int);
-	driver->formatSizes[GFX_SHORT] = sizeof(short int);
-	driver->formatSizes[GFX_USHORT] = sizeof(unsigned short int);
-	driver->formatSizes[GFX_BYTE] = sizeof(char);
-	driver->formatSizes[GFX_UBYTE] = sizeof(unsigned char);
-
 	driver->formats[GFX_FLOAT] = GL_FLOAT;
 	driver->formats[GFX_INT] = GL_INT;
 	driver->formats[GFX_UINT] = GL_UNSIGNED_INT;
@@ -61,6 +53,14 @@ unsigned char gfxInit()
 	driver->formats[GFX_USHORT] = GL_UNSIGNED_SHORT;
 	driver->formats[GFX_BYTE] = GL_BYTE;
 	driver->formats[GFX_UBYTE] = GL_UNSIGNED_BYTE;
+
+	driver->formatSizes[GFX_FLOAT] = sizeof(float);
+	driver->formatSizes[GFX_INT] = sizeof(int);
+	driver->formatSizes[GFX_UINT] = sizeof(unsigned int);
+	driver->formatSizes[GFX_SHORT] = sizeof(short int);
+	driver->formatSizes[GFX_USHORT] = sizeof(unsigned short int);
+	driver->formatSizes[GFX_BYTE] = sizeof(char);
+	driver->formatSizes[GFX_UBYTE] = sizeof(unsigned char);
 
 	driver->drawModes[GFX_POINTS] = GL_POINTS;
 	driver->drawModes[GFX_LINES] = GL_LINES;

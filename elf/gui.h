@@ -9,123 +9,84 @@ void elfSetOrtho(int x, int y, int width, int height, gfxShaderParams *shaderPar
 
 void elfDrawHorGradient(int x, int y, int width, int height, elfColor col1, elfColor col2)
 {
-	float *vertexBuffer;
+	int* vertexBuffer;
+	float* colorBuffer;
 
-	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->gradientVertexData);
+	vertexBuffer = (int*)gfxGetVertexDataBuffer(eng->gradientVertexData);
 
 	vertexBuffer[0] = x;
 	vertexBuffer[1] = y+height;
-	vertexBuffer[2] = 0.0f;
+	vertexBuffer[2] = 0;
 	vertexBuffer[3] = x;
 	vertexBuffer[4] = y;
-	vertexBuffer[5] = 0.0f;
+	vertexBuffer[5] = 0;
 	vertexBuffer[6] = x+width;
 	vertexBuffer[7] = y+height;
-	vertexBuffer[8] = 0.0f;
+	vertexBuffer[8] = 0;
 	vertexBuffer[9] = x+width;
 	vertexBuffer[10] = y;
-	vertexBuffer[11] = 0.0f;
+	vertexBuffer[11] = 0;
 
-	vertexBuffer = gfxGetVertexDataBuffer(eng->gradientColorData);
+	colorBuffer = (float*)gfxGetVertexDataBuffer(eng->gradientColorData);
 
-	vertexBuffer[0] = col1.r;
-	vertexBuffer[1] = col1.g;
-	vertexBuffer[2] = col1.b;
-	vertexBuffer[3] = col1.a;
-	vertexBuffer[4] = col2.r;
-	vertexBuffer[5] = col2.g;
-	vertexBuffer[6] = col2.b;
-	vertexBuffer[7] = col2.a;
-	vertexBuffer[8] = col1.r;
-	vertexBuffer[9] = col1.g;
-	vertexBuffer[10] = col1.b;
-	vertexBuffer[11] = col1.a;
-	vertexBuffer[12] = col2.r;
-	vertexBuffer[13] = col2.g;
-	vertexBuffer[14] = col2.b;
-	vertexBuffer[15] = col2.a;
+	colorBuffer[0] = col1.r;
+	colorBuffer[1] = col1.g;
+	colorBuffer[2] = col1.b;
+	colorBuffer[3] = col1.a;
+	colorBuffer[4] = col2.r;
+	colorBuffer[5] = col2.g;
+	colorBuffer[6] = col2.b;
+	colorBuffer[7] = col2.a;
+	colorBuffer[8] = col1.r;
+	colorBuffer[9] = col1.g;
+	colorBuffer[10] = col1.b;
+	colorBuffer[11] = col1.a;
+	colorBuffer[12] = col2.r;
+	colorBuffer[13] = col2.g;
+	colorBuffer[14] = col2.b;
+	colorBuffer[15] = col2.a;
 
 	gfxDrawVertexArray(eng->gradientVertexArray, 4, GFX_TRIANGLE_STRIP);
 }
 
-void elfDrawBorder(int x, int y, int width, int height, elfColor col)
-{
-	float *vertexBuffer;
-
-	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->gradientVertexData);
-
-	vertexBuffer[0] = x;
-	vertexBuffer[1] = y+height;
-	vertexBuffer[2] = 0.0f;
-	vertexBuffer[3] = x;
-	vertexBuffer[4] = y;
-	vertexBuffer[5] = 0.0f;
-	vertexBuffer[6] = x+width;
-	vertexBuffer[7] = y;
-	vertexBuffer[8] = 0.0f;
-	vertexBuffer[9] = x+width;
-	vertexBuffer[10] = y+height;
-	vertexBuffer[11] = 0.0f;
-
-	vertexBuffer = gfxGetVertexDataBuffer(eng->gradientColorData);
-
-	vertexBuffer[0] = col.r;
-	vertexBuffer[1] = col.g;
-	vertexBuffer[2] = col.b;
-	vertexBuffer[3] = col.a;
-	vertexBuffer[4] = col.r;
-	vertexBuffer[5] = col.g;
-	vertexBuffer[6] = col.b;
-	vertexBuffer[7] = col.a;
-	vertexBuffer[8] = col.r;
-	vertexBuffer[9] = col.g;
-	vertexBuffer[10] = col.b;
-	vertexBuffer[11] = col.a;
-	vertexBuffer[12] = col.r;
-	vertexBuffer[13] = col.g;
-	vertexBuffer[14] = col.b;
-	vertexBuffer[15] = col.a;
-
-	gfxDrawVertexArray(eng->gradientVertexArray, 4, GFX_LINE_LOOP);
-}
-
 void elfDrawHorGradientBorder(int x, int y, int width, int height, elfColor col1, elfColor col2)
 {
-	float *vertexBuffer;
+	int* vertexBuffer;
+	float* colorBuffer;
 
-	vertexBuffer = gfxGetVertexDataBuffer(eng->gradientVertexData);
+	vertexBuffer = (int*)gfxGetVertexDataBuffer(eng->gradientVertexData);
 
 	vertexBuffer[0] = x;
 	vertexBuffer[1] = y+height;
-	vertexBuffer[2] = 0.0f;
+	vertexBuffer[2] = 0;
 	vertexBuffer[3] = x;
 	vertexBuffer[4] = y;
-	vertexBuffer[5] = 0.0f;
+	vertexBuffer[5] = 0;
 	vertexBuffer[6] = x+width;
-	vertexBuffer[7] = y;
-	vertexBuffer[8] = 0.0f;
+	vertexBuffer[7] = y+1;
+	vertexBuffer[8] = 0;
 	vertexBuffer[9] = x+width;
 	vertexBuffer[10] = y+height;
-	vertexBuffer[11] = 0.0f;
+	vertexBuffer[11] = 0;
 
-	vertexBuffer = gfxGetVertexDataBuffer(eng->gradientColorData);
+	colorBuffer = (float*)gfxGetVertexDataBuffer(eng->gradientColorData);
 
-	vertexBuffer[0] = col1.r;
-	vertexBuffer[1] = col1.g;
-	vertexBuffer[2] = col1.b;
-	vertexBuffer[3] = col1.a;
-	vertexBuffer[4] = col2.r;
-	vertexBuffer[5] = col2.g;
-	vertexBuffer[6] = col2.b;
-	vertexBuffer[7] = col2.a;
-	vertexBuffer[8] = col2.r;
-	vertexBuffer[9] = col2.g;
-	vertexBuffer[10] = col2.b;
-	vertexBuffer[11] = col2.a;
-	vertexBuffer[12] = col1.r;
-	vertexBuffer[13] = col1.g;
-	vertexBuffer[14] = col1.b;
-	vertexBuffer[15] = col1.a;
+	colorBuffer[0] = col1.r;
+	colorBuffer[1] = col1.g;
+	colorBuffer[2] = col1.b;
+	colorBuffer[3] = col1.a;
+	colorBuffer[4] = col2.r;
+	colorBuffer[5] = col2.g;
+	colorBuffer[6] = col2.b;
+	colorBuffer[7] = col2.a;
+	colorBuffer[8] = col2.r;
+	colorBuffer[9] = col2.g;
+	colorBuffer[10] = col2.b;
+	colorBuffer[11] = col2.a;
+	colorBuffer[12] = col1.r;
+	colorBuffer[13] = col1.g;
+	colorBuffer[14] = col1.b;
+	colorBuffer[15] = col1.a;
 
 	gfxDrawVertexArray(eng->gradientVertexArray, 4, GFX_LINE_LOOP);
 }
