@@ -22,18 +22,18 @@ ELF_API elfCamera* ELF_APIENTRY elfCreateCamera(const char* name)
 	camera->orthoWidth = -1;
 	camera->orthoHeight = -1;
 	camera->clipNear = 1.0f;
-	camera->clipFar = 100.0f;
+	camera->clipFar = 250.0f;
 
 	gfxMatrix4SetIdentity(camera->projectionMatrix);
 	gfxMatrix4SetIdentity(camera->modelviewMatrix);
 
 	elfSetCameraMode(camera, ELF_PERSPECTIVE);
 
-	camera->dobject = elfCreatePhysicsObjectBox(0.35f, 0.35f, 0.35f, 0.0f, 0.0f, 0.0f, 0.0f);
+	camera->dobject = elfCreatePhysicsObjectSphere(0.5, 0.0f, 0.0f, 0.0f, 0.0f);
 	elfSetPhysicsObjectActor(camera->dobject, (elfActor*)camera);
 	elfIncRef((elfObject*)camera->dobject);
 
-	camera->pbbLengths.x = camera->pbbLengths.y = camera->pbbLengths.z = 0.7f;
+	camera->pbbLengths.x = camera->pbbLengths.y = camera->pbbLengths.z = 1.0f;
 
 	if(name) camera->name = elfCreateString(name);
 
