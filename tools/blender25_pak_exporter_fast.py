@@ -431,7 +431,7 @@ class Actor(object):
 
 		self.physics = 0
 		self.shape = 0
-		self.bounding_lengths = [0.0, 0.0, 0.0]
+		self.bounding_lengths = [1.0, 1.0, 1.0]
 		self.bounding_offset = [0.0, 0.0, 0.0]
 		self.mass = 0.0
 		self.lin_damp = 0.0
