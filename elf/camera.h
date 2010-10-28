@@ -27,7 +27,7 @@ ELF_API elfCamera* ELF_APIENTRY elfCreateCamera(const char* name)
 	gfxMatrix4SetIdentity(camera->projectionMatrix);
 	gfxMatrix4SetIdentity(camera->modelviewMatrix);
 
-	elfSetCameraPerspective(camera, camera->fov, camera->aspect, camera->clipNear, camera->clipFar);
+	elfSetCameraMode(camera, ELF_PERSPECTIVE);
 
 	camera->dobject = elfCreatePhysicsObjectBox(0.35f, 0.35f, 0.35f, 0.0f, 0.0f, 0.0f, 0.0f);
 	elfSetPhysicsObjectActor(camera->dobject, (elfActor*)camera);
@@ -48,8 +48,7 @@ void elfUpdateCamera(elfCamera* camera)
 {
 	elfUpdateActor((elfActor*)camera);
 
-	if(camera->mode == ELF_PERSPECTIVE)
-		elfSetCameraPerspective(camera, camera->fov, camera->aspect, camera->clipNear, camera->clipFar);
+	//if(camera->mode == ELF_PERSPECTIVE) elfRecalcCamera(camera);
 }
 
 void elfCameraPreDraw(elfCamera* camera)
@@ -76,6 +75,37 @@ void elfDestroyCamera(void* data)
 	elfDecObj(ELF_CAMERA);
 }
 
+void elfRecalcCamera(elfCamera *camera)
+{
+	if(camera->mode == ELF_PERSPECTIVE)
+	{
+		gfxGetPerspectiveProjectionMatrix(camera->fov, elfGetCameraAspect(camera),
+			camera->clipNear, camera->clipFar, camera->projectionMatrix);
+
+		camera->farPlaneHeight = 2 * (float)tan(camera->fov * GFX_PI_DIV_180 / 2) * camera->clipFar;
+		camera->farPlaneWidth = camera->farPlaneHeight * elfGetCameraAspect(camera);
+	}
+	else if(camera->mode == ELF_ORTHOGRAPHIC)
+	{
+		gfxGetOrthographicProjectionMatrix(
+			(float)camera->orthoX, (float)(camera->orthoX+camera->orthoWidth),
+			(float)camera->orthoY, (float)(camera->orthoY+camera->orthoHeight),
+			(float)camera->clipNear, camera->clipFar, camera->projectionMatrix);
+
+		camera->farPlaneWidth = camera->orthoWidth;
+		camera->farPlaneHeight = camera->orthoHeight;
+	}
+}
+
+ELF_API void ELF_APIENTRY elfSetCameraMode(elfCamera* camera, int mode)
+{
+	if(mode != ELF_PERSPECTIVE && mode != ELF_ORTHOGRAPHIC) return;
+
+	camera->mode = mode;
+
+	elfRecalcCamera(camera);
+}
+
 ELF_API void ELF_APIENTRY elfSetCameraViewport(elfCamera* camera, int x, int y, int width, int height)
 {
 	camera->viewpX = x;
@@ -84,69 +114,39 @@ ELF_API void ELF_APIENTRY elfSetCameraViewport(elfCamera* camera, int x, int y, 
 	camera->viewpHeight = height;
 }
 
-ELF_API void ELF_APIENTRY elfSetCameraPerspective(elfCamera* camera, float fov, float aspect, float clipNear, float clipFar)
+ELF_API void ELF_APIENTRY elfSetCameraOrthoViewport(elfCamera* camera, int x, int y, int width, int height)
 {
-	camera->mode = ELF_PERSPECTIVE;
-
-	camera->fov = fov;
-	camera->aspect = aspect;
-	camera->clipNear = clipNear;
-	camera->clipFar = clipFar;
-
-	if(aspect <= 0.0f)
-	{
-		if((float)elfGetWindowWidth()/(float)elfGetWindowHeight() >= 1.0f)
-			aspect = (float)elfGetWindowWidth()/(float)elfGetWindowHeight();
-		else aspect = (float)elfGetWindowHeight()/(float)elfGetWindowWidth();
-	}
-
-	camera->farPlaneHeight = 2 * (float)tan(camera->fov * GFX_PI_DIV_180 / 2) * camera->clipFar;
-	camera->farPlaneWidth = camera->farPlaneHeight * aspect;
-
-	gfxGetPerspectiveProjectionMatrix(camera->fov, aspect,
-		camera->clipNear, camera->clipFar, camera->projectionMatrix);
-}
-
-ELF_API void ELF_APIENTRY elfSetCameraOrthographic(elfCamera* camera, int x, int y, int width, int height, float clipNear, float clipFar)
-{
-	camera->mode = ELF_ORTHOGRAPHIC;
-
 	camera->orthoX = x;
 	camera->orthoY = y;
 	camera->orthoWidth = width;
 	camera->orthoHeight = height;
-	camera->clipNear = clipNear;
-	camera->clipFar = clipFar;
-
-	camera->farPlaneHeight = height;
-	camera->farPlaneWidth = width;
-
-	if(width <= 0) width = elfGetWindowWidth();
-	if(height <= 0) height = elfGetWindowHeight();
-
-	gfxGetOrthographicProjectionMatrix(
-		(float)camera->orthoX, (float)(camera->orthoX+width),
-		(float)camera->orthoY, (float)(camera->orthoY+height),
-		(float)camera->clipNear, camera->clipFar, camera->projectionMatrix);
 }
 
-ELF_API float ELF_APIENTRY elfGetCameraFov(elfCamera* camera)
+ELF_API void ELF_APIENTRY elfSetCameraFov(elfCamera* camera, float fov)
 {
-	return camera->fov;
+	camera->fov = fov;
+
+	elfRecalcCamera(camera);
 }
 
-ELF_API float ELF_APIENTRY elfGetCameraAspect(elfCamera* camera)
+ELF_API void ELF_APIENTRY elfSetCameraAspect(elfCamera* camera, float aspect)
 {
-	float aspect = camera->aspect;
+	camera->aspect = aspect;
 
-	if(aspect <= 0.0f)
-	{
-		if((float)elfGetWindowWidth()/(float)elfGetWindowHeight() >= 1.0f)
-			aspect = (float)elfGetWindowWidth()/(float)elfGetWindowHeight();
-		else aspect = (float)elfGetWindowHeight()/(float)elfGetWindowWidth();
-	}
+	elfRecalcCamera(camera);
+}
 
-	return aspect;
+ELF_API void ELF_APIENTRY elfSetCameraClip(elfCamera* camera, float near, float far)
+{
+	camera->clipNear = near;
+	camera->clipFar = far;
+
+	elfRecalcCamera(camera);
+}
+
+ELF_API int ELF_APIENTRY elfGetCameraMode(elfCamera* camera)
+{
+	return camera->mode;
 }
 
 ELF_API elfVec2i ELF_APIENTRY elfGetCameraViewportSize(elfCamera* camera)
@@ -169,6 +169,43 @@ ELF_API elfVec2i ELF_APIENTRY elfGetCameraViewportOffset(elfCamera* camera)
 	offset.y = camera->viewpY;
 
 	return offset;
+}
+
+ELF_API elfVec2i ELF_APIENTRY elfGetCameraOrthoViewportSize(elfCamera* camera)
+{
+	elfVec2i size;
+
+	size.x = camera->orthoWidth;
+	size.y = camera->orthoHeight;
+
+	return size;
+}
+
+ELF_API elfVec2i ELF_APIENTRY elfGetCameraOrthoViewportOffset(elfCamera* camera)
+{
+	elfVec2i offset;
+
+	offset.x = camera->orthoX;
+	offset.y = camera->orthoY;
+
+	return offset;
+}
+
+ELF_API float ELF_APIENTRY elfGetCameraFov(elfCamera* camera)
+{
+	return camera->fov;
+}
+
+ELF_API float ELF_APIENTRY elfGetCameraAspect(elfCamera* camera)
+{
+	if(camera->aspect <= 0.0f)
+	{
+		if((float)elfGetWindowWidth()/(float)elfGetWindowHeight() >= 1.0f)
+			return (float)elfGetWindowWidth()/(float)elfGetWindowHeight();
+		else return (float)elfGetWindowHeight()/(float)elfGetWindowWidth();
+	}
+
+	return camera->aspect;
 }
 
 ELF_API elfVec2f ELF_APIENTRY elfGetCameraClip(elfCamera* camera)
@@ -254,11 +291,11 @@ unsigned char elfCameraInsideSphere(elfCamera* camera, float* pos, float radius)
 
 void elfDrawCameraDebug(elfCamera* camera, gfxShaderParams* shaderParams)
 {
-	float min[3];
-	float max[3];
 	float position[3];
 	float rotation[3];
 	gfxTransform* transform;
+	int i;
+	float step;
 	float* vertexBuffer;
 
 	transform = gfxCreateObjectTransform();
@@ -273,15 +310,31 @@ void elfDrawCameraDebug(elfCamera* camera, gfxShaderParams* shaderParams)
 
 	gfxDestroyTransform(transform);
 
-	min[0] = min[1] = min[2] = -0.35f;
-	max[0] = max[1] = max[2] = 0.35f;
-
-	gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.2f, 0.6f, 0.2f, 1.0f);
-	shaderParams->renderParams.blendMode = ELF_ADD;
+	if(!camera->selected) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.2f, 0.6f, 0.2f, 1.0f);
+	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.0f, 0.0f, 1.0f);
 	gfxSetShaderParams(shaderParams);
-	gfxDrawBoundingBox(min, max);
 
 	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->lines);
+
+	step = (360.0f/32.0)*GFX_PI_DIV_180;
+
+	for(i = 0; i < 32; i++)
+	{
+		vertexBuffer[i*3] = -((float)sin((float)(step*i)))*0.5f;
+		vertexBuffer[i*3+1] = ((float)cos((float)(step*i)))*0.5f;
+		vertexBuffer[i*3+2] = 0.0f;
+	}
+
+	gfxDrawLineLoop(32, eng->lines);
+
+	for(i = 0; i < 32; i++)
+	{
+		vertexBuffer[i*3] = 0.0f;
+		vertexBuffer[i*3+1] = -((float)sin(step*i))*0.5f;
+		vertexBuffer[i*3+2] = ((float)cos(step*i))*0.5f;
+	}
+
+	gfxDrawLineLoop(32, eng->lines);
 
 	vertexBuffer[0] = -1.5f;
 	vertexBuffer[1] = 0.0f;
@@ -302,9 +355,6 @@ void elfDrawCameraDebug(elfCamera* camera, gfxShaderParams* shaderParams)
 	vertexBuffer[16] = 0.0f;
 	vertexBuffer[17] = -3.0f;
 
-	if(!camera->selected) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.2f, 0.6f, 0.2f, 1.0f);
-	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.0f, 0.0f, 1.0f);
-	gfxSetShaderParams(shaderParams);
 	gfxDrawLines(6, eng->lines);
 
 	elfDrawActorDebug((elfActor*)camera, shaderParams);

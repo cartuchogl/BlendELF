@@ -25,7 +25,9 @@ ELF_API elfLight* ELF_APIENTRY elfCreateLight(const char* name)
 
 	light->shadowCamera = elfCreateCamera("elfShadowCamera");
 	elfSetCameraViewport(light->shadowCamera, 0, 0, 512, 512);
-	elfSetCameraPerspective(light->shadowCamera, (light->innerCone+light->outerCone)*2, 1.0f, 1.0f, light->distance+(1.0f/light->fadeSpeed));
+	elfSetCameraFov(light->shadowCamera, (light->innerCone+light->outerCone)*2);
+	elfSetCameraAspect(light->shadowCamera, 1.0f);
+	elfSetCameraClip(light->shadowCamera, 1.0f, light->distance+(1.0f)/light->fadeSpeed);
 
 	gfxMatrix4SetIdentity(light->projectionMatrix);
 
@@ -92,7 +94,7 @@ ELF_API void ELF_APIENTRY elfSetLightDistance(elfLight* light, float distance)
 {
 	light->distance = distance;
 	if(light->distance < 0.0f) light->distance = 0.0f;
-	elfSetCameraPerspective(light->shadowCamera, (light->innerCone+light->outerCone)*2, 1.0f, 1.0f, light->distance+(1.0f/(light->fadeSpeed)));
+	elfSetCameraClip(light->shadowCamera, 1.0f, light->distance+(1.0f)/light->fadeSpeed);
 }
 
 ELF_API void ELF_APIENTRY elfSetLightFadeSpeed(elfLight* light, float fadeSpeed)
@@ -100,7 +102,7 @@ ELF_API void ELF_APIENTRY elfSetLightFadeSpeed(elfLight* light, float fadeSpeed)
 	light->fadeSpeed = fadeSpeed;
 	if(light->fadeSpeed < 0.0001f) light->fadeSpeed = 0.0001f;
 	if(light->fadeSpeed > 1.0f) light->fadeSpeed = 1.0f;
-	elfSetCameraPerspective(light->shadowCamera, (light->innerCone+light->outerCone)*2, 1.0f, 1.0f, light->distance+(1.0f/(light->fadeSpeed)));
+	elfSetCameraClip(light->shadowCamera, 1.0f, light->distance+(1.0f)/light->fadeSpeed);
 }
 
 ELF_API void ELF_APIENTRY elfSetLightShadows(elfLight* light, unsigned char shadows)
@@ -183,7 +185,7 @@ ELF_API void ELF_APIENTRY elfSetLightCone(elfLight* light, float innerCone, floa
 	light->outerCone = outerCone;
 	if(light->innerCone < 0.0f) light->innerCone = 0.0f;
 	if(light->outerCone < 0.0f) light->outerCone = 0.0f;
-	elfSetCameraPerspective(light->shadowCamera, (light->innerCone+light->outerCone)*2, 1.0f, 1.0f, light->distance+(1.0f/(light->fadeSpeed)));
+	elfSetCameraFov(light->shadowCamera, (light->innerCone+light->outerCone)*2);
 }
 
 ELF_API void ELF_APIENTRY elfSetLightShaft(elfLight* light, float size, float intensity, float fadeOff)

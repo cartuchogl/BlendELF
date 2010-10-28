@@ -1060,11 +1060,17 @@ void elfDestroyCamera(void* data);
 ELF_API elfCamera* ELF_APIENTRY elfCreateCamera(const char* name);	// <mdoc> CAMERA FUNCTIONS
 
 ELF_API void ELF_APIENTRY elfSetCameraViewport(elfCamera* camera, int x, int y, int width, int height);
-ELF_API void ELF_APIENTRY elfSetCameraPerspective(elfCamera* camera, float fov, float aspect, float clipNear, float clipFar);
-ELF_API void ELF_APIENTRY elfSetCameraOrthographic(elfCamera* camera, int x, int y, int width, int height, float clipNear, float clipFar);
+ELF_API void ELF_APIENTRY elfSetCameraOrthoViewport(elfCamera* camera, int x, int y, int width, int height);
+ELF_API void ELF_APIENTRY elfSetCameraMode(elfCamera* camera, int mode);
+ELF_API void ELF_APIENTRY elfSetCameraFov(elfCamera* camera, float fov);
+ELF_API void ELF_APIENTRY elfSetCameraAspect(elfCamera* camera, float aspect);
+ELF_API void ELF_APIENTRY elfSetCameraClip(elfCamera* camera, float near, float far);
 
 ELF_API elfVec2i ELF_APIENTRY elfGetCameraViewportSize(elfCamera* camera);
 ELF_API elfVec2i ELF_APIENTRY elfGetCameraViewportOffset(elfCamera* camera);
+ELF_API elfVec2i ELF_APIENTRY elfGetCameraOrthoViewportSize(elfCamera* camera);
+ELF_API elfVec2i ELF_APIENTRY elfGetCameraOrthoViewportOffset(elfCamera* camera);
+ELF_API int ELF_APIENTRY elfGetCameraMode(elfCamera* camera);
 ELF_API float ELF_APIENTRY elfGetCameraFov(elfCamera* camera);
 ELF_API float ELF_APIENTRY elfGetCameraAspect(elfCamera* camera);
 ELF_API elfVec2f ELF_APIENTRY elfGetCameraClip(elfCamera* camera);

@@ -370,7 +370,8 @@ ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* filePath)
 
 			camera = elfCreateCamera(aicam->mName.data);
 
-			elfSetCameraPerspective(camera, aicam->mHorizontalFOV, -1.0f, aicam->mClipPlaneNear, aicam->mClipPlaneFar);
+			elfSetCameraFov(camera, aicam->mHorizontalFOV);
+			elfSetCameraClip(camera, aicam->mClipPlaneNear, aicam->mClipPlaneFar);
 			elfSetActorPosition((elfActor*)camera, aicam->mPosition.x, aicam->mPosition.y, aicam->mPosition.z);
 
 			elfAddSceneCamera(scene, camera);

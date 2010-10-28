@@ -733,7 +733,8 @@ elfCamera* elfCreateCameraFromPak(FILE* file, const char* name, elfScene* scene)
 	fread((char*)&clipNear, sizeof(float), 1, file);
 	fread((char*)&clipFar, sizeof(float), 1, file);
 
-	elfSetCameraPerspective(camera, fov, -1.0f, clipNear, clipFar);
+	elfSetCameraFov(camera, fov);
+	elfSetCameraClip(camera, clipNear, clipFar);
 
 	return camera;
 }

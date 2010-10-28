@@ -4862,56 +4862,86 @@ static int lua_SetCameraViewport(lua_State *L)
 	elfSetCameraViewport(arg0, arg1, arg2, arg3, arg4);
 	return 0;
 }
-static int lua_SetCameraPerspective(lua_State *L)
-{
-	elfCamera* arg0;
-	float arg1;
-	float arg2;
-	float arg3;
-	float arg4;
-	if(lua_gettop(L) != 5) {return lua_fail_arg_count(L, "SetCameraPerspective", lua_gettop(L), 5);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CAMERA)
-		{return lua_fail_arg(L, "SetCameraPerspective", 1, "elfCamera");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetCameraPerspective", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetCameraPerspective", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "SetCameraPerspective", 4, "number");}
-	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "SetCameraPerspective", 5, "number");}
-	arg0 = (elfCamera*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = (float)lua_tonumber(L, 2);
-	arg2 = (float)lua_tonumber(L, 3);
-	arg3 = (float)lua_tonumber(L, 4);
-	arg4 = (float)lua_tonumber(L, 5);
-	elfSetCameraPerspective(arg0, arg1, arg2, arg3, arg4);
-	return 0;
-}
-static int lua_SetCameraOrthographic(lua_State *L)
+static int lua_SetCameraOrthoViewport(lua_State *L)
 {
 	elfCamera* arg0;
 	int arg1;
 	int arg2;
 	int arg3;
 	int arg4;
-	float arg5;
-	float arg6;
-	if(lua_gettop(L) != 7) {return lua_fail_arg_count(L, "SetCameraOrthographic", lua_gettop(L), 7);}
+	if(lua_gettop(L) != 5) {return lua_fail_arg_count(L, "SetCameraOrthoViewport", lua_gettop(L), 5);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CAMERA)
-		{return lua_fail_arg(L, "SetCameraOrthographic", 1, "elfCamera");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetCameraOrthographic", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetCameraOrthographic", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "SetCameraOrthographic", 4, "number");}
-	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "SetCameraOrthographic", 5, "number");}
-	if(!lua_isnumber(L, 6)) {return lua_fail_arg(L, "SetCameraOrthographic", 6, "number");}
-	if(!lua_isnumber(L, 7)) {return lua_fail_arg(L, "SetCameraOrthographic", 7, "number");}
+		{return lua_fail_arg(L, "SetCameraOrthoViewport", 1, "elfCamera");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetCameraOrthoViewport", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetCameraOrthoViewport", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "SetCameraOrthoViewport", 4, "number");}
+	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "SetCameraOrthoViewport", 5, "number");}
 	arg0 = (elfCamera*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (int)lua_tonumber(L, 2);
 	arg2 = (int)lua_tonumber(L, 3);
 	arg3 = (int)lua_tonumber(L, 4);
 	arg4 = (int)lua_tonumber(L, 5);
-	arg5 = (float)lua_tonumber(L, 6);
-	arg6 = (float)lua_tonumber(L, 7);
-	elfSetCameraOrthographic(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+	elfSetCameraOrthoViewport(arg0, arg1, arg2, arg3, arg4);
+	return 0;
+}
+static int lua_SetCameraMode(lua_State *L)
+{
+	elfCamera* arg0;
+	int arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetCameraMode", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CAMERA)
+		{return lua_fail_arg(L, "SetCameraMode", 1, "elfCamera");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetCameraMode", 2, "number");}
+	arg0 = (elfCamera*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (int)lua_tonumber(L, 2);
+	elfSetCameraMode(arg0, arg1);
+	return 0;
+}
+static int lua_SetCameraFov(lua_State *L)
+{
+	elfCamera* arg0;
+	float arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetCameraFov", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CAMERA)
+		{return lua_fail_arg(L, "SetCameraFov", 1, "elfCamera");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetCameraFov", 2, "number");}
+	arg0 = (elfCamera*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (float)lua_tonumber(L, 2);
+	elfSetCameraFov(arg0, arg1);
+	return 0;
+}
+static int lua_SetCameraAspect(lua_State *L)
+{
+	elfCamera* arg0;
+	float arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetCameraAspect", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CAMERA)
+		{return lua_fail_arg(L, "SetCameraAspect", 1, "elfCamera");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetCameraAspect", 2, "number");}
+	arg0 = (elfCamera*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (float)lua_tonumber(L, 2);
+	elfSetCameraAspect(arg0, arg1);
+	return 0;
+}
+static int lua_SetCameraClip(lua_State *L)
+{
+	elfCamera* arg0;
+	float arg1;
+	float arg2;
+	if(lua_gettop(L) != 3) {return lua_fail_arg_count(L, "SetCameraClip", lua_gettop(L), 3);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CAMERA)
+		{return lua_fail_arg(L, "SetCameraClip", 1, "elfCamera");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetCameraClip", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetCameraClip", 3, "number");}
+	arg0 = (elfCamera*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (float)lua_tonumber(L, 2);
+	arg2 = (float)lua_tonumber(L, 3);
+	elfSetCameraClip(arg0, arg1, arg2);
 	return 0;
 }
 static int lua_GetCameraViewportSize(lua_State *L)
@@ -4938,6 +4968,45 @@ static int lua_GetCameraViewportOffset(lua_State *L)
 	arg0 = (elfCamera*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	result = elfGetCameraViewportOffset(arg0);
 	lua_create_elfVec2i(L, result);
+	return 1;
+}
+static int lua_GetCameraOrthoViewportSize(lua_State *L)
+{
+	elfVec2i result;
+	elfCamera* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetCameraOrthoViewportSize", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CAMERA)
+		{return lua_fail_arg(L, "GetCameraOrthoViewportSize", 1, "elfCamera");}
+	arg0 = (elfCamera*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetCameraOrthoViewportSize(arg0);
+	lua_create_elfVec2i(L, result);
+	return 1;
+}
+static int lua_GetCameraOrthoViewportOffset(lua_State *L)
+{
+	elfVec2i result;
+	elfCamera* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetCameraOrthoViewportOffset", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CAMERA)
+		{return lua_fail_arg(L, "GetCameraOrthoViewportOffset", 1, "elfCamera");}
+	arg0 = (elfCamera*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetCameraOrthoViewportOffset(arg0);
+	lua_create_elfVec2i(L, result);
+	return 1;
+}
+static int lua_GetCameraMode(lua_State *L)
+{
+	int result;
+	elfCamera* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetCameraMode", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CAMERA)
+		{return lua_fail_arg(L, "GetCameraMode", 1, "elfCamera");}
+	arg0 = (elfCamera*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetCameraMode(arg0);
+	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
 static int lua_GetCameraFov(lua_State *L)
@@ -10835,10 +10904,16 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetActorSelected", lua_GetActorSelected},
 	{"CreateCamera", lua_CreateCamera},
 	{"SetCameraViewport", lua_SetCameraViewport},
-	{"SetCameraPerspective", lua_SetCameraPerspective},
-	{"SetCameraOrthographic", lua_SetCameraOrthographic},
+	{"SetCameraOrthoViewport", lua_SetCameraOrthoViewport},
+	{"SetCameraMode", lua_SetCameraMode},
+	{"SetCameraFov", lua_SetCameraFov},
+	{"SetCameraAspect", lua_SetCameraAspect},
+	{"SetCameraClip", lua_SetCameraClip},
 	{"GetCameraViewportSize", lua_GetCameraViewportSize},
 	{"GetCameraViewportOffset", lua_GetCameraViewportOffset},
+	{"GetCameraOrthoViewportSize", lua_GetCameraOrthoViewportSize},
+	{"GetCameraOrthoViewportOffset", lua_GetCameraOrthoViewportOffset},
+	{"GetCameraMode", lua_GetCameraMode},
 	{"GetCameraFov", lua_GetCameraFov},
 	{"GetCameraAspect", lua_GetCameraAspect},
 	{"GetCameraClip", lua_GetCameraClip},
