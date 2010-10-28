@@ -23,10 +23,14 @@ elfEngine* elfCreateEngine()
 	engine->speed = 1.0f;
 	engine->f10Exit = ELF_TRUE;
 
-	engine->shadowMapSize = 1024;
-	engine->shadowMap = gfxCreate2dTexture(1024, 1024, 0.0f, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
-	engine->shadowTarget = gfxCreateRenderTarget(1024, 1024);
-	gfxSetRenderTargetDepthTexture(engine->shadowTarget, engine->shadowMap);
+	if(gfxGetVersion() >= 200)
+	{
+		engine->shadowMapSize = 1024;
+		engine->shadowMap = gfxCreate2dTexture(1024, 1024, 0.0f, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
+		engine->shadowTarget = gfxCreateRenderTarget(1024, 1024);
+		gfxSetRenderTargetDepthTexture(engine->shadowTarget, engine->shadowMap);
+	}
+
 	engine->textureAnisotropy = 1.0f;
 	engine->occlusionCulling = ELF_FALSE;
 
@@ -193,8 +197,12 @@ void elfDestroyEngine(void* data)
 	if(engine->gui) elfDecRef((elfObject*)engine->gui);
 
 	if(engine->postProcess) elfDestroyPostProcess(engine->postProcess);
-	gfxDestroyRenderTarget(engine->shadowTarget);
-	gfxDestroyTexture(engine->shadowMap);
+
+	if(gfxGetVersion() > 200)
+	{
+		gfxDestroyRenderTarget(engine->shadowTarget);
+		gfxDestroyTexture(engine->shadowMap);
+	}
 
 	elfDecRef((elfObject*)engine->fpsTimer);
 	elfDecRef((elfObject*)engine->fpsLimitTimer);
@@ -645,7 +653,7 @@ ELF_API float ELF_APIENTRY elfGetTextureAnisotropy()
 ELF_API void ELF_APIENTRY elfSetShadowMapSize(int size)
 {
 	// why would someone want a shadow map of 1 pixel?...
-	if(size < 1) return;
+	if(gfxGetVersion() < 200 || size < 1) return;
 
 	gfxDestroyRenderTarget(eng->shadowTarget);
 	gfxDestroyTexture(eng->shadowMap);
@@ -853,6 +861,8 @@ ELF_API unsigned char ELF_APIENTRY elfIsLightShafts()
 
 ELF_API void ELF_APIENTRY elfSetOcclusionCulling(unsigned char cull)
 {
+	if(gfxGetVersion() < 150) return;
+
 	eng->occlusionCulling = !cull == ELF_FALSE;
 }
 

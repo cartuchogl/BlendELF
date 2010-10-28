@@ -93,7 +93,6 @@ gfxShaderProgram* gfxCreateShaderProgram(const char* vertex, const char* fragmen
 
 	glGetProgramiv(shaderProgram->id, GL_VALIDATE_STATUS, &success);
 
-#ifndef ELF_MACOSX		// stupid apple GLSL compiler...
 	if(!success)
 	{
 		glGetProgramiv(shaderProgram->id, GL_INFO_LOG_LENGTH, &infoLogLength);
@@ -102,13 +101,8 @@ gfxShaderProgram* gfxCreateShaderProgram(const char* vertex, const char* fragmen
 		memset(infoLog, '\0', sizeof(char)*(infoLogLength+1));
 
 		glGetProgramInfoLog(shaderProgram->id, infoLogLength, 0, infoLog);
-		elfLogWrite("error: validating shader program failed, log message:\n%s", infoLog);
-
-		gfxDestroyShaderProgram(shaderProgram);
-
-		return NULL;
+		elfLogWrite("warning: shader validation log message:\n%s", infoLog);
 	}
-#endif
 
 	shaderProgram->projectionMatrixLoc = glGetUniformLocation(shaderProgram->id, "elf_ProjectionMatrix");
 	shaderProgram->invProjectionMatrixLoc = glGetUniformLocation(shaderProgram->id, "elf_InvProjectionMatrix");

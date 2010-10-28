@@ -345,7 +345,7 @@ unsigned int* elfGetModelIndices(elfModel* model)
 
 void elfDrawModel(elfList* materials, elfModel* model, int mode, gfxShaderParams* shaderParams)
 {
-	int i;
+	int i, j;
 	elfMaterial* material;
 	unsigned char found;
 
@@ -387,6 +387,17 @@ void elfDrawModel(elfList* materials, elfModel* model, int mode, gfxShaderParams
 				}
 
 				elfSetMaterial(material, mode, shaderParams);
+
+				gfxSetShaderParams(shaderParams);
+			}
+			else
+			{
+				gfxSetMaterialParamsDefault(shaderParams);
+				for(j = 0; j < GFX_MAX_TEXTURES-1; j++)
+				{
+					if(shaderParams->textureParams[j].type != GFX_SHADOW_MAP)
+						shaderParams->textureParams[j].texture = 0;
+				}
 
 				gfxSetShaderParams(shaderParams);
 			}

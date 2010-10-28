@@ -11,7 +11,7 @@ ELF_API elfEntity* ELF_APIENTRY elfCreateEntity(const char* name)
 	elfInitActor((elfActor*)entity, ELF_FALSE);
 
 	entity->scale.x = entity->scale.y = entity->scale.z = 1.0f;
-	entity->query = gfxCreateQuery();
+	if(gfxGetVersion() >= 150) entity->query = gfxCreateQuery();
 	entity->visible = ELF_TRUE;
 
 	entity->materials = elfCreateList();
@@ -94,7 +94,7 @@ void elfDestroyEntity(void* data)
 	if(entity->armature) elfDecRef((elfObject*)entity->armature);
 	if(entity->vertices) gfxDecRef((gfxObject*)entity->vertices);
 	if(entity->normals) gfxDecRef((gfxObject*)entity->normals);
-	if(entity->query) gfxDestroyQuery(entity->query);
+	if(gfxGetVersion() >= 150) {if(entity->query) gfxDestroyQuery(entity->query);}
 
 	elfDecRef((elfObject*)entity->materials);
 	elfDecRef((elfObject*)entity->armaturePlayer);
@@ -430,7 +430,7 @@ ELF_API void ELF_APIENTRY elfSetEntityOccluder(elfEntity* entity, unsigned char 
 	entity->occluder = !occluder == ELF_FALSE;
 }
 
-ELF_API unsigned char ELF_APIENTRY elfIsEntityOccluder(elfEntity* entity)
+ELF_API unsigned char ELF_APIENTRY elfGetEntityOccluder(elfEntity* entity)
 {
 	return entity->occluder;
 }

@@ -1870,7 +1870,7 @@ void elfDrawScene(elfScene* scene)
 		}
 
 		// render shadow map if needed
-		if(light->lightType == ELF_SPOT_LIGHT && light->shadows)
+		if(light->lightType == ELF_SPOT_LIGHT && light->shadows && gfxGetVersion() >= 200)
 		{
 			gfxSetShaderParamsDefault(&scene->shaderParams);
 			scene->shaderParams.renderParams.colorWrite = GFX_FALSE;

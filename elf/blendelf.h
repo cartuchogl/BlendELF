@@ -7,9 +7,9 @@
 	#ifndef ELF_PLAYER
 		#define ELF_APIENTRY __stdcall
 		#ifdef ELF_DLL
-				#define ELF_API __declspec(dllexport)
+			#define ELF_API __declspec(dllexport)
 		#else
-				#define ELF_API __declspec(dllimport)
+			#define ELF_API __declspec(dllimport)
 		#endif
 	#else
 		#define ELF_API
@@ -1178,7 +1178,7 @@ ELF_API void ELF_APIENTRY elfSetEntityVisible(elfEntity* entity, unsigned char v
 ELF_API unsigned char ELF_APIENTRY elfGetEntityVisible(elfEntity* entity);
 
 ELF_API void ELF_APIENTRY elfSetEntityOccluder(elfEntity* entity, unsigned char occluder);
-ELF_API unsigned char ELF_APIENTRY elfIsEntityOccluder(elfEntity* entity);
+ELF_API unsigned char ELF_APIENTRY elfGetEntityOccluder(elfEntity* entity);
 
 ELF_API void ELF_APIENTRY elfSetEntityArmature(elfEntity* entity, elfArmature* armature);
 ELF_API void ELF_APIENTRY elfSetEntityArmatureFrame(elfEntity* entity, float frame);

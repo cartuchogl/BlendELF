@@ -642,13 +642,13 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> GetActorPosition( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> GetActorRotation( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">elfVec4f</span> GetActorOrientation( <span class="apiobjtype">elfActor</span> actor )</div>
+<div class="apifunc">SetActorPhysics( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">unsigned char</span> physics )</div>
+<div class="apifunc">SetActorShape( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">int</span> shape )</div>
 <div class="apifunc">SetActorBoundingLengths( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc">SetActorBoundingOffset( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
-<div class="apifunc">SetActorPhysics( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">int</span> shape, <span class="apikeytype">float</span> mass )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsActorPhysics( <span class="apiobjtype">elfActor</span> actor )</div>
-<div class="apifunc">DisableActorPhysics( <span class="apiobjtype">elfActor</span> actor )</div>
+<div class="apifunc">SetActorMass( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">float</span> mass )</div>
 <div class="apifunc">SetActorDamping( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">float</span> linDamp, <span class="apikeytype">float</span> angDamp )</div>
-<div class="apifunc">SetActorSleepThresholds( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">float</span> linThrs, <span class="apikeytype">float</span> angThrs )</div>
+<div class="apifunc">SetActorSleep( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">float</span> linThrs, <span class="apikeytype">float</span> angThrs )</div>
 <div class="apifunc">SetActorRestitution( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">float</span> restitution )</div>
 <div class="apifunc">SetActorAnisotropicFriction( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc">SetActorLinearFactor( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
@@ -659,14 +659,15 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetActorLinearVelocity( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc">SetActorLinearVelocityLocal( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc">SetActorAngularVelocity( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
+<div class="apifunc"><span class="apikeytype">unsigned char</span> GetActorPhysics( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> GetActorBoundingLengths( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> GetActorBoundingOffset( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetActorShape( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetActorMass( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetActorLinearDamping( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetActorAngularDamping( <span class="apiobjtype">elfActor</span> actor )</div>
-<div class="apifunc"><span class="apikeytype">float</span> GetActorLinearSleepThreshold( <span class="apiobjtype">elfActor</span> actor )</div>
-<div class="apifunc"><span class="apikeytype">float</span> GetActorAngularSleepThreshold( <span class="apiobjtype">elfActor</span> actor )</div>
+<div class="apifunc"><span class="apikeytype">float</span> GetActorLinearSleep( <span class="apiobjtype">elfActor</span> actor )</div>
+<div class="apifunc"><span class="apikeytype">float</span> GetActorAngularSleep( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetActorRestitution( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> GetActorAnisotropicFriction( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> GetActorLinearFactor( <span class="apiobjtype">elfActor</span> actor )</div>
@@ -763,9 +764,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetEntityVisible( <span class="apiobjtype">elfEntity</span> entity, <span class="apikeytype">unsigned char</span> visible )</div>
 <div class="apifunc"><span class="apikeytype">unsigned char</span> GetEntityVisible( <span class="apiobjtype">elfEntity</span> entity )</div>
 <div class="apifunc">SetEntityOccluder( <span class="apiobjtype">elfEntity</span> entity, <span class="apikeytype">unsigned char</span> occluder )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsEntityOccluder( <span class="apiobjtype">elfEntity</span> entity )</div>
-<div class="apifunc">SetEntityPhysics( <span class="apiobjtype">elfEntity</span> entity, <span class="apikeytype">int</span> type, <span class="apikeytype">float</span> mass )</div>
-<div class="apifunc">DisableEntityPhysics( <span class="apiobjtype">elfEntity</span> entity )</div>
+<div class="apifunc"><span class="apikeytype">unsigned char</span> GetEntityOccluder( <span class="apiobjtype">elfEntity</span> entity )</div>
 <div class="apifunc">SetEntityArmature( <span class="apiobjtype">elfEntity</span> entity, <span class="apiobjtype">elfArmature</span> armature )</div>
 <div class="apifunc">SetEntityArmatureFrame( <span class="apiobjtype">elfEntity</span> entity, <span class="apikeytype">float</span> frame )</div>
 <div class="apifunc">PlayEntityArmature( <span class="apiobjtype">elfEntity</span> entity, <span class="apikeytype">float</span> start, <span class="apikeytype">float</span> end, <span class="apikeytype">float</span> speed )</div>

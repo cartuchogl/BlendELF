@@ -160,15 +160,15 @@
 #define ELF_OBJECT_TYPE_COUNT 0x004A
 #define ELF_PERSPECTIVE 0x0000
 #define ELF_ORTHOGRAPHIC 0x0001
-#define ELF_BOX 0x0001
-#define ELF_SPHERE 0x0002
-#define ELF_MESH 0x0003
-#define ELF_CAPSULE_X 0x0004
-#define ELF_CAPSULE_Y 0x0005
-#define ELF_CAPSULE_Z 0x0006
-#define ELF_CONE_X 0x0007
-#define ELF_CONE_Y 0x0008
-#define ELF_CONE_Z 0x0009
+#define ELF_BOX 0x0000
+#define ELF_SPHERE 0x0001
+#define ELF_MESH 0x0002
+#define ELF_CAPSULE_X 0x0003
+#define ELF_CAPSULE_Y 0x0004
+#define ELF_CAPSULE_Z 0x0005
+#define ELF_CONE_X 0x0006
+#define ELF_CONE_Y 0x0007
+#define ELF_CONE_Z 0x0008
 #define ELF_HINGE 0x0001
 #define ELF_BALL 0x0002
 #define ELF_CONE_TWIST 0x0003
@@ -649,13 +649,13 @@ ELF_API void ELF_APIENTRY elfSetActorOrientationRelativeTo(elfActor* actor, elfA
 ELF_API elfVec3f ELF_APIENTRY elfGetActorPosition(elfActor* actor);
 ELF_API elfVec3f ELF_APIENTRY elfGetActorRotation(elfActor* actor);
 ELF_API elfVec4f ELF_APIENTRY elfGetActorOrientation(elfActor* actor);
+ELF_API void ELF_APIENTRY elfSetActorPhysics(elfActor* actor, unsigned char physics);
+ELF_API void ELF_APIENTRY elfSetActorShape(elfActor* actor, int shape);
 ELF_API void ELF_APIENTRY elfSetActorBoundingLengths(elfActor* actor, float x, float y, float z);
 ELF_API void ELF_APIENTRY elfSetActorBoundingOffset(elfActor* actor, float x, float y, float z);
-ELF_API void ELF_APIENTRY elfSetActorPhysics(elfActor* actor, int shape, float mass);
-ELF_API unsigned char ELF_APIENTRY elfIsActorPhysics(elfActor* actor);
-ELF_API void ELF_APIENTRY elfDisableActorPhysics(elfActor* actor);
+ELF_API void ELF_APIENTRY elfSetActorMass(elfActor* actor, float mass);
 ELF_API void ELF_APIENTRY elfSetActorDamping(elfActor* actor, float linDamp, float angDamp);
-ELF_API void ELF_APIENTRY elfSetActorSleepThresholds(elfActor* actor, float linThrs, float angThrs);
+ELF_API void ELF_APIENTRY elfSetActorSleep(elfActor* actor, float linThrs, float angThrs);
 ELF_API void ELF_APIENTRY elfSetActorRestitution(elfActor* actor, float restitution);
 ELF_API void ELF_APIENTRY elfSetActorAnisotropicFriction(elfActor* actor, float x, float y, float z);
 ELF_API void ELF_APIENTRY elfSetActorLinearFactor(elfActor* actor, float x, float y, float z);
@@ -666,14 +666,15 @@ ELF_API void ELF_APIENTRY elfAddActorTorque(elfActor* actor, float x, float y, f
 ELF_API void ELF_APIENTRY elfSetActorLinearVelocity(elfActor* actor, float x, float y, float z);
 ELF_API void ELF_APIENTRY elfSetActorLinearVelocityLocal(elfActor* actor, float x, float y, float z);
 ELF_API void ELF_APIENTRY elfSetActorAngularVelocity(elfActor* actor, float x, float y, float z);
+ELF_API unsigned char ELF_APIENTRY elfGetActorPhysics(elfActor* actor);
 ELF_API elfVec3f ELF_APIENTRY elfGetActorBoundingLengths(elfActor* actor);
 ELF_API elfVec3f ELF_APIENTRY elfGetActorBoundingOffset(elfActor* actor);
 ELF_API int ELF_APIENTRY elfGetActorShape(elfActor* actor);
 ELF_API float ELF_APIENTRY elfGetActorMass(elfActor* actor);
 ELF_API float ELF_APIENTRY elfGetActorLinearDamping(elfActor* actor);
 ELF_API float ELF_APIENTRY elfGetActorAngularDamping(elfActor* actor);
-ELF_API float ELF_APIENTRY elfGetActorLinearSleepThreshold(elfActor* actor);
-ELF_API float ELF_APIENTRY elfGetActorAngularSleepThreshold(elfActor* actor);
+ELF_API float ELF_APIENTRY elfGetActorLinearSleep(elfActor* actor);
+ELF_API float ELF_APIENTRY elfGetActorAngularSleep(elfActor* actor);
 ELF_API float ELF_APIENTRY elfGetActorRestitution(elfActor* actor);
 ELF_API elfVec3f ELF_APIENTRY elfGetActorAnisotropicFriction(elfActor* actor);
 ELF_API elfVec3f ELF_APIENTRY elfGetActorLinearFactor(elfActor* actor);
@@ -766,9 +767,7 @@ ELF_API elfMaterial* ELF_APIENTRY elfGetEntityMaterial(elfEntity* entity, int id
 ELF_API void ELF_APIENTRY elfSetEntityVisible(elfEntity* entity, unsigned char visible);
 ELF_API unsigned char ELF_APIENTRY elfGetEntityVisible(elfEntity* entity);
 ELF_API void ELF_APIENTRY elfSetEntityOccluder(elfEntity* entity, unsigned char occluder);
-ELF_API unsigned char ELF_APIENTRY elfIsEntityOccluder(elfEntity* entity);
-ELF_API void ELF_APIENTRY elfSetEntityPhysics(elfEntity* entity, int type, float mass);
-ELF_API void ELF_APIENTRY elfDisableEntityPhysics(elfEntity* entity);
+ELF_API unsigned char ELF_APIENTRY elfGetEntityOccluder(elfEntity* entity);
 ELF_API void ELF_APIENTRY elfSetEntityArmature(elfEntity* entity, elfArmature* armature);
 ELF_API void ELF_APIENTRY elfSetEntityArmatureFrame(elfEntity* entity, float frame);
 ELF_API void ELF_APIENTRY elfPlayEntityArmature(elfEntity* entity, float start, float end, float speed);

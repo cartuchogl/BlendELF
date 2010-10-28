@@ -205,10 +205,11 @@ void gfxAddVertexTextureCalcs(gfxDocument* document, gfxShaderConfig* config)
 
 void gfxAddVertexLightingCalcs(gfxDocument* document, gfxShaderConfig* config)
 {
-	if(config->light || config->textures & GFX_HEIGHT_MAP) gfxAddDocumentLine(document, "\telf_EyeVector = -vertex.xyz;");
+	if(config->light && !(config->textures & GFX_HEIGHT_MAP)) gfxAddDocumentLine(document, "\telf_EyeVector = -vertex.xyz;");
 	if((config->light && config->textures & GFX_NORMAL_MAP) || config->textures & GFX_HEIGHT_MAP)
 	{
-		gfxAddDocumentLine(document, "\tvec3 elf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
+		if(!(config->textures & GFX_NORMAL_MAP)) gfxAddDocumentLine(document, "\telf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
+		else gfxAddDocumentLine(document, "\tvec3 elf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
 		gfxAddDocumentLine(document, "\tvec3 elf_Tangent = vec3(elf_ModelviewMatrix*vec4(elf_TangentAttr, 0.0));");
 		gfxAddDocumentLine(document, "\tvec3 elf_BiNormal = cross(elf_Normal, elf_Tangent);");
 		gfxAddDocumentLine(document, "\tvec3 tmpvec = -vertex.xyz;");
@@ -229,7 +230,7 @@ void gfxAddVertexLightingCalcs(gfxDocument* document, gfxShaderConfig* config)
 		}
 		else
 		{
-				gfxAddDocumentLine(document, "\telf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
+				if(!(config->textures & GFX_HEIGHT_MAP)) gfxAddDocumentLine(document, "\telf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
 				if(config->light != GFX_SUN_LIGHT) gfxAddDocumentLine(document, "\telf_LightDirection = elf_LightPosition-vertex.xyz;");
 				if(config->light == GFX_SUN_LIGHT) gfxAddDocumentLine(document, "\telf_LightDirection = -elf_LightSpotDirection;");
 		}
@@ -457,8 +458,8 @@ gfxShaderProgram* gfxGetShaderProgram(gfxShaderConfig* config)
 	vertShdr = (char*)malloc(sizeof(char)*gfxGetDocumentChars(document)+1);
 	gfxDocumentToBuffer(document, vertShdr);
 	vertShdr[gfxGetDocumentChars(document)] = '\0';
-	//elfLogWrite("------------ VERTEX SHADER ------------\n");
-	//elfLogWrite(vertShdr);
+	elfLogWrite("------------ VERTEX SHADER ------------\n");
+	elfLogWrite(vertShdr);
 
 	gfxClearDocument(document);
 
@@ -481,8 +482,8 @@ gfxShaderProgram* gfxGetShaderProgram(gfxShaderConfig* config)
 	fragShdr = (char*)malloc(sizeof(char)*(gfxGetDocumentChars(document)+1));
 	gfxDocumentToBuffer(document, fragShdr);
 	fragShdr[gfxGetDocumentChars(document)] = '\0';
-	//elfLogWrite("----------- FRAGMENT SHADER -----------\n");
-	//elfLogWrite(fragShdr);
+	elfLogWrite("----------- FRAGMENT SHADER -----------\n");
+	elfLogWrite(fragShdr);
 
 	// ----------------------------------------------------------- //
 
