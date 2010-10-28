@@ -458,8 +458,8 @@ gfxShaderProgram* gfxGetShaderProgram(gfxShaderConfig* config)
 	vertShdr = (char*)malloc(sizeof(char)*gfxGetDocumentChars(document)+1);
 	gfxDocumentToBuffer(document, vertShdr);
 	vertShdr[gfxGetDocumentChars(document)] = '\0';
-	elfLogWrite("------------ VERTEX SHADER ------------\n");
-	elfLogWrite(vertShdr);
+	//elfLogWrite("------------ VERTEX SHADER ------------\n");
+	//elfLogWrite(vertShdr);
 
 	gfxClearDocument(document);
 
@@ -482,8 +482,8 @@ gfxShaderProgram* gfxGetShaderProgram(gfxShaderConfig* config)
 	fragShdr = (char*)malloc(sizeof(char)*(gfxGetDocumentChars(document)+1));
 	gfxDocumentToBuffer(document, fragShdr);
 	fragShdr[gfxGetDocumentChars(document)] = '\0';
-	elfLogWrite("----------- FRAGMENT SHADER -----------\n");
-	elfLogWrite(fragShdr);
+	//elfLogWrite("----------- FRAGMENT SHADER -----------\n");
+	//elfLogWrite(fragShdr);
 
 	// ----------------------------------------------------------- //
 
