@@ -585,6 +585,8 @@ class Entity(Actor):
 	def __init__(self):
 		super(Entity, self).__init__()
 
+		self.bounding_lengths = [0.0, 0.0, 0.0]
+
 		self.scale = [1.0, 1.0, 1.0]
 		self.model = ''
 		self.armature = ''
