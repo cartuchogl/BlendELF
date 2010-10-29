@@ -208,7 +208,8 @@ void gfxAddVertexLightingCalcs(gfxDocument* document, gfxShaderConfig* config)
 	if(config->light && !(config->textures & GFX_HEIGHT_MAP)) gfxAddDocumentLine(document, "\telf_EyeVector = -vertex.xyz;");
 	if((config->light && config->textures & GFX_NORMAL_MAP) || config->textures & GFX_HEIGHT_MAP)
 	{
-		if(!(config->textures & GFX_NORMAL_MAP)) gfxAddDocumentLine(document, "\telf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
+		if(config->light && !(config->textures & GFX_NORMAL_MAP) && config->textures & GFX_HEIGHT_MAP)
+			gfxAddDocumentLine(document, "\telf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
 		else gfxAddDocumentLine(document, "\tvec3 elf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
 		gfxAddDocumentLine(document, "\tvec3 elf_Tangent = vec3(elf_ModelviewMatrix*vec4(elf_TangentAttr, 0.0));");
 		gfxAddDocumentLine(document, "\tvec3 elf_BiNormal = cross(elf_Normal, elf_Tangent);");

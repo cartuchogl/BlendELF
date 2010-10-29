@@ -1780,12 +1780,10 @@ void elfDrawScene(elfScene* scene)
 		}
 	}
 
-	eng->ambientColor = scene->ambientColor;
-
 	// draw ambient pass
-	if(!elfAboutZero(eng->ambientColor.r) ||
-		!elfAboutZero(eng->ambientColor.g) ||
-		!elfAboutZero(eng->ambientColor.b) )
+	if(!elfAboutZero(scene->ambientColor.r) ||
+		!elfAboutZero(scene->ambientColor.g) ||
+		!elfAboutZero(scene->ambientColor.b) )
 	{
 		gfxSetShaderParamsDefault(&scene->shaderParams);
 		elfSetCamera(scene->curCamera, &scene->shaderParams);

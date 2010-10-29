@@ -142,6 +142,11 @@ unsigned char gfxInit()
 		return GFX_FALSE;
 	}
 
+	if(driver->version < 140)
+	{
+		elfLogWrite("warning: OpenGL version 1.4 not supported, npot textures will not display correctly\n");
+	}
+
 	// checks for deferred rendering
 
 	/*if(!glewIsSupported("GL_ARB_texture_float"))

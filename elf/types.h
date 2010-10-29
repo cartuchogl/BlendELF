@@ -196,8 +196,6 @@ struct elfEngine {
 	unsigned char occlusionCulling;
 	unsigned char debugDraw;
 
-	elfColor ambientColor;
-
 	unsigned char fog;
 	float fogStart;
 	float fogEnd;

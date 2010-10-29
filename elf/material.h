@@ -300,9 +300,9 @@ void elfSetMaterial(elfMaterial* material, int mode, gfxShaderParams* shaderPara
 	}
 	else if(mode == ELF_DRAW_AMBIENT)
 	{
-		shaderParams->materialParams.diffuseColor.r = material->ambientColor.r*eng->ambientColor.r;
-		shaderParams->materialParams.diffuseColor.g = material->ambientColor.g*eng->ambientColor.g;
-		shaderParams->materialParams.diffuseColor.b = material->ambientColor.b*eng->ambientColor.b;
+		shaderParams->materialParams.diffuseColor.r = material->ambientColor.r*eng->scene->ambientColor.r;
+		shaderParams->materialParams.diffuseColor.g = material->ambientColor.g*eng->scene->ambientColor.g;
+		shaderParams->materialParams.diffuseColor.b = material->ambientColor.b*eng->scene->ambientColor.b;
 		shaderParams->materialParams.diffuseColor.a = 1.0f;
 
 		if(material->diffuseMap)
