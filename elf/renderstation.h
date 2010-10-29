@@ -11,6 +11,7 @@ elfRenderStation* elfCreateRenderStation()
 	rs->objType = ELF_RENDER_STATION;
 	rs->objDestr = elfDestroyRenderStation;
 
+	// quad
 	rs->quadVertexData = gfxCreateVertexData(12, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
 	rs->quadTexCoordData = gfxCreateVertexData(12, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
 	rs->quadNormalData = gfxCreateVertexData(12, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
@@ -25,6 +26,7 @@ elfRenderStation* elfCreateRenderStation()
 	gfxSetVertexArrayData(rs->quadVertexArray, GFX_NORMAL, rs->quadNormalData);
 	gfxSetVertexArrayData(rs->quadVertexArray, GFX_TEX_COORD, rs->quadTexCoordData);
 
+	// bounding box
 	rs->bbVertexData = gfxCreateVertexData(24, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
 	rs->bbIndexData = gfxCreateVertexData(36, GFX_UINT, GFX_VERTEX_DATA_STATIC);
 	rs->bbVertexArray = gfxCreateVertexArray(GFX_FALSE);
@@ -34,6 +36,8 @@ elfRenderStation* elfCreateRenderStation()
 	gfxIncRef((gfxObject*)rs->bbIndexData);
 	gfxIncRef((gfxObject*)rs->bbVertexArray);
 	gfxIncRef((gfxObject*)rs->bbVertexIndex);
+
+	gfxSetVertexArrayData(rs->bbVertexArray, GFX_VERTEX, rs->bbVertexData);
 
 	indexBuffer = (unsigned int*)gfxGetVertexDataBuffer(rs->bbIndexData);
 
@@ -74,11 +78,14 @@ elfRenderStation* elfCreateRenderStation()
 	indexBuffer[34] = 1;
 	indexBuffer[35] = 7;
 
-	gfxSetVertexArrayData(rs->bbVertexArray, GFX_VERTEX, rs->bbVertexData);
+	// lines
+	rs->linesVertexArray = gfxCreateVertexArray(GFX_FALSE);
+	gfxIncRef((gfxObject*)rs->linesVertexArray);
 
-	rs->lineVertexArray = gfxCreateVertexArray(GFX_FALSE);
-	gfxIncRef((gfxObject*)rs->lineVertexArray);
+	rs->lines = gfxCreateVertexData(512, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
+	gfxIncRef((gfxObject*)rs->lines);
 
+	// circle
 	rs->circleVertexData = gfxCreateVertexData((GFX_MAX_CIRCLE_VERTICES+2)*3, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
 	rs->circleVertexArray = gfxCreateVertexArray(GFX_FALSE);
 
@@ -89,9 +96,7 @@ elfRenderStation* elfCreateRenderStation()
 
 	rs->prevCircleVerticeCount = 0;
 
-	rs->lines = gfxCreateVertexData(512, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-	gfxIncRef((gfxObject*)rs->lines);
-
+	// sprite
 	rs->spriteVertexArray = gfxCreateVertexArray(GFX_FALSE);
 	gfxIncRef((gfxObject*)rs->spriteVertexArray);
 
@@ -221,6 +226,7 @@ elfRenderStation* elfCreateRenderStation()
 
 	gfxSetVertexArrayData(rs->spriteVertexArray, GFX_NORMAL, vertexData);
 
+	// gradient
 	rs->gradientVertexData = gfxCreateVertexData(18, GFX_INT, GFX_VERTEX_DATA_DYNAMIC);
 	rs->gradientColorData = gfxCreateVertexData(24, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
 	rs->gradientVertexArray = gfxCreateVertexArray(GFX_FALSE);
@@ -251,7 +257,7 @@ void elfDestroyRenderStation(void* data)
 	gfxDecRef((gfxObject*)rs->bbVertexArray);
 	gfxDecRef((gfxObject*)rs->bbVertexIndex);
 
-	gfxDecRef((gfxObject*)rs->lineVertexArray);
+	gfxDecRef((gfxObject*)rs->linesVertexArray);
 
 	gfxDecRef((gfxObject*)rs->circleVertexData);
 	gfxDecRef((gfxObject*)rs->circleVertexArray);
@@ -455,8 +461,8 @@ void elfDrawLines(int count, gfxVertexData* vertices)
 	if(count < 2) return;
 	if(count > gfxGetVertexDataCount(vertices)/3) count -= count-(gfxGetVertexDataCount(vertices)/3);
 
-	gfxSetVertexArrayData(rnd->lineVertexArray, GFX_VERTEX, vertices);
-	gfxDrawVertexArray(rnd->lineVertexArray, count, GFX_LINES);
+	gfxSetVertexArrayData(rnd->linesVertexArray, GFX_VERTEX, vertices);
+	gfxDrawVertexArray(rnd->linesVertexArray, count, GFX_LINES);
 }
 
 void elfDrawLineLoop(int count, gfxVertexData* vertices)
@@ -464,8 +470,8 @@ void elfDrawLineLoop(int count, gfxVertexData* vertices)
 	if(count < 2) return;
 	if(count > gfxGetVertexDataCount(vertices)/3) count -= count-(gfxGetVertexDataCount(vertices)/3);
 
-	gfxSetVertexArrayData(rnd->lineVertexArray, GFX_VERTEX, vertices);
-	gfxDrawVertexArray(rnd->lineVertexArray, count, GFX_LINE_LOOP);
+	gfxSetVertexArrayData(rnd->linesVertexArray, GFX_VERTEX, vertices);
+	gfxDrawVertexArray(rnd->linesVertexArray, count, GFX_LINE_LOOP);
 }
 
 void elfDrawHorGradient(int x, int y, int width, int height, elfColor col1, elfColor col2)

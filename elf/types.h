@@ -209,15 +209,14 @@ struct elfRenderStation {
 	gfxVertexArray* bbVertexArray;
 	gfxVertexIndex* bbVertexIndex;
 
-	gfxVertexArray* lineVertexArray;
+	gfxVertexData* lines;
+	gfxVertexArray* linesVertexArray;
 
 	gfxVertexData* circleVertexData;
 	gfxVertexArray* circleVertexArray;
 
 	int prevCircleVerticeCount;
 	float prevCircleSize;
-
-	gfxVertexData* lines;
 	gfxVertexArray* spriteVertexArray;
 
 	gfxVertexData* gradientVertexData;
