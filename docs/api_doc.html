@@ -36,7 +36,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <br /><span class="apikeytype">double</span> - same as a floating poit value but can store more decimals
 <br /><span class="apikeytype">int</span> - a positive or negative integer value, like 40 or -2500
 <br /><span class="apikeytype">unsigned int</span> - a positive integer value, like 21 or 60
-<br /><span class="apikeytype">bool</span> - a truth value, like true or false
+<br /><span class="apikeytype">boolean</span> - a truth value, like true or false
 <br /><span class="apikeytype">string</span> - a string of characters, like "cat" or "MyEntity"
 <br /><span class="apikeytype">elfVec2i</span> - contains the integer attributes [x|y] which can be accessed by vec.x and vec.y
 <br /><span class="apikeytype">elfVec2f</span> - contains the floating point attributes [x|y] which can be accessed by vec.x and vec.y
@@ -365,14 +365,14 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">int</span> GetObjectRefCount( <span class="apiobjtype">elfObject</span> obj )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetGlobalRefCount(  )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetGlobalObjCount(  )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsActor( <span class="apiobjtype">elfObject</span> obj )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsGuiObject( <span class="apiobjtype">elfObject</span> obj )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsActor( <span class="apiobjtype">elfObject</span> obj )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsGuiObject( <span class="apiobjtype">elfObject</span> obj )</div>
 <div class="apitopic">LIST FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">elfList</span> CreateList(  )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetListLength( <span class="apiobjtype">elfList</span> list )</div>
 <div class="apifunc">InsertListObject( <span class="apiobjtype">elfList</span> list, <span class="apikeytype">int</span> idx, <span class="apiobjtype">elfObject</span> obj )</div>
 <div class="apifunc">AppendListObject( <span class="apiobjtype">elfList</span> list, <span class="apiobjtype">elfObject</span> obj )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveListObject( <span class="apiobjtype">elfList</span> list, <span class="apiobjtype">elfObject</span> obj )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveListObject( <span class="apiobjtype">elfList</span> list, <span class="apiobjtype">elfObject</span> obj )</div>
 <div class="apifunc"><span class="apiobjtype">elfObject</span> GetListObject( <span class="apiobjtype">elfList</span> list, <span class="apikeytype">int</span> idx )</div>
 <div class="apifunc"><span class="apiobjtype">elfObject</span> BeginList( <span class="apiobjtype">elfList</span> list )</div>
 <div class="apifunc"><span class="apiobjtype">elfObject</span> GetListNext( <span class="apiobjtype">elfList</span> list )</div>
@@ -392,8 +392,8 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetConfigLogPath( <span class="apiobjtype">elfConfig</span> config, <span class="apikeytype">string</span> logPath )</div>
 <div class="apifunc"><span class="apikeytype">elfVec2i</span> GetConfigWindowSize( <span class="apiobjtype">elfConfig</span> config )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetConfigMultisamples( <span class="apiobjtype">elfConfig</span> config )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetConfigFullscreen( <span class="apiobjtype">elfConfig</span> config )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetConfigTextureCompress( <span class="apiobjtype">elfConfig</span> config )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetConfigFullscreen( <span class="apiobjtype">elfConfig</span> config )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetConfigTextureCompress( <span class="apiobjtype">elfConfig</span> config )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetConfigTextureAnisotropy( <span class="apiobjtype">elfConfig</span> config )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetConfigShadowMapSize( <span class="apiobjtype">elfConfig</span> config )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetConfigStart( <span class="apiobjtype">elfConfig</span> config )</div>
@@ -407,20 +407,20 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">int</span> GetVideoModeCount(  )</div>
 <div class="apifunc"><span class="apikeytype">elfVec2i</span> GetVideoMode( <span class="apikeytype">int</span> idx )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetMultisamples(  )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsFullscreen(  )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsFullscreen(  )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetTitle(  )</div>
 <div class="apifunc"><span class="apikeytype">double</span> GetTime(  )</div>
 <div class="apifunc">Sleep( <span class="apikeytype">float</span> time )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsWindowOpened(  )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsWindowOpened(  )</div>
 <div class="apifunc"><span class="apikeytype">elfVec2i</span> GetMousePosition(  )</div>
 <div class="apifunc"><span class="apikeytype">elfVec2i</span> GetMouseForce(  )</div>
 <div class="apifunc">SetMousePosition( <span class="apikeytype">int</span> x, <span class="apikeytype">int</span> y )</div>
 <div class="apifunc">HideMouse( <span class="apikeytype">unsigned char</span> hide )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsMouseHidden(  )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsMouseHidden(  )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetMouseWheel(  )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetMouseButtonState( <span class="apikeytype">int</span> button )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetKeyState( <span class="apikeytype">int</span> key )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetJoystickPresent( <span class="apikeytype">int</span> joy )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetJoystickPresent( <span class="apikeytype">int</span> joy )</div>
 <div class="apifunc"><span class="apikeytype">elfVec2f</span> GetJoystickAxis( <span class="apikeytype">int</span> joy )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetJoystickButtonState( <span class="apikeytype">int</span> joy, <span class="apikeytype">int</span> but )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetEventCount(  )</div>
@@ -428,7 +428,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">int</span> GetKeyEventKey( <span class="apiobjtype">elfKeyEvent</span> keyEvent )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetKeyEventState( <span class="apiobjtype">elfKeyEvent</span> keyEvent )</div>
 <div class="apitopic">ENGINE FUNCTIONS</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> Init( <span class="apiobjtype">elfConfig</span> config )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> Init( <span class="apiobjtype">elfConfig</span> config )</div>
 <div class="apifunc">Deinit(  )</div>
 <div class="apifunc">ResizeWindow( <span class="apikeytype">int</span> width, <span class="apikeytype">int</span> height )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetPlatform(  )</div>
@@ -439,10 +439,10 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">string</span> GetCurrentDirectory(  )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetErrorString(  )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetError(  )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> Run(  )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> Run(  )</div>
 <div class="apifunc">Quit(  )</div>
 <div class="apifunc">SetF10Exit( <span class="apikeytype">unsigned char</span> exit )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetF10Exit(  )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetF10Exit(  )</div>
 <div class="apifunc"><span class="apiobjtype">elfScene</span> LoadScene( <span class="apikeytype">string</span> filePath )</div>
 <div class="apifunc">SetScene( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc"><span class="apiobjtype">elfScene</span> GetScene(  )</div>
@@ -450,7 +450,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apiobjtype">elfGui</span> GetGui(  )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetSync(  )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetFps(  )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> SaveScreenShot( <span class="apikeytype">string</span> filePath )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> SaveScreenShot( <span class="apikeytype">string</span> filePath )</div>
 <div class="apifunc">SetFpsLimit( <span class="apikeytype">float</span> fpsLimit )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetFpsLimit(  )</div>
 <div class="apifunc">SetTickRate( <span class="apikeytype">float</span> tickRate )</div>
@@ -458,7 +458,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetSpeed( <span class="apikeytype">float</span> speed )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetSpeed(  )</div>
 <div class="apifunc">SetTextureCompress( <span class="apikeytype">unsigned char</span> compress )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetTextureCompress(  )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetTextureCompress(  )</div>
 <div class="apifunc">SetTextureAnisotropy( <span class="apikeytype">float</span> anisotropy )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetTextureAnisotropy(  )</div>
 <div class="apifunc">SetShadowMapSize( <span class="apikeytype">int</span> size )</div>
@@ -477,10 +477,10 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetLightShafts( <span class="apikeytype">float</span> intensity )</div>
 <div class="apifunc">DisableLightShafts(  )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetLightShaftsIntensity(  )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsBloom(  )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsSsao(  )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsDof(  )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsLightShafts(  )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsBloom(  )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsSsao(  )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsDof(  )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsLightShafts(  )</div>
 <div class="apifunc"><span class="apiobjtype">elfObject</span> GetActor(  )</div>
 <div class="apifunc"><span class="apiobjtype">elfDirectory</span> ReadDirectory( <span class="apikeytype">string</span> path )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetDirectoryPath( <span class="apiobjtype">elfDirectory</span> directory )</div>
@@ -500,8 +500,8 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> SubVec3fVec3f( <span class="apikeytype">elfVec3f</span> vec1, <span class="apikeytype">elfVec3f</span> vec2 )</div>
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> AddVec3fVec3f( <span class="apikeytype">elfVec3f</span> vec1, <span class="apikeytype">elfVec3f</span> vec2 )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetVec3fLength( <span class="apikeytype">elfVec3f</span> vec )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> AboutSame( <span class="apikeytype">float</span> v1, <span class="apikeytype">float</span> v2 )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> AboutZero( <span class="apikeytype">float</span> val )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> AboutSame( <span class="apikeytype">float</span> v1, <span class="apikeytype">float</span> v2 )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> AboutZero( <span class="apikeytype">float</span> val )</div>
 <div class="apifunc"><span class="apikeytype">float</span> FloatAbs( <span class="apikeytype">float</span> val )</div>
 <div class="apifunc"><span class="apikeytype">float</span> FloatMin( <span class="apikeytype">float</span> a, <span class="apikeytype">float</span> b )</div>
 <div class="apifunc"><span class="apikeytype">float</span> FloatMax( <span class="apikeytype">float</span> a, <span class="apikeytype">float</span> b )</div>
@@ -524,8 +524,8 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">float</span> GetFramePlayerEnd( <span class="apiobjtype">elfFramePlayer</span> player )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetFramePlayerSpeed( <span class="apiobjtype">elfFramePlayer</span> player )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetFramePlayerFrame( <span class="apiobjtype">elfFramePlayer</span> player )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsFramePlayerPlaying( <span class="apiobjtype">elfFramePlayer</span> player )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsFramePlayerPaused( <span class="apiobjtype">elfFramePlayer</span> player )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsFramePlayerPlaying( <span class="apiobjtype">elfFramePlayer</span> player )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsFramePlayerPaused( <span class="apiobjtype">elfFramePlayer</span> player )</div>
 <div class="apitopic">TIMER FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">elfTimer</span> CreateTimer(  )</div>
 <div class="apifunc">StartTimer( <span class="apiobjtype">elfTimer</span> timer )</div>
@@ -562,7 +562,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">elfColor</span> GetMaterialSpecularColor( <span class="apiobjtype">elfMaterial</span> material )</div>
 <div class="apifunc"><span class="apikeytype">elfColor</span> GetMaterialAmbientColor( <span class="apiobjtype">elfMaterial</span> material )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetMaterialSpecularPower( <span class="apiobjtype">elfMaterial</span> material )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetMaterialLighting( <span class="apiobjtype">elfMaterial</span> material )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetMaterialLighting( <span class="apiobjtype">elfMaterial</span> material )</div>
 <div class="apifunc">SetMaterialDiffuseMap( <span class="apiobjtype">elfMaterial</span> material, <span class="apiobjtype">elfTexture</span> texture )</div>
 <div class="apifunc">SetMaterialNormalMap( <span class="apiobjtype">elfMaterial</span> material, <span class="apiobjtype">elfTexture</span> texture )</div>
 <div class="apifunc">SetMaterialHeightMap( <span class="apiobjtype">elfMaterial</span> material, <span class="apiobjtype">elfTexture</span> texture )</div>
@@ -585,7 +585,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetMaterialAlphaTest( <span class="apiobjtype">elfMaterial</span> material, <span class="apikeytype">unsigned char</span> alphaTest )</div>
 <div class="apifunc">SetMaterialAlphaThreshold( <span class="apiobjtype">elfMaterial</span> material, <span class="apikeytype">float</span> threshold )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetMaterialParallaxScale( <span class="apiobjtype">elfMaterial</span> material )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetMaterialAlphaTest( <span class="apiobjtype">elfMaterial</span> material )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetMaterialAlphaTest( <span class="apiobjtype">elfMaterial</span> material )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetMaterialAlphaThreshold( <span class="apiobjtype">elfMaterial</span> material )</div>
 <div class="apitopic">IPO FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">elfBezierPoint</span> CreateBezierPoint(  )</div>
@@ -602,7 +602,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apiobjtype">elfBezierPoint</span> GetPointFromBezierCurve( <span class="apiobjtype">elfBezierCurve</span> curve, <span class="apikeytype">int</span> idx )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetBezierCurveValue( <span class="apiobjtype">elfBezierCurve</span> curve, <span class="apikeytype">float</span> x )</div>
 <div class="apifunc"><span class="apiobjtype">elfIpo</span> CreateIpo(  )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> AddIpoCurve( <span class="apiobjtype">elfIpo</span> ipo, <span class="apiobjtype">elfBezierCurve</span> curve )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> AddIpoCurve( <span class="apiobjtype">elfIpo</span> ipo, <span class="apiobjtype">elfBezierCurve</span> curve )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetIpoCurveCount( <span class="apiobjtype">elfIpo</span> ipo )</div>
 <div class="apifunc"><span class="apiobjtype">elfBezierCurve</span> GetCurveFromIpo( <span class="apiobjtype">elfIpo</span> ipo, <span class="apikeytype">int</span> idx )</div>
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> GetIpoLoc( <span class="apiobjtype">elfIpo</span> ipo, <span class="apikeytype">float</span> x )</div>
@@ -615,7 +615,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">int</span> GetPropertyInt( <span class="apiobjtype">elfProperty</span> property )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetPropertyFloat( <span class="apiobjtype">elfProperty</span> property )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetPropertyString( <span class="apiobjtype">elfProperty</span> property )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetPropertyBool( <span class="apiobjtype">elfProperty</span> property )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetPropertyBool( <span class="apiobjtype">elfProperty</span> property )</div>
 <div class="apifunc">SetPropertyInt( <span class="apiobjtype">elfProperty</span> property, <span class="apikeytype">int</span> ival )</div>
 <div class="apifunc">SetPropertyFloat( <span class="apiobjtype">elfProperty</span> property, <span class="apikeytype">float</span> fval )</div>
 <div class="apifunc">SetPropertyString( <span class="apiobjtype">elfProperty</span> property, <span class="apikeytype">string</span> sval )</div>
@@ -657,7 +657,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetActorLinearVelocity( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc">SetActorLinearVelocityLocal( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc">SetActorAngularVelocity( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetActorPhysics( <span class="apiobjtype">elfActor</span> actor )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetActorPhysics( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> GetActorBoundingLengths( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> GetActorBoundingOffset( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetActorShape( <span class="apiobjtype">elfActor</span> actor )</div>
@@ -677,9 +677,9 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apiobjtype">elfJoint</span> AddActorConeTwistJoint( <span class="apiobjtype">elfActor</span> actor, <span class="apiobjtype">elfActor</span> actor2, <span class="apikeytype">string</span> name, <span class="apikeytype">float</span> px, <span class="apikeytype">float</span> py, <span class="apikeytype">float</span> pz, <span class="apikeytype">float</span> ax, <span class="apikeytype">float</span> ay, <span class="apikeytype">float</span> az )</div>
 <div class="apifunc"><span class="apiobjtype">elfJoint</span> GetActorJoint( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apiobjtype">elfJoint</span> GetActorJointByIndex( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">int</span> idx )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveActorJoint( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">string</span> name )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveActorJointByIndex( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">int</span> idx )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveActorJointByObject( <span class="apiobjtype">elfActor</span> actor, <span class="apiobjtype">elfJoint</span> joint )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveActorJoint( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">string</span> name )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveActorJointByIndex( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">int</span> idx )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveActorJointByObject( <span class="apiobjtype">elfActor</span> actor, <span class="apiobjtype">elfJoint</span> joint )</div>
 <div class="apifunc">SetActorIpo( <span class="apiobjtype">elfActor</span> actor, <span class="apiobjtype">elfIpo</span> ipo )</div>
 <div class="apifunc"><span class="apiobjtype">elfIpo</span> GetActorIpo( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc">SetActorIpoFrame( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">float</span> frame )</div>
@@ -692,20 +692,20 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">float</span> GetActorIpoEnd( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetActorIpoSpeed( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetActorIpoFrame( <span class="apiobjtype">elfActor</span> actor )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsActorIpoPlaying( <span class="apiobjtype">elfActor</span> actor )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsActorIpoPaused( <span class="apiobjtype">elfActor</span> actor )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsActorIpoPlaying( <span class="apiobjtype">elfActor</span> actor )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsActorIpoPaused( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetActorCollisionCount( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apiobjtype">elfCollision</span> GetActorCollision( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">int</span> idx )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetActorPropertyCount( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc">AddPropertyToActor( <span class="apiobjtype">elfActor</span> actor, <span class="apiobjtype">elfProperty</span> property )</div>
 <div class="apifunc"><span class="apiobjtype">elfProperty</span> GetActorPropertyByName( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apiobjtype">elfProperty</span> GetActorPropertyByIndex( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">int</span> idx )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveActorPropertyByName( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">string</span> name )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveActorPropertyByIndex( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">int</span> idx )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveActorPropertyByObject( <span class="apiobjtype">elfActor</span> actor, <span class="apiobjtype">elfProperty</span> property )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveActorPropertyByName( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">string</span> name )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveActorPropertyByIndex( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">int</span> idx )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveActorPropertyByObject( <span class="apiobjtype">elfActor</span> actor, <span class="apiobjtype">elfProperty</span> property )</div>
 <div class="apifunc">RemoveActorProperties( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc">SetActorSelected( <span class="apiobjtype">elfActor</span> actor, <span class="apikeytype">unsigned char</span> selected )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetActorSelected( <span class="apiobjtype">elfActor</span> actor )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetActorSelected( <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apitopic">CAMERA FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">elfCamera</span> CreateCamera( <span class="apikeytype">string</span> name )</div>
 <div class="apifunc">SetCameraViewport( <span class="apiobjtype">elfCamera</span> camera, <span class="apikeytype">int</span> x, <span class="apikeytype">int</span> y, <span class="apikeytype">int</span> width, <span class="apikeytype">int</span> height )</div>
@@ -766,9 +766,9 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">RemoveEntityMaterial( <span class="apiobjtype">elfEntity</span> entity, <span class="apikeytype">int</span> idx )</div>
 <div class="apifunc"><span class="apiobjtype">elfMaterial</span> GetEntityMaterial( <span class="apiobjtype">elfEntity</span> entity, <span class="apikeytype">int</span> idx )</div>
 <div class="apifunc">SetEntityVisible( <span class="apiobjtype">elfEntity</span> entity, <span class="apikeytype">unsigned char</span> visible )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetEntityVisible( <span class="apiobjtype">elfEntity</span> entity )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetEntityVisible( <span class="apiobjtype">elfEntity</span> entity )</div>
 <div class="apifunc">SetEntityOccluder( <span class="apiobjtype">elfEntity</span> entity, <span class="apikeytype">unsigned char</span> occluder )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetEntityOccluder( <span class="apiobjtype">elfEntity</span> entity )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetEntityOccluder( <span class="apiobjtype">elfEntity</span> entity )</div>
 <div class="apifunc">SetEntityArmature( <span class="apiobjtype">elfEntity</span> entity, <span class="apiobjtype">elfArmature</span> armature )</div>
 <div class="apifunc">SetEntityArmatureFrame( <span class="apiobjtype">elfEntity</span> entity, <span class="apikeytype">float</span> frame )</div>
 <div class="apifunc">PlayEntityArmature( <span class="apiobjtype">elfEntity</span> entity, <span class="apikeytype">float</span> start, <span class="apikeytype">float</span> end, <span class="apikeytype">float</span> speed )</div>
@@ -780,20 +780,20 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">float</span> GetEntityArmatureEnd( <span class="apiobjtype">elfEntity</span> entity )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetEntityArmatureSpeed( <span class="apiobjtype">elfEntity</span> entity )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetEntityArmatureFrame( <span class="apiobjtype">elfEntity</span> entity )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsEntityArmaturePlaying( <span class="apiobjtype">elfEntity</span> entity )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsEntityArmaturePaused( <span class="apiobjtype">elfEntity</span> entity )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsEntityArmaturePlaying( <span class="apiobjtype">elfEntity</span> entity )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsEntityArmaturePaused( <span class="apiobjtype">elfEntity</span> entity )</div>
 <div class="apifunc"><span class="apiobjtype">elfArmature</span> GetEntityArmature( <span class="apiobjtype">elfEntity</span> entity )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetEntityChanged( <span class="apiobjtype">elfEntity</span> entity )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetEntityChanged( <span class="apiobjtype">elfEntity</span> entity )</div>
 <div class="apitopic">LIGHT FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">elfLight</span> CreateLight( <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetLightType( <span class="apiobjtype">elfLight</span> light )</div>
 <div class="apifunc"><span class="apikeytype">elfColor</span> GetLightColor( <span class="apiobjtype">elfLight</span> light )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetLightDistance( <span class="apiobjtype">elfLight</span> light )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetLightFadeSpeed( <span class="apiobjtype">elfLight</span> light )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetLightShadows( <span class="apiobjtype">elfLight</span> light )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetLightVisible( <span class="apiobjtype">elfLight</span> light )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetLightShadows( <span class="apiobjtype">elfLight</span> light )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetLightVisible( <span class="apiobjtype">elfLight</span> light )</div>
 <div class="apifunc"><span class="apikeytype">elfVec2f</span> GetLightCone( <span class="apiobjtype">elfLight</span> light )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsLightShaft( <span class="apiobjtype">elfLight</span> light )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsLightShaft( <span class="apiobjtype">elfLight</span> light )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetLightShaftSize( <span class="apiobjtype">elfLight</span> light )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetLightShaftIntensity( <span class="apiobjtype">elfLight</span> light )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetLightShaftFadeOff( <span class="apiobjtype">elfLight</span> light )</div>
@@ -853,7 +853,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apiobjtype">elfEntity</span> GetParticlesEntity( <span class="apiobjtype">elfParticles</span> particles )</div>
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> GetParticlesGravity( <span class="apiobjtype">elfParticles</span> particles )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetParticlesSpawnDelay( <span class="apiobjtype">elfParticles</span> particles )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetParticlesSpawn( <span class="apiobjtype">elfParticles</span> particles )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetParticlesSpawn( <span class="apiobjtype">elfParticles</span> particles )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetParticlesSizeMin( <span class="apiobjtype">elfParticles</span> particles )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetParticlesSizeMax( <span class="apiobjtype">elfParticles</span> particles )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetParticlesSizeGrowthMin( <span class="apiobjtype">elfParticles</span> particles )</div>
@@ -879,25 +879,25 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetSpriteFaceCamera( <span class="apiobjtype">elfSprite</span> sprite, <span class="apikeytype">unsigned char</span> faceCamera )</div>
 <div class="apifunc"><span class="apiobjtype">elfMaterial</span> GetSpriteMaterial( <span class="apiobjtype">elfSprite</span> sprite )</div>
 <div class="apifunc"><span class="apikeytype">elfVec2f</span> GetSpriteScale( <span class="apiobjtype">elfSprite</span> sprite )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetSpriteFaceCamera( <span class="apiobjtype">elfSprite</span> sprite )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetSpriteFaceCamera( <span class="apiobjtype">elfSprite</span> sprite )</div>
 <div class="apifunc">SetSpriteVisible( <span class="apiobjtype">elfSprite</span> sprite, <span class="apikeytype">unsigned char</span> visible )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetSpriteVisible( <span class="apiobjtype">elfSprite</span> sprite )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetSpriteVisible( <span class="apiobjtype">elfSprite</span> sprite )</div>
 <div class="apifunc">SetSpriteOccluder( <span class="apiobjtype">elfSprite</span> sprite, <span class="apikeytype">unsigned char</span> occluder )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetSpriteOccluder( <span class="apiobjtype">elfSprite</span> sprite )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetSpriteOccluder( <span class="apiobjtype">elfSprite</span> sprite )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetSceneName( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetSceneFilePath( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apitopic">SCENE FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">elfScene</span> CreateScene( <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apiobjtype">elfScene</span> CreateSceneFromFile( <span class="apikeytype">string</span> filePath )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> SaveScene( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">string</span> filePath )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> SaveScene( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">string</span> filePath )</div>
 <div class="apifunc">SetScenePhysics( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">unsigned char</span> physics )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetScenePhysics( <span class="apiobjtype">elfScene</span> scene )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetScenePhysics( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc">SetSceneRunScripts( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">unsigned char</span> runScripts )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetSceneRunScripts( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">unsigned char</span> runScripts )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetSceneRunScripts( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">unsigned char</span> runScripts )</div>
 <div class="apifunc">SetSceneDebugDraw( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">unsigned char</span> debugDraw )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetSceneDebugDraw( <span class="apiobjtype">elfScene</span> scene )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetSceneDebugDraw( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc">SetSceneOcclusionCulling( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">unsigned char</span> occlusionCulling )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetSceneOcclusionCulling( <span class="apiobjtype">elfScene</span> scene )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetSceneOcclusionCulling( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc">SetSceneGravity( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> GetSceneGravity( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc">SetSceneAmbientColor( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">float</span> r, <span class="apikeytype">float</span> g, <span class="apikeytype">float</span> b, <span class="apikeytype">float</span> a )</div>
@@ -906,7 +906,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetSceneFogStart( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">float</span> start )</div>
 <div class="apifunc">SetSceneFogEnd( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">float</span> end )</div>
 <div class="apifunc">SetSceneFogColor( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">float</span> r, <span class="apikeytype">float</span> g, <span class="apikeytype">float</span> b, <span class="apikeytype">float</span> a )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetSceneFog( <span class="apiobjtype">elfScene</span> scene )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetSceneFog( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetSceneFogStart( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetFogEnd( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc"><span class="apikeytype">elfColor</span> GetFogColor( <span class="apiobjtype">elfScene</span> scene )</div>
@@ -944,22 +944,22 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apiobjtype">elfParticles</span> GetSceneParticles( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apiobjtype">elfSprite</span> GetSceneSprite( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apiobjtype">elfActor</span> GetSceneActor( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">string</span> name )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveSceneCamera( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">string</span> name )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveSceneEntity( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">string</span> name )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveSceneLight( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">string</span> name )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveSceneParticles( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">string</span> name )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveSceneSprite( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">string</span> name )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveSceneCameraByIndex( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">int</span> idx )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveSceneEntityByIndex( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">int</span> idx )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveSceneLightByIndex( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">int</span> idx )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveSceneParticlesByIndex( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">int</span> idx )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveSceneSpriteByIndex( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">int</span> idx )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveSceneCameraByObject( <span class="apiobjtype">elfScene</span> scene, <span class="apiobjtype">elfCamera</span> camera )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveSceneEntityByObject( <span class="apiobjtype">elfScene</span> scene, <span class="apiobjtype">elfEntity</span> entity )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveSceneLightByObject( <span class="apiobjtype">elfScene</span> scene, <span class="apiobjtype">elfLight</span> light )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveSceneParticlesByObject( <span class="apiobjtype">elfScene</span> scene, <span class="apiobjtype">elfParticles</span> particles )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveSceneSpriteByObject( <span class="apiobjtype">elfScene</span> scene, <span class="apiobjtype">elfSprite</span> sprite )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveSceneActorByObject( <span class="apiobjtype">elfScene</span> scene, <span class="apiobjtype">elfActor</span> actor )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveSceneCamera( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">string</span> name )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveSceneEntity( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">string</span> name )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveSceneLight( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">string</span> name )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveSceneParticles( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">string</span> name )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveSceneSprite( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">string</span> name )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveSceneCameraByIndex( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">int</span> idx )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveSceneEntityByIndex( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">int</span> idx )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveSceneLightByIndex( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">int</span> idx )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveSceneParticlesByIndex( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">int</span> idx )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveSceneSpriteByIndex( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">int</span> idx )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveSceneCameraByObject( <span class="apiobjtype">elfScene</span> scene, <span class="apiobjtype">elfCamera</span> camera )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveSceneEntityByObject( <span class="apiobjtype">elfScene</span> scene, <span class="apiobjtype">elfEntity</span> entity )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveSceneLightByObject( <span class="apiobjtype">elfScene</span> scene, <span class="apiobjtype">elfLight</span> light )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveSceneParticlesByObject( <span class="apiobjtype">elfScene</span> scene, <span class="apiobjtype">elfParticles</span> particles )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveSceneSpriteByObject( <span class="apiobjtype">elfScene</span> scene, <span class="apiobjtype">elfSprite</span> sprite )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveSceneActorByObject( <span class="apiobjtype">elfScene</span> scene, <span class="apiobjtype">elfActor</span> actor )</div>
 <div class="apifunc"><span class="apiobjtype">elfList</span> GetSceneScripts( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc"><span class="apiobjtype">elfList</span> GetSceneTextures( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc"><span class="apiobjtype">elfList</span> GetSceneMaterials( <span class="apiobjtype">elfScene</span> scene )</div>
@@ -971,10 +971,10 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">string</span> GetScriptName( <span class="apiobjtype">elfScript</span> script )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetScriptFilePath( <span class="apiobjtype">elfScript</span> script )</div>
 <div class="apifunc">SetScriptText( <span class="apiobjtype">elfScript</span> script, <span class="apikeytype">string</span> text )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsScriptError( <span class="apiobjtype">elfScript</span> script )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsScriptError( <span class="apiobjtype">elfScript</span> script )</div>
 <div class="apitopic">SCRIPTING FUNCTIONS</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RunString( <span class="apikeytype">string</span> str )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RunScript( <span class="apiobjtype">elfScript</span> script )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RunString( <span class="apikeytype">string</span> str )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RunScript( <span class="apiobjtype">elfScript</span> script )</div>
 <div class="apitopic">AUDIO FUNCTIONS</div>
 <div class="apifunc">SetAudioVolume( <span class="apikeytype">float</span> volume )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetAudioVolume(  )</div>
@@ -992,8 +992,8 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">PauseSound( <span class="apiobjtype">elfAudioSource</span> source )</div>
 <div class="apifunc">ResumeSound( <span class="apiobjtype">elfAudioSource</span> source )</div>
 <div class="apifunc">StopSound( <span class="apiobjtype">elfAudioSource</span> source )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsSoundPlaying( <span class="apiobjtype">elfAudioSource</span> source )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsSoundPaused( <span class="apiobjtype">elfAudioSource</span> source )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsSoundPlaying( <span class="apiobjtype">elfAudioSource</span> source )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> IsSoundPaused( <span class="apiobjtype">elfAudioSource</span> source )</div>
 <div class="apitopic">COLLISION FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">elfActor</span> GetCollisionActor( <span class="apiobjtype">elfCollision</span> collision )</div>
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> GetCollisionPosition( <span class="apiobjtype">elfCollision</span> collision )</div>
@@ -1019,7 +1019,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">elfVec2i</span> GetGuiObjectPosition( <span class="apiobjtype">elfGuiObject</span> object )</div>
 <div class="apifunc"><span class="apikeytype">elfVec2i</span> GetGuiObjectSize( <span class="apiobjtype">elfGuiObject</span> object )</div>
 <div class="apifunc"><span class="apikeytype">elfColor</span> GetGuiObjectColor( <span class="apiobjtype">elfGuiObject</span> object )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetGuiObjectVisible( <span class="apiobjtype">elfGuiObject</span> object )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetGuiObjectVisible( <span class="apiobjtype">elfGuiObject</span> object )</div>
 <div class="apifunc"><span class="apiobjtype">elfScript</span> GetGuiObjectScript( <span class="apiobjtype">elfGuiObject</span> object )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetGuiObjectEvent( <span class="apiobjtype">elfGuiObject</span> object )</div>
 <div class="apifunc">SetGuiObjectPosition( <span class="apiobjtype">elfGuiObject</span> object, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y )</div>
@@ -1034,7 +1034,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetLabelText( <span class="apiobjtype">elfLabel</span> label, <span class="apikeytype">string</span> text )</div>
 <div class="apitopic">BUTTON FUNCTION</div>
 <div class="apifunc"><span class="apiobjtype">elfButton</span> CreateButton( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apikeytype">string</span> name, <span class="apikeytype">int</span> x, <span class="apikeytype">int</span> y, <span class="apikeytype">int</span> width, <span class="apikeytype">int</span> height, <span class="apikeytype">string</span> text )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetButtonState( <span class="apiobjtype">elfButton</span> button )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetButtonState( <span class="apiobjtype">elfButton</span> button )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetButtonText( <span class="apiobjtype">elfButton</span> button )</div>
 <div class="apifunc"><span class="apiobjtype">elfFont</span> GetButtonFont( <span class="apiobjtype">elfButton</span> button )</div>
 <div class="apifunc"><span class="apiobjtype">elfTexture</span> GetButtonOffTexture( <span class="apiobjtype">elfButton</span> button )</div>
@@ -1092,19 +1092,19 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">int</span> GetTextListOffset( <span class="apiobjtype">elfTextList</span> textList )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetTextListItem( <span class="apiobjtype">elfTextList</span> textList, <span class="apikeytype">int</span> idx )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetTextListSelectedItem( <span class="apiobjtype">elfTextList</span> textList )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetTextListItemDrag( <span class="apiobjtype">elfTextList</span> textList )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetTextListItemDrag( <span class="apiobjtype">elfTextList</span> textList )</div>
 <div class="apifunc">SetTextListFont( <span class="apiobjtype">elfTextList</span> textList, <span class="apiobjtype">elfFont</span> font )</div>
 <div class="apifunc">SetTextListSize( <span class="apiobjtype">elfTextList</span> textList, <span class="apikeytype">int</span> rows, <span class="apikeytype">int</span> width )</div>
 <div class="apifunc">AddTextListItem( <span class="apiobjtype">elfTextList</span> textList, <span class="apikeytype">string</span> text )</div>
 <div class="apifunc">SetTextListItem( <span class="apiobjtype">elfTextList</span> textList, <span class="apikeytype">int</span> idx, <span class="apikeytype">string</span> text )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveTextListItem( <span class="apiobjtype">elfTextList</span> textList, <span class="apikeytype">int</span> idx )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveTextListItem( <span class="apiobjtype">elfTextList</span> textList, <span class="apikeytype">int</span> idx )</div>
 <div class="apifunc">RemoveTextListItems( <span class="apiobjtype">elfTextList</span> textList )</div>
 <div class="apifunc">SetTextListOffset( <span class="apiobjtype">elfTextList</span> textList, <span class="apikeytype">int</span> offset )</div>
 <div class="apifunc">SetTextListSelection( <span class="apiobjtype">elfTextList</span> textList, <span class="apikeytype">int</span> selection )</div>
 <div class="apifunc">SetTextListItemDrag( <span class="apiobjtype">elfTextList</span> textList, <span class="apikeytype">unsigned char</span> itemDrag )</div>
 <div class="apitopic">CHECK BOX FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">elfCheckBox</span> CreateCheckBox( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apikeytype">string</span> name, <span class="apikeytype">int</span> x, <span class="apikeytype">int</span> y, <span class="apikeytype">unsigned char</span> state )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetCheckBoxState( <span class="apiobjtype">elfCheckBox</span> checkBox )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetCheckBoxState( <span class="apiobjtype">elfCheckBox</span> checkBox )</div>
 <div class="apifunc"><span class="apiobjtype">elfTexture</span> GetCheckBoxOffTexture( <span class="apiobjtype">elfCheckBox</span> checkBox )</div>
 <div class="apifunc"><span class="apiobjtype">elfTexture</span> GetCheckBoxOnTexture( <span class="apiobjtype">elfCheckBox</span> checkBox )</div>
 <div class="apifunc">SetCheckBoxOffTexture( <span class="apiobjtype">elfCheckBox</span> checkBox, <span class="apiobjtype">elfTexture</span> off )</div>
@@ -1112,16 +1112,16 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetCheckBoxState( <span class="apiobjtype">elfCheckBox</span> checkBox, <span class="apikeytype">unsigned char</span> state )</div>
 <div class="apitopic">GUI FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">elfGui</span> CreateGui(  )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> AddGuiObject( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apiobjtype">elfGuiObject</span> object )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> AddGuiObject( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apiobjtype">elfGuiObject</span> object )</div>
 <div class="apifunc"><span class="apiobjtype">elfGuiObject</span> GetGuiObjectByName( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apiobjtype">elfGuiObject</span> GetGuiObjectByIndex( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apikeytype">int</span> idx )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveGuiObjectByName( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apikeytype">string</span> name )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveGuiObjectByIndex( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apikeytype">int</span> idx )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> RemoveGuiObjectByObject( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apiobjtype">elfGuiObject</span> object )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveGuiObjectByName( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apikeytype">string</span> name )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveGuiObjectByIndex( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apikeytype">int</span> idx )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> RemoveGuiObjectByObject( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apiobjtype">elfGuiObject</span> object )</div>
 <div class="apifunc"><span class="apiobjtype">elfGuiObject</span> GetGuiTrace( <span class="apiobjtype">elfGui</span> gui )</div>
 <div class="apifunc"><span class="apiobjtype">elfGuiObject</span> GetGuiFocus( <span class="apiobjtype">elfGui</span> gui )</div>
 <div class="apifunc"><span class="apiobjtype">elfGuiObject</span> GetGuiActiveTextField( <span class="apiobjtype">elfGui</span> gui )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> GetGuiDragging( <span class="apiobjtype">elfGui</span> gui )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetGuiDragging( <span class="apiobjtype">elfGui</span> gui )</div>
 <div class="apifunc"><span class="apiobjtype">elfGuiObject</span> GetGuiDragObject( <span class="apiobjtype">elfGui</span> gui )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetGuiDragContent( <span class="apiobjtype">elfGui</span> gui )</div>
 <div class="apifunc">EmptyGui( <span class="apiobjtype">elfGui</span> gui )</div>

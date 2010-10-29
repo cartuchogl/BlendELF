@@ -533,7 +533,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <br /><span class="apikeytype">double</span> - same as a floating poit value but can store more decimals
 <br /><span class="apikeytype">int</span> - a positive or negative integer value, like 40 or -2500
 <br /><span class="apikeytype">unsigned int</span> - a positive integer value, like 21 or 60
-<br /><span class="apikeytype">bool</span> - a truth value, like true or false
+<br /><span class="apikeytype">boolean</span> - a truth value, like true or false
 <br /><span class="apikeytype">string</span> - a string of characters, like "cat" or "MyEntity"
 <br /><span class="apikeytype">elfVec2i</span> - contains the integer attributes [x|y] which can be accessed by vec.x and vec.y
 <br /><span class="apikeytype">elfVec2f</span> - contains the floating point attributes [x|y] which can be accessed by vec.x and vec.y
