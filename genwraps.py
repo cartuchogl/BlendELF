@@ -949,6 +949,8 @@ for func in functions:
 	docs.write('<div class=\"apifunc\">')
 	if func.type in elfobjs:
 		docs.write('<span class=\"apiobjtype\">'+func.type[:-1]+'</span> ')
+	elif func.type == 'unsigned char':
+		docs.write('<span class=\"apikeytype\">boolean</span> ')
 	elif func.type == 'const char*':
 		docs.write('<span class=\"apikeytype\">string</span> ')
 	elif func.type == 'void':
