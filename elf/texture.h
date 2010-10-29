@@ -32,13 +32,13 @@ ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromFile(const char* filePath)
 		case 24:
 			format = GFX_BGR;
 			if(gfxGetVersion() >= 130)
-				internalFormat = eng->textureCompress ? GFX_COMPRESSED_RGB : GFX_RGB;
+				internalFormat = eng->config->textureCompress ? GFX_COMPRESSED_RGB : GFX_RGB;
 			else internalFormat = GFX_RGB;
 			break;
 		case 32:
 			format = GFX_BGRA;
 			if(gfxGetVersion() >= 130)
-				internalFormat = eng->textureCompress ? GFX_COMPRESSED_RGBA : GFX_RGBA;
+				internalFormat = eng->config->textureCompress ? GFX_COMPRESSED_RGBA : GFX_RGBA;
 			else internalFormat = GFX_RGBA;
 			break;
 		default:
@@ -53,7 +53,7 @@ ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromFile(const char* filePath)
 	texture->filePath = elfCreateString(filePath);
 
 	texture->texture = gfxCreate2dTexture(elfGetImageWidth(image), elfGetImageHeight(image),
-		eng->textureAnisotropy, GFX_REPEAT, GFX_LINEAR, format, internalFormat, GFX_UBYTE, elfGetImageData(image));
+		eng->config->textureAnisotropy, GFX_REPEAT, GFX_LINEAR, format, internalFormat, GFX_UBYTE, elfGetImageData(image));
 
 	if(!texture->texture)
 	{
@@ -81,13 +81,13 @@ ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromImage(elfImage* image)
 		case 24:
 			format = GFX_BGR;
 			if(gfxGetVersion() >= 130)
-				internalFormat = eng->textureCompress ? GFX_COMPRESSED_RGB : GFX_RGB;
+				internalFormat = eng->config->textureCompress ? GFX_COMPRESSED_RGB : GFX_RGB;
 			else internalFormat = GFX_RGB;
 			break;
 		case 32:
 			format = GFX_BGRA;
 			if(gfxGetVersion() >= 130)
-				internalFormat = eng->textureCompress ? GFX_COMPRESSED_RGBA : GFX_RGBA;
+				internalFormat = eng->config->textureCompress ? GFX_COMPRESSED_RGBA : GFX_RGBA;
 			else internalFormat = GFX_RGBA;
 			break;
 		default:
@@ -98,7 +98,7 @@ ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromImage(elfImage* image)
 	texture = elfCreateTexture();
 
 	texture->texture = gfxCreate2dTexture(elfGetImageWidth(image), elfGetImageHeight(image),
-		eng->textureAnisotropy, GFX_REPEAT, GFX_LINEAR, format, internalFormat, GFX_UBYTE, elfGetImageData(image));
+		eng->config->textureAnisotropy, GFX_REPEAT, GFX_LINEAR, format, internalFormat, GFX_UBYTE, elfGetImageData(image));
 
 	if(!texture->texture)
 	{
@@ -194,8 +194,8 @@ ELF_API elfTexture* ELF_APIENTRY elfCreateCubeMapFromFiles(const char* xpos, con
 	{
 		case 8: format = GFX_LUMINANCE; internalFormat = GFX_LUMINANCE; break;
 		case 16: format = GFX_LUMINANCE_ALPHA; internalFormat = GFX_LUMINANCE_ALPHA; break;
-		case 24: format = GFX_BGR; internalFormat = eng->textureCompress ? GFX_COMPRESSED_RGB : GFX_RGB; break;
-		case 32: format = GFX_BGRA; internalFormat = eng->textureCompress ? GFX_COMPRESSED_RGBA : GFX_RGBA; break;
+		case 24: format = GFX_BGR; internalFormat = eng->config->textureCompress ? GFX_COMPRESSED_RGB : GFX_RGB; break;
+		case 32: format = GFX_BGRA; internalFormat = eng->config->textureCompress ? GFX_COMPRESSED_RGBA : GFX_RGBA; break;
 		default:
 			elfSetError(ELF_INVALID_FILE, "error: unsupported bits per pixel value [%d] in cube map image \"%s\"\n", elfGetImageBitsPerPixel(xposi), xpos);
 			elfDestroyImage(xposi);
@@ -213,7 +213,7 @@ ELF_API elfTexture* ELF_APIENTRY elfCreateCubeMapFromFiles(const char* xpos, con
 	texture->filePath = elfCreateString(xpos);
 
 	texture->texture = gfxCreateCubeMap(elfGetImageWidth(xposi), elfGetImageHeight(xposi),
-		eng->textureAnisotropy, GFX_REPEAT, GFX_LINEAR, format, internalFormat, GFX_UBYTE,
+		eng->config->textureAnisotropy, GFX_REPEAT, GFX_LINEAR, format, internalFormat, GFX_UBYTE,
 		elfGetImageData(xposi), elfGetImageData(xnegi), elfGetImageData(yposi),
 		elfGetImageData(ynegi), elfGetImageData(zposi), elfGetImageData(znegi));
 

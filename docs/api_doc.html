@@ -216,6 +216,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apidefine">MESH_DATA</div>
 <div class="apidefine">LIST_PTR</div>
 <div class="apidefine">RESOURCES</div>
+<div class="apidefine">RENDER_STATION</div>
 <div class="apitopic">NUMBER OF OBJECT TYPES</div>
 <div class="apidefine">OBJECT_TYPE_COUNT</div>
 <div class="apitopic">CAMERA MODE</div>
@@ -381,15 +382,22 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">RSeekList( <span class="apiobjtype">elfList</span> list, <span class="apiobjtype">elfObject</span> ptr )</div>
 <div class="apitopic">CONFIG FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">elfConfig</span> ReadConfig( <span class="apikeytype">string</span> filePath )</div>
-<div class="apifunc"><span class="apikeytype">int</span> GetConfigWindowWidth( <span class="apiobjtype">elfConfig</span> config )</div>
-<div class="apifunc"><span class="apikeytype">int</span> GetConfigWindowHeight( <span class="apiobjtype">elfConfig</span> config )</div>
+<div class="apifunc">SetConfigWindowSize( <span class="apiobjtype">elfConfig</span> config, <span class="apikeytype">int</span> width, <span class="apikeytype">int</span> height )</div>
+<div class="apifunc">SetConfigMultisamples( <span class="apiobjtype">elfConfig</span> config, <span class="apikeytype">int</span> multisamples )</div>
+<div class="apifunc">SetConfigFullscreen( <span class="apiobjtype">elfConfig</span> config, <span class="apikeytype">unsigned char</span> fullscreen )</div>
+<div class="apifunc">SetConfigTextureCompress( <span class="apiobjtype">elfConfig</span> config, <span class="apikeytype">unsigned char</span> textureCompress )</div>
+<div class="apifunc">SetConfigTextureAnisotropy( <span class="apiobjtype">elfConfig</span> config, <span class="apikeytype">float</span> textureAnisotropy )</div>
+<div class="apifunc">SetConfigShadowMapSize( <span class="apiobjtype">elfConfig</span> config, <span class="apikeytype">int</span> shadowMapSize )</div>
+<div class="apifunc">SetConfigStart( <span class="apiobjtype">elfConfig</span> config, <span class="apikeytype">string</span> start )</div>
+<div class="apifunc">SetConfigLogPath( <span class="apiobjtype">elfConfig</span> config, <span class="apikeytype">string</span> logPath )</div>
+<div class="apifunc"><span class="apikeytype">elfVec2i</span> GetConfigWindowSize( <span class="apiobjtype">elfConfig</span> config )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetConfigMultisamples( <span class="apiobjtype">elfConfig</span> config )</div>
 <div class="apifunc"><span class="apikeytype">unsigned char</span> GetConfigFullscreen( <span class="apiobjtype">elfConfig</span> config )</div>
 <div class="apifunc"><span class="apikeytype">unsigned char</span> GetConfigTextureCompress( <span class="apiobjtype">elfConfig</span> config )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetConfigTextureAnisotropy( <span class="apiobjtype">elfConfig</span> config )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetConfigShadowMapSize( <span class="apiobjtype">elfConfig</span> config )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetConfigStart( <span class="apiobjtype">elfConfig</span> config )</div>
-<div class="apifunc"><span class="apikeytype">string</span> GetConfigLog( <span class="apiobjtype">elfConfig</span> config )</div>
+<div class="apifunc"><span class="apikeytype">string</span> GetConfigLogPath( <span class="apiobjtype">elfConfig</span> config )</div>
 <div class="apitopic">LOG FUNCTIONS</div>
 <div class="apifunc">WriteLogLine( <span class="apikeytype">string</span> str )</div>
 <div class="apitopic">CONTEXT FUNCTIONS</div>
@@ -420,8 +428,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">int</span> GetKeyEventKey( <span class="apiobjtype">elfKeyEvent</span> keyEvent )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetKeyEventState( <span class="apiobjtype">elfKeyEvent</span> keyEvent )</div>
 <div class="apitopic">ENGINE FUNCTIONS</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> Init( <span class="apikeytype">int</span> width, <span class="apikeytype">int</span> height, <span class="apikeytype">string</span> title, <span class="apikeytype">int</span> multisamples, <span class="apikeytype">unsigned char</span> fullscreen, <span class="apikeytype">string</span> log )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> InitWithConfig( <span class="apikeytype">string</span> filePath )</div>
+<div class="apifunc"><span class="apikeytype">unsigned char</span> Init( <span class="apiobjtype">elfConfig</span> config )</div>
 <div class="apifunc">Deinit(  )</div>
 <div class="apifunc">ResizeWindow( <span class="apikeytype">int</span> width, <span class="apikeytype">int</span> height )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetPlatform(  )</div>
@@ -444,8 +451,8 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">float</span> GetSync(  )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetFps(  )</div>
 <div class="apifunc"><span class="apikeytype">unsigned char</span> SaveScreenShot( <span class="apikeytype">string</span> filePath )</div>
-<div class="apifunc">SetFpsLimit( <span class="apikeytype">int</span> fpsLimit )</div>
-<div class="apifunc"><span class="apikeytype">int</span> GetFpsLimit(  )</div>
+<div class="apifunc">SetFpsLimit( <span class="apikeytype">float</span> fpsLimit )</div>
+<div class="apifunc"><span class="apikeytype">float</span> GetFpsLimit(  )</div>
 <div class="apifunc">SetTickRate( <span class="apikeytype">float</span> tickRate )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetTickRate(  )</div>
 <div class="apifunc">SetSpeed( <span class="apikeytype">float</span> speed )</div>
@@ -457,11 +464,6 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetShadowMapSize( <span class="apikeytype">int</span> size )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetShadowMapSize(  )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetPolygonsRendered(  )</div>
-<div class="apifunc">SetFog( <span class="apikeytype">float</span> start, <span class="apikeytype">float</span> end, <span class="apikeytype">float</span> r, <span class="apikeytype">float</span> g, <span class="apikeytype">float</span> b )</div>
-<div class="apifunc">DisableFog(  )</div>
-<div class="apifunc"><span class="apikeytype">float</span> GetFogStart(  )</div>
-<div class="apifunc"><span class="apikeytype">float</span> GetFogEnd(  )</div>
-<div class="apifunc"><span class="apikeytype">elfColor</span> GetFogColor(  )</div>
 <div class="apifunc">SetBloom( <span class="apikeytype">float</span> threshold )</div>
 <div class="apifunc">DisableBloom(  )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetBloomThreshold(  )</div>
@@ -475,15 +477,10 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetLightShafts( <span class="apikeytype">float</span> intensity )</div>
 <div class="apifunc">DisableLightShafts(  )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetLightShaftsIntensity(  )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsFog(  )</div>
 <div class="apifunc"><span class="apikeytype">unsigned char</span> IsBloom(  )</div>
 <div class="apifunc"><span class="apikeytype">unsigned char</span> IsSsao(  )</div>
 <div class="apifunc"><span class="apikeytype">unsigned char</span> IsDof(  )</div>
 <div class="apifunc"><span class="apikeytype">unsigned char</span> IsLightShafts(  )</div>
-<div class="apifunc">SetOcclusionCulling( <span class="apikeytype">unsigned char</span> cull )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsOcclusionCulling(  )</div>
-<div class="apifunc">SetDebugDraw( <span class="apikeytype">unsigned char</span> debugDraw )</div>
-<div class="apifunc"><span class="apikeytype">unsigned char</span> IsDebugDraw(  )</div>
 <div class="apifunc"><span class="apiobjtype">elfObject</span> GetActor(  )</div>
 <div class="apifunc"><span class="apiobjtype">elfDirectory</span> ReadDirectory( <span class="apikeytype">string</span> path )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetDirectoryPath( <span class="apiobjtype">elfDirectory</span> directory )</div>
@@ -503,6 +500,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> SubVec3fVec3f( <span class="apikeytype">elfVec3f</span> vec1, <span class="apikeytype">elfVec3f</span> vec2 )</div>
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> AddVec3fVec3f( <span class="apikeytype">elfVec3f</span> vec1, <span class="apikeytype">elfVec3f</span> vec2 )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetVec3fLength( <span class="apikeytype">elfVec3f</span> vec )</div>
+<div class="apifunc"><span class="apikeytype">unsigned char</span> AboutSame( <span class="apikeytype">float</span> v1, <span class="apikeytype">float</span> v2 )</div>
 <div class="apifunc"><span class="apikeytype">unsigned char</span> AboutZero( <span class="apikeytype">float</span> val )</div>
 <div class="apifunc"><span class="apikeytype">float</span> FloatAbs( <span class="apikeytype">float</span> val )</div>
 <div class="apifunc"><span class="apikeytype">float</span> FloatMin( <span class="apikeytype">float</span> a, <span class="apikeytype">float</span> b )</div>
@@ -711,10 +709,16 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apitopic">CAMERA FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">elfCamera</span> CreateCamera( <span class="apikeytype">string</span> name )</div>
 <div class="apifunc">SetCameraViewport( <span class="apiobjtype">elfCamera</span> camera, <span class="apikeytype">int</span> x, <span class="apikeytype">int</span> y, <span class="apikeytype">int</span> width, <span class="apikeytype">int</span> height )</div>
-<div class="apifunc">SetCameraPerspective( <span class="apiobjtype">elfCamera</span> camera, <span class="apikeytype">float</span> fov, <span class="apikeytype">float</span> aspect, <span class="apikeytype">float</span> clipNear, <span class="apikeytype">float</span> clipFar )</div>
-<div class="apifunc">SetCameraOrthographic( <span class="apiobjtype">elfCamera</span> camera, <span class="apikeytype">int</span> x, <span class="apikeytype">int</span> y, <span class="apikeytype">int</span> width, <span class="apikeytype">int</span> height, <span class="apikeytype">float</span> clipNear, <span class="apikeytype">float</span> clipFar )</div>
+<div class="apifunc">SetCameraOrthoViewport( <span class="apiobjtype">elfCamera</span> camera, <span class="apikeytype">int</span> x, <span class="apikeytype">int</span> y, <span class="apikeytype">int</span> width, <span class="apikeytype">int</span> height )</div>
+<div class="apifunc">SetCameraMode( <span class="apiobjtype">elfCamera</span> camera, <span class="apikeytype">int</span> mode )</div>
+<div class="apifunc">SetCameraFov( <span class="apiobjtype">elfCamera</span> camera, <span class="apikeytype">float</span> fov )</div>
+<div class="apifunc">SetCameraAspect( <span class="apiobjtype">elfCamera</span> camera, <span class="apikeytype">float</span> aspect )</div>
+<div class="apifunc">SetCameraClip( <span class="apiobjtype">elfCamera</span> camera, <span class="apikeytype">float</span> near, <span class="apikeytype">float</span> far )</div>
 <div class="apifunc"><span class="apikeytype">elfVec2i</span> GetCameraViewportSize( <span class="apiobjtype">elfCamera</span> camera )</div>
 <div class="apifunc"><span class="apikeytype">elfVec2i</span> GetCameraViewportOffset( <span class="apiobjtype">elfCamera</span> camera )</div>
+<div class="apifunc"><span class="apikeytype">elfVec2i</span> GetCameraOrthoViewportSize( <span class="apiobjtype">elfCamera</span> camera )</div>
+<div class="apifunc"><span class="apikeytype">elfVec2i</span> GetCameraOrthoViewportOffset( <span class="apiobjtype">elfCamera</span> camera )</div>
+<div class="apifunc"><span class="apikeytype">int</span> GetCameraMode( <span class="apiobjtype">elfCamera</span> camera )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetCameraFov( <span class="apiobjtype">elfCamera</span> camera )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetCameraAspect( <span class="apiobjtype">elfCamera</span> camera )</div>
 <div class="apifunc"><span class="apikeytype">elfVec2f</span> GetCameraClip( <span class="apiobjtype">elfCamera</span> camera )</div>
@@ -880,20 +884,32 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">unsigned char</span> GetSpriteVisible( <span class="apiobjtype">elfSprite</span> sprite )</div>
 <div class="apifunc">SetSpriteOccluder( <span class="apiobjtype">elfSprite</span> sprite, <span class="apikeytype">unsigned char</span> occluder )</div>
 <div class="apifunc"><span class="apikeytype">unsigned char</span> GetSpriteOccluder( <span class="apiobjtype">elfSprite</span> sprite )</div>
+<div class="apifunc"><span class="apikeytype">string</span> GetSceneName( <span class="apiobjtype">elfScene</span> scene )</div>
+<div class="apifunc"><span class="apikeytype">string</span> GetSceneFilePath( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apitopic">SCENE FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">elfScene</span> CreateScene( <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apiobjtype">elfScene</span> CreateSceneFromFile( <span class="apikeytype">string</span> filePath )</div>
 <div class="apifunc"><span class="apikeytype">unsigned char</span> SaveScene( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">string</span> filePath )</div>
-<div class="apifunc">SetSceneAmbientColor( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">float</span> r, <span class="apikeytype">float</span> g, <span class="apikeytype">float</span> b, <span class="apikeytype">float</span> a )</div>
-<div class="apifunc"><span class="apikeytype">elfColor</span> GetSceneAmbientColor( <span class="apiobjtype">elfScene</span> scene )</div>
-<div class="apifunc">SetSceneGravity( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
-<div class="apifunc"><span class="apikeytype">elfVec3f</span> GetSceneGravity( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc">SetScenePhysics( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">unsigned char</span> physics )</div>
 <div class="apifunc"><span class="apikeytype">unsigned char</span> GetScenePhysics( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc">SetSceneRunScripts( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">unsigned char</span> runScripts )</div>
 <div class="apifunc"><span class="apikeytype">unsigned char</span> GetSceneRunScripts( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">unsigned char</span> runScripts )</div>
-<div class="apifunc"><span class="apikeytype">string</span> GetSceneName( <span class="apiobjtype">elfScene</span> scene )</div>
-<div class="apifunc"><span class="apikeytype">string</span> GetSceneFilePath( <span class="apiobjtype">elfScene</span> scene )</div>
+<div class="apifunc">SetSceneDebugDraw( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">unsigned char</span> debugDraw )</div>
+<div class="apifunc"><span class="apikeytype">unsigned char</span> GetSceneDebugDraw( <span class="apiobjtype">elfScene</span> scene )</div>
+<div class="apifunc">SetSceneOcclusionCulling( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">unsigned char</span> occlusionCulling )</div>
+<div class="apifunc"><span class="apikeytype">unsigned char</span> GetSceneOcclusionCulling( <span class="apiobjtype">elfScene</span> scene )</div>
+<div class="apifunc">SetSceneGravity( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
+<div class="apifunc"><span class="apikeytype">elfVec3f</span> GetSceneGravity( <span class="apiobjtype">elfScene</span> scene )</div>
+<div class="apifunc">SetSceneAmbientColor( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">float</span> r, <span class="apikeytype">float</span> g, <span class="apikeytype">float</span> b, <span class="apikeytype">float</span> a )</div>
+<div class="apifunc"><span class="apikeytype">elfColor</span> GetSceneAmbientColor( <span class="apiobjtype">elfScene</span> scene )</div>
+<div class="apifunc">SetSceneFog( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">unsigned char</span> fog )</div>
+<div class="apifunc">SetSceneFogStart( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">float</span> start )</div>
+<div class="apifunc">SetSceneFogEnd( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">float</span> end )</div>
+<div class="apifunc">SetSceneFogColor( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">float</span> r, <span class="apikeytype">float</span> g, <span class="apikeytype">float</span> b, <span class="apikeytype">float</span> a )</div>
+<div class="apifunc"><span class="apikeytype">unsigned char</span> GetSceneFog( <span class="apiobjtype">elfScene</span> scene )</div>
+<div class="apifunc"><span class="apikeytype">float</span> GetSceneFogStart( <span class="apiobjtype">elfScene</span> scene )</div>
+<div class="apifunc"><span class="apikeytype">float</span> GetFogEnd( <span class="apiobjtype">elfScene</span> scene )</div>
+<div class="apifunc"><span class="apikeytype">elfColor</span> GetFogColor( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetSceneCameraCount( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetSceneEntityCount( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetSceneLightCount( <span class="apiobjtype">elfScene</span> scene )</div>

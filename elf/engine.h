@@ -8,6 +8,9 @@ elfEngine* elfCreateEngine()
 	engine->objType = ELF_ENGINE;
 	engine->objDestr = elfDestroyEngine;
 
+	engine->config = elfCreateConfig();
+	elfIncRef((elfObject*)engine->config);
+
 	engine->fpsTimer = elfCreateTimer();
 	engine->fpsLimitTimer = elfCreateTimer();
 	engine->timeSyncTimer = elfCreateTimer();
@@ -17,20 +20,6 @@ elfEngine* elfCreateEngine()
 	elfIncRef((elfObject*)engine->timeSyncTimer);
 
 	engine->freeRun = ELF_TRUE;
-	engine->fpsLimit = 0;
-	engine->speed = 1.0f;
-	engine->f10Exit = ELF_TRUE;
-
-	if(gfxGetVersion() >= 200)
-	{
-		engine->shadowMapSize = 1024;
-		engine->shadowMap = gfxCreate2dTexture(1024, 1024, 0.0f, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
-		engine->shadowTarget = gfxCreateRenderTarget(1024, 1024);
-		gfxSetRenderTargetDepthTexture(engine->shadowTarget, engine->shadowMap);
-	}
-
-	engine->textureAnisotropy = 1.0f;
-	engine->occlusionCulling = ELF_FALSE;
 
 	elfIncObj(ELF_ENGINE);
 
@@ -41,20 +30,16 @@ void elfDestroyEngine(void* data)
 {
 	elfEngine* engine = (elfEngine*)data;
 
-	if(engine->scene) elfDecRef((elfObject*)engine->scene);
-	if(engine->gui) elfDecRef((elfObject*)engine->gui);
-
-	if(engine->postProcess) elfDestroyPostProcess(engine->postProcess);
-
-	if(gfxGetVersion() > 200)
-	{
-		gfxDestroyRenderTarget(engine->shadowTarget);
-		gfxDestroyTexture(engine->shadowMap);
-	}
+	if(engine->config) elfDecRef((elfObject*)engine->config);
 
 	elfDecRef((elfObject*)engine->fpsTimer);
 	elfDecRef((elfObject*)engine->fpsLimitTimer);
 	elfDecRef((elfObject*)engine->timeSyncTimer);
+
+	if(engine->postProcess) elfDestroyPostProcess(engine->postProcess);
+
+	if(engine->scene) elfDecRef((elfObject*)engine->scene);
+	if(engine->gui) elfDecRef((elfObject*)engine->gui);
 
 	if(eng->guiFont) elfDecRef((elfObject*)eng->guiFont);
 
@@ -103,14 +88,16 @@ void elfDeinitEngine()
 	eng = NULL;
 }
 
-ELF_API unsigned char ELF_APIENTRY elfInit(int width, int height, const char* title, int multisamples, unsigned char fullscreen, const char* log)
+ELF_API unsigned char ELF_APIENTRY elfInit(elfConfig* config)
 {
+	if(config == NULL) config = elfCreateConfig();
+
 	elfInitGeneral();
-	elfSetLogFilePath(log);
+	elfSetLogFilePath(config->logPath);
 
 	elfStartLog("BlendELF 0.9 Beta\n");
 
-	if(!elfInitContext(width, height, title, multisamples, fullscreen)) return ELF_FALSE;
+	if(!elfInitContext(config->windowSize.x, config->windowSize.y, config->windowTitle, config->multisamples, config->fullscreen)) return ELF_FALSE;
 	if(!gfxInit())
 	{
 		elfDeinitContext();
@@ -122,43 +109,26 @@ ELF_API unsigned char ELF_APIENTRY elfInit(int width, int height, const char* ti
 	elfInitResources();
 	elfInitScripting();
 
-	return ELF_TRUE;
-}
-
-ELF_API unsigned char ELF_APIENTRY elfInitWithConfig(const char* filePath)
-{
-	elfConfig* config;
-
-	elfInitGeneral();
-
-	if(!(config = elfReadConfig("config.txt")))
-		config = elfCreateConfig();
-
-	if(!elfInit(config->windowSize[0], config->windowSize[1], "BlendELF", config->multisamples, !config->fullscreen == ELF_FALSE, config->log))
-	{
-		elfSetError(ELF_CANT_INITIALIZE, "error: could not initialize engine\n");
-		elfDestroyConfig(config);
-		return ELF_FALSE;
-	}
-
 	elfSetTextureCompress(config->textureCompress);
 	elfSetTextureAnisotropy(config->textureAnisotropy);
 	elfSetShadowMapSize(config->shadowMapSize);
 
 	if(strlen(config->start) > 0) elfLoadScene(config->start);
 
-	elfDestroyConfig(config);
+	if(eng->config) elfDecRef((elfObject*)eng->config);
+	eng->config = config;
+	elfIncRef((elfObject*)eng->config);
 
 	return ELF_TRUE;
 }
 
 void elfLimitEngineFps()
 {
-	if(eng->fpsLimit > 0)
+	if(!elfAboutZero(eng->config->fpsLimit))
 	{
 		if(elfGetElapsedTime(eng->fpsLimitTimer) > 0.0f)
 		{
-			while(elfGetElapsedTime(eng->fpsLimitTimer) < 1.0f/(float)eng->fpsLimit);
+			while(elfGetElapsedTime(eng->fpsLimitTimer) < 1.0f/(float)eng->config->fpsLimit);
 			elfStartTimer(eng->fpsLimitTimer);
 		}
 		else
@@ -174,9 +144,9 @@ void elfUpdateEngine()
 
 	if(elfGetElapsedTime(eng->timeSyncTimer) > 0.0f)
 	{
-		if(elfAboutZero(eng->tickRate))
-			eng->sync = (eng->sync*2.0f+((float)elfGetElapsedTime(eng->timeSyncTimer)*eng->speed))/3.0f;
-		else eng->sync = eng->tickRate;
+		if(elfAboutZero(eng->config->tickRate))
+			eng->sync = (eng->sync*2.0f+((float)elfGetElapsedTime(eng->timeSyncTimer)*eng->config->speed))/3.0f;
+		else eng->sync = eng->config->tickRate;
 
 		elfStartTimer(eng->timeSyncTimer);
 
@@ -223,7 +193,7 @@ ELF_API unsigned char ELF_APIENTRY elfRun()
 
 	eng->freeRun = ELF_FALSE;
 
-	if((eng->f10Exit && elfGetKeyState(ELF_KEY_F10)) || !elfIsWindowOpened() || eng->quit)
+	if((eng->config->f10Exit && elfGetKeyState(ELF_KEY_F10)) || !elfIsWindowOpened() || eng->quit)
 	{
 		eng->freeRun = ELF_TRUE;
 		return ELF_FALSE;
@@ -262,7 +232,7 @@ ELF_API unsigned char ELF_APIENTRY elfRun()
 		}
 		elfRunPostProcess(eng->postProcess, eng->scene);
 	}
-	if(eng->scene && eng->debugDraw) elfDrawSceneDebug(eng->scene);
+	if(eng->scene && eng->scene->debugDraw) elfDrawSceneDebug(eng->scene);
 	if(eng->gui) elfDrawGui(eng->gui);
 
 	elfSwapBuffers();
@@ -371,12 +341,12 @@ ELF_API void ELF_APIENTRY elfQuit()
 
 ELF_API void ELF_APIENTRY elfSetF10Exit(unsigned char exit)
 {
-	eng->f10Exit = !(exit == ELF_FALSE);
+	eng->config->f10Exit = !(exit == ELF_FALSE);
 }
 
 ELF_API unsigned char ELF_APIENTRY elfGetF10Exit()
 {
-	return eng->f10Exit;
+	return eng->config->f10Exit;
 }
 
 ELF_API elfScene* ELF_APIENTRY elfLoadScene(const char* filePath)
@@ -428,37 +398,37 @@ ELF_API int ELF_APIENTRY elfGetFps()
 	return eng->fps;
 }
 
-ELF_API void ELF_APIENTRY elfSetFpsLimit(int fpsLimit)
+ELF_API void ELF_APIENTRY elfSetFpsLimit(float fpsLimit)
 {
-	eng->fpsLimit = fpsLimit;
-	if(eng->fpsLimit < 0) eng->fpsLimit = 0;
+	eng->config->fpsLimit = fpsLimit;
+	if(eng->config->fpsLimit < 0.0f) eng->config->fpsLimit = 0.0f;
 }
 
-ELF_API int ELF_APIENTRY elfGetFpsLimit()
+ELF_API float ELF_APIENTRY elfGetFpsLimit()
 {
-	return eng->fpsLimit;
+	return eng->config->fpsLimit;
 }
 
 ELF_API void ELF_APIENTRY elfSetTickRate(float tickRate)
 {
-	eng->tickRate = tickRate;
-	if(eng->tickRate < 0.0f) eng->tickRate = 0.0f;
+	eng->config->tickRate = tickRate;
+	if(eng->config->tickRate < 0.0f) eng->config->tickRate = 0.0f;
 }
 
 ELF_API float ELF_APIENTRY elfGetTickRate()
 {
-	return eng->tickRate;
+	return eng->config->tickRate;
 }
 
 ELF_API void ELF_APIENTRY elfSetSpeed(float speed)
 {
-	eng->speed = speed;
-	if(eng->speed < 0.0001f) eng->speed = 0.0001f;
+	eng->config->speed = speed;
+	if(eng->config->speed < 0.0001f) eng->config->speed = 0.0001f;
 }
 
 ELF_API float ELF_APIENTRY elfGetSpeed()
 {
-	return eng->speed;
+	return eng->config->speed;
 }
 
 ELF_API unsigned char ELF_APIENTRY elfSaveScreenShot(const char* filePath)
@@ -482,76 +452,50 @@ ELF_API unsigned char ELF_APIENTRY elfSaveScreenShot(const char* filePath)
 
 ELF_API void ELF_APIENTRY elfSetTextureCompress(unsigned char compress)
 {
-	eng->textureCompress = !compress == ELF_FALSE;
+	eng->config->textureCompress = !compress == ELF_FALSE;
 }
 
 ELF_API unsigned char ELF_APIENTRY elfGetTextureCompress()
 {
-	return eng->textureCompress;
+	return eng->config->textureCompress;
 }
 
 ELF_API void ELF_APIENTRY elfSetTextureAnisotropy(float anisotropy)
 {
-	eng->textureAnisotropy = anisotropy;
+	eng->config->textureAnisotropy = anisotropy;
 }
 
 ELF_API float ELF_APIENTRY elfGetTextureAnisotropy()
 {
-	return eng->textureAnisotropy;
+	return eng->config->textureAnisotropy;
 }
 
 ELF_API void ELF_APIENTRY elfSetShadowMapSize(int size)
 {
 	// why would someone want a shadow map of 1 pixel?...
-	if(gfxGetVersion() < 200 || size < 1) return;
+	if(gfxGetVersion() < 200 || size < 1 || size == eng->config->shadowMapSize) return;
 
-	gfxDestroyRenderTarget(eng->shadowTarget);
-	gfxDestroyTexture(eng->shadowMap);
+	gfxDecRef((gfxObject*)rnd->shadowMap);
+	gfxDecRef((gfxObject*)rnd->shadowTarget);
 
-	eng->shadowMapSize = size;
-	eng->shadowMap = gfxCreate2dTexture(size, size, 0.0f, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
-	eng->shadowTarget = gfxCreateRenderTarget(size, size);
-	gfxSetRenderTargetDepthTexture(eng->shadowTarget, eng->shadowMap);
+	eng->config->shadowMapSize = size;
+	rnd->shadowMap = gfxCreate2dTexture(size, size, 0.0f, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
+	rnd->shadowTarget = gfxCreateRenderTarget(size, size);
+
+	gfxIncRef((gfxObject*)rnd->shadowMap);
+	gfxIncRef((gfxObject*)rnd->shadowTarget);
+
+	gfxSetRenderTargetDepthTexture(rnd->shadowTarget, rnd->shadowMap);
 }
 
 ELF_API int ELF_APIENTRY elfGetShadowMapSize()
 {
-	return eng->shadowMapSize;
+	return eng->config->shadowMapSize;
 }
 
 ELF_API int ELF_APIENTRY elfGetPolygonsRendered()
 {
 	return gfxGetVerticesDrawn(GFX_TRIANGLES)/3+gfxGetVerticesDrawn(GFX_TRIANGLE_STRIP)/3;
-}
-
-ELF_API void ELF_APIENTRY elfSetFog(float start, float end, float r, float g, float b)
-{
-	eng->fog = ELF_TRUE;
-	eng->fogStart = start;
-	eng->fogEnd = end;
-	eng->fogColor.r = r;
-	eng->fogColor.g = g;
-	eng->fogColor.b = b;
-}
-
-ELF_API void ELF_APIENTRY elfDisableFog()
-{
-	eng->fog = ELF_FALSE;
-}
-
-ELF_API float ELF_APIENTRY elfGetFogStart()
-{
-	return eng->fogStart;
-}
-
-ELF_API float ELF_APIENTRY elfGetFogEnd()
-{
-	return eng->fogEnd;
-}
-
-ELF_API elfColor ELF_APIENTRY elfGetFogColor()
-{
-	return eng->fogColor;
 }
 
 ELF_API void ELF_APIENTRY elfSetBloom(float threshold)
@@ -680,11 +624,6 @@ ELF_API float ELF_APIENTRY elfGetLightShaftsIntensity()
 	return 0.0f;
 }
 
-ELF_API unsigned char ELF_APIENTRY elfIsFog()
-{
-	return eng->fog;
-}
-
 ELF_API unsigned char ELF_APIENTRY elfIsBloom()
 {
 	if(eng->postProcess) return elfIsPostProcessBloom(eng->postProcess);
@@ -707,28 +646,6 @@ ELF_API unsigned char ELF_APIENTRY elfIsLightShafts()
 {
 	if(eng->postProcess) return elfIsPostProcessLightShafts(eng->postProcess);
 	return ELF_FALSE;
-}
-
-ELF_API void ELF_APIENTRY elfSetOcclusionCulling(unsigned char cull)
-{
-	if(gfxGetVersion() < 150) return;
-
-	eng->occlusionCulling = !cull == ELF_FALSE;
-}
-
-ELF_API unsigned char ELF_APIENTRY elfIsOcclusionCulling()
-{
-	return eng->occlusionCulling;
-}
-
-ELF_API void ELF_APIENTRY elfSetDebugDraw(unsigned char debugDraw)
-{
-	eng->debugDraw = !debugDraw == ELF_FALSE;
-}
-
-ELF_API unsigned char ELF_APIENTRY elfIsDebugDraw()
-{
-	return eng->debugDraw;
 }
 
 ELF_API elfObject* ELF_APIENTRY elfGetActor()

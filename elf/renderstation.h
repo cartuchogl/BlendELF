@@ -11,6 +11,14 @@ elfRenderStation* elfCreateRenderStation()
 	rs->objType = ELF_RENDER_STATION;
 	rs->objDestr = elfDestroyRenderStation;
 
+	rs->shadowMap = gfxCreate2dTexture(1024, 1024, 0.0f, GFX_CLAMP, GFX_LINEAR, GFX_DEPTH_COMPONENT, GFX_DEPTH_COMPONENT, GFX_UBYTE, NULL);
+	rs->shadowTarget = gfxCreateRenderTarget(1024, 1024);
+
+	gfxIncRef((gfxObject*)rs->shadowMap);
+	gfxIncRef((gfxObject*)rs->shadowTarget);
+
+	gfxSetRenderTargetDepthTexture(rs->shadowTarget, rs->shadowMap);
+
 	// quad
 	rs->quadVertexData = gfxCreateVertexData(12, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
 	rs->quadTexCoordData = gfxCreateVertexData(12, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
@@ -246,6 +254,9 @@ elfRenderStation* elfCreateRenderStation()
 void elfDestroyRenderStation(void* data)
 {
 	elfRenderStation* rs = (elfRenderStation*)data;
+
+	gfxDecRef((gfxObject*)rs->shadowMap);
+	gfxDecRef((gfxObject*)rs->shadowTarget);
 
 	gfxDecRef((gfxObject*)rs->quadVertexArray);
 	gfxDecRef((gfxObject*)rs->quadVertexData);

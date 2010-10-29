@@ -87,22 +87,12 @@ int main()
 	if(!(config = elfReadConfig("config.txt")))
 		config = elfCreateConfig();
 
-	if(strlen(config->start) < 1)
-	{
-		if(config->start) elfDestroyString(config->start);
-		config->start = elfCreateString("start.pak");
-	}
-
-	if(!elfInit(config->windowSize[0], config->windowSize[1], "BlendELF", config->multisamples, !config->fullscreen == ELF_FALSE, config->log))
+	if(!elfInit(config))
 	{
 		elfSetError(ELF_CANT_INITIALIZE, "error: can't initialize engine\n");
 		elfDestroyConfig(config);
 		return -1;
 	}
-
-	elfSetTextureCompress(config->textureCompress);
-	elfSetTextureAnisotropy(config->textureAnisotropy);
-	elfSetShadowMapSize(config->shadowMapSize);
 
 	script = elfCreateScriptFromFile("init.lua");
 	if(script)
@@ -113,17 +103,8 @@ int main()
 	}
 	else
 	{
-		if(!elfLoadScene(config->start))
-		{
-			elfDestroyConfig(config);
-			elfDeinit();
-			return -1;
-		}
-
 		while(elfRun());
 	}
-
-	elfDestroyConfig(config);
 
 	elfDeinit();
 

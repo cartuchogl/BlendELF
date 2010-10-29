@@ -26,8 +26,6 @@ char* elfReadNext(const char* text, int* pos)
 	memcpy(str, &text[start], sizeof(char)*(end-start));
 	str[end-start] = '\0';
 
-	elfIncObj(ELF_STRING);
-
 	return str;
 }
 
@@ -43,7 +41,7 @@ float elfReadSstFloat(const char* text, int* pos)
 
 	str = elfReadNext(text, pos);
 	val = (float)atof(str);
-	elfDestroyString(str);
+	free(str);
 
 	return val;
 }
@@ -56,7 +54,7 @@ void elfReadSstFloats(const char* text, int* pos, int n, float* params)
 	for(i = 0; i < n && (str = elfReadNext(text, pos)); i++)
 	{
 		params[i] = (float)atof(str);
-		elfDestroyString(str);
+		free(str);
 	}
 }
 
@@ -67,7 +65,7 @@ int elfReadSstInt(const char* text, int* pos)
 
 	str = elfReadNext(text, pos);
 	val = atoi(str);
-	elfDestroyString(str);
+	free(str);
 
 	return val;
 }
@@ -80,7 +78,7 @@ void elfReadSstInts(const char* text, int* pos, int n, int* params)
 	for(i = 0; i < n && (str = elfReadNext(text, pos)); i++)
 	{
 		params[i] = atoi(str);
-		elfDestroyString(str);
+		free(str);
 	}
 }
 
@@ -94,7 +92,7 @@ unsigned char elfReadSstBool(const char* text, int* pos)
 	if(!strcmp(str, "FALSE")) result = ELF_FALSE;
 	else result = ELF_TRUE;
 
-	elfDestroyString(str);
+	free(str);
 
 	return result;
 }

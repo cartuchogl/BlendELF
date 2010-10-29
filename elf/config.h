@@ -8,17 +8,29 @@ elfConfig* elfCreateConfig()
 	config->objType = ELF_CONFIG;
 	config->objDestr = elfDestroyConfig;
 
-	config->windowSize[0] = 1024;
-	config->windowSize[1] = 768;
+	config->windowSize.x = 1024;
+	config->windowSize.y = 768;
+
+	config->windowTitle = (char*)malloc(sizeof(char)*9);
+	memset(config->windowTitle, 0x0, sizeof(char)*9);
+	memcpy(config->windowTitle, "BlendELF", sizeof(char)*8);
+
 	config->multisamples = 0;
 	config->fullscreen = ELF_FALSE;
 	config->textureCompress = ELF_FALSE;
 	config->textureAnisotropy = 1.0f;
 	config->shadowMapSize = 1024;
-	config->start = elfCreateString("");
-	config->log = elfCreateString("elf.log");
+	config->fpsLimit = 0.0f;
+	config->tickRate = 0.0f;
+	config->speed = 1.0f;
+	config->f10Exit = ELF_TRUE;
 
-	elfIncObj(ELF_CONFIG);
+	config->start = (char*)malloc(sizeof(char));
+	config->start[0] = '\0';
+
+	config->logPath = (char*)malloc(sizeof(char)*8);
+	memset(config->logPath, 0x0, sizeof(char)*8);
+	memcpy(config->logPath, "elf.log", sizeof(char)*7);
 
 	return config;
 }
@@ -27,12 +39,11 @@ void elfDestroyConfig(void* data)
 {
 	elfConfig* config = (elfConfig*)data;
 
-	if(config->start) elfDestroyString(config->start);
-	if(config->log) elfDestroyString(config->log);
+	if(config->windowTitle) free(config->windowTitle);
+	if(config->start) free(config->start);
+	if(config->logPath) free(config->logPath);
 
 	free(config);
-
-	elfDecObj(ELF_CONFIG);
 }
 
 ELF_API elfConfig* ELF_APIENTRY elfReadConfig(const char* filePath)
@@ -85,7 +96,12 @@ ELF_API elfConfig* ELF_APIENTRY elfReadConfig(const char* filePath)
 		{
 			if(!strcmp(str, "windowSize"))
 			{
-				elfReadSstInts(text, &pos, 2, config->windowSize);
+				elfReadSstInts(text, &pos, 2, &config->windowSize.x);
+			}
+			else if(!strcmp(str, "windowSize"))
+			{
+				if(config->windowTitle) free(config->windowTitle);
+				config->windowTitle = elfReadSstString(text, &pos);
 			}
 			else if(!strcmp(str, "multisamples"))
 			{
@@ -109,13 +125,13 @@ ELF_API elfConfig* ELF_APIENTRY elfReadConfig(const char* filePath)
 			}
 			else if(!strcmp(str, "start"))
 			{
-				if(config->start) elfDestroyString(config->start);
+				if(config->start) free(config->start);
 				config->start = elfReadSstString(text, &pos);
 			}
-			else if(!strcmp(str, "log"))
+			else if(!strcmp(str, "logPath"))
 			{
-				if(config->log) elfDestroyString(config->log);
-				config->log = elfReadSstString(text, &pos);
+				if(config->logPath) free(config->logPath);
+				config->logPath = elfReadSstString(text, &pos);
 			}
 			else if(!strcmp(str, "{"))
 			{
@@ -126,7 +142,7 @@ ELF_API elfConfig* ELF_APIENTRY elfReadConfig(const char* filePath)
 				scope--;
 				if(scope < 0)
 				{
-					elfDestroyString(str);
+					free(str);
 					break;
 				}
 			}
@@ -135,7 +151,7 @@ ELF_API elfConfig* ELF_APIENTRY elfReadConfig(const char* filePath)
 				printf("warning: unknown element \"%s\" in config.txt\n", str);
 			}
 		}
-		elfDestroyString(str);
+		free(str);
 		str = NULL;
 	}
 
@@ -144,14 +160,62 @@ ELF_API elfConfig* ELF_APIENTRY elfReadConfig(const char* filePath)
 	return config;
 }
 
-ELF_API int ELF_APIENTRY elfGetConfigWindowWidth(elfConfig* config)
+ELF_API void elfSetConfigWindowSize(elfConfig* config, int width, int height)
 {
-	return config->windowSize[0];
+	config->windowSize.x = width;
+	config->windowSize.y = height;
+
+	if(config->windowSize.x < 1) config->windowSize.x = 1;
+	if(config->windowSize.y < 1) config->windowSize.y = 1;
 }
 
-ELF_API int ELF_APIENTRY elfGetConfigWindowHeight(elfConfig* config)
+ELF_API void ELF_APIENTRY elfSetConfigMultisamples(elfConfig* config, int multisamples)
 {
-	return config->windowSize[1];
+	config->multisamples = multisamples;
+	if(config->multisamples < 0) config->multisamples = 0;
+}
+
+ELF_API void ELF_APIENTRY elfSetConfigFullscreen(elfConfig* config, unsigned char fullscreen)
+{
+	config->fullscreen = !fullscreen == ELF_FALSE;
+}
+
+ELF_API void ELF_APIENTRY elfSetConfigTextureCompress(elfConfig* config, unsigned char textureCompress)
+{
+	config->textureCompress = !textureCompress == ELF_FALSE;
+}
+
+ELF_API void ELF_APIENTRY elfSetConfigTextureAnisotropy(elfConfig* config, float textureAnisotropy)
+{
+	config->textureAnisotropy = textureAnisotropy;
+	if(config->textureAnisotropy < 1.0f) config->textureAnisotropy = 1.0f;
+}
+
+ELF_API void ELF_APIENTRY elfSetConfigShadowMapSize(elfConfig* config, int shadowMapSize)
+{
+	config->shadowMapSize = shadowMapSize;
+	if(config->shadowMapSize < 1) config->shadowMapSize = 1;
+}
+
+ELF_API void ELF_APIENTRY elfSetConfigStart(elfConfig* config, const char* start)
+{
+	if(config->start) free(config->start);
+	config->start = malloc(sizeof(char)*(strlen(start)+1));
+	memset(config->start, 0x0, sizeof(char)*(strlen(start)+1));
+	memcpy(config->start, start, sizeof(char)*strlen(start));
+}
+
+ELF_API void ELF_APIENTRY elfSetConfigLogPath(elfConfig* config, const char* logPath)
+{
+	if(config->logPath) free(config->logPath);
+	config->logPath = malloc(sizeof(char)*(strlen(logPath)+1));
+	memset(config->logPath, 0x0, sizeof(char)*(strlen(logPath)+1));
+	memcpy(config->logPath, logPath, sizeof(char)*strlen(logPath));
+}
+
+ELF_API elfVec2i ELF_APIENTRY elfGetConfigWindowSize(elfConfig* config)
+{
+	return config->windowSize;
 }
 
 ELF_API int ELF_APIENTRY elfGetConfigMultisamples(elfConfig* config)
@@ -161,7 +225,7 @@ ELF_API int ELF_APIENTRY elfGetConfigMultisamples(elfConfig* config)
 
 ELF_API unsigned char ELF_APIENTRY elfGetConfigFullscreen(elfConfig* config)
 {
-	return !config->fullscreen == ELF_FALSE;
+	return config->fullscreen;
 }
 
 ELF_API unsigned char ELF_APIENTRY elfGetConfigTextureCompress(elfConfig* config)
@@ -184,8 +248,8 @@ ELF_API const char* ELF_APIENTRY elfGetConfigStart(elfConfig* config)
 	return config->start;
 }
 
-ELF_API const char* ELF_APIENTRY elfGetConfigLog(elfConfig* config)
+ELF_API const char* ELF_APIENTRY elfGetConfigLogPath(elfConfig* config)
 {
-	return config->start;
+	return config->logPath;
 }
 

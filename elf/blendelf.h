@@ -513,7 +513,7 @@ ELF_API elfObject* ELF_APIENTRY elfGetListRNext(elfList* list);
 ELF_API void ELF_APIENTRY elfSeekList(elfList* list, elfObject* ptr);
 ELF_API void ELF_APIENTRY elfRSeekList(elfList* list, elfObject* ptr);
 
-//////////////////////////////// CONFIGURATION ////////////////////////////////
+/////////////////////////////// CONFIG ///////////////////////////////
 
 // <!!
 elfConfig* elfCreateConfig();
@@ -521,15 +521,24 @@ void elfDestroyConfig(void* data);
 // !!>
 
 ELF_API elfConfig* ELF_APIENTRY elfReadConfig(const char* filePath);	// <mdoc> CONFIG FUNCTIONS
-ELF_API int ELF_APIENTRY elfGetConfigWindowWidth(elfConfig* config);
-ELF_API int ELF_APIENTRY elfGetConfigWindowHeight(elfConfig* config);
+
+ELF_API void elfSetConfigWindowSize(elfConfig* config, int width, int height);
+ELF_API void ELF_APIENTRY elfSetConfigMultisamples(elfConfig* config, int multisamples);
+ELF_API void ELF_APIENTRY elfSetConfigFullscreen(elfConfig* config, unsigned char fullscreen);
+ELF_API void ELF_APIENTRY elfSetConfigTextureCompress(elfConfig* config, unsigned char textureCompress);
+ELF_API void ELF_APIENTRY elfSetConfigTextureAnisotropy(elfConfig* config, float textureAnisotropy);
+ELF_API void ELF_APIENTRY elfSetConfigShadowMapSize(elfConfig* config, int shadowMapSize);
+ELF_API void ELF_APIENTRY elfSetConfigStart(elfConfig* config, const char* start);
+ELF_API void ELF_APIENTRY elfSetConfigLogPath(elfConfig* config, const char* logPath);
+
+ELF_API elfVec2i ELF_APIENTRY elfGetConfigWindowSize(elfConfig* config);
 ELF_API int ELF_APIENTRY elfGetConfigMultisamples(elfConfig* config);
 ELF_API unsigned char ELF_APIENTRY elfGetConfigFullscreen(elfConfig* config);
 ELF_API unsigned char ELF_APIENTRY elfGetConfigTextureCompress(elfConfig* config);
 ELF_API float ELF_APIENTRY elfGetConfigTextureAnisotropy(elfConfig* config);
 ELF_API int ELF_APIENTRY elfGetConfigShadowMapSize(elfConfig* config);
 ELF_API const char* ELF_APIENTRY elfGetConfigStart(elfConfig* config);
-ELF_API const char* ELF_APIENTRY elfGetConfigLog(elfConfig* config);
+ELF_API const char* ELF_APIENTRY elfGetConfigLogPath(elfConfig* config);
 
 ///////////////////////////////// LOG /////////////////////////////////
 
@@ -607,8 +616,7 @@ unsigned char elfInitEngine();
 void elfDeinitEngine();
 // !!>
 
-ELF_API unsigned char ELF_APIENTRY elfInit(int width, int height, const char* title, int multisamples, unsigned char fullscreen, const char* log);	// <mdoc> ENGINE FUNCTIONS
-ELF_API unsigned char ELF_APIENTRY elfInitWithConfig(const char* filePath);
+ELF_API unsigned char ELF_APIENTRY elfInit(elfConfig* config);	// <mdoc> ENGINE FUNCTIONS
 ELF_API void ELF_APIENTRY elfDeinit();
 
 ELF_API void ELF_APIENTRY elfResizeWindow(int width, int height);
@@ -644,8 +652,8 @@ ELF_API int ELF_APIENTRY elfGetFps();
 
 ELF_API unsigned char ELF_APIENTRY elfSaveScreenShot(const char* filePath);
 
-ELF_API void ELF_APIENTRY elfSetFpsLimit(int fpsLimit);
-ELF_API int ELF_APIENTRY elfGetFpsLimit();
+ELF_API void ELF_APIENTRY elfSetFpsLimit(float fpsLimit);
+ELF_API float ELF_APIENTRY elfGetFpsLimit();
 
 ELF_API void ELF_APIENTRY elfSetTickRate(float tickRate);
 ELF_API float ELF_APIENTRY elfGetTickRate();
@@ -662,12 +670,6 @@ ELF_API void ELF_APIENTRY elfSetShadowMapSize(int size);
 ELF_API int ELF_APIENTRY elfGetShadowMapSize();
 
 ELF_API int ELF_APIENTRY elfGetPolygonsRendered();
-
-ELF_API void ELF_APIENTRY elfSetFog(float start, float end, float r, float g, float b);
-ELF_API void ELF_APIENTRY elfDisableFog();
-ELF_API float ELF_APIENTRY elfGetFogStart();
-ELF_API float ELF_APIENTRY elfGetFogEnd();
-ELF_API elfColor ELF_APIENTRY elfGetFogColor();
 
 ELF_API void ELF_APIENTRY elfSetBloom(float threshold);
 ELF_API void ELF_APIENTRY elfDisableBloom();
@@ -686,17 +688,10 @@ ELF_API void ELF_APIENTRY elfSetLightShafts(float intensity);
 ELF_API void ELF_APIENTRY elfDisableLightShafts();
 ELF_API float ELF_APIENTRY elfGetLightShaftsIntensity();
 
-ELF_API unsigned char ELF_APIENTRY elfIsFog();
 ELF_API unsigned char ELF_APIENTRY elfIsBloom();
 ELF_API unsigned char ELF_APIENTRY elfIsSsao();
 ELF_API unsigned char ELF_APIENTRY elfIsDof();
 ELF_API unsigned char ELF_APIENTRY elfIsLightShafts();
-
-ELF_API void ELF_APIENTRY elfSetOcclusionCulling(unsigned char cull);
-ELF_API unsigned char ELF_APIENTRY elfIsOcclusionCulling();
-
-ELF_API void ELF_APIENTRY elfSetDebugDraw(unsigned char debugDraw);
-ELF_API unsigned char ELF_APIENTRY elfIsDebugDraw();
 
 ELF_API elfObject* ELF_APIENTRY elfGetActor();
 
@@ -1423,15 +1418,12 @@ void elfScenePostDraw(elfScene* scene);
 void elfDestroyScene(void* data);
 // !!>
 
+ELF_API const char* ELF_APIENTRY elfGetSceneName(elfScene* scene);
+ELF_API const char* ELF_APIENTRY elfGetSceneFilePath(elfScene* scene);
+
 ELF_API elfScene* ELF_APIENTRY elfCreateScene(const char* name);	// <mdoc> SCENE FUNCTIONS
 ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* filePath);
 ELF_API unsigned char ELF_APIENTRY elfSaveScene(elfScene* scene, const char* filePath);
-
-ELF_API void ELF_APIENTRY elfSetSceneAmbientColor(elfScene* scene, float r, float g, float b, float a);
-ELF_API elfColor ELF_APIENTRY elfGetSceneAmbientColor(elfScene* scene);
-
-ELF_API void ELF_APIENTRY elfSetSceneGravity(elfScene* scene, float x, float y, float z);
-ELF_API elfVec3f ELF_APIENTRY elfGetSceneGravity(elfScene* scene);
 
 ELF_API void ELF_APIENTRY elfSetScenePhysics(elfScene* scene, unsigned char physics);
 ELF_API unsigned char ELF_APIENTRY elfGetScenePhysics(elfScene* scene);
@@ -1439,8 +1431,27 @@ ELF_API unsigned char ELF_APIENTRY elfGetScenePhysics(elfScene* scene);
 ELF_API void ELF_APIENTRY elfSetSceneRunScripts(elfScene* scene, unsigned char runScripts);
 ELF_API unsigned char ELF_APIENTRY elfGetSceneRunScripts(elfScene* scene, unsigned char runScripts);
 
-ELF_API const char* ELF_APIENTRY elfGetSceneName(elfScene* scene);
-ELF_API const char* ELF_APIENTRY elfGetSceneFilePath(elfScene* scene);
+ELF_API void ELF_APIENTRY elfSetSceneDebugDraw(elfScene* scene, unsigned char debugDraw);
+ELF_API unsigned char ELF_APIENTRY elfGetSceneDebugDraw(elfScene* scene);
+
+ELF_API void ELF_APIENTRY elfSetSceneOcclusionCulling(elfScene* scene, unsigned char occlusionCulling);
+ELF_API unsigned char ELF_APIENTRY elfGetSceneOcclusionCulling(elfScene* scene);
+
+ELF_API void ELF_APIENTRY elfSetSceneGravity(elfScene* scene, float x, float y, float z);
+ELF_API elfVec3f ELF_APIENTRY elfGetSceneGravity(elfScene* scene);
+
+ELF_API void ELF_APIENTRY elfSetSceneAmbientColor(elfScene* scene, float r, float g, float b, float a);
+ELF_API elfColor ELF_APIENTRY elfGetSceneAmbientColor(elfScene* scene);
+
+ELF_API void ELF_APIENTRY elfSetSceneFog(elfScene* scene, unsigned char fog);
+ELF_API void ELF_APIENTRY elfSetSceneFogStart(elfScene* scene, float start);
+ELF_API void ELF_APIENTRY elfSetSceneFogEnd(elfScene* scene, float end);
+ELF_API void ELF_APIENTRY elfSetSceneFogColor(elfScene* scene, float r, float g, float b, float a);
+
+ELF_API unsigned char ELF_APIENTRY elfGetSceneFog(elfScene* scene);
+ELF_API float ELF_APIENTRY elfGetSceneFogStart(elfScene* scene);
+ELF_API float ELF_APIENTRY elfGetFogEnd(elfScene* scene);
+ELF_API elfColor ELF_APIENTRY elfGetFogColor(elfScene* scene);
 
 ELF_API int ELF_APIENTRY elfGetSceneCameraCount(elfScene* scene);
 ELF_API int ELF_APIENTRY elfGetSceneEntityCount(elfScene* scene);

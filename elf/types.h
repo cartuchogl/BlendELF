@@ -97,14 +97,19 @@ struct elfGeneral {
 
 struct elfConfig {
 	ELF_OBJECT_HEADER;
-	int windowSize[2];
+	elfVec2i windowSize;
+	char* windowTitle;
 	int multisamples;
 	unsigned char fullscreen;
 	unsigned char textureCompress;
 	float textureAnisotropy;
 	int shadowMapSize;
 	char* start;
-	char* log;
+	char* logPath;
+	float fpsLimit;
+	float tickRate;
+	float speed;
+	unsigned char f10Exit;
 };
 
 struct elfKeyEvent {
@@ -154,40 +159,21 @@ struct elfContext {
 struct elfEngine {
 	ELF_OBJECT_HEADER;
 
+	elfConfig* config;
+
 	char cwd[256];
 
-	unsigned char freeRun;
-
 	int fps;
+	unsigned int frames;
+	float sync;
 	elfTimer* fpsTimer;
 	elfTimer* fpsLimitTimer;
 	elfTimer* timeSyncTimer;
-	unsigned int frames;
-	int fpsLimit;
-	float tickRate;
-	float speed;
-	float sync;
-	unsigned char f10Exit;
+
+	unsigned char freeRun;
 	unsigned char quit;
 
-	gfxGbuffer* gbuffer;
-
 	elfPostProcess* postProcess;
-
-	gfxTexture* shadowMap;
-	gfxRenderTarget* shadowTarget;
-
-	int shadowMapSize;
-	unsigned char textureCompress;
-	float textureAnisotropy;
-
-	unsigned char occlusionCulling;
-	unsigned char debugDraw;
-
-	unsigned char fog;
-	float fogStart;
-	float fogEnd;
-	elfColor fogColor;
 
 	elfFont* guiFont;
 
@@ -198,6 +184,9 @@ struct elfEngine {
 
 struct elfRenderStation {
 	ELF_OBJECT_HEADER;
+
+	gfxTexture* shadowMap;
+	gfxRenderTarget* shadowTarget;
 
 	gfxVertexData* quadVertexData;
 	gfxVertexData* quadTexCoordData;
@@ -569,9 +558,18 @@ struct elfSprite {
 struct elfScene {
 	ELF_RESOURCE_HEADER;
 	char* filePath;
-	elfColor ambientColor;
+
 	unsigned char physics;
 	unsigned char runScripts;
+	unsigned char debugDraw;
+	unsigned char occlusionCulling;
+
+	elfColor ambientColor;
+
+	unsigned char fog;
+	float fogStart;
+	float fogEnd;
+	elfColor fogColor;
 
 	elfList* scripts;
 	elfList* textures;

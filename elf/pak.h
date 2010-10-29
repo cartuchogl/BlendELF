@@ -1339,9 +1339,9 @@ elfTexture* elfCreateTextureFromPak(FILE* file, const char* name, elfScene* scen
 	{
 		case 8: format = GFX_LUMINANCE; internalFormat = GFX_LUMINANCE; dataFormat = GFX_UBYTE; break;
 		case 16: format = GFX_LUMINANCE_ALPHA; internalFormat = GFX_LUMINANCE_ALPHA; dataFormat = GFX_UBYTE; break;
-		case 24: format = GFX_BGR; internalFormat = eng->textureCompress ? GFX_COMPRESSED_RGB : GFX_RGB; dataFormat = GFX_UBYTE; break;
-		case 32: format = GFX_BGRA; internalFormat = eng->textureCompress ? GFX_COMPRESSED_RGBA : GFX_RGBA; dataFormat = GFX_UBYTE; break;
-		case 48: format = GFX_BGR; internalFormat = eng->textureCompress ? GFX_COMPRESSED_RGB : GFX_RGB; dataFormat = GFX_USHORT; break;
+		case 24: format = GFX_BGR; internalFormat = eng->config->textureCompress ? GFX_COMPRESSED_RGB : GFX_RGB; dataFormat = GFX_UBYTE; break;
+		case 32: format = GFX_BGRA; internalFormat = eng->config->textureCompress ? GFX_COMPRESSED_RGBA : GFX_RGBA; dataFormat = GFX_UBYTE; break;
+		case 48: format = GFX_BGR; internalFormat = eng->config->textureCompress ? GFX_COMPRESSED_RGB : GFX_RGB; dataFormat = GFX_USHORT; break;
 		default:
 			elfSetError(ELF_INVALID_FILE, "error: unsupported bits per pixel value [%d] in texture \"%s//%s\"\n", (int)bpp, elfGetSceneFilePath(scene), rname);
 			free(data);
@@ -1352,7 +1352,7 @@ elfTexture* elfCreateTextureFromPak(FILE* file, const char* name, elfScene* scen
 
 	texture->name = elfCreateString(rname);
 	texture->filePath = elfCreateString(elfGetSceneFilePath(scene));
-	texture->texture = gfxCreate2dTexture(width, height, eng->textureAnisotropy, GFX_REPEAT, GFX_LINEAR, format, internalFormat, dataFormat, data);
+	texture->texture = gfxCreate2dTexture(width, height, eng->config->textureAnisotropy, GFX_REPEAT, GFX_LINEAR, format, internalFormat, dataFormat, data);
 
 	free(data);
 

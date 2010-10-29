@@ -599,27 +599,14 @@ void elfDestroyScene(void* data)
 	free(scene);
 }
 
-ELF_API void ELF_APIENTRY elfSetSceneAmbientColor(elfScene* scene, float r, float g, float b, float a)
+ELF_API const char* ELF_APIENTRY elfGetSceneName(elfScene* scene)
 {
-	scene->ambientColor.r = r;
-	scene->ambientColor.g = g;
-	scene->ambientColor.b = b;
-	scene->ambientColor.a = a;
+	return scene->name;
 }
 
-ELF_API elfColor ELF_APIENTRY elfGetSceneAmbientColor(elfScene* scene)
+ELF_API const char* ELF_APIENTRY elfGetSceneFilePath(elfScene* scene)
 {
-	return scene->ambientColor;
-}
-
-ELF_API void ELF_APIENTRY elfSetSceneGravity(elfScene* scene, float x, float y, float z)
-{
-	elfSetPhysicsWorldGravity(scene->world, x, y, z);
-}
-
-ELF_API elfVec3f ELF_APIENTRY elfGetSceneGravity(elfScene* scene)
-{
-	return elfGetPhysicsWorldGravity(scene->world);
+	return scene->filePath;
 }
 
 ELF_API void ELF_APIENTRY elfSetScenePhysics(elfScene* scene, unsigned char physics)
@@ -642,14 +629,94 @@ ELF_API unsigned char ELF_APIENTRY elfGetSceneRunScripts(elfScene* scene, unsign
 	return scene->runScripts;
 }
 
-ELF_API const char* ELF_APIENTRY elfGetSceneName(elfScene* scene)
+ELF_API void ELF_APIENTRY elfSetSceneDebugDraw(elfScene* scene, unsigned char debugDraw)
 {
-	return scene->name;
+	scene->debugDraw = !debugDraw == ELF_FALSE;
 }
 
-ELF_API const char* ELF_APIENTRY elfGetSceneFilePath(elfScene* scene)
+ELF_API unsigned char ELF_APIENTRY elfGetSceneDebugDraw(elfScene* scene)
 {
-	return scene->filePath;
+	return scene->debugDraw;
+}
+
+ELF_API void ELF_APIENTRY elfSetSceneOcclusionCulling(elfScene* scene, unsigned char occlusionCulling)
+{
+	if(gfxGetVersion() < 150) return;
+
+	scene->occlusionCulling = !occlusionCulling == ELF_FALSE;
+}
+
+ELF_API unsigned char ELF_APIENTRY elfGetSceneOcclusionCulling(elfScene* scene)
+{
+	return scene->occlusionCulling;
+}
+
+ELF_API void ELF_APIENTRY elfSetSceneGravity(elfScene* scene, float x, float y, float z)
+{
+	elfSetPhysicsWorldGravity(scene->world, x, y, z);
+}
+
+ELF_API elfVec3f ELF_APIENTRY elfGetSceneGravity(elfScene* scene)
+{
+	return elfGetPhysicsWorldGravity(scene->world);
+}
+
+ELF_API void ELF_APIENTRY elfSetSceneAmbientColor(elfScene* scene, float r, float g, float b, float a)
+{
+	scene->ambientColor.r = r;
+	scene->ambientColor.g = g;
+	scene->ambientColor.b = b;
+	scene->ambientColor.a = a;
+}
+
+ELF_API elfColor ELF_APIENTRY elfGetSceneAmbientColor(elfScene* scene)
+{
+	return scene->ambientColor;
+}
+
+ELF_API void ELF_APIENTRY elfSetSceneFog(elfScene* scene, unsigned char fog)
+{
+	scene->fog = !fog == ELF_FALSE;
+}
+
+ELF_API void ELF_APIENTRY elfSetSceneFogStart(elfScene* scene, float start)
+{
+	scene->fogStart = start;
+	if(scene->fogStart < 0.0f) scene->fogStart = 0.0f;
+}
+
+ELF_API void ELF_APIENTRY elfSetSceneFogEnd(elfScene* scene, float end)
+{
+	scene->fogEnd = end;
+	if(scene->fogEnd < 0.0f) scene->fogEnd = 0.0f;
+}
+
+ELF_API void ELF_APIENTRY elfSetSceneFogColor(elfScene* scene, float r, float g, float b, float a)
+{
+	scene->fogColor.r = r;
+	scene->fogColor.g = g;
+	scene->fogColor.b = b;
+	scene->fogColor.a = a;
+}
+
+ELF_API unsigned char ELF_APIENTRY elfGetSceneFog(elfScene* scene)
+{
+	return scene->fog;
+}
+
+ELF_API float ELF_APIENTRY elfGetSceneFogStart(elfScene* scene)
+{
+	return scene->fogStart;
+}
+
+ELF_API float ELF_APIENTRY elfGetFogEnd(elfScene* scene)
+{
+	return scene->fogEnd;
+}
+
+ELF_API elfColor ELF_APIENTRY elfGetFogColor(elfScene* scene)
+{
+	return scene->fogColor;
 }
 
 ELF_API int ELF_APIENTRY elfGetSceneCameraCount(elfScene* scene)
@@ -1571,7 +1638,7 @@ void elfDrawScene(elfScene* scene)
 
 	renderTarget = gfxGetCurRenderTarget();
 
-	if(eng->occlusionCulling)
+	if(scene->occlusionCulling)
 	{
 		// draw occluders to depth buffer
 		gfxSetShaderParamsDefault(&scene->shaderParams);
@@ -1879,7 +1946,7 @@ void elfDrawScene(elfScene* scene)
 			elfSetCamera(light->shadowCamera, &scene->shaderParams);
 			gfxSetShaderParams(&scene->shaderParams);
 
-			gfxSetRenderTarget(eng->shadowTarget);
+			gfxSetRenderTarget(rnd->shadowTarget);
 			gfxClearDepthBuffer(1.0f);
 
 			for(ent = (elfEntity*)elfBeginList(scene->entities); ent != NULL;
@@ -1923,7 +1990,7 @@ void elfDrawScene(elfScene* scene)
 			if(gfxGetVersion() >= 200)
 			{
 				scene->shaderParams.textureParams[GFX_MAX_TEXTURES-1].type = GFX_SHADOW_MAP;
-				scene->shaderParams.textureParams[GFX_MAX_TEXTURES-1].texture = eng->shadowMap;
+				scene->shaderParams.textureParams[GFX_MAX_TEXTURES-1].texture = rnd->shadowMap;
 				scene->shaderParams.textureParams[GFX_MAX_TEXTURES-1].projectionMode = GFX_SHADOW_PROJECTION;
 				memcpy(scene->shaderParams.textureParams[GFX_MAX_TEXTURES-1].matrix,
 					light->projectionMatrix, sizeof(float)*16);
@@ -1931,7 +1998,7 @@ void elfDrawScene(elfScene* scene)
 			else
 			{
 				scene->shaderParams.textureParams[3].type = GFX_SHADOW_MAP;
-				scene->shaderParams.textureParams[3].texture = eng->shadowMap;
+				scene->shaderParams.textureParams[3].texture = rnd->shadowMap;
 				scene->shaderParams.textureParams[3].projectionMode = GFX_SHADOW_PROJECTION;
 				memcpy(scene->shaderParams.textureParams[3].matrix,
 					light->projectionMatrix, sizeof(float)*16);
@@ -2004,7 +2071,7 @@ void elfDrawScene(elfScene* scene)
 		}
 	}
 
-	if(eng->fog && gfxGetVersion() >= 200)
+	if(scene->fog && gfxGetVersion() >= 200)
 	{
 		gfxSetShaderParamsDefault(&scene->shaderParams);
 		scene->shaderParams.renderParams.depthWrite = GFX_FALSE;
@@ -2013,9 +2080,9 @@ void elfDrawScene(elfScene* scene)
 		scene->shaderParams.renderParams.alphaWrite = GFX_TRUE;
 
 		scene->shaderParams.fogParams.mode = GFX_LINEAR;
-		scene->shaderParams.fogParams.start = eng->fogStart;
-		scene->shaderParams.fogParams.end = eng->fogEnd;
-		memcpy(&scene->shaderParams.fogParams.color.r, &eng->fogColor.r, sizeof(float)*4);
+		scene->shaderParams.fogParams.start = scene->fogStart;
+		scene->shaderParams.fogParams.end = scene->fogEnd;
+		memcpy(&scene->shaderParams.fogParams.color.r, &scene->fogColor.r, sizeof(float)*4);
 
 		scene->shaderParams.shaderProgram = scene->composeFogShdr;
 		scene->shaderParams.renderParams.blendMode = GFX_TRANSPARENT;
@@ -2043,12 +2110,12 @@ void elfDrawScene(elfScene* scene)
 	scene->shaderParams.renderParams.depthFunc = GFX_LEQUAL;
 	scene->shaderParams.renderParams.colorWrite = GFX_TRUE;
 	scene->shaderParams.renderParams.alphaWrite = GFX_TRUE;
-	if(eng->fog)
+	if(scene->fog)
 	{
 		scene->shaderParams.fogParams.mode = GFX_LINEAR;
-		scene->shaderParams.fogParams.start = eng->fogStart;
-		scene->shaderParams.fogParams.end = eng->fogEnd;
-		memcpy(&scene->shaderParams.fogParams.color.r, &eng->fogColor.r, sizeof(float)*4);
+		scene->shaderParams.fogParams.start = scene->fogStart;
+		scene->shaderParams.fogParams.end = scene->fogEnd;
+		memcpy(&scene->shaderParams.fogParams.color.r, &scene->fogColor.r, sizeof(float)*4);
 	}
 	elfSetCamera(scene->curCamera, &scene->shaderParams);
 	
@@ -2111,7 +2178,7 @@ void elfDrawScene(elfScene* scene)
 	gfxBindGbuffer(eng->gbuffer, &scene->shaderParams);
 	gfxClearBuffers(0.0, 0.0, 0.0, 0.0, 1.0);
 
-	if(eng->occlusionCulling)
+	if(scene->occlusionCulling)
 	{
 		// draw occluders to depth buffer
 		gfxSetShaderParamsDefault(&scene->shaderParams);
@@ -2442,7 +2509,7 @@ void elfDrawScene(elfScene* scene)
 				elfSetCamera(lig->shadowCamera, &scene->shaderParams);
 				gfxSetShaderParams(&scene->shaderParams);
 
-				gfxSetRenderTarget(eng->shadowTarget);
+				gfxSetRenderTarget(rnd->shadowTarget);
 				gfxClearDepthBuffer(1.0);
 
 				for(ent = (elfEntity*)elfBeginList(scene->entities); ent != NULL;
@@ -2479,7 +2546,7 @@ void elfDrawScene(elfScene* scene)
 		if(lig->lightType == ELF_SPOT_LIGHT && lig->shadows)
 		{
 			scene->shaderParams.textureParams[GFX_MAX_TEXTURES-1].type = GFX_SHADOW_MAP;
-			scene->shaderParams.textureParams[GFX_MAX_TEXTURES-1].texture = eng->shadowMap;
+			scene->shaderParams.textureParams[GFX_MAX_TEXTURES-1].texture = rnd->shadowMap;
 			scene->shaderParams.textureParams[GFX_MAX_TEXTURES-1].projectionMode = GFX_SHADOW_PROJECTION;
 			memcpy(scene->shaderParams.textureParams[GFX_MAX_TEXTURES-1].matrix,
 				lig->projectionMatrix, sizeof(float)*16);

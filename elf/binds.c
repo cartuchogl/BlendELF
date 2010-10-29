@@ -649,30 +649,132 @@ static int lua_ReadConfig(lua_State *L)
 	else lua_pushnil(L);
 	return 1;
 }
-static int lua_GetConfigWindowWidth(lua_State *L)
+static int lua_SetConfigWindowSize(lua_State *L)
 {
-	int result;
 	elfConfig* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetConfigWindowWidth", lua_gettop(L), 1);}
+	int arg1;
+	int arg2;
+	if(lua_gettop(L) != 3) {return lua_fail_arg_count(L, "SetConfigWindowSize", lua_gettop(L), 3);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CONFIG)
-		{return lua_fail_arg(L, "GetConfigWindowWidth", 1, "elfConfig");}
+		{return lua_fail_arg(L, "SetConfigWindowSize", 1, "elfConfig");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetConfigWindowSize", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetConfigWindowSize", 3, "number");}
 	arg0 = (elfConfig*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetConfigWindowWidth(arg0);
-	lua_pushnumber(L, (lua_Number)result);
-	return 1;
+	arg1 = (int)lua_tonumber(L, 2);
+	arg2 = (int)lua_tonumber(L, 3);
+	elfSetConfigWindowSize(arg0, arg1, arg2);
+	return 0;
 }
-static int lua_GetConfigWindowHeight(lua_State *L)
+static int lua_SetConfigMultisamples(lua_State *L)
 {
-	int result;
 	elfConfig* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetConfigWindowHeight", lua_gettop(L), 1);}
+	int arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetConfigMultisamples", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CONFIG)
-		{return lua_fail_arg(L, "GetConfigWindowHeight", 1, "elfConfig");}
+		{return lua_fail_arg(L, "SetConfigMultisamples", 1, "elfConfig");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetConfigMultisamples", 2, "number");}
 	arg0 = (elfConfig*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetConfigWindowHeight(arg0);
-	lua_pushnumber(L, (lua_Number)result);
+	arg1 = (int)lua_tonumber(L, 2);
+	elfSetConfigMultisamples(arg0, arg1);
+	return 0;
+}
+static int lua_SetConfigFullscreen(lua_State *L)
+{
+	elfConfig* arg0;
+	unsigned char arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetConfigFullscreen", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CONFIG)
+		{return lua_fail_arg(L, "SetConfigFullscreen", 1, "elfConfig");}
+	if(!lua_isboolean(L, 2)) {return lua_fail_arg(L, "SetConfigFullscreen", 2, "boolean");}
+	arg0 = (elfConfig*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (unsigned char)lua_toboolean(L, 2);
+	elfSetConfigFullscreen(arg0, arg1);
+	return 0;
+}
+static int lua_SetConfigTextureCompress(lua_State *L)
+{
+	elfConfig* arg0;
+	unsigned char arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetConfigTextureCompress", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CONFIG)
+		{return lua_fail_arg(L, "SetConfigTextureCompress", 1, "elfConfig");}
+	if(!lua_isboolean(L, 2)) {return lua_fail_arg(L, "SetConfigTextureCompress", 2, "boolean");}
+	arg0 = (elfConfig*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (unsigned char)lua_toboolean(L, 2);
+	elfSetConfigTextureCompress(arg0, arg1);
+	return 0;
+}
+static int lua_SetConfigTextureAnisotropy(lua_State *L)
+{
+	elfConfig* arg0;
+	float arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetConfigTextureAnisotropy", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CONFIG)
+		{return lua_fail_arg(L, "SetConfigTextureAnisotropy", 1, "elfConfig");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetConfigTextureAnisotropy", 2, "number");}
+	arg0 = (elfConfig*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (float)lua_tonumber(L, 2);
+	elfSetConfigTextureAnisotropy(arg0, arg1);
+	return 0;
+}
+static int lua_SetConfigShadowMapSize(lua_State *L)
+{
+	elfConfig* arg0;
+	int arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetConfigShadowMapSize", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CONFIG)
+		{return lua_fail_arg(L, "SetConfigShadowMapSize", 1, "elfConfig");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetConfigShadowMapSize", 2, "number");}
+	arg0 = (elfConfig*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (int)lua_tonumber(L, 2);
+	elfSetConfigShadowMapSize(arg0, arg1);
+	return 0;
+}
+static int lua_SetConfigStart(lua_State *L)
+{
+	elfConfig* arg0;
+	const char* arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetConfigStart", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CONFIG)
+		{return lua_fail_arg(L, "SetConfigStart", 1, "elfConfig");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "SetConfigStart", 2, "string");}
+	arg0 = (elfConfig*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = lua_tostring(L, 2);
+	elfSetConfigStart(arg0, arg1);
+	return 0;
+}
+static int lua_SetConfigLogPath(lua_State *L)
+{
+	elfConfig* arg0;
+	const char* arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetConfigLogPath", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CONFIG)
+		{return lua_fail_arg(L, "SetConfigLogPath", 1, "elfConfig");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "SetConfigLogPath", 2, "string");}
+	arg0 = (elfConfig*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = lua_tostring(L, 2);
+	elfSetConfigLogPath(arg0, arg1);
+	return 0;
+}
+static int lua_GetConfigWindowSize(lua_State *L)
+{
+	elfVec2i result;
+	elfConfig* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetConfigWindowSize", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CONFIG)
+		{return lua_fail_arg(L, "GetConfigWindowSize", 1, "elfConfig");}
+	arg0 = (elfConfig*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetConfigWindowSize(arg0);
+	lua_create_elfVec2i(L, result);
 	return 1;
 }
 static int lua_GetConfigMultisamples(lua_State *L)
@@ -753,16 +855,16 @@ static int lua_GetConfigStart(lua_State *L)
 	lua_pushstring(L, result);
 	return 1;
 }
-static int lua_GetConfigLog(lua_State *L)
+static int lua_GetConfigLogPath(lua_State *L)
 {
 	const char* result;
 	elfConfig* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetConfigLog", lua_gettop(L), 1);}
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetConfigLogPath", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CONFIG)
-		{return lua_fail_arg(L, "GetConfigLog", 1, "elfConfig");}
+		{return lua_fail_arg(L, "GetConfigLogPath", 1, "elfConfig");}
 	arg0 = (elfConfig*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetConfigLog(arg0);
+	result = elfGetConfigLogPath(arg0);
 	lua_pushstring(L, result);
 	return 1;
 }
@@ -1028,37 +1130,13 @@ static int lua_GetKeyEventState(lua_State *L)
 static int lua_Init(lua_State *L)
 {
 	unsigned char result;
-	int arg0;
-	int arg1;
-	const char* arg2;
-	int arg3;
-	unsigned char arg4;
-	const char* arg5;
-	if(lua_gettop(L) != 6) {return lua_fail_arg_count(L, "Init", lua_gettop(L), 6);}
-	if(!lua_isnumber(L, 1)) {return lua_fail_arg(L, "Init", 1, "number");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "Init", 2, "number");}
-	if(!lua_isstring(L, 3)) {return lua_fail_arg(L, "Init", 3, "string");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "Init", 4, "number");}
-	if(!lua_isboolean(L, 5)) {return lua_fail_arg(L, "Init", 5, "boolean");}
-	if(!lua_isstring(L, 6)) {return lua_fail_arg(L, "Init", 6, "string");}
-	arg0 = (int)lua_tonumber(L, 1);
-	arg1 = (int)lua_tonumber(L, 2);
-	arg2 = lua_tostring(L, 3);
-	arg3 = (int)lua_tonumber(L, 4);
-	arg4 = (unsigned char)lua_toboolean(L, 5);
-	arg5 = lua_tostring(L, 6);
-	result = elfInit(arg0, arg1, arg2, arg3, arg4, arg5);
-	lua_pushboolean(L, result);
-	return 1;
-}
-static int lua_InitWithConfig(lua_State *L)
-{
-	unsigned char result;
-	const char* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "InitWithConfig", lua_gettop(L), 1);}
-	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "InitWithConfig", 1, "string");}
-	arg0 = lua_tostring(L, 1);
-	result = elfInitWithConfig(arg0);
+	elfConfig* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "Init", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_CONFIG)
+		{return lua_fail_arg(L, "Init", 1, "elfConfig");}
+	arg0 = (elfConfig*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfInit(arg0);
 	lua_pushboolean(L, result);
 	return 1;
 }
@@ -1256,16 +1334,16 @@ static int lua_SaveScreenShot(lua_State *L)
 }
 static int lua_SetFpsLimit(lua_State *L)
 {
-	int arg0;
+	float arg0;
 	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "SetFpsLimit", lua_gettop(L), 1);}
 	if(!lua_isnumber(L, 1)) {return lua_fail_arg(L, "SetFpsLimit", 1, "number");}
-	arg0 = (int)lua_tonumber(L, 1);
+	arg0 = (float)lua_tonumber(L, 1);
 	elfSetFpsLimit(arg0);
 	return 0;
 }
 static int lua_GetFpsLimit(lua_State *L)
 {
-	int result;
+	float result;
 	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "GetFpsLimit", lua_gettop(L), 0);}
 	result = elfGetFpsLimit();
 	lua_pushnumber(L, (lua_Number)result);
@@ -1362,57 +1440,6 @@ static int lua_GetPolygonsRendered(lua_State *L)
 	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "GetPolygonsRendered", lua_gettop(L), 0);}
 	result = elfGetPolygonsRendered();
 	lua_pushnumber(L, (lua_Number)result);
-	return 1;
-}
-static int lua_SetFog(lua_State *L)
-{
-	float arg0;
-	float arg1;
-	float arg2;
-	float arg3;
-	float arg4;
-	if(lua_gettop(L) != 5) {return lua_fail_arg_count(L, "SetFog", lua_gettop(L), 5);}
-	if(!lua_isnumber(L, 1)) {return lua_fail_arg(L, "SetFog", 1, "number");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetFog", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetFog", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "SetFog", 4, "number");}
-	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "SetFog", 5, "number");}
-	arg0 = (float)lua_tonumber(L, 1);
-	arg1 = (float)lua_tonumber(L, 2);
-	arg2 = (float)lua_tonumber(L, 3);
-	arg3 = (float)lua_tonumber(L, 4);
-	arg4 = (float)lua_tonumber(L, 5);
-	elfSetFog(arg0, arg1, arg2, arg3, arg4);
-	return 0;
-}
-static int lua_DisableFog(lua_State *L)
-{
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "DisableFog", lua_gettop(L), 0);}
-	elfDisableFog();
-	return 0;
-}
-static int lua_GetFogStart(lua_State *L)
-{
-	float result;
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "GetFogStart", lua_gettop(L), 0);}
-	result = elfGetFogStart();
-	lua_pushnumber(L, (lua_Number)result);
-	return 1;
-}
-static int lua_GetFogEnd(lua_State *L)
-{
-	float result;
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "GetFogEnd", lua_gettop(L), 0);}
-	result = elfGetFogEnd();
-	lua_pushnumber(L, (lua_Number)result);
-	return 1;
-}
-static int lua_GetFogColor(lua_State *L)
-{
-	elfColor result;
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "GetFogColor", lua_gettop(L), 0);}
-	result = elfGetFogColor();
-	lua_create_elfColor(L, result);
 	return 1;
 }
 static int lua_SetBloom(lua_State *L)
@@ -1518,14 +1545,6 @@ static int lua_GetLightShaftsIntensity(lua_State *L)
 	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
-static int lua_IsFog(lua_State *L)
-{
-	unsigned char result;
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "IsFog", lua_gettop(L), 0);}
-	result = elfIsFog();
-	lua_pushboolean(L, result);
-	return 1;
-}
 static int lua_IsBloom(lua_State *L)
 {
 	unsigned char result;
@@ -1555,40 +1574,6 @@ static int lua_IsLightShafts(lua_State *L)
 	unsigned char result;
 	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "IsLightShafts", lua_gettop(L), 0);}
 	result = elfIsLightShafts();
-	lua_pushboolean(L, result);
-	return 1;
-}
-static int lua_SetOcclusionCulling(lua_State *L)
-{
-	unsigned char arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "SetOcclusionCulling", lua_gettop(L), 1);}
-	if(!lua_isboolean(L, 1)) {return lua_fail_arg(L, "SetOcclusionCulling", 1, "boolean");}
-	arg0 = (unsigned char)lua_toboolean(L, 1);
-	elfSetOcclusionCulling(arg0);
-	return 0;
-}
-static int lua_IsOcclusionCulling(lua_State *L)
-{
-	unsigned char result;
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "IsOcclusionCulling", lua_gettop(L), 0);}
-	result = elfIsOcclusionCulling();
-	lua_pushboolean(L, result);
-	return 1;
-}
-static int lua_SetDebugDraw(lua_State *L)
-{
-	unsigned char arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "SetDebugDraw", lua_gettop(L), 1);}
-	if(!lua_isboolean(L, 1)) {return lua_fail_arg(L, "SetDebugDraw", 1, "boolean");}
-	arg0 = (unsigned char)lua_toboolean(L, 1);
-	elfSetDebugDraw(arg0);
-	return 0;
-}
-static int lua_IsDebugDraw(lua_State *L)
-{
-	unsigned char result;
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "IsDebugDraw", lua_gettop(L), 0);}
-	result = elfIsDebugDraw();
 	lua_pushboolean(L, result);
 	return 1;
 }
@@ -7352,6 +7337,32 @@ static int lua_GetSpriteOccluder(lua_State *L)
 	lua_pushboolean(L, result);
 	return 1;
 }
+static int lua_GetSceneName(lua_State *L)
+{
+	const char* result;
+	elfScene* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetSceneName", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
+		{return lua_fail_arg(L, "GetSceneName", 1, "elfScene");}
+	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetSceneName(arg0);
+	lua_pushstring(L, result);
+	return 1;
+}
+static int lua_GetSceneFilePath(lua_State *L)
+{
+	const char* result;
+	elfScene* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetSceneFilePath", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
+		{return lua_fail_arg(L, "GetSceneFilePath", 1, "elfScene");}
+	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetSceneFilePath(arg0);
+	lua_pushstring(L, result);
+	return 1;
+}
 static int lua_CreateScene(lua_State *L)
 {
 	elfScene* result;
@@ -7390,75 +7401,6 @@ static int lua_SaveScene(lua_State *L)
 	arg1 = lua_tostring(L, 2);
 	result = elfSaveScene(arg0, arg1);
 	lua_pushboolean(L, result);
-	return 1;
-}
-static int lua_SetSceneAmbientColor(lua_State *L)
-{
-	elfScene* arg0;
-	float arg1;
-	float arg2;
-	float arg3;
-	float arg4;
-	if(lua_gettop(L) != 5) {return lua_fail_arg_count(L, "SetSceneAmbientColor", lua_gettop(L), 5);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "SetSceneAmbientColor", 1, "elfScene");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetSceneAmbientColor", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetSceneAmbientColor", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "SetSceneAmbientColor", 4, "number");}
-	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "SetSceneAmbientColor", 5, "number");}
-	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = (float)lua_tonumber(L, 2);
-	arg2 = (float)lua_tonumber(L, 3);
-	arg3 = (float)lua_tonumber(L, 4);
-	arg4 = (float)lua_tonumber(L, 5);
-	elfSetSceneAmbientColor(arg0, arg1, arg2, arg3, arg4);
-	return 0;
-}
-static int lua_GetSceneAmbientColor(lua_State *L)
-{
-	elfColor result;
-	elfScene* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetSceneAmbientColor", lua_gettop(L), 1);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetSceneAmbientColor", 1, "elfScene");}
-	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetSceneAmbientColor(arg0);
-	lua_create_elfColor(L, result);
-	return 1;
-}
-static int lua_SetSceneGravity(lua_State *L)
-{
-	elfScene* arg0;
-	float arg1;
-	float arg2;
-	float arg3;
-	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "SetSceneGravity", lua_gettop(L), 4);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "SetSceneGravity", 1, "elfScene");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetSceneGravity", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetSceneGravity", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "SetSceneGravity", 4, "number");}
-	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = (float)lua_tonumber(L, 2);
-	arg2 = (float)lua_tonumber(L, 3);
-	arg3 = (float)lua_tonumber(L, 4);
-	elfSetSceneGravity(arg0, arg1, arg2, arg3);
-	return 0;
-}
-static int lua_GetSceneGravity(lua_State *L)
-{
-	elfVec3f result;
-	elfScene* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetSceneGravity", lua_gettop(L), 1);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetSceneGravity", 1, "elfScene");}
-	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetSceneGravity(arg0);
-	lua_create_elfVec3f(L, result);
 	return 1;
 }
 static int lua_SetScenePhysics(lua_State *L)
@@ -7518,30 +7460,244 @@ static int lua_GetSceneRunScripts(lua_State *L)
 	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_GetSceneName(lua_State *L)
+static int lua_SetSceneDebugDraw(lua_State *L)
 {
-	const char* result;
 	elfScene* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetSceneName", lua_gettop(L), 1);}
+	unsigned char arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetSceneDebugDraw", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetSceneName", 1, "elfScene");}
+		{return lua_fail_arg(L, "SetSceneDebugDraw", 1, "elfScene");}
+	if(!lua_isboolean(L, 2)) {return lua_fail_arg(L, "SetSceneDebugDraw", 2, "boolean");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetSceneName(arg0);
-	lua_pushstring(L, result);
+	arg1 = (unsigned char)lua_toboolean(L, 2);
+	elfSetSceneDebugDraw(arg0, arg1);
+	return 0;
+}
+static int lua_GetSceneDebugDraw(lua_State *L)
+{
+	unsigned char result;
+	elfScene* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetSceneDebugDraw", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
+		{return lua_fail_arg(L, "GetSceneDebugDraw", 1, "elfScene");}
+	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetSceneDebugDraw(arg0);
+	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_GetSceneFilePath(lua_State *L)
+static int lua_SetSceneOcclusionCulling(lua_State *L)
 {
-	const char* result;
 	elfScene* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetSceneFilePath", lua_gettop(L), 1);}
+	unsigned char arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetSceneOcclusionCulling", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
-		{return lua_fail_arg(L, "GetSceneFilePath", 1, "elfScene");}
+		{return lua_fail_arg(L, "SetSceneOcclusionCulling", 1, "elfScene");}
+	if(!lua_isboolean(L, 2)) {return lua_fail_arg(L, "SetSceneOcclusionCulling", 2, "boolean");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetSceneFilePath(arg0);
-	lua_pushstring(L, result);
+	arg1 = (unsigned char)lua_toboolean(L, 2);
+	elfSetSceneOcclusionCulling(arg0, arg1);
+	return 0;
+}
+static int lua_GetSceneOcclusionCulling(lua_State *L)
+{
+	unsigned char result;
+	elfScene* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetSceneOcclusionCulling", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
+		{return lua_fail_arg(L, "GetSceneOcclusionCulling", 1, "elfScene");}
+	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetSceneOcclusionCulling(arg0);
+	lua_pushboolean(L, result);
+	return 1;
+}
+static int lua_SetSceneGravity(lua_State *L)
+{
+	elfScene* arg0;
+	float arg1;
+	float arg2;
+	float arg3;
+	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "SetSceneGravity", lua_gettop(L), 4);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
+		{return lua_fail_arg(L, "SetSceneGravity", 1, "elfScene");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetSceneGravity", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetSceneGravity", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "SetSceneGravity", 4, "number");}
+	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (float)lua_tonumber(L, 2);
+	arg2 = (float)lua_tonumber(L, 3);
+	arg3 = (float)lua_tonumber(L, 4);
+	elfSetSceneGravity(arg0, arg1, arg2, arg3);
+	return 0;
+}
+static int lua_GetSceneGravity(lua_State *L)
+{
+	elfVec3f result;
+	elfScene* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetSceneGravity", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
+		{return lua_fail_arg(L, "GetSceneGravity", 1, "elfScene");}
+	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetSceneGravity(arg0);
+	lua_create_elfVec3f(L, result);
+	return 1;
+}
+static int lua_SetSceneAmbientColor(lua_State *L)
+{
+	elfScene* arg0;
+	float arg1;
+	float arg2;
+	float arg3;
+	float arg4;
+	if(lua_gettop(L) != 5) {return lua_fail_arg_count(L, "SetSceneAmbientColor", lua_gettop(L), 5);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
+		{return lua_fail_arg(L, "SetSceneAmbientColor", 1, "elfScene");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetSceneAmbientColor", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetSceneAmbientColor", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "SetSceneAmbientColor", 4, "number");}
+	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "SetSceneAmbientColor", 5, "number");}
+	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (float)lua_tonumber(L, 2);
+	arg2 = (float)lua_tonumber(L, 3);
+	arg3 = (float)lua_tonumber(L, 4);
+	arg4 = (float)lua_tonumber(L, 5);
+	elfSetSceneAmbientColor(arg0, arg1, arg2, arg3, arg4);
+	return 0;
+}
+static int lua_GetSceneAmbientColor(lua_State *L)
+{
+	elfColor result;
+	elfScene* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetSceneAmbientColor", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
+		{return lua_fail_arg(L, "GetSceneAmbientColor", 1, "elfScene");}
+	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetSceneAmbientColor(arg0);
+	lua_create_elfColor(L, result);
+	return 1;
+}
+static int lua_SetSceneFog(lua_State *L)
+{
+	elfScene* arg0;
+	unsigned char arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetSceneFog", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
+		{return lua_fail_arg(L, "SetSceneFog", 1, "elfScene");}
+	if(!lua_isboolean(L, 2)) {return lua_fail_arg(L, "SetSceneFog", 2, "boolean");}
+	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (unsigned char)lua_toboolean(L, 2);
+	elfSetSceneFog(arg0, arg1);
+	return 0;
+}
+static int lua_SetSceneFogStart(lua_State *L)
+{
+	elfScene* arg0;
+	float arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetSceneFogStart", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
+		{return lua_fail_arg(L, "SetSceneFogStart", 1, "elfScene");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetSceneFogStart", 2, "number");}
+	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (float)lua_tonumber(L, 2);
+	elfSetSceneFogStart(arg0, arg1);
+	return 0;
+}
+static int lua_SetSceneFogEnd(lua_State *L)
+{
+	elfScene* arg0;
+	float arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetSceneFogEnd", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
+		{return lua_fail_arg(L, "SetSceneFogEnd", 1, "elfScene");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetSceneFogEnd", 2, "number");}
+	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (float)lua_tonumber(L, 2);
+	elfSetSceneFogEnd(arg0, arg1);
+	return 0;
+}
+static int lua_SetSceneFogColor(lua_State *L)
+{
+	elfScene* arg0;
+	float arg1;
+	float arg2;
+	float arg3;
+	float arg4;
+	if(lua_gettop(L) != 5) {return lua_fail_arg_count(L, "SetSceneFogColor", lua_gettop(L), 5);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
+		{return lua_fail_arg(L, "SetSceneFogColor", 1, "elfScene");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetSceneFogColor", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetSceneFogColor", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "SetSceneFogColor", 4, "number");}
+	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "SetSceneFogColor", 5, "number");}
+	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (float)lua_tonumber(L, 2);
+	arg2 = (float)lua_tonumber(L, 3);
+	arg3 = (float)lua_tonumber(L, 4);
+	arg4 = (float)lua_tonumber(L, 5);
+	elfSetSceneFogColor(arg0, arg1, arg2, arg3, arg4);
+	return 0;
+}
+static int lua_GetSceneFog(lua_State *L)
+{
+	unsigned char result;
+	elfScene* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetSceneFog", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
+		{return lua_fail_arg(L, "GetSceneFog", 1, "elfScene");}
+	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetSceneFog(arg0);
+	lua_pushboolean(L, result);
+	return 1;
+}
+static int lua_GetSceneFogStart(lua_State *L)
+{
+	float result;
+	elfScene* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetSceneFogStart", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
+		{return lua_fail_arg(L, "GetSceneFogStart", 1, "elfScene");}
+	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetSceneFogStart(arg0);
+	lua_pushnumber(L, (lua_Number)result);
+	return 1;
+}
+static int lua_GetFogEnd(lua_State *L)
+{
+	float result;
+	elfScene* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetFogEnd", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
+		{return lua_fail_arg(L, "GetFogEnd", 1, "elfScene");}
+	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetFogEnd(arg0);
+	lua_pushnumber(L, (lua_Number)result);
+	return 1;
+}
+static int lua_GetFogColor(lua_State *L)
+{
+	elfColor result;
+	elfScene* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetFogColor", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
+		{return lua_fail_arg(L, "GetFogColor", 1, "elfScene");}
+	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetFogColor(arg0);
+	lua_create_elfColor(L, result);
 	return 1;
 }
 static int lua_GetSceneCameraCount(lua_State *L)
@@ -10646,15 +10802,22 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"SeekList", lua_SeekList},
 	{"RSeekList", lua_RSeekList},
 	{"ReadConfig", lua_ReadConfig},
-	{"GetConfigWindowWidth", lua_GetConfigWindowWidth},
-	{"GetConfigWindowHeight", lua_GetConfigWindowHeight},
+	{"SetConfigWindowSize", lua_SetConfigWindowSize},
+	{"SetConfigMultisamples", lua_SetConfigMultisamples},
+	{"SetConfigFullscreen", lua_SetConfigFullscreen},
+	{"SetConfigTextureCompress", lua_SetConfigTextureCompress},
+	{"SetConfigTextureAnisotropy", lua_SetConfigTextureAnisotropy},
+	{"SetConfigShadowMapSize", lua_SetConfigShadowMapSize},
+	{"SetConfigStart", lua_SetConfigStart},
+	{"SetConfigLogPath", lua_SetConfigLogPath},
+	{"GetConfigWindowSize", lua_GetConfigWindowSize},
 	{"GetConfigMultisamples", lua_GetConfigMultisamples},
 	{"GetConfigFullscreen", lua_GetConfigFullscreen},
 	{"GetConfigTextureCompress", lua_GetConfigTextureCompress},
 	{"GetConfigTextureAnisotropy", lua_GetConfigTextureAnisotropy},
 	{"GetConfigShadowMapSize", lua_GetConfigShadowMapSize},
 	{"GetConfigStart", lua_GetConfigStart},
-	{"GetConfigLog", lua_GetConfigLog},
+	{"GetConfigLogPath", lua_GetConfigLogPath},
 	{"WriteLogLine", lua_WriteLogLine},
 	{"SetTitle", lua_SetTitle},
 	{"GetWindowWidth", lua_GetWindowWidth},
@@ -10683,7 +10846,6 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetKeyEventKey", lua_GetKeyEventKey},
 	{"GetKeyEventState", lua_GetKeyEventState},
 	{"Init", lua_Init},
-	{"InitWithConfig", lua_InitWithConfig},
 	{"Deinit", lua_Deinit},
 	{"ResizeWindow", lua_ResizeWindow},
 	{"GetPlatform", lua_GetPlatform},
@@ -10719,11 +10881,6 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"SetShadowMapSize", lua_SetShadowMapSize},
 	{"GetShadowMapSize", lua_GetShadowMapSize},
 	{"GetPolygonsRendered", lua_GetPolygonsRendered},
-	{"SetFog", lua_SetFog},
-	{"DisableFog", lua_DisableFog},
-	{"GetFogStart", lua_GetFogStart},
-	{"GetFogEnd", lua_GetFogEnd},
-	{"GetFogColor", lua_GetFogColor},
 	{"SetBloom", lua_SetBloom},
 	{"DisableBloom", lua_DisableBloom},
 	{"GetBloomThreshold", lua_GetBloomThreshold},
@@ -10737,15 +10894,10 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"SetLightShafts", lua_SetLightShafts},
 	{"DisableLightShafts", lua_DisableLightShafts},
 	{"GetLightShaftsIntensity", lua_GetLightShaftsIntensity},
-	{"IsFog", lua_IsFog},
 	{"IsBloom", lua_IsBloom},
 	{"IsSsao", lua_IsSsao},
 	{"IsDof", lua_IsDof},
 	{"IsLightShafts", lua_IsLightShafts},
-	{"SetOcclusionCulling", lua_SetOcclusionCulling},
-	{"IsOcclusionCulling", lua_IsOcclusionCulling},
-	{"SetDebugDraw", lua_SetDebugDraw},
-	{"IsDebugDraw", lua_IsDebugDraw},
 	{"GetActor", lua_GetActor},
 	{"ReadDirectory", lua_ReadDirectory},
 	{"GetDirectoryPath", lua_GetDirectoryPath},
@@ -11134,19 +11286,31 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetSpriteVisible", lua_GetSpriteVisible},
 	{"SetSpriteOccluder", lua_SetSpriteOccluder},
 	{"GetSpriteOccluder", lua_GetSpriteOccluder},
+	{"GetSceneName", lua_GetSceneName},
+	{"GetSceneFilePath", lua_GetSceneFilePath},
 	{"CreateScene", lua_CreateScene},
 	{"CreateSceneFromFile", lua_CreateSceneFromFile},
 	{"SaveScene", lua_SaveScene},
-	{"SetSceneAmbientColor", lua_SetSceneAmbientColor},
-	{"GetSceneAmbientColor", lua_GetSceneAmbientColor},
-	{"SetSceneGravity", lua_SetSceneGravity},
-	{"GetSceneGravity", lua_GetSceneGravity},
 	{"SetScenePhysics", lua_SetScenePhysics},
 	{"GetScenePhysics", lua_GetScenePhysics},
 	{"SetSceneRunScripts", lua_SetSceneRunScripts},
 	{"GetSceneRunScripts", lua_GetSceneRunScripts},
-	{"GetSceneName", lua_GetSceneName},
-	{"GetSceneFilePath", lua_GetSceneFilePath},
+	{"SetSceneDebugDraw", lua_SetSceneDebugDraw},
+	{"GetSceneDebugDraw", lua_GetSceneDebugDraw},
+	{"SetSceneOcclusionCulling", lua_SetSceneOcclusionCulling},
+	{"GetSceneOcclusionCulling", lua_GetSceneOcclusionCulling},
+	{"SetSceneGravity", lua_SetSceneGravity},
+	{"GetSceneGravity", lua_GetSceneGravity},
+	{"SetSceneAmbientColor", lua_SetSceneAmbientColor},
+	{"GetSceneAmbientColor", lua_GetSceneAmbientColor},
+	{"SetSceneFog", lua_SetSceneFog},
+	{"SetSceneFogStart", lua_SetSceneFogStart},
+	{"SetSceneFogEnd", lua_SetSceneFogEnd},
+	{"SetSceneFogColor", lua_SetSceneFogColor},
+	{"GetSceneFog", lua_GetSceneFog},
+	{"GetSceneFogStart", lua_GetSceneFogStart},
+	{"GetFogEnd", lua_GetFogEnd},
+	{"GetFogColor", lua_GetFogColor},
 	{"GetSceneCameraCount", lua_GetSceneCameraCount},
 	{"GetSceneEntityCount", lua_GetSceneEntityCount},
 	{"GetSceneLightCount", lua_GetSceneLightCount},
