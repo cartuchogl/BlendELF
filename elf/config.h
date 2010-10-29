@@ -98,7 +98,7 @@ ELF_API elfConfig* ELF_APIENTRY elfReadConfig(const char* filePath)
 			{
 				elfReadSstInts(text, &pos, 2, &config->windowSize.x);
 			}
-			else if(!strcmp(str, "windowSize"))
+			else if(!strcmp(str, "windowTitle"))
 			{
 				if(config->windowTitle) free(config->windowTitle);
 				config->windowTitle = elfReadSstString(text, &pos);
