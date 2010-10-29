@@ -22,7 +22,7 @@ ELF_API elfMaterial* ELF_APIENTRY elfCreateMaterial(const char* name)
 
 	elfIncObj(ELF_MATERIAL);
 
-	material->id = ++gen->materialIdCounter;
+	material->id = ++res->materialIdCounter;
 
 	return material;
 }

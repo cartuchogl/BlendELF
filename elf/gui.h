@@ -1,94 +1,9 @@
 
 void elfSetOrtho(int x, int y, int width, int height, gfxShaderParams *shaderParams)
 {
-
 	gfxSetViewport(x, y, width, height);
 	gfxGetOrthographicProjectionMatrix((float)x, (float)x+width, (float)y, (float)y+height,
 		-1.0f, 1.0f, shaderParams->projectionMatrix);
-}
-
-void elfDrawHorGradient(int x, int y, int width, int height, elfColor col1, elfColor col2)
-{
-	int* vertexBuffer;
-	float* colorBuffer;
-
-	vertexBuffer = (int*)gfxGetVertexDataBuffer(eng->gradientVertexData);
-
-	vertexBuffer[0] = x;
-	vertexBuffer[1] = y+height;
-	vertexBuffer[2] = 0;
-	vertexBuffer[3] = x;
-	vertexBuffer[4] = y;
-	vertexBuffer[5] = 0;
-	vertexBuffer[6] = x+width;
-	vertexBuffer[7] = y+height;
-	vertexBuffer[8] = 0;
-	vertexBuffer[9] = x+width;
-	vertexBuffer[10] = y;
-	vertexBuffer[11] = 0;
-
-	colorBuffer = (float*)gfxGetVertexDataBuffer(eng->gradientColorData);
-
-	colorBuffer[0] = col1.r;
-	colorBuffer[1] = col1.g;
-	colorBuffer[2] = col1.b;
-	colorBuffer[3] = col1.a;
-	colorBuffer[4] = col2.r;
-	colorBuffer[5] = col2.g;
-	colorBuffer[6] = col2.b;
-	colorBuffer[7] = col2.a;
-	colorBuffer[8] = col1.r;
-	colorBuffer[9] = col1.g;
-	colorBuffer[10] = col1.b;
-	colorBuffer[11] = col1.a;
-	colorBuffer[12] = col2.r;
-	colorBuffer[13] = col2.g;
-	colorBuffer[14] = col2.b;
-	colorBuffer[15] = col2.a;
-
-	gfxDrawVertexArray(eng->gradientVertexArray, 4, GFX_TRIANGLE_STRIP);
-}
-
-void elfDrawHorGradientBorder(int x, int y, int width, int height, elfColor col1, elfColor col2)
-{
-	int* vertexBuffer;
-	float* colorBuffer;
-
-	vertexBuffer = (int*)gfxGetVertexDataBuffer(eng->gradientVertexData);
-
-	vertexBuffer[0] = x;
-	vertexBuffer[1] = y+height;
-	vertexBuffer[2] = 0;
-	vertexBuffer[3] = x;
-	vertexBuffer[4] = y;
-	vertexBuffer[5] = 0;
-	vertexBuffer[6] = x+width;
-	vertexBuffer[7] = y+1;
-	vertexBuffer[8] = 0;
-	vertexBuffer[9] = x+width;
-	vertexBuffer[10] = y+height;
-	vertexBuffer[11] = 0;
-
-	colorBuffer = (float*)gfxGetVertexDataBuffer(eng->gradientColorData);
-
-	colorBuffer[0] = col1.r;
-	colorBuffer[1] = col1.g;
-	colorBuffer[2] = col1.b;
-	colorBuffer[3] = col1.a;
-	colorBuffer[4] = col2.r;
-	colorBuffer[5] = col2.g;
-	colorBuffer[6] = col2.b;
-	colorBuffer[7] = col2.a;
-	colorBuffer[8] = col2.r;
-	colorBuffer[9] = col2.g;
-	colorBuffer[10] = col2.b;
-	colorBuffer[11] = col2.a;
-	colorBuffer[12] = col1.r;
-	colorBuffer[13] = col1.g;
-	colorBuffer[14] = col1.b;
-	colorBuffer[15] = col1.a;
-
-	gfxDrawVertexArray(eng->gradientVertexArray, 4, GFX_LINE_LOOP);
 }
 
 ELF_API const char* ELF_APIENTRY elfGetGuiObjectName(elfGuiObject* object)
@@ -346,7 +261,7 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams)
 			gfxSetColor(&shaderParams->materialParams.diffuseColor, button->color.r,
 				button->color.g, button->color.b, button->color.a);
 			gfxSetShaderParams(shaderParams);
-			gfxDrawTextured2dQuad((float)button->pos.x, (float)button->pos.y, (float)button->width, (float)button->height);
+			elfDrawTextured2dQuad((float)button->pos.x, (float)button->pos.y, (float)button->width, (float)button->height);
 			shaderParams->textureParams[0].texture = NULL;
 		}
 	}
@@ -494,7 +409,7 @@ void elfDrawPicture(elfPicture* picture, gfxShaderParams* shaderParams)
 
 	shaderParams->textureParams[0].texture = picture->texture->texture;
 	gfxSetShaderParams(shaderParams);
-	gfxDrawTextured2dQuad((float)picture->pos.x, (float)picture->pos.y, (float)picture->width, (float)picture->height);
+	elfDrawTextured2dQuad((float)picture->pos.x, (float)picture->pos.y, (float)picture->width, (float)picture->height);
 	shaderParams->textureParams[0].texture = NULL;
 }
 
@@ -635,7 +550,7 @@ void elfDrawTextField(elfTextField* textField, elfArea* area, gfxShaderParams* s
 		if(shaderParams->textureParams[0].texture)
 		{
 			gfxSetShaderParams(shaderParams);
-			gfxDrawTextured2dQuad((float)textField->pos.x, (float)textField->pos.y, (float)textField->width, (float)textField->height);
+			elfDrawTextured2dQuad((float)textField->pos.x, (float)textField->pos.y, (float)textField->width, (float)textField->height);
 			shaderParams->textureParams[0].texture = NULL;
 		}
 	}
@@ -663,7 +578,7 @@ void elfDrawTextField(elfTextField* textField, elfArea* area, gfxShaderParams* s
 
 		str = elfSubString(textField->text, textField->drawPos,
 			textField->cursorPos-textField->drawPos);
-		gfxDraw2dQuad(textField->pos.x+textField->offsetX+elfGetStringWidth(textField->font, str),
+		elfDraw2dQuad(textField->pos.x+textField->offsetX+elfGetStringWidth(textField->font, str),
 			textField->pos.y+textField->offsetY, 1, textField->height-textField->offsetY*2);
 		elfDestroyString(str);
 	}
@@ -895,7 +810,7 @@ void elfDrawSlider(elfSlider* slider, gfxShaderParams* shaderParams)
 		if(shaderParams->textureParams[0].texture)
 		{
 			gfxSetShaderParams(shaderParams);
-			gfxDrawTextured2dQuad((float)slider->pos.x, (float)slider->pos.y, (float)slider->width, (float)slider->height);
+			elfDrawTextured2dQuad((float)slider->pos.x, (float)slider->pos.y, (float)slider->width, (float)slider->height);
 			shaderParams->textureParams[0].texture = NULL;
 		}
 
@@ -906,11 +821,11 @@ void elfDrawSlider(elfSlider* slider, gfxShaderParams* shaderParams)
 			gfxSetShaderParams(shaderParams);
 			if(slider->width > slider->height)
 			{
-				gfxDrawTextured2dQuadRegion((float)slider->pos.x, (float)slider->pos.y, (float)slider->width*slider->value, (float)slider->height, 0.0f, 0.0f, slider->value, 1.0f);
+				elfDrawTextured2dQuadRegion((float)slider->pos.x, (float)slider->pos.y, (float)slider->width*slider->value, (float)slider->height, 0.0f, 0.0f, slider->value, 1.0f);
 			}
 			else
 			{
-				gfxDrawTextured2dQuadRegion((float)slider->pos.x, (float)slider->pos.y, (float)slider->width, (float)slider->height*slider->value, 0.0f, 0.0f, 1.0f, slider->value);	
+				elfDrawTextured2dQuadRegion((float)slider->pos.x, (float)slider->pos.y, (float)slider->width, (float)slider->height*slider->value, 0.0f, 0.0f, 1.0f, slider->value);	
 			}
 			shaderParams->textureParams[0].texture = NULL;
 		}
@@ -1090,7 +1005,7 @@ void elfDrawScreen(elfScreen* screen, elfArea* area, gfxShaderParams* shaderPara
 		if(shaderParams->textureParams[0].texture)
 		{
 			gfxSetShaderParams(shaderParams);
-			gfxDrawTextured2dQuad((float)screen->pos.x, (float)screen->pos.y, (float)screen->width, (float)screen->height);
+			elfDrawTextured2dQuad((float)screen->pos.x, (float)screen->pos.y, (float)screen->width, (float)screen->height);
 
 			shaderParams->textureParams[0].texture = NULL;
 		}
@@ -1565,7 +1480,7 @@ void elfDrawCheckBox(elfCheckBox* checkBox, gfxShaderParams* shaderParams)
 			gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 0.6f);
 			gfxSetShaderParams(shaderParams);
 
-			vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->lines);
+			vertexBuffer = (float*)gfxGetVertexDataBuffer(rnd->lines);
 
 			vertexBuffer[0] = checkBox->pos.x+4;
 			vertexBuffer[1] = checkBox->pos.y+2;
@@ -1581,7 +1496,7 @@ void elfDrawCheckBox(elfCheckBox* checkBox, gfxShaderParams* shaderParams)
 			vertexBuffer[10] = checkBox->pos.y+9;
 			vertexBuffer[11] = 0.0;
 
-			gfxDrawLines(4, eng->lines);
+			elfDrawLines(4, rnd->lines);
 
 			shaderParams->renderParams.lineWidth = 1.0;
 		}
@@ -1600,7 +1515,7 @@ void elfDrawCheckBox(elfCheckBox* checkBox, gfxShaderParams* shaderParams)
 			gfxSetColor(&shaderParams->materialParams.diffuseColor, checkBox->color.r,
 				checkBox->color.g, checkBox->color.b, checkBox->color.a);
 			gfxSetShaderParams(shaderParams);
-			gfxDrawTextured2dQuad((float)checkBox->pos.x, (float)checkBox->pos.y, (float)checkBox->width, (float)checkBox->height);
+			elfDrawTextured2dQuad((float)checkBox->pos.x, (float)checkBox->pos.y, (float)checkBox->width, (float)checkBox->height);
 			shaderParams->textureParams[0].texture = NULL;
 		}
 	}
@@ -2381,7 +2296,7 @@ void elfDrawGui(elfGui* gui)
 
 		gfxSetShaderParams(&gui->shaderParams);
 
-		gfxDrawCircle((float)mousePos.x, (float)(elfGetWindowHeight()-mousePos.y), 16, 12.0f);
+		elfDrawCircle((float)mousePos.x, (float)(elfGetWindowHeight()-mousePos.y), 16, 12.0f);
 	}
 
 	// reset state just to be sure...

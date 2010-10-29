@@ -1874,6 +1874,20 @@ static int lua_GetVec3fLength(lua_State *L)
 	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
+static int lua_AboutSame(lua_State *L)
+{
+	unsigned char result;
+	float arg0;
+	float arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AboutSame", lua_gettop(L), 2);}
+	if(!lua_isnumber(L, 1)) {return lua_fail_arg(L, "AboutSame", 1, "number");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "AboutSame", 2, "number");}
+	arg0 = (float)lua_tonumber(L, 1);
+	arg1 = (float)lua_tonumber(L, 2);
+	result = elfAboutSame(arg0, arg1);
+	lua_pushboolean(L, result);
+	return 1;
+}
 static int lua_AboutZero(lua_State *L)
 {
 	unsigned char result;
@@ -10751,6 +10765,7 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"SubVec3fVec3f", lua_SubVec3fVec3f},
 	{"AddVec3fVec3f", lua_AddVec3fVec3f},
 	{"GetVec3fLength", lua_GetVec3fLength},
+	{"AboutSame", lua_AboutSame},
 	{"AboutZero", lua_AboutZero},
 	{"FloatAbs", lua_FloatAbs},
 	{"FloatMin", lua_FloatMin},
@@ -11807,8 +11822,11 @@ int luaopen_elf(lua_State* L)
 	lua_pushstring(L, "RESOURCES");
 	lua_pushnumber(L, 0x0049);
 	lua_settable(L, -3);
-	lua_pushstring(L, "OBJECT_TYPE_COUNT");
+	lua_pushstring(L, "RENDER_STATION");
 	lua_pushnumber(L, 0x004A);
+	lua_settable(L, -3);
+	lua_pushstring(L, "OBJECT_TYPE_COUNT");
+	lua_pushnumber(L, 0x004B);
 	lua_settable(L, -3);
 	lua_pushstring(L, "PERSPECTIVE");
 	lua_pushnumber(L, 0x0000);

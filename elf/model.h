@@ -8,7 +8,7 @@ elfModel* elfCreateModel(const char* name)
 	model->objType = ELF_MODEL;
 	model->objDestr = elfDestroyModel;
 
-	model->id = ++gen->modelIdCounter;
+	model->id = ++res->modelIdCounter;
 
 	if(name) model->name = elfCreateString(name);
 
@@ -412,6 +412,6 @@ void elfDrawModelBoundingBox(elfModel* model, gfxShaderParams* shaderParams)
 	if(!model->vertexArray) return;
 
 	gfxSetShaderParams(shaderParams);
-	gfxDrawBoundingBox(&model->bbMin.x, &model->bbMax.x);
+	elfDrawBoundingBox(&model->bbMin.x, &model->bbMax.x);
 }
 

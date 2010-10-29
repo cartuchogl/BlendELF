@@ -8,7 +8,7 @@ elfTexture* elfCreateTexture()
 	texture->objType = ELF_TEXTURE;
 	texture->objDestr = elfDestroyTexture;
 
-	texture->id = ++gen->textureIdCounter;
+	texture->id = ++res->textureIdCounter;
 
 	elfIncObj(ELF_TEXTURE);
 

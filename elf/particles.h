@@ -131,7 +131,7 @@ ELF_API elfParticles* ELF_APIENTRY elfCreateParticles(const char* name, int maxC
 
 	if(name) particles->name = elfCreateString(name);
 
-	particles->id = ++gen->particlesIdCounter;
+	particles->id = ++res->particlesIdCounter;
 
 	elfIncObj(ELF_PARTICLES);
 
@@ -536,7 +536,7 @@ void elfDrawParticlesDebug(elfParticles* particles, gfxShaderParams* shaderParam
 	min[0] = min[1] = min[2] = -0.5f;
 	max[0] = max[1] = max[2] = 0.5f;
 
-	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->lines);
+	vertexBuffer = (float*)gfxGetVertexDataBuffer(rnd->lines);
 
 	vertexBuffer[0] = 0.0f;
 	vertexBuffer[1] = 0.0f;
@@ -590,7 +590,7 @@ void elfDrawParticlesDebug(elfParticles* particles, gfxShaderParams* shaderParam
 	if(!particles->selected) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.35f, 0.75f, 0.75f, 1.0f);
 	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.0f, 0.0f, 1.0f);
 	gfxSetShaderParams(shaderParams);
-	gfxDrawLines(14, eng->lines);
+	elfDrawLines(14, rnd->lines);
 
 	elfDrawActorDebug((elfActor*)particles, shaderParams);
 }

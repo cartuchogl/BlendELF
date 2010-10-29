@@ -28,7 +28,7 @@ ELF_API elfSprite* ELF_APIENTRY elfCreateSprite(const char* name)
 
 	if(name) sprite->name = elfCreateString(name);
 
-	sprite->id = ++gen->spriteIdCounter;
+	sprite->id = ++res->spriteIdCounter;
 
 	elfIncObj(ELF_SPRITE);
 
@@ -225,7 +225,7 @@ void elfDrawSprite(elfSprite* sprite, int mode, gfxShaderParams* shaderParams)
 	elfSetMaterial(sprite->material, mode, shaderParams);
 	gfxSetShaderParams(shaderParams);
 
-	gfxDrawVertexArray(eng->spriteVertexArray, 12, GFX_TRIANGLES);
+	gfxDrawVertexArray(rnd->spriteVertexArray, 12, GFX_TRIANGLES);
 }
 
 void elfDrawSpriteDebug(elfSprite* sprite, gfxShaderParams* shaderParams)
@@ -235,7 +235,7 @@ void elfDrawSpriteDebug(elfSprite* sprite, gfxShaderParams* shaderParams)
 	gfxMulMatrix4Matrix4(gfxGetTransformMatrix(sprite->transform),
 		shaderParams->cameraMatrix, shaderParams->modelviewMatrix);
 
-	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->lines);
+	vertexBuffer = (float*)gfxGetVertexDataBuffer(rnd->lines);
 
 	vertexBuffer[0] = -0.5f;
 	vertexBuffer[1] = 0.5f;
@@ -272,7 +272,7 @@ void elfDrawSpriteDebug(elfSprite* sprite, gfxShaderParams* shaderParams)
 	if(!sprite->selected) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.6f, 0.2f, 0.6f, 1.0f);
 	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.0f, 0.0f, 1.0f);
 	gfxSetShaderParams(shaderParams);
-	gfxDrawLines(8, eng->lines);
+	elfDrawLines(8, rnd->lines);
 
 	elfDrawActorDebug((elfActor*)sprite, shaderParams);
 }

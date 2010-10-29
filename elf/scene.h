@@ -65,7 +65,7 @@ ELF_API elfScene* ELF_APIENTRY elfCreateScene(const char* name)
 
 	scene->composeFogShdr = gfxCreateShaderProgram(composeFogVert, composeFogFrag);
 
-	scene->id = ++gen->sceneIdCounter;
+	scene->id = ++res->sceneIdCounter;
 
 	elfIncObj(ELF_SCENE);
 

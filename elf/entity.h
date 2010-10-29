@@ -30,7 +30,7 @@ ELF_API elfEntity* ELF_APIENTRY elfCreateEntity(const char* name)
 
 	if(name) entity->name = elfCreateString(name);
 
-	entity->id = ++gen->entityIdCounter;
+	entity->id = ++res->entityIdCounter;
 
 	elfIncObj(ELF_ENTITY);
 
@@ -588,7 +588,7 @@ void elfDrawEntityBoundingBox(elfEntity* entity, gfxShaderParams* shaderParams)
 		shaderParams->cameraMatrix, shaderParams->modelviewMatrix);
 
 	gfxSetShaderParams(shaderParams);
-	gfxDrawBoundingBox(&entity->model->bbMin.x, &entity->model->bbMax.x);
+	elfDrawBoundingBox(&entity->model->bbMin.x, &entity->model->bbMax.x);
 }
 
 void elfDrawEntityDebug(elfEntity* entity, gfxShaderParams* shaderParams)
@@ -611,7 +611,7 @@ void elfDrawEntityDebug(elfEntity* entity, gfxShaderParams* shaderParams)
 		max[0] = max[1] = max[2] = 0.2f;
 	}
 
-	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->lines);
+	vertexBuffer = (float*)gfxGetVertexDataBuffer(rnd->lines);
 
 	vertexBuffer[0] = min[0];
 	vertexBuffer[1] = max[1];
@@ -700,7 +700,7 @@ void elfDrawEntityDebug(elfEntity* entity, gfxShaderParams* shaderParams)
 	if(!entity->selected) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.1f, 0.1f, 0.2f, 1.0f);
 	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.0f, 0.0f, 1.0f);
 	gfxSetShaderParams(shaderParams);
-	gfxDrawLines(24, eng->lines);
+	elfDrawLines(24, rnd->lines);
 
 	if(entity->armature)
 	{

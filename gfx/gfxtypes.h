@@ -36,23 +36,6 @@ struct gfxDriver {
 	unsigned char dirtyVertexArrays;
 	unsigned int verticesDrawn[GFX_MAX_DRAW_MODES];
 
-	gfxVertexData* quadVertexData;
-	gfxVertexData* quadTexCoordData;
-	gfxVertexData* quadNormalData;
-	gfxVertexArray* quadVertexArray;
-
-	gfxVertexData* bbVertexData;
-	gfxVertexData* bbIndexData;
-	gfxVertexArray* bbVertexArray;
-	gfxVertexIndex* bbVertexIndex;
-
-	gfxVertexArray* lineVertexArray;
-
-	gfxVertexData* circleVertexData;
-	gfxVertexArray* circleVertexArray;
-	int prevCircleVerticeCount;
-	float prevCircleSize;
-
 	gfxShaderConfig shaderConfig;
 };
 

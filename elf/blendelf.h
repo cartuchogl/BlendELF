@@ -188,7 +188,8 @@ extern "C" {
 #define ELF_MESH_DATA					0x0047
 #define ELF_LIST_PTR					0x0048
 #define ELF_RESOURCES					0x0049
-#define ELF_OBJECT_TYPE_COUNT				0x004A	// <mdoc> NUMBER OF OBJECT TYPES
+#define ELF_RENDER_STATION				0x004A
+#define ELF_OBJECT_TYPE_COUNT				0x004B	// <mdoc> NUMBER OF OBJECT TYPES
 
 #define ELF_PERSPECTIVE					0x0000	// <mdoc> CAMERA MODE <mdocc> The camera modes used by camera internal functions
 #define ELF_ORTHOGRAPHIC				0x0001
@@ -406,6 +407,7 @@ typedef struct elfVideoMode				elfVideoMode;
 typedef struct elfVertex				elfVertex;
 typedef struct elfFace					elfFace;
 typedef struct elfMeshData				elfMeshData;
+typedef struct elfRenderStation				elfRenderStation;
 
 // <!!
 struct elfVec2i {
@@ -726,6 +728,7 @@ ELF_API elfVec3f ELF_APIENTRY elfSubVec3fVec3f(elfVec3f vec1, elfVec3f vec2);
 ELF_API elfVec3f ELF_APIENTRY elfAddVec3fVec3f(elfVec3f vec1, elfVec3f vec2);
 ELF_API float ELF_APIENTRY elfGetVec3fLength(elfVec3f vec);
 
+ELF_API unsigned char ELF_APIENTRY elfAboutSame(float v1, float v2);
 ELF_API unsigned char ELF_APIENTRY elfAboutZero(float val);
 ELF_API float ELF_APIENTRY elfFloatAbs(float val);
 ELF_API float ELF_APIENTRY elfFloatMin(float a, float b);
@@ -734,6 +737,26 @@ ELF_API float ELF_APIENTRY elfRandomFloat();
 ELF_API float ELF_APIENTRY elfRandomFloatRange(float min, float max);
 ELF_API int ELF_APIENTRY elfRandomInt();
 ELF_API int ELF_APIENTRY elfRandomIntRange(int min, int max);
+
+/////////////////////////// RENDER STATION ////////////////////////////
+
+// <!!
+elfRenderStation* elfCreateRenderStation();
+void elfDestroyRenderStation(void *data);
+unsigned char elfInitRenderStation();
+void elfDeinitRenderStation();
+
+void elfDraw2dQuad(float x, float y, float width, float height);
+void elfDrawTextured2dQuad(float x, float y, float width, float height);
+void elfDrawTextured2dQuadRegion(float x, float y, float width, float height, float tx, float ty, float twidth, float theight);
+float elfGetAbsoluteValue(float val);
+void elfDrawCircle(float x, float y, int vertices, float size);
+void elfDrawBoundingBox(float min[3], float max[3]);
+void elfDrawLines(int count, gfxVertexData* vertices);
+void elfDrawLineLoop(int count, gfxVertexData* vertices);
+void elfDrawHorGradient(int x, int y, int width, int height, elfColor col1, elfColor col2);
+void elfDrawHorGradientBorder(int x, int y, int width, int height, elfColor col1, elfColor col2);
+// !!>
 
 ////////////////////////////// RESOURCES //////////////////////////////
 

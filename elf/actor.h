@@ -1091,7 +1091,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 	gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.5f, 1.0f, 0.5f, 1.0f);
 	gfxSetShaderParams(shaderParams);
 
-	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->lines);
+	vertexBuffer = (float*)gfxGetVertexDataBuffer(rnd->lines);
 
 	if(actor->shape == ELF_BOX)
 	{
@@ -1187,7 +1187,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 		vertexBuffer[71] = min[2];
 
 		gfxSetShaderParams(shaderParams);
-		gfxDrawLines(24, eng->lines);
+		elfDrawLines(24, rnd->lines);
 	}
 	else if(actor->shape == ELF_SPHERE)
 	{
@@ -1206,7 +1206,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 			vertexBuffer[i*3+2] = actor->pbbOffset.z;
 		}
 
-		gfxDrawLineLoop(128, eng->lines);
+		elfDrawLineLoop(128, rnd->lines);
 
 		for(i = 0; i < 128; i++)
 		{
@@ -1215,7 +1215,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 			vertexBuffer[i*3+2] = ((float)cos((float)(step*i)))*size+actor->pbbOffset.z;
 		}
 
-		gfxDrawLineLoop(128, eng->lines);
+		elfDrawLineLoop(128, rnd->lines);
 
 		for(i = 0; i < 128; i++)
 		{
@@ -1224,7 +1224,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 			vertexBuffer[i*3+2] = ((float)cos((float)(step*i)))*size+actor->pbbOffset.z;
 		}
 
-		gfxDrawLineLoop(128, eng->lines);
+		elfDrawLineLoop(128, rnd->lines);
 	}
 	else if(actor->shape == ELF_CAPSULE_X)
 	{
@@ -1263,7 +1263,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 			vertexBuffer[i*3+2] = actor->pbbOffset.z;
 		}
 
-		gfxDrawLineLoop(128, eng->lines);
+		elfDrawLineLoop(128, rnd->lines);
 
 		for(i = 0; i < 32; i++)
 		{
@@ -1293,7 +1293,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 			vertexBuffer[i*3+2] = -((float)sin((float)(step*i)))*size+actor->pbbOffset.z;
 		}
 
-		gfxDrawLineLoop(128, eng->lines);
+		elfDrawLineLoop(128, rnd->lines);
 	}
 	else if(actor->shape == ELF_CAPSULE_Y)
 	{
@@ -1332,7 +1332,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 			vertexBuffer[i*3+2] = actor->pbbOffset.z;
 		}
 
-		gfxDrawLineLoop(128, eng->lines);
+		elfDrawLineLoop(128, rnd->lines);
 
 		for(i = 0; i < 32; i++)
 		{
@@ -1362,7 +1362,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 			vertexBuffer[i*3+2] = -((float)sin((float)(step*i)))*size+actor->pbbOffset.z;
 		}
 
-		gfxDrawLineLoop(128, eng->lines);
+		elfDrawLineLoop(128, rnd->lines);
 	}
 	else if(actor->shape == ELF_CAPSULE_Z)
 	{
@@ -1401,7 +1401,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 			vertexBuffer[i*3+2] = ((float)cos((float)(step*i)))*size+halfLength+actor->pbbOffset.z;
 		}
 
-		gfxDrawLineLoop(128, eng->lines);
+		elfDrawLineLoop(128, rnd->lines);
 
 		for(i = 0; i < 32; i++)
 		{
@@ -1431,7 +1431,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 			vertexBuffer[i*3+2] = ((float)cos((float)(step*i)))*size+halfLength+actor->pbbOffset.z;
 		}
 
-		gfxDrawLineLoop(128, eng->lines);
+		elfDrawLineLoop(128, rnd->lines);
 	}
 	else if(actor->shape == ELF_CONE_X)
 	{
@@ -1449,7 +1449,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 			vertexBuffer[i*3+2] = ((float)cos((float)(step*i)))*size+actor->pbbOffset.y;
 		}
 
-		gfxDrawLineLoop(128, eng->lines);
+		elfDrawLineLoop(128, rnd->lines);
 
 		vertexBuffer[0] = halfLength+actor->pbbOffset.z;
 		vertexBuffer[1] = 0.0f+actor->pbbOffset.x;
@@ -1476,7 +1476,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 		vertexBuffer[22] = 0.0f+actor->pbbOffset.x;
 		vertexBuffer[23] = -size+actor->pbbOffset.y;
 
-		gfxDrawLines(8, eng->lines);
+		elfDrawLines(8, rnd->lines);
 	}
 	else if(actor->shape == ELF_CONE_Y)
 	{
@@ -1494,7 +1494,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 			vertexBuffer[i*3+2] = ((float)cos((float)(step*i)))*size+actor->pbbOffset.y;
 		}
 
-		gfxDrawLineLoop(128, eng->lines);
+		elfDrawLineLoop(128, rnd->lines);
 
 		vertexBuffer[0] = 0.0f+actor->pbbOffset.x;
 		vertexBuffer[1] = halfLength+actor->pbbOffset.z;
@@ -1521,7 +1521,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 		vertexBuffer[22] = -halfLength+actor->pbbOffset.z;
 		vertexBuffer[23] = -size+actor->pbbOffset.y;
 
-		gfxDrawLines(8, eng->lines);
+		elfDrawLines(8, rnd->lines);
 	}
 	else if(actor->shape == ELF_CONE_Z)
 	{
@@ -1539,7 +1539,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 			vertexBuffer[i*3+2] = -halfLength+actor->pbbOffset.z;
 		}
 
-		gfxDrawLineLoop(128, eng->lines);
+		elfDrawLineLoop(128, rnd->lines);
 
 		vertexBuffer[0] = 0.0f+actor->pbbOffset.x;
 		vertexBuffer[1] = 0.0f+actor->pbbOffset.y;
@@ -1566,7 +1566,7 @@ void elfDrawActorDebug(elfActor* actor, gfxShaderParams* shaderParams)
 		vertexBuffer[22] = -size+actor->pbbOffset.y;
 		vertexBuffer[23] = -halfLength+actor->pbbOffset.z;
 
-		gfxDrawLines(8, eng->lines);
+		elfDrawLines(8, rnd->lines);
 	}
 }
 

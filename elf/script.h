@@ -8,7 +8,7 @@ ELF_API elfScript* ELF_APIENTRY elfCreateScript(const char* name)
 	script->objType = ELF_SCRIPT;
 	script->objDestr = elfDestroyScript;
 
-	script->id = ++gen->scriptIdCounter;
+	script->id = ++res->scriptIdCounter;
 
 	if(name) script->name = elfCreateString(name);
 

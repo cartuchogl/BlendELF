@@ -2,8 +2,6 @@
 elfEngine* elfCreateEngine()
 {
 	elfEngine* engine;
-	gfxVertexData* vertexData;
-	float* vertexBuffer;
 
 	engine = (elfEngine*)malloc(sizeof(elfEngine));
 	memset(engine, 0x0, sizeof(elfEngine));
@@ -34,149 +32,6 @@ elfEngine* elfCreateEngine()
 	engine->textureAnisotropy = 1.0f;
 	engine->occlusionCulling = ELF_FALSE;
 
-	engine->lines = gfxCreateVertexData(512, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-	gfxIncRef((gfxObject*)engine->lines);
-
-	engine->spriteVertexArray = gfxCreateVertexArray(GFX_FALSE);
-	gfxIncRef((gfxObject*)engine->spriteVertexArray);
-
-	vertexData = gfxCreateVertexData(36, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-
-	vertexBuffer = (float*)gfxGetVertexDataBuffer(vertexData);
-
-	vertexBuffer[0] = -0.5f;
-	vertexBuffer[1] = 0.5f;
-	vertexBuffer[2] = 0.0f;
-	vertexBuffer[3] = -0.5f;
-	vertexBuffer[4] = -0.5f;
-	vertexBuffer[5] = 0.0f;
-	vertexBuffer[6] = 0.5f;
-	vertexBuffer[7] = -0.5f;
-	vertexBuffer[8] = 0.0f;
-
-	vertexBuffer[9] = -0.5f;
-	vertexBuffer[10] = 0.5f;
-	vertexBuffer[11] = 0.0f;
-	vertexBuffer[12] = 0.5f;
-	vertexBuffer[13] = -0.5f;
-	vertexBuffer[14] = 0.0f;
-	vertexBuffer[15] = 0.5f;
-	vertexBuffer[16] = 0.5f;
-	vertexBuffer[17] = 0.0f;
-
-	vertexBuffer[18] = 0.5f;
-	vertexBuffer[19] = 0.5f;
-	vertexBuffer[20] = 0.0f;
-	vertexBuffer[21] = 0.5f;
-	vertexBuffer[22] = -0.5f;
-	vertexBuffer[23] = 0.0f;
-	vertexBuffer[24] = -0.5f;
-	vertexBuffer[25] = -0.5f;
-	vertexBuffer[26] = 0.0f;
-
-	vertexBuffer[27] = 0.5f;
-	vertexBuffer[28] = 0.5f;
-	vertexBuffer[29] = 0.0f;
-	vertexBuffer[30] = -0.5f;
-	vertexBuffer[31] = -0.5f;
-	vertexBuffer[32] = 0.0f;
-	vertexBuffer[33] = -0.5f;
-	vertexBuffer[34] = 0.5f;
-	vertexBuffer[35] = 0.0f;
-
-	gfxSetVertexArrayData(engine->spriteVertexArray, GFX_VERTEX, vertexData);
-
-	vertexData = gfxCreateVertexData(24, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-
-	vertexBuffer = (float*)gfxGetVertexDataBuffer(vertexData);
-
-	vertexBuffer[0] = 0.0f;
-	vertexBuffer[1] = 1.0f;
-	vertexBuffer[2] = 0.0f;
-	vertexBuffer[3] = 0.0f;
-	vertexBuffer[4] = 1.0f;
-	vertexBuffer[5] = 0.0f;
-
-	vertexBuffer[6] = 0.0f;
-	vertexBuffer[7] = 1.0f;
-	vertexBuffer[8] = 1.0f;
-	vertexBuffer[9] = 0.0f;
-	vertexBuffer[10] = 1.0f;
-	vertexBuffer[11] = 1.0f;
-
-	vertexBuffer[12] = 0.0f;
-	vertexBuffer[13] = 1.0f;
-	vertexBuffer[14] = 0.0f;
-	vertexBuffer[15] = 0.0f;
-	vertexBuffer[16] = 1.0f;
-	vertexBuffer[17] = 0.0f;
-
-	vertexBuffer[18] = 0.0f;
-	vertexBuffer[19] = 1.0f;
-	vertexBuffer[20] = 1.0f;
-	vertexBuffer[21] = 0.0f;
-	vertexBuffer[22] = 1.0f;
-	vertexBuffer[23] = 1.0f;
-
-	gfxSetVertexArrayData(engine->spriteVertexArray, GFX_TEX_COORD, vertexData);
-
-	vertexData = gfxCreateVertexData(36, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-
-	vertexBuffer = (float*)gfxGetVertexDataBuffer(vertexData);
-
-	vertexBuffer[0] = 0.0f;
-	vertexBuffer[1] = 0.0f;
-	vertexBuffer[2] = 1.0f;
-	vertexBuffer[3] = 0.0f;
-	vertexBuffer[4] = 0.0f;
-	vertexBuffer[5] = 1.0f;
-	vertexBuffer[6] = 0.0f;
-	vertexBuffer[7] = 0.0f;
-	vertexBuffer[8] = 1.0f;
-
-	vertexBuffer[9] = 0.0f;
-	vertexBuffer[10] = 0.0f;
-	vertexBuffer[11] = 1.0f;
-	vertexBuffer[12] = 0.0f;
-	vertexBuffer[13] = 0.0f;
-	vertexBuffer[14] = 1.0f;
-	vertexBuffer[15] = 0.0f;
-	vertexBuffer[16] = 0.0f;
-	vertexBuffer[17] = 1.0f;
-
-	vertexBuffer[18] = 0.0f;
-	vertexBuffer[19] = 0.0f;
-	vertexBuffer[20] = -1.0f;
-	vertexBuffer[21] = 0.0f;
-	vertexBuffer[22] = 0.0f;
-	vertexBuffer[23] = -1.0f;
-	vertexBuffer[24] = 0.0f;
-	vertexBuffer[25] = 0.0f;
-	vertexBuffer[26] = -1.0f;
-
-	vertexBuffer[27] = 0.0f;
-	vertexBuffer[28] = 0.0f;
-	vertexBuffer[29] = -1.0f;
-	vertexBuffer[30] = 0.0f;
-	vertexBuffer[31] = 0.0f;
-	vertexBuffer[32] = -1.0f;
-	vertexBuffer[33] = 0.0f;
-	vertexBuffer[34] = 0.0f;
-	vertexBuffer[35] = -1.0f;
-
-	gfxSetVertexArrayData(engine->spriteVertexArray, GFX_NORMAL, vertexData);
-
-	engine->gradientVertexData = gfxCreateVertexData(18, GFX_INT, GFX_VERTEX_DATA_DYNAMIC);
-	engine->gradientColorData = gfxCreateVertexData(24, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-	engine->gradientVertexArray = gfxCreateVertexArray(GFX_FALSE);
-
-	gfxSetVertexArrayData(engine->gradientVertexArray, GFX_VERTEX, engine->gradientVertexData);
-	gfxSetVertexArrayData(engine->gradientVertexArray, GFX_COLOR, engine->gradientColorData);
-
-	gfxIncRef((gfxObject*)engine->gradientVertexData);
-	gfxIncRef((gfxObject*)engine->gradientColorData);
-	gfxIncRef((gfxObject*)engine->gradientVertexArray);
-
 	elfIncObj(ELF_ENGINE);
 
 	return engine;
@@ -185,13 +40,6 @@ elfEngine* elfCreateEngine()
 void elfDestroyEngine(void* data)
 {
 	elfEngine* engine = (elfEngine*)data;
-
-	gfxDecRef((gfxObject*)engine->lines);
-	gfxDecRef((gfxObject*)engine->spriteVertexArray);
-
-	gfxDecRef((gfxObject*)engine->gradientVertexData);
-	gfxDecRef((gfxObject*)engine->gradientColorData);
-	gfxDecRef((gfxObject*)engine->gradientVertexArray);
 
 	if(engine->scene) elfDecRef((elfObject*)engine->scene);
 	if(engine->gui) elfDecRef((elfObject*)engine->gui);
@@ -207,6 +55,8 @@ void elfDestroyEngine(void* data)
 	elfDecRef((elfObject*)engine->fpsTimer);
 	elfDecRef((elfObject*)engine->fpsLimitTimer);
 	elfDecRef((elfObject*)engine->timeSyncTimer);
+
+	if(eng->guiFont) elfDecRef((elfObject*)eng->guiFont);
 
 	free(engine);
 
@@ -249,8 +99,6 @@ void elfDeinitEngine()
 {
 	if(!eng) return;
 
-	if(eng->guiFont) elfDecRef((elfObject*)eng->guiFont);
-
 	elfDecRef((elfObject*)eng);
 	eng = NULL;
 }
@@ -270,6 +118,7 @@ ELF_API unsigned char ELF_APIENTRY elfInit(int width, int height, const char* ti
 	}
 	elfInitAudio();
 	elfInitEngine();
+	elfInitRenderStation();
 	elfInitResources();
 	elfInitScripting();
 
@@ -433,6 +282,7 @@ ELF_API void ELF_APIENTRY elfDeinit()
 {
 	elfDeinitScripting();
 	elfDeinitResources();
+	elfDeinitRenderStation();
 	elfDeinitEngine();
 	elfDeinitAudio();
 	gfxDeinit();
@@ -1200,6 +1050,12 @@ ELF_API float ELF_APIENTRY elfGetVec3fLength(elfVec3f vec)
 ELF_API unsigned char ELF_APIENTRY elfAboutZero(float val)
 {
 	if(val < 0.0001f && val > -0.0001f) return ELF_TRUE;
+	return ELF_FALSE;
+}
+
+ELF_API unsigned char ELF_APIENTRY elfAboutSame(float v1, float v2)
+{
+	if(elfFloatAbs(v1-v2) < 0.0001f) return ELF_TRUE;
 	return ELF_FALSE;
 }
 

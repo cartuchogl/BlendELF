@@ -33,12 +33,9 @@ extern void elfLogWrite(const char* fmt, ...);
 #include "gfxshaderparams.h"
 #include "gfxquery.h"
 #include "gfxgbuffer.h"
-#include "gfxdraw.h"
 
 unsigned char gfxInit()
 {
-	unsigned int* indexBuffer;
-
 	if(driver) return GFX_TRUE;
 
 	gfxGen = gfxCreateGeneral();
@@ -178,84 +175,6 @@ unsigned char gfxInit()
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-	driver->quadVertexData = gfxCreateVertexData(12, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-	driver->quadTexCoordData = gfxCreateVertexData(12, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-	driver->quadNormalData = gfxCreateVertexData(12, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-	driver->quadVertexArray = gfxCreateVertexArray(GFX_FALSE);
-
-	gfxIncRef((gfxObject*)driver->quadVertexData);
-	gfxIncRef((gfxObject*)driver->quadNormalData);
-	gfxIncRef((gfxObject*)driver->quadTexCoordData);
-	gfxIncRef((gfxObject*)driver->quadVertexArray);
-
-	gfxSetVertexArrayData(driver->quadVertexArray, GFX_VERTEX, driver->quadVertexData);
-	gfxSetVertexArrayData(driver->quadVertexArray, GFX_NORMAL, driver->quadNormalData);
-	gfxSetVertexArrayData(driver->quadVertexArray, GFX_TEX_COORD, driver->quadTexCoordData);
-
-	driver->bbVertexData = gfxCreateVertexData(24, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-	driver->bbIndexData = gfxCreateVertexData(36, GFX_UINT, GFX_VERTEX_DATA_STATIC);
-	driver->bbVertexArray = gfxCreateVertexArray(GFX_FALSE);
-	driver->bbVertexIndex = gfxCreateVertexIndex(GFX_FALSE, driver->bbIndexData);
-
-	gfxIncRef((gfxObject*)driver->bbVertexData);
-	gfxIncRef((gfxObject*)driver->bbIndexData);
-	gfxIncRef((gfxObject*)driver->bbVertexArray);
-	gfxIncRef((gfxObject*)driver->bbVertexIndex);
-
-	indexBuffer = (unsigned int*)gfxGetVertexDataBuffer(driver->bbIndexData);
-
-	indexBuffer[0] = 0;
-	indexBuffer[1] = 1;
-	indexBuffer[2] = 2;
-	indexBuffer[3] = 2;
-	indexBuffer[4] = 1;
-	indexBuffer[5] = 3;
-	indexBuffer[6] = 2;
-	indexBuffer[7] = 3;
-	indexBuffer[8] = 4;
-	indexBuffer[9] = 4;
-	indexBuffer[10] = 3;
-	indexBuffer[11] = 5;
-	indexBuffer[12] = 4;
-	indexBuffer[13] = 5;
-	indexBuffer[14] = 6;
-	indexBuffer[15] = 6;
-	indexBuffer[16] = 5;
-	indexBuffer[17] = 7;
-	indexBuffer[18] = 6;
-	indexBuffer[19] = 7;
-	indexBuffer[20] = 0;
-	indexBuffer[21] = 0;
-	indexBuffer[22] = 7;
-	indexBuffer[23] = 1;
-	indexBuffer[24] = 0;
-	indexBuffer[25] = 2;
-	indexBuffer[26] = 6;
-	indexBuffer[27] = 6;
-	indexBuffer[28] = 2;
-	indexBuffer[29] = 4;
-	indexBuffer[30] = 3;
-	indexBuffer[31] = 1;
-	indexBuffer[32] = 5;
-	indexBuffer[33] = 5;
-	indexBuffer[34] = 1;
-	indexBuffer[35] = 7;
-
-	gfxSetVertexArrayData(driver->bbVertexArray, GFX_VERTEX, driver->bbVertexData);
-
-	driver->lineVertexArray = gfxCreateVertexArray(GFX_FALSE);
-	gfxIncRef((gfxObject*)driver->lineVertexArray);
-
-	driver->circleVertexData = gfxCreateVertexData((GFX_MAX_CIRCLE_VERTICES+2)*3, GFX_FLOAT, GFX_VERTEX_DATA_DYNAMIC);
-	driver->circleVertexArray = gfxCreateVertexArray(GFX_FALSE);
-
-	gfxIncRef((gfxObject*)driver->circleVertexData);
-	gfxIncRef((gfxObject*)driver->circleVertexArray);
-
-	gfxSetVertexArrayData(driver->circleVertexArray, GFX_VERTEX, driver->circleVertexData);
-
-	driver->prevCircleVerticeCount = 0;
-
 	return GFX_TRUE;
 }
 
@@ -264,21 +183,6 @@ void gfxDeinit()
 	if(!driver) return;
 
 	if(driver->shaderPrograms) gfxDestroyShaderPrograms(driver->shaderPrograms);
-
-	gfxDecRef((gfxObject*)driver->quadVertexArray);
-	gfxDecRef((gfxObject*)driver->quadVertexData);
-	gfxDecRef((gfxObject*)driver->quadNormalData);
-	gfxDecRef((gfxObject*)driver->quadTexCoordData);
-
-	gfxDecRef((gfxObject*)driver->bbVertexData);
-	gfxDecRef((gfxObject*)driver->bbIndexData);
-	gfxDecRef((gfxObject*)driver->bbVertexArray);
-	gfxDecRef((gfxObject*)driver->bbVertexIndex);
-
-	gfxDecRef((gfxObject*)driver->lineVertexArray);
-
-	gfxDecRef((gfxObject*)driver->circleVertexData);
-	gfxDecRef((gfxObject*)driver->circleVertexArray);
 
 	free(driver);
 	driver = NULL;

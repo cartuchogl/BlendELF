@@ -39,6 +39,8 @@ ELF_API elfLight* ELF_APIENTRY elfCreateLight(const char* name)
 
 	if(name) light->name = elfCreateString(name);
 
+	light->id = ++res->lightIdCounter;
+
 	elfIncObj(ELF_LIGHT);
 
 	return light;
@@ -262,7 +264,7 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 	gfxMulMatrix4Matrix4(gfxGetTransformMatrix(light->transform),
 		shaderParams->cameraMatrix, shaderParams->modelviewMatrix);
 
-	vertexBuffer = (float*)gfxGetVertexDataBuffer(eng->lines);
+	vertexBuffer = (float*)gfxGetVertexDataBuffer(rnd->lines);
 
 	if(!light->selected) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.5f, 0.5f, 0.2f, 1.0f);
 	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.0f, 0.0f, 1.0f);
@@ -277,7 +279,7 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 		vertexBuffer[i*3+2] = 0.0f;
 	}
 
-	gfxDrawLineLoop(32, eng->lines);
+	elfDrawLineLoop(32, rnd->lines);
 
 	for(i = 0; i < 32; i++)
 	{
@@ -286,7 +288,7 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 		vertexBuffer[i*3+2] = ((float)cos(step*i))*0.5f;
 	}
 
-	gfxDrawLineLoop(32, eng->lines);
+	elfDrawLineLoop(32, rnd->lines);
 
 	for(i = 0; i < 32; i++)
 	{
@@ -295,7 +297,7 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 		vertexBuffer[i*3+2] = ((float)cos(step*i))*0.5f;
 	}
 
-	gfxDrawLineLoop(32, eng->lines);
+	elfDrawLineLoop(32, rnd->lines);
 
 	if(!light->selected) return;
 
@@ -313,7 +315,7 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 			vertexBuffer[i*3+2] = 0.0f;
 		}
 
-		gfxDrawLines(128, eng->lines);
+		elfDrawLines(128, rnd->lines);
 
 		for(i = 0; i < 128; i++)
 		{
@@ -322,7 +324,7 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 			vertexBuffer[i*3+2] = ((float)cos(step*i))*light->distance;
 		}
 
-		gfxDrawLines(128, eng->lines);
+		elfDrawLines(128, rnd->lines);
 
 		for(i = 0; i < 128; i++)
 		{
@@ -331,7 +333,7 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 			vertexBuffer[i*3+2] = ((float)cos(step*i))*light->distance;
 		}
 
-		gfxDrawLines(128, eng->lines);
+		elfDrawLines(128, rnd->lines);
 
 		vertexBuffer[0] = 0.0f;
 		vertexBuffer[1] = 0.0f;
@@ -352,7 +354,7 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 		vertexBuffer[16] = 0.5f;
 		vertexBuffer[17] = 0.0f;
 
-		gfxDrawLines(6, eng->lines);
+		elfDrawLines(6, rnd->lines);
 	}
 	else if(light->lightType == ELF_SPOT_LIGHT)
 	{
@@ -366,7 +368,7 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 			vertexBuffer[i*3+2] = -light->distance;
 		}
 
-		gfxDrawLines(128, eng->lines);
+		elfDrawLines(128, rnd->lines);
 
 		size = sin((float)GFX_PI_DIV_180*(light->innerCone+light->outerCone))*light->distance;
 
@@ -377,7 +379,7 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 			vertexBuffer[i*3+2] = -light->distance;
 		}
 
-		gfxDrawLines(128, eng->lines);
+		elfDrawLines(128, rnd->lines);
 
 		vertexBuffer[0] = 0.0f;
 		vertexBuffer[1] = 0.0f;
@@ -410,7 +412,7 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 		vertexBuffer[28] = 0.0f;
 		vertexBuffer[29] = -light->distance;
 
-		gfxDrawLines(13, eng->lines);
+		elfDrawLines(13, rnd->lines);
 	}
 	else if(light->lightType == ELF_SUN_LIGHT)
 	{
@@ -433,7 +435,7 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 		vertexBuffer[16] = 0.5f;
 		vertexBuffer[17] = 0.0f;
 
-		gfxDrawLines(6, eng->lines);
+		elfDrawLines(6, rnd->lines);
 	}
 
 	elfDrawActorDebug((elfActor*)light, shaderParams);

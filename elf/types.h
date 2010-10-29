@@ -89,18 +89,6 @@ struct elfGeneral {
 	char* errStr;
 	int errCode;
 
-	int sceneIdCounter;
-	int scriptIdCounter;
-	int textureIdCounter;
-	int materialIdCounter;
-	int modelIdCounter;
-	int cameraIdCounter;
-	int entityIdCounter;
-	int lightIdCounter;
-	int armatureIdCounter;
-	int particlesIdCounter;
-	int spriteIdCounter;
-
 	int refCount;
 	int objCount;
 	int refTable[ELF_OBJECT_TYPE_COUNT];
@@ -201,13 +189,6 @@ struct elfEngine {
 	float fogEnd;
 	elfColor fogColor;
 
-	gfxVertexData* lines;
-	gfxVertexArray* spriteVertexArray;
-
-	gfxVertexData* gradientVertexData;
-	gfxVertexData* gradientColorData;
-	gfxVertexArray* gradientVertexArray;
-
 	elfFont* guiFont;
 
 	elfScene* scene;
@@ -215,9 +196,50 @@ struct elfEngine {
 	elfObject* actor;
 };
 
+struct elfRenderStation {
+	ELF_OBJECT_HEADER;
+
+	gfxVertexData* quadVertexData;
+	gfxVertexData* quadTexCoordData;
+	gfxVertexData* quadNormalData;
+	gfxVertexArray* quadVertexArray;
+
+	gfxVertexData* bbVertexData;
+	gfxVertexData* bbIndexData;
+	gfxVertexArray* bbVertexArray;
+	gfxVertexIndex* bbVertexIndex;
+
+	gfxVertexArray* lineVertexArray;
+
+	gfxVertexData* circleVertexData;
+	gfxVertexArray* circleVertexArray;
+
+	int prevCircleVerticeCount;
+	float prevCircleSize;
+
+	gfxVertexData* lines;
+	gfxVertexArray* spriteVertexArray;
+
+	gfxVertexData* gradientVertexData;
+	gfxVertexData* gradientColorData;
+	gfxVertexArray* gradientVertexArray;
+};
+
 struct elfResources {
 	ELF_OBJECT_HEADER;
 	elfList* textures;
+
+	int sceneIdCounter;
+	int scriptIdCounter;
+	int textureIdCounter;
+	int materialIdCounter;
+	int modelIdCounter;
+	int cameraIdCounter;
+	int entityIdCounter;
+	int lightIdCounter;
+	int armatureIdCounter;
+	int particlesIdCounter;
+	int spriteIdCounter;
 };
 
 struct elfDirectory {
