@@ -48,6 +48,53 @@ struct lua_elfColor {
 	LUA_ELF_USERDATA_HEADER;
 	elfColor val;
 };
+static int lua_fail_with_backtrace(lua_State* L, const char *fmt, ...)
+{
+	va_list argp;
+  	lua_Debug ar;
+	int i;
+	int j;
+
+	va_start(argp, fmt);
+
+	i = 1;
+	j = 0;
+	while(lua_getstack(L, i, &ar))
+	{
+		if(j > 0)
+		{
+			lua_pushfstring(L, "\n");
+			j += 1;
+		}
+		lua_getinfo(L, "Sl", &ar);
+		if(ar.currentline > 0)
+		{
+			if(j == 0)
+			{
+				lua_pushfstring(L, "%s:%d: ", ar.short_src, ar.currentline);
+				lua_pushvfstring(L, fmt, argp);
+				j += 1;
+			}
+			else
+			{
+				lua_pushfstring(L, "%s:%d ", ar.short_src, ar.currentline);
+			}
+		}
+		else
+		{
+			lua_pushliteral(L, "");  /* else, no information available... */
+		}
+
+		i += 1;
+		j += 1;
+	}
+
+	va_end(argp);
+
+	lua_concat(L, j);
+
+	return lua_error(L);
+}
 static int lua_elfObject__gc(lua_State* L)
 {
 	lua_elfObject *obj = (lua_elfObject*)lua_touserdata(L, 1);
@@ -73,12 +120,12 @@ static int lua_elfVec2i__newindex(lua_State* L)
 	if(!strcmp(lua_tostring(L, 2),  "x"))
 	{
 		if(lua_isnumber(L, 3)) ud->val.x = (int)lua_tonumber(L, 3);
-		else return luaL_error(L, "Attemp to assign a non-number to elf_vec2i.x");
+		else return lua_fail_with_backtrace(L, "Attemp to assign a non-number to elf_vec2i.x");
 	}
 	else if(!strcmp(lua_tostring(L, 2), "y"))
 	{
 		if(lua_isnumber(L, 3)) ud->val.y = (int)lua_tonumber(L, 3);
-		else return luaL_error(L, "Attemp to assign a non-number to elf_vec2i.y");
+		else return lua_fail_with_backtrace(L, "Attemp to assign a non-number to elf_vec2i.y");
 	}
 	return 0;
 }
@@ -101,12 +148,12 @@ static int lua_elfVec2f__newindex(lua_State* L)
 	if(!strcmp(lua_tostring(L, 2),  "x"))
 	{
 		if(lua_isnumber(L, 3)) ud->val.x = (float)lua_tonumber(L, 3);
-		else return luaL_error(L, "Attemp to assign a non-number to elf_vec2f.x");
+		else return lua_fail_with_backtrace(L, "Attemp to assign a non-number to elf_vec2f.x");
 	}
 	else if(!strcmp(lua_tostring(L, 2), "y"))
 	{
 		if(lua_isnumber(L, 3)) ud->val.y = (float)lua_tonumber(L, 3);
-		else return luaL_error(L, "Attemp to assign a non-number to elf_vec2f.y");
+		else return lua_fail_with_backtrace(L, "Attemp to assign a non-number to elf_vec2f.y");
 	}
 	return 0;
 }
@@ -133,17 +180,17 @@ static int lua_elfVec3f__newindex(lua_State* L)
 	if(!strcmp(lua_tostring(L, 2),  "x"))
 	{
 		if(lua_isnumber(L, 3)) ud->val.x = (float)lua_tonumber(L, 3);
-		else return luaL_error(L, "Attemp to assign a non-number to elf_vec3f.x");
+		else return lua_fail_with_backtrace(L, "Attemp to assign a non-number to elf_vec3f.x");
 	}
 	else if(!strcmp(lua_tostring(L, 2), "y"))
 	{
 		if(lua_isnumber(L, 3)) ud->val.y = (float)lua_tonumber(L, 3);
-		else return luaL_error(L, "Attemp to assign a non-number to elf_vec3f.y");
+		else return lua_fail_with_backtrace(L, "Attemp to assign a non-number to elf_vec3f.y");
 	}
 	else if(!strcmp(lua_tostring(L, 2), "z"))
 	{
 		if(lua_isnumber(L, 3)) ud->val.z = (float)lua_tonumber(L, 3);
-		else return luaL_error(L, "Attemp to assign a non-number to elf_vec3f.z");
+		else return lua_fail_with_backtrace(L, "Attemp to assign a non-number to elf_vec3f.z");
 	}
 	return 0;
 }
@@ -174,22 +221,22 @@ static int lua_elfVec4f__newindex(lua_State* L)
 	if(!strcmp(lua_tostring(L, 2),  "x"))
 	{
 		if(lua_isnumber(L, 3)) ud->val.x = (float)lua_tonumber(L, 3);
-		else return luaL_error(L, "Attemp to assign a non-number to elf_color.x");
+		else return lua_fail_with_backtrace(L, "Attemp to assign a non-number to elf_color.x");
 	}
 	else if(!strcmp(lua_tostring(L, 2), "y"))
 	{
 		if(lua_isnumber(L, 3)) ud->val.y = (float)lua_tonumber(L, 3);
-		else return luaL_error(L, "Attemp to assign a non-number to elf_color.y");
+		else return lua_fail_with_backtrace(L, "Attemp to assign a non-number to elf_color.y");
 	}
 	else if(!strcmp(lua_tostring(L, 2), "z"))
 	{
 		if(lua_isnumber(L, 3)) ud->val.z = (float)lua_tonumber(L, 3);
-		else return luaL_error(L, "Attemp to assign a non-number to elf_color.z");
+		else return lua_fail_with_backtrace(L, "Attemp to assign a non-number to elf_color.z");
 	}
 	else if(!strcmp(lua_tostring(L, 2), "w"))
 	{
 		if(lua_isnumber(L, 3)) ud->val.w = (float)lua_tonumber(L, 3);
-		else return luaL_error(L, "Attemp to assign a non-number to elf_color.w");
+		else return lua_fail_with_backtrace(L, "Attemp to assign a non-number to elf_color.w");
 	}
 	return 0;
 }
@@ -220,22 +267,22 @@ static int lua_elfColor__newindex(lua_State* L)
 	if(!strcmp(lua_tostring(L, 2),  "r"))
 	{
 		if(lua_isnumber(L, 3)) ud->val.r = (float)lua_tonumber(L, 3);
-		else return luaL_error(L, "Attemp to assign a non-number to elf_vec4f.r");
+		else return lua_fail_with_backtrace(L, "Attemp to assign a non-number to elf_vec4f.r");
 	}
 	else if(!strcmp(lua_tostring(L, 2), "g"))
 	{
 		if(lua_isnumber(L, 3)) ud->val.g = (float)lua_tonumber(L, 3);
-		else return luaL_error(L, "Attemp to assign a non-number to elf_vec4f.g");
+		else return lua_fail_with_backtrace(L, "Attemp to assign a non-number to elf_vec4f.g");
 	}
 	else if(!strcmp(lua_tostring(L, 2), "b"))
 	{
 		if(lua_isnumber(L, 3)) ud->val.b = (float)lua_tonumber(L, 3);
-		else return luaL_error(L, "Attemp to assign a non-number to elf_vec4f.b");
+		else return lua_fail_with_backtrace(L, "Attemp to assign a non-number to elf_vec4f.b");
 	}
 	else if(!strcmp(lua_tostring(L, 2), "a"))
 	{
 		if(lua_isnumber(L, 3)) ud->val.a = (float)lua_tonumber(L, 3);
-		else return luaL_error(L, "Attemp to assign a non-number to elf_vec4f.a");
+		else return lua_fail_with_backtrace(L, "Attemp to assign a non-number to elf_vec4f.a");
 	}
 	return 0;
 }
@@ -325,11 +372,11 @@ void lua_create_elfObject(lua_State* L, elfObject* obj)
 }
 int lua_fail_arg_count(lua_State* L, const char* func_name, int a, int b)
 {
-	return luaL_error(L, "%s: Got %d arguments instead of %d", func_name, a, b);
+	return lua_fail_with_backtrace(L, "%s: Got %d arguments instead of %d", func_name, a, b);
 }
 int lua_fail_arg(lua_State *L, const char* func_name, int idx, const char* etype)
 {
-	return luaL_error(L, "%s: Argument %d should be type %s", func_name, idx, etype);
+	return lua_fail_with_backtrace(L, "%s: Argument %d should be of type %s", func_name, idx, etype);
 }
 static int lua_IncRef(lua_State *L)
 {
