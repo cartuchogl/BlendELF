@@ -308,7 +308,7 @@ char* elfGetDirectoryFromPath(const char* filePath)
 
 	if(strlen(filePath) < 1) return elfCreateString("");
 
-	idx = elfRfindCharsFromString(filePath, "/\\");
+	idx = elfRFindCharsFromString("/\\", filePath);
 	if(idx < 1)
 	{
 		return elfCreateString("");

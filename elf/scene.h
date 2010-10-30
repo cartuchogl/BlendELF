@@ -331,7 +331,7 @@ ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* filePath)
 	type = strrchr(filePath, '.');
 	if(!type)
 	{
-		elfSetError(ELF_CANT_OPEN_FILE, "error: can't open file \"%s\"\n", filePath);
+		elfSetError(ELF_INVALID_FILE, "error: can't open file \"%s\", no identifying file extension\n", filePath);
 		return NULL;
 	}
 
@@ -350,12 +350,11 @@ ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* filePath)
 		struct aiLogStream stream;
 
 		stream = aiGetPredefinedLogStream(aiDefaultLogStream_STDOUT,NULL);
-		aiAttachLogStream(&stream);
 
 		aiscn = aiImportFile(filePath, aiProcessPreset_TargetRealtime_Quality);
 		if(!aiscn)
 		{
-			aiDetachAllLogStreams();
+			elfSetError(ELF_INVALID_FILE, "error: assimp failed to load file \"%s\"\n", filePath);
 			return NULL;
 		}
 
@@ -398,7 +397,6 @@ ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* filePath)
 		}
 
 		aiReleaseImport(aiscn);
-		aiDetachAllLogStreams();
 
 		return scene;
 	}

@@ -223,7 +223,7 @@ unsigned char elfIsStringPositiveInt(const char* str)
 	return ELF_TRUE;
 }
 
-int elfRfindCharFromString(const char* str, char chr)
+int elfRFindCharFromString(char chr, const char* str)
 {
 	int result = -1;
 
@@ -235,7 +235,7 @@ int elfRfindCharFromString(const char* str, char chr)
 	return result;
 }
 
-int elfRfindCharsFromString(const char* str, const char* chrs)
+int elfRFindCharsFromString(char* chrs, const char* str)
 {
 	int i;
 	int result = -1;
@@ -258,17 +258,17 @@ char* elfGetFileFolder(const char* filePath)
 
 	str = elfCreateString(filePath);
 
-	if(elfRfindCharFromString(filePath, '/') != -1)
+	if(elfRFindCharFromString('/', filePath) != -1)
 	{
-		nstr = elfSubString(str, 0, elfRfindCharFromString(str, '/')+1);
+		nstr = elfSubString(str, 0, elfRFindCharFromString('/', str)+1);
 		elfDestroyString(str);
 		str = nstr;
 		nstr = NULL;
 	}
 
-	if(elfRfindCharFromString(filePath, '\\') != -1)
+	if(elfRFindCharFromString('\\', filePath) != -1)
 	{
-		nstr = elfSubString(str, 0, elfRfindCharFromString(str, '\\')+1);
+		nstr = elfSubString(str, 0, elfRFindCharFromString('\\', str)+1);
 		elfDestroyString(str);
 		str = nstr;
 		nstr = NULL;

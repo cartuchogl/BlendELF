@@ -492,8 +492,8 @@ char* elfSubString(char* str, int start, int len);
 unsigned char elfIsCharNumber(char c);
 unsigned char elfIsStringNumber(const char* str);
 unsigned char elfIsStringPositiveInt(const char* str);
-int elfRfindCharFromString(const char* str, char chr);
-int elfRfindCharsFromString(const char* str, const char* chrs);
+int elfRFindCharFromString(char chr, const char* str);
+int elfRFindCharsFromString(char* chrs, const char* str);
 // !!>
 
 //////////////////////////////// LIST ////////////////////////////////
@@ -2012,7 +2012,8 @@ ELF_API void ELF_APIENTRY elfEmptyGui(elfGui* gui);
 //////////////////////////////// SST ////////////////////////////////
 
 // <!!
-char* elfReadNext(const char* text, int* pos);
+char* elfReadSstNext(const char* text, int* pos, const char* sep);
+char* elfReadSstText(const char* text, int* pos);
 char* elfReadSstString(const char* text, int* pos);
 float elfReadSstFloat(const char* text, int* pos);
 void elfReadSstFloats(const char* text, int* pos, int n, float* params);

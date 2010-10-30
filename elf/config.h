@@ -79,7 +79,7 @@ ELF_API elfConfig* ELF_APIENTRY elfReadConfig(const char* filePath)
 
 	pos = 0;
 	scope = 0;
-	while((str = elfReadNext(text, &pos)))
+	while((str = elfReadSstNext(text, &pos, " \t\n\r")))
 	{
 		if(scope > 0)
 		{
@@ -101,7 +101,7 @@ ELF_API elfConfig* ELF_APIENTRY elfReadConfig(const char* filePath)
 			else if(!strcmp(str, "windowTitle"))
 			{
 				if(config->windowTitle) free(config->windowTitle);
-				config->windowTitle = elfReadSstString(text, &pos);
+				config->windowTitle = elfReadSstText(text, &pos);
 			}
 			else if(!strcmp(str, "multisamples"))
 			{

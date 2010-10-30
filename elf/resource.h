@@ -39,7 +39,7 @@ void elfSetResourceUniqueName(elfList* namedObjects, elfResource* object)
 			return;
 		}
 
-		dotPos = elfRfindCharFromString(object->name, '.');
+		dotPos = elfRFindCharFromString('.', object->name);
 
 		if(dotPos == (int)strlen(object->name)-1)
 		{

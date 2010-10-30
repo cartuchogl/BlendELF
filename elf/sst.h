@@ -1,12 +1,12 @@
 
-char* elfReadNext(const char* text, int* pos)
+char* elfReadSstNext(const char* text, int* pos, const char *sep)
 {
 	int start, end;
 	char* str;
 
 	start =* pos;
 
-	while(text[start] == ' ' || text[start] == '\t' || text[start] == '\n' || text[start] == '\r')
+	while(elfRFindCharFromString(text[start], sep) != -1 && text[start] != '\0')
 	{
 		(*pos)++;
 		start++;
@@ -14,7 +14,7 @@ char* elfReadNext(const char* text, int* pos)
 
 	end = start;
 
-	while(text[end] != ' ' && text[end] != '\t' && text[end] != '\n' && text[end] != '\r' && text[end] != '\0')
+	while(elfRFindCharFromString(text[end], sep) == -1 && text[end] != '\0')
 	{
 		(*pos)++;
 		end++;
@@ -29,9 +29,45 @@ char* elfReadNext(const char* text, int* pos)
 	return str;
 }
 
+char* elfReadSstText(const char* text, int* pos)
+{
+	int start, end;
+	char* str;
+
+	start =* pos;
+
+	while(text[start] != '\"' && text[start] != '\0')
+	{
+		(*pos)++;
+		start++;
+	}
+
+	if(text[start] == '\"')
+	{
+		end = ++start;
+		(*pos)++;
+	}
+
+	while(text[end] != '\"' && text[end] != '\0')
+	{
+		(*pos)++;
+		end++;
+	}
+
+	if(text[end] == '\"') (*pos)++;
+
+	if(start == end) return NULL;
+
+	str = (char*)malloc(sizeof(char)*(end-start+1));
+	memcpy(str, &text[start], sizeof(char)*(end-start));
+	str[end-start] = '\0';
+
+	return str;
+}
+
 char* elfReadSstString(const char* text, int* pos)
 {
-	return elfReadNext(text, pos);
+	return elfReadSstNext(text, pos, " \t\n\r");
 }
 
 float elfReadSstFloat(const char* text, int* pos)
@@ -39,7 +75,7 @@ float elfReadSstFloat(const char* text, int* pos)
 	char* str;
 	float val;
 
-	str = elfReadNext(text, pos);
+	str = elfReadSstNext(text, pos, " \t\n\r");
 	val = (float)atof(str);
 	free(str);
 
@@ -51,7 +87,7 @@ void elfReadSstFloats(const char* text, int* pos, int n, float* params)
 	int i;
 	char* str;
 
-	for(i = 0; i < n && (str = elfReadNext(text, pos)); i++)
+	for(i = 0; i < n && (str = elfReadSstNext(text, pos, " \t\n\r")); i++)
 	{
 		params[i] = (float)atof(str);
 		free(str);
@@ -63,7 +99,7 @@ int elfReadSstInt(const char* text, int* pos)
 	char* str;
 	int val;
 
-	str = elfReadNext(text, pos);
+	str = elfReadSstNext(text, pos, " \t\n\r");
 	val = atoi(str);
 	free(str);
 
@@ -75,7 +111,7 @@ void elfReadSstInts(const char* text, int* pos, int n, int* params)
 	int i;
 	char* str;
 
-	for(i = 0; i < n && (str = elfReadNext(text, pos)); i++)
+	for(i = 0; i < n && (str = elfReadSstNext(text, pos, " \t\n\r")); i++)
 	{
 		params[i] = atoi(str);
 		free(str);
@@ -87,7 +123,7 @@ unsigned char elfReadSstBool(const char* text, int* pos)
 	char* str;
 	unsigned char result;
 
-	str = elfReadNext(text, pos);
+	str = elfReadSstNext(text, pos, " \t\n\r");
 
 	if(!strcmp(str, "FALSE")) result = ELF_FALSE;
 	else result = ELF_TRUE;
