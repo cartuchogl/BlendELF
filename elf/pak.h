@@ -304,7 +304,6 @@ int elfGetLightSizeBytes(elfLight* light)
 	sizeBytes += sizeof(unsigned char);	// type
 	sizeBytes += sizeof(float)*4;	// color
 	sizeBytes += sizeof(float);	// range
-	sizeBytes += sizeof(float);	// fade speed
 	sizeBytes += sizeof(float);	// inner cone
 	sizeBytes += sizeof(float);	// outer cone
 	sizeBytes += sizeof(unsigned int);	// junk???
@@ -824,7 +823,6 @@ elfLight* elfCreateLightFromPak(FILE* file, const char* name, elfScene* scene)
 {
 	elfLight* light;
 	int magic = 0;
-	unsigned int junk;
 
 	fread((char*)&magic, sizeof(int), 1, file);
 
@@ -840,10 +838,8 @@ elfLight* elfCreateLightFromPak(FILE* file, const char* name, elfScene* scene)
 	fread((char*)&light->lightType, sizeof(unsigned char), 1, file);
 	fread((char*)&light->color.r, sizeof(float), 4, file);
 	fread((char*)&light->range, sizeof(float), 1, file);
-	fread((char*)&light->fadeSpeed, sizeof(float), 1, file);
 	fread((char*)&light->innerCone, sizeof(float), 1, file);
 	fread((char*)&light->outerCone, sizeof(float), 1, file);
-	fread((char*)&junk, sizeof(unsigned int), 1, file);
 	fread((char*)&light->shadows, sizeof(unsigned char), 1, file);
 	fread((char*)&light->shaft, sizeof(unsigned char), 1, file);
 	fread((char*)&light->shaftSize, sizeof(float), 1, file);
@@ -853,10 +849,12 @@ elfLight* elfCreateLightFromPak(FILE* file, const char* name, elfScene* scene)
 	elfSetLightType(light, light->lightType);
 	elfSetLightColor(light, light->color.r, light->color.g, light->color.b, light->color.a);
 	elfSetLightRange(light, light->range);
-	elfSetLightFadeSpeed(light, light->fadeSpeed);
 	elfSetLightShadows(light, light->shadows);
 	elfSetLightCone(light, light->innerCone, light->outerCone);
-	if(light->shaft) elfSetLightShaft(light, light->shaftSize, light->shaftIntensity, light->shaftFadeOff);
+	elfSetLightShaft(light, light->shaft);
+	elfSetLightShaftSize(light, light->shaftSize);
+	elfSetLightShaftIntensity(light, light->shaftIntensity);
+	elfSetLightShaftFadeOff(light, light->shaftFadeOff);
 
 	return light;
 }
@@ -1635,7 +1633,6 @@ void elfWriteEntityToFile(elfEntity* entity, FILE* file)
 void elfWriteLightToFile(elfLight* light, FILE* file)
 {
 	int magic = 0;
-	int junk = 0;
 
 	magic = ELF_LIGHT_MAGIC;
 	fwrite((char*)&magic, sizeof(int), 1, file);
@@ -1645,10 +1642,8 @@ void elfWriteLightToFile(elfLight* light, FILE* file)
 	fwrite((char*)&light->lightType, sizeof(unsigned char), 1, file);
 	fwrite((char*)&light->color.r, sizeof(float), 4, file);
 	fwrite((char*)&light->range, sizeof(float), 1, file);
-	fwrite((char*)&light->fadeSpeed, sizeof(float), 1, file);
 	fwrite((char*)&light->innerCone, sizeof(float), 1, file);
 	fwrite((char*)&light->outerCone, sizeof(float), 1, file);
-	fwrite((char*)&junk, sizeof(int), 1, file);
 	fwrite((char*)&light->shadows, sizeof(unsigned char), 1, file);
 	fwrite((char*)&light->shaft, sizeof(unsigned char), 1, file);
 	fwrite((char*)&light->shaftSize, sizeof(float), 1, file);

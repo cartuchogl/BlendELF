@@ -786,26 +786,26 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">boolean</span> GetEntityChanged( <span class="apiobjtype">elfEntity</span> entity )</div>
 <div class="apitopic">LIGHT FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">elfLight</span> CreateLight( <span class="apikeytype">string</span> name )</div>
-<div class="apifunc"><span class="apikeytype">int</span> GetLightType( <span class="apiobjtype">elfLight</span> light )</div>
-<div class="apifunc"><span class="apikeytype">elfColor</span> GetLightColor( <span class="apiobjtype">elfLight</span> light )</div>
-<div class="apifunc"><span class="apikeytype">float</span> GetLightDistance( <span class="apiobjtype">elfLight</span> light )</div>
-<div class="apifunc"><span class="apikeytype">float</span> GetLightFadeSpeed( <span class="apiobjtype">elfLight</span> light )</div>
-<div class="apifunc"><span class="apikeytype">boolean</span> GetLightShadows( <span class="apiobjtype">elfLight</span> light )</div>
-<div class="apifunc"><span class="apikeytype">boolean</span> GetLightVisible( <span class="apiobjtype">elfLight</span> light )</div>
-<div class="apifunc"><span class="apikeytype">elfVec2f</span> GetLightCone( <span class="apiobjtype">elfLight</span> light )</div>
-<div class="apifunc"><span class="apikeytype">boolean</span> IsLightShaft( <span class="apiobjtype">elfLight</span> light )</div>
-<div class="apifunc"><span class="apikeytype">float</span> GetLightShaftSize( <span class="apiobjtype">elfLight</span> light )</div>
-<div class="apifunc"><span class="apikeytype">float</span> GetLightShaftIntensity( <span class="apiobjtype">elfLight</span> light )</div>
-<div class="apifunc"><span class="apikeytype">float</span> GetLightShaftFadeOff( <span class="apiobjtype">elfLight</span> light )</div>
 <div class="apifunc">SetLightType( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">int</span> type )</div>
 <div class="apifunc">SetLightColor( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">float</span> r, <span class="apikeytype">float</span> g, <span class="apikeytype">float</span> b, <span class="apikeytype">float</span> a )</div>
-<div class="apifunc">SetLightDistance( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">float</span> distance )</div>
-<div class="apifunc">SetLightFadeSpeed( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">float</span> fadeSpeed )</div>
+<div class="apifunc">SetLightRange( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">float</span> range )</div>
 <div class="apifunc">SetLightShadows( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">unsigned char</span> shadows )</div>
 <div class="apifunc">SetLightVisible( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">unsigned char</span> visible )</div>
 <div class="apifunc">SetLightCone( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">float</span> innerCone, <span class="apikeytype">float</span> outerCone )</div>
-<div class="apifunc">SetLightShaft( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">float</span> size, <span class="apikeytype">float</span> intensity, <span class="apikeytype">float</span> fadeOff )</div>
-<div class="apifunc">DisableLightShaft( <span class="apiobjtype">elfLight</span> light )</div>
+<div class="apifunc">SetLightShaft( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">unsigned char</span> shaft )</div>
+<div class="apifunc">SetLightShaftSize( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">float</span> size )</div>
+<div class="apifunc">SetLightShaftIntensity( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">float</span> intensity )</div>
+<div class="apifunc">SetLightShaftFadeOff( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">float</span> fadeOff )</div>
+<div class="apifunc"><span class="apikeytype">int</span> GetLightType( <span class="apiobjtype">elfLight</span> light )</div>
+<div class="apifunc"><span class="apikeytype">elfColor</span> GetLightColor( <span class="apiobjtype">elfLight</span> light )</div>
+<div class="apifunc"><span class="apikeytype">float</span> GetLightRange( <span class="apiobjtype">elfLight</span> light )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetLightShadows( <span class="apiobjtype">elfLight</span> light )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetLightVisible( <span class="apiobjtype">elfLight</span> light )</div>
+<div class="apifunc"><span class="apikeytype">elfVec2f</span> GetLightCone( <span class="apiobjtype">elfLight</span> light )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetLightShaft( <span class="apiobjtype">elfLight</span> light )</div>
+<div class="apifunc"><span class="apikeytype">float</span> GetLightShaftSize( <span class="apiobjtype">elfLight</span> light )</div>
+<div class="apifunc"><span class="apikeytype">float</span> GetLightShaftIntensity( <span class="apiobjtype">elfLight</span> light )</div>
+<div class="apifunc"><span class="apikeytype">float</span> GetLightShaftFadeOff( <span class="apiobjtype">elfLight</span> light )</div>
 <div class="apitopic">ARMATURE FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">elfArmature</span> GetBoneArmature( <span class="apiobjtype">elfBone</span> bone )</div>
 <div class="apifunc"><span class="apiobjtype">elfBone</span> GetBoneParent( <span class="apiobjtype">elfBone</span> bone )</div>
@@ -831,7 +831,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetParticlesEntity( <span class="apiobjtype">elfParticles</span> particles, <span class="apiobjtype">elfEntity</span> entity )</div>
 <div class="apifunc">ClearParticlesEntity( <span class="apiobjtype">elfParticles</span> particles )</div>
 <div class="apifunc">SetParticlesGravity( <span class="apiobjtype">elfParticles</span> particles, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
-<div class="apifunc">SetParticlesSpawnDelay( <span class="apiobjtype">elfParticles</span> particles, <span class="apikeytype">float</span> delay )</div>
+<div class="apifunc">SetParticlesSpawnCount( <span class="apiobjtype">elfParticles</span> particles, <span class="apikeytype">int</span> perSecond )</div>
 <div class="apifunc">SetParticlesSpawn( <span class="apiobjtype">elfParticles</span> particles, <span class="apikeytype">unsigned char</span> spawn )</div>
 <div class="apifunc">SetParticlesSize( <span class="apiobjtype">elfParticles</span> particles, <span class="apikeytype">float</span> min, <span class="apikeytype">float</span> max )</div>
 <div class="apifunc">SetParticlesSizeGrowth( <span class="apiobjtype">elfParticles</span> particles, <span class="apikeytype">float</span> min, <span class="apikeytype">float</span> max )</div>
@@ -852,7 +852,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apiobjtype">elfModel</span> GetParticlesModel( <span class="apiobjtype">elfParticles</span> particles )</div>
 <div class="apifunc"><span class="apiobjtype">elfEntity</span> GetParticlesEntity( <span class="apiobjtype">elfParticles</span> particles )</div>
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> GetParticlesGravity( <span class="apiobjtype">elfParticles</span> particles )</div>
-<div class="apifunc"><span class="apikeytype">float</span> GetParticlesSpawnDelay( <span class="apiobjtype">elfParticles</span> particles )</div>
+<div class="apifunc"><span class="apikeytype">int</span> GetParticlesSpawnCount( <span class="apiobjtype">elfParticles</span> particles )</div>
 <div class="apifunc"><span class="apikeytype">boolean</span> GetParticlesSpawn( <span class="apiobjtype">elfParticles</span> particles )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetParticlesSizeMin( <span class="apiobjtype">elfParticles</span> particles )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetParticlesSizeMax( <span class="apiobjtype">elfParticles</span> particles )</div>
@@ -893,7 +893,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetScenePhysics( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">unsigned char</span> physics )</div>
 <div class="apifunc"><span class="apikeytype">boolean</span> GetScenePhysics( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc">SetSceneRunScripts( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">unsigned char</span> runScripts )</div>
-<div class="apifunc"><span class="apikeytype">boolean</span> GetSceneRunScripts( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">unsigned char</span> runScripts )</div>
+<div class="apifunc"><span class="apikeytype">boolean</span> GetSceneRunScripts( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc">SetSceneDebugDraw( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">unsigned char</span> debugDraw )</div>
 <div class="apifunc"><span class="apikeytype">boolean</span> GetSceneDebugDraw( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apifunc">SetSceneOcclusionCulling( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">unsigned char</span> occlusionCulling )</div>

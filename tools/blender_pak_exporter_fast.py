@@ -19,7 +19,7 @@ import struct
 import math
 
 ELF_NAME_LENGTH = 128
-ELF_PAK_VERSION = 102
+ELF_PAK_VERSION = 103
 
 def write_name_to_file(name, f):
 	if len(name) > ELF_NAME_LENGTH-1: name = name[0:ELF_NAME_LENGTH-1]
@@ -536,9 +536,10 @@ def get_actor_header_size(eobj):
 			size_bytes += struct.calcsize('<BBi')
 			size_bytes += struct.calcsize('<ffffff')*len(curve.points)
 
+	size_bytes += struct.calcsize('<B')	# physics
+	size_bytes += struct.calcsize('<B')	# shape
 	size_bytes += struct.calcsize('<fff')	# bounding lengths
 	size_bytes += struct.calcsize('<fff')	# bounding offsets
-	size_bytes += struct.calcsize('<B')	# shape
 	size_bytes += struct.calcsize('<f')	# mass
 	size_bytes += struct.calcsize('<f')	# linear damp
 	size_bytes += struct.calcsize('<f')	# angular damp
@@ -664,11 +665,9 @@ class Light(Actor):
 
 		self.type = 'point'
 		self.color = [1.0, 1.0, 1.0, 1.0]
-		self.distance = 0.0
-		self.fade_speed = 0.0
+		self.range = 0.0
 		self.inner_cone = 180.0
 		self.outer_cone = 0.0
-		self.shadow_map_size = 512
 		self.shadow_caster = 1
 
 	def load(self, obj):
@@ -682,10 +681,9 @@ class Light(Actor):
 		elif data.getType() is 2: self.type = 'spot'
 		else: self.type = 'point'
 
-		self.color = [col[0]*energy*0.75, col[1]*energy*0.75, col[2]*energy*0.75, 1.0]
+		self.color = [col[0]*energy, col[1]*energy, col[2]*energy, 1.0]
 
-		self.distance = data.getDist()
-		self.fade_speed = 1.0/self.distance;
+		self.range = data.getDist()*4
 
 		self.inner_cone = data.getSpotSize()/2.0*(1.0-data.getSpotBlend())
 		self.outer_cone = data.getSpotSize()/2.0-self.inner_cone
@@ -699,9 +697,9 @@ class Light(Actor):
 		self.size_bytes += get_actor_header_size(self)	# actor header
 		self.size_bytes += struct.calcsize('<B')	# type
 		self.size_bytes += struct.calcsize('<ffff')	# color
-		self.size_bytes += struct.calcsize('<ff')	# attenuation
+		self.size_bytes += struct.calcsize('<f')	# range
 		self.size_bytes += struct.calcsize('<ff')	# spot light specs
-		self.size_bytes += struct.calcsize('<IB')	# shadow specs
+		self.size_bytes += struct.calcsize('<B')	# shadow flag
 		self.size_bytes += struct.calcsize('<Bfff')	# light shaft specs
 		
 		print 'Light \"'+self.name+'\" converted'
@@ -709,55 +707,21 @@ class Light(Actor):
 		print '  size: '+str(self.size_bytes)+' bytes'
 
 	def save(self, f):
-		# write magic
-		f.write(struct.pack('<i', 179532113))
-
-		# write actor header
-		write_actor_header(self, f)
+		f.write(struct.pack('<i', 179532113))	# write magic
+		write_actor_header(self, f)	# write actor header
 
 		# write type
-		if self.type is 'sun':
-			f.write(struct.pack('<B', 2))
-		elif self.type is 'spot':
-			f.write(struct.pack('<B', 3))
-		else:
-			f.write(struct.pack('<B', 1))
+		if self.type is 'sun': f.write(struct.pack('<B', 2))
+		elif self.type is 'spot': f.write(struct.pack('<B', 3))
+		else: f.write(struct.pack('<B', 1))
 
-		# write colors
-		f.write(struct.pack('<ffff', self.color[0], self.color[1], self.color[2], self.color[3]))
-
-		# write attenuation
-		f.write(struct.pack('<ff', self.distance, self.fade_speed))
-
-		# write spot light specs
-		f.write(struct.pack('<ff', self.inner_cone, self.outer_cone))
-		
-		# write shadow specs
-		f.write(struct.pack('<IB', self.shadow_map_size, self.shadow_caster))
-
-		# write ligth shaft specs
-		f.write(struct.pack('<Bfff', 0, 0.0, 0.0, 0.0))
+		f.write(struct.pack('<ffff', self.color[0], self.color[1], self.color[2], self.color[3]))	# write colors
+		f.write(struct.pack('<f', self.range))	# write range
+		f.write(struct.pack('<ff', self.inner_cone, self.outer_cone))	# write spot light specs
+		f.write(struct.pack('<B', self.shadow_caster))	# write shadow flag
+		f.write(struct.pack('<Bfff', 0, 1.0, 1.0, 0.0))	# write ligth shaft specs
 
 		print 'Light \"'+self.name+'\" saved'
-
-"""
-def matrix4_to_eulers(mat):
-	eul = [0.0, 0.0, 0.0]
-	if mat[4] > 0.998:
-		eul[0] = math.atan2(mat[2],mat[10])*(180.0/math.pi);
-		eul[1] = math.pi/2*(180.0/math.pi);
-		eul[2] = 0;
-		return eul
-	if mat[4] < -0.998:
-		eul[0] = math.atan2(mat[2],mat[10])*(180.0/math.pi);
-		eul[1] = -math.pi/2*(180.0/math.pi);
-		eul[2] = 0;
-		return eul
-	eul[0] = math.atan2(-mat[8],mat[0])*(180.0/math.pi);
-	eul[1] = math.atan2(-mat[6],mat[5])*(180.0/math.pi);
-	eul[2] = math.asin(mat[4])*(180.0/math.pi);
-	return eul
-"""
 
 class BoneFrame:
 	def __init__(self):

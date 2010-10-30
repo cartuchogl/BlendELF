@@ -464,8 +464,6 @@ void gfxSetShaderParams(gfxShaderParams* shaderParams)
 				glUniform3fv(shaderProgram->lightColorLoc, 1, &shaderParams->lightParams.color.r);
 			if(shaderProgram->lightRangeLoc != -1)
 				glUniform1f(shaderProgram->lightRangeLoc, shaderParams->lightParams.range);
-			if(shaderProgram->lightFadeSpeedLoc != -1)
-				glUniform1f(shaderProgram->lightFadeSpeedLoc, shaderParams->lightParams.fadeSpeed);
 			if(shaderProgram->lightSpotDirectionLoc != -1)
 				glUniform3fv(shaderProgram->lightSpotDirectionLoc, 1, &shaderParams->lightParams.direction.x);
 			if(shaderProgram->lightInnerConeCosLoc != -1)

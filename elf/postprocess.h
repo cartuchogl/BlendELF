@@ -605,7 +605,7 @@ void elfRunPostProcess(elfPostProcess* postProcess, elfScene* scene)
 			light = (elfLight*)elfGetListNext(scene->lights))
 		{
 			lightPos = elfGetActorPosition((elfActor*)light);
-			if(elfIsLightShaft(light) && elfSphereInsideFrustum(scene->curCamera, &lightPos.x, light->shaftSize))
+			if(light->shaft && elfSphereInsideFrustum(scene->curCamera, &lightPos.x, light->shaftSize))
 			{
 				if(firstShaft)
 				{

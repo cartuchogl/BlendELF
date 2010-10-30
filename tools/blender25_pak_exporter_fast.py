@@ -35,7 +35,7 @@ import math
 import os
 
 ELF_NAME_LENGTH = 128
-ELF_PAK_VERSION = 102
+ELF_PAK_VERSION = 103
 
 def write_name_to_file(name, f):
 	if len(name) > ELF_NAME_LENGTH-1: name = name[0:ELF_NAME_LENGTH-1]
@@ -636,7 +636,7 @@ class Entity(Actor):
 		f.write(struct.pack('<fff', self.scale[0], self.scale[1], self.scale[2]))	# write scale
 		write_name_to_file(self.model, f)	# write model
 		write_name_to_file(self.armature, f)	# write armature
-		f.write(struct.pack('<B', 0))
+		f.write(struct.pack('<B', 0))	# occluder flag
 
 		# write materials
 		f.write(struct.pack('<i', len(self.materials)))
@@ -651,11 +651,9 @@ class Light(Actor):
 
 		self.type = 'point'
 		self.color = [1.0, 1.0, 1.0, 1.0]
-		self.distance = 0.0
-		self.fade_speed = 0.0
+		self.range = 0.0
 		self.inner_cone = 180.0
 		self.outer_cone = 0.0
-		self.shadow_map_size = 512
 		self.shadow_caster = 1
 
 	def load(self, obj):
@@ -669,10 +667,9 @@ class Light(Actor):
 		elif data.type == "SPOT": self.type = 3
 		else: self.type = 1
 
-		self.color = [col[0]*energy*0.75, col[1]*energy*0.75, col[2]*energy*0.75, 1.0]
+		self.color = [col[0]*energy, col[1]*energy, col[2]*energy, 1.0]
 
-		self.distance = data.distance
-		self.fade_speed = 1.0/self.distance;
+		self.range = data.distance*4
 
 		if data.type == "SPOT":
 			self.inner_cone = data.spot_size*(180.0/3.1415926535)/2.0*(1.0-data.spot_blend)
@@ -687,9 +684,9 @@ class Light(Actor):
 		self.size_bytes += get_actor_header_size(self)	# actor header
 		self.size_bytes += struct.calcsize('<B')	# type
 		self.size_bytes += struct.calcsize('<ffff')	# color
-		self.size_bytes += struct.calcsize('<ff')	# attenuation
+		self.size_bytes += struct.calcsize('<f')	# range
 		self.size_bytes += struct.calcsize('<ff')	# spot light specs
-		self.size_bytes += struct.calcsize('<IB')	# shadow specs
+		self.size_bytes += struct.calcsize('<B')	# shadow flag
 		self.size_bytes += struct.calcsize('<Bfff')	# light shaft specs
 		
 		print('Light \"'+self.name+'\" converted')
@@ -697,29 +694,14 @@ class Light(Actor):
 		print('  size: '+str(self.size_bytes)+' bytes')
 
 	def save(self, f):
-		# write magic
-		f.write(struct.pack('<i', 179532113))
-
-		# write actor header
-		write_actor_header(self, f)
-
-		# write type
-		f.write(struct.pack('<B', self.type))
-
-		# write colors
-		f.write(struct.pack('<ffff', self.color[0], self.color[1], self.color[2], self.color[3]))
-
-		# write attenuation
-		f.write(struct.pack('<ff', self.distance, self.fade_speed))
-
-		# write spot light specs
-		f.write(struct.pack('<ff', self.inner_cone, self.outer_cone))
-		
-		# write shadow specs
-		f.write(struct.pack('<IB', self.shadow_map_size, self.shadow_caster))
-
-		# write ligth shaft specs
-		f.write(struct.pack('<Bfff', 0, 0.0, 0.0, 0.0))
+		f.write(struct.pack('<i', 179532113))	# write magic
+		write_actor_header(self, f)	# write actor header
+		f.write(struct.pack('<B', self.type))	# write type
+		f.write(struct.pack('<ffff', self.color[0], self.color[1], self.color[2], self.color[3]))	# write colors
+		f.write(struct.pack('<f', self.range))	# write attenuation
+		f.write(struct.pack('<ff', self.inner_cone, self.outer_cone))	# write spot light specs
+		f.write(struct.pack('<B', self.shadow_caster))	# write shadow flag
+		f.write(struct.pack('<Bfff', 0, 1.0, 1.0, 0.0))	# write ligth shaft specs
 
 		print('Light \"'+self.name+'\" saved')
 
