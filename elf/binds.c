@@ -7448,15 +7448,12 @@ static int lua_GetSceneRunScripts(lua_State *L)
 {
 	unsigned char result;
 	elfScene* arg0;
-	unsigned char arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "GetSceneRunScripts", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetSceneRunScripts", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_SCENE)
 		{return lua_fail_arg(L, "GetSceneRunScripts", 1, "elfScene");}
-	if(!lua_isboolean(L, 2)) {return lua_fail_arg(L, "GetSceneRunScripts", 2, "boolean");}
 	arg0 = (elfScene*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = (unsigned char)lua_toboolean(L, 2);
-	result = elfGetSceneRunScripts(arg0, arg1);
+	result = elfGetSceneRunScripts(arg0);
 	lua_pushboolean(L, result);
 	return 1;
 }

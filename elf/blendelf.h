@@ -1429,7 +1429,7 @@ ELF_API void ELF_APIENTRY elfSetScenePhysics(elfScene* scene, unsigned char phys
 ELF_API unsigned char ELF_APIENTRY elfGetScenePhysics(elfScene* scene);
 
 ELF_API void ELF_APIENTRY elfSetSceneRunScripts(elfScene* scene, unsigned char runScripts);
-ELF_API unsigned char ELF_APIENTRY elfGetSceneRunScripts(elfScene* scene, unsigned char runScripts);
+ELF_API unsigned char ELF_APIENTRY elfGetSceneRunScripts(elfScene* scene);
 
 ELF_API void ELF_APIENTRY elfSetSceneDebugDraw(elfScene* scene, unsigned char debugDraw);
 ELF_API unsigned char ELF_APIENTRY elfGetSceneDebugDraw(elfScene* scene);

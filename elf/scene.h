@@ -363,7 +363,7 @@ ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* filePath)
 
 		elfRecursivelyImportAssets(scene, aiscn, aiscn->mRootNode);
 
-		for(i = 0; i < aiscn->mNumCameras; i++)
+		for(i = 0; i < (int)aiscn->mNumCameras; i++)
 		{
 			const struct aiCamera* aicam = aiscn->mCameras[i];
 
@@ -376,7 +376,7 @@ ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* filePath)
 			elfAddSceneCamera(scene, camera);
 		}
 
-		for(i = 0; i < aiscn->mNumLights; i++)
+		for(i = 0; i < (int)aiscn->mNumLights; i++)
 		{
 			const struct aiLight* ailig = aiscn->mLights[i];
 
@@ -622,7 +622,7 @@ ELF_API void ELF_APIENTRY elfSetSceneRunScripts(elfScene* scene, unsigned char r
 	scene->runScripts = !runScripts == ELF_FALSE;
 }
 
-ELF_API unsigned char ELF_APIENTRY elfGetSceneRunScripts(elfScene* scene, unsigned char runScripts)
+ELF_API unsigned char ELF_APIENTRY elfGetSceneRunScripts(elfScene* scene)
 {
 	return scene->runScripts;
 }

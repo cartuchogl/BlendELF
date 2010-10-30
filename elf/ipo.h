@@ -189,10 +189,10 @@ ELF_API unsigned char ELF_APIENTRY elfAddIpoCurve(elfIpo* ipo, elfBezierCurve* c
 
 	elfAppendListObject(ipo->curves, (elfObject*)curve);
 
-	if(curve->curveType >= ELF_LOC_X && curve->curveType <= ELF_LOC_Z) ipo->loc = ELF_TRUE;
-	if(curve->curveType >= ELF_ROT_X && curve->curveType <= ELF_ROT_Z) ipo->rot = ELF_TRUE;
-	if(curve->curveType >= ELF_SCALE_X && curve->curveType <= ELF_SCALE_Z) ipo->scale = ELF_TRUE;
-	if(curve->curveType >= ELF_QUA_X && curve->curveType <= ELF_QUA_W) ipo->qua = ELF_TRUE;
+	if(curve->curveType <= ELF_LOC_Z) ipo->loc = ELF_TRUE;
+	if(curve->curveType <= ELF_ROT_Z) ipo->rot = ELF_TRUE;
+	if(curve->curveType <= ELF_SCALE_Z) ipo->scale = ELF_TRUE;
+	if(curve->curveType <= ELF_QUA_W) ipo->qua = ELF_TRUE;
 
 	return ELF_TRUE;
 }

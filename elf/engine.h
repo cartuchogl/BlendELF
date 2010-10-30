@@ -264,10 +264,10 @@ ELF_API void ELF_APIENTRY elfResizeWindow(int width, int height)
 {
 	elfSetError(ELF_MISSING_FEATURE, "error: resizing not yet in a usable state\n");
 
-	/*if(width <= 0 || height <= 0 || (width == elfGetWindowWidth() &&
+	if(width <= 0 || height <= 0 || (width == elfGetWindowWidth() &&
 		height == elfGetWindowHeight())) return;
 
-	elfResizeContext(width, height);
+	/*elfResizeContext(width, height);
 	elfInitPostProcessBuffers(eng->postProcess);*/
 }
 

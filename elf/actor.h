@@ -402,7 +402,7 @@ ELF_API void ELF_APIENTRY elfSetActorOrientationRelativeTo(elfActor* actor, elfA
 	lorient.z = z;
 	lorient.w = w;
 
-	elfGetActorOrientation_(actor, &orient.x);
+	elfGetActorOrientation_(to, &orient.x);
 
 	gfxMulQuaQua(&lorient.x, &orient.x, &result.x);
 
