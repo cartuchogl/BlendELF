@@ -398,7 +398,7 @@ int elfGetParticlesSizeBytes(elfParticles* particles)
 	sizeBytes += sizeof(char)*ELF_NAME_LENGTH;	// entity
 	sizeBytes += sizeof(int);	// max count
 	sizeBytes += sizeof(unsigned char);	// draw mode
-	sizeBytes += sizeof(float);	// spawn delay
+	sizeBytes += sizeof(int);	// spawn count
 	sizeBytes += sizeof(unsigned char);	// spawn
 	sizeBytes += sizeof(float)*3;	// gravity
 	sizeBytes += sizeof(float);	// size min
@@ -1160,7 +1160,7 @@ elfParticles* elfCreateParticlesFromPak(FILE* file, const char* name, elfScene* 
 	elfSetParticlesMaxCount(particles, particles->maxCount);
 	elfSetParticlesDrawMode(particles, particles->drawMode);
 
-	fread((char*)&particles->spawnDelay, sizeof(float), 1, file);
+	fread((char*)&particles->spawnCount, sizeof(int), 1, file);
 	fread((char*)&particles->spawn, sizeof(unsigned char), 1, file);
 	fread((char*)&particles->gravity.x, sizeof(float), 3, file);
 	fread((char*)&particles->sizeMin, sizeof(float), 1, file);
@@ -1182,7 +1182,7 @@ elfParticles* elfCreateParticlesFromPak(FILE* file, const char* name, elfScene* 
 	fread((char*)&particles->colorMin.r, sizeof(float), 4, file);
 	fread((char*)&particles->colorMax.r, sizeof(float), 4, file);
 
-	elfSetParticlesSpawnDelay(particles, particles->spawnDelay);
+	elfSetParticlesSpawnCount(particles, particles->spawnCount);
 	elfSetParticlesSpawn(particles, particles->spawn);
 	elfSetParticlesGravity(particles, particles->gravity.x, particles->gravity.y, particles->gravity.z);
 	elfSetParticlesSize(particles, particles->sizeMin, particles->sizeMax);
@@ -1774,7 +1774,7 @@ void elfWriteParticlesToFile(elfParticles* particles, FILE* file)
 	fwrite((char*)&particles->maxCount, sizeof(int), 1, file);
 	fwrite((char*)&particles->drawMode, sizeof(unsigned char), 1, file);
 
-	fwrite((char*)&particles->spawnDelay, sizeof(float), 1, file);
+	fwrite((char*)&particles->spawnCount, sizeof(int), 1, file);
 	fwrite((char*)&particles->spawn, sizeof(unsigned char), 1, file);
 	fwrite((char*)&particles->gravity.x, sizeof(float), 3, file);
 	fwrite((char*)&particles->sizeMin, sizeof(float), 1, file);

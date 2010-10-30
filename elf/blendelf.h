@@ -1327,7 +1327,7 @@ ELF_API void ELF_APIENTRY elfClearParticlesModel(elfParticles* particles);
 ELF_API void ELF_APIENTRY elfSetParticlesEntity(elfParticles* particles, elfEntity* entity);
 ELF_API void ELF_APIENTRY elfClearParticlesEntity(elfParticles* particles);
 ELF_API void ELF_APIENTRY elfSetParticlesGravity(elfParticles* particles, float x, float y, float z);
-ELF_API void ELF_APIENTRY elfSetParticlesSpawnDelay(elfParticles* particles, float delay);
+ELF_API void ELF_APIENTRY elfSetParticlesSpawnCount(elfParticles* particles, int perSecond);
 ELF_API void ELF_APIENTRY elfSetParticlesSpawn(elfParticles* particles, unsigned char spawn);
 
 ELF_API void ELF_APIENTRY elfSetParticlesSize(elfParticles* particles, float min, float max);
@@ -1350,7 +1350,7 @@ ELF_API elfTexture* ELF_APIENTRY elfGetParticlesTexture(elfParticles* particles)
 ELF_API elfModel* ELF_APIENTRY elfGetParticlesModel(elfParticles* particles);
 ELF_API elfEntity* ELF_APIENTRY elfGetParticlesEntity(elfParticles* particles);
 ELF_API elfVec3f ELF_APIENTRY elfGetParticlesGravity(elfParticles* particles);
-ELF_API float ELF_APIENTRY elfGetParticlesSpawnDelay(elfParticles* particles);
+ELF_API int ELF_APIENTRY elfGetParticlesSpawnCount(elfParticles* particles);
 ELF_API unsigned char ELF_APIENTRY elfGetParticlesSpawn(elfParticles* particles);
 
 ELF_API float ELF_APIENTRY elfGetParticlesSizeMin(elfParticles* particles);

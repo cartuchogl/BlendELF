@@ -508,6 +508,7 @@ struct elfParticles {
 	gfxVertexData* texCoords;
 	gfxVertexData* colors;
 
+	int spawnCount;
 	float spawnDelay;
 	unsigned char spawn;
 	float curTime;

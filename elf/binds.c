@@ -6574,18 +6574,18 @@ static int lua_SetParticlesGravity(lua_State *L)
 	elfSetParticlesGravity(arg0, arg1, arg2, arg3);
 	return 0;
 }
-static int lua_SetParticlesSpawnDelay(lua_State *L)
+static int lua_SetParticlesSpawnCount(lua_State *L)
 {
 	elfParticles* arg0;
-	float arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetParticlesSpawnDelay", lua_gettop(L), 2);}
+	int arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetParticlesSpawnCount", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_PARTICLES)
-		{return lua_fail_arg(L, "SetParticlesSpawnDelay", 1, "elfParticles");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetParticlesSpawnDelay", 2, "number");}
+		{return lua_fail_arg(L, "SetParticlesSpawnCount", 1, "elfParticles");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetParticlesSpawnCount", 2, "number");}
 	arg0 = (elfParticles*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = (float)lua_tonumber(L, 2);
-	elfSetParticlesSpawnDelay(arg0, arg1);
+	arg1 = (int)lua_tonumber(L, 2);
+	elfSetParticlesSpawnCount(arg0, arg1);
 	return 0;
 }
 static int lua_SetParticlesSpawn(lua_State *L)
@@ -6924,16 +6924,16 @@ static int lua_GetParticlesGravity(lua_State *L)
 	lua_create_elfVec3f(L, result);
 	return 1;
 }
-static int lua_GetParticlesSpawnDelay(lua_State *L)
+static int lua_GetParticlesSpawnCount(lua_State *L)
 {
-	float result;
+	int result;
 	elfParticles* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetParticlesSpawnDelay", lua_gettop(L), 1);}
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetParticlesSpawnCount", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_PARTICLES)
-		{return lua_fail_arg(L, "GetParticlesSpawnDelay", 1, "elfParticles");}
+		{return lua_fail_arg(L, "GetParticlesSpawnCount", 1, "elfParticles");}
 	arg0 = (elfParticles*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetParticlesSpawnDelay(arg0);
+	result = elfGetParticlesSpawnCount(arg0);
 	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
@@ -11234,7 +11234,7 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"SetParticlesEntity", lua_SetParticlesEntity},
 	{"ClearParticlesEntity", lua_ClearParticlesEntity},
 	{"SetParticlesGravity", lua_SetParticlesGravity},
-	{"SetParticlesSpawnDelay", lua_SetParticlesSpawnDelay},
+	{"SetParticlesSpawnCount", lua_SetParticlesSpawnCount},
 	{"SetParticlesSpawn", lua_SetParticlesSpawn},
 	{"SetParticlesSize", lua_SetParticlesSize},
 	{"SetParticlesSizeGrowth", lua_SetParticlesSizeGrowth},
@@ -11255,7 +11255,7 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetParticlesModel", lua_GetParticlesModel},
 	{"GetParticlesEntity", lua_GetParticlesEntity},
 	{"GetParticlesGravity", lua_GetParticlesGravity},
-	{"GetParticlesSpawnDelay", lua_GetParticlesSpawnDelay},
+	{"GetParticlesSpawnCount", lua_GetParticlesSpawnCount},
 	{"GetParticlesSpawn", lua_GetParticlesSpawn},
 	{"GetParticlesSizeMin", lua_GetParticlesSizeMin},
 	{"GetParticlesSizeMax", lua_GetParticlesSizeMax},

@@ -43,6 +43,7 @@ ELF_API elfParticles* ELF_APIENTRY elfCreateParticles(const char* name, int maxC
 	elfIncRef((elfObject*)particles->particles);
 
 	particles->drawMode = ELF_ADD;
+	particles->spawnCount = 50;
 	particles->spawnDelay = 0.02f;
 	particles->spawn = ELF_TRUE;
 	particles->sizeMin = 1.0f;
@@ -276,10 +277,18 @@ void elfUpdateParticles(elfParticles* particles, float sync)
 
 	// update, remove and spawn particles
 	particles->curTime += sync;
-	spawnCount = (int)(particles->curTime/particles->spawnDelay);
-	if(elfGetListLength(particles->particles)+spawnCount > particles->maxCount)
-		spawnCount -= (elfGetListLength(particles->particles)+spawnCount)-particles->maxCount;
-	if(spawnCount > 0) particles->curTime -= particles->spawnDelay*spawnCount;
+	if(particles->spawnCount == 0)
+	{
+		spawnCount = 0;
+		particles->curTime = 0.0f;
+	}
+	else
+	{
+		spawnCount = (int)(particles->curTime/particles->spawnDelay);
+		if(elfGetListLength(particles->particles)+spawnCount > particles->maxCount)
+			spawnCount -= (elfGetListLength(particles->particles)+spawnCount)-particles->maxCount;
+		if(spawnCount > 0) particles->curTime -= particles->spawnDelay*spawnCount;
+	}
 
 	for(particle = (elfParticle*)elfBeginList(particles->particles); particle;
 		particle = (elfParticle*)elfGetListNext(particles->particles))
@@ -775,10 +784,18 @@ ELF_API void ELF_APIENTRY elfSetParticlesGravity(elfParticles* particles, float 
 	elfCalcParticlesAabb(particles);
 }
 
-ELF_API void ELF_APIENTRY elfSetParticlesSpawnDelay(elfParticles* particles, float delay)
+ELF_API void ELF_APIENTRY elfSetParticlesSpawnCount(elfParticles* particles, int perSecond)
 {
-	particles->spawnDelay = delay;
-	if(particles->spawnDelay < 0.00001f) particles->spawnDelay = 0.00001f;
+	particles->spawnCount = perSecond;
+	if(particles->spawnCount <= 0)
+	{
+		particles->spawnCount = 0;
+		particles->spawnDelay = 0.0f;
+	}
+	else
+	{
+		particles->spawnDelay = 1.0f/(float)particles->spawnCount;
+	}
 }
 
 ELF_API void ELF_APIENTRY elfSetParticlesSpawn(elfParticles* particles, unsigned char spawn)
@@ -909,9 +926,9 @@ ELF_API elfVec3f ELF_APIENTRY elfGetParticlesGravity(elfParticles* particles)
 	return particles->gravity;
 }
 
-ELF_API float ELF_APIENTRY elfGetParticlesSpawnDelay(elfParticles* particles)
+ELF_API int ELF_APIENTRY elfGetParticlesSpawnCount(elfParticles* particles)
 {
-	return particles->spawnDelay;
+	return particles->spawnCount;
 }
 
 ELF_API unsigned char ELF_APIENTRY elfGetParticlesSpawn(elfParticles* particles)
