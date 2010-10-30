@@ -306,7 +306,6 @@ int elfGetLightSizeBytes(elfLight* light)
 	sizeBytes += sizeof(float);	// range
 	sizeBytes += sizeof(float);	// inner cone
 	sizeBytes += sizeof(float);	// outer cone
-	sizeBytes += sizeof(unsigned int);	// junk???
 	sizeBytes += sizeof(unsigned char);	// shadow caster
 	sizeBytes += sizeof(unsigned char);	// shaft
 	sizeBytes += sizeof(float);	// shaft size
