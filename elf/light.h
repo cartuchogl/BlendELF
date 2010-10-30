@@ -10,7 +10,7 @@ ELF_API elfLight* ELF_APIENTRY elfCreateLight(const char* name)
 
 	elfInitActor((elfActor*)light, ELF_FALSE);
 
-	light->distance = 30.0f;
+	light->range = 30.0f;
 	light->fadeSpeed = 1.0f/30.0f;
 	light->innerCone = 45.0f;
 	light->outerCone = 0.0f;
@@ -27,7 +27,7 @@ ELF_API elfLight* ELF_APIENTRY elfCreateLight(const char* name)
 	elfSetCameraViewport(light->shadowCamera, 0, 0, 512, 512);
 	elfSetCameraFov(light->shadowCamera, (light->innerCone+light->outerCone)*2);
 	elfSetCameraAspect(light->shadowCamera, 1.0f);
-	elfSetCameraClip(light->shadowCamera, 1.0f, light->distance+(1.0f)/light->fadeSpeed);
+	elfSetCameraClip(light->shadowCamera, 1.0f, light->range+(1.0f)/light->fadeSpeed);
 
 	gfxMatrix4SetIdentity(light->projectionMatrix);
 
@@ -92,11 +92,11 @@ ELF_API void ELF_APIENTRY elfSetLightColor(elfLight* light, float r, float g, fl
 	light->color.a = a;
 }
 
-ELF_API void ELF_APIENTRY elfSetLightDistance(elfLight* light, float distance)
+ELF_API void ELF_APIENTRY elfSetLightRange(elfLight* light, float range)
 {
-	light->distance = distance;
-	if(light->distance < 0.0f) light->distance = 0.0f;
-	elfSetCameraClip(light->shadowCamera, 1.0f, light->distance+(1.0f)/light->fadeSpeed);
+	light->range = range;
+	if(light->range < 0.0f) light->range = 0.0f;
+	elfSetCameraClip(light->shadowCamera, 1.0f, light->range+(1.0f)/light->fadeSpeed);
 }
 
 ELF_API void ELF_APIENTRY elfSetLightFadeSpeed(elfLight* light, float fadeSpeed)
@@ -104,7 +104,7 @@ ELF_API void ELF_APIENTRY elfSetLightFadeSpeed(elfLight* light, float fadeSpeed)
 	light->fadeSpeed = fadeSpeed;
 	if(light->fadeSpeed < 0.0001f) light->fadeSpeed = 0.0001f;
 	if(light->fadeSpeed > 1.0f) light->fadeSpeed = 1.0f;
-	elfSetCameraClip(light->shadowCamera, 1.0f, light->distance+(1.0f)/light->fadeSpeed);
+	elfSetCameraClip(light->shadowCamera, 1.0f, light->range+(1.0f)/light->fadeSpeed);
 }
 
 ELF_API void ELF_APIENTRY elfSetLightShadows(elfLight* light, unsigned char shadows)
@@ -126,9 +126,9 @@ ELF_API elfColor ELF_APIENTRY elfGetLightColor(elfLight* light)
 	return light->color;
 }
 
-ELF_API float ELF_APIENTRY elfGetLightDistance(elfLight* light)
+ELF_API float ELF_APIENTRY elfGetLightRange(elfLight* light)
 {
-	return light->distance;
+	return light->range;
 }
 
 ELF_API float ELF_APIENTRY elfGetLightFadeSpeed(elfLight* light)
@@ -243,7 +243,7 @@ void elfSetLight(elfLight* light, elfCamera* camera, gfxShaderParams* shaderPara
 	}
 
 	memcpy(&shaderParams->lightParams.color.r, &light->color.r, sizeof(float)*4);
-	shaderParams->lightParams.distance = light->distance;
+	shaderParams->lightParams.range = light->range;
 	shaderParams->lightParams.fadeSpeed = light->fadeSpeed;
 	shaderParams->lightParams.innerCone = light->innerCone;
 	shaderParams->lightParams.outerCone = light->outerCone;
@@ -310,8 +310,8 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 
 		for(i = 0; i < 128; i++)
 		{
-			vertexBuffer[i*3] = -((float)sin(step*i))*light->distance;
-			vertexBuffer[i*3+1] = ((float)cos(step*i))*light->distance;
+			vertexBuffer[i*3] = -((float)sin(step*i))*light->range;
+			vertexBuffer[i*3+1] = ((float)cos(step*i))*light->range;
 			vertexBuffer[i*3+2] = 0.0f;
 		}
 
@@ -320,17 +320,17 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 		for(i = 0; i < 128; i++)
 		{
 			vertexBuffer[i*3] = 0.0f;
-			vertexBuffer[i*3+1] = -((float)sin(step*i))*light->distance;
-			vertexBuffer[i*3+2] = ((float)cos(step*i))*light->distance;
+			vertexBuffer[i*3+1] = -((float)sin(step*i))*light->range;
+			vertexBuffer[i*3+2] = ((float)cos(step*i))*light->range;
 		}
 
 		elfDrawLines(128, rnd->lines);
 
 		for(i = 0; i < 128; i++)
 		{
-			vertexBuffer[i*3] = -((float)sin(step*i))*light->distance;
+			vertexBuffer[i*3] = -((float)sin(step*i))*light->range;
 			vertexBuffer[i*3+1] = 0.0f;
-			vertexBuffer[i*3+2] = ((float)cos(step*i))*light->distance;
+			vertexBuffer[i*3+2] = ((float)cos(step*i))*light->range;
 		}
 
 		elfDrawLines(128, rnd->lines);
@@ -359,24 +359,24 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 	else if(light->lightType == ELF_SPOT_LIGHT)
 	{
 		step = (360.0f/128.0)*GFX_PI_DIV_180;
-		size = sin((float)GFX_PI_DIV_180*light->innerCone)*light->distance;
+		size = sin((float)GFX_PI_DIV_180*light->innerCone)*light->range;
 
 		for(i = 0; i < 128; i++)
 		{
 			vertexBuffer[i*3] = -(float)sin(step*i)*size;
 			vertexBuffer[i*3+1] = (float)cos(step*i)*size;
-			vertexBuffer[i*3+2] = -light->distance;
+			vertexBuffer[i*3+2] = -light->range;
 		}
 
 		elfDrawLines(128, rnd->lines);
 
-		size = sin((float)GFX_PI_DIV_180*(light->innerCone+light->outerCone))*light->distance;
+		size = sin((float)GFX_PI_DIV_180*(light->innerCone+light->outerCone))*light->range;
 
 		for(i = 0; i < 128; i++)
 		{
 			vertexBuffer[i*3] = -(float)sin(step*i)*size;
 			vertexBuffer[i*3+1] = (float)cos(step*i)*size;
-			vertexBuffer[i*3+2] = -light->distance;
+			vertexBuffer[i*3+2] = -light->range;
 		}
 
 		elfDrawLines(128, rnd->lines);
@@ -404,13 +404,13 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 		vertexBuffer[20] = 0.0f;
 		vertexBuffer[21] = size;
 		vertexBuffer[22] = 0.0f;
-		vertexBuffer[23] = -light->distance;
+		vertexBuffer[23] = -light->range;
 		vertexBuffer[24] = 0.0f;
 		vertexBuffer[25] = 0.0f;
 		vertexBuffer[26] = 0.0f;
 		vertexBuffer[27] = -size;
 		vertexBuffer[28] = 0.0f;
-		vertexBuffer[29] = -light->distance;
+		vertexBuffer[29] = -light->range;
 
 		elfDrawLines(13, rnd->lines);
 	}
@@ -421,7 +421,7 @@ void elfDrawLightDebug(elfLight* light, gfxShaderParams* shaderParams)
 		vertexBuffer[2] = 0.5f;
 		vertexBuffer[3] = 0.0f;
 		vertexBuffer[4] = 0.0f;
-		vertexBuffer[5] = -light->distance;
+		vertexBuffer[5] = -light->range;
 		vertexBuffer[6] = -0.5f;
 		vertexBuffer[7] = 0.0f;
 		vertexBuffer[8] = 0.0f;

@@ -432,7 +432,7 @@ struct elfLight {
 	ELF_ACTOR_HEADER;
 	int lightType;
 	elfColor color;
-	float distance;
+	float range;
 	float fadeSpeed;
 	float innerCone;
 	float outerCone;

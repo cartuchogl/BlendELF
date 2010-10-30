@@ -1243,7 +1243,7 @@ ELF_API elfLight* ELF_APIENTRY elfCreateLight(const char* name);	// <mdoc> LIGHT
 
 ELF_API int ELF_APIENTRY elfGetLightType(elfLight* light);
 ELF_API elfColor ELF_APIENTRY elfGetLightColor(elfLight* light);
-ELF_API float ELF_APIENTRY elfGetLightDistance(elfLight* light);
+ELF_API float ELF_APIENTRY elfGetLightRange(elfLight* light);
 ELF_API float ELF_APIENTRY elfGetLightFadeSpeed(elfLight* light);
 ELF_API unsigned char ELF_APIENTRY elfGetLightShadows(elfLight* light);
 ELF_API unsigned char ELF_APIENTRY elfGetLightVisible(elfLight* light);
@@ -1255,7 +1255,7 @@ ELF_API float ELF_APIENTRY elfGetLightShaftFadeOff(elfLight* light);
 
 ELF_API void ELF_APIENTRY elfSetLightType(elfLight* light, int type);
 ELF_API void ELF_APIENTRY elfSetLightColor(elfLight* light, float r, float g, float b, float a);
-ELF_API void ELF_APIENTRY elfSetLightDistance(elfLight* light, float distance);
+ELF_API void ELF_APIENTRY elfSetLightRange(elfLight* light, float range);
 ELF_API void ELF_APIENTRY elfSetLightFadeSpeed(elfLight* light, float fadeSpeed);
 ELF_API void ELF_APIENTRY elfSetLightShadows(elfLight* light, unsigned char shadows);
 ELF_API void ELF_APIENTRY elfSetLightVisible(elfLight* light, unsigned char visible);

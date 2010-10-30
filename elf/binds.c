@@ -5982,16 +5982,16 @@ static int lua_GetLightColor(lua_State *L)
 	lua_create_elfColor(L, result);
 	return 1;
 }
-static int lua_GetLightDistance(lua_State *L)
+static int lua_GetLightRange(lua_State *L)
 {
 	float result;
 	elfLight* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetLightDistance", lua_gettop(L), 1);}
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetLightRange", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_LIGHT)
-		{return lua_fail_arg(L, "GetLightDistance", 1, "elfLight");}
+		{return lua_fail_arg(L, "GetLightRange", 1, "elfLight");}
 	arg0 = (elfLight*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetLightDistance(arg0);
+	result = elfGetLightRange(arg0);
 	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
@@ -6136,18 +6136,18 @@ static int lua_SetLightColor(lua_State *L)
 	elfSetLightColor(arg0, arg1, arg2, arg3, arg4);
 	return 0;
 }
-static int lua_SetLightDistance(lua_State *L)
+static int lua_SetLightRange(lua_State *L)
 {
 	elfLight* arg0;
 	float arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetLightDistance", lua_gettop(L), 2);}
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetLightRange", lua_gettop(L), 2);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_LIGHT)
-		{return lua_fail_arg(L, "SetLightDistance", 1, "elfLight");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetLightDistance", 2, "number");}
+		{return lua_fail_arg(L, "SetLightRange", 1, "elfLight");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetLightRange", 2, "number");}
 	arg0 = (elfLight*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (float)lua_tonumber(L, 2);
-	elfSetLightDistance(arg0, arg1);
+	elfSetLightRange(arg0, arg1);
 	return 0;
 }
 static int lua_SetLightFadeSpeed(lua_State *L)
@@ -11190,7 +11190,7 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"CreateLight", lua_CreateLight},
 	{"GetLightType", lua_GetLightType},
 	{"GetLightColor", lua_GetLightColor},
-	{"GetLightDistance", lua_GetLightDistance},
+	{"GetLightRange", lua_GetLightRange},
 	{"GetLightFadeSpeed", lua_GetLightFadeSpeed},
 	{"GetLightShadows", lua_GetLightShadows},
 	{"GetLightVisible", lua_GetLightVisible},
@@ -11201,7 +11201,7 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetLightShaftFadeOff", lua_GetLightShaftFadeOff},
 	{"SetLightType", lua_SetLightType},
 	{"SetLightColor", lua_SetLightColor},
-	{"SetLightDistance", lua_SetLightDistance},
+	{"SetLightRange", lua_SetLightRange},
 	{"SetLightFadeSpeed", lua_SetLightFadeSpeed},
 	{"SetLightShadows", lua_SetLightShadows},
 	{"SetLightVisible", lua_SetLightVisible},

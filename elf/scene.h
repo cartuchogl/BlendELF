@@ -388,7 +388,7 @@ ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* filePath)
 
 			elfSetLightColor(light, ailig->mColorDiffuse.r, ailig->mColorDiffuse.g, ailig->mColorDiffuse.b, 1.0f);
 			elfSetLightCone(light, ailig->mAngleInnerCone, ailig->mAngleOuterCone);
-			elfSetLightDistance(light, 0.0001f);
+			elfSetLightRange(light, 0.0001f);
 			elfSetLightFadeSpeed(light, (ailig->mAttenuationLinear+ailig->mAttenuationQuadratic)/2.0f);
 			elfSetActorPosition((elfActor*)light, ailig->mPosition.x, ailig->mPosition.y, ailig->mPosition.z);
 			elfSetActorDirection((elfActor*)light, ailig->mDirection.x, ailig->mDirection.y, ailig->mDirection.z);
@@ -2027,7 +2027,7 @@ void elfDrawScene(elfScene* scene)
 			}
 			else if(light->lightType == ELF_POINT_LIGHT)
 			{
-				lrad = light->distance+1.0f/light->fadeSpeed;
+				lrad = light->range+1.0f/light->fadeSpeed;
 				if(gfxBoxSphereIntersect(&ent->cullAabbMin.x, &ent->cullAabbMax.x, &lpos.x, lrad))
 				{
 					elfDrawEntity(ent, ELF_DRAW_WITH_LIGHTING, &scene->shaderParams);
@@ -2056,7 +2056,7 @@ void elfDrawScene(elfScene* scene)
 				dvec = elfSubVec3fVec3f(spos, lpos);
 				dist = elfGetVec3fLength(dvec);
 				dist -= spr->cullRadius;
-				att = 1.0f-elfFloatMax(dist-light->distance, 0.0f)*light->fadeSpeed;
+				att = 1.0f-elfFloatMax(dist-light->range, 0.0f)*light->fadeSpeed;
 				if(att > 0.0f)
 				{
 					elfDrawSprite(spr, ELF_DRAW_WITH_LIGHTING, &scene->shaderParams);
@@ -2433,7 +2433,7 @@ void elfDrawScene(elfScene* scene)
 
 		// cull lights that aren't affecting any pixels on the screen
 		lpos = elfGetActorPosition((elfActor*)lig);
-		ldist = lig->distance+1.0/lig->fadeSpeed;
+		ldist = lig->range+1.0/lig->fadeSpeed;
 
 		ldvec.x = 0.0; ldvec.y = ldist; ldvec.z = 0.0;
 		ldvec = elfMulQuaVec3f(camOrient, ldvec);

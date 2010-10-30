@@ -303,7 +303,7 @@ int elfGetLightSizeBytes(elfLight* light)
 	sizeBytes += elfGetActorHeaderSizeBytes((elfActor*)light);	// actor header
 	sizeBytes += sizeof(unsigned char);	// type
 	sizeBytes += sizeof(float)*4;	// color
-	sizeBytes += sizeof(float);	// distance
+	sizeBytes += sizeof(float);	// range
 	sizeBytes += sizeof(float);	// fade speed
 	sizeBytes += sizeof(float);	// inner cone
 	sizeBytes += sizeof(float);	// outer cone
@@ -839,7 +839,7 @@ elfLight* elfCreateLightFromPak(FILE* file, const char* name, elfScene* scene)
 
 	fread((char*)&light->lightType, sizeof(unsigned char), 1, file);
 	fread((char*)&light->color.r, sizeof(float), 4, file);
-	fread((char*)&light->distance, sizeof(float), 1, file);
+	fread((char*)&light->range, sizeof(float), 1, file);
 	fread((char*)&light->fadeSpeed, sizeof(float), 1, file);
 	fread((char*)&light->innerCone, sizeof(float), 1, file);
 	fread((char*)&light->outerCone, sizeof(float), 1, file);
@@ -852,7 +852,7 @@ elfLight* elfCreateLightFromPak(FILE* file, const char* name, elfScene* scene)
 
 	elfSetLightType(light, light->lightType);
 	elfSetLightColor(light, light->color.r, light->color.g, light->color.b, light->color.a);
-	elfSetLightDistance(light, light->distance);
+	elfSetLightRange(light, light->range);
 	elfSetLightFadeSpeed(light, light->fadeSpeed);
 	elfSetLightShadows(light, light->shadows);
 	elfSetLightCone(light, light->innerCone, light->outerCone);
@@ -1644,7 +1644,7 @@ void elfWriteLightToFile(elfLight* light, FILE* file)
 
 	fwrite((char*)&light->lightType, sizeof(unsigned char), 1, file);
 	fwrite((char*)&light->color.r, sizeof(float), 4, file);
-	fwrite((char*)&light->distance, sizeof(float), 1, file);
+	fwrite((char*)&light->range, sizeof(float), 1, file);
 	fwrite((char*)&light->fadeSpeed, sizeof(float), 1, file);
 	fwrite((char*)&light->innerCone, sizeof(float), 1, file);
 	fwrite((char*)&light->outerCone, sizeof(float), 1, file);
