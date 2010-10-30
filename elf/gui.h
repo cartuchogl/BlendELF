@@ -214,6 +214,7 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams)
 	if(!button->off)
 	{
 		elfColor col1, col2;
+		col1.r = col1.g = col1.b = col1.a = 1.0f; col2.r = col2.g = col2.b = col2.a = 1.0f;
 
 		shaderParams->renderParams.vertexColor = ELF_TRUE;
 		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 1.0f);

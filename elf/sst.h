@@ -47,6 +47,10 @@ char* elfReadSstText(const char* text, int* pos)
 		end = ++start;
 		(*pos)++;
 	}
+	else
+	{
+		end = start;
+	}
 
 	while(text[end] != '\"' && text[end] != '\0')
 	{

@@ -84,7 +84,7 @@ void elfRecursivelyImportAssets(elfScene* scene, const struct aiScene* aiscn, st
 	int indexOffset;
 	float* vertexBuffer;
 	float* normalBuffer;
-	float* texcoordBuffer;
+	float* texcoordBuffer = NULL;
 	unsigned int* indexBuffer;
 	struct aiColor4D col;
 	const struct aiMaterial* aimat;
