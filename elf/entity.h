@@ -574,6 +574,8 @@ void elfDrawEntity(elfEntity* entity, int mode, gfxShaderParams* shaderParams)
 
 	gfxMulMatrix4Matrix4(gfxGetTransformMatrix(entity->transform),
 			shaderParams->cameraMatrix, shaderParams->modelviewMatrix);
+	gfxMulMatrix3Matrix4(gfxGetTransformNormalMatrix(entity->transform),
+			shaderParams->cameraMatrix, shaderParams->normalMatrix);
 
 	elfPreDrawEntity(entity);
 	elfDrawModel(entity->materials, entity->model, mode, shaderParams);

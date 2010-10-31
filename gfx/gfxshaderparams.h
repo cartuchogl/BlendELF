@@ -39,6 +39,7 @@ void gfxSetShaderParamsDefault(gfxShaderParams* shaderParams)
 	gfxMatrix4SetIdentity(shaderParams->projectionMatrix);
 	gfxMatrix4SetIdentity(shaderParams->invProjectionMatrix);
 	gfxMatrix4SetIdentity(shaderParams->modelviewMatrix);
+	gfxMatrix3SetIdentity(shaderParams->normalMatrix);
 
 	shaderParams->shaderProgram = NULL;
 }
@@ -381,6 +382,9 @@ void gfxSetShaderParams(gfxShaderParams* shaderParams)
 		if(shaderProgram->modelviewMatrixLoc != -1)
 			glUniformMatrix4fv(shaderProgram->modelviewMatrixLoc,
 				1, GL_FALSE, shaderParams->modelviewMatrix);
+		if(shaderProgram->normalMatrixLoc != -1)
+			glUniformMatrix3fv(shaderProgram->normalMatrixLoc,
+				1, GL_FALSE, shaderParams->normalMatrix);
 
 		if(shaderProgram->fogStartLoc != -1)
 			glUniform1f(shaderProgram->fogStartLoc, shaderParams->fogParams.start);

@@ -1966,7 +1966,7 @@ void elfDrawScene(elfScene* scene)
 
 			gfxMulMatrix4Matrix4(elfGetCameraProjectionMatrix(light->shadowCamera), bias, tempMat1);
 			gfxMulMatrix4Matrix4(elfGetCameraModelviewMatrix(light->shadowCamera), tempMat1, tempMat2);
-			gfxMatrix4GetInverseFast(elfGetCameraModelviewMatrix(scene->curCamera), tempMat1);
+			gfxMatrix4GetInverse(elfGetCameraModelviewMatrix(scene->curCamera), tempMat1);
 			gfxMulMatrix4Matrix4(tempMat1, tempMat2, light->projectionMatrix);
 
 			if(renderTarget) gfxSetRenderTarget(renderTarget);

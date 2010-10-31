@@ -324,93 +324,10 @@ void gfxMatrix4SetIdentity(float* mat)
 	mat[0] = mat[5] = mat[10] = mat[15] = 1.0f;
 }
 
-void gfxMatrix4Transpose(float* mat1, float* mat2)
+void gfxMatrix3SetIdentity(float* mat)
 {
-	mat2[0] = mat1[0];
-	mat2[4] = mat1[1];
-	mat2[8] = mat1[2];
-	mat2[12] = mat1[3];
-	mat2[1] = mat1[4];
-	mat2[5] = mat1[5];
-	mat2[9] = mat1[6];
-	mat2[13] = mat1[7];
-	mat2[2] = mat1[8];
-	mat2[6] = mat1[9];
-	mat2[10] = mat1[10];
-	mat2[14] = mat1[11];
-	mat2[3] = mat1[12];
-	mat2[7] = mat1[13];
-	mat2[11] = mat1[14];
-	mat2[15] = mat1[15];
-}
-
-#define M11 0
-#define M12 1
-#define M13 2
-#define M14 3
-#define M21 4
-#define M22 5
-#define M23 6
-#define M24 7
-#define M31 8
-#define M32 9
-#define M33 10
-#define M34 11
-#define M41 12
-#define M42 13
-#define M43 14
-#define M44 15
-
-float gfxMatrix4GetDeterminant(float* mat1)
-{
-	return mat1[M11] * mat1[M22] * mat1[M33] * mat1[M44] +
-		mat1[M11] * mat1[M23] * mat1[M34] * mat1[M42] +
-		mat1[M11] * mat1[M24] * mat1[M32] * mat1[M43] +
-
-		mat1[M12] * mat1[M21] * mat1[M34] * mat1[M43] +
-		mat1[M12] * mat1[M23] * mat1[M31] * mat1[M44] +
-		mat1[M12] * mat1[M24] * mat1[M33] * mat1[M41] +
-
-		mat1[M13] * mat1[M21] * mat1[M32] * mat1[M44] +
-		mat1[M13] * mat1[M22] * mat1[M34] * mat1[M41] +
-		mat1[M13] * mat1[M24] * mat1[M31] * mat1[M42] +
-
-		mat1[M14] * mat1[M21] * mat1[M33] * mat1[M42] +
-		mat1[M14] * mat1[M22] * mat1[M31] * mat1[M43] +
-		mat1[M14] * mat1[M23] * mat1[M32] * mat1[M41] -
-
-		mat1[M11] * mat1[M22] * mat1[M34] * mat1[M43] -
-		mat1[M11] * mat1[M23] * mat1[M32] * mat1[M44] -
-		mat1[M11] * mat1[M24] * mat1[M33] * mat1[M42] -
-
-		mat1[M12] * mat1[M21] * mat1[M33] * mat1[M44] -
-		mat1[M12] * mat1[M23] * mat1[M34] * mat1[M41] -
-		mat1[M12] * mat1[M24] * mat1[M31] * mat1[M43] -
-
-		mat1[M13] * mat1[M21] * mat1[M34] * mat1[M42] -
-		mat1[M13] * mat1[M22] * mat1[M31] * mat1[M44] -
-		mat1[M13] * mat1[M24] * mat1[M32] * mat1[M41] -
-
-		mat1[M14] * mat1[M21] * mat1[M32] * mat1[M43] -
-		mat1[M14] * mat1[M22] * mat1[M33] * mat1[M41] -
-		mat1[M14] * mat1[M23] * mat1[M31] * mat1[M42];
-}
-
-void gfxMatrix4GetInverseFast(float* mat1, float* mat2)
-{
-	mat2[3] = mat2[7] = mat2[11] = 0.0f; mat2[15] = 1.0f;
-	mat2[0] = mat1[0];
-	mat2[1] = mat1[4];
-	mat2[2] = mat1[8];
-	mat2[4] = mat1[1];
-	mat2[5] = mat1[5];
-	mat2[6] = mat1[9];
-	mat2[8] = mat1[2];
-	mat2[9] = mat1[6];
-	mat2[10] = mat1[10];
-	mat2[12] = -(mat1[12] * mat2[0] + mat1[13] * mat2[4] + mat1[14] * mat2[8]);
-	mat2[13] = -(mat1[12] * mat2[1] + mat1[13] * mat2[5] + mat1[14] * mat2[9]);
-	mat2[14] = -(mat1[12] * mat2[2] + mat1[13] * mat2[6] + mat1[14] * mat2[10]);
+	memset(mat, 0x0, sizeof(float)*9);
+	mat[0] = mat[4] = mat[8] = 1.0f;
 }
 
 #define MATSWAP(a,b) {temp=(a);(a)=(b);(b)=temp;}
@@ -423,8 +340,10 @@ unsigned char gfxMatrix4GetInverse(float* mat1, float* mat2)
 	int indxc[4], indxr[4], ipiv[4];
 	float big, dum, pivinv, temp;
 
-	for(i = 0; i < 4; i++) {
-		for (j=0; j<4; j++) {
+	for(i = 0; i < 4; i++)
+	{
+		for (j=0; j<4; j++)
+		{
 			matr[i][j] = mat1[4*i+j];
 			ident[i][j] = 0.0f;
 		}
@@ -510,6 +429,171 @@ unsigned char gfxMatrix4GetInverse(float* mat1, float* mat2)
 	}
 
 	return GFX_TRUE;
+}
+
+unsigned char gfxMatrix3GetInverse(float* mat1, float* mat2)
+{
+	float matr[3][3], ident[3][3];
+	int i, j, k, l, ll;
+	int icol=0, irow=0;
+	int indxc[3], indxr[3], ipiv[3];
+	float big, dum, pivinv, temp;
+
+	for(i = 0; i < 3; i++)
+	{
+		for (j = 0; j < 3; j++)
+		{
+			matr[i][j] = mat1[3*i+j];
+			ident[i][j] = 0.0f;
+		}
+		ident[i][i] = 1.0f;
+	} 
+
+	for(j = 0; j <= 2; j++) ipiv[j] = 0;
+	for(i = 0; i <= 2; i++)
+	{
+		big = 0.0f;
+
+		for (j = 0; j <= 2; j++)
+		{
+			if(ipiv[j] != 1)
+			{
+				for(k = 0; k <= 2; k++)
+				{
+					if(ipiv[k] == 0)
+					{
+						if(fabs(matr[j][k]) >= big)
+						{
+							big = (float)fabs(matr[j][k]);
+							irow = j;
+							icol = k;
+						}
+					}
+					else if(ipiv[k] > 1)
+					{
+						return GFX_FALSE;
+					}
+				} 
+			}
+		}
+
+		++(ipiv[icol]);
+
+		if(irow != icol)
+		{
+			for(l = 0; l <= 2; l++) MATSWAP(matr[irow][l], matr[icol][l]);
+			for(l = 0; l <= 2; l++) MATSWAP(ident[irow][l], ident[icol][l]);
+		}
+
+		indxr[i]=irow;
+		indxc[i]=icol;
+
+		if(matr[icol][icol] == 0.0f) return GFX_FALSE; 
+
+		pivinv = 1.0f / matr[icol][icol];
+		matr[icol][icol] = 1.0f;
+
+		for(l = 0; l <= 2; l++) matr[icol][l] *= pivinv;
+		for(l = 0; l <= 2; l++) ident[icol][l] *= pivinv;
+
+		for(ll = 0; ll <= 2; ll++)
+		{
+			if (ll != icol)
+			{
+				dum=matr[ll][icol];
+				matr[ll][icol] = 0.0f;
+				for(l = 0; l<=2; l++) matr[ll][l] -= matr[icol][l]*dum;
+				for(l = 0; l<=2; l++) ident[ll][l] -= ident[icol][l]*dum;
+			}
+		}
+	}
+
+	for(l = 2; l >= 0; l--)
+	{
+		if(indxr[l] != indxc[l])
+		{
+			for(k = 0; k <= 2; k++)
+			{
+				MATSWAP(matr[k][indxr[l]], matr[k][indxc[l]]);
+			}
+		}
+	}
+
+	for(i = 0; i < 3; i++)
+	{
+		for(j = 0; j < 3; j++)
+		{
+			mat2[3*i+j] = matr[i][j];
+		}
+	}
+
+	return GFX_TRUE;
+}
+
+void gfxMatrix4GetTranspose(float* mat1, float* mat2)
+{
+	int i, j;
+	int save;
+	float matrix[4][4];
+
+	for(i = 0; i < 4; i++)
+	{
+		for(j = 0; j < 4; j++)
+		{
+			matrix[i][j] = mat1[4*i+j];
+		}
+	}
+
+	for(i = 0; i < 4; i++)
+	{
+		for(j = i + 1; j < 4; j++)
+		{
+			save = matrix[i][j];
+			matrix[i][j] = matrix[j][i];
+			matrix[j][i] = save;
+		}
+	}
+
+	for(i = 0; i < 4; i++)
+	{
+		for(j = 0; j < 4; j++)
+		{
+			mat2[4*i+j] = matrix[i][j];
+		}
+	}
+}
+
+void gfxMatrix3GetTranspose(float* mat1, float* mat2)
+{
+	int i, j;
+	int save;
+	float matrix[3][3];
+
+	for(i = 0; i < 3; i++)
+	{
+		for(j = 0; j < 3; j++)
+		{
+			matrix[i][j] = mat1[3*i+j];
+		}
+	}
+
+	for(i = 0; i < 3; i++)
+	{
+		for(j = i + 1; j < 3; j++)
+		{
+			save = matrix[i][j];
+			matrix[i][j] = matrix[j][i];
+			matrix[j][i] = save;
+		}
+	}
+
+	for(i = 0; i < 3; i++)
+	{
+		for(j = 0; j < 3; j++)
+		{
+			mat2[3*i+j] = matrix[i][j];
+		}
+	}
 }
 
 void gfxMatrix3ToQua(float* mat, float* qua)
@@ -605,6 +689,19 @@ void gfxMulMatrix4Matrix4(float* m1, float* m2, float* m3)
 	m3[13] = m1[12]*m2[1]+m1[13]*m2[5]+m1[14]*m2[9]+m1[15]*m2[13];
 	m3[14] = m1[12]*m2[2]+m1[13]*m2[6]+m1[14]*m2[10]+m1[15]*m2[14];
 	m3[15] = m1[12]*m2[3]+m1[13]*m2[7]+m1[14]*m2[11]+m1[15]*m2[15];
+}
+
+void gfxMulMatrix3Matrix4(float* m1, float* m2, float* m3)
+{
+	m3[0] = m1[0]*m2[0]+m1[1]*m2[4]+m1[2]*m2[8];
+	m3[1] = m1[0]*m2[1]+m1[1]*m2[5]+m1[2]*m2[9];
+	m3[2] = m1[0]*m2[2]+m1[1]*m2[6]+m1[2]*m2[10];
+	m3[3] = m1[3]*m2[0]+m1[4]*m2[4]+m1[5]*m2[8];
+	m3[4] = m1[3]*m2[1]+m1[4]*m2[5]+m1[5]*m2[9];
+	m3[5] = m1[3]*m2[2]+m1[4]*m2[6]+m1[5]*m2[10];
+	m3[6] = m1[6]*m2[0]+m1[7]*m2[4]+m1[8]*m2[8];
+	m3[7] = m1[6]*m2[1]+m1[7]*m2[5]+m1[8]*m2[9];
+	m3[8] = m1[6]*m2[2]+m1[7]*m2[6]+m1[8]*m2[10];
 }
 
 unsigned char gfxBoxSphereIntersect(float* bmin, float* bmax, float* spos, float srad)

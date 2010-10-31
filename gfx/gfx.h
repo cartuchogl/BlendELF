@@ -225,6 +225,7 @@ typedef struct gfxShaderParams {
 	float projectionMatrix[16];
 	float invProjectionMatrix[16];
 	float modelviewMatrix[16];
+	float normalMatrix[9];
 	gfxGbuffer* gbuffer;
 	unsigned char gbufferMode;
 	gfxShaderProgram* shaderProgram;
@@ -279,14 +280,17 @@ void gfxMulQuaQua(float* qua1, float* qua2, float* qua3);
 void gfxQuaSlerp(float* qa, float* qb, double t, float* result);
 
 void gfxMatrix4SetIdentity(float* mat);
-void gfxMatrix4Transpose(float* mat1, float* mat2);
-void gfxMatrix4GetInverseFast(float* mat1, float* mat2);
+void gfxMatrix3SetIdentity(float* mat);
 unsigned char gfxMatrix4GetInverse(float* mat1, float* mat2);
+unsigned char gfxMatrix3GetInverse(float* mat1, float* mat2);
+void gfxMatrix4GetTranspose(float* mat1, float* mat2);
+void gfxMatrix3GetTranspose(float* mat1, float* mat2);
 void gfxMatrix3ToQua(float* mat, float* qua);
 void gfxMatrix4ToEuler(float* mat, float* eul);
 void gfxMulMatrix4Vec3(float* m1, float* vec1, float* vec2);
 void gfxMulMatrix4Vec4(float* m1, float* vec1, float* vec2);
 void gfxMulMatrix4Matrix4(float* m1, float* m2, float* m3);
+void gfxMulMatrix3Matrix4(float* m1, float* m2, float* m3);
 
 unsigned char gfxBoxSphereIntersect(float* bmin, float* bmax, float* spos, float srad);
 
@@ -308,6 +312,7 @@ void gfxUnProject(float x, float y, float z, float modl[16], float proj[16], int
 
 void gfxRecalcTransformMatrix(gfxTransform* transform);
 float* gfxGetTransformMatrix(gfxTransform* transform);
+float* gfxGetTransformNormalMatrix(gfxTransform* transform);
 gfxTransform* gfxCreateCameraTransform();
 gfxTransform* gfxCreateObjectTransform();
 void gfxDestroyTransform(gfxTransform* transform);

@@ -171,6 +171,8 @@ void gfxAddVertexUniforms(gfxDocument* document, gfxShaderConfig* config)
 {
 	gfxAddDocumentLine(document, "uniform mat4 elf_ProjectionMatrix;");
 	gfxAddDocumentLine(document, "uniform mat4 elf_ModelviewMatrix;");
+	if(config->light || config->textures & GFX_HEIGHT_MAP)
+		gfxAddDocumentLine(document, "uniform mat3 elf_NormalMatrix;");
 	if(config->light) gfxAddDocumentLine(document, "uniform vec3 elf_LightPosition;");
 	if(config->light == GFX_SPOT_LIGHT || config->light == GFX_SUN_LIGHT) gfxAddDocumentLine(document, "uniform vec3 elf_LightSpotDirection;");
 	if(config->light && config->textures & GFX_SHADOW_MAP) gfxAddDocumentLine(document, "uniform mat4 elf_ShadowProjectionMatrix;");
@@ -210,8 +212,8 @@ void gfxAddVertexLightingCalcs(gfxDocument* document, gfxShaderConfig* config)
 	{
 		if(config->light && !(config->textures & GFX_NORMAL_MAP) && config->textures & GFX_HEIGHT_MAP)
 			gfxAddDocumentLine(document, "\telf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0f));");
-		else gfxAddDocumentLine(document, "\tvec3 elf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0f));");
-		gfxAddDocumentLine(document, "\tvec3 elf_Tangent = vec3(elf_ModelviewMatrix*vec4(elf_TangentAttr, 0.0f));");
+		else gfxAddDocumentLine(document, "\tvec3 elf_Normal = elf_NormalMatrix*elf_NormalAttr;");
+		gfxAddDocumentLine(document, "\tvec3 elf_Tangent = elf_NormalMatrix*elf_TangentAttr;");
 		gfxAddDocumentLine(document, "\tvec3 elf_BiNormal = cross(elf_Normal, elf_Tangent);");
 		gfxAddDocumentLine(document, "\tvec3 tmpvec = -vertex.xyz;");
 		gfxAddDocumentLine(document, "\telf_EyeVector.x = dot(tmpvec, elf_Tangent);");
@@ -231,7 +233,7 @@ void gfxAddVertexLightingCalcs(gfxDocument* document, gfxShaderConfig* config)
 		}
 		else
 		{
-				if(!(config->textures & GFX_HEIGHT_MAP)) gfxAddDocumentLine(document, "\telf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0f));");
+				if(!(config->textures & GFX_HEIGHT_MAP)) gfxAddDocumentLine(document, "\telf_Normal = elf_NormalMatrix*elf_NormalAttr;");
 				if(config->light != GFX_SUN_LIGHT) gfxAddDocumentLine(document, "\telf_LightDirection = elf_LightPosition-vertex.xyz;");
 				if(config->light == GFX_SUN_LIGHT) gfxAddDocumentLine(document, "\telf_LightDirection = -elf_LightSpotDirection;");
 		}
@@ -240,7 +242,7 @@ void gfxAddVertexLightingCalcs(gfxDocument* document, gfxShaderConfig* config)
 	{
 		if(!config->light && !(config->textures & GFX_HEIGHT_MAP))
 		{
-			gfxAddDocumentLine(document, "\tvec3 elf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0f));");
+			gfxAddDocumentLine(document, "\tvec3 elf_Normal = elf_NormalMatrix*elf_NormalAttr;");
 		}
 		gfxAddDocumentLine(document, "\telf_CubeMapCoord = reflect(normalize(elf_CameraPosition-vertex.xyz), elf_Normal);");
 	}
@@ -524,6 +526,8 @@ void gfxAddGbufVertexUniforms(gfxDocument* document, gfxShaderConfig* config)
 {
 	gfxAddDocumentLine(document, "uniform mat4 elf_ProjectionMatrix;");
 	gfxAddDocumentLine(document, "uniform mat4 elf_ModelviewMatrix;");
+	if(config->light || config->textures & GFX_HEIGHT_MAP)
+		gfxAddDocumentLine(document, "uniform mat3 elf_NormalMatrix;");
 }
 
 void gfxAddGbufVertexVaryings(gfxDocument* document, gfxShaderConfig* config)
@@ -555,8 +559,8 @@ void gfxAddGbufVertexLightingCalcs(gfxDocument* document, gfxShaderConfig* confi
 {
 	if(config->textures & GFX_NORMAL_MAP || config->textures & GFX_HEIGHT_MAP)
 	{
-		gfxAddDocumentLine(document, "\telf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0f));");
-		gfxAddDocumentLine(document, "\telf_Tangent = vec3(elf_ModelviewMatrix*vec4(elf_TangentAttr, 0.0f));");
+		gfxAddDocumentLine(document, "\telf_Normal = elf_NormalMatrix*elf_NormalAttr;");
+		gfxAddDocumentLine(document, "\telf_Tangent = elf_NormalMatrix*elf_TangentAttr;");
 		gfxAddDocumentLine(document, "\telf_BiNormal = cross(elf_Normal, elf_Tangent);");
 		if(config->textures & GFX_HEIGHT_MAP)
 		{
@@ -568,7 +572,7 @@ void gfxAddGbufVertexLightingCalcs(gfxDocument* document, gfxShaderConfig* confi
 	}
 	else
 	{
-		gfxAddDocumentLine(document, "\telf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0f));");
+		gfxAddDocumentLine(document, "\telf_Normal = elf_NormalMatrix*elf_NormalAttr;");
 	}
 }
 

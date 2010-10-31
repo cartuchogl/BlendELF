@@ -161,6 +161,10 @@ void gfxRecalcTransformMatrix(gfxTransform* transform)
 		gfxQuaToMatrix4(invQua, tempMatrix1);
 		gfxMulMatrix4Matrix4(tempMatrix1, transform->matrix, tempMatrix2);
 
+		memcpy(&transform->normalMatrix[0], &tempMatrix2[0], sizeof(float)*3);
+		memcpy(&transform->normalMatrix[3], &tempMatrix2[4], sizeof(float)*3);
+		memcpy(&transform->normalMatrix[6], &tempMatrix2[8], sizeof(float)*3);
+
 		gfxMatrix4SetIdentity(tempMatrix1);
 
 		tempMatrix1[0] = transform->scale[0];
@@ -191,6 +195,17 @@ float* gfxGetTransformMatrix(gfxTransform* transform)
 	}
 
 	return transform->matrix;
+}
+
+float* gfxGetTransformNormalMatrix(gfxTransform* transform)
+{
+	if(transform->recalcMatrix == GFX_TRUE)
+	{
+		gfxRecalcTransformMatrix(transform);
+		transform->recalcMatrix = GFX_FALSE;
+	}
+
+	return transform->normalMatrix;
 }
 
 gfxTransform* gfxCreateCameraTransform()

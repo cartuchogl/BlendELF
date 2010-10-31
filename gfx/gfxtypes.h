@@ -45,6 +45,7 @@ struct gfxTransform {
 	float scale[3];
 	float orient[4];
 	float matrix[16];
+	float normalMatrix[9];
 	unsigned char recalcMatrix;
 	unsigned char cameraMode;
 };
@@ -97,6 +98,7 @@ struct gfxShaderProgram {
 	int projectionMatrixLoc;
 	int invProjectionMatrixLoc;
 	int modelviewMatrixLoc;
+	int normalMatrixLoc;
 	int texture0Loc;
 	int texture1Loc;
 	int texture2Loc;

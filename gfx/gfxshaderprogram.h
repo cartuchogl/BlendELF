@@ -107,6 +107,7 @@ gfxShaderProgram* gfxCreateShaderProgram(const char* vertex, const char* fragmen
 	shaderProgram->projectionMatrixLoc = glGetUniformLocation(shaderProgram->id, "elf_ProjectionMatrix");
 	shaderProgram->invProjectionMatrixLoc = glGetUniformLocation(shaderProgram->id, "elf_InvProjectionMatrix");
 	shaderProgram->modelviewMatrixLoc = glGetUniformLocation(shaderProgram->id, "elf_ModelviewMatrix");
+	shaderProgram->normalMatrixLoc = glGetUniformLocation(shaderProgram->id, "elf_NormalMatrix");
 	shaderProgram->texture0Loc = glGetUniformLocation(shaderProgram->id, "elf_Texture0");
 	shaderProgram->texture1Loc = glGetUniformLocation(shaderProgram->id, "elf_Texture1");
 	shaderProgram->texture2Loc = glGetUniformLocation(shaderProgram->id, "elf_Texture2");
