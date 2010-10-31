@@ -118,6 +118,7 @@ struct gfxShaderProgram {
 	int lightColorLoc;
 	int lightSpotDirectionLoc;
 	int lightRangeLoc;
+	int lightFadeRangeLoc;
 	int lightInnerConeCosLoc;
 	int lightOuterConeCosLoc;
 	int cameraPositionLoc;

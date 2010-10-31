@@ -254,7 +254,7 @@ void gfxSetShaderParams(gfxShaderParams* shaderParams)
 
 				glLightfv(GL_LIGHT0, GL_DIFFUSE, &shaderParams->lightParams.color.r);
 				glLightfv(GL_LIGHT0, GL_SPECULAR, &shaderParams->lightParams.color.r);
-				glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 1.0f/shaderParams->lightParams.range);
+				glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 10.0f/(shaderParams->lightParams.range+shaderParams->lightParams.fadeRange));
 
 				if(shaderParams->lightParams.type != GFX_SPOT_LIGHT)
 				{
@@ -464,6 +464,8 @@ void gfxSetShaderParams(gfxShaderParams* shaderParams)
 				glUniform3fv(shaderProgram->lightColorLoc, 1, &shaderParams->lightParams.color.r);
 			if(shaderProgram->lightRangeLoc != -1)
 				glUniform1f(shaderProgram->lightRangeLoc, shaderParams->lightParams.range);
+			if(shaderProgram->lightFadeRangeLoc != -1)
+				glUniform1f(shaderProgram->lightFadeRangeLoc, shaderParams->lightParams.fadeRange);
 			if(shaderProgram->lightSpotDirectionLoc != -1)
 				glUniform3fv(shaderProgram->lightSpotDirectionLoc, 1, &shaderParams->lightParams.direction.x);
 			if(shaderProgram->lightInnerConeCosLoc != -1)

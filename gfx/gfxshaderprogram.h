@@ -128,6 +128,7 @@ gfxShaderProgram* gfxCreateShaderProgram(const char* vertex, const char* fragmen
 	shaderProgram->lightColorLoc = glGetUniformLocation(shaderProgram->id, "elf_LightColor");
 	shaderProgram->lightSpotDirectionLoc = glGetUniformLocation(shaderProgram->id, "elf_LightSpotDirection");
 	shaderProgram->lightRangeLoc = glGetUniformLocation(shaderProgram->id, "elf_LightRange");
+	shaderProgram->lightFadeRangeLoc = glGetUniformLocation(shaderProgram->id, "elf_LightFadeRange");
 	shaderProgram->lightInnerConeCosLoc = glGetUniformLocation(shaderProgram->id, "elf_LightInnerConeCos");
 	shaderProgram->lightOuterConeCosLoc = glGetUniformLocation(shaderProgram->id, "elf_LightOuterConeCos");
 	shaderProgram->cameraPositionLoc = glGetUniformLocation(shaderProgram->id, "elf_CameraPosition");

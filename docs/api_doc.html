@@ -788,7 +788,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apiobjtype">elfLight</span> CreateLight( <span class="apikeytype">string</span> name )</div>
 <div class="apifunc">SetLightType( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">int</span> type )</div>
 <div class="apifunc">SetLightColor( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">float</span> r, <span class="apikeytype">float</span> g, <span class="apikeytype">float</span> b, <span class="apikeytype">float</span> a )</div>
-<div class="apifunc">SetLightRange( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">float</span> range )</div>
+<div class="apifunc">SetLightRange( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">float</span> range, <span class="apikeytype">float</span> fadeRange )</div>
 <div class="apifunc">SetLightShadows( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">unsigned char</span> shadows )</div>
 <div class="apifunc">SetLightVisible( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">unsigned char</span> visible )</div>
 <div class="apifunc">SetLightCone( <span class="apiobjtype">elfLight</span> light, <span class="apikeytype">float</span> innerCone, <span class="apikeytype">float</span> outerCone )</div>
@@ -799,9 +799,11 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">int</span> GetLightType( <span class="apiobjtype">elfLight</span> light )</div>
 <div class="apifunc"><span class="apikeytype">elfColor</span> GetLightColor( <span class="apiobjtype">elfLight</span> light )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetLightRange( <span class="apiobjtype">elfLight</span> light )</div>
+<div class="apifunc"><span class="apikeytype">float</span> GetLightFadeRange( <span class="apiobjtype">elfLight</span> light )</div>
 <div class="apifunc"><span class="apikeytype">boolean</span> GetLightShadows( <span class="apiobjtype">elfLight</span> light )</div>
 <div class="apifunc"><span class="apikeytype">boolean</span> GetLightVisible( <span class="apiobjtype">elfLight</span> light )</div>
-<div class="apifunc"><span class="apikeytype">elfVec2f</span> GetLightCone( <span class="apiobjtype">elfLight</span> light )</div>
+<div class="apifunc"><span class="apikeytype">float</span> GetLightInnerCone( <span class="apiobjtype">elfLight</span> light )</div>
+<div class="apifunc"><span class="apikeytype">float</span> GetLightOuterCone( <span class="apiobjtype">elfLight</span> light )</div>
 <div class="apifunc"><span class="apikeytype">boolean</span> GetLightShaft( <span class="apiobjtype">elfLight</span> light )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetLightShaftSize( <span class="apiobjtype">elfLight</span> light )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetLightShaftIntensity( <span class="apiobjtype">elfLight</span> light )</div>

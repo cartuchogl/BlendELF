@@ -205,6 +205,7 @@ typedef struct gfxLightParams {
 	gfxNormal direction;
 	gfxColor color;
 	float range;
+	float fadeRange;
 	float innerCone;
 	float outerCone;
 } gfxLightParams;

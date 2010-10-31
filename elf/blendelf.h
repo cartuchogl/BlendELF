@@ -335,7 +335,7 @@ extern "C" {
 #define ELF_DRAW_WITHOUT_LIGHTING			0x0002
 #define ELF_DRAW_WITH_LIGHTING				0x0003
 
-#define ELF_PAK_VERSION					103
+#define ELF_PAK_VERSION					104
 // !!>
 
 typedef struct elfVec2i					elfVec2i;
@@ -1243,7 +1243,7 @@ ELF_API elfLight* ELF_APIENTRY elfCreateLight(const char* name);	// <mdoc> LIGHT
 
 ELF_API void ELF_APIENTRY elfSetLightType(elfLight* light, int type);
 ELF_API void ELF_APIENTRY elfSetLightColor(elfLight* light, float r, float g, float b, float a);
-ELF_API void ELF_APIENTRY elfSetLightRange(elfLight* light, float range);
+ELF_API void ELF_APIENTRY elfSetLightRange(elfLight* light, float range, float fadeRange);
 ELF_API void ELF_APIENTRY elfSetLightShadows(elfLight* light, unsigned char shadows);
 ELF_API void ELF_APIENTRY elfSetLightVisible(elfLight* light, unsigned char visible);
 ELF_API void ELF_APIENTRY elfSetLightCone(elfLight* light, float innerCone, float outerCone);
@@ -1255,9 +1255,11 @@ ELF_API void ELF_APIENTRY elfSetLightShaftFadeOff(elfLight* light, float fadeOff
 ELF_API int ELF_APIENTRY elfGetLightType(elfLight* light);
 ELF_API elfColor ELF_APIENTRY elfGetLightColor(elfLight* light);
 ELF_API float ELF_APIENTRY elfGetLightRange(elfLight* light);
+ELF_API float ELF_APIENTRY elfGetLightFadeRange(elfLight* light);
 ELF_API unsigned char ELF_APIENTRY elfGetLightShadows(elfLight* light);
 ELF_API unsigned char ELF_APIENTRY elfGetLightVisible(elfLight* light);
-ELF_API elfVec2f ELF_APIENTRY elfGetLightCone(elfLight* light);
+ELF_API float ELF_APIENTRY elfGetLightInnerCone(elfLight* light);
+ELF_API float ELF_APIENTRY elfGetLightOuterCone(elfLight* light);
 ELF_API unsigned char ELF_APIENTRY elfGetLightShaft(elfLight* light);
 ELF_API float ELF_APIENTRY elfGetLightShaftSize(elfLight* light);
 ELF_API float ELF_APIENTRY elfGetLightShaftIntensity(elfLight* light);

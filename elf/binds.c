@@ -5997,14 +5997,17 @@ static int lua_SetLightRange(lua_State *L)
 {
 	elfLight* arg0;
 	float arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetLightRange", lua_gettop(L), 2);}
+	float arg2;
+	if(lua_gettop(L) != 3) {return lua_fail_arg_count(L, "SetLightRange", lua_gettop(L), 3);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_LIGHT)
 		{return lua_fail_arg(L, "SetLightRange", 1, "elfLight");}
 	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetLightRange", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetLightRange", 3, "number");}
 	arg0 = (elfLight*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (float)lua_tonumber(L, 2);
-	elfSetLightRange(arg0, arg1);
+	arg2 = (float)lua_tonumber(L, 3);
+	elfSetLightRange(arg0, arg1, arg2);
 	return 0;
 }
 static int lua_SetLightShadows(lua_State *L)
@@ -6147,6 +6150,19 @@ static int lua_GetLightRange(lua_State *L)
 	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
+static int lua_GetLightFadeRange(lua_State *L)
+{
+	float result;
+	elfLight* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetLightFadeRange", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_LIGHT)
+		{return lua_fail_arg(L, "GetLightFadeRange", 1, "elfLight");}
+	arg0 = (elfLight*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetLightFadeRange(arg0);
+	lua_pushnumber(L, (lua_Number)result);
+	return 1;
+}
 static int lua_GetLightShadows(lua_State *L)
 {
 	unsigned char result;
@@ -6173,17 +6189,30 @@ static int lua_GetLightVisible(lua_State *L)
 	lua_pushboolean(L, result);
 	return 1;
 }
-static int lua_GetLightCone(lua_State *L)
+static int lua_GetLightInnerCone(lua_State *L)
 {
-	elfVec2f result;
+	float result;
 	elfLight* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetLightCone", lua_gettop(L), 1);}
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetLightInnerCone", lua_gettop(L), 1);}
 	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
 		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_LIGHT)
-		{return lua_fail_arg(L, "GetLightCone", 1, "elfLight");}
+		{return lua_fail_arg(L, "GetLightInnerCone", 1, "elfLight");}
 	arg0 = (elfLight*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfGetLightCone(arg0);
-	lua_create_elfVec2f(L, result);
+	result = elfGetLightInnerCone(arg0);
+	lua_pushnumber(L, (lua_Number)result);
+	return 1;
+}
+static int lua_GetLightOuterCone(lua_State *L)
+{
+	float result;
+	elfLight* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetLightOuterCone", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_LIGHT)
+		{return lua_fail_arg(L, "GetLightOuterCone", 1, "elfLight");}
+	arg0 = (elfLight*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetLightOuterCone(arg0);
+	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
 static int lua_GetLightShaft(lua_State *L)
@@ -11199,9 +11228,11 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetLightType", lua_GetLightType},
 	{"GetLightColor", lua_GetLightColor},
 	{"GetLightRange", lua_GetLightRange},
+	{"GetLightFadeRange", lua_GetLightFadeRange},
 	{"GetLightShadows", lua_GetLightShadows},
 	{"GetLightVisible", lua_GetLightVisible},
-	{"GetLightCone", lua_GetLightCone},
+	{"GetLightInnerCone", lua_GetLightInnerCone},
+	{"GetLightOuterCone", lua_GetLightOuterCone},
 	{"GetLightShaft", lua_GetLightShaft},
 	{"GetLightShaftSize", lua_GetLightShaftSize},
 	{"GetLightShaftIntensity", lua_GetLightShaftIntensity},

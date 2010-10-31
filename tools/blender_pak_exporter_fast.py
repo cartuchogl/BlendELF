@@ -19,7 +19,7 @@ import struct
 import math
 
 ELF_NAME_LENGTH = 128
-ELF_PAK_VERSION = 103
+ELF_PAK_VERSION = 104
 
 def write_name_to_file(name, f):
 	if len(name) > ELF_NAME_LENGTH-1: name = name[0:ELF_NAME_LENGTH-1]
@@ -666,6 +666,7 @@ class Light(Actor):
 		self.type = 'point'
 		self.color = [1.0, 1.0, 1.0, 1.0]
 		self.range = 0.0
+		self.fade_range = 0.0
 		self.inner_cone = 180.0
 		self.outer_cone = 0.0
 		self.shadow_caster = 1
@@ -683,7 +684,8 @@ class Light(Actor):
 
 		self.color = [col[0]*energy, col[1]*energy, col[2]*energy, 1.0]
 
-		self.range = data.getDist()*4
+		self.range = data.getDist()
+		self.fade_range = data.getDist()*3
 
 		self.inner_cone = data.getSpotSize()/2.0*(1.0-data.getSpotBlend())
 		self.outer_cone = data.getSpotSize()/2.0-self.inner_cone
@@ -697,7 +699,7 @@ class Light(Actor):
 		self.size_bytes += get_actor_header_size(self)	# actor header
 		self.size_bytes += struct.calcsize('<B')	# type
 		self.size_bytes += struct.calcsize('<ffff')	# color
-		self.size_bytes += struct.calcsize('<f')	# range
+		self.size_bytes += struct.calcsize('<ff')	# range and fade range
 		self.size_bytes += struct.calcsize('<ff')	# spot light specs
 		self.size_bytes += struct.calcsize('<B')	# shadow flag
 		self.size_bytes += struct.calcsize('<Bfff')	# light shaft specs
@@ -716,7 +718,7 @@ class Light(Actor):
 		else: f.write(struct.pack('<B', 1))
 
 		f.write(struct.pack('<ffff', self.color[0], self.color[1], self.color[2], self.color[3]))	# write colors
-		f.write(struct.pack('<f', self.range))	# write range
+		f.write(struct.pack('<ff', self.range, self.fade_range))	# write range
 		f.write(struct.pack('<ff', self.inner_cone, self.outer_cone))	# write spot light specs
 		f.write(struct.pack('<B', self.shadow_caster))	# write shadow flag
 		f.write(struct.pack('<Bfff', 0, 1.0, 1.0, 0.0))	# write ligth shaft specs

@@ -291,6 +291,7 @@ void gfxAddFragmentLightingUniforms(gfxDocument* document, gfxShaderConfig* conf
 {
 	if(config->light) gfxAddDocumentLine(document, "uniform vec3 elf_LightColor;");
 	if(config->light && config->light != GFX_SUN_LIGHT) gfxAddDocumentLine(document, "uniform float elf_LightRange;");
+	if(config->light && config->light != GFX_SUN_LIGHT) gfxAddDocumentLine(document, "uniform float elf_LightFadeRange;");
 	if(config->light == GFX_SPOT_LIGHT) gfxAddDocumentLine(document, "uniform vec3 elf_LightSpotDirection;");
 	if(config->light == GFX_SPOT_LIGHT) gfxAddDocumentLine(document, "uniform float elf_LightInnerConeCos;");
 	if(config->light == GFX_SPOT_LIGHT) gfxAddDocumentLine(document, "uniform float elf_LightOuterConeCos;");
@@ -352,7 +353,7 @@ void gfxAddFragmentPreLightingCalcs(gfxDocument* document, gfxShaderConfig* conf
 	if(config->light && config->textures & GFX_NORMAL_MAP) gfxAddDocumentLine(document, "\tvec3 L = elf_LightTSDirection*inversesqrt(dot(elf_LightTSDirection, elf_LightTSDirection));");
 	if(config->light && !(config->textures & GFX_NORMAL_MAP)) gfxAddDocumentLine(document, "\tvec3 N = normalize(elf_Normal);");
 	if(config->light && !(config->textures & GFX_NORMAL_MAP)) gfxAddDocumentLine(document, "\tvec3 L = normalize(elf_LightDirection);");
-	if(config->light && config->light != GFX_SUN_LIGHT) gfxAddDocumentLine(document, "\tfloat att = max(elf_LightRange-elf_Distance, 0.0)/elf_LightRange;");
+	if(config->light && config->light != GFX_SUN_LIGHT) gfxAddDocumentLine(document, "\tfloat att = clamp(1.0-max(elf_Distance-elf_LightRange, 0.0)/elf_LightFadeRange, 0.0, 1.0);");
 	if(config->light == GFX_SPOT_LIGHT)
 	{
 		gfxAddDocumentLine(document, "\tvec3 D = normalize(elf_LightSpotDirection);");
@@ -751,6 +752,7 @@ gfxShaderProgram* gfxGetGbufShaderProgram(gfxShaderConfig* config)
 		gfxAddDocumentLine(document, "uniform vec3 elf_LightPosition;");
 		gfxAddDocumentLine(document, "uniform vec3 elf_LightColor;");
 		gfxAddDocumentLine(document, "uniform float elf_LightRange;");
+		gfxAddDocumentLine(document, "uniform float elf_LightFadeRange;");
 		if(config->light == GFX_SPOT_LIGHT)
 		{
 			gfxAddDocumentLine(document, "uniform vec3 elf_LightSpotDirection;");
@@ -803,7 +805,7 @@ gfxShaderProgram* gfxGetGbufShaderProgram(gfxShaderConfig* config)
 			gfxAddDocumentLine(document, "\tfloat spot = 0.0;");
 			gfxAddDocumentLine(document, "\tspot = clamp((cosCurAngle-cosOuterConeAngle) / cosInnerMinusOuterConeAngle, 0.0, 1.0);");
 		}
-		gfxAddDocumentLine(document, "\tfloat att = max(elf_Distance-elf_LightRange, 0.0)/elf_LightSpeed;");
+		gfxAddDocumentLine(document, "\tfloat att = clamp(1.0-max(elf_Distance-elf_LightRange, 0.0)/elf_LightFadeRange, 0.0, 1.0);");
 		gfxAddDocumentLine(document, "\tfloat lambertTerm = max(dot(N, L), 0.0);");
 		gfxAddDocumentLine(document, "\tif(lambertTerm > 0.0)");
 		gfxAddDocumentLine(document, "\t{");

@@ -387,7 +387,8 @@ ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* filePath)
 			else if(ailig->mType == aiLightSource_SPOT) elfSetLightType(light, ELF_SPOT_LIGHT);
 
 			elfSetLightColor(light, ailig->mColorDiffuse.r, ailig->mColorDiffuse.g, ailig->mColorDiffuse.b, 1.0f);
-			elfSetLightRange(light, 1.0f/(ailig->mAttenuationLinear+ailig->mAttenuationQuadratic*ailig->mAttenuationQuadratic));
+			elfSetLightRange(light, 1.0f/(ailig->mAttenuationLinear+ailig->mAttenuationQuadratic*ailig->mAttenuationQuadratic),
+				1.0f/(ailig->mAttenuationLinear+ailig->mAttenuationQuadratic*ailig->mAttenuationQuadratic));
 			elfSetLightCone(light, ailig->mAngleInnerCone, ailig->mAngleOuterCone);
 			elfSetActorPosition((elfActor*)light, ailig->mPosition.x, ailig->mPosition.y, ailig->mPosition.z);
 			elfSetActorDirection((elfActor*)light, ailig->mDirection.x, ailig->mDirection.y, ailig->mDirection.z);
@@ -2025,7 +2026,7 @@ void elfDrawScene(elfScene* scene)
 			}
 			else if(light->lightType == ELF_POINT_LIGHT)
 			{
-				if(gfxBoxSphereIntersect(&ent->cullAabbMin.x, &ent->cullAabbMax.x, &lpos.x, light->range))
+				if(gfxBoxSphereIntersect(&ent->cullAabbMin.x, &ent->cullAabbMax.x, &lpos.x, light->range+light->fadeRange))
 				{
 					elfDrawEntity(ent, ELF_DRAW_WITH_LIGHTING, &scene->shaderParams);
 				}
@@ -2053,7 +2054,7 @@ void elfDrawScene(elfScene* scene)
 				dvec = elfSubVec3fVec3f(spos, lpos);
 				dist = elfGetVec3fLength(dvec);
 				dist -= spr->cullRadius;
-				att = elfFloatMax(light->range-dist, 0.0f)/light->range;
+				att = 1.0-elfFloatMax(dist-light->range, 0.0f)/light->fadeRange;
 				if(att > 0.0f)
 				{
 					elfDrawSprite(spr, ELF_DRAW_WITH_LIGHTING, &scene->shaderParams);

@@ -433,6 +433,7 @@ struct elfLight {
 	int lightType;
 	elfColor color;
 	float range;
+	float fadeRange;
 	float innerCone;
 	float outerCone;
 	unsigned char visible;

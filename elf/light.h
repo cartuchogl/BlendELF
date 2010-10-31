@@ -10,7 +10,8 @@ ELF_API elfLight* ELF_APIENTRY elfCreateLight(const char* name)
 
 	elfInitActor((elfActor*)light, ELF_FALSE);
 
-	light->range = 30.0f;
+	light->range = 20.0f;
+	light->fadeRange = 15.0f;
 	light->innerCone = 45.0f;
 	light->outerCone = 0.0f;
 	light->lightType = ELF_POINT_LIGHT;
@@ -26,7 +27,7 @@ ELF_API elfLight* ELF_APIENTRY elfCreateLight(const char* name)
 	elfSetCameraViewport(light->shadowCamera, 0, 0, 512, 512);
 	elfSetCameraFov(light->shadowCamera, (light->innerCone+light->outerCone)*2);
 	elfSetCameraAspect(light->shadowCamera, 1.0f);
-	elfSetCameraClip(light->shadowCamera, 1.0f, light->range);
+	elfSetCameraClip(light->shadowCamera, 1.0f, light->range+light->fadeRange);
 
 	gfxMatrix4SetIdentity(light->projectionMatrix);
 
@@ -91,18 +92,20 @@ ELF_API void ELF_APIENTRY elfSetLightColor(elfLight* light, float r, float g, fl
 	light->color.a = a;
 }
 
-ELF_API void ELF_APIENTRY elfSetLightRange(elfLight* light, float range)
+ELF_API void ELF_APIENTRY elfSetLightRange(elfLight* light, float range, float fadeRange)
 {
 	light->range = range;
-	if(light->range < 0.0f) light->range = 0.0f;
-	elfSetCameraClip(light->shadowCamera, 1.0f, light->range);
+	light->fadeRange = fadeRange;
+	if(light->range < 0.001f) light->range = 0.001f;
+	if(light->fadeRange < 0.001f) light->fadeRange = 0.001f;
+	elfSetCameraClip(light->shadowCamera, 1.0f, light->range+light->fadeRange);
 }
 
 ELF_API void ELF_APIENTRY elfSetLightShadows(elfLight* light, unsigned char shadows)
 {
 	if(light->shadows == shadows) return;
 
-	light->shadows = shadows;
+	light->shadows = !shadows == ELF_FALSE;
 
 	light->moved = ELF_TRUE;
 }
@@ -158,6 +161,10 @@ ELF_API float ELF_APIENTRY elfGetLightRange(elfLight* light)
 {
 	return light->range;
 }
+ELF_API float ELF_APIENTRY elfGetLightFadeRange(elfLight* light)
+{
+	return light->fadeRange;
+}
 
 ELF_API unsigned char ELF_APIENTRY elfGetLightShadows(elfLight* light)
 {
@@ -167,6 +174,16 @@ ELF_API unsigned char ELF_APIENTRY elfGetLightShadows(elfLight* light)
 ELF_API unsigned char ELF_APIENTRY elfGetLightVisible(elfLight* light)
 {
 	return light->visible;
+}
+
+ELF_API float ELF_APIENTRY elfGetLightInnerCone(elfLight* light)
+{
+	return light->innerCone;
+}
+
+ELF_API float ELF_APIENTRY elfGetLightOuterCone(elfLight* light)
+{
+	return light->outerCone;
 }
 
 ELF_API unsigned char ELF_APIENTRY elfGetLightShaft(elfLight* light)
@@ -187,16 +204,6 @@ ELF_API float ELF_APIENTRY elfGetLightShaftIntensity(elfLight* light)
 ELF_API float ELF_APIENTRY elfGetLightShaftFadeOff(elfLight* light)
 {
 	return light->shaftFadeOff;
-}
-
-ELF_API elfVec2f ELF_APIENTRY elfGetLightCone(elfLight* light)
-{
-	elfVec2f cone;
-
-	cone.x = light->innerCone;
-	cone.y = light->outerCone;
-
-	return cone;
 }
 
 void elfSetLight(elfLight* light, elfCamera* camera, gfxShaderParams* shaderParams)
@@ -237,6 +244,7 @@ void elfSetLight(elfLight* light, elfCamera* camera, gfxShaderParams* shaderPara
 
 	memcpy(&shaderParams->lightParams.color.r, &light->color.r, sizeof(float)*4);
 	shaderParams->lightParams.range = light->range;
+	shaderParams->lightParams.fadeRange = light->fadeRange;
 	shaderParams->lightParams.innerCone = light->innerCone;
 	shaderParams->lightParams.outerCone = light->outerCone;
 }
