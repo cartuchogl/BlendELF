@@ -567,7 +567,6 @@ class Camera(Actor):
 		
 		data = obj.data
 
-		self.fov = data.getLens()
 		self.clip_near = data.getClipStart()
 		self.clip_far = data.getClipEnd()
 		

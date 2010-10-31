@@ -553,7 +553,6 @@ class Camera(Actor):
 		
 		data = obj.data
 
-		self.fov = data.lens
 		self.clip_near = data.clip_start
 		self.clip_far = data.clip_end
 		
