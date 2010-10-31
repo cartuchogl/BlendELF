@@ -221,6 +221,8 @@ void elfDrawSprite(elfSprite* sprite, int mode, gfxShaderParams* shaderParams)
 
 	gfxMulMatrix4Matrix4(gfxGetTransformMatrix(sprite->transform),
 			shaderParams->cameraMatrix, shaderParams->modelviewMatrix);
+	gfxMulMatrix3Matrix4(gfxGetTransformNormalMatrix(sprite->transform),
+			shaderParams->cameraMatrix, shaderParams->normalMatrix);
 
 	elfSetMaterial(sprite->material, mode, shaderParams);
 	gfxSetShaderParams(shaderParams);
