@@ -2708,7 +2708,6 @@ void elfDrawSceneDebug(elfScene* scene)
 	gfxSetShaderParamsDefault(&scene->shaderParams);
 	scene->shaderParams.renderParams.depthWrite = GFX_FALSE;
 	scene->shaderParams.renderParams.depthTest = GFX_FALSE;
-	scene->shaderParams.renderParams.blendMode = GFX_ADD;
 	elfSetCamera(scene->curCamera, &scene->shaderParams);
 
 	for(par = (elfParticles*)elfBeginList(scene->particles); par != NULL;
@@ -2720,7 +2719,6 @@ void elfDrawSceneDebug(elfScene* scene)
 	gfxSetShaderParamsDefault(&scene->shaderParams);
 	scene->shaderParams.renderParams.depthWrite = GFX_FALSE;
 	scene->shaderParams.renderParams.depthTest = GFX_FALSE;
-	scene->shaderParams.renderParams.blendMode = GFX_ADD;
 	elfSetCamera(scene->curCamera, &scene->shaderParams);
 
 	for(spr = (elfSprite*)elfBeginList(scene->sprites); spr != NULL;
@@ -2732,7 +2730,6 @@ void elfDrawSceneDebug(elfScene* scene)
 	gfxSetShaderParamsDefault(&scene->shaderParams);
 	scene->shaderParams.renderParams.depthWrite = GFX_FALSE;
 	scene->shaderParams.renderParams.depthTest = GFX_FALSE;
-	scene->shaderParams.renderParams.blendMode = GFX_ADD;
 	elfSetCamera(scene->curCamera, &scene->shaderParams);
 
 	for(lig = (elfLight*)elfBeginList(scene->lights); lig != NULL;
@@ -2744,7 +2741,6 @@ void elfDrawSceneDebug(elfScene* scene)
 	gfxSetShaderParamsDefault(&scene->shaderParams);
 	scene->shaderParams.renderParams.depthWrite = GFX_FALSE;
 	scene->shaderParams.renderParams.depthTest = GFX_FALSE;
-	scene->shaderParams.renderParams.blendMode = GFX_ADD;
 	elfSetCamera(scene->curCamera, &scene->shaderParams);
 
 	for(cam = (elfCamera*)elfBeginList(scene->cameras); cam != NULL;

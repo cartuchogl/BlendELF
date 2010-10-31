@@ -697,8 +697,16 @@ void elfDrawEntityDebug(elfEntity* entity, gfxShaderParams* shaderParams)
 	vertexBuffer[70] = max[1];
 	vertexBuffer[71] = min[2];
 
-	if(!entity->selected) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.1f, 0.1f, 0.2f, 1.0f);
-	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.0f, 0.0f, 1.0f);
+	if(!entity->selected)
+	{
+		gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.1f, 0.1f, 0.2f, 1.0f);
+		shaderParams->renderParams.blendMode = GFX_ADD;
+	}
+	else
+	{
+		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.0f, 0.0f, 1.0f);
+		shaderParams->renderParams.blendMode = GFX_NONE;
+	}
 	gfxSetShaderParams(shaderParams);
 	elfDrawLines(24, rnd->lines);
 
