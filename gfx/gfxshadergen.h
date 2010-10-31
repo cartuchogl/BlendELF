@@ -194,7 +194,7 @@ void gfxAddVertexInit(gfxDocument* document, gfxShaderConfig* config)
 {
 	gfxAddDocumentLine(document, "void main()");
 	gfxAddDocumentLine(document, "{");
-	gfxAddDocumentLine(document, "\tvec4 vertex = elf_ModelviewMatrix*vec4(elf_VertexAttr, 1.0);");
+	gfxAddDocumentLine(document, "\tvec4 vertex = elf_ModelviewMatrix*vec4(elf_VertexAttr, 1.0f);");
 }
 
 void gfxAddVertexTextureCalcs(gfxDocument* document, gfxShaderConfig* config)
@@ -209,9 +209,9 @@ void gfxAddVertexLightingCalcs(gfxDocument* document, gfxShaderConfig* config)
 	if((config->light && config->textures & GFX_NORMAL_MAP) || config->textures & GFX_HEIGHT_MAP)
 	{
 		if(config->light && !(config->textures & GFX_NORMAL_MAP) && config->textures & GFX_HEIGHT_MAP)
-			gfxAddDocumentLine(document, "\telf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
-		else gfxAddDocumentLine(document, "\tvec3 elf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
-		gfxAddDocumentLine(document, "\tvec3 elf_Tangent = vec3(elf_ModelviewMatrix*vec4(elf_TangentAttr, 0.0));");
+			gfxAddDocumentLine(document, "\telf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0f));");
+		else gfxAddDocumentLine(document, "\tvec3 elf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0f));");
+		gfxAddDocumentLine(document, "\tvec3 elf_Tangent = vec3(elf_ModelviewMatrix*vec4(elf_TangentAttr, 0.0f));");
 		gfxAddDocumentLine(document, "\tvec3 elf_BiNormal = cross(elf_Normal, elf_Tangent);");
 		gfxAddDocumentLine(document, "\tvec3 tmpvec = -vertex.xyz;");
 		gfxAddDocumentLine(document, "\telf_EyeVector.x = dot(tmpvec, elf_Tangent);");
@@ -231,7 +231,7 @@ void gfxAddVertexLightingCalcs(gfxDocument* document, gfxShaderConfig* config)
 		}
 		else
 		{
-				if(!(config->textures & GFX_HEIGHT_MAP)) gfxAddDocumentLine(document, "\telf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
+				if(!(config->textures & GFX_HEIGHT_MAP)) gfxAddDocumentLine(document, "\telf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0f));");
 				if(config->light != GFX_SUN_LIGHT) gfxAddDocumentLine(document, "\telf_LightDirection = elf_LightPosition-vertex.xyz;");
 				if(config->light == GFX_SUN_LIGHT) gfxAddDocumentLine(document, "\telf_LightDirection = -elf_LightSpotDirection;");
 		}
@@ -240,7 +240,7 @@ void gfxAddVertexLightingCalcs(gfxDocument* document, gfxShaderConfig* config)
 	{
 		if(!config->light && !(config->textures & GFX_HEIGHT_MAP))
 		{
-			gfxAddDocumentLine(document, "\tvec3 elf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
+			gfxAddDocumentLine(document, "\tvec3 elf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0f));");
 		}
 		gfxAddDocumentLine(document, "\telf_CubeMapCoord = reflect(normalize(elf_CameraPosition-vertex.xyz), elf_Normal);");
 	}
@@ -314,11 +314,11 @@ void gfxAddFragmentInit(gfxDocument* document, gfxShaderConfig* config)
 {
 	gfxAddDocumentLine(document, "void main()");
 	gfxAddDocumentLine(document, "{");
-	gfxAddDocumentLine(document, "\tvec4 finalColor = vec4(1.0, 1.0, 1.0, 1.0);");
+	gfxAddDocumentLine(document, "\tvec4 finalColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);");
 	if(config->light)
 	{
-		gfxAddDocumentLine(document, "\tvec4 diffuse = vec4(0.0, 0.0, 0.0, 1.0);");
-		gfxAddDocumentLine(document, "\tvec3 specular = vec3(0.0, 0.0, 0.0);");
+		gfxAddDocumentLine(document, "\tvec4 diffuse = vec4(0.0f, 0.0f, 0.0f, 1.0f);");
+		gfxAddDocumentLine(document, "\tvec3 specular = vec3(0.0f, 0.0f, 0.0f);");
 	}
 }
 
@@ -326,8 +326,8 @@ void gfxAddFragmentShadowCalcs(gfxDocument* document, gfxShaderConfig* config)
 {
 	if(config->light && config->textures & GFX_SHADOW_MAP)
 	{
-		gfxAddDocumentLine(document, "\tfloat shadow = max(shadow2DProj(elf_ShadowMap, elf_ShadowCoord).r, 0.0);");
-		gfxAddDocumentLine(document, "\tif(shadow < 0.001) discard;");
+		gfxAddDocumentLine(document, "\tfloat shadow = max(shadow2DProj(elf_ShadowMap, elf_ShadowCoord).r, 0.0f);");
+		gfxAddDocumentLine(document, "\tif(shadow < 0.001f) discard;");
 	}
 }
 
@@ -338,9 +338,9 @@ void gfxAddFragmentParallaxMappingCalcs(gfxDocument* document, gfxShaderConfig* 
 	{
 		gfxAddDocumentLine(document, "\tfloat depth = texture2D(elf_HeightMap, elf_TexCoord).r;");
 		gfxAddDocumentLine(document, "\tvec2 elf_HeightTexCoord = E.xy*depth*elf_ParallaxScale;");
-		gfxAddDocumentLine(document, "\tdepth = (depth+texture2D(elf_HeightMap, elf_TexCoord+elf_HeightTexCoord).r)*0.5;");
+		gfxAddDocumentLine(document, "\tdepth = (depth+texture2D(elf_HeightMap, elf_TexCoord+elf_HeightTexCoord).r)*0.5f;");
 		gfxAddDocumentLine(document, "\telf_HeightTexCoord = E.xy*depth*elf_ParallaxScale;");
-		gfxAddDocumentLine(document, "\tdepth = (depth+texture2D(elf_HeightMap, elf_TexCoord+elf_HeightTexCoord).r)*0.5;");
+		gfxAddDocumentLine(document, "\tdepth = (depth+texture2D(elf_HeightMap, elf_TexCoord+elf_HeightTexCoord).r)*0.5f;");
 		gfxAddDocumentLine(document, "\telf_HeightTexCoord = E.xy*depth*elf_ParallaxScale;");
 		gfxAddDocumentLine(document, "\telf_HeightTexCoord = elf_TexCoord+elf_HeightTexCoord;");
 	}
@@ -348,12 +348,12 @@ void gfxAddFragmentParallaxMappingCalcs(gfxDocument* document, gfxShaderConfig* 
 
 void gfxAddFragmentPreLightingCalcs(gfxDocument* document, gfxShaderConfig* config)
 {
-	if(config->light && config->textures & GFX_NORMAL_MAP && config->textures & GFX_HEIGHT_MAP) gfxAddDocumentLine(document, "\tvec3 N = normalize(texture2D(elf_NormalMap, elf_HeightTexCoord).rgb*2.0-1.0);");
-	if(config->light && config->textures & GFX_NORMAL_MAP && !(config->textures & GFX_HEIGHT_MAP)) gfxAddDocumentLine(document, "\tvec3 N = normalize(texture2D(elf_NormalMap, elf_TexCoord).rgb*2.0-1.0);");
+	if(config->light && config->textures & GFX_NORMAL_MAP && config->textures & GFX_HEIGHT_MAP) gfxAddDocumentLine(document, "\tvec3 N = normalize(texture2D(elf_NormalMap, elf_HeightTexCoord).rgb*2.0f-1.0f);");
+	if(config->light && config->textures & GFX_NORMAL_MAP && !(config->textures & GFX_HEIGHT_MAP)) gfxAddDocumentLine(document, "\tvec3 N = normalize(texture2D(elf_NormalMap, elf_TexCoord).rgb*2.0f-1.0f);");
 	if(config->light && config->textures & GFX_NORMAL_MAP) gfxAddDocumentLine(document, "\tvec3 L = elf_LightTSDirection*inversesqrt(dot(elf_LightTSDirection, elf_LightTSDirection));");
 	if(config->light && !(config->textures & GFX_NORMAL_MAP)) gfxAddDocumentLine(document, "\tvec3 N = normalize(elf_Normal);");
 	if(config->light && !(config->textures & GFX_NORMAL_MAP)) gfxAddDocumentLine(document, "\tvec3 L = normalize(elf_LightDirection);");
-	if(config->light && config->light != GFX_SUN_LIGHT) gfxAddDocumentLine(document, "\tfloat att = clamp(1.0-max(elf_Distance-elf_LightRange, 0.0)/elf_LightFadeRange, 0.0, 1.0);");
+	if(config->light && config->light != GFX_SUN_LIGHT) gfxAddDocumentLine(document, "\tfloat att = clamp(1.0-max(elf_Distance-elf_LightRange, 0.0)/elf_LightFadeRange, 0.0f, 1.0f);");
 	if(config->light == GFX_SPOT_LIGHT)
 	{
 		gfxAddDocumentLine(document, "\tvec3 D = normalize(elf_LightSpotDirection);");
@@ -362,8 +362,8 @@ void gfxAddFragmentPreLightingCalcs(gfxDocument* document, gfxShaderConfig* conf
 		gfxAddDocumentLine(document, "\tfloat cosInnerConeAngle = elf_LightInnerConeCos;");
 		gfxAddDocumentLine(document, "\tfloat cosOuterConeAngle = elf_LightOuterConeCos;");
 		gfxAddDocumentLine(document, "\tfloat cosInnerMinusOuterConeAngle = cosInnerConeAngle-cosOuterConeAngle;");
-		gfxAddDocumentLine(document, "\tfloat spot = 0.0;");
-		gfxAddDocumentLine(document, "\tspot = clamp((cosCurAngle-cosOuterConeAngle) / cosInnerMinusOuterConeAngle, 0.0, 1.0);");
+		gfxAddDocumentLine(document, "\tfloat spot = 0.0f;");
+		gfxAddDocumentLine(document, "\tspot = clamp((cosCurAngle-cosOuterConeAngle) / cosInnerMinusOuterConeAngle, 0.0f, 1.0f);");
 	}
 }
 
@@ -371,14 +371,14 @@ void gfxAddFragmentLightingCalcs(gfxDocument* document, gfxShaderConfig* config)
 {
 	if(config->light)
 	{
-		gfxAddDocumentLine(document, "\tfloat lambertTerm = max(dot(N, L), 0.0);");
-		gfxAddDocumentLine(document, "\tif(lambertTerm > 0.0)");
+		gfxAddDocumentLine(document, "\tfloat lambertTerm = max(dot(N, L), 0.0f);");
+		gfxAddDocumentLine(document, "\tif(lambertTerm > 0.0f)");
 		gfxAddDocumentLine(document, "\t{");
-		gfxAddDocumentLine(document, "\t\tdiffuse = elf_DiffuseColor*vec4(elf_LightColor*lambertTerm, 1.0);");
+		gfxAddDocumentLine(document, "\t\tdiffuse = elf_DiffuseColor*vec4(elf_LightColor*lambertTerm, 1.0f);");
 		if(config->specular)
 		{
 			gfxAddDocumentLine(document, "\t\tvec3 R = reflect(-L, N);");
-			gfxAddDocumentLine(document, "\t\tfloat specStrength = clamp(pow(max(dot(R, E), 0.0), elf_Shininess), 0.0, 1.0);");
+			gfxAddDocumentLine(document, "\t\tfloat specStrength = clamp(pow(max(dot(R, E), 0.0f), elf_Shininess), 0.0f, 1.0f);");
 			gfxAddDocumentLine(document, "\t\tspecular = elf_SpecularColor*elf_LightColor*specStrength;");
 		}
 		gfxAddDocumentLine(document, "\t}");
@@ -391,13 +391,13 @@ void gfxAddFragmentTextureCalcs(gfxDocument* document, gfxShaderConfig* config)
 	if(config->textures & GFX_HEIGHT_MAP)
 	{
 		if(config->textures & GFX_COLOR_MAP) gfxAddDocumentLine(document, "\tfinalColor *= texture2D(elf_ColorMap, elf_HeightTexCoord);");
-		if(config->light && config->textures & GFX_COLOR_RAMP_MAP) gfxAddDocumentLine(document, "\tfinalColor.rgb *= texture2D(elf_ColorRampMap, vec2(clamp(lambertTerm, 0.0, 1.0))).rgb*elf_DiffuseColor*elf_LightColor;");
+		if(config->light && config->textures & GFX_COLOR_RAMP_MAP) gfxAddDocumentLine(document, "\tfinalColor.rgb *= texture2D(elf_ColorRampMap, vec2(clamp(lambertTerm, 0.0f, 1.0f))).rgb*elf_DiffuseColor*elf_LightColor;");
 		if(config->textures & GFX_LIGHT_MAP) gfxAddDocumentLine(document, "\tfinalColor.rgb *= texture2D(elf_LightMap, elf_HeightTexCoord).rgb;");
 	}
 	else
 	{
 		if(config->textures & GFX_COLOR_MAP) gfxAddDocumentLine(document, "\tfinalColor *= texture2D(elf_ColorMap, elf_TexCoord);");
-		if(config->light && config->textures & GFX_COLOR_RAMP_MAP) gfxAddDocumentLine(document, "\tfinalColor.rgb *= texture2D(elf_ColorRampMap, vec2(clamp(lambertTerm, 0.0, 1.0))).rgb*elf_DiffuseColor*elf_LightColor;");
+		if(config->light && config->textures & GFX_COLOR_RAMP_MAP) gfxAddDocumentLine(document, "\tfinalColor.rgb *= texture2D(elf_ColorRampMap, vec2(clamp(lambertTerm, 0.0f, 1.0f))).rgb*elf_DiffuseColor*elf_LightColor;");
 		if(config->textures & GFX_LIGHT_MAP) gfxAddDocumentLine(document, "\tfinalColor.rgb *= texture2D(elf_LightMap, elf_TexCoord).rgb;");
 	}
 	if(config->textures & GFX_CUBE_MAP) gfxAddDocumentLine(document, "\tfinalColor *= textureCube(elf_CubeMap, elf_CubeMapCoord);");
@@ -419,9 +419,9 @@ void gfxAddFragmentEnd(gfxDocument* document, gfxShaderConfig* config)
 	if(config->fog)
 	{
 		if(config->blend == GFX_ADD)
-			gfxAddDocumentLine(document, "\tfinalColor.rgb = mix(elf_FogColor*(finalColor.r*0.3+finalColor.g*0.59+finalColor.b*0.11), finalColor.rgb, clamp((elf_FogEnd-gl_FragCoord.z/gl_FragCoord.w)/(elf_FogEnd-elf_FogStart), 0.0, 1.0));");
+			gfxAddDocumentLine(document, "\tfinalColor.rgb = mix(elf_FogColor*(finalColor.r*0.3f+finalColor.g*0.59f+finalColor.b*0.11f), finalColor.rgb, clamp((elf_FogEnd-gl_FragCoord.z/gl_FragCoord.w)/(elf_FogEnd-elf_FogStart), 0.0f, 1.0f));");
 		else
-			gfxAddDocumentLine(document, "\tfinalColor.rgb = mix(elf_FogColor, finalColor.rgb, clamp((elf_FogEnd-gl_FragCoord.z/gl_FragCoord.w)/(elf_FogEnd-elf_FogStart), 0.0, 1.0));");
+			gfxAddDocumentLine(document, "\tfinalColor.rgb = mix(elf_FogColor, finalColor.rgb, clamp((elf_FogEnd-gl_FragCoord.z/gl_FragCoord.w)/(elf_FogEnd-elf_FogStart), 0.0f, 1.0f));");
 	}
 	if(config->vertexColor) gfxAddDocumentLine(document, "\tfinalColor *= elf_VertexColor;");
 	gfxAddDocumentLine(document, "\tgl_FragColor = finalColor;");
@@ -543,7 +543,7 @@ void gfxAddGbufVertexInit(gfxDocument* document, gfxShaderConfig* config)
 {
 	gfxAddDocumentLine(document, "void main()");
 	gfxAddDocumentLine(document, "{");
-	gfxAddDocumentLine(document, "\tvec4 vertex = elf_ModelviewMatrix*vec4(elf_VertexAttr, 1.0);");
+	gfxAddDocumentLine(document, "\tvec4 vertex = elf_ModelviewMatrix*vec4(elf_VertexAttr, 1.0f);");
 }
 
 void gfxAddGbufVertexTextureCalcs(gfxDocument* document, gfxShaderConfig* config)
@@ -555,8 +555,8 @@ void gfxAddGbufVertexLightingCalcs(gfxDocument* document, gfxShaderConfig* confi
 {
 	if(config->textures & GFX_NORMAL_MAP || config->textures & GFX_HEIGHT_MAP)
 	{
-		gfxAddDocumentLine(document, "\telf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
-		gfxAddDocumentLine(document, "\telf_Tangent = vec3(elf_ModelviewMatrix*vec4(elf_TangentAttr, 0.0));");
+		gfxAddDocumentLine(document, "\telf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0f));");
+		gfxAddDocumentLine(document, "\telf_Tangent = vec3(elf_ModelviewMatrix*vec4(elf_TangentAttr, 0.0f));");
 		gfxAddDocumentLine(document, "\telf_BiNormal = cross(elf_Normal, elf_Tangent);");
 		if(config->textures & GFX_HEIGHT_MAP)
 		{
@@ -568,7 +568,7 @@ void gfxAddGbufVertexLightingCalcs(gfxDocument* document, gfxShaderConfig* confi
 	}
 	else
 	{
-		gfxAddDocumentLine(document, "\telf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0));");
+		gfxAddDocumentLine(document, "\telf_Normal = vec3(elf_ModelviewMatrix*vec4(elf_NormalAttr, 0.0f));");
 	}
 }
 
@@ -622,9 +622,9 @@ void gfxAddGbufFragmentParallaxMappingCalcs(gfxDocument* document, gfxShaderConf
 		gfxAddDocumentLine(document, "\tvec3 E = normalize(elf_EyeVector);");
 		gfxAddDocumentLine(document, "\tfloat depth = texture2D(elf_HeightMap, elf_TexCoord).r;");
 		gfxAddDocumentLine(document, "\tvec2 texcoord = E.xy*depth*elf_ParallaxScale;");
-		gfxAddDocumentLine(document, "\tdepth = (depth+texture2D(elf_HeightMap, elf_TexCoord+texcoord).r)*0.5;");
+		gfxAddDocumentLine(document, "\tdepth = (depth+texture2D(elf_HeightMap, elf_TexCoord+texcoord).r)*0.5f;");
 		gfxAddDocumentLine(document, "\ttexcoord = E.xy*depth*elf_ParallaxScale;");
-		gfxAddDocumentLine(document, "\tdepth = (depth+texture2D(elf_HeightMap, elf_TexCoord+texcoord).r)*0.5;");
+		gfxAddDocumentLine(document, "\tdepth = (depth+texture2D(elf_HeightMap, elf_TexCoord+texcoord).r)*0.5f;");
 		gfxAddDocumentLine(document, "\ttexcoord = E.xy*depth*elf_ParallaxScale;");
 		gfxAddDocumentLine(document, "\ttexcoord = elf_TexCoord+texcoord;");
 	}
@@ -639,7 +639,7 @@ void gfxAddGbufFragmentEnd(gfxDocument* document, gfxShaderConfig* config)
 	if(config->textures & GFX_NORMAL_MAP)
 	{
 		gfxAddDocumentLine(document, "\tvec3 normal = texture2D(elf_NormalMap, texcoord).rgb;");
-		gfxAddDocumentLine(document, "\tnormal -= 0.5;");
+		gfxAddDocumentLine(document, "\tnormal -= 0.5f;");
 		gfxAddDocumentLine(document, "\tnormal = normalize(normal.x*elf_Tangent+normal.y*elf_BiNormal+normal.z*elf_Normal);");
 		gfxAddDocumentLine(document, "\tgl_FragData[0].rg = normal.xy;");		
 	}
@@ -651,7 +651,7 @@ void gfxAddGbufFragmentEnd(gfxDocument* document, gfxShaderConfig* config)
 	if(config->textures & GFX_COLOR_MAP) gfxAddDocumentLine(document, "\tcolor *= texture2D(elf_ColorMap, texcoord);");
 	if(config->textures & GFX_LIGHT_MAP) gfxAddDocumentLine(document, "\tcolor *= texture2D(elf_LightMap, texcoord);");
 	gfxAddDocumentLine(document, "\tgl_FragData[1] = vec4(color.rgb, 1.0);");
-	gfxAddDocumentLine(document, "\tgl_FragData[2] = vec4(elf_SpecularColor, elf_Shininess/255.0);");
+	gfxAddDocumentLine(document, "\tgl_FragData[2] = vec4(elf_SpecularColor, elf_Shininess/255.0f);");
 	gfxAddDocumentLine(document, "}");
 }
 
@@ -685,7 +685,7 @@ gfxShaderProgram* gfxGetGbufShaderProgram(gfxShaderConfig* config)
 		gfxAddDocumentLine(document, "void main()");
 		gfxAddDocumentLine(document, "{");
 		if(config->textures & GFX_COLOR_MAP) gfxAddDocumentLine(document, "\telf_TexCoord = elf_TexCoordAttr;");
-		gfxAddDocumentLine(document, "\tgl_Position = elf_ProjectionMatrix*(elf_ModelviewMatrix*vec4(elf_VertexAttr, 1.0));");
+		gfxAddDocumentLine(document, "\tgl_Position = elf_ProjectionMatrix*(elf_ModelviewMatrix*vec4(elf_VertexAttr, 1.0f));");
 		gfxAddDocumentLine(document, "}");
 	}
 	else if(config->gbuffer == GFX_GBUFFER_FILL)
@@ -708,7 +708,7 @@ gfxShaderProgram* gfxGetGbufShaderProgram(gfxShaderConfig* config)
 		gfxAddDocumentLine(document, "void main()");
 		gfxAddDocumentLine(document, "{");
 		gfxAddDocumentLine(document, "\telf_TexCoord = elf_TexCoordAttr;");
-		gfxAddDocumentLine(document, "\tgl_Position = elf_ProjectionMatrix*(elf_ModelviewMatrix*vec4(elf_VertexAttr, 1.0));");
+		gfxAddDocumentLine(document, "\tgl_Position = elf_ProjectionMatrix*(elf_ModelviewMatrix*vec4(elf_VertexAttr, 1.0f));");
 		gfxAddDocumentLine(document, "}");
 	}
 
@@ -772,14 +772,14 @@ gfxShaderProgram* gfxGetGbufShaderProgram(gfxShaderConfig* config)
 		gfxAddDocumentLine(document, "varying vec2 elf_TexCoord;");
 		gfxAddDocumentLine(document, "void main()");
 		gfxAddDocumentLine(document, "{\n");
-		gfxAddDocumentLine(document, "\tvec3 diffuse = vec3(0.0, 0.0, 0.0);");
-		gfxAddDocumentLine(document, "\tvec3 specular = vec3(0.0, 0.0, 0.0);");
-		gfxAddDocumentLine(document, "\tfloat depth = texture2D(elf_Texture0, elf_TexCoord).r*2.0-1.0;");
-		gfxAddDocumentLine(document, "\tvec4 vertex = elf_InvProjectionMatrix*vec4(elf_TexCoord.x*2.0-1.0, elf_TexCoord.y*2.0-1.0, depth, 1.0);");
+		gfxAddDocumentLine(document, "\tvec3 diffuse = vec3(0.0f, 0.0f, 0.0f);");
+		gfxAddDocumentLine(document, "\tvec3 specular = vec3(0.0f, 0.0f, 0.0f);");
+		gfxAddDocumentLine(document, "\tfloat depth = texture2D(elf_Texture0, elf_TexCoord).r*2.0f-1.0f;");
+		gfxAddDocumentLine(document, "\tvec4 vertex = elf_InvProjectionMatrix*vec4(elf_TexCoord.x*2.0f-1.0f, elf_TexCoord.y*2.0f-1.0f, depth, 1.0f);");
 		gfxAddDocumentLine(document, "\tvertex = vec4(vertex.xyz/vertex.w, 1.0);");
 		if(config->light == GFX_SPOT_LIGHT && config->textures & GFX_SHADOW_MAP)
 		{
-			gfxAddDocumentLine(document, "\tvec4 elf_ShadowCoord = elf_ShadowProjectionMatrix*vec4(vertex.xyz, 1.0);");
+			gfxAddDocumentLine(document, "\tvec4 elf_ShadowCoord = elf_ShadowProjectionMatrix*vec4(vertex.xyz, 1.0f);");
 			gfxAddDocumentLine(document, "\tfloat shadow = shadow2DProj(elf_ShadowMap, elf_ShadowCoord).r;");
 			gfxAddDocumentLine(document, "\tif(shadow < 0.001) discard;");
 		}
@@ -792,7 +792,7 @@ gfxShaderProgram* gfxGetGbufShaderProgram(gfxShaderConfig* config)
 			gfxAddDocumentLine(document, "\tvec3 elf_LightDirection = -elf_LightSpotDirection;");
 		}
 		gfxAddDocumentLine(document, "\tfloat elf_Distance = length(elf_LightDirection);");
-		gfxAddDocumentLine(document, "\tvec3 N = vec3(texture2D(elf_Texture1, elf_TexCoord).rg, 0.0);");
+		gfxAddDocumentLine(document, "\tvec3 N = vec3(texture2D(elf_Texture1, elf_TexCoord).rg, 0.0f);");
 		gfxAddDocumentLine(document, "\tN = normalize(vec3(N.x, N.y, sqrt(1.0-N.x*N.x-N.y*N.y)));");
 		gfxAddDocumentLine(document, "\tvec3 L = normalize(elf_LightDirection);");
 		if(config->light == GFX_SPOT_LIGHT)
@@ -802,20 +802,20 @@ gfxShaderProgram* gfxGetGbufShaderProgram(gfxShaderConfig* config)
 			gfxAddDocumentLine(document, "\tfloat cosInnerConeAngle = elf_LightInnerConeCos;");
 			gfxAddDocumentLine(document, "\tfloat cosOuterConeAngle = elf_LightOuterConeCos;");
 			gfxAddDocumentLine(document, "\tfloat cosInnerMinusOuterConeAngle = cosInnerConeAngle-cosOuterConeAngle;");
-			gfxAddDocumentLine(document, "\tfloat spot = 0.0;");
-			gfxAddDocumentLine(document, "\tspot = clamp((cosCurAngle-cosOuterConeAngle) / cosInnerMinusOuterConeAngle, 0.0, 1.0);");
+			gfxAddDocumentLine(document, "\tfloat spot = 0.0f;");
+			gfxAddDocumentLine(document, "\tspot = clamp((cosCurAngle-cosOuterConeAngle) / cosInnerMinusOuterConeAngle, 0.0f, 1.0f);");
 		}
-		gfxAddDocumentLine(document, "\tfloat att = clamp(1.0-max(elf_Distance-elf_LightRange, 0.0)/elf_LightFadeRange, 0.0, 1.0);");
-		gfxAddDocumentLine(document, "\tfloat lambertTerm = max(dot(N, L), 0.0);");
-		gfxAddDocumentLine(document, "\tif(lambertTerm > 0.0)");
+		gfxAddDocumentLine(document, "\tfloat att = clamp(1.0f-max(elf_Distance-elf_LightRange, 0.0f)/elf_LightFadeRange, 0.0f, 1.0f);");
+		gfxAddDocumentLine(document, "\tfloat lambertTerm = max(dot(N, L), 0.0f);");
+		gfxAddDocumentLine(document, "\tif(lambertTerm > 0.0f)");
 		gfxAddDocumentLine(document, "\t{");
 		gfxAddDocumentLine(document, "\t\tvec3 E = normalize(-vertex.xyz);");
 		gfxAddDocumentLine(document, "\t\tvec3 R = reflect(-L, N);");
 		gfxAddDocumentLine(document, "\t\tvec4 spec = texture2D(elf_Texture2, elf_TexCoord);");
-		gfxAddDocumentLine(document, "\t\tspec.a = spec.a*255.0;");
+		gfxAddDocumentLine(document, "\t\tspec.a = spec.a*255.0f;");
 		gfxAddDocumentLine(document, "\t\tif(spec.a > 0.0)");
 		gfxAddDocumentLine(document, "\t\t{");
-		gfxAddDocumentLine(document, "\t\t\tfloat specStrength = clamp(pow(max(dot(R, E), 0.0), spec.a), 0.0, 1.0);");
+		gfxAddDocumentLine(document, "\t\t\tfloat specStrength = clamp(pow(max(dot(R, E), 0.0f), spec.a), 0.0f, 1.0f);");
 		gfxAddDocumentLine(document, "\t\t\tspecular = spec.rgb*elf_LightColor*specStrength;");
 		gfxAddDocumentLine(document, "\t\t}");
 		gfxAddDocumentLine(document, "\t\tdiffuse = elf_LightColor*lambertTerm;");
@@ -828,13 +828,13 @@ gfxShaderProgram* gfxGetGbufShaderProgram(gfxShaderConfig* config)
 		}
 		if(config->light != GFX_SUN_LIGHT)
 		{
-			gfxAddDocumentLine(document, "\tgl_FragData[0] = vec4(diffuse*str, 1.0);");
-			gfxAddDocumentLine(document, "\tgl_FragData[1] = vec4(specular*str, 1.0);");
+			gfxAddDocumentLine(document, "\tgl_FragData[0] = vec4(diffuse*str, 1.0f);");
+			gfxAddDocumentLine(document, "\tgl_FragData[1] = vec4(specular*str, 1.0f);");
 		}
 		else
 		{
-			gfxAddDocumentLine(document, "\tgl_FragData[0] = vec4(diffuse, 1.0);");
-			gfxAddDocumentLine(document, "\tgl_FragData[1] = vec4(specular, 1.0);");
+			gfxAddDocumentLine(document, "\tgl_FragData[0] = vec4(diffuse, 1.0f);");
+			gfxAddDocumentLine(document, "\tgl_FragData[1] = vec4(specular, 1.0f);");
 		}
 		gfxAddDocumentLine(document, "}");
 	}
