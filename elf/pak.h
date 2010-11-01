@@ -778,9 +778,9 @@ elfEntity* elfCreateEntityFromPak(FILE* file, const char* name, elfScene* scene)
 	}
 
 	if(!elfAboutZero(boundingLengths.x) || !elfAboutZero(boundingLengths.y) || !elfAboutZero(boundingLengths.z))
-		elfSetActorBoundingLengths((elfActor*)entity, boundingLengths.x, boundingLengths.y, boundingLengths.y);
+		elfSetActorBoundingLengths((elfActor*)entity, boundingLengths.x, boundingLengths.y, boundingLengths.z);
 	if(!elfAboutZero(boundingOffset.x) || !elfAboutZero(boundingOffset.y) || !elfAboutZero(boundingOffset.z))
-		elfSetActorBoundingOffset((elfActor*)entity, boundingOffset.x, boundingOffset.y, boundingOffset.y);
+		elfSetActorBoundingOffset((elfActor*)entity, boundingOffset.x, boundingOffset.y, boundingOffset.z);
 
 	fread(armature, sizeof(char), ELF_NAME_LENGTH, file);
 	if(strlen(armature))

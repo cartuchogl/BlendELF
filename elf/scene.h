@@ -324,9 +324,6 @@ ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* filePath)
 	elfPak* pak;
 	elfScene* scene;
 	const char* type;
-	int i;
-	elfCamera* camera;
-	elfLight* light;
 
 	type = strrchr(filePath, '.');
 	if(!type)
@@ -362,39 +359,6 @@ ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* filePath)
 		scene->filePath = elfCreateString(filePath);
 
 		elfRecursivelyImportAssets(scene, aiscn, aiscn->mRootNode);
-
-		for(i = 0; i < (int)aiscn->mNumCameras; i++)
-		{
-			const struct aiCamera* aicam = aiscn->mCameras[i];
-
-			camera = elfCreateCamera(aicam->mName.data);
-
-			elfSetCameraFov(camera, aicam->mHorizontalFOV);
-			elfSetCameraClip(camera, aicam->mClipPlaneNear, aicam->mClipPlaneFar);
-			elfSetActorPosition((elfActor*)camera, aicam->mPosition.x, aicam->mPosition.y, aicam->mPosition.z);
-
-			elfAddSceneCamera(scene, camera);
-		}
-
-		for(i = 0; i < (int)aiscn->mNumLights; i++)
-		{
-			const struct aiLight* ailig = aiscn->mLights[i];
-
-			light = elfCreateLight(ailig->mName.data);
-
-			if(ailig->mType == aiLightSource_DIRECTIONAL) elfSetLightType(light, ELF_SUN_LIGHT);
-			else if(ailig->mType == aiLightSource_POINT) elfSetLightType(light, ELF_POINT_LIGHT);
-			else if(ailig->mType == aiLightSource_SPOT) elfSetLightType(light, ELF_SPOT_LIGHT);
-
-			elfSetLightColor(light, ailig->mColorDiffuse.r, ailig->mColorDiffuse.g, ailig->mColorDiffuse.b, 1.0f);
-			elfSetLightRange(light, 1.0f/(ailig->mAttenuationLinear+ailig->mAttenuationQuadratic*ailig->mAttenuationQuadratic),
-				1.0f/(ailig->mAttenuationLinear+ailig->mAttenuationQuadratic*ailig->mAttenuationQuadratic));
-			elfSetLightCone(light, ailig->mAngleInnerCone, ailig->mAngleOuterCone);
-			elfSetActorPosition((elfActor*)light, ailig->mPosition.x, ailig->mPosition.y, ailig->mPosition.z);
-			elfSetActorDirection((elfActor*)light, ailig->mDirection.x, ailig->mDirection.y, ailig->mDirection.z);
-
-			elfAddSceneLight(scene, light);
-		}
 
 		aiReleaseImport(aiscn);
 

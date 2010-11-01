@@ -342,8 +342,6 @@ void elfAddRootBoneToArmature(elfArmature* armature, elfBone* bone)
 void elfDrawBoneHierarchy(elfBone* bone, gfxShaderParams* shaderParams)
 {
 	elfBone* cbone;
-	float min[3];
-	float max[3];
 	elfVec3f pos;
 	elfVec3f axis;
 	elfVec4f orient;
@@ -364,7 +362,6 @@ void elfDrawBoneHierarchy(elfBone* bone, gfxShaderParams* shaderParams)
 	vertexBuffer[4] = pos.y+axis.y;
 	vertexBuffer[5] = pos.z+axis.z;
 
-	shaderParams->renderParams.blendMode = GFX_NONE;
 	gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.0f, 0.0f, 1.0f, 1.0f);
 	gfxSetShaderParams(shaderParams);
 
@@ -392,23 +389,12 @@ void elfDrawBoneHierarchy(elfBone* bone, gfxShaderParams* shaderParams)
 
 	elfDrawLines(2, rnd->lines);
 
-	min[0] = pos.x-0.05f;
-	min[1] = pos.y-0.05f;
-	min[2] = pos.z-0.05f;
-
-	max[0] = pos.x+0.05f;
-	max[1] = pos.y+0.05f;
-	max[2] = pos.z+0.05f;
-
-	shaderParams->renderParams.blendMode = GFX_ADD;
-	gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.4f, 0.2f, 1.0f);
-	gfxSetShaderParams(shaderParams);
-
-	elfDrawBoundingBox(min, max);
-
 	for(cbone = (elfBone*)elfBeginList(bone->children); cbone;
 		cbone = (elfBone*)elfGetListNext(bone->children))
 	{
+		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.5f, 0.2f, 1.0f);
+		gfxSetShaderParams(shaderParams);
+
 		vertexBuffer[3] = cbone->curPos.x;
 		vertexBuffer[4] = cbone->curPos.y;
 		vertexBuffer[5] = cbone->curPos.z;
