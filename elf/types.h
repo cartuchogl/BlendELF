@@ -546,8 +546,7 @@ struct elfSprite {
 
 	elfVec3f position;
 	elfVec2f scale;
-	elfVec2f texSize;
-	elfVec3f realScale;
+	elfVec2f size;
 	float cullRadius;
 
 	gfxQuery* query;

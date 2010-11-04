@@ -11,8 +11,7 @@ ELF_API elfSprite* ELF_APIENTRY elfCreateSprite(const char* name)
 	elfInitActor((elfActor*)sprite, ELF_FALSE);
 
 	sprite->scale.x = sprite->scale.y = 1.0f;
-	sprite->texSize.x = sprite->texSize.y = 0.6f;
-	sprite->realScale.x = sprite->realScale.y = 0.6f; sprite->realScale.z = 1.0f;
+	sprite->size.x = sprite->size.y = 0.6f;
 	sprite->query = gfxCreateQuery();
 	sprite->visible = ELF_TRUE;
 	sprite->culled = ELF_TRUE;
@@ -82,28 +81,24 @@ void elfCalcSpriteBounds(elfSprite* sprite)
 	{
 		if(sprite->material->diffuseMap && sprite->material->diffuseMap->texture)
 		{
-			sprite->texSize.x = (float)gfxGetTextureWidth(sprite->material->diffuseMap->texture)/100.0f;
-			sprite->texSize.y = (float)gfxGetTextureHeight(sprite->material->diffuseMap->texture)/100.0f;
+			sprite->size.x = (float)gfxGetTextureWidth(sprite->material->diffuseMap->texture)/100.0f;
+			sprite->size.y = (float)gfxGetTextureHeight(sprite->material->diffuseMap->texture)/100.0f;
 		}
 	}
 	else
 	{
 		sprite->scale.x = sprite->scale.y = 1.0f;
-		sprite->texSize.x = sprite->texSize.y = 0.6f;
-		sprite->realScale.x = sprite->realScale.y = 0.6f; sprite->realScale.z = 1.0f;
+		sprite->size.x = sprite->size.y = 0.6f;
 		sprite->pbbLengths.x = sprite->pbbLengths.y = 0.6f; sprite->pbbLengths.z = 0.01f;
+		sprite->cullRadius = 0.3f;
+		return;
 	}
 
-	sprite->pbbLengths.x = sprite->texSize.x;
-	sprite->pbbLengths.y = sprite->texSize.y;
+	sprite->pbbLengths.x = sprite->size.x;
+	sprite->pbbLengths.y = sprite->size.y;
 	sprite->pbbLengths.z = 0.01f;
-	sprite->realScale.x = sprite->scale.x*sprite->texSize.x;
-	sprite->realScale.y = sprite->scale.y*sprite->texSize.y;
-	sprite->realScale.z = 0.0f;
 
-	sprite->cullRadius = elfGetVec3fLength(sprite->realScale)/2.0f;
-
-	sprite->realScale.z = 1.0f;
+	sprite->cullRadius = elfGetVec2fLength(elfMulVec2fVec2f(sprite->size, sprite->scale))/2.0f;
 }
 
 void elfResetSpriteDebugPhysicsObject(elfSprite* sprite)
@@ -119,8 +114,8 @@ void elfResetSpriteDebugPhysicsObject(elfSprite* sprite)
 		elfDecRef((elfObject*)sprite->dobject);
 	}
 
-	sprite->dobject = elfCreatePhysicsObjectBox(sprite->texSize.x/2.0f,
-		sprite->texSize.y/2.0f, 0.01f/2.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	sprite->dobject = elfCreatePhysicsObjectBox(sprite->size.x/2.0f,
+		sprite->size.y/2.0f, 0.01f/2.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
 	elfSetPhysicsObjectActor(sprite->dobject, (elfActor*)sprite);
 	elfIncRef((elfObject*)sprite->dobject);
@@ -144,8 +139,6 @@ ELF_API void ELF_APIENTRY elfSetSpriteMaterial(elfSprite* sprite, elfMaterial* m
 
 	elfCalcSpriteBounds(sprite);
 
-	gfxSetTransformScale(sprite->transform, sprite->realScale.x, sprite->realScale.y, sprite->realScale.z);
-
 	if(sprite->object) elfSetActorPhysics((elfActor*)sprite, ELF_TRUE);
 
 	elfResetSpriteDebugPhysicsObject(sprite);
@@ -157,7 +150,7 @@ ELF_API void ELF_APIENTRY elfSetSpriteScale(elfSprite* sprite, float x, float y)
 
 	elfCalcSpriteBounds(sprite);
 
-	gfxSetTransformScale(sprite->transform, sprite->realScale.x, sprite->realScale.y, sprite->realScale.z);
+	gfxSetTransformScale(sprite->transform, sprite->scale.x, sprite->scale.y, 1.0);
 
 	if(sprite->object) elfSetPhysicsObjectScale(sprite->object, sprite->scale.x, sprite->scale.y, 1.0f);
 	if(sprite->dobject) elfSetPhysicsObjectScale(sprite->dobject, sprite->scale.x, sprite->scale.y, 1.0f);
@@ -216,6 +209,11 @@ unsigned char elfCullSprite(elfSprite* sprite, elfCamera* camera)
 
 void elfDrawSprite(elfSprite* sprite, int mode, gfxShaderParams* shaderParams)
 {
+	float* vertexBuffer;
+	float* texCoordBuffer;
+	float* normalBuffer;
+	float sizex, sizey;
+
 	if(!sprite->material || !sprite->visible ||
 		(mode == ELF_DRAW_WITHOUT_LIGHTING && sprite->material->lighting)) return;
 
@@ -224,57 +222,95 @@ void elfDrawSprite(elfSprite* sprite, int mode, gfxShaderParams* shaderParams)
 	gfxMulMatrix3Matrix4(gfxGetTransformNormalMatrix(sprite->transform),
 			shaderParams->cameraMatrix, shaderParams->normalMatrix);
 
+	vertexBuffer = gfxGetVertexDataBuffer(rnd->quadVertexData);
+	texCoordBuffer = gfxGetVertexDataBuffer(rnd->quadTexCoordData);
+	normalBuffer = gfxGetVertexDataBuffer(rnd->quadNormalData);
+
+	sizex = sprite->size.x/2.0f;
+	sizey = sprite->size.y/2.0f;
+
+	vertexBuffer[0] = -sizex;
+	vertexBuffer[1] = sizey;
+	vertexBuffer[2] = 0.0f;
+	vertexBuffer[3] = -sizex;
+	vertexBuffer[4] = -sizey;
+	vertexBuffer[5] = 0.0f;
+	vertexBuffer[6] = sizex;
+	vertexBuffer[7] = sizey;
+	vertexBuffer[8] = 0.0f;
+	vertexBuffer[9] = sizex;
+	vertexBuffer[10] = -sizey;
+	vertexBuffer[11] = 0.0f;
+
+	texCoordBuffer[0] = 0.0f;
+	texCoordBuffer[1] = 1.0f;
+	texCoordBuffer[2] = 0.0f;
+	texCoordBuffer[3] = 0.0f;
+	texCoordBuffer[4] = 1.0f;
+	texCoordBuffer[5] = 1.0f;
+	texCoordBuffer[6] = 1.0f;
+	texCoordBuffer[7] = 0.0f;
+
+	normalBuffer[0] = 0.0f;
+	normalBuffer[1] = 0.0f;
+	normalBuffer[2] = 1.0f;
+	normalBuffer[3] = 0.0f;
+	normalBuffer[4] = 0.0f;
+	normalBuffer[5] = 1.0f;
+	normalBuffer[6] = 0.0f;
+	normalBuffer[7] = 0.0f;
+	normalBuffer[8] = 1.0f;
+	normalBuffer[9] = 0.0f;
+	normalBuffer[10] = 0.0f;
+	normalBuffer[11] = 1.0f;
+
+	gfxUpdateVertexData(rnd->quadVertexData);
+	gfxUpdateVertexData(rnd->quadTexCoordData);
+	gfxUpdateVertexData(rnd->quadNormalData);
+
 	elfSetMaterial(sprite->material, mode, shaderParams);
 	gfxSetShaderParams(shaderParams);
 
-	gfxDrawVertexArray(rnd->spriteVertexArray, 12, GFX_TRIANGLES);
+	gfxDrawVertexArray(rnd->quadVertexArray, 4, GFX_TRIANGLE_STRIP);
 }
 
 void elfDrawSpriteDebug(elfSprite* sprite, gfxShaderParams* shaderParams)
 {
 	float* vertexBuffer;
+	float sizex, sizey;
 
 	gfxMulMatrix4Matrix4(gfxGetTransformMatrix(sprite->transform),
 		shaderParams->cameraMatrix, shaderParams->modelviewMatrix);
 
+	sizex = sprite->size.x/2.0f;
+	sizey = sprite->size.y/2.0f;
+
 	vertexBuffer = (float*)gfxGetVertexDataBuffer(rnd->lines);
 
-	vertexBuffer[0] = -0.5f;
-	vertexBuffer[1] = 0.5f;
+	vertexBuffer[0] = -sizex;
+	vertexBuffer[1] = sizey;
 	vertexBuffer[2] = 0.0f;
 
-	vertexBuffer[3] = -0.5f;
-	vertexBuffer[4] = -0.5f;
+	vertexBuffer[3] = -sizex;
+	vertexBuffer[4] = -sizey;
 	vertexBuffer[5] = 0.0f;
 
-	vertexBuffer[6] = -0.5f;
-	vertexBuffer[7] = -0.5f;
+	vertexBuffer[6] = sizex;
+	vertexBuffer[7] = -sizey;
 	vertexBuffer[8] = 0.0f;
 
-	vertexBuffer[9] = 0.5f;
-	vertexBuffer[10] = -0.5f;
+	vertexBuffer[9] = sizex;
+	vertexBuffer[10] = sizey;
 	vertexBuffer[11] = 0.0f;
 
-	vertexBuffer[12] = 0.5f;
-	vertexBuffer[13] = -0.5f;
+	vertexBuffer[12] = -sizex;
+	vertexBuffer[13] = sizey;
 	vertexBuffer[14] = 0.0f;
-
-	vertexBuffer[15] = 0.5f;
-	vertexBuffer[16] = 0.5f;
-	vertexBuffer[17] = 0.0f;
-
-	vertexBuffer[18] = 0.5f;
-	vertexBuffer[19] = 0.5f;
-	vertexBuffer[20] = 0.0f;
-
-	vertexBuffer[21] = -0.5f;
-	vertexBuffer[22] = 0.5f;
-	vertexBuffer[23] = 0.0f;
 
 	if(!sprite->selected) gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.6f, 0.2f, 0.6f, 1.0f);
 	else gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 0.0f, 0.0f, 1.0f);
 	gfxSetShaderParams(shaderParams);
-	elfDrawLines(8, rnd->lines);
+	elfDrawLineLoop(5, rnd->lines);
 
 	elfDrawActorDebug((elfActor*)sprite, shaderParams);
 }

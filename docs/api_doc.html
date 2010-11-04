@@ -489,17 +489,23 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">string</span> GetDirectoryItemName( <span class="apiobjtype">elfDirectoryItem</span> dirItem )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetDirectoryItemType( <span class="apiobjtype">elfDirectoryItem</span> dirItem )</div>
 <div class="apifunc"><span class="apikeytype">elfColor</span> CreateColor( <span class="apikeytype">float</span> r, <span class="apikeytype">float</span> g, <span class="apikeytype">float</span> b, <span class="apikeytype">float</span> a )</div>
+<div class="apifunc"><span class="apikeytype">elfVec2f</span> CreateVec2f( <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y )</div>
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> CreateVec3f( <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc"><span class="apikeytype">elfVec4f</span> CreateQua( <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z, <span class="apikeytype">float</span> w )</div>
 <div class="apifunc"><span class="apikeytype">elfVec4f</span> CreateQuaFromEuler( <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc"><span class="apikeytype">elfVec4f</span> CreateQuaFromAngleAxis( <span class="apikeytype">float</span> angle, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
+<div class="apifunc"><span class="apikeytype">elfVec2f</span> AddVec2fVec2f( <span class="apikeytype">elfVec2f</span> vec1, <span class="apikeytype">elfVec2f</span> vec2 )</div>
+<div class="apifunc"><span class="apikeytype">elfVec2f</span> SubVec2fVec2f( <span class="apikeytype">elfVec2f</span> vec1, <span class="apikeytype">elfVec2f</span> vec2 )</div>
+<div class="apifunc"><span class="apikeytype">elfVec2f</span> MulVec2fVec2f( <span class="apikeytype">elfVec2f</span> vec1, <span class="apikeytype">elfVec2f</span> vec2 )</div>
+<div class="apifunc"><span class="apikeytype">float</span> GetVec2fLength( <span class="apikeytype">elfVec2f</span> vec )</div>
+<div class="apifunc"><span class="apikeytype">elfVec3f</span> AddVec3fVec3f( <span class="apikeytype">elfVec3f</span> vec1, <span class="apikeytype">elfVec3f</span> vec2 )</div>
+<div class="apifunc"><span class="apikeytype">elfVec3f</span> SubVec3fVec3f( <span class="apikeytype">elfVec3f</span> vec1, <span class="apikeytype">elfVec3f</span> vec2 )</div>
+<div class="apifunc"><span class="apikeytype">elfVec3f</span> MulVec3fVec3f( <span class="apikeytype">elfVec3f</span> vec1, <span class="apikeytype">elfVec3f</span> vec2 )</div>
+<div class="apifunc"><span class="apikeytype">float</span> GetVec3fLength( <span class="apikeytype">elfVec3f</span> vec )</div>
+<div class="apifunc"><span class="apikeytype">elfVec3f</span> RotateVec3f( <span class="apikeytype">elfVec3f</span> vec, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> MulQuaVec3f( <span class="apikeytype">elfVec4f</span> qua, <span class="apikeytype">elfVec3f</span> vec )</div>
 <div class="apifunc"><span class="apikeytype">elfVec4f</span> MulQuaQua( <span class="apikeytype">elfVec4f</span> qua1, <span class="apikeytype">elfVec4f</span> qua2 )</div>
 <div class="apifunc"><span class="apikeytype">elfVec4f</span> GetQuaInverted( <span class="apikeytype">elfVec4f</span> qua )</div>
-<div class="apifunc"><span class="apikeytype">elfVec3f</span> RotateVec3f( <span class="apikeytype">elfVec3f</span> vec, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y, <span class="apikeytype">float</span> z )</div>
-<div class="apifunc"><span class="apikeytype">elfVec3f</span> SubVec3fVec3f( <span class="apikeytype">elfVec3f</span> vec1, <span class="apikeytype">elfVec3f</span> vec2 )</div>
-<div class="apifunc"><span class="apikeytype">elfVec3f</span> AddVec3fVec3f( <span class="apikeytype">elfVec3f</span> vec1, <span class="apikeytype">elfVec3f</span> vec2 )</div>
-<div class="apifunc"><span class="apikeytype">float</span> GetVec3fLength( <span class="apikeytype">elfVec3f</span> vec )</div>
 <div class="apifunc"><span class="apikeytype">boolean</span> AboutSame( <span class="apikeytype">float</span> v1, <span class="apikeytype">float</span> v2 )</div>
 <div class="apifunc"><span class="apikeytype">boolean</span> AboutZero( <span class="apikeytype">float</span> val )</div>
 <div class="apifunc"><span class="apikeytype">float</span> FloatAbs( <span class="apikeytype">float</span> val )</div>

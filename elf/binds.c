@@ -1687,6 +1687,20 @@ static int lua_CreateColor(lua_State *L)
 	lua_create_elfColor(L, result);
 	return 1;
 }
+static int lua_CreateVec2f(lua_State *L)
+{
+	elfVec2f result;
+	float arg0;
+	float arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "CreateVec2f", lua_gettop(L), 2);}
+	if(!lua_isnumber(L, 1)) {return lua_fail_arg(L, "CreateVec2f", 1, "number");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "CreateVec2f", 2, "number");}
+	arg0 = (float)lua_tonumber(L, 1);
+	arg1 = (float)lua_tonumber(L, 2);
+	result = elfCreateVec2f(arg0, arg1);
+	lua_create_elfVec2f(L, result);
+	return 1;
+}
 static int lua_CreateVec3f(lua_State *L)
 {
 	elfVec3f result;
@@ -1761,6 +1775,132 @@ static int lua_CreateQuaFromAngleAxis(lua_State *L)
 	lua_create_elfVec4f(L, result);
 	return 1;
 }
+static int lua_AddVec2fVec2f(lua_State *L)
+{
+	elfVec2f result;
+	elfVec2f arg0;
+	elfVec2f arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddVec2fVec2f", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1)) {return lua_fail_arg(L, "AddVec2fVec2f", 1, "elfVec2f");}
+	if(!lua_isuserdata(L, 2)) {return lua_fail_arg(L, "AddVec2fVec2f", 2, "elfVec2f");}
+	arg0 = ((lua_elfVec2f*)lua_touserdata(L, 1))->val;
+	arg1 = ((lua_elfVec2f*)lua_touserdata(L, 2))->val;
+	result = elfAddVec2fVec2f(arg0, arg1);
+	lua_create_elfVec2f(L, result);
+	return 1;
+}
+static int lua_SubVec2fVec2f(lua_State *L)
+{
+	elfVec2f result;
+	elfVec2f arg0;
+	elfVec2f arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SubVec2fVec2f", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1)) {return lua_fail_arg(L, "SubVec2fVec2f", 1, "elfVec2f");}
+	if(!lua_isuserdata(L, 2)) {return lua_fail_arg(L, "SubVec2fVec2f", 2, "elfVec2f");}
+	arg0 = ((lua_elfVec2f*)lua_touserdata(L, 1))->val;
+	arg1 = ((lua_elfVec2f*)lua_touserdata(L, 2))->val;
+	result = elfSubVec2fVec2f(arg0, arg1);
+	lua_create_elfVec2f(L, result);
+	return 1;
+}
+static int lua_MulVec2fVec2f(lua_State *L)
+{
+	elfVec2f result;
+	elfVec2f arg0;
+	elfVec2f arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "MulVec2fVec2f", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1)) {return lua_fail_arg(L, "MulVec2fVec2f", 1, "elfVec2f");}
+	if(!lua_isuserdata(L, 2)) {return lua_fail_arg(L, "MulVec2fVec2f", 2, "elfVec2f");}
+	arg0 = ((lua_elfVec2f*)lua_touserdata(L, 1))->val;
+	arg1 = ((lua_elfVec2f*)lua_touserdata(L, 2))->val;
+	result = elfMulVec2fVec2f(arg0, arg1);
+	lua_create_elfVec2f(L, result);
+	return 1;
+}
+static int lua_GetVec2fLength(lua_State *L)
+{
+	float result;
+	elfVec2f arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetVec2fLength", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1)) {return lua_fail_arg(L, "GetVec2fLength", 1, "elfVec2f");}
+	arg0 = ((lua_elfVec2f*)lua_touserdata(L, 1))->val;
+	result = elfGetVec2fLength(arg0);
+	lua_pushnumber(L, (lua_Number)result);
+	return 1;
+}
+static int lua_AddVec3fVec3f(lua_State *L)
+{
+	elfVec3f result;
+	elfVec3f arg0;
+	elfVec3f arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddVec3fVec3f", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1)) {return lua_fail_arg(L, "AddVec3fVec3f", 1, "elfVec3f");}
+	if(!lua_isuserdata(L, 2)) {return lua_fail_arg(L, "AddVec3fVec3f", 2, "elfVec3f");}
+	arg0 = ((lua_elfVec3f*)lua_touserdata(L, 1))->val;
+	arg1 = ((lua_elfVec3f*)lua_touserdata(L, 2))->val;
+	result = elfAddVec3fVec3f(arg0, arg1);
+	lua_create_elfVec3f(L, result);
+	return 1;
+}
+static int lua_SubVec3fVec3f(lua_State *L)
+{
+	elfVec3f result;
+	elfVec3f arg0;
+	elfVec3f arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SubVec3fVec3f", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1)) {return lua_fail_arg(L, "SubVec3fVec3f", 1, "elfVec3f");}
+	if(!lua_isuserdata(L, 2)) {return lua_fail_arg(L, "SubVec3fVec3f", 2, "elfVec3f");}
+	arg0 = ((lua_elfVec3f*)lua_touserdata(L, 1))->val;
+	arg1 = ((lua_elfVec3f*)lua_touserdata(L, 2))->val;
+	result = elfSubVec3fVec3f(arg0, arg1);
+	lua_create_elfVec3f(L, result);
+	return 1;
+}
+static int lua_MulVec3fVec3f(lua_State *L)
+{
+	elfVec3f result;
+	elfVec3f arg0;
+	elfVec3f arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "MulVec3fVec3f", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1)) {return lua_fail_arg(L, "MulVec3fVec3f", 1, "elfVec3f");}
+	if(!lua_isuserdata(L, 2)) {return lua_fail_arg(L, "MulVec3fVec3f", 2, "elfVec3f");}
+	arg0 = ((lua_elfVec3f*)lua_touserdata(L, 1))->val;
+	arg1 = ((lua_elfVec3f*)lua_touserdata(L, 2))->val;
+	result = elfMulVec3fVec3f(arg0, arg1);
+	lua_create_elfVec3f(L, result);
+	return 1;
+}
+static int lua_GetVec3fLength(lua_State *L)
+{
+	float result;
+	elfVec3f arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetVec3fLength", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1)) {return lua_fail_arg(L, "GetVec3fLength", 1, "elfVec3f");}
+	arg0 = ((lua_elfVec3f*)lua_touserdata(L, 1))->val;
+	result = elfGetVec3fLength(arg0);
+	lua_pushnumber(L, (lua_Number)result);
+	return 1;
+}
+static int lua_RotateVec3f(lua_State *L)
+{
+	elfVec3f result;
+	elfVec3f arg0;
+	float arg1;
+	float arg2;
+	float arg3;
+	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "RotateVec3f", lua_gettop(L), 4);}
+	if(!lua_isuserdata(L, 1)) {return lua_fail_arg(L, "RotateVec3f", 1, "elfVec3f");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "RotateVec3f", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "RotateVec3f", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "RotateVec3f", 4, "number");}
+	arg0 = ((lua_elfVec3f*)lua_touserdata(L, 1))->val;
+	arg1 = (float)lua_tonumber(L, 2);
+	arg2 = (float)lua_tonumber(L, 3);
+	arg3 = (float)lua_tonumber(L, 4);
+	result = elfRotateVec3f(arg0, arg1, arg2, arg3);
+	lua_create_elfVec3f(L, result);
+	return 1;
+}
 static int lua_MulQuaVec3f(lua_State *L)
 {
 	elfVec3f result;
@@ -1798,65 +1938,6 @@ static int lua_GetQuaInverted(lua_State *L)
 	arg0 = ((lua_elfVec4f*)lua_touserdata(L, 1))->val;
 	result = elfGetQuaInverted(arg0);
 	lua_create_elfVec4f(L, result);
-	return 1;
-}
-static int lua_RotateVec3f(lua_State *L)
-{
-	elfVec3f result;
-	elfVec3f arg0;
-	float arg1;
-	float arg2;
-	float arg3;
-	if(lua_gettop(L) != 4) {return lua_fail_arg_count(L, "RotateVec3f", lua_gettop(L), 4);}
-	if(!lua_isuserdata(L, 1)) {return lua_fail_arg(L, "RotateVec3f", 1, "elfVec3f");}
-	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "RotateVec3f", 2, "number");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "RotateVec3f", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "RotateVec3f", 4, "number");}
-	arg0 = ((lua_elfVec3f*)lua_touserdata(L, 1))->val;
-	arg1 = (float)lua_tonumber(L, 2);
-	arg2 = (float)lua_tonumber(L, 3);
-	arg3 = (float)lua_tonumber(L, 4);
-	result = elfRotateVec3f(arg0, arg1, arg2, arg3);
-	lua_create_elfVec3f(L, result);
-	return 1;
-}
-static int lua_SubVec3fVec3f(lua_State *L)
-{
-	elfVec3f result;
-	elfVec3f arg0;
-	elfVec3f arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SubVec3fVec3f", lua_gettop(L), 2);}
-	if(!lua_isuserdata(L, 1)) {return lua_fail_arg(L, "SubVec3fVec3f", 1, "elfVec3f");}
-	if(!lua_isuserdata(L, 2)) {return lua_fail_arg(L, "SubVec3fVec3f", 2, "elfVec3f");}
-	arg0 = ((lua_elfVec3f*)lua_touserdata(L, 1))->val;
-	arg1 = ((lua_elfVec3f*)lua_touserdata(L, 2))->val;
-	result = elfSubVec3fVec3f(arg0, arg1);
-	lua_create_elfVec3f(L, result);
-	return 1;
-}
-static int lua_AddVec3fVec3f(lua_State *L)
-{
-	elfVec3f result;
-	elfVec3f arg0;
-	elfVec3f arg1;
-	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "AddVec3fVec3f", lua_gettop(L), 2);}
-	if(!lua_isuserdata(L, 1)) {return lua_fail_arg(L, "AddVec3fVec3f", 1, "elfVec3f");}
-	if(!lua_isuserdata(L, 2)) {return lua_fail_arg(L, "AddVec3fVec3f", 2, "elfVec3f");}
-	arg0 = ((lua_elfVec3f*)lua_touserdata(L, 1))->val;
-	arg1 = ((lua_elfVec3f*)lua_touserdata(L, 2))->val;
-	result = elfAddVec3fVec3f(arg0, arg1);
-	lua_create_elfVec3f(L, result);
-	return 1;
-}
-static int lua_GetVec3fLength(lua_State *L)
-{
-	float result;
-	elfVec3f arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetVec3fLength", lua_gettop(L), 1);}
-	if(!lua_isuserdata(L, 1)) {return lua_fail_arg(L, "GetVec3fLength", 1, "elfVec3f");}
-	arg0 = ((lua_elfVec3f*)lua_touserdata(L, 1))->val;
-	result = elfGetVec3fLength(arg0);
-	lua_pushnumber(L, (lua_Number)result);
 	return 1;
 }
 static int lua_AboutSame(lua_State *L)
@@ -10930,17 +11011,23 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetDirectoryItemName", lua_GetDirectoryItemName},
 	{"GetDirectoryItemType", lua_GetDirectoryItemType},
 	{"CreateColor", lua_CreateColor},
+	{"CreateVec2f", lua_CreateVec2f},
 	{"CreateVec3f", lua_CreateVec3f},
 	{"CreateQua", lua_CreateQua},
 	{"CreateQuaFromEuler", lua_CreateQuaFromEuler},
 	{"CreateQuaFromAngleAxis", lua_CreateQuaFromAngleAxis},
+	{"AddVec2fVec2f", lua_AddVec2fVec2f},
+	{"SubVec2fVec2f", lua_SubVec2fVec2f},
+	{"MulVec2fVec2f", lua_MulVec2fVec2f},
+	{"GetVec2fLength", lua_GetVec2fLength},
+	{"AddVec3fVec3f", lua_AddVec3fVec3f},
+	{"SubVec3fVec3f", lua_SubVec3fVec3f},
+	{"MulVec3fVec3f", lua_MulVec3fVec3f},
+	{"GetVec3fLength", lua_GetVec3fLength},
+	{"RotateVec3f", lua_RotateVec3f},
 	{"MulQuaVec3f", lua_MulQuaVec3f},
 	{"MulQuaQua", lua_MulQuaQua},
 	{"GetQuaInverted", lua_GetQuaInverted},
-	{"RotateVec3f", lua_RotateVec3f},
-	{"SubVec3fVec3f", lua_SubVec3fVec3f},
-	{"AddVec3fVec3f", lua_AddVec3fVec3f},
-	{"GetVec3fLength", lua_GetVec3fLength},
 	{"AboutSame", lua_AboutSame},
 	{"AboutZero", lua_AboutZero},
 	{"FloatAbs", lua_FloatAbs},

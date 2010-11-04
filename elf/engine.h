@@ -858,6 +858,16 @@ ELF_API elfColor ELF_APIENTRY elfCreateColor(float r, float g, float b, float a)
 	return col;
 }
 
+ELF_API elfVec2f ELF_APIENTRY elfCreateVec2f(float x, float y)
+{
+	elfVec2f result;
+
+	result.x = x;
+	result.y = y;
+
+	return result;
+}
+
 ELF_API elfVec3f ELF_APIENTRY elfCreateVec3f(float x, float y, float z)
 {
 	elfVec3f result;
@@ -902,6 +912,79 @@ ELF_API elfVec4f ELF_APIENTRY elfCreateQuaFromAngleAxis(float angle, float x, fl
 	return qua;
 }
 
+ELF_API elfVec2f ELF_APIENTRY elfAddVec2fVec2f(elfVec2f vec1, elfVec2f vec2)
+{
+	elfVec2f result;
+	result.x = vec1.x+vec2.x;
+	result.y = vec1.y+vec2.y;
+	return result;
+}
+
+ELF_API elfVec2f ELF_APIENTRY elfSubVec2fVec2f(elfVec2f vec1, elfVec2f vec2)
+{
+	elfVec2f result;
+	result.x = vec1.x-vec2.x;
+	result.y = vec1.y-vec2.y;
+	return result;
+}
+
+ELF_API elfVec2f ELF_APIENTRY elfMulVec2fVec2f(elfVec2f vec1, elfVec2f vec2)
+{
+	elfVec2f result;
+	result.x = vec1.x*vec2.x;
+	result.y = vec1.y*vec2.y;
+	return result;
+}
+
+ELF_API float ELF_APIENTRY elfGetVec2fLength(elfVec2f vec)
+{
+	return (float)sqrt(vec.x*vec.x+vec.y*vec.y);
+}
+
+ELF_API elfVec3f ELF_APIENTRY elfAddVec3fVec3f(elfVec3f vec1, elfVec3f vec2)
+{
+	elfVec3f result;
+	result.x = vec1.x+vec2.x;
+	result.y = vec1.y+vec2.y;
+	result.z = vec1.z+vec2.z;
+	return result;
+}
+
+ELF_API elfVec3f ELF_APIENTRY elfSubVec3fVec3f(elfVec3f vec1, elfVec3f vec2)
+{
+	elfVec3f result;
+	result.x = vec1.x-vec2.x;
+	result.y = vec1.y-vec2.y;
+	result.z = vec1.z-vec2.z;
+	return result;
+}
+
+ELF_API elfVec3f ELF_APIENTRY elfMulVec3fVec3f(elfVec3f vec1, elfVec3f vec2)
+{
+	elfVec3f result;
+	result.x = vec1.x*vec2.x;
+	result.y = vec1.y*vec2.y;
+	result.z = vec1.z*vec2.z;
+	return result;
+}
+
+ELF_API float ELF_APIENTRY elfGetVec3fLength(elfVec3f vec)
+{
+	return gfxVecLength(&vec.x);
+}
+
+ELF_API elfVec3f ELF_APIENTRY elfRotateVec3f(elfVec3f vec, float x, float y, float z)
+{
+	elfVec4f qua;
+	elfVec3f result;
+
+	gfxQuaFromEuler(x, y, z, &qua.x);
+
+	gfxMulQuaVec(&qua.x, &vec.x, &result.x);
+
+	return result;
+}
+
 ELF_API elfVec3f ELF_APIENTRY elfMulQuaVec3f(elfVec4f qua, elfVec3f vec)
 {
 	elfVec3f result;
@@ -927,41 +1010,6 @@ ELF_API elfVec4f ELF_APIENTRY elfGetQuaInverted(elfVec4f qua)
 	gfxQuaGetInverse(&qua.x, &result.x);
 
 	return result;
-}
-
-ELF_API elfVec3f ELF_APIENTRY elfRotateVec3f(elfVec3f vec, float x, float y, float z)
-{
-	elfVec4f qua;
-	elfVec3f result;
-
-	gfxQuaFromEuler(x, y, z, &qua.x);
-
-	gfxMulQuaVec(&qua.x, &vec.x, &result.x);
-
-	return result;
-}
-
-ELF_API elfVec3f ELF_APIENTRY elfSubVec3fVec3f(elfVec3f vec1, elfVec3f vec2)
-{
-	elfVec3f result;
-	result.x = vec1.x-vec2.x;
-	result.y = vec1.y-vec2.y;
-	result.z = vec1.z-vec2.z;
-	return result;
-}
-
-ELF_API elfVec3f ELF_APIENTRY elfAddVec3fVec3f(elfVec3f vec1, elfVec3f vec2)
-{
-	elfVec3f result;
-	result.x = vec1.x+vec2.x;
-	result.y = vec1.y+vec2.y;
-	result.z = vec1.z+vec2.z;
-	return result;
-}
-
-ELF_API float ELF_APIENTRY elfGetVec3fLength(elfVec3f vec)
-{
-	return gfxVecLength(&vec.x);
 }
 
 ELF_API unsigned char ELF_APIENTRY elfAboutZero(float val)

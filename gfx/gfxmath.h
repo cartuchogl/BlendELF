@@ -32,6 +32,11 @@ float gfxVecLength(float* vec)
 	return (float)sqrt(vec[0]*vec[0]+vec[1]*vec[1]+vec[2]*vec[2]);
 }
 
+float gfxVecSquaredLength(float* vec)
+{
+	return vec[0]*vec[0]+vec[1]*vec[1]+vec[2]*vec[2];
+}
+
 void gfxQuaSetIdentity(float* qua)
 {
 	qua[0] = qua[1] = qua[2] = 0.0f;

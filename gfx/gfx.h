@@ -264,6 +264,7 @@ void gfxVecNormalize(float* vec);
 void gfxVecDotVec(float* vec1, float* vec2, float* dot);
 void gfxVecCrossProduct(float* vec1, float* vec2, float* vec3);
 float gfxVecLength(float* vec);
+float gfxVecSquaredLength(float* vec);
 
 void gfxQuaSetIdentity(float* qua);
 void gfxQuaNormalize(float* qua, float* result);
