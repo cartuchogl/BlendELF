@@ -61,8 +61,6 @@ ELF_API void ELF_APIENTRY elfWriteLogLine(const char* str)
 	FILE* file;
 
 	file = fopen(gen->log, "a");
-	if(!file) fopen(gen->log, "w");
-
 	if(file)
 	{
 		fprintf(file, "%s\n", (char*)str);
