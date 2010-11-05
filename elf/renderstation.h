@@ -350,6 +350,7 @@ void elfDrawTextured2dQuad(float x, float y, float width, float height)
 	vertexBuffer[9] = x+width;
 	vertexBuffer[10] = y;
 	vertexBuffer[11] = 0.0f;
+
 	texCoordBuffer[0] = 0.0f;
 	texCoordBuffer[1] = 1.0f;
 	texCoordBuffer[2] = 0.0f;
@@ -384,6 +385,7 @@ void elfDrawTextured2dQuadRegion(float x, float y, float width, float height, fl
 	vertexBuffer[9] = x+width;
 	vertexBuffer[10] = y;
 	vertexBuffer[11] = 0.0f;
+
 	texCoordBuffer[0] = tx;
 	texCoordBuffer[1] = ty+theight;
 	texCoordBuffer[2] = tx;

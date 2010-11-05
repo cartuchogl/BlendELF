@@ -95,7 +95,8 @@ ELF_API unsigned char ELF_APIENTRY elfInit(elfConfig* config)
 	elfInitGeneral();
 	elfSetLogFilePath(config->logPath);
 
-	elfStartLog("BlendELF 0.9 Beta\n");
+	elfStartLog();
+	elfLogWrite("%s\n", elfGetVersion());
 
 	if(!elfInitContext(config->windowSize.x, config->windowSize.y, config->windowTitle, config->multisamples, config->fullscreen)) return ELF_FALSE;
 	if(!gfxInit())

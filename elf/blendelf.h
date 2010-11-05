@@ -543,10 +543,9 @@ ELF_API const char* ELF_APIENTRY elfGetConfigLogPath(elfConfig* config);
 ///////////////////////////////// LOG /////////////////////////////////
 
 // <!!
-void elfStartLog(const char* text);
+void elfStartLog();
 void elfLogWrite(const char* fmt, ...);
 void elfSetError(int code, const char* fmt, ...);
-void elfSetErrorNoSave(int code, const char* fmt, ...);
 // !!>
 
 ELF_API void ELF_APIENTRY elfWriteLogLine(const char* str);	// <mdoc> LOG FUNCTIONS

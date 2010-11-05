@@ -1,209 +1,59 @@
 
-void elfStartLog(const char* text)
+void elfStartLog()
 {
 	FILE* file;
 
 	file = fopen(gen->log, "w");
-	if(!file) return;
-
-	fwrite(text, sizeof(char), strlen(text), file);
-	fclose(file);
+	if(file) fclose(file);
 }
 
 void elfLogWrite(const char* fmt, ...)
 {
-	va_list list;
-	const char* p,* s;
-	int d;
-	double f;
+	va_list args;
 	FILE* file;
 
-	va_start(list, fmt);
+	va_start(args, fmt);
 
 	file = fopen(gen->log, "a");
-	if(!file) fopen(gen->log, "w");
-
-	for(p = fmt;* p; ++p)
+	if(file)
 	{
-		if(*p != '%')
-		{
-			putc(*p, stdout);
-			if(file) putc(*p, file);
-		}
-		else
-		{
-			switch(*++p)
-			{
-				case 's':
-					s = va_arg(list, char*);
-					if(s == NULL) continue;
-					printf("%s", s);
-					if(file) fprintf(file, "%s", s);
-					continue;
-				case 'd':
-					d = va_arg(list, int);
-					printf("%d", d);
-					if(file) fprintf(file, "%d", d);
-					continue;
-				case 'f':
-					f = va_arg(list, double);
-					printf("%f", f);
-					if(file) fprintf(file, "%f", f);
-					continue;
-			}
-		}
+		vfprintf(file, fmt, args);
+		fclose(file);
 	}
 
-	if(file) fclose(file);
+	vprintf(fmt, args);
+
+	va_end(args);
 }
 
 void elfSetError(int code, const char* fmt, ...)
 {
-	va_list list;
-	const char* p,* s;
-	int d;
-	double f;
-	char* errStr;
-	char* tmpStr;
-	char num[32];
+	va_list args;
 	FILE* file;
+	int len = -1;
 
-	va_start(list, fmt);
+	va_start(args, fmt);
 
 	file = fopen(gen->log, "a");
-	if(!file) fopen(gen->log, "w");
-
-	errStr = elfCreateString("");
-
-	for(p = fmt;* p; ++p)
+	if(file)
 	{
-		if(*p != '%')
-		{
-			putc(*p, stdout);
-			if(file) putc(*p, file);
-			tmpStr = elfAppendCharToString(errStr,* p);
-			elfDestroyString(errStr);
-			errStr = tmpStr;
-		}
-		else
-		{
-			switch(*++p)
-			{
-				case 's':
-					s = va_arg(list, char*);
-					if(s == NULL) continue;
-					printf("%s", s);
-					if(file) fprintf(file, "%s", s);
-
-					tmpStr = elfMergeStrings(errStr, s);
-					elfDestroyString(errStr);
-					errStr = tmpStr;
-					continue;
-				case 'd':
-					d = va_arg(list, int);
-					printf("%d", d);
-					if(file) fprintf(file, "%d", d);
-
-					memset(num, 0x0, sizeof(char)*32);
-					sprintf(num, "%d", d);
-
-					tmpStr = elfMergeStrings(errStr, num);
-					elfDestroyString(errStr);
-					errStr = tmpStr;
-					continue;
-				case 'f':
-					f = va_arg(list, double);
-					printf("%f", f);
-					if(file) fprintf(file, "%f", f);
-
-					memset(num, 0x0, sizeof(char)*32);
-					sprintf(num, "%f", f);
-
-					tmpStr = elfMergeStrings(errStr, num);
-					elfDestroyString(errStr);
-					errStr = tmpStr;
-					continue;
-			}
-		}
+		len = vfprintf(file, fmt, args);
+		fclose(file);
 	}
+
+	if(len > 0)
+	{
+		if(gen->errStr) elfDestroyString(gen->errStr);
+		gen->errStr = malloc(sizeof(char)*(len+1));
+		vsprintf(gen->errStr, fmt, args);
+		gen->errStr[len] = '\0';
+	}
+
+	vprintf(fmt, args);
 
 	gen->errCode = code;
 
-	if(gen->errStr) elfDestroyString(gen->errStr);
-	gen->errStr = elfCreateString(errStr);
-	elfDestroyString(errStr);
-
-	if(file) fclose(file);
-}
-
-void elfSetErrorNoSave(int code, const char* fmt, ...)
-{
-	va_list list;
-	const char* p,* s;
-	int d;
-	double f;
-	char* errStr;
-	char* tmpStr;
-	char num[32];
-
-	va_start(list, fmt);
-
-	errStr = elfCreateString("");
-
-	for(p = fmt;* p; ++p)
-	{
-		if(*p != '%')
-		{
-			putc(*p, stdout);
-
-			tmpStr = elfAppendCharToString(errStr,* p);
-			elfDestroyString(errStr);
-			errStr = tmpStr;
-		}
-		else
-		{
-			switch(*++p)
-			{
-				case 's':
-					s = va_arg(list, char*);
-					if(s == NULL) continue;
-					printf("%s", s);
-
-					tmpStr = elfMergeStrings(errStr, s);
-					elfDestroyString(errStr);
-					errStr = tmpStr;
-					continue;
-				case 'd':
-					d = va_arg(list, int);
-					printf("%d", d);
-
-					memset(num, 0x0, sizeof(char)*32);
-					sprintf(num, "%d", d);
-
-					tmpStr = elfMergeStrings(errStr, num);
-					elfDestroyString(errStr);
-					errStr = tmpStr;
-					continue;
-				case 'f':
-					f = va_arg(list, double);
-					printf("%f", f);
-
-					memset(num, 0x0, sizeof(char)*32);
-					sprintf(num, "%f", f);
-
-					tmpStr = elfMergeStrings(errStr, num);
-					elfDestroyString(errStr);
-					errStr = tmpStr;
-					continue;
-			}
-		}
-	}
-
-	gen->errCode = code;
-
-	if(gen->errStr) elfDestroyString(gen->errStr);
-	gen->errStr = elfCreateString(errStr);
-	elfDestroyString(errStr);
+	va_end(args);
 }
 
 ELF_API void ELF_APIENTRY elfWriteLogLine(const char* str)

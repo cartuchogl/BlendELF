@@ -7,7 +7,9 @@ void elfInitGeneral()
 	memset(gen, 0x0, sizeof(elfGeneral));
 	gen->objType = ELF_GENERAL;
 
-	gen->log = elfCreateString("elf.log");
+	gen->log = (char*)malloc(sizeof(char)*8);
+	memcpy(gen->log, "elf.log", sizeof(char)*7);
+	gen->log[7] = '\0';
 
 }
 
@@ -15,7 +17,7 @@ void elfDeinitGeneral()
 {
 	if(!gen) return;
 
-	if(gen->errStr) elfDestroyString(gen->errStr);
+	if(gen->errStr) free(gen->errStr);
 
 	if(gen->refCount > 0)
 	{
@@ -31,21 +33,21 @@ void elfDeinitGeneral()
 		elfDumpRefTable();
 	}
 
-	if(gen->objCount > 1)
+	if(gen->objCount > 0)
 	{
 		elfLogWrite("error: possible memory leak in ELF, [%d] objects not destroyed\n",
 			elfGetGlobalObjCount()-1);
 		elfDumpObjTable();
 	}
 
-	if(gen->objCount < 1)
+	if(gen->objCount < 0)
 	{
 		elfLogWrite("error: possible double free in ELF, [%d] negative object count\n",
 			elfGetGlobalObjCount()-1);
 		elfDumpObjTable();
 	}
 
-	if(gen->log) elfDestroyString(gen->log);
+	if(gen->log) free(gen->log);
 
 	free(gen);
 }
@@ -168,7 +170,9 @@ void elfSetLogFilePath(const char* filePath)
 		}
 	}
 
-	if(gen->log) elfDestroyString(gen->log);
-	gen->log = elfCreateString(filePath);
+	if(gen->log) free(gen->log);
+	gen->log = (char*)malloc(sizeof(char)*(strlen(filePath)+1));
+	memcpy(gen->log, filePath, sizeof(char)*strlen(filePath));
+	gen->log[strlen(filePath)] = '\0';
 }
 
