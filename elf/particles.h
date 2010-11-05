@@ -286,7 +286,10 @@ void elfUpdateParticles(elfParticles* particles, float sync)
 	{
 		spawnCount = (int)(particles->curTime/particles->spawnDelay);
 		if(elfGetListLength(particles->particles)+spawnCount > particles->maxCount)
+		{
 			spawnCount -= (elfGetListLength(particles->particles)+spawnCount)-particles->maxCount;
+			particles->curTime -= sync;
+		}
 		if(spawnCount > 0) particles->curTime -= particles->spawnDelay*spawnCount;
 	}
 
