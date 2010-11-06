@@ -82,8 +82,6 @@ int main()
 	elfConfig* config;
 	elfScript* script;
 
-	elfInitGeneral();
-
 	if(!(config = elfReadConfig("config.txt")))
 		config = elfCreateConfig();
 

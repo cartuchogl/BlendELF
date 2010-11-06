@@ -47,8 +47,6 @@ ELF_API elfCamera* ELF_APIENTRY elfCreateCamera(const char* name)
 void elfUpdateCamera(elfCamera* camera)
 {
 	elfUpdateActor((elfActor*)camera);
-
-	//if(camera->mode == ELF_PERSPECTIVE) elfRecalcCamera(camera);
 }
 
 void elfCameraPreDraw(elfCamera* camera)
