@@ -9368,6 +9368,19 @@ static int lua_GetGuiObjectVisible(lua_State *L)
 	lua_pushboolean(L, result);
 	return 1;
 }
+static int lua_GetGuiObjectActive(lua_State *L)
+{
+	unsigned char result;
+	elfGuiObject* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetGuiObjectActive", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
+		{return lua_fail_arg(L, "GetGuiObjectActive", 1, "elfGuiObject");}
+	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetGuiObjectActive(arg0);
+	lua_pushboolean(L, result);
+	return 1;
+}
 static int lua_GetGuiObjectScript(lua_State *L)
 {
 	elfScript* result;
@@ -9447,6 +9460,20 @@ static int lua_SetGuiObjectVisible(lua_State *L)
 	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	arg1 = (unsigned char)lua_toboolean(L, 2);
 	elfSetGuiObjectVisible(arg0, arg1);
+	return 0;
+}
+static int lua_SetGuiObjectActive(lua_State *L)
+{
+	elfGuiObject* arg0;
+	unsigned char arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetGuiObjectActive", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
+		{return lua_fail_arg(L, "SetGuiObjectActive", 1, "elfGuiObject");}
+	if(!lua_isboolean(L, 2)) {return lua_fail_arg(L, "SetGuiObjectActive", 2, "boolean");}
+	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (unsigned char)lua_toboolean(L, 2);
+	elfSetGuiObjectActive(arg0, arg1);
 	return 0;
 }
 static int lua_SetGuiObjectScript(lua_State *L)
@@ -11526,11 +11553,13 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetGuiObjectSize", lua_GetGuiObjectSize},
 	{"GetGuiObjectColor", lua_GetGuiObjectColor},
 	{"GetGuiObjectVisible", lua_GetGuiObjectVisible},
+	{"GetGuiObjectActive", lua_GetGuiObjectActive},
 	{"GetGuiObjectScript", lua_GetGuiObjectScript},
 	{"GetGuiObjectEvent", lua_GetGuiObjectEvent},
 	{"SetGuiObjectPosition", lua_SetGuiObjectPosition},
 	{"SetGuiObjectColor", lua_SetGuiObjectColor},
 	{"SetGuiObjectVisible", lua_SetGuiObjectVisible},
+	{"SetGuiObjectActive", lua_SetGuiObjectActive},
 	{"SetGuiObjectScript", lua_SetGuiObjectScript},
 	{"CreateLabel", lua_CreateLabel},
 	{"GetLabelFont", lua_GetLabelFont},

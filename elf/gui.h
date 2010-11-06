@@ -36,6 +36,11 @@ ELF_API unsigned char ELF_APIENTRY elfGetGuiObjectVisible(elfGuiObject* object)
 	return object->visible;
 }
 
+ELF_API unsigned char ELF_APIENTRY elfGetGuiObjectActive(elfGuiObject* object)
+{
+	return object->active;
+}
+
 ELF_API elfScript* ELF_APIENTRY elfGetGuiObjectScript(elfGuiObject* object)
 {
 	return object->script;
@@ -64,6 +69,12 @@ ELF_API void ELF_APIENTRY elfSetGuiObjectColor(elfGuiObject* object, float r, fl
 ELF_API void ELF_APIENTRY elfSetGuiObjectVisible(elfGuiObject* object, unsigned char visible)
 {
 	object->visible = !visible == ELF_FALSE;
+}
+
+ELF_API void ELF_APIENTRY elfSetGuiObjectActive(elfGuiObject* object, unsigned char active)
+{
+	object->active = !active == ELF_FALSE;
+	if(object->objType == ELF_BUTTON) ((elfButton*)object)->state = ELF_OFF;
 }
 
 ELF_API void ELF_APIENTRY elfSetGuiObjectScript(elfGuiObject* object, elfScript* script)
@@ -173,6 +184,7 @@ ELF_API elfButton* ELF_APIENTRY elfCreateButton(elfGuiObject* parent, const char
 
 	button->color.r = button->color.g = button->color.b = button->color.a = 1.0f;
 	button->visible = ELF_TRUE;
+	button->active = ELF_TRUE;
 
 	if(name) button->name = elfCreateString(name);
 
@@ -236,7 +248,8 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams)
 		elfDrawHorGradientBorder(button->pos.x, button->pos.y, button->width, button->height, col1, col2);
 
 		shaderParams->renderParams.vertexColor = ELF_FALSE;
-		gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 0.6f);
+		if(button->active) gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 0.6f);
+		else gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.5f, 0.5f, 0.5f, 0.6f);
 		gfxSetShaderParams(shaderParams);
 
 		elfDrawString(button->font, button->text, button->pos.x+(button->width-elfGetStringWidth(button->font, button->text))/2,
@@ -465,6 +478,7 @@ ELF_API elfTextField* ELF_APIENTRY elfCreateTextField(elfGuiObject* parent, cons
 	textField->color.r = textField->color.g = textField->color.b = textField->color.a = 1.0f;
 	textField->textColor.r = textField->textColor.g = textField->textColor.b = 1.0f; textField->textColor.a = 0.6f;
 	textField->visible = ELF_TRUE;
+	textField->active = ELF_TRUE;
 	textField->text = elfCreateString("");
 
 	if(name) textField->name = elfCreateString(name);
@@ -735,6 +749,7 @@ ELF_API elfSlider* ELF_APIENTRY elfCreateSlider(elfGuiObject* parent, const char
 
 	slider->color.r = slider->color.g = slider->color.b = slider->color.a = 1.0f; 
 	slider->visible = ELF_TRUE;
+	slider->active = ELF_TRUE;
 	slider->value = 1.0f;
 
 	if(name) slider->name = elfCreateString(name);
@@ -1139,6 +1154,7 @@ ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(elfGuiObject* parent, const 
 
 	textList->color.r = textList->color.g = textList->color.b = textList->color.a = 1.0f;
 	textList->visible = ELF_TRUE;
+	textList->active = ELF_TRUE;
 	textList->rows = 16;
 	textList->listWidth = 256;
 	textList->selection = -1;
@@ -1426,6 +1442,7 @@ ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(elfGuiObject* parent, const 
 
 	checkBox->color.r = checkBox->color.g = checkBox->color.b = checkBox->color.a = 1.0f;
 	checkBox->visible = ELF_TRUE;
+	checkBox->active = ELF_TRUE;
 
 	if(name) checkBox->name = elfCreateString(name);
 
@@ -1656,6 +1673,7 @@ ELF_API elfGui* ELF_APIENTRY elfCreateGui()
 	gui->objDestr = elfDestroyGui;
 
 	gui->visible = ELF_TRUE;
+	gui->active = ELF_TRUE;
 
 	gui->children = elfCreateList();
 	gui->screens = elfCreateList();
@@ -1888,6 +1906,8 @@ void elfUpdateGui(elfGui* gui, float step)
 	elfTextList* textList;
 	int i;
 
+	if(!gui->visible || !gui->active) return;
+
 	if(gui->updateSize)
 	{
 		gui->width = elfGetWindowWidth();
@@ -1906,7 +1926,7 @@ void elfUpdateGui(elfGui* gui, float step)
 	prevTrace = gui->trace;
 	gui->trace = elfTraceTopObject((elfGuiObject*)gui, elfGetMouseButtonState(ELF_BUTTON_LEFT) == ELF_PRESSED);
 
-	if(gui->trace)
+	if(gui->trace && gui->trace->active)
 	{
 		if(gui->trace->objType == ELF_BUTTON)
 		{
@@ -1952,7 +1972,7 @@ void elfUpdateGui(elfGui* gui, float step)
 
 		gui->target = gui->trace;
 
-		if(gui->target)
+		if(gui->target && gui->target->active)
 		{
 			if(gui->target->objType == ELF_BUTTON)
 			{
@@ -2064,7 +2084,7 @@ void elfUpdateGui(elfGui* gui, float step)
 	}
 	else if(elfGetMouseButtonState(ELF_BUTTON_LEFT) == ELF_RELEASED)
 	{
-		if(gui->target)
+		if(gui->target && gui->target->active)
 		{
 			if(gui->target->objType == ELF_BUTTON)
 			{
@@ -2090,7 +2110,7 @@ void elfUpdateGui(elfGui* gui, float step)
 		}
 		gui->target = NULL;
 
-		if(gui->trace)
+		if(gui->trace && gui->trace->active)
 		{
 			if(gui->trace->objType == ELF_TEXT_FIELD)
 			{
@@ -2118,7 +2138,7 @@ void elfUpdateGui(elfGui* gui, float step)
 	}
 	else if(elfGetMouseButtonState(ELF_BUTTON_LEFT) == ELF_DOWN && moved)
 	{
-		if(gui->target)
+		if(gui->target && gui->target->active)
 		{
 			if(gui->target->objType == ELF_SLIDER)
 			{
@@ -2288,7 +2308,7 @@ void elfDrawGui(elfGui* gui)
 		elfSetOrtho(gui->pos.x, gui->pos.y, gui->width, gui->height, &gui->shaderParams);
 	}
 
-	if(gui->dragging && gui->trace && gui->trace->objType != ELF_TEXT_LIST)
+	if(gui->dragging && gui->trace && gui->trace->active && gui->trace->objType != ELF_TEXT_LIST)
 	{
 		elfVec2i mousePos = elfGetMousePosition();
 

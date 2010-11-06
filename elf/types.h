@@ -47,6 +47,7 @@
 	int width, height; \
 	elfColor color; \
 	unsigned char visible; \
+	unsigned char active; \
 	elfGui* root; \
 	elfGuiObject* parent; \
 	elfList* children; \

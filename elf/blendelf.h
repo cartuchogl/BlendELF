@@ -1835,12 +1835,14 @@ ELF_API elfVec2i ELF_APIENTRY elfGetGuiObjectPosition(elfGuiObject* object);
 ELF_API elfVec2i ELF_APIENTRY elfGetGuiObjectSize(elfGuiObject* object);
 ELF_API elfColor ELF_APIENTRY elfGetGuiObjectColor(elfGuiObject* object);
 ELF_API unsigned char ELF_APIENTRY elfGetGuiObjectVisible(elfGuiObject* object);
+ELF_API unsigned char ELF_APIENTRY elfGetGuiObjectActive(elfGuiObject* object);
 ELF_API elfScript* ELF_APIENTRY elfGetGuiObjectScript(elfGuiObject* object);
 ELF_API int ELF_APIENTRY elfGetGuiObjectEvent(elfGuiObject* object);
 
 ELF_API void ELF_APIENTRY elfSetGuiObjectPosition(elfGuiObject* object, float x, float y);
 ELF_API void ELF_APIENTRY elfSetGuiObjectColor(elfGuiObject* object, float r, float g, float b, float a);
 ELF_API void ELF_APIENTRY elfSetGuiObjectVisible(elfGuiObject* object, unsigned char visible);
+ELF_API void ELF_APIENTRY elfSetGuiObjectActive(elfGuiObject* object, unsigned char active);
 ELF_API void ELF_APIENTRY elfSetGuiObjectScript(elfGuiObject* object, elfScript* script);
 
 // <!!
