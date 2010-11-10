@@ -12,17 +12,18 @@ void elfLogWrite(const char* fmt, ...)
 	va_list args;
 	FILE* file;
 
-	va_start(args, fmt);
-
 	file = fopen(gen->log, "a");
 	if(file)
 	{
+		va_start(args, fmt);
 		vfprintf(file, fmt, args);
+		va_end(args);
+
 		fclose(file);
 	}
 
+	va_start(args, fmt);
 	vprintf(fmt, args);
-
 	va_end(args);
 }
 
@@ -32,12 +33,14 @@ void elfSetError(int code, const char* fmt, ...)
 	FILE* file;
 	int len = -1;
 
-	va_start(args, fmt);
-
 	file = fopen(gen->log, "a");
 	if(file)
 	{
+
+		va_start(args, fmt);
 		len = vfprintf(file, fmt, args);
+		va_end(args);
+
 		fclose(file);
 	}
 
@@ -45,15 +48,19 @@ void elfSetError(int code, const char* fmt, ...)
 	{
 		if(gen->errStr) elfDestroyString(gen->errStr);
 		gen->errStr = malloc(sizeof(char)*(len+1));
+
+		va_start(args, fmt);
 		vsprintf(gen->errStr, fmt, args);
+		va_end(args);
+
 		gen->errStr[len] = '\0';
 	}
 
+	va_start(args, fmt);
 	vprintf(fmt, args);
+	va_end(args);
 
 	gen->errCode = code;
-
-	va_end(args);
 }
 
 ELF_API void ELF_APIENTRY elfWriteLogLine(const char* str)
