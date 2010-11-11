@@ -134,10 +134,10 @@ ELF_API void ELF_APIENTRY elfSetCameraAspect(elfCamera* camera, float aspect)
 	elfRecalcCamera(camera);
 }
 
-ELF_API void ELF_APIENTRY elfSetCameraClip(elfCamera* camera, float near, float far)
+ELF_API void ELF_APIENTRY elfSetCameraClip(elfCamera* camera, float clipNear, float clipFar)
 {
-	camera->clipNear = near;
-	camera->clipFar = far;
+	camera->clipNear = clipNear;
+	camera->clipFar = clipFar;
 
 	elfRecalcCamera(camera);
 }

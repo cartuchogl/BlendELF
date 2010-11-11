@@ -1087,7 +1087,7 @@ ELF_API void ELF_APIENTRY elfSetCameraOrthoViewport(elfCamera* camera, int x, in
 ELF_API void ELF_APIENTRY elfSetCameraMode(elfCamera* camera, int mode);
 ELF_API void ELF_APIENTRY elfSetCameraFov(elfCamera* camera, float fov);
 ELF_API void ELF_APIENTRY elfSetCameraAspect(elfCamera* camera, float aspect);
-ELF_API void ELF_APIENTRY elfSetCameraClip(elfCamera* camera, float near, float far);
+ELF_API void ELF_APIENTRY elfSetCameraClip(elfCamera* camera, float clipNear, float clipFar);
 
 ELF_API elfVec2i ELF_APIENTRY elfGetCameraViewportSize(elfCamera* camera);
 ELF_API elfVec2i ELF_APIENTRY elfGetCameraViewportOffset(elfCamera* camera);
