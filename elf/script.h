@@ -17,7 +17,7 @@ ELF_API elfScript* ELF_APIENTRY elfCreateScript(const char* name)
 	return script;
 }
 
-ELF_API elfScript* ELF_APIENTRY elfCreateScriptFromFile(const char* filePath)
+ELF_API elfScript* ELF_APIENTRY elfCreateScriptFromFile(const char* name, const char* filePath)
 {
 	elfScript* script = NULL;
 	FILE* file;
@@ -40,9 +40,8 @@ ELF_API elfScript* ELF_APIENTRY elfCreateScriptFromFile(const char* filePath)
 		memset(text, 0x0, sizeof(char)*length+1);
 		fread(text, sizeof(char), length, file);
 
-		script = elfCreateScript(NULL);
+		script = elfCreateScript(name);
 
-		script->name = elfCreateString(filePath);
 		script->filePath = elfCreateString(filePath);
 
 		elfSetScriptText(script, text);

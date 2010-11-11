@@ -2417,10 +2417,13 @@ static int lua_CreateTextureFromFile(lua_State *L)
 {
 	elfTexture* result;
 	const char* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateTextureFromFile", lua_gettop(L), 1);}
+	const char* arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "CreateTextureFromFile", lua_gettop(L), 2);}
 	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateTextureFromFile", 1, "string");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateTextureFromFile", 2, "string");}
 	arg0 = lua_tostring(L, 1);
-	result = elfCreateTextureFromFile(arg0);
+	arg1 = lua_tostring(L, 2);
+	result = elfCreateTextureFromFile(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -2428,13 +2431,16 @@ static int lua_CreateTextureFromFile(lua_State *L)
 static int lua_CreateTextureFromImage(lua_State *L)
 {
 	elfTexture* result;
-	elfImage* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateTextureFromImage", lua_gettop(L), 1);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_IMAGE)
-		{return lua_fail_arg(L, "CreateTextureFromImage", 1, "elfImage");}
-	arg0 = (elfImage*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	result = elfCreateTextureFromImage(arg0);
+	const char* arg0;
+	elfImage* arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "CreateTextureFromImage", lua_gettop(L), 2);}
+	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateTextureFromImage", 1, "string");}
+	if(!lua_isuserdata(L, 2) || ((lua_elf_userdata*)lua_touserdata(L,2))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 2))->object) != ELF_IMAGE)
+		{return lua_fail_arg(L, "CreateTextureFromImage", 2, "elfImage");}
+	arg0 = lua_tostring(L, 1);
+	arg1 = (elfImage*)((lua_elfObject*)lua_touserdata(L, 2))->object;
+	result = elfCreateTextureFromImage(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -2448,20 +2454,23 @@ static int lua_CreateCubeMapFromFiles(lua_State *L)
 	const char* arg3;
 	const char* arg4;
 	const char* arg5;
-	if(lua_gettop(L) != 6) {return lua_fail_arg_count(L, "CreateCubeMapFromFiles", lua_gettop(L), 6);}
+	const char* arg6;
+	if(lua_gettop(L) != 7) {return lua_fail_arg_count(L, "CreateCubeMapFromFiles", lua_gettop(L), 7);}
 	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateCubeMapFromFiles", 1, "string");}
 	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateCubeMapFromFiles", 2, "string");}
 	if(!lua_isstring(L, 3)) {return lua_fail_arg(L, "CreateCubeMapFromFiles", 3, "string");}
 	if(!lua_isstring(L, 4)) {return lua_fail_arg(L, "CreateCubeMapFromFiles", 4, "string");}
 	if(!lua_isstring(L, 5)) {return lua_fail_arg(L, "CreateCubeMapFromFiles", 5, "string");}
 	if(!lua_isstring(L, 6)) {return lua_fail_arg(L, "CreateCubeMapFromFiles", 6, "string");}
+	if(!lua_isstring(L, 7)) {return lua_fail_arg(L, "CreateCubeMapFromFiles", 7, "string");}
 	arg0 = lua_tostring(L, 1);
 	arg1 = lua_tostring(L, 2);
 	arg2 = lua_tostring(L, 3);
 	arg3 = lua_tostring(L, 4);
 	arg4 = lua_tostring(L, 5);
 	arg5 = lua_tostring(L, 6);
-	result = elfCreateCubeMapFromFiles(arg0, arg1, arg2, arg3, arg4, arg5);
+	arg6 = lua_tostring(L, 7);
+	result = elfCreateCubeMapFromFiles(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -7487,10 +7496,13 @@ static int lua_CreateSceneFromFile(lua_State *L)
 {
 	elfScene* result;
 	const char* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateSceneFromFile", lua_gettop(L), 1);}
+	const char* arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "CreateSceneFromFile", lua_gettop(L), 2);}
 	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateSceneFromFile", 1, "string");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateSceneFromFile", 2, "string");}
 	arg0 = lua_tostring(L, 1);
-	result = elfCreateSceneFromFile(arg0);
+	arg1 = lua_tostring(L, 2);
+	result = elfCreateSceneFromFile(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -8750,10 +8762,13 @@ static int lua_CreateScriptFromFile(lua_State *L)
 {
 	elfScript* result;
 	const char* arg0;
-	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateScriptFromFile", lua_gettop(L), 1);}
+	const char* arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "CreateScriptFromFile", lua_gettop(L), 2);}
 	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateScriptFromFile", 1, "string");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateScriptFromFile", 2, "string");}
 	arg0 = lua_tostring(L, 1);
-	result = elfCreateScriptFromFile(arg0);
+	arg1 = lua_tostring(L, 2);
+	result = elfCreateScriptFromFile(arg0, arg1);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;

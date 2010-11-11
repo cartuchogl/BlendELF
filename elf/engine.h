@@ -303,6 +303,23 @@ ELF_API const char* ELF_APIENTRY elfGetVersion()
 	return "BlendELF 0.9 Beta 4";
 }
 
+char* elfGetFileFromPath(const char* filePath)
+{
+	int idx;
+
+	if(strlen(filePath) < 1) return elfCreateString("");
+
+	idx = elfRFindCharsFromString("/\\", filePath);
+	if(idx < 1 || idx == strlen(filePath)-1)
+	{
+		return elfCreateString("");
+	}
+	else
+	{
+		return elfSubString((char*)filePath, idx+1, strlen(filePath)-(idx+1));
+	}
+}
+
 char* elfGetDirectoryFromPath(const char* filePath)
 {
 	int idx;
@@ -354,7 +371,7 @@ ELF_API elfScene* ELF_APIENTRY elfLoadScene(const char* filePath)
 {
 	elfScene* scene;
 
-	scene = elfCreateSceneFromFile(filePath);
+	scene = elfCreateSceneFromFile("", filePath);
 	if(scene)
 	{
 		if(eng->scene) elfDecRef((elfObject*)eng->scene);

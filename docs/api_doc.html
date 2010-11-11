@@ -544,9 +544,9 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">int</span> GetImageBitsPerPixel( <span class="apiobjtype">elfImage</span> image )</div>
 <div class="apifunc"><span class="apikeytype">elfColor</span> GetImagePixel( <span class="apiobjtype">elfImage</span> image, <span class="apikeytype">int</span> x, <span class="apikeytype">int</span> y )</div>
 <div class="apitopic">TEXTURE FUNCTIONS</div>
-<div class="apifunc"><span class="apiobjtype">elfTexture</span> CreateTextureFromFile( <span class="apikeytype">string</span> filePath )</div>
-<div class="apifunc"><span class="apiobjtype">elfTexture</span> CreateTextureFromImage( <span class="apiobjtype">elfImage</span> image )</div>
-<div class="apifunc"><span class="apiobjtype">elfTexture</span> CreateCubeMapFromFiles( <span class="apikeytype">string</span> xpos, <span class="apikeytype">string</span> xneg, <span class="apikeytype">string</span> ypos, <span class="apikeytype">string</span> yneg, <span class="apikeytype">string</span> zpos, <span class="apikeytype">string</span> zneg )</div>
+<div class="apifunc"><span class="apiobjtype">elfTexture</span> CreateTextureFromFile( <span class="apikeytype">string</span> name, <span class="apikeytype">string</span> filePath )</div>
+<div class="apifunc"><span class="apiobjtype">elfTexture</span> CreateTextureFromImage( <span class="apikeytype">string</span> name, <span class="apiobjtype">elfImage</span> image )</div>
+<div class="apifunc"><span class="apiobjtype">elfTexture</span> CreateCubeMapFromFiles( <span class="apikeytype">string</span> name, <span class="apikeytype">string</span> xpos, <span class="apikeytype">string</span> xneg, <span class="apikeytype">string</span> ypos, <span class="apikeytype">string</span> yneg, <span class="apikeytype">string</span> zpos, <span class="apikeytype">string</span> zneg )</div>
 <div class="apifunc">SetTextureName( <span class="apiobjtype">elfTexture</span> texture, <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetTextureName( <span class="apiobjtype">elfTexture</span> texture )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetTextureFilePath( <span class="apiobjtype">elfTexture</span> texture )</div>
@@ -896,7 +896,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">string</span> GetSceneFilePath( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apitopic">SCENE FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">elfScene</span> CreateScene( <span class="apikeytype">string</span> name )</div>
-<div class="apifunc"><span class="apiobjtype">elfScene</span> CreateSceneFromFile( <span class="apikeytype">string</span> filePath )</div>
+<div class="apifunc"><span class="apiobjtype">elfScene</span> CreateSceneFromFile( <span class="apikeytype">string</span> name, <span class="apikeytype">string</span> filePath )</div>
 <div class="apifunc"><span class="apikeytype">boolean</span> SaveScene( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">string</span> filePath )</div>
 <div class="apifunc">SetScenePhysics( <span class="apiobjtype">elfScene</span> scene, <span class="apikeytype">unsigned char</span> physics )</div>
 <div class="apifunc"><span class="apikeytype">boolean</span> GetScenePhysics( <span class="apiobjtype">elfScene</span> scene )</div>
@@ -974,7 +974,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apiobjtype">elfList</span> GetSceneModels( <span class="apiobjtype">elfScene</span> scene )</div>
 <div class="apitopic">SCRIPT FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">elfScript</span> CreateScript( <span class="apikeytype">string</span> name )</div>
-<div class="apifunc"><span class="apiobjtype">elfScript</span> CreateScriptFromFile( <span class="apikeytype">string</span> filePath )</div>
+<div class="apifunc"><span class="apiobjtype">elfScript</span> CreateScriptFromFile( <span class="apikeytype">string</span> name, <span class="apikeytype">string</span> filePath )</div>
 <div class="apifunc">SetScriptName( <span class="apiobjtype">elfScript</span> script, <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetScriptName( <span class="apiobjtype">elfScript</span> script )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetScriptFilePath( <span class="apiobjtype">elfScript</span> script )</div>

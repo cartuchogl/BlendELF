@@ -77,7 +77,7 @@ ELF_API elfTexture* elfGetOrLoadResourcesTexture(const char* filePath, const cha
 	texture = elfGetResourcesTexture(filePath, name);
 	if(!texture)
 	{
-		texture = elfCreateTextureFromFile(filePath);
+		texture = elfCreateTextureFromFile(name, filePath);
 		if(texture) elfAppendListObject(res->textures, (elfObject*)texture);
 	}
 

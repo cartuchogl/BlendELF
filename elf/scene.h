@@ -95,6 +95,7 @@ void elfRecursivelyImportAssets(elfScene* scene, const struct aiScene* aiscn, st
 	struct aiString name;
 	char* parentFolder;
 	char* realPath;
+	char* texName;
 	unsigned char isTexCoords;
 
 	entity = elfCreateEntity(aind->mName.data);
@@ -218,7 +219,9 @@ void elfRecursivelyImportAssets(elfScene* scene, const struct aiScene* aiscn, st
 				if(strlen(path.data) > 1 && path.data[0] != '/' && path.data[1] != ':')
 					realPath = elfMergeStrings(parentFolder, path.data);
 				else realPath = elfCreateString(path.data);
-				texture = elfCreateTextureFromFile(realPath);
+				texName = elfGetFileFromPath(realPath);
+				texture = elfCreateTextureFromFile(texName, realPath);
+				elfDestroyString(texName);
 				if(texture) elfSetMaterialDiffuseMap(material, texture);
 			}
 
@@ -228,7 +231,9 @@ void elfRecursivelyImportAssets(elfScene* scene, const struct aiScene* aiscn, st
 				if(strlen(path.data) > 1 && path.data[0] != '/' && path.data[1] != ':')
 					realPath = elfMergeStrings(parentFolder, path.data);
 				else realPath = elfCreateString(path.data);
-				texture = elfCreateTextureFromFile(realPath);
+				texName = elfGetFileFromPath(realPath);
+				texture = elfCreateTextureFromFile(texName, realPath);
+				elfDestroyString(texName);
 				if(texture) elfSetMaterialSpecularMap(material, texture);
 			}
 
@@ -238,7 +243,9 @@ void elfRecursivelyImportAssets(elfScene* scene, const struct aiScene* aiscn, st
 				if(strlen(path.data) > 1 && path.data[0] != '/' && path.data[1] != ':')
 					realPath = elfMergeStrings(parentFolder, path.data);
 				else realPath = elfCreateString(path.data);
-				texture = elfCreateTextureFromFile(realPath);
+				texName = elfGetFileFromPath(realPath);
+				texture = elfCreateTextureFromFile(texName, realPath);
+				elfDestroyString(texName);
 				if(texture) elfSetMaterialNormalMap(material, texture);
 			}
 
@@ -248,7 +255,9 @@ void elfRecursivelyImportAssets(elfScene* scene, const struct aiScene* aiscn, st
 				if(strlen(path.data) > 1 && path.data[0] != '/' && path.data[1] != ':')
 					realPath = elfMergeStrings(parentFolder, path.data);
 				else realPath = elfCreateString(path.data);
-				texture = elfCreateTextureFromFile(realPath);
+				texName = elfGetFileFromPath(realPath);
+				texture = elfCreateTextureFromFile(texName, realPath);
+				elfDestroyString(texName);
 				if(texture) elfSetMaterialLightMap(material, texture);
 			}
 
@@ -258,7 +267,9 @@ void elfRecursivelyImportAssets(elfScene* scene, const struct aiScene* aiscn, st
 				if(strlen(path.data) > 1 && path.data[0] != '/' && path.data[1] != ':')
 					realPath = elfMergeStrings(parentFolder, path.data);
 				else realPath = elfCreateString(path.data);
-				texture = elfCreateTextureFromFile(realPath);
+				texName = elfGetFileFromPath(realPath);
+				texture = elfCreateTextureFromFile(texName, realPath);
+				elfDestroyString(texName);
 				if(texture) elfSetMaterialHeightMap(material, texture);
 			}
 
@@ -319,7 +330,7 @@ void elfRecursivelyImportAssets(elfScene* scene, const struct aiScene* aiscn, st
 	}
 }
 
-ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* filePath)
+ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* name, const char* filePath)
 {
 	elfPak* pak;
 	elfScene* scene;
@@ -337,7 +348,7 @@ ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* filePath)
 		pak = elfCreatePakFromFile(filePath);
 		if(!pak) return NULL;
 
-		scene = elfCreateSceneFromPak(pak);
+		scene = elfCreateSceneFromPak(name, pak);
 
 		return scene;
 	}
@@ -355,7 +366,7 @@ ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* filePath)
 			return NULL;
 		}
 
-		scene = elfCreateScene(filePath);
+		scene = elfCreateScene(name);
 		scene->filePath = elfCreateString(filePath);
 
 		elfRecursivelyImportAssets(scene, aiscn, aiscn->mRootNode);

@@ -15,7 +15,7 @@ elfTexture* elfCreateTexture()
 	return texture;
 }
 
-ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromFile(const char* filePath)
+ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromFile(const char* name, const char* filePath)
 {
 	elfImage* image;
 	elfTexture* texture;
@@ -49,7 +49,7 @@ ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromFile(const char* filePath)
 
 	texture = elfCreateTexture();
 
-	texture->name = elfCreateString(filePath);
+	texture->name = elfCreateString(name);
 	texture->filePath = elfCreateString(filePath);
 
 	texture->texture = gfxCreate2dTexture(elfGetImageWidth(image), elfGetImageHeight(image),
@@ -68,7 +68,7 @@ ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromFile(const char* filePath)
 	return texture;
 }
 
-ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromImage(elfImage* image)
+ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromImage(const char* name, elfImage* image)
 {
 	elfTexture* texture;
 	int format;
@@ -97,6 +97,7 @@ ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromImage(elfImage* image)
 
 	texture = elfCreateTexture();
 
+	texture->name = elfCreateString(name);
 	texture->texture = gfxCreate2dTexture(elfGetImageWidth(image), elfGetImageHeight(image),
 		eng->config->textureAnisotropy, GFX_REPEAT, GFX_LINEAR, format, internalFormat, GFX_UBYTE, elfGetImageData(image));
 
@@ -110,7 +111,7 @@ ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromImage(elfImage* image)
 	return texture;
 }
 
-ELF_API elfTexture* ELF_APIENTRY elfCreateCubeMapFromFiles(const char* xpos, const char* xneg, const char* ypos, const char* yneg, const char* zpos, const char* zneg)
+ELF_API elfTexture* ELF_APIENTRY elfCreateCubeMapFromFiles(const char* name, const char* xpos, const char* xneg, const char* ypos, const char* yneg, const char* zpos, const char* zneg)
 {
 	elfImage* xposi;
 	elfImage* xnegi;
@@ -209,7 +210,7 @@ ELF_API elfTexture* ELF_APIENTRY elfCreateCubeMapFromFiles(const char* xpos, con
 
 	texture = elfCreateTexture();
 
-	texture->name = elfCreateString(xpos);
+	texture->name = elfCreateString(name);
 	texture->filePath = elfCreateString(xpos);
 
 	texture->texture = gfxCreateCubeMap(elfGetImageWidth(xposi), elfGetImageHeight(xposi),

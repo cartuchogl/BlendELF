@@ -92,7 +92,7 @@ int main()
 		return -1;
 	}
 
-	script = elfCreateScriptFromFile("init.lua");
+	script = elfCreateScriptFromFile("Init", "init.lua");
 	if(script)
 	{
 		elfIncRef((elfObject*)script);

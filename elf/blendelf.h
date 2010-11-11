@@ -627,7 +627,8 @@ ELF_API int ELF_APIENTRY elfGetVersionMinor();
 ELF_API const char* ELF_APIENTRY elfGetVersionRelease();
 ELF_API const char* ELF_APIENTRY elfGetVersion();
 
-/* <!> */ char* elfGetDirectoryFromPath(const char* filePath);
+char* elfGetFileFromPath(const char* filePath);
+char* elfGetDirectoryFromPath(const char* filePath);
 ELF_API const char* ELF_APIENTRY elfGetCurrentDirectory();
 
 ELF_API const char* ELF_APIENTRY elfGetErrorString();
@@ -828,9 +829,9 @@ elfTexture* elfCreateTexture();
 void elfDestroyTexture(void* data);
 // !!>
 
-ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromFile(const char* filePath);	// <mdoc> TEXTURE FUNCTIONS
-ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromImage(elfImage* image);
-ELF_API elfTexture* ELF_APIENTRY elfCreateCubeMapFromFiles(const char* xpos, const char* xneg, const char* ypos, const char* yneg, const char* zpos, const char* zneg);
+ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromFile(const char* name, const char* filePath);	// <mdoc> TEXTURE FUNCTIONS
+ELF_API elfTexture* ELF_APIENTRY elfCreateTextureFromImage(const char* name, elfImage* image);
+ELF_API elfTexture* ELF_APIENTRY elfCreateCubeMapFromFiles(const char* name, const char* xpos, const char* xneg, const char* ypos, const char* yneg, const char* zpos, const char* zneg);
 
 ELF_API void ELF_APIENTRY elfSetTextureName(elfTexture* texture, const char* name);
 
@@ -1429,7 +1430,7 @@ ELF_API const char* ELF_APIENTRY elfGetSceneName(elfScene* scene);
 ELF_API const char* ELF_APIENTRY elfGetSceneFilePath(elfScene* scene);
 
 ELF_API elfScene* ELF_APIENTRY elfCreateScene(const char* name);	// <mdoc> SCENE FUNCTIONS
-ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* filePath);
+ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* name, const char* filePath);
 ELF_API unsigned char ELF_APIENTRY elfSaveScene(elfScene* scene, const char* filePath);
 
 ELF_API void ELF_APIENTRY elfSetScenePhysics(elfScene* scene, unsigned char physics);
@@ -1587,7 +1588,7 @@ elfSprite* elfCreateSpriteFromPak(FILE* file, const char* name, elfScene* scene)
 elfTexture* elfCreateTextureFromPak(FILE* file, const char* name, elfScene* scene);
 unsigned char elfLoadTextureDataFromPak(elfTexture* texture);
 
-elfScene* elfCreateSceneFromPak(elfPak* pak);
+elfScene* elfCreateSceneFromPak(const char* name, elfPak* pak);
 
 void elfWriteActorHeader(elfActor* actor, FILE* file);
 void elfWriteArmatureToFile(elfArmature* armature, FILE* file);
@@ -1644,7 +1645,7 @@ void elfDestroyScript(void* data);
 // !!>
 
 ELF_API elfScript* ELF_APIENTRY elfCreateScript(const char* name);	// <mdoc> SCRIPT FUNCTIONS
-ELF_API elfScript* ELF_APIENTRY elfCreateScriptFromFile(const char* filePath);
+ELF_API elfScript* ELF_APIENTRY elfCreateScriptFromFile(const char* name, const char* filePath);
 
 ELF_API void ELF_APIENTRY elfSetScriptName(elfScript* script, const char* name);
 

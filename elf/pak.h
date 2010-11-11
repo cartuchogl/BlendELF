@@ -1365,7 +1365,7 @@ elfTexture* elfCreateTextureFromPak(FILE* file, const char* name, elfScene* scen
 	return texture;
 }
 
-elfScene* elfCreateSceneFromPak(elfPak* pak)
+elfScene* elfCreateSceneFromPak(const char* name, elfPak* pak)
 {
 	elfScene* scene;
 	elfCamera* camera;
@@ -1376,13 +1376,13 @@ elfScene* elfCreateSceneFromPak(elfPak* pak)
 	elfPakIndex* index;
 	FILE* file;
 	int magic;
-	char name[ELF_NAME_LENGTH];
+	char rname[ELF_NAME_LENGTH];
 	float ambientColor[4];
 	unsigned char sceneRead;
 
 	scene = elfCreateScene(NULL);
 
-	scene->name = elfCreateString(elfGetPakFilePath(pak));
+	scene->name = elfCreateString(name);
 	scene->filePath = elfCreateString(elfGetPakFilePath(pak));
 
 	scene->pak = pak;
@@ -1412,9 +1412,12 @@ elfScene* elfCreateSceneFromPak(elfPak* pak)
 					continue;
 				}
 
-				fread(name, sizeof(char), ELF_NAME_LENGTH, file);
-				if(scene->name) elfDestroyString(scene->name);
-				scene->name = elfCreateString(name);
+				fread(rname, sizeof(char), ELF_NAME_LENGTH, file);
+				if(!name || strlen(name) < 1)
+				{
+					if(scene->name) elfDestroyString(scene->name);
+					scene->name = elfCreateString(rname);
+				}
 
 				fread((char*)ambientColor, sizeof(float), 4, file);
 
