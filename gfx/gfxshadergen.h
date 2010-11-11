@@ -450,6 +450,7 @@ gfxShaderProgram* gfxGetShaderProgram(gfxShaderConfig* config)
 
 	// --------------------- VERTEX SHADER --------------------- //
 
+	gfxAddDocumentLine(document, "#version 120");
 	gfxAddVertexAttributes(document, config);
 	gfxAddVertexUniforms(document, config);
 	gfxAddVertexVaryings(document, config);
@@ -468,6 +469,7 @@ gfxShaderProgram* gfxGetShaderProgram(gfxShaderConfig* config)
 
 	// --------------------- FRAGMENT SHADER --------------------- //
 
+	gfxAddDocumentLine(document, "#version 120");
 	gfxAddFragmentTextureUniforms(document, config);
 	gfxAddFragmentFogUniforms(document, config);
 	gfxAddFragmentMaterialUniforms(document, config);
