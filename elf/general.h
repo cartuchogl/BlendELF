@@ -17,8 +17,6 @@ void elfDeinitGeneral()
 {
 	if(!gen) return;
 
-	if(gen->errStr) free(gen->errStr);
-
 	if(gen->refCount > 0)
 	{
 		elfLogWrite("error: possible memory leak in ELF, [%d] references not dereferenced\n",
@@ -36,17 +34,18 @@ void elfDeinitGeneral()
 	if(gen->objCount > 0)
 	{
 		elfLogWrite("error: possible memory leak in ELF, [%d] objects not destroyed\n",
-			elfGetGlobalObjCount()-1);
+			elfGetGlobalObjCount());
 		elfDumpObjTable();
 	}
 
 	if(gen->objCount < 0)
 	{
 		elfLogWrite("error: possible double free in ELF, [%d] negative object count\n",
-			elfGetGlobalObjCount()-1);
+			elfGetGlobalObjCount());
 		elfDumpObjTable();
 	}
 
+	if(gen->errStr) free(gen->errStr);
 	if(gen->log) free(gen->log);
 
 	free(gen);

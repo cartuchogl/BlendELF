@@ -46,7 +46,7 @@ void elfSetError(int code, const char* fmt, ...)
 
 	if(len > 0)
 	{
-		if(gen->errStr) elfDestroyString(gen->errStr);
+		if(gen->errStr) free(gen->errStr);
 		gen->errStr = malloc(sizeof(char)*(len+1));
 
 		va_start(args, fmt);
