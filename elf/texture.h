@@ -213,10 +213,11 @@ ELF_API elfTexture* ELF_APIENTRY elfCreateCubeMapFromFiles(const char* name, con
 	texture->name = elfCreateString(name);
 	texture->filePath = elfCreateString(xpos);
 
+	// z negative first and then z positive... lol didn't bother to figure out why it works like this
 	texture->texture = gfxCreateCubeMap(elfGetImageWidth(xposi), elfGetImageHeight(xposi),
 		eng->config->textureAnisotropy, GFX_REPEAT, GFX_LINEAR, format, internalFormat, GFX_UBYTE,
 		elfGetImageData(xposi), elfGetImageData(xnegi), elfGetImageData(yposi),
-		elfGetImageData(ynegi), elfGetImageData(zposi), elfGetImageData(znegi));
+		elfGetImageData(ynegi), elfGetImageData(znegi), elfGetImageData(zposi));
 
 	if(!texture->texture)
 	{

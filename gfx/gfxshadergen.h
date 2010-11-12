@@ -171,7 +171,7 @@ void gfxAddVertexUniforms(gfxDocument* document, gfxShaderConfig* config)
 {
 	gfxAddDocumentLine(document, "uniform mat4 elf_ProjectionMatrix;");
 	gfxAddDocumentLine(document, "uniform mat4 elf_ModelviewMatrix;");
-	if(config->light || config->textures & GFX_HEIGHT_MAP)
+	if(config->light || config->textures & GFX_HEIGHT_MAP || config->textures & GFX_CUBE_MAP)
 		gfxAddDocumentLine(document, "uniform mat3 elf_NormalMatrix;");
 	if(config->light) gfxAddDocumentLine(document, "uniform vec3 elf_LightPosition;");
 	if(config->light == GFX_SPOT_LIGHT || config->light == GFX_SUN_LIGHT) gfxAddDocumentLine(document, "uniform vec3 elf_LightSpotDirection;");
@@ -244,7 +244,7 @@ void gfxAddVertexLightingCalcs(gfxDocument* document, gfxShaderConfig* config)
 		{
 			gfxAddDocumentLine(document, "\tvec3 elf_Normal = elf_NormalMatrix*elf_NormalAttr;");
 		}
-		gfxAddDocumentLine(document, "\telf_CubeMapCoord = reflect(normalize(elf_CameraPosition-vertex.xyz), elf_Normal);");
+		gfxAddDocumentLine(document, "\telf_CubeMapCoord = reflect(-vertex.xyz, elf_Normal);");
 	}
 	if(config->light && config->light != GFX_SUN_LIGHT) gfxAddDocumentLine(document, "\telf_Distance = length(elf_LightDirection);");
 }
