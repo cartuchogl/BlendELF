@@ -359,38 +359,6 @@ ELF_API void ELF_APIENTRY elfSetActorRotationRelativeTo(elfActor* actor, elfActo
 	if(actor->objType == ELF_LIGHT) elfSetActorRotationRelativeTo((elfActor*)((elfLight*)actor)->shadowCamera, to, x, y, z);
 }
 
-void elfDirectActorAt(elfActor* actor, elfActor* at)
-{
-	elfVec3f dir;
-	elfVec3f pos1;
-	elfVec3f pos2;
-
-	elfGetActorPosition_(actor, &pos1.x);
-	elfGetActorPosition_(at, &pos2.x);
-
-	dir.x = pos2.x-pos1.x;
-	dir.y = pos2.y-pos1.y;
-	dir.z = pos2.z-pos1.z;
-
-	elfSetActorDirection(actor, dir.x, dir.y, dir.z);
-}
-
-void elfSetActorDirection(elfActor* actor, float x, float y, float z)
-{
-	elfVec4f orient;
-	elfVec3f dir;
-
-	dir.x = x;
-	dir.y = y;
-	dir.z = z;
-
-	gfxVecNormalize(&dir.x);
-
-	gfxQuaFromDirection(&dir.x, &orient.x);
-
-	elfSetActorOrientation(actor, orient.x, orient.y, orient.z, orient.w);
-}
-
 ELF_API void ELF_APIENTRY elfSetActorOrientationRelativeTo(elfActor* actor, elfActor* to, float x, float y, float z, float w)
 {
 	elfVec4f lorient;

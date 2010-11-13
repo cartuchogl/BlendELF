@@ -61,27 +61,6 @@ void gfxQuaGetInverse(float* qua, float* invqua)
 	invqua[3] = qua[3]*length;
 }
 
-void gfxQuaFromDirection(float* dir, float* qua)
-{
-	float up[3] = {0.0f, 0.0f, -1.0f};
-	float right[3];
-	float scale;
-	float tempQua[4];
-
-	gfxVecCrossProduct(up, dir, right);
-	gfxVecCrossProduct(dir, right, up);
-
-	tempQua[3] = (float)sqrt(1.0f + right[0]+up[1]+dir[2]) / 2.0f;
-	scale = tempQua[3]*4.0f;
-	tempQua[0] = (dir[1]-up[2])/scale;
-	tempQua[1] = (right[2]-dir[0])/scale;
-	tempQua[2] = (up[0]-right[1])/scale;
-
-	gfxQuaNormalize(tempQua, qua);
-	gfxQuaGetInverse(qua, tempQua);
-	memcpy(qua, tempQua, sizeof(float)*4);
-}
-
 void gfxQuaFromAngleAxis(float angle, float* axis, float* qua)
 {
 	float sinA;
@@ -160,6 +139,23 @@ void gfxQuaToEuler(float* qua, float* euler)
 	euler[0] *= GFX_180_DIV_PI;
 	euler[1] *= GFX_180_DIV_PI;
 	euler[2] *= GFX_180_DIV_PI;
+}
+
+void gfxQuaLookAt(float* dir, float* up, float* qua)
+{
+	float mat[9];
+
+	mat[6] = dir[0]; mat[7] = dir[1]; mat[8] = dir[2];
+
+	gfxVecNormalize(&mat[6]);
+
+	gfxVecCrossProduct(up, &mat[6], &mat[0]);
+
+	gfxVecNormalize(&mat[0]);
+
+	gfxVecCrossProduct(&mat[6], &mat[0], &mat[3]);
+
+	gfxMatrix3ToQua(mat, qua);
 }
 
 void gfxRotateQua(float x, float y, float z, float* qua)

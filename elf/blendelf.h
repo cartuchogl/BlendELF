@@ -980,8 +980,6 @@ ELF_API void ELF_APIENTRY elfMoveActorLocal(elfActor* actor, float x, float y, f
 ELF_API void ELF_APIENTRY elfSetActorPositionRelativeTo(elfActor* actor, elfActor* to, float x, float y, float z);
 ELF_API void ELF_APIENTRY elfSetActorRotationRelativeTo(elfActor* actor, elfActor* to, float x, float y, float z);
 ELF_API void ELF_APIENTRY elfSetActorOrientationRelativeTo(elfActor* actor, elfActor* to, float x, float y, float z, float w);
-/* <!> */ void elfDirectActorAt(elfActor* actor, elfActor* at);
-/* <!> */ void elfSetActorDirection(elfActor* actor, float x, float y, float z);
 ELF_API elfVec3f ELF_APIENTRY elfGetActorPosition(elfActor* actor);
 ELF_API elfVec3f ELF_APIENTRY elfGetActorRotation(elfActor* actor);
 ELF_API elfVec4f ELF_APIENTRY elfGetActorOrientation(elfActor* actor);
