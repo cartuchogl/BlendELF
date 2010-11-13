@@ -273,7 +273,6 @@ void gfxQuaFromAngleAxis(float angle, float* axis, float* qua);
 void gfxQuaFromEuler(float x, float y, float z, float* qua);
 void gfxQuaToMatrix4(float* qua, float* mat);
 void gfxQuaToEuler(float* qua, float* euler);
-void gfxQuaLookAt(float* dir, float* up, float* qua);
 void gfxRotateQua(float x, float y, float z, float* qua);
 void gfxRotateQuaLocal(float x, float y, float z, float* qua);
 void gfxMulQuaVec(float* qua, float* vec1, float* vec2);

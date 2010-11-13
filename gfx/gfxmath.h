@@ -141,23 +141,6 @@ void gfxQuaToEuler(float* qua, float* euler)
 	euler[2] *= GFX_180_DIV_PI;
 }
 
-void gfxQuaLookAt(float* dir, float* up, float* qua)
-{
-	float mat[9];
-
-	mat[6] = dir[0]; mat[7] = dir[1]; mat[8] = dir[2];
-
-	gfxVecNormalize(&mat[6]);
-
-	gfxVecCrossProduct(up, &mat[6], &mat[0]);
-
-	gfxVecNormalize(&mat[0]);
-
-	gfxVecCrossProduct(&mat[6], &mat[0], &mat[3]);
-
-	gfxMatrix3ToQua(mat, qua);
-}
-
 void gfxRotateQua(float x, float y, float z, float* qua)
 {
 	float axisAngleQua[4];
