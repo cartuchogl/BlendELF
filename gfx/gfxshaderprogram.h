@@ -91,7 +91,7 @@ gfxShaderProgram* gfxCreateShaderProgram(const char* vertex, const char* fragmen
 	if(vertex) glDeleteShader(myVertexShader);
 	if(fragment) glDeleteShader(myFragmentShader);
 
-	glGetProgramiv(shaderProgram->id, GL_VALIDATE_STATUS, &success);
+	glGetProgramiv(shaderProgram->id, GL_LINK_STATUS, &success);
 
 	if(!success)
 	{
@@ -101,7 +101,13 @@ gfxShaderProgram* gfxCreateShaderProgram(const char* vertex, const char* fragmen
 		memset(infoLog, '\0', sizeof(char)*(infoLogLength+1));
 
 		glGetProgramInfoLog(shaderProgram->id, infoLogLength, 0, infoLog);
-		elfLogWrite("warning: shader validation log message:\n%s", infoLog);
+		elfLogWrite("error: could not link shader, log message:\n%s", infoLog);
+
+		gfxDestroyShaderProgram(shaderProgram);
+
+		free(infoLog);
+
+		return NULL;
 	}
 
 	shaderProgram->projectionMatrixLoc = glGetUniformLocation(shaderProgram->id, "elf_ProjectionMatrix");

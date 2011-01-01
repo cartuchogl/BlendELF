@@ -627,8 +627,8 @@ ELF_API int ELF_APIENTRY elfGetVersionMinor();
 ELF_API const char* ELF_APIENTRY elfGetVersionRelease();
 ELF_API const char* ELF_APIENTRY elfGetVersion();
 
-char* elfGetFileFromPath(const char* filePath);
-char* elfGetDirectoryFromPath(const char* filePath);
+ELF_API char* ELF_APIENTRY elfGetFileFromPath(const char* filePath);
+ELF_API char* ELF_APIENTRY elfGetDirectoryFromPath(const char* filePath);
 ELF_API const char* ELF_APIENTRY elfGetCurrentDirectory();
 
 ELF_API const char* ELF_APIENTRY elfGetErrorString();
