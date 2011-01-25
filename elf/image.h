@@ -79,7 +79,7 @@ ELF_API elfImage* ELF_APIENTRY elfCreateImageFromFile(const char* filePath)
 	{
 		elfSetError(ELF_INVALID_SIZE, "error: \"%s\" has invalid size\n", filePath);
 		FreeImage_Unload(in);
-		free(image);
+		elfDestroyImage(image);
 		return 0;
 	}
 
