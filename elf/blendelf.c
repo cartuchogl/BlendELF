@@ -27,9 +27,11 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#ifndef NO_ASSIMP
 #include <assimp/assimp.h>
 #include <assimp/aiPostProcess.h>
 #include <assimp/aiScene.h>
+#endif
 
 #include "gfx.h"
 #include "blendelf.h"

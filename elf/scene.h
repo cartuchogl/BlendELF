@@ -72,6 +72,7 @@ ELF_API elfScene* ELF_APIENTRY elfCreateScene(const char* name)
 	return scene;
 }
 
+#ifndef NO_ASSIMP
 void elfRecursivelyImportAssets(elfScene* scene, const struct aiScene* aiscn, struct aiNode* aind)
 {
 	int i, j, k;
@@ -329,6 +330,7 @@ void elfRecursivelyImportAssets(elfScene* scene, const struct aiScene* aiscn, st
 		elfRecursivelyImportAssets(scene, aiscn, aind->mChildren[i]);
 	}
 }
+#endif
 
 ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* name, const char* filePath)
 {
@@ -352,6 +354,7 @@ ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* name, const ch
 
 		return scene;
 	}
+	#ifndef NO_ASSIMP
 	else if(aiIsExtensionSupported(type))
 	{
 		const struct aiScene* aiscn;
@@ -375,6 +378,7 @@ ELF_API elfScene* ELF_APIENTRY elfCreateSceneFromFile(const char* name, const ch
 
 		return scene;
 	}
+	#endif
 	else
 	{
 		elfSetError(ELF_INVALID_FILE, "error: can't open \"%s\", unsupported format\n", filePath);
