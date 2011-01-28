@@ -1,17 +1,24 @@
 # Makefile for osx
 
-BULLET_PATH=../bullet-2.76.mac/src
+BULLET_PATH=../../Compile/bullet-2.76.mac/src
 GLFW_PATH=../glfw/trunk
 
-DEV_CFLAGS = -g -Wall -DELF_PLAYER -DELF_MACOSX
-REL_CFLAGS = -Wall -O2 -DELF_PLAYER -DELF_MACOSX
+DEV_CFLAGS = -g -Wall -DELF_PLAYER -DELF_MACOSX -DNO_ASSIMP \
+	-force_cpusubtype_ALL -mmacosx-version-min=10.4 -arch i386 -arch x86_64
 
 INCS = -Iphy -Igfx -Ielf -I/usr/include/lua5.1 -I/usr/include/freetype2 -I$(BULLET_PATH) \
 	-I$(GLFW_PATH)/include -I/opt/local/include/ -I/opt/local/include/freetype2 -framework OpenAL \
 	-I/usr/include/malloc
 
-BLENDELF_LIBS = -L/opt/local/lib $(GLFW_PATH)/lib/cocoa/libglfw.a -lGLEW -pthread \
-	-lfreeimage -lvorbisfile -lvorbis -logg -llua -lfreetype -lz -lassimp \
+BLENDELF_LIBS = -L/opt/local/lib $(GLFW_PATH)/lib/cocoa/libglfw.a -pthread \
+	/opt/local/lib/libfreeimage.a \
+	/opt/local/lib/libogg.a \
+	/opt/local/lib/libvorbis.a \
+	/opt/local/lib/libvorbisfile.a \
+	/opt/local/lib/libfreetype.a \
+	/opt/local/lib/libz.a \
+	/opt/local/lib/liblua.a \
+	/opt/local/lib/libGLEW.a \
 	-framework OpenGL -framework OpenAL -lstdc++ -framework Cocoa \
 	$(BULLET_PATH)/BulletDynamics/Release/libBulletDynamics.a \
 	$(BULLET_PATH)/LinearMath/Release/libLinearMath.a \
@@ -26,5 +33,6 @@ all:
 	g++ -c elf/physics.cpp $(DEV_CFLAGS) $(INCS)
 	gcc -c elf/binds.c $(DEV_CFLAGS) $(INCS)
 	gcc -Wl -o blendelf *.o $(DEV_CFLAGS) $(BLENDELF_LIBS)
+	/bin/sh bundle.sh BlendElf
+	gcc -Wl -o BlendElf.app/Contents/MacOS/BlendElf *.o $(DEV_CFLAGS) $(BLENDELF_LIBS)
 	rm *.o
-

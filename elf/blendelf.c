@@ -83,6 +83,11 @@ int main()
 {
 	elfConfig* config;
 	elfScript* script;
+	
+	// On bundle OSX need init glfw first for path are correct
+	#ifdef ELF_MACOSX
+		glfwInit();
+	#endif
 
 	if(!(config = elfReadConfig("config.txt")))
 		config = elfCreateConfig();

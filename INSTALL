@@ -70,11 +70,15 @@ Extract and generate XCode project with:
 
 cmake . -G Xcode
 
-Then build it using XCode a release version.
+Then build it using XCode a release version but first disable "Build Active Architecture Only"
+option on right click on proyect -> Get Info.
 
-For GLFW, check out the glfw svn:
+For GLFW, download version greater than 2.7 from:
 
-svn co https://glfw.svn.sourceforge.net/svnroot/glfw glfw
+http://www.glfw.org/download.html
+
+Add to lib->cocoa->Makefile.cocoa on CFLAGS var this options
+-force_cpusubtype_ALL -mmacosx-version-min=10.5 -arch i386 -arch x86_64
 
 Compile with:
 
@@ -83,12 +87,14 @@ make cocoa
 Install the other dependencies with macports or following
 the install instructions of the individual libraries.
 
-sudo port install lua
-sudo port install libvorbis
-sudo port install glew
-sudo port install freeimage
-sudo port install freetype
-sudo port install libenet
+sudo port install lua +universal
+sudo port install libvorbis +universal
+sudo port install glew +universal
+sudo port install freeimage +universal
+sudo port install freetype +universal
+
+On current macosx the support of assimp is removed because not static linking support for that.
+Continue on ---->>>>
 
 Now compile assimp, but first install boost
 
@@ -105,10 +111,16 @@ and add -I/opt/local/include at C_FLAGS and CXX_FLAGS vars, then re-run make
 
 Install it with sudo make install and only rest blendelf ...
 
+---->>>>
+
 Review Makefile.osx for path of bullet and glfw
 Compile the BlendELF code with:
 
 make -f Makefile.osx
+
+Now you have a blendelf executable and a bundle app universal (i386/x86_64) on BlendElf.app
+if you copy your files on BlendElf.app/Contents/Resources (init.lua,config.txt,deffont.tff,etc...)
+You can run you app with double click on bundle.
 
 Tested on Snow Leopard (10.6 x64) with a 9400M and Leopard (10.5 x32) with 8800GS
 

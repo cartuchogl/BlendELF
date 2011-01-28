@@ -137,7 +137,9 @@ unsigned char elfInitContext(int width, int height,
 	ctx->fullscreen = (fullscreen == ELF_FALSE) ? ELF_FALSE : ELF_TRUE;
 	ctx->title = elfCreateString(title);
 
+	#ifndef ELF_MACOSX
 	glfwInit();
+	#endif
 
 	glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE, GL_TRUE);
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, multisamples);
