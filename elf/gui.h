@@ -84,7 +84,7 @@ ELF_API void ELF_APIENTRY elfSetGuiObjectScript(elfGuiObject* object, elfScript*
 	if(object->script) elfIncRef((elfObject*)object->script);
 }
 
-ELF_API elfLabel* ELF_APIENTRY elfCreateLabel(elfGuiObject* parent, const char *name, int x, int y, const char *text)
+ELF_API elfLabel* ELF_APIENTRY elfCreateLabel(const char* name)
 {
 	elfLabel* label;
 
@@ -97,11 +97,6 @@ ELF_API elfLabel* ELF_APIENTRY elfCreateLabel(elfGuiObject* parent, const char *
 	label->visible = ELF_TRUE;
 
 	if(name) label->name = elfCreateString(name);
-
-	elfSetGuiObjectPosition((elfGuiObject*)label, x, y);
-	elfSetLabelFont(label, eng->guiFont);
-	elfSetLabelText(label, text);
-	elfAddGuiObject(parent, (elfGuiObject*)label);
 
 	elfIncObj(ELF_LABEL);
 
@@ -173,7 +168,7 @@ ELF_API void ELF_APIENTRY elfSetLabelText(elfLabel* label, const char* text)
 	elfRecalcGuiObject((elfGuiObject*)label);
 }
 
-ELF_API elfButton* ELF_APIENTRY elfCreateButton(elfGuiObject* parent, const char* name, int x, int y, int width, int height, const char* text)
+ELF_API elfButton* ELF_APIENTRY elfCreateButton(const char* name)
 {
 	elfButton* button;
 
@@ -182,18 +177,16 @@ ELF_API elfButton* ELF_APIENTRY elfCreateButton(elfGuiObject* parent, const char
 	button->objType = ELF_BUTTON;
 	button->objDestr = elfDestroyButton;
 
-	button->color.r = button->color.g = button->color.b = button->color.a = 1.0f;
+	button->color.r = button->color.g = button->color.b = button->color.a = 1.0;
 	button->visible = ELF_TRUE;
-	button->active = ELF_TRUE;
 
 	if(name) button->name = elfCreateString(name);
-
-	elfSetGuiObjectPosition((elfGuiObject*)button, x, y);
-	elfSetButtonFont(button, eng->guiFont);
-	button->width = width;
-	button->height = height;
-	elfSetButtonText(button, text);
-	elfAddGuiObject(parent, (elfGuiObject*)button);
+	
+	// TODO: add method size
+	int sizeX=10; 
+	int sizeY=10;
+	button->width = sizeX;
+	button->height = sizeY;
 
 	elfIncObj(ELF_BUTTON);
 
@@ -376,7 +369,7 @@ ELF_API void ELF_APIENTRY elfSetButtonOnTexture(elfButton* button, elfTexture* o
 	if(button->on) elfIncRef((elfObject*)button->on);
 }
 
-ELF_API elfPicture* ELF_APIENTRY elfCreatePicture(elfGuiObject* parent, const char* name, int x, int y, const char *path)
+ELF_API elfPicture* ELF_APIENTRY elfCreatePicture(const char* name)
 {
 	elfPicture* picture;
 	elfTexture* texture;
@@ -391,11 +384,6 @@ ELF_API elfPicture* ELF_APIENTRY elfCreatePicture(elfGuiObject* parent, const ch
 	picture->visible = ELF_TRUE;
 
 	if(name) picture->name = elfCreateString(name);
-
-	elfSetGuiObjectPosition((elfGuiObject*)picture, x, y);
-	texture = elfGetOrLoadResourcesTexture(path, NULL);
-	if(texture) elfSetPictureTexture(picture, texture);
-	elfAddGuiObject(parent, (elfGuiObject*)picture);
 
 	elfIncObj(ELF_PICTURE);
 
@@ -466,7 +454,7 @@ ELF_API void ELF_APIENTRY elfSetPictureScale(elfPicture* picture, float x, float
 	elfRecalcGuiObject((elfGuiObject*)picture);
 }
 
-ELF_API elfTextField* ELF_APIENTRY elfCreateTextField(elfGuiObject* parent, const char* name, int x, int y, int width, const char* text)
+ELF_API elfTextField* ELF_APIENTRY elfCreateTextField(const char* name)
 {
 	elfTextField* textField;
 
@@ -478,17 +466,9 @@ ELF_API elfTextField* ELF_APIENTRY elfCreateTextField(elfGuiObject* parent, cons
 	textField->color.r = textField->color.g = textField->color.b = textField->color.a = 1.0f;
 	textField->textColor.r = textField->textColor.g = textField->textColor.b = 1.0f; textField->textColor.a = 0.6f;
 	textField->visible = ELF_TRUE;
-	textField->active = ELF_TRUE;
 	textField->text = elfCreateString("");
 
 	if(name) textField->name = elfCreateString(name);
-
-	elfSetGuiObjectPosition((elfGuiObject*)textField, x, y);
-	elfSetTextFieldFont(textField, eng->guiFont);
-	elfSetTextFieldWidth(textField, width);
-	elfSetTextFieldOffset(textField, 2, 2);
-	elfSetTextFieldText(textField, text);	
-	elfAddGuiObject(parent, (elfGuiObject*)textField);
 
 	elfIncObj(ELF_TEXT_FIELD);
 
@@ -738,7 +718,7 @@ ELF_API void ELF_APIENTRY elfSetTextFieldText(elfTextField* textField, const cha
 		elfMoveTextFieldCursorRight(textField);
 }
 
-ELF_API elfSlider* ELF_APIENTRY elfCreateSlider(elfGuiObject* parent, const char* name, int x, int y, int width, int height, float value)
+ELF_API elfSlider* ELF_APIENTRY elfCreateSlider(const char* name)
 {
 	elfSlider* slider;
 
@@ -749,15 +729,9 @@ ELF_API elfSlider* ELF_APIENTRY elfCreateSlider(elfGuiObject* parent, const char
 
 	slider->color.r = slider->color.g = slider->color.b = slider->color.a = 1.0f; 
 	slider->visible = ELF_TRUE;
-	slider->active = ELF_TRUE;
 	slider->value = 1.0f;
 
 	if(name) slider->name = elfCreateString(name);
-
-	elfSetGuiObjectPosition((elfGuiObject*)slider, x, y);
-	elfSetSliderSize(slider, width, height);
-	elfSetSliderValue(slider, value);
-	elfAddGuiObject(parent, (elfGuiObject*)slider);
 
 	elfIncObj(ELF_SLIDER);
 
@@ -919,7 +893,7 @@ ELF_API void ELF_APIENTRY elfSetSliderValue(elfSlider* slider, float value)
 	if(slider->value > 1.0f) slider->value = 1.0f;
 }
 
-ELF_API elfScreen* ELF_APIENTRY elfCreateScreen(elfGuiObject* parent, const char* name, int x, int y, int width, int height)
+ELF_API elfScreen* ELF_APIENTRY elfCreateScreen(const char* name)
 {
 	elfScreen* screen;
 
@@ -938,10 +912,6 @@ ELF_API elfScreen* ELF_APIENTRY elfCreateScreen(elfGuiObject* parent, const char
 	elfIncRef((elfObject*)screen->screens);
 
 	if(name) screen->name = elfCreateString(name);
-
-	elfSetGuiObjectPosition((elfGuiObject*)screen, x, y);
-	elfSetScreenSize(screen, width, height);
-	elfAddGuiObject(parent, (elfGuiObject*)screen);
 
 	elfIncObj(ELF_SCREEN);
 
@@ -1143,7 +1113,7 @@ ELF_API void ELF_APIENTRY elfReleaseScreenFocus(elfScreen* screen)
 	screen->root->focusScreen = NULL;
 }
 
-ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(elfGuiObject* parent, const char* name, int x, int y, int rows, int width)
+ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(const char* name)
 {
 	elfTextList* textList;
 
@@ -1154,7 +1124,6 @@ ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(elfGuiObject* parent, const 
 
 	textList->color.r = textList->color.g = textList->color.b = textList->color.a = 1.0f;
 	textList->visible = ELF_TRUE;
-	textList->active = ELF_TRUE;
 	textList->rows = 16;
 	textList->listWidth = 256;
 	textList->selection = -1;
@@ -1163,11 +1132,6 @@ ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(elfGuiObject* parent, const 
 	elfIncRef((elfObject*)textList->items);
 
 	if(name) textList->name = elfCreateString(name);
-
-	elfSetGuiObjectPosition((elfGuiObject*)textList, x, y);
-	elfSetTextListFont(textList, eng->guiFont);
-	elfSetTextListSize(textList, rows, width);
-	elfAddGuiObject(parent, (elfGuiObject*)textList);
 
 	elfIncObj(ELF_TEXT_LIST);
 
@@ -1431,7 +1395,7 @@ ELF_API void ELF_APIENTRY elfSetTextListItemDrag(elfTextList* textList, unsigned
 	textList->itemDrag = !itemDrag == ELF_FALSE;
 }
 
-ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(elfGuiObject* parent, const char* name, int x, int y, unsigned char state)
+ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(const char* name)
 {
 	elfCheckBox* checkBox;
 
@@ -1442,13 +1406,8 @@ ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(elfGuiObject* parent, const 
 
 	checkBox->color.r = checkBox->color.g = checkBox->color.b = checkBox->color.a = 1.0f;
 	checkBox->visible = ELF_TRUE;
-	checkBox->active = ELF_TRUE;
 
 	if(name) checkBox->name = elfCreateString(name);
-
-	elfSetGuiObjectPosition((elfGuiObject*)checkBox, x, y);
-	elfSetCheckBoxState(checkBox, state);
-	elfAddGuiObject(parent, (elfGuiObject*)checkBox);
 
 	elfIncObj(ELF_CHECK_BOX);
 

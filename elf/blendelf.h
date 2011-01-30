@@ -1850,7 +1850,7 @@ void elfDrawLabel(elfLabel* label, gfxShaderParams* shaderParams);
 void elfRecalcLabel(elfLabel* label);
 // !!>
 
-ELF_API elfLabel* ELF_APIENTRY elfCreateLabel(elfGuiObject* parent, const char* name, int x, int y, const char* text);	// <mdoc> LABEL FUNCTIONS
+ELF_API elfLabel* ELF_APIENTRY elfCreateLabel(const char* name);	// <mdoc> LABEL FUNCTIONS
 
 ELF_API elfFont* ELF_APIENTRY elfGetLabelFont(elfLabel* label);
 ELF_API const char* ELF_APIENTRY elfGetLabelText(elfLabel* label);
@@ -1864,7 +1864,7 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams);
 void elfRecalcButton(elfButton* button);
 // !!>
 
-ELF_API elfButton* ELF_APIENTRY elfCreateButton(elfGuiObject* parent, const char* name, int x, int y, int width, int height, const char* text);	// <mdoc> BUTTON FUNCTION
+ELF_API elfButton* ELF_APIENTRY elfCreateButton(const char* name);	// <mdoc> BUTTON FUNCTION
 
 ELF_API unsigned char ELF_APIENTRY elfGetButtonState(elfButton* button);
 ELF_API const char* ELF_APIENTRY elfGetButtonText(elfButton* button);
@@ -1886,7 +1886,7 @@ void elfDrawPicture(elfPicture* picture, gfxShaderParams* shaderParams);
 void elfRecalcPicture(elfPicture* picture);
 // !!>
 
-ELF_API elfPicture* ELF_APIENTRY elfCreatePicture(elfGuiObject* parent, const char* name, int x, int y, const char* filePath);	// <mdoc> PICTURE FUNCTIONS
+ELF_API elfPicture* ELF_APIENTRY elfCreatePicture(const char* name);	// <mdoc> PICTURE FUNCTIONS
 
 ELF_API elfTexture* ELF_APIENTRY elfGetPictureTexture(elfPicture* picture);
 ELF_API elfVec2f ELF_APIENTRY elfGetPictureScale(elfPicture* picture);
@@ -1900,7 +1900,7 @@ void elfDrawTextField(elfTextField* textField, elfArea* area, gfxShaderParams* s
 void elfRecalcTextField(elfTextField* textField);
 // !!>
 
-ELF_API elfTextField* ELF_APIENTRY elfCreateTextField(elfGuiObject* parent, const char* name, int x, int y, int width, const char* text);	// <mdoc> TEXT FIELD FUNCTIONS
+ELF_API elfTextField* ELF_APIENTRY elfCreateTextField(const char* name);	// <mdoc> TEXT FIELD FUNCTIONS
 
 ELF_API elfTexture* ELF_APIENTRY elfGetTextFieldTexture(elfTextField* textField);
 ELF_API elfFont* ELF_APIENTRY elfGetTextFieldFont(elfTextField* textField);
@@ -1922,7 +1922,7 @@ void elfDrawSlider(elfSlider* slider, gfxShaderParams* shaderParams);
 void elfRecalcSlider(elfSlider* slider);
 // !!>
 
-ELF_API elfSlider* ELF_APIENTRY elfCreateSlider(elfGuiObject* parent, const char* name, int x, int y, int width, int height, float value);	// <mdoc> SLIDER FUNCTIONS
+ELF_API elfSlider* ELF_APIENTRY elfCreateSlider(const char* name);	// <mdoc> SLIDER FUNCTIONS
 
 ELF_API elfTexture* ELF_APIENTRY elfGetSliderBackgroundTexture(elfSlider* slider);
 ELF_API elfTexture* ELF_APIENTRY elfGetSliderSliderTexture(elfSlider* slider);
@@ -1939,7 +1939,7 @@ void elfDrawScreen(elfScreen* screen, elfArea* area, gfxShaderParams* shaderPara
 void elfRecalcScreen(elfScreen* screen);
 // !!>
 
-ELF_API elfScreen* ELF_APIENTRY elfCreateScreen(elfGuiObject* parent, const char* name, int x, int y, int width, int height);	// <mdoc> SCREEN FUCNTIONS
+ELF_API elfScreen* ELF_APIENTRY elfCreateScreen(const char* name);	// <mdoc> SCREEN FUCNTIONS
 
 ELF_API void ELF_APIENTRY elfSetScreenSize(elfScreen* screen, int width, int height);
 ELF_API elfTexture* ELF_APIENTRY elfGetScreenTexture(elfScreen* screen);
@@ -1954,7 +1954,7 @@ void elfDrawTextList(elfTextList* textList, elfArea* area, gfxShaderParams* shad
 void elfRecalcTextList(elfTextList* textList);
 // !!>
 
-ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(elfGuiObject* parent, const char* name, int x, int y, int rows, int width);	// <mdoc> TEXT LIST FUNCTIONS
+ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(const char* name);	// <mdoc> TEXT LIST FUNCTIONS
 
 ELF_API elfFont* ELF_APIENTRY elfGetTextListFont(elfTextList* textList);
 ELF_API int ELF_APIENTRY elfGetTextListRowCount(elfTextList* textList);
@@ -1981,7 +1981,7 @@ void elfDrawCheckBox(elfCheckBox* checkBox, gfxShaderParams* shaderParams);
 void elfRecalcCheckBox(elfCheckBox* checkBox);
 // !!>
 
-ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(elfGuiObject* parent, const char* name, int x, int y, unsigned char state);	// <mdoc> CHECK BOX FUNCTIONS
+ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(const char* name);	// <mdoc> CHECK BOX FUNCTIONS
 
 ELF_API unsigned char ELF_APIENTRY elfGetCheckBoxState(elfCheckBox* checkBox);
 ELF_API elfTexture* ELF_APIENTRY elfGetCheckBoxOffTexture(elfCheckBox* checkBox);
