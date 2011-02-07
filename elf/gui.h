@@ -97,6 +97,8 @@ ELF_API elfLabel* ELF_APIENTRY elfCreateLabel(const char* name)
 	label->visible = ELF_TRUE;
 
 	if(name) label->name = elfCreateString(name);
+	
+	elfSetLabelFont(label, eng->guiFont);
 
 	elfIncObj(ELF_LABEL);
 
@@ -177,8 +179,12 @@ ELF_API elfButton* ELF_APIENTRY elfCreateButton(const char* name)
 	button->objType = ELF_BUTTON;
 	button->objDestr = elfDestroyButton;
 
-	button->color.r = button->color.g = button->color.b = button->color.a = 1.0;
+	button->color.r = button->color.g = button->color.b = button->color.a = 1.0f;
+	button->textColor.r = button->textColor.g = button->textColor.b = 1.0f;
+	button->textColor.a = 0.9f;
+	elfSetButtonFont(button, eng->guiFont);
 	button->visible = ELF_TRUE;
+	button->active = ELF_TRUE;
 
 	if(name) button->name = elfCreateString(name);
 	
@@ -241,7 +247,7 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams)
 		elfDrawHorGradientBorder(button->pos.x, button->pos.y, button->width, button->height, col1, col2);
 
 		shaderParams->renderParams.vertexColor = ELF_FALSE;
-		if(button->active) gfxSetColor(&shaderParams->materialParams.diffuseColor, 1.0f, 1.0f, 1.0f, 0.6f);
+		if(button->active) gfxSetColor(&shaderParams->materialParams.diffuseColor, button->textColor.r, button->textColor.g, button->textColor.b, button->textColor.a);
 		else gfxSetColor(&shaderParams->materialParams.diffuseColor, 0.5f, 0.5f, 0.5f, 0.6f);
 		gfxSetShaderParams(shaderParams);
 
@@ -270,6 +276,15 @@ void elfDrawButton(elfButton* button, gfxShaderParams* shaderParams)
 			gfxSetShaderParams(shaderParams);
 			elfDrawTextured2dQuad((float)button->pos.x, (float)button->pos.y, (float)button->width, (float)button->height);
 			shaderParams->textureParams[0].texture = NULL;
+		}
+		if(button->text)
+		{
+			shaderParams->renderParams.vertexColor = ELF_FALSE;
+			gfxSetColor(&shaderParams->materialParams.diffuseColor, button->textColor.r, button->textColor.g, button->textColor.b, button->textColor.a);
+			gfxSetShaderParams(shaderParams);
+			elfDrawString(button->font, button->text, 
+				button->pos.x+(button->width-elfGetStringWidth(button->font, button->text))/2,
+				button->pos.y+(button->height-elfGetStringHeight(button->font, button->text))/2-button->font->offsetY/2, shaderParams);
 		}
 	}
 }
@@ -323,6 +338,19 @@ ELF_API elfTexture* ELF_APIENTRY elfGetButtonOnTexture(elfButton* button)
 	return button->on;
 }
 
+ELF_API elfColor ELF_APIENTRY elfGetButtonTextColor(elfTextField* button)
+{
+	return button->textColor;
+}
+
+ELF_API void ELF_APIENTRY elfSetButtonTextColor(elfButton* button, float r, float g, float b, float a)
+{
+	button->textColor.r = r;
+	button->textColor.g = g;
+	button->textColor.b = b;
+	button->textColor.a = a;
+}
+
 ELF_API void ELF_APIENTRY elfSetButtonText(elfButton* button, const char* text)
 {
 	if(button->text) elfDestroyString(button->text);
@@ -352,6 +380,7 @@ ELF_API void ELF_APIENTRY elfSetButtonOffTexture(elfButton* button, elfTexture* 
 	if(button->off) elfDecRef((elfObject*)button->off);
 	button->off = off;
 	if(button->off) elfIncRef((elfObject*)button->off);
+	elfSetButtonSize(button,elfGetTextureWidth(off),elfGetTextureHeight(off));
 	elfRecalcGuiObject((elfGuiObject*)button);
 }
 

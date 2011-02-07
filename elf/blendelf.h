@@ -1872,7 +1872,9 @@ ELF_API elfFont* ELF_APIENTRY elfGetButtonFont(elfButton* button);
 ELF_API elfTexture* ELF_APIENTRY elfGetButtonOffTexture(elfButton* button);
 ELF_API elfTexture* ELF_APIENTRY elfGetButtonOverTexture(elfButton* button);
 ELF_API elfTexture* ELF_APIENTRY elfGetButtonOnTexture(elfButton* button);
+ELF_API elfColor ELF_APIENTRY elfGetButtonTextColor(elfTextField* textField);
 
+ELF_API void ELF_APIENTRY elfSetButtonTextColor(elfButton* button, float r, float g, float b, float a);
 ELF_API void ELF_APIENTRY elfSetButtonText(elfButton* button, const char* text);
 ELF_API void ELF_APIENTRY elfSetButtonFont(elfButton* button, elfFont* font);
 ELF_API void ELF_APIENTRY elfSetButtonSize(elfButton* button, int width, int height);

@@ -721,6 +721,7 @@ struct elfButton {
 	elfTexture* off;
 	elfTexture* over;
 	elfTexture* on;
+	elfColor textColor;
 };
 
 struct elfPicture {
