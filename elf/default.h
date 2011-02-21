@@ -47,9 +47,11 @@
 
 #include <enet/enet.h>
 
+#ifndef NO_ASSIMP
 #include <assimp/assimp.h>
 #include <assimp/aiPostProcess.h>
 #include <assimp/aiScene.h>
+#endif
 
 /* 
 	End of File 
