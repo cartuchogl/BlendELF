@@ -758,6 +758,7 @@ ELF_API elfSlider* ELF_APIENTRY elfCreateSlider(const char* name)
 
 	slider->color.r = slider->color.g = slider->color.b = slider->color.a = 1.0f; 
 	slider->visible = ELF_TRUE;
+	slider->active = ELF_TRUE;
 	slider->value = 1.0f;
 
 	if(name) slider->name = elfCreateString(name);
@@ -1153,6 +1154,7 @@ ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(const char* name)
 
 	textList->color.r = textList->color.g = textList->color.b = textList->color.a = 1.0f;
 	textList->visible = ELF_TRUE;
+	textList->active = ELF_TRUE;
 	textList->rows = 16;
 	textList->listWidth = 256;
 	textList->selection = -1;
@@ -1435,6 +1437,7 @@ ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(const char* name)
 
 	checkBox->color.r = checkBox->color.g = checkBox->color.b = checkBox->color.a = 1.0f;
 	checkBox->visible = ELF_TRUE;
+	checkBox->active = ELF_TRUE;
 
 	if(name) checkBox->name = elfCreateString(name);
 
