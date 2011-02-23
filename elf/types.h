@@ -752,6 +752,7 @@ struct elfSlider {
 struct elfScreen {
 	ELF_GUI_OBJECT_HEADER;
 	elfTexture* texture;
+	int hack;
 };
 
 struct elfTextList {

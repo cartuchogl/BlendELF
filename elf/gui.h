@@ -944,6 +944,8 @@ ELF_API elfScreen* ELF_APIENTRY elfCreateScreen(const char* name)
 	if(name) screen->name = elfCreateString(name);
 
 	elfIncObj(ELF_SCREEN);
+	
+	screen->hack = 0;
 
 	return screen;
 }
@@ -1080,7 +1082,7 @@ ELF_API elfTexture* ELF_APIENTRY elfGetScreenTexture(elfScreen* screen)
 
 void elfRecalcScreen(elfScreen* screen)
 {
-	if(screen->texture)
+	if(screen->texture&&screen->hack==0)
 	{
 		screen->width = elfGetTextureWidth(screen->texture);
 		screen->height = elfGetTextureHeight(screen->texture);
@@ -1089,14 +1091,12 @@ void elfRecalcScreen(elfScreen* screen)
 
 ELF_API void ELF_APIENTRY elfSetScreenSize(elfScreen* screen, int width, int height)
 {
-	if(!screen->texture)
-	{
+		screen->hack = 1;
 		screen->width = width;
 		screen->height = height;
 		if(screen->width < 0) screen->width = 0;
 		if(screen->height < 0) screen->height = 0;
 		elfRecalcGuiObject((elfGuiObject*)screen);
-	}
 }
 
 ELF_API void ELF_APIENTRY elfSetScreenTexture(elfScreen* screen, elfTexture* texture)
