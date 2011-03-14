@@ -109,6 +109,11 @@ ELF_API elfFont* ELF_APIENTRY elfCreateFontFromFile(const char* filePath, int si
 	return font;
 }
 
+ELF_API elfFont* ELF_APIENTRY elfGetDefaultFont()
+{
+	return eng->guiFont;
+}
+
 void elfDestroyFont(void* data)
 {
 	int i;

@@ -1819,6 +1819,7 @@ void elfDestroyFont(void* data);
 
 ELF_API elfFont* ELF_APIENTRY elfCreateFontFromFile(const char* filePath, int size);	// <mdoc> FONT FUNCTIONS
 
+ELF_API elfFont* ELF_APIENTRY elfGetDefaultFont();
 ELF_API const char* ELF_APIENTRY elfGetFontName(elfFont* font);
 ELF_API const char* ELF_APIENTRY elfGetFontFilePath(elfFont* font);
 ELF_API int ELF_APIENTRY elfGetFontSize(elfFont* font);
