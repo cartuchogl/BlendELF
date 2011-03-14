@@ -173,6 +173,8 @@ ELF_API void ELF_APIENTRY elfSetLabelText(elfLabel* label, const char* text)
 ELF_API elfButton* ELF_APIENTRY elfCreateButton(const char* name)
 {
 	elfButton* button;
+	int sizeX;
+	int sizeY;
 
 	button = (elfButton*)malloc(sizeof(elfButton));
 	memset(button, 0x0, sizeof(elfButton));
@@ -189,8 +191,8 @@ ELF_API elfButton* ELF_APIENTRY elfCreateButton(const char* name)
 	if(name) button->name = elfCreateString(name);
 	
 	// TODO: add method size
-	int sizeX=10; 
-	int sizeY=10;
+	sizeX=10; 
+	sizeY=10;
 	button->width = sizeX;
 	button->height = sizeY;
 
