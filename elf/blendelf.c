@@ -33,6 +33,18 @@
 #include <assimp/aiScene.h>
 #endif
 
+#ifdef USE_SERF
+#include <apr.h>
+#include <apr_uri.h>
+#include <apr_strings.h>
+#include <apr_atomic.h>
+#include <apr_base64.h>
+#include <apr_getopt.h>
+#include <apr_version.h>
+
+#include "serf.h"
+#endif
+
 #include "gfx.h"
 #include "blendelf.h"
 #include "types.h"
@@ -50,6 +62,7 @@ elfResources* res = NULL;
 #include "str.h"
 #include "list.h"
 #include "context.h"
+#include "network.h"
 #include "engine.h"
 #include "renderstation.h"
 #include "resources.h"

@@ -109,6 +109,7 @@ ELF_API unsigned char ELF_APIENTRY elfInit(elfConfig* config)
 	elfInitRenderStation();
 	elfInitResources();
 	elfInitScripting();
+	elfInitNetworking();
 
 	elfSetTextureCompress(config->textureCompress);
 	elfSetTextureAnisotropy(config->textureAnisotropy);
@@ -251,6 +252,7 @@ ELF_API unsigned char ELF_APIENTRY elfRun()
 
 ELF_API void ELF_APIENTRY elfDeinit()
 {
+	elfDeinitNetworking();
 	elfDeinitScripting();
 	elfDeinitResources();
 	elfDeinitRenderStation();

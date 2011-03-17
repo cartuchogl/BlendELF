@@ -2020,6 +2020,8 @@ ELF_API const char* ELF_APIENTRY elfGetGuiDragContent(elfGui* gui);
 
 ELF_API void ELF_APIENTRY elfEmptyGui(elfGui* gui);
 
+ELF_API void ELF_APIENTRY elfNetworkingDemo(const char* uri);	// <mdoc> NETWORKING FUNCTIONS
+
 //////////////////////////////// SST ////////////////////////////////
 
 // <!!
