@@ -9247,6 +9247,15 @@ static int lua_CreateFontFromFile(lua_State *L)
 	else lua_pushnil(L);
 	return 1;
 }
+static int lua_GetDefaultFont(lua_State *L)
+{
+	elfFont* result;
+	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "GetDefaultFont", lua_gettop(L), 0);}
+	result = elfGetDefaultFont();
+	if(result) lua_create_elfObject(L, (elfObject*)result);
+	else lua_pushnil(L);
+	return 1;
+}
 static int lua_GetFontName(lua_State *L)
 {
 	const char* result;
@@ -9510,25 +9519,11 @@ static int lua_SetGuiObjectScript(lua_State *L)
 static int lua_CreateLabel(lua_State *L)
 {
 	elfLabel* result;
-	elfGuiObject* arg0;
-	const char* arg1;
-	int arg2;
-	int arg3;
-	const char* arg4;
-	if(lua_gettop(L) != 5) {return lua_fail_arg_count(L, "CreateLabel", lua_gettop(L), 5);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "CreateLabel", 1, "elfGuiObject");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateLabel", 2, "string");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateLabel", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreateLabel", 4, "number");}
-	if(!lua_isstring(L, 5)) {return lua_fail_arg(L, "CreateLabel", 5, "string");}
-	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = lua_tostring(L, 2);
-	arg2 = (int)lua_tonumber(L, 3);
-	arg3 = (int)lua_tonumber(L, 4);
-	arg4 = lua_tostring(L, 5);
-	result = elfCreateLabel(arg0, arg1, arg2, arg3, arg4);
+	const char* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateLabel", lua_gettop(L), 1);}
+	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateLabel", 1, "string");}
+	arg0 = lua_tostring(L, 1);
+	result = elfCreateLabel(arg0);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -9593,31 +9588,11 @@ static int lua_SetLabelText(lua_State *L)
 static int lua_CreateButton(lua_State *L)
 {
 	elfButton* result;
-	elfGuiObject* arg0;
-	const char* arg1;
-	int arg2;
-	int arg3;
-	int arg4;
-	int arg5;
-	const char* arg6;
-	if(lua_gettop(L) != 7) {return lua_fail_arg_count(L, "CreateButton", lua_gettop(L), 7);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "CreateButton", 1, "elfGuiObject");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateButton", 2, "string");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateButton", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreateButton", 4, "number");}
-	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "CreateButton", 5, "number");}
-	if(!lua_isnumber(L, 6)) {return lua_fail_arg(L, "CreateButton", 6, "number");}
-	if(!lua_isstring(L, 7)) {return lua_fail_arg(L, "CreateButton", 7, "string");}
-	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = lua_tostring(L, 2);
-	arg2 = (int)lua_tonumber(L, 3);
-	arg3 = (int)lua_tonumber(L, 4);
-	arg4 = (int)lua_tonumber(L, 5);
-	arg5 = (int)lua_tonumber(L, 6);
-	arg6 = lua_tostring(L, 7);
-	result = elfCreateButton(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+	const char* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateButton", lua_gettop(L), 1);}
+	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateButton", 1, "string");}
+	arg0 = lua_tostring(L, 1);
+	result = elfCreateButton(arg0);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -9703,6 +9678,42 @@ static int lua_GetButtonOnTexture(lua_State *L)
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
+}
+static int lua_GetButtonTextColor(lua_State *L)
+{
+	elfColor result;
+	elfTextField* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetButtonTextColor", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_TEXT_FIELD)
+		{return lua_fail_arg(L, "GetButtonTextColor", 1, "elfTextField");}
+	arg0 = (elfTextField*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetButtonTextColor(arg0);
+	lua_create_elfColor(L, result);
+	return 1;
+}
+static int lua_SetButtonTextColor(lua_State *L)
+{
+	elfButton* arg0;
+	float arg1;
+	float arg2;
+	float arg3;
+	float arg4;
+	if(lua_gettop(L) != 5) {return lua_fail_arg_count(L, "SetButtonTextColor", lua_gettop(L), 5);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_BUTTON)
+		{return lua_fail_arg(L, "SetButtonTextColor", 1, "elfButton");}
+	if(!lua_isnumber(L, 2)) {return lua_fail_arg(L, "SetButtonTextColor", 2, "number");}
+	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "SetButtonTextColor", 3, "number");}
+	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "SetButtonTextColor", 4, "number");}
+	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "SetButtonTextColor", 5, "number");}
+	arg0 = (elfButton*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = (float)lua_tonumber(L, 2);
+	arg2 = (float)lua_tonumber(L, 3);
+	arg3 = (float)lua_tonumber(L, 4);
+	arg4 = (float)lua_tonumber(L, 5);
+	elfSetButtonTextColor(arg0, arg1, arg2, arg3, arg4);
+	return 0;
 }
 static int lua_SetButtonText(lua_State *L)
 {
@@ -9802,25 +9813,11 @@ static int lua_SetButtonOnTexture(lua_State *L)
 static int lua_CreatePicture(lua_State *L)
 {
 	elfPicture* result;
-	elfGuiObject* arg0;
-	const char* arg1;
-	int arg2;
-	int arg3;
-	const char* arg4;
-	if(lua_gettop(L) != 5) {return lua_fail_arg_count(L, "CreatePicture", lua_gettop(L), 5);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "CreatePicture", 1, "elfGuiObject");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreatePicture", 2, "string");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreatePicture", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreatePicture", 4, "number");}
-	if(!lua_isstring(L, 5)) {return lua_fail_arg(L, "CreatePicture", 5, "string");}
-	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = lua_tostring(L, 2);
-	arg2 = (int)lua_tonumber(L, 3);
-	arg3 = (int)lua_tonumber(L, 4);
-	arg4 = lua_tostring(L, 5);
-	result = elfCreatePicture(arg0, arg1, arg2, arg3, arg4);
+	const char* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreatePicture", lua_gettop(L), 1);}
+	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreatePicture", 1, "string");}
+	arg0 = lua_tostring(L, 1);
+	result = elfCreatePicture(arg0);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -9888,28 +9885,11 @@ static int lua_SetPictureScale(lua_State *L)
 static int lua_CreateTextField(lua_State *L)
 {
 	elfTextField* result;
-	elfGuiObject* arg0;
-	const char* arg1;
-	int arg2;
-	int arg3;
-	int arg4;
-	const char* arg5;
-	if(lua_gettop(L) != 6) {return lua_fail_arg_count(L, "CreateTextField", lua_gettop(L), 6);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "CreateTextField", 1, "elfGuiObject");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateTextField", 2, "string");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateTextField", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreateTextField", 4, "number");}
-	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "CreateTextField", 5, "number");}
-	if(!lua_isstring(L, 6)) {return lua_fail_arg(L, "CreateTextField", 6, "string");}
-	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = lua_tostring(L, 2);
-	arg2 = (int)lua_tonumber(L, 3);
-	arg3 = (int)lua_tonumber(L, 4);
-	arg4 = (int)lua_tonumber(L, 5);
-	arg5 = lua_tostring(L, 6);
-	result = elfCreateTextField(arg0, arg1, arg2, arg3, arg4, arg5);
+	const char* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateTextField", lua_gettop(L), 1);}
+	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateTextField", 1, "string");}
+	arg0 = lua_tostring(L, 1);
+	result = elfCreateTextField(arg0);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -10098,31 +10078,11 @@ static int lua_SetTextFieldText(lua_State *L)
 static int lua_CreateSlider(lua_State *L)
 {
 	elfSlider* result;
-	elfGuiObject* arg0;
-	const char* arg1;
-	int arg2;
-	int arg3;
-	int arg4;
-	int arg5;
-	float arg6;
-	if(lua_gettop(L) != 7) {return lua_fail_arg_count(L, "CreateSlider", lua_gettop(L), 7);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "CreateSlider", 1, "elfGuiObject");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateSlider", 2, "string");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateSlider", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreateSlider", 4, "number");}
-	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "CreateSlider", 5, "number");}
-	if(!lua_isnumber(L, 6)) {return lua_fail_arg(L, "CreateSlider", 6, "number");}
-	if(!lua_isnumber(L, 7)) {return lua_fail_arg(L, "CreateSlider", 7, "number");}
-	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = lua_tostring(L, 2);
-	arg2 = (int)lua_tonumber(L, 3);
-	arg3 = (int)lua_tonumber(L, 4);
-	arg4 = (int)lua_tonumber(L, 5);
-	arg5 = (int)lua_tonumber(L, 6);
-	arg6 = (float)lua_tonumber(L, 7);
-	result = elfCreateSlider(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+	const char* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateSlider", lua_gettop(L), 1);}
+	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateSlider", 1, "string");}
+	arg0 = lua_tostring(L, 1);
+	result = elfCreateSlider(arg0);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -10234,28 +10194,11 @@ static int lua_SetSliderValue(lua_State *L)
 static int lua_CreateScreen(lua_State *L)
 {
 	elfScreen* result;
-	elfGuiObject* arg0;
-	const char* arg1;
-	int arg2;
-	int arg3;
-	int arg4;
-	int arg5;
-	if(lua_gettop(L) != 6) {return lua_fail_arg_count(L, "CreateScreen", lua_gettop(L), 6);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "CreateScreen", 1, "elfGuiObject");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateScreen", 2, "string");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateScreen", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreateScreen", 4, "number");}
-	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "CreateScreen", 5, "number");}
-	if(!lua_isnumber(L, 6)) {return lua_fail_arg(L, "CreateScreen", 6, "number");}
-	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = lua_tostring(L, 2);
-	arg2 = (int)lua_tonumber(L, 3);
-	arg3 = (int)lua_tonumber(L, 4);
-	arg4 = (int)lua_tonumber(L, 5);
-	arg5 = (int)lua_tonumber(L, 6);
-	result = elfCreateScreen(arg0, arg1, arg2, arg3, arg4, arg5);
+	const char* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateScreen", lua_gettop(L), 1);}
+	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateScreen", 1, "string");}
+	arg0 = lua_tostring(L, 1);
+	result = elfCreateScreen(arg0);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -10343,28 +10286,11 @@ static int lua_ReleaseScreenFocus(lua_State *L)
 static int lua_CreateTextList(lua_State *L)
 {
 	elfTextList* result;
-	elfGuiObject* arg0;
-	const char* arg1;
-	int arg2;
-	int arg3;
-	int arg4;
-	int arg5;
-	if(lua_gettop(L) != 6) {return lua_fail_arg_count(L, "CreateTextList", lua_gettop(L), 6);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "CreateTextList", 1, "elfGuiObject");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateTextList", 2, "string");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateTextList", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreateTextList", 4, "number");}
-	if(!lua_isnumber(L, 5)) {return lua_fail_arg(L, "CreateTextList", 5, "number");}
-	if(!lua_isnumber(L, 6)) {return lua_fail_arg(L, "CreateTextList", 6, "number");}
-	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = lua_tostring(L, 2);
-	arg2 = (int)lua_tonumber(L, 3);
-	arg3 = (int)lua_tonumber(L, 4);
-	arg4 = (int)lua_tonumber(L, 5);
-	arg5 = (int)lua_tonumber(L, 6);
-	result = elfCreateTextList(arg0, arg1, arg2, arg3, arg4, arg5);
+	const char* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateTextList", lua_gettop(L), 1);}
+	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateTextList", 1, "string");}
+	arg0 = lua_tostring(L, 1);
+	result = elfCreateTextList(arg0);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -10613,25 +10539,11 @@ static int lua_SetTextListItemDrag(lua_State *L)
 static int lua_CreateCheckBox(lua_State *L)
 {
 	elfCheckBox* result;
-	elfGuiObject* arg0;
-	const char* arg1;
-	int arg2;
-	int arg3;
-	unsigned char arg4;
-	if(lua_gettop(L) != 5) {return lua_fail_arg_count(L, "CreateCheckBox", lua_gettop(L), 5);}
-	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
-		!elfIsGuiObject(((lua_elfObject*)lua_touserdata(L, 1))->object))
-		{return lua_fail_arg(L, "CreateCheckBox", 1, "elfGuiObject");}
-	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "CreateCheckBox", 2, "string");}
-	if(!lua_isnumber(L, 3)) {return lua_fail_arg(L, "CreateCheckBox", 3, "number");}
-	if(!lua_isnumber(L, 4)) {return lua_fail_arg(L, "CreateCheckBox", 4, "number");}
-	if(!lua_isboolean(L, 5)) {return lua_fail_arg(L, "CreateCheckBox", 5, "boolean");}
-	arg0 = (elfGuiObject*)((lua_elfObject*)lua_touserdata(L, 1))->object;
-	arg1 = lua_tostring(L, 2);
-	arg2 = (int)lua_tonumber(L, 3);
-	arg3 = (int)lua_tonumber(L, 4);
-	arg4 = (unsigned char)lua_toboolean(L, 5);
-	result = elfCreateCheckBox(arg0, arg1, arg2, arg3, arg4);
+	const char* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateCheckBox", lua_gettop(L), 1);}
+	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateCheckBox", 1, "string");}
+	arg0 = lua_tostring(L, 1);
+	result = elfCreateCheckBox(arg0);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -10925,6 +10837,80 @@ static int lua_EmptyGui(lua_State *L)
 		{return lua_fail_arg(L, "EmptyGui", 1, "elfGui");}
 	arg0 = (elfGui*)((lua_elfObject*)lua_touserdata(L, 1))->object;
 	elfEmptyGui(arg0);
+	return 0;
+}
+static int lua_CreateRequest(lua_State *L)
+{
+	elfRequest* result;
+	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "CreateRequest", lua_gettop(L), 0);}
+	result = elfCreateRequest();
+	if(result) lua_create_elfObject(L, (elfObject*)result);
+	else lua_pushnil(L);
+	return 1;
+}
+static int lua_SendRequest(lua_State *L)
+{
+	elfRequest* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "SendRequest", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_REQUEST)
+		{return lua_fail_arg(L, "SendRequest", 1, "elfRequest");}
+	arg0 = (elfRequest*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	elfSendRequest(arg0);
+	return 0;
+}
+static int lua_GetRequestUrl(lua_State *L)
+{
+	const char* result;
+	elfRequest* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetRequestUrl", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_REQUEST)
+		{return lua_fail_arg(L, "GetRequestUrl", 1, "elfRequest");}
+	arg0 = (elfRequest*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetRequestUrl(arg0);
+	lua_pushstring(L, result);
+	return 1;
+}
+static int lua_SetRequestUrl(lua_State *L)
+{
+	elfRequest* arg0;
+	const char* arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetRequestUrl", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_REQUEST)
+		{return lua_fail_arg(L, "SetRequestUrl", 1, "elfRequest");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "SetRequestUrl", 2, "string");}
+	arg0 = (elfRequest*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = lua_tostring(L, 2);
+	elfSetRequestUrl(arg0, arg1);
+	return 0;
+}
+static int lua_GetRequestMethod(lua_State *L)
+{
+	const char* result;
+	elfRequest* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "GetRequestMethod", lua_gettop(L), 1);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_REQUEST)
+		{return lua_fail_arg(L, "GetRequestMethod", 1, "elfRequest");}
+	arg0 = (elfRequest*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	result = elfGetRequestMethod(arg0);
+	lua_pushstring(L, result);
+	return 1;
+}
+static int lua_SetRequestMethod(lua_State *L)
+{
+	elfRequest* arg0;
+	const char* arg1;
+	if(lua_gettop(L) != 2) {return lua_fail_arg_count(L, "SetRequestMethod", lua_gettop(L), 2);}
+	if(!lua_isuserdata(L, 1) || ((lua_elf_userdata*)lua_touserdata(L,1))->type != LUA_ELF_OBJECT ||
+		elfGetObjectType(((lua_elfObject*)lua_touserdata(L, 1))->object) != ELF_REQUEST)
+		{return lua_fail_arg(L, "SetRequestMethod", 1, "elfRequest");}
+	if(!lua_isstring(L, 2)) {return lua_fail_arg(L, "SetRequestMethod", 2, "string");}
+	arg0 = (elfRequest*)((lua_elfObject*)lua_touserdata(L, 1))->object;
+	arg1 = lua_tostring(L, 2);
+	elfSetRequestMethod(arg0, arg1);
 	return 0;
 }
 static const struct luaL_reg lua_elf_functions[] = {
@@ -11558,6 +11544,7 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetJointPivot", lua_GetJointPivot},
 	{"GetJointAxis", lua_GetJointAxis},
 	{"CreateFontFromFile", lua_CreateFontFromFile},
+	{"GetDefaultFont", lua_GetDefaultFont},
 	{"GetFontName", lua_GetFontName},
 	{"GetFontFilePath", lua_GetFontFilePath},
 	{"GetFontSize", lua_GetFontSize},
@@ -11588,6 +11575,8 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetButtonOffTexture", lua_GetButtonOffTexture},
 	{"GetButtonOverTexture", lua_GetButtonOverTexture},
 	{"GetButtonOnTexture", lua_GetButtonOnTexture},
+	{"GetButtonTextColor", lua_GetButtonTextColor},
+	{"SetButtonTextColor", lua_SetButtonTextColor},
 	{"SetButtonText", lua_SetButtonText},
 	{"SetButtonFont", lua_SetButtonFont},
 	{"SetButtonSize", lua_SetButtonSize},
@@ -11666,6 +11655,12 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"GetGuiDragObject", lua_GetGuiDragObject},
 	{"GetGuiDragContent", lua_GetGuiDragContent},
 	{"EmptyGui", lua_EmptyGui},
+	{"CreateRequest", lua_CreateRequest},
+	{"SendRequest", lua_SendRequest},
+	{"GetRequestUrl", lua_GetRequestUrl},
+	{"SetRequestUrl", lua_SetRequestUrl},
+	{"GetRequestMethod", lua_GetRequestMethod},
+	{"SetRequestMethod", lua_SetRequestMethod},
 	{NULL, NULL}
 };
 int luaopen_elf(lua_State* L)
@@ -12146,8 +12141,11 @@ int luaopen_elf(lua_State* L)
 	lua_pushstring(L, "RENDER_STATION");
 	lua_pushnumber(L, 0x004A);
 	lua_settable(L, -3);
-	lua_pushstring(L, "OBJECT_TYPE_COUNT");
+	lua_pushstring(L, "REQUEST");
 	lua_pushnumber(L, 0x004B);
+	lua_settable(L, -3);
+	lua_pushstring(L, "OBJECT_TYPE_COUNT");
+	lua_pushnumber(L, 0x004C);
 	lua_settable(L, -3);
 	lua_pushstring(L, "PERSPECTIVE");
 	lua_pushnumber(L, 0x0000);

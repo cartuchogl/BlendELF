@@ -158,7 +158,8 @@
 #define ELF_LIST_PTR 0x0048
 #define ELF_RESOURCES 0x0049
 #define ELF_RENDER_STATION 0x004A
-#define ELF_OBJECT_TYPE_COUNT 0x004B
+#define ELF_REQUEST 0x004B
+#define ELF_OBJECT_TYPE_COUNT 0x004C
 #define ELF_PERSPECTIVE 0x0000
 #define ELF_ORTHOGRAPHIC 0x0001
 #define ELF_BOX 0x0000
@@ -354,6 +355,7 @@ typedef struct elfVertex				elfVertex;
 typedef struct elfFace					elfFace;
 typedef struct elfMeshData				elfMeshData;
 typedef struct elfRenderStation				elfRenderStation;
+typedef struct elfRequest				elfRequest;
 struct elfVec2i {
 	int x;
 	int y;
@@ -1009,6 +1011,7 @@ ELF_API elfActor* ELF_APIENTRY elfGetJointActorB(elfJoint* joint);
 ELF_API elfVec3f ELF_APIENTRY elfGetJointPivot(elfJoint* joint);
 ELF_API elfVec3f ELF_APIENTRY elfGetJointAxis(elfJoint* joint);
 ELF_API elfFont* ELF_APIENTRY elfCreateFontFromFile(const char* filePath, int size);
+ELF_API elfFont* ELF_APIENTRY elfGetDefaultFont();
 ELF_API const char* ELF_APIENTRY elfGetFontName(elfFont* font);
 ELF_API const char* ELF_APIENTRY elfGetFontFilePath(elfFont* font);
 ELF_API int ELF_APIENTRY elfGetFontSize(elfFont* font);
@@ -1027,30 +1030,32 @@ ELF_API void ELF_APIENTRY elfSetGuiObjectColor(elfGuiObject* object, float r, fl
 ELF_API void ELF_APIENTRY elfSetGuiObjectVisible(elfGuiObject* object, unsigned char visible);
 ELF_API void ELF_APIENTRY elfSetGuiObjectActive(elfGuiObject* object, unsigned char active);
 ELF_API void ELF_APIENTRY elfSetGuiObjectScript(elfGuiObject* object, elfScript* script);
-ELF_API elfLabel* ELF_APIENTRY elfCreateLabel(elfGuiObject* parent, const char* name, int x, int y, const char* text);
+ELF_API elfLabel* ELF_APIENTRY elfCreateLabel(const char* name);
 ELF_API elfFont* ELF_APIENTRY elfGetLabelFont(elfLabel* label);
 ELF_API const char* ELF_APIENTRY elfGetLabelText(elfLabel* label);
 ELF_API void ELF_APIENTRY elfSetLabelFont(elfLabel* label, elfFont* font);
 ELF_API void ELF_APIENTRY elfSetLabelText(elfLabel* label, const char* text);
-ELF_API elfButton* ELF_APIENTRY elfCreateButton(elfGuiObject* parent, const char* name, int x, int y, int width, int height, const char* text);
+ELF_API elfButton* ELF_APIENTRY elfCreateButton(const char* name);
 ELF_API unsigned char ELF_APIENTRY elfGetButtonState(elfButton* button);
 ELF_API const char* ELF_APIENTRY elfGetButtonText(elfButton* button);
 ELF_API elfFont* ELF_APIENTRY elfGetButtonFont(elfButton* button);
 ELF_API elfTexture* ELF_APIENTRY elfGetButtonOffTexture(elfButton* button);
 ELF_API elfTexture* ELF_APIENTRY elfGetButtonOverTexture(elfButton* button);
 ELF_API elfTexture* ELF_APIENTRY elfGetButtonOnTexture(elfButton* button);
+ELF_API elfColor ELF_APIENTRY elfGetButtonTextColor(elfTextField* textField);
+ELF_API void ELF_APIENTRY elfSetButtonTextColor(elfButton* button, float r, float g, float b, float a);
 ELF_API void ELF_APIENTRY elfSetButtonText(elfButton* button, const char* text);
 ELF_API void ELF_APIENTRY elfSetButtonFont(elfButton* button, elfFont* font);
 ELF_API void ELF_APIENTRY elfSetButtonSize(elfButton* button, int width, int height);
 ELF_API void ELF_APIENTRY elfSetButtonOffTexture(elfButton* button, elfTexture* off);
 ELF_API void ELF_APIENTRY elfSetButtonOverTexture(elfButton* button, elfTexture* over);
 ELF_API void ELF_APIENTRY elfSetButtonOnTexture(elfButton* button, elfTexture* on);
-ELF_API elfPicture* ELF_APIENTRY elfCreatePicture(elfGuiObject* parent, const char* name, int x, int y, const char* filePath);
+ELF_API elfPicture* ELF_APIENTRY elfCreatePicture(const char* name);
 ELF_API elfTexture* ELF_APIENTRY elfGetPictureTexture(elfPicture* picture);
 ELF_API elfVec2f ELF_APIENTRY elfGetPictureScale(elfPicture* picture);
 ELF_API void ELF_APIENTRY elfSetPictureTexture(elfPicture* picture, elfTexture* texture);
 ELF_API void ELF_APIENTRY elfSetPictureScale(elfPicture* picture, float x, float y);
-ELF_API elfTextField* ELF_APIENTRY elfCreateTextField(elfGuiObject* parent, const char* name, int x, int y, int width, const char* text);
+ELF_API elfTextField* ELF_APIENTRY elfCreateTextField(const char* name);
 ELF_API elfTexture* ELF_APIENTRY elfGetTextFieldTexture(elfTextField* textField);
 ELF_API elfFont* ELF_APIENTRY elfGetTextFieldFont(elfTextField* textField);
 ELF_API elfColor ELF_APIENTRY elfGetTextFieldTextColor(elfTextField* textField);
@@ -1063,7 +1068,7 @@ ELF_API void ELF_APIENTRY elfSetTextFieldTextColor(elfTextField* textField, floa
 ELF_API void ELF_APIENTRY elfSetTextFieldOffset(elfTextField* textField, int offsetX, int offsetY);
 ELF_API void ELF_APIENTRY elfSetTextFieldCursorPosition(elfTextField* textField, int idx);
 ELF_API void ELF_APIENTRY elfSetTextFieldText(elfTextField* textField, const char* text);
-ELF_API elfSlider* ELF_APIENTRY elfCreateSlider(elfGuiObject* parent, const char* name, int x, int y, int width, int height, float value);
+ELF_API elfSlider* ELF_APIENTRY elfCreateSlider(const char* name);
 ELF_API elfTexture* ELF_APIENTRY elfGetSliderBackgroundTexture(elfSlider* slider);
 ELF_API elfTexture* ELF_APIENTRY elfGetSliderSliderTexture(elfSlider* slider);
 ELF_API float ELF_APIENTRY elfGetSliderValue(elfSlider* slider);
@@ -1071,14 +1076,14 @@ ELF_API void ELF_APIENTRY elfSetSliderSize(elfSlider* slider, int width, int hei
 ELF_API void ELF_APIENTRY elfSetSliderBackgroundTexture(elfSlider* slider, elfTexture* background);
 ELF_API void ELF_APIENTRY elfSetSliderSliderTexture(elfSlider* slider, elfTexture* sliderTexture);
 ELF_API void ELF_APIENTRY elfSetSliderValue(elfSlider* slider, float value);
-ELF_API elfScreen* ELF_APIENTRY elfCreateScreen(elfGuiObject* parent, const char* name, int x, int y, int width, int height);
+ELF_API elfScreen* ELF_APIENTRY elfCreateScreen(const char* name);
 ELF_API void ELF_APIENTRY elfSetScreenSize(elfScreen* screen, int width, int height);
 ELF_API elfTexture* ELF_APIENTRY elfGetScreenTexture(elfScreen* screen);
 ELF_API void ELF_APIENTRY elfSetScreenTexture(elfScreen* screen, elfTexture* texture);
 ELF_API void ELF_APIENTRY elfSetScreenToTop(elfScreen* screen);
 ELF_API void ELF_APIENTRY elfForceScreenFocus(elfScreen* screen);
 ELF_API void ELF_APIENTRY elfReleaseScreenFocus(elfScreen* screen);
-ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(elfGuiObject* parent, const char* name, int x, int y, int rows, int width);
+ELF_API elfTextList* ELF_APIENTRY elfCreateTextList(const char* name);
 ELF_API elfFont* ELF_APIENTRY elfGetTextListFont(elfTextList* textList);
 ELF_API int ELF_APIENTRY elfGetTextListRowCount(elfTextList* textList);
 ELF_API int ELF_APIENTRY elfGetTextListItemCount(elfTextList* textList);
@@ -1096,7 +1101,7 @@ ELF_API void ELF_APIENTRY elfRemoveTextListItems(elfTextList* textList);
 ELF_API void ELF_APIENTRY elfSetTextListOffset(elfTextList* textList, int offset);
 ELF_API void ELF_APIENTRY elfSetTextListSelection(elfTextList* textList, int selection);
 ELF_API void ELF_APIENTRY elfSetTextListItemDrag(elfTextList* textList, unsigned char itemDrag);
-ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(elfGuiObject* parent, const char* name, int x, int y, unsigned char state);
+ELF_API elfCheckBox* ELF_APIENTRY elfCreateCheckBox(const char* name);
 ELF_API unsigned char ELF_APIENTRY elfGetCheckBoxState(elfCheckBox* checkBox);
 ELF_API elfTexture* ELF_APIENTRY elfGetCheckBoxOffTexture(elfCheckBox* checkBox);
 ELF_API elfTexture* ELF_APIENTRY elfGetCheckBoxOnTexture(elfCheckBox* checkBox);
@@ -1117,4 +1122,10 @@ ELF_API unsigned char ELF_APIENTRY elfGetGuiDragging(elfGui* gui);
 ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiDragObject(elfGui* gui);
 ELF_API const char* ELF_APIENTRY elfGetGuiDragContent(elfGui* gui);
 ELF_API void ELF_APIENTRY elfEmptyGui(elfGui* gui);
+ELF_API elfRequest* ELF_APIENTRY elfCreateRequest();
+ELF_API void ELF_APIENTRY elfSendRequest(elfRequest* req);
+ELF_API const char* ELF_APIENTRY elfGetRequestUrl(elfRequest* request);
+ELF_API void ELF_APIENTRY elfSetRequestUrl(elfRequest* request, const char* url);
+ELF_API const char* ELF_APIENTRY elfGetRequestMethod(elfRequest* request);
+ELF_API void ELF_APIENTRY elfSetRequestMethod(elfRequest* request, const char* method);
 #endif

@@ -41,6 +41,8 @@
 #include <apr_base64.h>
 #include <apr_getopt.h>
 #include <apr_version.h>
+#include <apr_general.h>
+#include <apr_thread_proc.h>
 
 #include "serf.h"
 #endif

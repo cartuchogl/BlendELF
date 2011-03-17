@@ -86,6 +86,7 @@ typedef struct elfVertex				elfVertex;
 typedef struct elfFace					elfFace;
 typedef struct elfMeshData				elfMeshData;
 typedef struct elfRenderStation				elfRenderStation;
+typedef struct elfRequest				elfRequest;
 struct elfVec2i {
 	int x;
 	int y;
@@ -643,7 +644,8 @@ elfobjs = ['elfGeneral*',
 	'elfVertex*',
 	'elfFace*',
 	'elfMeshData*',
-	'elfRenderStation*']
+	'elfRenderStation*',
+	'elfRequest*']
 
 defines = []
 functions = []

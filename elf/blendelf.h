@@ -189,7 +189,8 @@ extern "C" {
 #define ELF_LIST_PTR					0x0048
 #define ELF_RESOURCES					0x0049
 #define ELF_RENDER_STATION				0x004A
-#define ELF_OBJECT_TYPE_COUNT				0x004B	// <mdoc> NUMBER OF OBJECT TYPES
+#define ELF_REQUEST				0x004B
+#define ELF_OBJECT_TYPE_COUNT				0x004C	// <mdoc> NUMBER OF OBJECT TYPES
 
 #define ELF_PERSPECTIVE					0x0000	// <mdoc> CAMERA MODE <mdocc> The camera modes used by camera internal functions
 #define ELF_ORTHOGRAPHIC				0x0001
@@ -408,6 +409,7 @@ typedef struct elfVertex				elfVertex;
 typedef struct elfFace					elfFace;
 typedef struct elfMeshData				elfMeshData;
 typedef struct elfRenderStation				elfRenderStation;
+typedef struct elfRequest				elfRequest;
 
 // <!!
 struct elfVec2i {
@@ -2020,7 +2022,16 @@ ELF_API const char* ELF_APIENTRY elfGetGuiDragContent(elfGui* gui);
 
 ELF_API void ELF_APIENTRY elfEmptyGui(elfGui* gui);
 
-ELF_API void ELF_APIENTRY elfNetworkingDemo(const char* uri);	// <mdoc> NETWORKING FUNCTIONS
+// <!!
+void elfDestroyRequest(void* data);
+// !!>
+
+ELF_API elfRequest* ELF_APIENTRY elfCreateRequest();	// <mdoc> NETWORKING FUNCTIONS
+ELF_API void ELF_APIENTRY elfSendRequest(elfRequest* req);
+ELF_API const char* ELF_APIENTRY elfGetRequestUrl(elfRequest* request);
+ELF_API void ELF_APIENTRY elfSetRequestUrl(elfRequest* request,const char* url);
+ELF_API const char* ELF_APIENTRY elfGetRequestMethod(elfRequest* request);
+ELF_API void ELF_APIENTRY elfSetRequestMethod(elfRequest* request,const char* method);
 
 //////////////////////////////// SST ////////////////////////////////
 

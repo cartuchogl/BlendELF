@@ -796,3 +796,9 @@ struct elfGui {
 	unsigned char charRepeat;
 };
 
+struct elfRequest {
+	ELF_OBJECT_HEADER;
+	char* url;
+	char* method;
+};
+

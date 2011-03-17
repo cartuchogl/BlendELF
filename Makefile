@@ -1,14 +1,19 @@
 #Makefile
 
-DEV_CFLAGS = -g -Wall -DELF_PLAYER -DELF_LINUX
+DEV_CFLAGS = -g -Wall -DELF_PLAYER -DELF_LINUX -DUSE_SERF \
+	`apr-config --cppflags` \
+	`apr-config --cflags`
+
 STA_CFLAGS = -Wall -O2 -DELF_PLAYER -DELF_LINUX
 SHR_CFLAGS = -fPIC -Wall -O2 -DELF_LINUX
 
-INCS = -Igfx -Ielf -I/usr/include/lua5.1 -I/usr/include/freetype2
+INCS = -Igfx -Ielf -I/usr/include/lua5.1 -I/usr/include/freetype2 -I/usr/local/serf/include/serf-0 \
+	-I/usr/include/apr-1.0
 
 BLENDELF_LIBS = -lGL -lGLEW -lglfw -lXxf86vm -lXrandr -lXrender -pthread \
 	-lfreeimage -lvorbisfile -lvorbis -logg -lopenal -llua5.1 -lfreetype \
-	-lBulletDynamics -lLinearMath -lBulletCollision -lassimp
+	-lBulletDynamics -lLinearMath -lBulletCollision -lassimp -lapr-1 /usr/local/serf/lib/libserf-0.a \
+	-lssl -lz -laprutil-1
 
 BLENDELF_STATIC_LIBS = -lGL -lGLU /usr/lib/libGLEW.a /usr/lib/libglfw.a \
 	/usr/lib/libXxf86vm.a /usr/lib/libXrandr.a /usr/lib/libXrender.a \

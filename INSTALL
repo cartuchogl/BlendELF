@@ -14,7 +14,7 @@ OpenAL (http://connect.creativelabs.com/openal)
 Ogg Vorbis (http://www.vorbis.com)
 lua (http://www.lua.org)
 Bullet Physics (http://bulletphysics.com)
-enet (http://enet.bespin.org/)
+serf (http://code.google.com/p/serf/) need >= 0.7
 Assimp (http://assimp.sourceforge.net/)
 
 The chances are that you already have some of them. Most
@@ -78,7 +78,7 @@ For GLFW, download version greater than 2.7 from:
 http://www.glfw.org/download.html
 
 Add to lib->cocoa->Makefile.cocoa on CFLAGS var this options
--force_cpusubtype_ALL -mmacosx-version-min=10.5 -arch i386 -arch x86_64
+-force_cpusubtype_ALL -mmacosx-version-min=10.4 -arch i386 -arch x86_64
 
 Compile with:
 
@@ -92,6 +92,9 @@ sudo port install libvorbis +universal
 sudo port install glew +universal
 sudo port install freeimage +universal
 sudo port install freetype +universal
+
+for use of experimental request code need serf >= 0.7
+sudo port install serf +universal
 
 On current macosx the support of assimp is removed because not static linking support for that.
 Continue on ---->>>>

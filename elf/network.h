@@ -211,7 +211,7 @@ static apr_status_t setup_request(serf_request_t *request,
 
 	serf_bucket_headers_setn(hdrs_bkt, "User-Agent",
 		"Serf/" SERF_VERSION_STRING);
-/* Shouldn't serf do this for us? */
+	/* Shouldn't serf do this for us? */
 	serf_bucket_headers_setn(hdrs_bkt, "Accept-Encoding", "gzip");
 
 	if (ctx->authn != NULL) {
@@ -226,12 +226,13 @@ static apr_status_t setup_request(serf_request_t *request,
 	return APR_SUCCESS;
 }
 
-#endif
-
-ELF_API void ELF_APIENTRY elfNetworkingDemo(const char* uri)
+/**
+ * Thread entry point
+ */
+static void* APR_THREAD_FUNC making_the_request(apr_thread_t *thd, void *data)
 {
-	#ifdef USE_SERF
-	apr_status_t status;
+	elfRequest* req = (elfRequest *)data;
+  apr_status_t status;
 	serf_context_t *context;
 	serf_connection_t *connection;
 	serf_request_t *request;
@@ -248,11 +249,12 @@ ELF_API void ELF_APIENTRY elfNetworkingDemo(const char* uri)
 	/* Default to one round of fetching. */
 	count = 1;
 	/* Default to GET. */
-	method = "GET";
+	method = req->method ? req->method : "GET";
 	/* Do not print headers by default. */
 	print_headers = 1;
 
-	raw_url = uri;
+	raw_url = req->url;
+	printf("%s\n",req->url);
 
 	apr_uri_parse(pool, raw_url, &url);
 	if (!url.port) {
@@ -282,22 +284,19 @@ ELF_API void ELF_APIENTRY elfNetworkingDemo(const char* uri)
 		if (status)
 		{
 			printf("Cannot parse proxy hostname/port: %d\n", status);
-				//apr_pool_destroy(pool);
-			return;
+			return NULL;
 		}
 
 		if (!proxy_host)
 		{
 			printf("Proxy hostname must be specified\n");
-				//apr_pool_destroy(pool);
-			return;
+			return NULL;
 		}
 
 		if (!proxy_port)
 		{
 			printf("Proxy port must be specified\n");
-				//apr_pool_destroy(pool);
-			return;
+			return NULL;
 		}
 
 		status = apr_sockaddr_info_get(&proxy_address, proxy_host, APR_UNSPEC,
@@ -306,8 +305,7 @@ ELF_API void ELF_APIENTRY elfNetworkingDemo(const char* uri)
 		if (status)
 		{
 			printf("Cannot resolve proxy address '%s': %d\n", proxy_host, status);
-				//apr_pool_destroy(pool);
-			return;
+			return NULL;
 		}
 
 		serf_config_proxy(context, proxy_address);
@@ -323,8 +321,7 @@ ELF_API void ELF_APIENTRY elfNetworkingDemo(const char* uri)
 		pool);
 	if (status) {
 		printf("Error creating connection: %d\n", status);
-			//apr_pool_destroy(pool);
-		return;
+		return NULL;
 	}
 
 	handler_ctx.completed_requests = 0;
@@ -352,19 +349,87 @@ ELF_API void ELF_APIENTRY elfNetworkingDemo(const char* uri)
 			continue;
 		if (status) {
 			char buf[200];
-
-			printf("Error running context: (%d) %s\n", status,
-				apr_strerror(status, buf, sizeof(buf)));
-					//apr_pool_destroy(pool);
-			return;
+			printf("Error running context: (%d) %s\n", status, apr_strerror(status, buf, sizeof(buf)));
+			return NULL;
 		}
 		if (apr_atomic_read32(&handler_ctx.completed_requests) >= count) {
 			break;
 		}
-			/* Debugging purposes only! */
+		/* Debugging purposes only! */
 		serf_debug__closed_conn(app_ctx.bkt_alloc);
 	}
 
 	serf_connection_close(connection);
+	apr_thread_exit(thd, APR_SUCCESS);
+	return NULL;
+}
+#endif
+
+ELF_API elfRequest* ELF_APIENTRY elfCreateRequest()
+{
+	#ifdef USE_SERF
+	elfRequest* request;
+
+	request = (elfRequest*)malloc(sizeof(elfRequest));
+	memset(request, 0x0, sizeof(elfRequest));
+	
+	request->objType = ELF_REQUEST;
+	request->objDestr = elfDestroyRequest;
+	
+	request->url = NULL;
+	request->method = NULL;
+	
+	elfIncObj(ELF_REQUEST);
+
+	return request;
+	#endif
+}
+
+void elfDestroyRequest(void* data)
+{
+	elfRequest* request = (elfRequest*)data;
+
+	if(request->url) elfDestroyString(request->url);
+	if(request->method) elfDestroyString(request->method);
+
+	free(request);
+
+	elfDecObj(ELF_REQUEST);
+}
+
+ELF_API const char* ELF_APIENTRY elfGetRequestUrl(elfRequest* request)
+{
+	return request->url;
+}
+
+ELF_API void ELF_APIENTRY elfSetRequestUrl(elfRequest* request, const char* url)
+{
+	if(request->url) elfDestroyString(request->url);
+	request->url = elfCreateString(url);
+}
+
+ELF_API const char* ELF_APIENTRY elfGetRequestMethod(elfRequest* request)
+{
+	return request->method;
+}
+
+ELF_API void ELF_APIENTRY elfSetRequestMethod(elfRequest* request, const char* method)
+{
+	if(request->method) elfDestroyString(request->method);
+	request->method = elfCreateString(method);
+}
+
+ELF_API void ELF_APIENTRY elfSendRequest(elfRequest* req)
+{
+	#ifdef USE_SERF
+	apr_status_t rv;
+	apr_thread_t *thd;
+	apr_threadattr_t *thd_attr;
+
+	/* The default thread attribute: detachable */
+	apr_threadattr_create(&thd_attr, pool);
+
+	/* If the thread attribute is a default value, you can pass NULL to the second argument */
+	rv = apr_thread_create(&thd, thd_attr, making_the_request, req, pool);
 	#endif
 }
