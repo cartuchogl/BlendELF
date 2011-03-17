@@ -403,7 +403,6 @@ ELF_API void ELF_APIENTRY elfSetButtonOnTexture(elfButton* button, elfTexture* o
 ELF_API elfPicture* ELF_APIENTRY elfCreatePicture(const char* name)
 {
 	elfPicture* picture;
-	elfTexture* texture;
 
 	picture = (elfPicture*)malloc(sizeof(elfPicture));
 	memset(picture, 0x0, sizeof(elfPicture));
