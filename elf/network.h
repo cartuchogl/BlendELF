@@ -226,6 +226,9 @@ static apr_status_t setup_request(serf_request_t *request,
 	return APR_SUCCESS;
 }
 
+char url_copy[256];
+char method_copy[256];
+
 /**
  * Thread entry point
  */
@@ -249,13 +252,14 @@ static void* APR_THREAD_FUNC making_the_request(apr_thread_t *thd, void *data)
 	/* Default to one round of fetching. */
 	count = 1;
 	/* Default to GET. */
-	method = req->method ? req->method : "GET";
+	method = method_copy ? method_copy : "GET";
 	/* Do not print headers by default. */
 	print_headers = 1;
 
 	raw_url = req->url;
-	printf("%s\n",req->url);
-
+	printf("%skk\n",req->url);
+	printf("%spp\n",url_copy);
+	raw_url = url_copy;
 	apr_uri_parse(pool, raw_url, &url);
 	if (!url.port) {
 		url.port = apr_uri_port_of_scheme(url.scheme);
@@ -425,11 +429,21 @@ ELF_API void ELF_APIENTRY elfSendRequest(elfRequest* req)
 	apr_status_t rv;
 	apr_thread_t *thd;
 	apr_threadattr_t *thd_attr;
+	
+	elfRequest* copy;
+	copy = (elfRequest*)malloc(sizeof(elfRequest));
+	memset(copy, 0x0, sizeof(elfRequest));
+	memset(url_copy,0x0,256);
+	memset(method_copy,0x0,256);
+	copy->url = strncpy(url_copy,req->url,255);
+	copy->method = strncpy(method_copy,req->method,255);
+	printf("%s\n",method_copy);
+	printf("%s\n",url_copy);
 
 	/* The default thread attribute: detachable */
 	apr_threadattr_create(&thd_attr, pool);
 
 	/* If the thread attribute is a default value, you can pass NULL to the second argument */
-	rv = apr_thread_create(&thd, thd_attr, making_the_request, req, pool);
+	rv = apr_thread_create(&thd, thd_attr, making_the_request, (void *)copy, pool);
 	#endif
 }
