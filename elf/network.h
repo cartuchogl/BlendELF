@@ -229,7 +229,7 @@ static apr_status_t setup_request(serf_request_t *request,
 	hdrs_bkt = serf_bucket_request_get_headers(*req_bkt);
 
 	serf_bucket_headers_setn(hdrs_bkt, "User-Agent",
-		"Serf/" SERF_VERSION_STRING);
+		"cblendlef 0.1 Serf/" SERF_VERSION_STRING);
 	/* Shouldn't serf do this for us? */
 	serf_bucket_headers_setn(hdrs_bkt, "Accept-Encoding", "gzip");
 
@@ -485,8 +485,6 @@ ELF_API void ELF_APIENTRY elfSendRequest(elfRequest* req)
 		memset(method_copy,0x0,sizeof(method_copy));
 		copy->url = strncpy(url_copy,req->url,sizeof(url_copy)-1);
 		copy->method = strncpy(method_copy,req->method,sizeof(method_copy)-1);
-		printf("%s\n",method_copy);
-		printf("%s\n",url_copy);
 
 		/* The default thread attribute: detachable */
 		apr_threadattr_create(&thd_attr, pool);
