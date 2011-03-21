@@ -797,7 +797,7 @@ struct elfGui {
 };
 
 struct elfRequest {
-	ELF_OBJECT_HEADER;
+	ELF_RESOURCE_HEADER;
 	char* url;
 	char* method;
 };

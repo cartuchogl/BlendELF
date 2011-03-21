@@ -113,6 +113,10 @@ typedef struct {
 #define apr_atomic_read32 apr_atomic_read
 #endif
 
+char url_copy[256];
+char method_copy[256];
+int thread_state = 0;
+
 static apr_status_t handle_response(serf_request_t *request,
 	serf_bucket_t *response,
 	void *handler_baton,
@@ -123,6 +127,7 @@ static apr_status_t handle_response(serf_request_t *request,
 	serf_status_line sl;
 	apr_status_t status;
 	handler_baton_t *ctx = handler_baton;
+	FILE* file;
 
 	if (!response) {
 		/* A NULL response can come back if the request failed completely */
@@ -132,15 +137,24 @@ static apr_status_t handle_response(serf_request_t *request,
 	if (status) {
 		return status;
 	}
-
+	
+	file = fopen("tmp-response.txt", "w");
+	if(file) fclose(file);
+	
+	file = fopen("tmp-headers.txt", "w");
+	if(file) fclose(file);
+	
 	while (1) {
 		status = serf_bucket_read(response, 2048, &data, &len);
 		if (SERF_BUCKET_READ_ERROR(status))
 			return status;
 
-		/* got some data. print it out. */
-		fwrite(data, 1, len, stdout);
-
+		file = fopen("tmp-response.txt", "ab");
+		if(file)
+		{
+			fwrite(data, 1, len, file);
+			fclose(file);
+		}
 		/* are we done yet? */
 		if (APR_STATUS_IS_EOF(status)) {
 			if (ctx->print_headers) {
@@ -151,7 +165,12 @@ static apr_status_t handle_response(serf_request_t *request,
 					if (SERF_BUCKET_READ_ERROR(status))
 						return status;
 
-					fwrite(data, 1, len, stdout);
+					file = fopen("tmp-headers.txt", "ab");
+					if(file)
+					{
+						fwrite(data, 1, len, file);
+						fclose(file);
+					}
 					if (APR_STATUS_IS_EOF(status)) {
 						break;
 					}
@@ -252,13 +271,11 @@ static void* APR_THREAD_FUNC making_the_request(apr_thread_t *thd, void *data)
 	/* Default to one round of fetching. */
 	count = 1;
 	/* Default to GET. */
-	method = method_copy ? method_copy : "GET";
+	method = method_copy;
 	/* Do not print headers by default. */
 	print_headers = 1;
 
 	raw_url = req->url;
-	printf("%skk\n",req->url);
-	printf("%spp\n",url_copy);
 	raw_url = url_copy;
 	apr_uri_parse(pool, raw_url, &url);
 	if (!url.port) {
@@ -364,12 +381,13 @@ static void* APR_THREAD_FUNC making_the_request(apr_thread_t *thd, void *data)
 	}
 
 	serf_connection_close(connection);
+	thread_state = 0;
 	apr_thread_exit(thd, APR_SUCCESS);
 	return NULL;
 }
 #endif
 
-ELF_API elfRequest* ELF_APIENTRY elfCreateRequest()
+ELF_API elfRequest* ELF_APIENTRY elfCreateRequest(const char* name)
 {
 	#ifdef USE_SERF
 	elfRequest* request;
@@ -380,70 +398,101 @@ ELF_API elfRequest* ELF_APIENTRY elfCreateRequest()
 	request->objType = ELF_REQUEST;
 	request->objDestr = elfDestroyRequest;
 	
+	if(name) request->name = elfCreateString(name);
+	
 	request->url = NULL;
 	request->method = NULL;
 	
 	elfIncObj(ELF_REQUEST);
 
 	return request;
+	#else
+	return NULL;
 	#endif
 }
 
 void elfDestroyRequest(void* data)
 {
+	#ifdef USE_SERF
 	elfRequest* request = (elfRequest*)data;
 
+	if(request->name) elfDestroyString(request->name);
 	if(request->url) elfDestroyString(request->url);
 	if(request->method) elfDestroyString(request->method);
 
 	free(request);
 
 	elfDecObj(ELF_REQUEST);
+	#endif
 }
 
 ELF_API const char* ELF_APIENTRY elfGetRequestUrl(elfRequest* request)
 {
+	#ifdef USE_SERF
 	return request->url;
+	#else
+	return NULL;
+	#endif
 }
 
 ELF_API void ELF_APIENTRY elfSetRequestUrl(elfRequest* request, const char* url)
 {
+	#ifdef USE_SERF
 	if(request->url) elfDestroyString(request->url);
 	request->url = elfCreateString(url);
+	#endif
 }
 
 ELF_API const char* ELF_APIENTRY elfGetRequestMethod(elfRequest* request)
 {
+	#ifdef USE_SERF
 	return request->method;
+	#else
+	return NULL;
+	#endif
 }
 
 ELF_API void ELF_APIENTRY elfSetRequestMethod(elfRequest* request, const char* method)
 {
+	#ifdef USE_SERF
 	if(request->method) elfDestroyString(request->method);
 	request->method = elfCreateString(method);
+	#endif
+}
+
+ELF_API int ELF_APIENTRY elfGetRequestState()
+{
+	#ifdef USE_SERF
+	return thread_state;
+	#else
+	return -1;
+	#endif
 }
 
 ELF_API void ELF_APIENTRY elfSendRequest(elfRequest* req)
 {
 	#ifdef USE_SERF
-	apr_status_t rv;
-	apr_thread_t *thd;
-	apr_threadattr_t *thd_attr;
+	if( thread_state == 0 ){
+		thread_state = 1;
+		apr_status_t rv;
+		apr_thread_t *thd;
+		apr_threadattr_t *thd_attr;
 	
-	elfRequest* copy;
-	copy = (elfRequest*)malloc(sizeof(elfRequest));
-	memset(copy, 0x0, sizeof(elfRequest));
-	memset(url_copy,0x0,256);
-	memset(method_copy,0x0,256);
-	copy->url = strncpy(url_copy,req->url,255);
-	copy->method = strncpy(method_copy,req->method,255);
-	printf("%s\n",method_copy);
-	printf("%s\n",url_copy);
+		elfRequest* copy;
+		copy = (elfRequest*)malloc(sizeof(elfRequest));
+		memset(copy, 0x0, sizeof(elfRequest));
+		memset(url_copy,0x0,sizeof(url_copy));
+		memset(method_copy,0x0,sizeof(method_copy));
+		copy->url = strncpy(url_copy,req->url,sizeof(url_copy)-1);
+		copy->method = strncpy(method_copy,req->method,sizeof(method_copy)-1);
+		printf("%s\n",method_copy);
+		printf("%s\n",url_copy);
 
-	/* The default thread attribute: detachable */
-	apr_threadattr_create(&thd_attr, pool);
+		/* The default thread attribute: detachable */
+		apr_threadattr_create(&thd_attr, pool);
 
-	/* If the thread attribute is a default value, you can pass NULL to the second argument */
-	rv = apr_thread_create(&thd, thd_attr, making_the_request, (void *)copy, pool);
+		/* If the thread attribute is a default value, you can pass NULL to the second argument */
+		rv = apr_thread_create(&thd, thd_attr, making_the_request, (void *)copy, pool);
+	}
 	#endif
 }

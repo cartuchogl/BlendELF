@@ -2026,12 +2026,13 @@ ELF_API void ELF_APIENTRY elfEmptyGui(elfGui* gui);
 void elfDestroyRequest(void* data);
 // !!>
 
-ELF_API elfRequest* ELF_APIENTRY elfCreateRequest();	// <mdoc> NETWORKING FUNCTIONS
+ELF_API elfRequest* ELF_APIENTRY elfCreateRequest(const char* name);	// <mdoc> NETWORKING FUNCTIONS
 ELF_API void ELF_APIENTRY elfSendRequest(elfRequest* req);
 ELF_API const char* ELF_APIENTRY elfGetRequestUrl(elfRequest* request);
 ELF_API void ELF_APIENTRY elfSetRequestUrl(elfRequest* request,const char* url);
 ELF_API const char* ELF_APIENTRY elfGetRequestMethod(elfRequest* request);
 ELF_API void ELF_APIENTRY elfSetRequestMethod(elfRequest* request,const char* method);
+ELF_API int ELF_APIENTRY elfGetRequestState();
 
 //////////////////////////////// SST ////////////////////////////////
 

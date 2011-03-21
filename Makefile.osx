@@ -4,10 +4,10 @@ BULLET_PATH=../bullet-2.77/src
 GLFW_PATH=../glfw-2.7
 
 DEV_CFLAGS = -g -Wall -DELF_PLAYER -DELF_MACOSX -DNO_ASSIMP -DUSE_SERF \
-	# -force_cpusubtype_ALL -mmacosx-version-min=10.4 -arch i386 -arch x86_64
+	-force_cpusubtype_ALL -mmacosx-version-min=10.4 -arch i386 -arch x86_64
 
 INCS = -Iphy -Igfx -Ielf -I/usr/include/lua5.1 -I/usr/include/freetype2 -I$(BULLET_PATH) \
-	-I$(GLFW_PATH)/include -I/opt/local/include/ -I/opt/local/include/freetype2 -framework OpenAL \
+	-I$(GLFW_PATH)/include -I/opt/local/include/ -I/opt/local/include/freetype2 \
 	-I/usr/include/malloc -I/opt/local/include/apr-1 -I/opt/local/include/serf-0
 
 BLENDELF_LIBS = -L/opt/local/lib $(GLFW_PATH)/lib/cocoa/libglfw.a -pthread \

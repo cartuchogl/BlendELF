@@ -10842,8 +10842,11 @@ static int lua_EmptyGui(lua_State *L)
 static int lua_CreateRequest(lua_State *L)
 {
 	elfRequest* result;
-	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "CreateRequest", lua_gettop(L), 0);}
-	result = elfCreateRequest();
+	const char* arg0;
+	if(lua_gettop(L) != 1) {return lua_fail_arg_count(L, "CreateRequest", lua_gettop(L), 1);}
+	if(!lua_isstring(L, 1)) {return lua_fail_arg(L, "CreateRequest", 1, "string");}
+	arg0 = lua_tostring(L, 1);
+	result = elfCreateRequest(arg0);
 	if(result) lua_create_elfObject(L, (elfObject*)result);
 	else lua_pushnil(L);
 	return 1;
@@ -10912,6 +10915,14 @@ static int lua_SetRequestMethod(lua_State *L)
 	arg1 = lua_tostring(L, 2);
 	elfSetRequestMethod(arg0, arg1);
 	return 0;
+}
+static int lua_GetRequestState(lua_State *L)
+{
+	int result;
+	if(lua_gettop(L) != 0) {return lua_fail_arg_count(L, "GetRequestState", lua_gettop(L), 0);}
+	result = elfGetRequestState();
+	lua_pushnumber(L, (lua_Number)result);
+	return 1;
 }
 static const struct luaL_reg lua_elf_functions[] = {
 	{"IncRef", lua_IncRef},
@@ -11661,6 +11672,7 @@ static const struct luaL_reg lua_elf_functions[] = {
 	{"SetRequestUrl", lua_SetRequestUrl},
 	{"GetRequestMethod", lua_GetRequestMethod},
 	{"SetRequestMethod", lua_SetRequestMethod},
+	{"GetRequestState", lua_GetRequestState},
 	{NULL, NULL}
 };
 int luaopen_elf(lua_State* L)

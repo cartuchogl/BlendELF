@@ -1122,10 +1122,11 @@ ELF_API unsigned char ELF_APIENTRY elfGetGuiDragging(elfGui* gui);
 ELF_API elfGuiObject* ELF_APIENTRY elfGetGuiDragObject(elfGui* gui);
 ELF_API const char* ELF_APIENTRY elfGetGuiDragContent(elfGui* gui);
 ELF_API void ELF_APIENTRY elfEmptyGui(elfGui* gui);
-ELF_API elfRequest* ELF_APIENTRY elfCreateRequest();
+ELF_API elfRequest* ELF_APIENTRY elfCreateRequest(const char* name);
 ELF_API void ELF_APIENTRY elfSendRequest(elfRequest* req);
 ELF_API const char* ELF_APIENTRY elfGetRequestUrl(elfRequest* request);
 ELF_API void ELF_APIENTRY elfSetRequestUrl(elfRequest* request, const char* url);
 ELF_API const char* ELF_APIENTRY elfGetRequestMethod(elfRequest* request);
 ELF_API void ELF_APIENTRY elfSetRequestMethod(elfRequest* request, const char* method);
+ELF_API int ELF_APIENTRY elfGetRequestState();
 #endif

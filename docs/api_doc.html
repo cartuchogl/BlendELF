@@ -217,6 +217,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apidefine">LIST_PTR</div>
 <div class="apidefine">RESOURCES</div>
 <div class="apidefine">RENDER_STATION</div>
+<div class="apidefine">REQUEST</div>
 <div class="apitopic">NUMBER OF OBJECT TYPES</div>
 <div class="apidefine">OBJECT_TYPE_COUNT</div>
 <div class="apitopic">CAMERA MODE</div>
@@ -1016,6 +1017,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apikeytype">elfVec3f</span> GetJointAxis( <span class="apiobjtype">elfJoint</span> joint )</div>
 <div class="apitopic">FONT FUNCTIONS</div>
 <div class="apifunc"><span class="apiobjtype">elfFont</span> CreateFontFromFile( <span class="apikeytype">string</span> filePath, <span class="apikeytype">int</span> size )</div>
+<div class="apifunc"><span class="apiobjtype">elfFont</span> GetDefaultFont(  )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetFontName( <span class="apiobjtype">elfFont</span> font )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetFontFilePath( <span class="apiobjtype">elfFont</span> font )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetFontSize( <span class="apiobjtype">elfFont</span> font )</div>
@@ -1037,19 +1039,21 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetGuiObjectActive( <span class="apiobjtype">elfGuiObject</span> object, <span class="apikeytype">unsigned char</span> active )</div>
 <div class="apifunc">SetGuiObjectScript( <span class="apiobjtype">elfGuiObject</span> object, <span class="apiobjtype">elfScript</span> script )</div>
 <div class="apitopic">LABEL FUNCTIONS</div>
-<div class="apifunc"><span class="apiobjtype">elfLabel</span> CreateLabel( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apikeytype">string</span> name, <span class="apikeytype">int</span> x, <span class="apikeytype">int</span> y, <span class="apikeytype">string</span> text )</div>
+<div class="apifunc"><span class="apiobjtype">elfLabel</span> CreateLabel( <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apiobjtype">elfFont</span> GetLabelFont( <span class="apiobjtype">elfLabel</span> label )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetLabelText( <span class="apiobjtype">elfLabel</span> label )</div>
 <div class="apifunc">SetLabelFont( <span class="apiobjtype">elfLabel</span> label, <span class="apiobjtype">elfFont</span> font )</div>
 <div class="apifunc">SetLabelText( <span class="apiobjtype">elfLabel</span> label, <span class="apikeytype">string</span> text )</div>
 <div class="apitopic">BUTTON FUNCTION</div>
-<div class="apifunc"><span class="apiobjtype">elfButton</span> CreateButton( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apikeytype">string</span> name, <span class="apikeytype">int</span> x, <span class="apikeytype">int</span> y, <span class="apikeytype">int</span> width, <span class="apikeytype">int</span> height, <span class="apikeytype">string</span> text )</div>
+<div class="apifunc"><span class="apiobjtype">elfButton</span> CreateButton( <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apikeytype">boolean</span> GetButtonState( <span class="apiobjtype">elfButton</span> button )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetButtonText( <span class="apiobjtype">elfButton</span> button )</div>
 <div class="apifunc"><span class="apiobjtype">elfFont</span> GetButtonFont( <span class="apiobjtype">elfButton</span> button )</div>
 <div class="apifunc"><span class="apiobjtype">elfTexture</span> GetButtonOffTexture( <span class="apiobjtype">elfButton</span> button )</div>
 <div class="apifunc"><span class="apiobjtype">elfTexture</span> GetButtonOverTexture( <span class="apiobjtype">elfButton</span> button )</div>
 <div class="apifunc"><span class="apiobjtype">elfTexture</span> GetButtonOnTexture( <span class="apiobjtype">elfButton</span> button )</div>
+<div class="apifunc"><span class="apikeytype">elfColor</span> GetButtonTextColor( <span class="apiobjtype">elfTextField</span> textField )</div>
+<div class="apifunc">SetButtonTextColor( <span class="apiobjtype">elfButton</span> button, <span class="apikeytype">float</span> r, <span class="apikeytype">float</span> g, <span class="apikeytype">float</span> b, <span class="apikeytype">float</span> a )</div>
 <div class="apifunc">SetButtonText( <span class="apiobjtype">elfButton</span> button, <span class="apikeytype">string</span> text )</div>
 <div class="apifunc">SetButtonFont( <span class="apiobjtype">elfButton</span> button, <span class="apiobjtype">elfFont</span> font )</div>
 <div class="apifunc">SetButtonSize( <span class="apiobjtype">elfButton</span> button, <span class="apikeytype">int</span> width, <span class="apikeytype">int</span> height )</div>
@@ -1057,13 +1061,13 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetButtonOverTexture( <span class="apiobjtype">elfButton</span> button, <span class="apiobjtype">elfTexture</span> over )</div>
 <div class="apifunc">SetButtonOnTexture( <span class="apiobjtype">elfButton</span> button, <span class="apiobjtype">elfTexture</span> on )</div>
 <div class="apitopic">PICTURE FUNCTIONS</div>
-<div class="apifunc"><span class="apiobjtype">elfPicture</span> CreatePicture( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apikeytype">string</span> name, <span class="apikeytype">int</span> x, <span class="apikeytype">int</span> y, <span class="apikeytype">string</span> filePath )</div>
+<div class="apifunc"><span class="apiobjtype">elfPicture</span> CreatePicture( <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apiobjtype">elfTexture</span> GetPictureTexture( <span class="apiobjtype">elfPicture</span> picture )</div>
 <div class="apifunc"><span class="apikeytype">elfVec2f</span> GetPictureScale( <span class="apiobjtype">elfPicture</span> picture )</div>
 <div class="apifunc">SetPictureTexture( <span class="apiobjtype">elfPicture</span> picture, <span class="apiobjtype">elfTexture</span> texture )</div>
 <div class="apifunc">SetPictureScale( <span class="apiobjtype">elfPicture</span> picture, <span class="apikeytype">float</span> x, <span class="apikeytype">float</span> y )</div>
 <div class="apitopic">TEXT FIELD FUNCTIONS</div>
-<div class="apifunc"><span class="apiobjtype">elfTextField</span> CreateTextField( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apikeytype">string</span> name, <span class="apikeytype">int</span> x, <span class="apikeytype">int</span> y, <span class="apikeytype">int</span> width, <span class="apikeytype">string</span> text )</div>
+<div class="apifunc"><span class="apiobjtype">elfTextField</span> CreateTextField( <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apiobjtype">elfTexture</span> GetTextFieldTexture( <span class="apiobjtype">elfTextField</span> textField )</div>
 <div class="apifunc"><span class="apiobjtype">elfFont</span> GetTextFieldFont( <span class="apiobjtype">elfTextField</span> textField )</div>
 <div class="apifunc"><span class="apikeytype">elfColor</span> GetTextFieldTextColor( <span class="apiobjtype">elfTextField</span> textField )</div>
@@ -1077,7 +1081,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetTextFieldCursorPosition( <span class="apiobjtype">elfTextField</span> textField, <span class="apikeytype">int</span> idx )</div>
 <div class="apifunc">SetTextFieldText( <span class="apiobjtype">elfTextField</span> textField, <span class="apikeytype">string</span> text )</div>
 <div class="apitopic">SLIDER FUNCTIONS</div>
-<div class="apifunc"><span class="apiobjtype">elfSlider</span> CreateSlider( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apikeytype">string</span> name, <span class="apikeytype">int</span> x, <span class="apikeytype">int</span> y, <span class="apikeytype">int</span> width, <span class="apikeytype">int</span> height, <span class="apikeytype">float</span> value )</div>
+<div class="apifunc"><span class="apiobjtype">elfSlider</span> CreateSlider( <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apiobjtype">elfTexture</span> GetSliderBackgroundTexture( <span class="apiobjtype">elfSlider</span> slider )</div>
 <div class="apifunc"><span class="apiobjtype">elfTexture</span> GetSliderSliderTexture( <span class="apiobjtype">elfSlider</span> slider )</div>
 <div class="apifunc"><span class="apikeytype">float</span> GetSliderValue( <span class="apiobjtype">elfSlider</span> slider )</div>
@@ -1086,7 +1090,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetSliderSliderTexture( <span class="apiobjtype">elfSlider</span> slider, <span class="apiobjtype">elfTexture</span> sliderTexture )</div>
 <div class="apifunc">SetSliderValue( <span class="apiobjtype">elfSlider</span> slider, <span class="apikeytype">float</span> value )</div>
 <div class="apitopic">SCREEN FUCNTIONS</div>
-<div class="apifunc"><span class="apiobjtype">elfScreen</span> CreateScreen( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apikeytype">string</span> name, <span class="apikeytype">int</span> x, <span class="apikeytype">int</span> y, <span class="apikeytype">int</span> width, <span class="apikeytype">int</span> height )</div>
+<div class="apifunc"><span class="apiobjtype">elfScreen</span> CreateScreen( <span class="apikeytype">string</span> name )</div>
 <div class="apifunc">SetScreenSize( <span class="apiobjtype">elfScreen</span> screen, <span class="apikeytype">int</span> width, <span class="apikeytype">int</span> height )</div>
 <div class="apifunc"><span class="apiobjtype">elfTexture</span> GetScreenTexture( <span class="apiobjtype">elfScreen</span> screen )</div>
 <div class="apifunc">SetScreenTexture( <span class="apiobjtype">elfScreen</span> screen, <span class="apiobjtype">elfTexture</span> texture )</div>
@@ -1094,7 +1098,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">ForceScreenFocus( <span class="apiobjtype">elfScreen</span> screen )</div>
 <div class="apifunc">ReleaseScreenFocus( <span class="apiobjtype">elfScreen</span> screen )</div>
 <div class="apitopic">TEXT LIST FUNCTIONS</div>
-<div class="apifunc"><span class="apiobjtype">elfTextList</span> CreateTextList( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apikeytype">string</span> name, <span class="apikeytype">int</span> x, <span class="apikeytype">int</span> y, <span class="apikeytype">int</span> rows, <span class="apikeytype">int</span> width )</div>
+<div class="apifunc"><span class="apiobjtype">elfTextList</span> CreateTextList( <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apiobjtype">elfFont</span> GetTextListFont( <span class="apiobjtype">elfTextList</span> textList )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetTextListRowCount( <span class="apiobjtype">elfTextList</span> textList )</div>
 <div class="apifunc"><span class="apikeytype">int</span> GetTextListItemCount( <span class="apiobjtype">elfTextList</span> textList )</div>
@@ -1113,7 +1117,7 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc">SetTextListSelection( <span class="apiobjtype">elfTextList</span> textList, <span class="apikeytype">int</span> selection )</div>
 <div class="apifunc">SetTextListItemDrag( <span class="apiobjtype">elfTextList</span> textList, <span class="apikeytype">unsigned char</span> itemDrag )</div>
 <div class="apitopic">CHECK BOX FUNCTIONS</div>
-<div class="apifunc"><span class="apiobjtype">elfCheckBox</span> CreateCheckBox( <span class="apiobjtype">elfGuiObject</span> parent, <span class="apikeytype">string</span> name, <span class="apikeytype">int</span> x, <span class="apikeytype">int</span> y, <span class="apikeytype">unsigned char</span> state )</div>
+<div class="apifunc"><span class="apiobjtype">elfCheckBox</span> CreateCheckBox( <span class="apikeytype">string</span> name )</div>
 <div class="apifunc"><span class="apikeytype">boolean</span> GetCheckBoxState( <span class="apiobjtype">elfCheckBox</span> checkBox )</div>
 <div class="apifunc"><span class="apiobjtype">elfTexture</span> GetCheckBoxOffTexture( <span class="apiobjtype">elfCheckBox</span> checkBox )</div>
 <div class="apifunc"><span class="apiobjtype">elfTexture</span> GetCheckBoxOnTexture( <span class="apiobjtype">elfCheckBox</span> checkBox )</div>
@@ -1135,6 +1139,14 @@ This document contains all of the available functions for the BlendELF Lua API.
 <div class="apifunc"><span class="apiobjtype">elfGuiObject</span> GetGuiDragObject( <span class="apiobjtype">elfGui</span> gui )</div>
 <div class="apifunc"><span class="apikeytype">string</span> GetGuiDragContent( <span class="apiobjtype">elfGui</span> gui )</div>
 <div class="apifunc">EmptyGui( <span class="apiobjtype">elfGui</span> gui )</div>
+<div class="apitopic">NETWORKING FUNCTIONS</div>
+<div class="apifunc"><span class="apiobjtype">elfRequest</span> CreateRequest( <span class="apikeytype">string</span> name )</div>
+<div class="apifunc">SendRequest( <span class="apiobjtype">elfRequest</span> req )</div>
+<div class="apifunc"><span class="apikeytype">string</span> GetRequestUrl( <span class="apiobjtype">elfRequest</span> request )</div>
+<div class="apifunc">SetRequestUrl( <span class="apiobjtype">elfRequest</span> request, <span class="apikeytype">string</span> url )</div>
+<div class="apifunc"><span class="apikeytype">string</span> GetRequestMethod( <span class="apiobjtype">elfRequest</span> request )</div>
+<div class="apifunc">SetRequestMethod( <span class="apiobjtype">elfRequest</span> request, <span class="apikeytype">string</span> method )</div>
+<div class="apifunc"><span class="apikeytype">int</span> GetRequestState(  )</div>
 <div class="copyright">Copyright &copy; 2009-2010 Samuel Anjam</div>
 
 <script type="text/javascript">
