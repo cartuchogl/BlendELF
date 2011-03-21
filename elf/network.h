@@ -472,7 +472,6 @@ ELF_API int ELF_APIENTRY elfGetRequestState()
 ELF_API void ELF_APIENTRY elfSendRequest(elfRequest* req)
 {
 	#ifdef USE_SERF
-	thread_state = 1;
 	apr_status_t rv;
 	apr_thread_t *thd;
 	apr_threadattr_t *thd_attr;
@@ -480,6 +479,7 @@ ELF_API void ELF_APIENTRY elfSendRequest(elfRequest* req)
 	elfRequest* copy;
 	
 	if( thread_state == 0 ) {
+		thread_state = 1;
 		copy = (elfRequest*)malloc(sizeof(elfRequest));
 		memset(copy, 0x0, sizeof(elfRequest));
 		memset(url_copy,0x0,sizeof(url_copy));
