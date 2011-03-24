@@ -267,6 +267,7 @@ static void* APR_THREAD_FUNC making_the_request(apr_thread_t *thd, void *data)
 	int i;
 	int print_headers;
 	char *authn = NULL;
+	FILE* file;
 
 	/* Default to one round of fetching. */
 	count = 1;
@@ -277,6 +278,13 @@ static void* APR_THREAD_FUNC making_the_request(apr_thread_t *thd, void *data)
 
 	raw_url = req->url;
 	raw_url = url_copy;
+	
+	file = fopen("tmp-post-data.txt","r");
+	if(file){
+		req_body_path = "tmp-post-data.txt";
+		fclose(file);
+	}
+	
 	apr_uri_parse(pool, raw_url, &url);
 	if (!url.port) {
 		url.port = apr_uri_port_of_scheme(url.scheme);
